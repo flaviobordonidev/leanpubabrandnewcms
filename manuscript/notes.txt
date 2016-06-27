@@ -1,0 +1,10 @@
+www.leanpub.com
+
+https://leanpub.com/railsreferences/preview
+
+https://leanpub.com/help/getting_started_sync_dropbox
+https://leanpub.com/help/manual
+
+---
+http://pygments.org/demo/
+vedi il codice nel menu a cascata
