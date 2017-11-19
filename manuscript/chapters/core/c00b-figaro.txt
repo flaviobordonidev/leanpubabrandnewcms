@@ -1,0 +1,345 @@
+# Figaro
+
+ho creato un capitolo su figaro anche se il suo utilizzo è da vedere nei vari capitoli in cui serve... ^_^
+
+Questo è più un "reference-index" in cui spiego di cosa si tratta ed indico i capitoli in cui andare a vedere il suo utilizzo
+
+...
+
+ad esempio è bene installarlo da subito perché la prima password da non passare su git è quella di collegamento al database. (In realtà si riesce a lavorare in development anche senza password...)
+
+...
+
+
+
+
+## Risorse web:
+
+  * https://github.com/laserlemon/figaro
+  * https://devcenter.heroku.com/articles/config-vars
+  * http://edgeguides.rubyonrails.org/4_1_release_notes.html#config/secrets.yml
+  * http://blog.honeybadger.io/ruby-guide-environment-variables/
+  * http://blog.honeybadger.io/securing-environment-variables/
+  * https://richonrails.com/articles/the-rails-4-1-secrets-yml-file
+  * http://stackoverflow.com/questions/25006650/step-by-step-explanation-for-using-rails-secrets-yml-without-exposing-keys-to-pu
+
+
+
+
+## Da rails 4.1 non è più necessario usare figaro?
+
+Rails 4.1 ha introdotto il file secrets.yml che potrebbe sostituire figaro ma non al 100%. Il problema è che secrets.yml non setta le variabili d'ambiente (doesn't set environment variables).
+Lo stesso secrets.yml di default ne usa una per l'ambiente di produzione.
+
+[codice: application config xx](#code-application-config-xx)
+
+{title="config/secrets.yml", lang=ruby, line-numbers=on, starting-line-number=47}
+~~~~~~~~
+# Do not keep production secrets in the repository,
+# instead read values from the environment.
+production:
+  secret_key_base: <%= ENV["SECRET_KEY_BASE"] %>
+~~~~~~~~
+
+Quindi dove raccolgo tutte le password per la mia applicazione per poi passarle come variabili d'ambiente?
+Al momento conviene ancora usare figaro e raccoglierle sul file a lui dedicato config/application.yml
+All'avvio di rails la gemma figaro carica in variabili d'ambiente tutte le password scritte su config/application.yml
+
+I> Avoid using .bashrc or .bash-profile for secrets
+I>
+I> When you store secrets in files like .bashrc, they're sent as environment variables to every single program that you run as that user. Most of these programs don't need to know your secrets. So why give them to them?
+I>
+I> Only reveal your secrets to the processes that need them
+I>
+I> If your Rails app is the only process that needs to know your MY_PASSWD_API_KEY, then it's a good idea to only make it available to that process.
+I>
+I> There are several gems that let you add environment variables to a file that is loaded when Rails starts. These env vars are only available to your Rails process, and its child processes. See figaro and dotenv gems.
+
+
+I> ATTENZIONE!
+I>
+I> ricordiamoci di mettere config/application.yml su .gitignor per non passare il file delle password su git-hub.
+
+
+
+
+## installiamo figaro
+
+
+![la gemma figaro](images/originals/rubygems_figaro-01.png)
+
+
+I> Verifica sempre le ultime versioni su https://rubygems.org
+I>
+I> Verifica sempre gli ultimi aggiornamenti sul readme.md di https://github.com/laserlemon/figaro
+
+Aggiungiamo la "gem" di ruby:
+
+[codice: application xx](#code-application-xx)
+
+{title="Gemfile", lang=ruby, line-numbers=on, starting-line-number=47}
+~~~~~~~~
+# figaro - configuration framework - imposta le Environment Variables - ENV["SECRET_PASSWORD"]
+gem 'figaro', '~> 1.1', '>= 1.1.1'
+~~~~~~~~
+
+Eseguiamo l'installazione della gemma con bundle ed il refresh dell'ambiente rbenv (opzionale)
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ bundle install
+$ rbenv rehash
+~~~~~~~~
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ bundle exec figaro install
+  create  config/application.yml
+  append  .gitignore
+~~~~~~~~
+
+L'installazione di figaro si è già preoccupata di escludere il file di configurazione da git.
+
+[codice: application xx](#code-application-xx)
+
+{title=".gitignore", lang=text, line-numbers=on, starting-line-number=23}
+~~~~~~~~
+# Ignore application configuration
+/config/application.yml
+~~~~~~~~
+
+
+## Cominciamo a mettere al sicuro le password
+
+Avendo installato figaro spostiamo tutte le password sul file /config/application.yml
+Iniziamo con il secret_key_base che è usato per verificare l'integrità dei signed cookies e che si trova da rails 4.1 sul file config/secrets.yml. (Nelle precedenti versioni di rails era in config/initializers/secret_token.rb)
+
+Questo file ha una "convenzione" con heroku per quanto riguarda la produzione. Infatti heroku crea in automatico la ENV["SECRET_KEY_BASE"] come puoi verificare da terminale.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku config
+~~~~~~~~
+
+Quindi questa possiamo lasciarla così com'è oppure possiamo prendere quella di heroku ed archiviarla sul file di figaro config/application.yml 
+Comunque per le altre due Spostiamo i valori. 
+
+[codice: application config 10](#code-application-config-10)
+
+{title="config/application.yml", lang=yaml, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+development:
+  SECRET_KEY_BASE: 2d64e44d814e3fdf518fb7f830e0f656bfcd015c86dfc4c5686d2b671a6e05aeaf67e780beaaa82b5f3be2c58bd28d616ffef2845233ab5dba9fade5067e0c06
+
+test:
+  SECRET_KEY_BASE: 2de1ca50ad0877af447c1f414419e3eab1e0d09f612a6d24cd846bfcea38e3750d4965323aa35d39f945bb18b5f1592c1c590ffee3dbec39973ca299bbacb1ca
+
+production:
+  # SECRET_KEY_BASE: already present on heroku. See $ heroku config
+~~~~~~~~
+
+I> ATTENZIONE!
+I>
+I> le variabili d'ambiente sono case-sensitive quindi ENV["secret_key_base"] è DIVERSO da ENV["SECRET_KEY_BASE"]
+I> 
+I> Per convenzione le variabili d'ambiente si scrivono tutte maiuscole.
+
+I> DOPPIA ATTENZIONE!
+I> 
+I> dopo le modifiche al file config/application.yml può essere necessario chiudere TUTTO IL TERMNIALE e non solo uscire dalla rails console e rientrare.
+
+
+quindi il file secret.yml risulta
+
+[codice: application config 11](#code-application-config-11)
+
+{title="config/secrets.yml", lang=yaml, line-numbers=on, starting-line-number=13}
+~~~~~~~~
+development:
+  secret_key_base: ENV["SECRET_KEY_BASE"]
+
+test:
+  secret_key_base: ENV["SECRET_KEY_BASE"]
+
+# Do not keep production secrets in the repository,
+# instead read values from the environment.
+production:
+  secret_key_base: <%= ENV["SECRET_KEY_BASE"] %>
+~~~~~~~~
+
+
+
+
+## Giochiamo con le variabili d'ambiente (ENV)
+
+if you use this key <%= ENV["SECRET_KEY_BASE'] %>
+
+Though, if you would like to play and test. One option is trying to edit your app/views/layouts/application.html.erb file and put the config var you want to display, for instance USERNAME config var
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= ENV['USERNAME'] %></title>
+</head>
+<body>
+
+<%= yield %>
+
+</body>
+</html>
+Then deploy to heroku and run
+
+heroku config:set USERNAME=gwho
+
+You should see 'gwho' at the page title.
+
+
+Un altro modo di controllare è usando la rails console (https://pragmaticstudio.com/blog/2014/3/11/console-shortcuts-tips-tricks)
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails console
+> puts ENV.keys # find out what ENV vars are set
+=> (returns a long list of var names)
+> puts ENV['DEVISE_PEPPER']
+=> "067d793e8781fa02aebd36e239c7878bdc1403d6bcb7c380beac53189ff6366be"
+~~~~~~~~
+
+Riproviamolo nell'ambiente di test
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails console test
+> puts ENV.keys 
+~~~~~~~~
+
+Riproviamolo nell'ambiente di produzione (con sandbox per rollback delle modifiche)
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails console production --sandbox
+> puts ENV.keys 
+~~~~~~~~
+
+I> ATTENZIONE!
+I> facciamo quache prova perché non sono sicuro che console production riesca ad interagire con la produzione messa su heroku. Per heroku credo si debba usare un'altro comando. Ad esempio " heroku run bash "
+
+
+
+
+
+
+
+
+## Mettiamo al sicuro le password del database
+
+
+# database.yml
+---
+development:
+  username: flavio
+  password: secretpass
+test:
+  username: flavio
+  password: secretpass
+---
+
+
+
+
+
+
+
+
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku login
+Email: flavio.bordoni.dev@gmail.com
+Password: ***
+
+$ heroku create
+$ git push heroku master
+$ heroku open
+
+$ rake figaro:heroku
+
+$ heroku open
+~~~~~~~~
+
+
+
+
+Estratto dal manuale di rails 4.1 
+
+[...]
+
+2.2 config/secrets.yml
+Rails 4.1 generates a new secrets.yml file in the config folder. By default, this file contains the application's secret_key_base, but it could also be used to store other secrets such as access keys for external APIs.
+
+The secrets added to this file are accessible via Rails.application.secrets. For example, with the following config/secrets.yml:
+
+development:
+  secret_key_base: 3b7cd727ee24e8444053437c36cc66c3
+  some_api_key: SOMEKEY
+Rails.application.secrets.some_api_key returns SOMEKEY in the development environment.
+
+See the Upgrading Ruby on Rails guide on how to migrate existing applications to use this feature.
+
+[...]
+
+3.3 config/secrets.yml
+If you want to use the new secrets.yml convention to store your application's secrets, you need to:
+
+Create a secrets.yml file in your config folder with the following content:
+
+development:
+  secret_key_base:
+ 
+test:
+  secret_key_base:
+ 
+production:
+  secret_key_base: <%= ENV["SECRET_KEY_BASE"] %>
+Use your existing secret_key_base from the secret_token.rb initializer to set the SECRET_KEY_BASE environment variable for whichever users running the Rails application in production mode. Alternatively, you can simply copy the existing secret_key_base from the secret_token.rb initializer to secrets.yml under the production section, replacing '<%= ENV["SECRET_KEY_BASE"] %>'.
+
+Remove the secret_token.rb initializer.
+
+Use rake secret to generate new keys for the development and test sections.
+
+Restart your server.
+
+[...]
+
+include the file in .gitignore
+
+[...]
+
+
+
+Estratto dal sito di heroku
+
+On a traditional host or working locally you can set environment vars in your bashrc file. On Heroku, you use config vars.
+Setting up config vars for a deployed application
+Use the Heroku CLI’s config, config:set, config:get and config:unset to manage your config vars:
+
+$ heroku config:set GITHUB_USERNAME=joesmith
+Adding config vars and restarting myapp... done, v12
+GITHUB_USERNAME: joesmith
+
+$ heroku config
+GITHUB_USERNAME: joesmith
+OTHER_VAR:    production
+
+$ heroku config:get GITHUB_USERNAME
+joesmith
+
+$ heroku config:unset GITHUB_USERNAME
+Unsetting GITHUB_USERNAME and restarting myapp... done, v13
+
+You can also edit config vars on your app’s settings tab on Dashboard:
+
+
+

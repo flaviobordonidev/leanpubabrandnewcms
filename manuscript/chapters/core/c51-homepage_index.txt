@@ -1,0 +1,37 @@
+# homepage index
+
+La vera Pagina iniziale (Homepage)
+
+
+
+
+## inizio
+
+La pagina iniziale presenta gli articoli (posts) che sono stati scelti con il checkbox "homepage" e ne presenta i primi 6 in ordine cronologico decrescente.
+
+A> story:
+A>
+A> Come visitatore del sito 
+A> 
+A> Voglio vedere una homepage sempre attualizzata con le ultime novità
+A> 
+A> Così da potermi mantenere attualizzato
+
+Mi apro il branch e lo aggiorno su github (repository esterno: origin)
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git pull origin master
+$ git checkout -b homepage
+$ git push origin homepage
+~~~~~~~~
+
+
+
+
+# views index
+
+Passo il contenuto del mocks index_magazine sul mio views/homepage/index. E lo divido in vari partials che metto nella cartella views/mocks/index_magazine/...
+
+
+

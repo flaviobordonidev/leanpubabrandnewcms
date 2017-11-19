@@ -1,0 +1,5 @@
+-# Inizio
+
+il Web Developer lavora con il Web Designer per impostare l'applicazione con layout generale framework (bootstrap)
+ed inizializzazione dei mocks.
+Questo per lasciare poi spazio al solo Web Designer per creare il mock-up.

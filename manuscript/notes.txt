@@ -1,6 +1,6 @@
 www.leanpub.com
 
-https://leanpub.com/railsreferences/preview
+https://leanpub.com/integram_cms/preview
 
 https://leanpub.com/help/getting_started_sync_dropbox
 https://leanpub.com/help/manual
@@ -8,3 +8,13 @@ https://leanpub.com/help/manual
 ---
 http://pygments.org/demo/
 vedi il codice nel menu a cascata
+
+---
+http://themes.semicolonweb.com/html/canvas/index-corporate-4.php
+http://themes.semicolonweb.com/html/canvas/page-title-dark.php
+
+---
+---
+---
+
+

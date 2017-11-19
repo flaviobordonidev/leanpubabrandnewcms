@@ -1,0 +1,87 @@
+# homepage
+
+Pagina iniziale (Homepage)
+Non lavoro subito quella del mock ma inizio con una pagina semplice che mi permette di implementare l'internazionalizzazione e la parte di login per poter gestire gli articolo del sito. La parte di layout del template la implementiamo successivamente.
+
+
+
+
+## inizio
+
+La pagina iniziale presenta gli articoli (posts) che sono stati scelti con il checkbox "homepage" e ne presenta i primi 6 in ordine cronologico decrescente.
+
+A> story:
+A>
+A> pagina di test dello sviluppatore  
+A> 
+A> Inizio con una homepage che è di appoggio pe lo sviluppatore
+A> 
+A> Così da poter implementare l'internazionalizzazione ed il login sul back-office
+
+Mi apro il branch e lo aggiorno su github (repository esterno: origin)
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git pull origin master
+$ git checkout -b homepage
+$ git push origin homepage
+~~~~~~~~
+
+
+
+
+## no scaffold
+
+non usiamo lo Scaffold perché la homepage non ha una corrispettiva tabella nel database ma prende i dati dalla tabella posts.
+Uso quindi il "rails generate controller ..." e gli associo solo l'azione "index". 
+
+A> Perché "index" che sarebbe un elenco e non "show" che è la pagina che presenta i dati? 
+A>
+A> Non ho una risposta definitiva ed in passato ho usato "show" ma ultimamente sto usando index perché è più comunemente usato in html e perché se penso all'url con index non ho la necessità di specificare l'id come faccio invece su show. (es. mydomain/homepages invece di mydomain/homepages/1 )
+A questo punto evito anche di usare il plurale come fa lo "scaffold" perché non ho una tabella "homepages". Uso quindi il singolare visto che è un controller suigeneris e usa l'"index" come se fosse "show" perché non ha un elenco di elementi. Ho quindi mydomain/homepage.
+
+I> ATTENZIONE: con "rails generate controller ..." -> uso il SINGOLARE (ed ottengo un controller al singolare)
+I>
+I> Poiché è una pagina statica lascio il controller al singolare visto che non ha un elenco di elementi da visualizzare
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g controller Homepage index
+~~~~~~~~
+
+non ho nessun migrate perché non mi interfaccio con il database.
+
+
+
+
+## routes
+
+Aggiorno il file routes per mettere l'homepage come pagina principale (root)
+
+[codice: homepage config 01](#code-homepage-config-01)
+
+{title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+root 'homepage#index'
+~~~~~~~~
+
+
+
+
+## homepage views
+
+[codice: homepage views 01](#code-homepage-views-01)
+
+{title="views/homepage/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<h1> Questa è l'homepage </h1>
+<p> Il testo verrà preso dal database ma alcuni messaggi sono passati dall'applicazione ed è quindi bene che vengano tradotti per essere pronti a supportare più lingue. </p>
+~~~~~~~~
+
+
+
+Posso verificare che funziona tutto sull'url:
+
+A> http://localhost:3000
+
+

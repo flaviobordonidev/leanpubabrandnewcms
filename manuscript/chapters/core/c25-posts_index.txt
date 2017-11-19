@@ -1,0 +1,51 @@
+# post index
+
+l'elenco di tutti i posts.
+
+Nuova story:
+
+A> Come visitatore del sito web                               
+A> 
+A> Voglio vedere l'elenco di tutti i posts dal più vecchio al più recente
+A> 
+A> Così da poter scegliere quello con il titolo e l'immagine più accattivanti
+
+Quindi mi apro il branch
+
+A> $ git pull origin master
+A>
+A> $ git checkout -b posts_index
+A>
+A> $ git push origin posts_index
+
+
+Mettiamo la parte di mock in alto e sostituiamo l'elenco con quello dinamico
+
+[codice: posts views 02](#code-posts-views-02)
+
+{title="views/people/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!-- Document Wrapper
+============================================= -->
+<div id="wrapper" class="clearfix">
+~~~~~~~~
+
+{title="views/people/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=27}
+~~~~~~~~
+<div id="posts" class="small-thumbs">
+    <%= render "posts/index/post_list" %>
+</div><!-- #posts end -->
+~~~~~~~~
+
+
+E lavoriamo la visualizzazione della lista
+
+[codice: posts views 03](#code-posts-views-03)
+
+{title="views/posts/index/_posts_list.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<% @posts.each do |post| %>
+...
+~~~~~~~~
+
+

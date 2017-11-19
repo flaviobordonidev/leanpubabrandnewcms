@@ -1,0 +1,23 @@
+# Devise su heroku
+
+Una volta che funziona in locale funziona anche su heroku.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku login
+  Email: flavio.bordoni.dev@gmail.com
+  Password: ***
+$ git push heroku master
+$ heroku open
+~~~~~~~~
+
+Non funziona perché su heroku non abbiamo eseguito il migrate.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku run rake db:migrate
+$ heroku open
+~~~~~~~~
+
+Adesso funziona!
+

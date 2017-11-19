@@ -1,0 +1,310 @@
+# Login -- devise
+
+Implementiamo la parte di login con la gemma "devise"
+
+
+
+
+## Risorse web:
+
+  * https://github.com/plataformatec/devise
+  * https://github.com/plataformatec/devise/wiki/Example-Applications
+  * http://railsapps.github.io/tutorial-rails-devise-rspec-cucumber.html
+  * http://railsapps.github.io/tutorial-rails-mongoid-devise.html
+  * Railscasts pro 209-devise-revised
+  * http://railsapps.github.io/tutorial-rails-mongoid-devise.html
+
+
+
+## inizio
+
+Definisco la mia storia (http://www.pivotaltracker.com/help/gettingstarted):
+
+
+
+A> Caratteristica: Login
+A>
+A>   Scenario: 
+A>
+A>     Un utente si logga per avere il SUO ambiente di lavoro
+A>
+A>
+A>     Come ... user                               
+A>
+A>     Voglio ... poter fare login dalla pagina /users/sign_in
+A>
+A>     Così che ... possa usare il mio ambiente personalizzato 
+
+
+Mi apro il branch e lo aggiorno su github (repository esterno: origin)
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git pull origin master
+$ git checkout -b ft-login-01
+$ git push origin ft-login-01
+~~~~~~~~
+
+I> ft: Features are stories that provide verifiable business value to the team's customer.
+I>
+I> login: nome della storia
+I>
+I> 01: progressivo (oppure l'id della storia dato da pivotaltracker)
+
+
+
+
+## installiamo devise
+
+
+![la gemma devise](images/originals/rubygems_devise-01.png)
+
+
+I> Verifica sempre le ultime versioni su https://rubygems.org
+I>
+I> Verifica sempre gli ultimi aggiornamenti sul readme.md di https://github.com/plataformatec/devise
+
+Aggiungiamo la "gem" di ruby:
+
+[codice: application 08](#code-application-08)
+
+{title="Gemfile", lang=ruby, line-numbers=on, starting-line-number=47}
+~~~~~~~~
+# Flexible authentication solution for Rails with Warden 
+gem 'devise', '~> 4.1'
+~~~~~~~~
+
+Eseguiamo l'installazione della gemma con bundle ed il refresh dell'ambiente rbenv (opzionale)
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ bundle install
+$ rbenv rehash
+~~~~~~~~
+
+
+Eseguiamo lo script di installazione di devise su rails (il generator)
+The generator will install an initializer which describes ALL of Devise's configuration options. It is imperative that you take a look at it. 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g devise:install
+
+Running via Spring preloader in process 3081
+      create  config/initializers/devise.rb
+      create  config/locales/devise.en.yml
+===============================================================================
+
+Some setup you must do manually if you haven't yet:
+
+  1. Ensure you have defined default url options in your environments files. Here
+     is an example of default_url_options appropriate for a development environment
+     in config/environments/development.rb:
+
+       config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+
+     In production, :host should be set to the actual host of your application.
+
+  2. Ensure you have defined root_url to *something* in your config/routes.rb.
+     For example:
+
+       root to: "home#index"
+
+  3. Ensure you have flash messages in app/views/layouts/application.html.erb.
+     For example:
+
+       <p class="notice"><%= notice %></p>
+       <p class="alert"><%= alert %></p>
+
+  4. If you are deploying on Heroku with Rails 3.2 only, you may want to set:
+
+       config.assets.initialize_on_precompile = false
+
+     On config/application.rb forcing your application to not access the DB
+     or load models when precompiling your assets.
+
+  5. You can copy Devise views (for customization) to your app by running:
+
+       rails g devise:views
+
+===============================================================================
+~~~~~~~~
+
+Alcuni dei punti riportati sul testo che appare dopo devise:install sono già stati fatti. quelli che mancano li eseguiamo adesso.
+
+Completiamo il punto 1. relativo alla parte di settaggio sia in sviluppo che in produzione.
+
+[codice: application config 05](#code-application-config-05)
+
+{title="config/environments/development.rb", lang=ruby, line-numbers=on, starting-line-number=42}
+~~~~~~~~
+# Devise config
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+~~~~~~~~
+
+[codice: application config 06](#code-application-config-06)
+
+{title="config/environments/production.rb", lang=ruby, line-numbers=on, starting-line-number=80}
+~~~~~~~~
+# Devise config
+  config.action_mailer.default_url_options = { :host => 'guarded-retreat-51105.herokuapp.com' }
+~~~~~~~~
+
+Per trovare il nome host su heroku o ci loggiamo oppure usiamo il comando "heroku open" e prendiamo l'url dal browser che viene aperto.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku open
+~~~~~~~~
+
+I> Attenzione!
+I>
+I> In produzione facciamo riferimento al sito web di heroku. Dobbiamo ricordarci di cambiare questo settaggio quando ci sposteremo sul sito definitivo.
+
+i punti 2. e 3. li abbiamo già.
+Il punto 4. non ci riguarda perché siamo su Rails 4
+
+Facciamo il punto 5. 
+
+Implementiamo il MODEL di devise "User" che crea anche la tabella users usando il "rails generate devise MODEL".
+
+Replace MODEL with the class name used for the application’s users (it’s frequently User but could also be Admin). This will create a model (if one does not exist) and configure it with the default Devise modules. The generator also configures your config/routes.rb file to point to the Devise controller.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g devise User
+~~~~~~~~
+
+Next, check the MODEL for any additional configuration options you might want to add, such as confirmable or lockable. If you add an option, be sure to inspect the migration file (created by the generator if your ORM supports them) and uncomment the appropriate section. For example, if you add the confirmable option in the model, you'll need to uncomment the Confirmable section in the migration. Then run rake db:migrate
+
+Non aggiungiamo nessuna opzione e lasciamo sia il model che il migration come da default
+
+[codice: users models 01](#code-users-models-01)
+
+{title="app/models/user.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class User < ActiveRecord::Base
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
+end
+~~~~~~~~
+
+[codice: users db 01](#code-users-db-01)
+
+{title="db/migrate/xxx_devise_create_users.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+create_table :users do |t|
+~~~~~~~~
+
+
+Quindi effettuiamo il migration ed usiamo il "rails generate devise:views" per le views. Infine creiamo il controller per la tabella users. (Note that “users” is plural when you create the controller.)
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rake db:migrate
+$ rails g devise:views
+$ rails g controller users show
+~~~~~~~~
+
+Il comando "devise:views" crea/visualizza tutte le views di devise permettendoti di modificarle e di applicarci lo stile del tuo template.
+
+
+
+
+## lavoriamo sulle routes.
+
+
+[codice: application config 07](#code-application-config-07)
+
+{title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+root 'users#show'
+
+devise_for :users
+resources :users
+~~~~~~~~
+
+I> Important note: The devise_for :users route must be placed above resources :users.
+
+Per ora lasciamo users#show seguendo l'esempio standard di https://github.com/plataformatec/devise ma nei prossimi capitoli lo modifichiamo puntandolo all'homepage.
+
+
+
+
+## lavoriamo sul controller di users
+
+[codice: users controllers 01](#code-users-controllers-01)
+
+{title="app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+before_filter :authenticate_user!
+
+  def show
+    #@user = User.find(current_user.id)
+    # current_user is generated by the gem "devise"
+    @user = current_user
+  end
+~~~~~~~~
+
+
+I> Attenzione!
+I>
+I> For Rails 5, note that protect_from_forgery is no longer prepended to the before_action chain, so if you have set authenticate_user before protect_from_forgery, your request will result in "Can't verify CSRF token authenticity." To resolve this, either change the order in which you call them, or use protect_from_forgery prepend: true.
+
+
+I> Attenzione!
+I> Strong Parameters
+I> The Parameter Sanitizer API has changed for Devise 4
+
+Al momento non mi preoccupo dei due avvisi in alto ma ne terremo conto nei capitoli successivi.
+
+
+Modify the file app/views/users/show.html.erb and add:
+
+<p>User: <%= @user.email %></p>
+
+
+
+
+Altre impostazioni che configuriamo in seguito sono:
+
+{title="config/inizializer/devise", lang=ruby, line-numbers=on, starting-line-number=37}
+~~~~~~~~
+  mettere email del sender
+  leggere le possibili implementazioni
+~~~~~~~~
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add authentication with devise"
+~~~~~~~~
+
+
+
+
+## Questa user story è finita  
+
+Facciamo un "pull request" su github per fare il merge e chiudere il branch.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git pull origin master
+
+$ git merge favorites_contact_person_maps_seeds
+$ git push origin master
+
+$ git branch -d favorites_contact_person_maps_seeds
+$ git push origin :favorites_contact_person_maps_seeds
+~~~~~~~~
+
+
+
+
+
+
+

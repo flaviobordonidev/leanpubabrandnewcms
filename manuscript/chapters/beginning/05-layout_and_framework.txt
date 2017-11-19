@@ -1,0 +1,269 @@
+# Hello world
+
+Un saluto al mondo in produzione. Fla decide di far visualizzare una pagina web in produzione che non sia una pagina di errore. Crea la sezione "mocks" che è dedicata al web designer per sviluppare dei modelli statici che saranno successivamente utilizzati nelle sezioni operative dell'applicazione insieme ai contenuti dinamici presi dal database. ( vedi [riferimenti/mocks-web-dev](#references-mocks_web_dev-overview) )
+Sulla sezione mocks crea la pagina "index". Per far questo decide di usare la "magia" di rails e da terminale digita la formula magica:
+
+A> rails g controller mocks index
+
+I> Per Convenzione Rails: "g controller" vuole il nome al plurale (mocks)
+
+
+Dentro il controller sostituiamo le due righe
+
+~~~~~~~~
+  def index
+  end
+~~~~~~~~
+
+con una riga di commento perché per mocks non ci interessa lavorare con le variabli rails essendo dedicato solo al web designer.
+
+[-codice mocks controllers 01-](#code-mocks-controllers-01)
+
+{title="controllers/mocks_controller.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+# lascio il comportamento di default di rails tanto i mocks sono tutte pagine statiche.
+~~~~~~~~
+
+Messo l'appunto sul controller va a "disegnare" sulla tela bianca views/mocks/index
+
+[-codice mocks views 01-](#code-mocks-views-01)
+
+{title="views/mocks/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<h1>Hello world!</h1>
+~~~~~~~~
+
+Per rendere questa la pagina di default modifica il file routes.
+
+[-codice mocks config 01-](#code-mocks-config-01)
+
+{title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+root 'mocks#index'
+~~~~~~~~
+
+Verfica in locale (ambiente development) che tutto stia funzionando
+
+A> $ rails s
+A>
+A> URL: http://localhost:3000/
+
+
+Archivia tutto su git, github e fa deployment su heroku
+
+A> $ git add -A
+A> 
+A> $ git commit -m "My first view"
+A> 
+A> $ git push origin master
+A> 
+A> $ git push heroku master
+A> 
+A> $ heroku open
+
+
+
+
+## Arriva il template
+
+Fla si dedica ad importare il tema canvas sulla nuova app rails.
+La prima cosa da fare è aprirsi un branch su git.
+Conferma di essere sul branch master
+
+A> $ git branch
+
+Essendo l'unico branch finora presente è anche l'unico attivo visualizzato con l'asterisco '*'
+Ciò nonostante esegue il comando per spostarsi sul branch master
+
+A> $ git checkout master
+
+Straconvinto di essere sul branch master esegue il comando per creare un nuovo branch e spostarsi su di esso. Crea e si sposta sul branch che chiama "import-canvas-theme"
+
+A> $ git checkout -b import-canvas-theme
+
+Conferma di essere sul nuovo branch
+
+A> $ git branch
+
+Pubblica il nuovo branch sul repository remoto Github
+
+A> $ git push origin import-canvas-theme
+
+
+Una volta creato il nuovo branch scrive su github alcuni messaggi a Bob spiegando cosa vuole fare. Concordato che come template da importare va benissimo "canvas" Fla si mette al lavoro.
+dal tema canvas che ha molti files e cartelle compresi vari esempi seleziona il seguente set minimo di files: 
+
+- app/assets/image
+  - tutti i files e sottocartelle
+
+- app/assets/stylesheets
+  app/assets/stylesheets/animate.css
+  app/assets/stylesheets/application.css
+  app/assets/stylesheets/bootstrap.css
+  app/assets/stylesheets/mocks.scss
+  app/assets/stylesheets/style.css
+
+- vendor/assets/javascripts
+  vendor/assets/javascripts/functions.js
+
+- app/assets/javascripts
+  app/assets/javascripts/application.js
+  app/assets/javascripts/mocks.coffee
+  app/assets/javascripts/plugins.js
+
+E li copia nelle seguenti cartelle di romasportface2:
+
+la cartella css/ su .../app/assets/stylesheets 
+ad eccezione della cartella fonts/ che copio direttamente su .../app/assets
+la cartella images/ su .../app/assets/images
+la cartella js/ su .../app/assets/javascripts
+
+Finito di copiare la parte relativa alla formattazione/comportamenti (css/js) inizia a preparare il primo view. Decide di iniziare da index.html.
+la parte <html> ed <head> le sposta su view/layouts/application.html mentre lascia sul view mocks/index tutto il contenuto dentro il <body>
+
+- views/mocks
+  index.html
+
+
+Index.html mette un velo bianco nei primi secondi in cui carica i vari files css e js. Per togliere il velo bianco di preload servono i 3 files:
+- stylesheeets/animate.css
+- app/assets/javascripts/plugins.js
+- vendor/assets/javascripts/functions.js
+
+
+qui scrivo come ho settato layouts/application....
+
+
+Ottengo un errore di asset non precomilato a causa di function.js
+
+ERRORE:
+
+Sprockets::Rails::Helper::AssetNotPrecompiled in Mocks#index
+
+Asset was not declared to be precompiled in production.
+Add `Rails.application.config.assets.precompile += %w( functions.js )` to `config/initializers/assets.rb` and restart your server
+
+
+Metto la riga ...
+URRAAA! FUNZIOOOONA!!!
+
+
+Siccome in sviluppo funziona tutto decide di provare su heroku. Siccome heroku pubblica solo il suo branch master e trascura tutti gli altri branch ci sono due scelte per Fla: o fare il merge sul branch master e passare tutto su heroku, oppure passare sul branch master di heroku il branch import-canvas-theme su cui sta lavorando. Scelglie la seconda opzione:
+
+A> $ git push heroku import-canvas-theme:master
+
+Le cose non vanno per il verso giusto. Ci sono degli errori e non viene completato il precompiling dell'asset pipeline. Solo che dalle log ($ heroku log) non riesce a capire molto. Decide allora di fare il precompile localmente e di mandare su heroku l'asset pipeline già precompilato. Per far questo basta eseguire il comando:
+
+A> $ RAILS_ENV=production bundle exec rake assets:precompile
+
+Questo gli permette di visualizzare più dettagli sul tipo di errore ed inoltre è estremamente più veloce che aspettare di caricare tutto su heroku.
+Comincia quindi la fase di troubleshooting/debugging:
+
+.
+.
+.
+
+Risolto il problema. Adesso il branch è pubblicato anche su heroku. Decide quindi di fare il merge del branch import-canvas-theme sul branch master, di aggiornare github, di fare il bump della versione (aumentare il numero) e di ripubblicare su heroku secondo la "convenzione" ossia branch master locale su branch master remoto (repository heroku).
+
+A> $ git add -A
+A>
+A> $ git commit -m "import canvas succeed"
+A>
+A> $ git push origin import-canvas-theme
+
+Una volta importato il branch scrive a Bob se anche per lui va tutto bene e se possono fare il merge sul ramo principale. Bob è daccordo allora Fla esegue il merge del branch import-canvas-theme sul branch master.
+
+A> $ git checkout master
+A>
+A> $ git merge --no-ff import-canvas-theme
+
+ed aggiorniamo github del merge
+
+A> $ git push origin master
+
+Pubblichiamo su heroku
+
+A> $ git push heroku master
+
+Eliminiamo il branch sia in locale che in remoto (su github)
+
+A> $ git branch -d import-canvas-theme
+A>
+A> $ git push origin :import-canvas-theme
+
+
+
+## Importiamo i fonts
+
+Fla è contento del primo passo effettuato e si prepara per ad avanzare con l'altro piede. Questa volta tocca ai fonts perché legate ai fonts ci sono praticamente tutte le icone.
+Crea il nuovo branch "import-fonts"
+
+A> $ git branch
+A>
+A> $ git checkout master
+A>
+A> $ git checkout -b import-fonts
+A>
+A> $ git branch
+A>
+A> $ git push origin import-fonts
+
+
+copia:
+ css/fonts/           su .../app/assets/ 
+ css/font-icons.css   su .../app/assets/stylesheets/
+ css/fonts.css        su .../app/assets/stylesheets/
+
+Adesso modifico il file fonts.css in fonts.scss (estensione per SAS che Rails interpreta e riporta in css) 
+
+inoltre cambio tutti le chiamate url(path) con l'helper rails asset-url(file_name)
+
+url('fonts/xxx') -> asset-url('xxx')
+
+
+I> Attenzione se usate font-url() funziona in locale ma non su heroku. Per funzionare anche su heroku usate asset-url() (vedi http://stackoverflow.com/questions/21691846/custom-font-not-working-in-heroku)
+
+
+
+Archivio in locale le modifiche su git
+
+A> $ git add -A
+A>
+A> $ git commit -m "import fonts"
+
+
+Precompilo l'asset pipeline per heroku e lo pubblico
+
+A> $ RAILS_ENV=production bundle exec rake assets:precompile
+A>
+A> $ git push heroku import-fonts:master
+
+
+Verificato che funziona anche su heroku pubblica il ramo su github e chiede a Bob il permesso di fare il merge.
+
+A> git push origin import-fonts
+
+Bob è daccordo a fare il merge allora Fla procede
+
+A> $ git checkout master
+A>
+A> $ git merge --no-ff import-fonts
+
+ed aggiorniamo github del merge ed eliminiamo il branch import-fonts sia in locale sia in remoto (su github)
+
+A> $ git push origin master
+A>
+A> $ git branch -d import-fonts
+A>
+A> $ git push origin :import-fonts
+
+
+Pubblichiamo su heroku
+
+A> $ git push heroku master
+
+
+
+
+...
+dopo aver importato i fonts mi dedico all'index blog. non importo subito tutte le funzionalità css e js del template. Le importo più avanti...

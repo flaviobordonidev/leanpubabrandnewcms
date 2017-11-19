@@ -1,0 +1,40 @@
+# Devise internazionalizzazione
+
+
+In fase di installazione Devise ha creato il file config/locales/devise.en.yml con tutte le frasi in inglese. Per la nostra traduzione in italiano duplichiamo il file e lo rinominiamo config/locales/devise.it.yml
+
+Cambiamo la parte iniziale da :en a :it
+
+[codice: application config xx](#code-application-config-xx)
+
+{title="config/locales/devise.it.yml", lang=yaml, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+it:
+  devise:
+~~~~~~~~
+
+E traduciamo il testo dei vari segnaposto. Es:
+
+{title="config/locales/devise.it.yml", lang=yaml, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+      invalid: "%{authentication_keys} o password non validi."
+~~~~~~~~
+
+Oppure, più semplicemente, andiamo su https://github.com/plataformatec/devise/wiki/I18n e prendiamo il file già tradotto in italiano.
+
+I> Ricordati che i messaggi sono passati con flash keys :notice and :alert quindi devono essere attivi su views altrimenti non vengono visualizzati.
+
+[codice: application views xx](#code-application-views-xx)
+
+{title="views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=13}
+~~~~~~~~
+<% flash.each do |name,msg| %>
+  <div class='alert alert-<%= name == :notice ? 'success' : 'error' %>'>
+    <a class='close' data-dismiss='alert'>&#215;</a>
+    <%= msg %>
+  </div>
+<% end %>
+~~~~~~~~
+
+
+
