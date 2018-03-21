@@ -1,12 +1,12 @@
 # Perchè Bootstrap?
 
-Bootstrap è un framework sviluppato da Mark Otto e Jacob Thornton (aka @mdo and @fat) a Twitter con l’obiettivo di mettere a punto un set di strumenti
+Bootstrap è un framework sviluppato da Mark Otto e Jacob Thornton (aka @mdo and @fat) a Twitter con l’obiettivo di mettere a punto un set di strumenti
 che uniformasse l’interfaccia web del Social Network facilitandone la manutenzione.
 
 Un altro motivo i moduli o i plugin di questi software non sono sempre gratuiti o a passo con i tempi, la possibilità di avere un CMS personalizzabile
 ed avere il pieno controllo, alla lunga porta dei benefici di tempo ed economici.
 
-Nel 2011 Twitter ha rilasciato Bootstrap sotto licenza open source, da allora questo framework è stato adottato da un numero crescente di sviluppatori ed
+Nel 2011 Twitter ha rilasciato Bootstrap sotto licenza open source, da allora questo framework è stato adottato da un numero crescente di sviluppatori ed
 al contempo ha raggiunto la release 3.3.6.
 
 I> Apprendiamo che al momento della stesura di questo libro il mondo è attesa dell'imminiente arrivo della versione 4
@@ -22,9 +22,9 @@ Questi portali da soli elencano perlomeno l’80% delle risorse più rilevanti.
 
 ![Bootsnipp Home Page](images/originals/bootsnipp.jpg)
 
-Bootsnip è un utile punto di partenza per chi è alla ricerca di risorse e snippet di codice da integrare al proprio progetto Bootstrap.
-Fra le risorse da segnalare trova posto un form builder per la creazione visuale di form, un market place per temi a pagamento basati su Bootstrap
-e una libreria di snippet suddivisa in base alla compatibilità con le release del framework.
+Bootsnip è un utile punto di partenza per chi è alla ricerca di risorse e snippet di codice da integrare al proprio progetto Bootstrap.
+Fra le risorse da segnalare trova posto un form builder per la creazione visuale di form, un market place per temi a pagamento basati su Bootstrap
+e una libreria di snippet suddivisa in base alla compatibilità con le release del framework.
 [http://www.bootsnipp.com/](http://www.bootsnipp.com/)
 
 
@@ -37,8 +37,8 @@ La gallery è minimale ed organizzata in ordine cronologico ma può fornire indu
 La gallery ha anche una sezione risorse da consultare.
 
 ## The Big Badass List of Twitter Bootstrap Resources
-bootstraphero.com propone una lista molto corposa di risorse (ad oggi 319) organizzata per componenti, framework Integrations, interface builders,
-tool per il mockup, strumenti e servizi, how to e  javascript addons.
+bootstraphero.com propone una lista molto corposa di risorse (ad oggi 319) organizzata per componenti, framework Integrations, interface builders,
+tool per il mockup, strumenti e servizi, how to e javascript addons.
 
 I> Spiccano le integrazioni e i temi per diversi CMS come Joomla e WordPress.
 
@@ -96,42 +96,42 @@ o a larghezza fluida (container-fluid), questo garantisce il corretto allineamen
 <!-- contenitore responsivo a larghezze fisse -->
 <div class="container">
     <div class="row">
-      <div class="col-lg-12">
+    <div class="col-lg-12">
       </div>
-    </div>
+  </div>
 </div>
 ~~~~~~~~
 
 {title="esempio 4", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~ 
+~~~~~~~~
 <!-- contenitore responsivo fluido -->
 <div class="container-fluid">
 <div class="row">
-     <div class="col-lg-12"></div>
-    </div>
+     <div class="col-lg-12"></div>
+    </div>
 </div>
 ~~~~~~~~
 
 Al fine di comprendere meglio come funzionano le griglie Bob consiglia di aggiungere uno stile di debug che ne evidenzi la struttura:
 row > div { min-height:100px; border:1px solid red;}
 
-Le righe permettono di isolare gruppi orizzontali di colonne delineando confini ben precisi nel layout responsivo.
+Le righe permettono di isolare gruppi orizzontali di colonne delineando confini ben precisi nel layout responsivo.
 
 {title="esempio 5", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~ 
+~~~~~~~~
 <div class="container">
-    <div class="row">
-     <div class="col-lg-6"></div>
-        <div class="col-lg-6"></div>
-    </div>
-    <div class="row">
-     <div class="col-lg-4"></div>
-        <div class="col-lg-4"></div>
-        <div class="col-lg-4"></div>
-    </div>
+<div class="row">
+ <div class="col-lg-6"></div>
+  <div class="col-lg-6"></div>
+</div>
+<div class="row">
+<div class="col-lg-4"></div>
+<div class="col-lg-4"></div>
+<div class="col-lg-4"></div>
+</div>
 </div>
 ~~~~~~~~
 
-Per garantire il corretto funzionamento della griglia responsiva il contenuto deve essere collocato all’interno delle colonne
-e solamente le colonne possono essere figlie delle righe. Le colonne sono spaziate fra loro con il padding.
-Tramite le righe il padding dell’ultima e della prima colonna sono compensati da un margin negativo.
+Per garantire il corretto funzionamento della griglia responsiva il contenuto deve essere collocato all’interno delle colonne
+e solamente le colonne possono essere figlie delle righe. Le colonne sono spaziate fra loro con il padding.
+Tramite le righe il padding dell’ultima e della prima colonna sono compensati da un margin negativo.

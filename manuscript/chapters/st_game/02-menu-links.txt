@@ -1,0 +1,14 @@
+When we need to have a hyper link to an id in the same page
+
+given that your html id is #my_id
+
+<%= link_to('Click here to do to my_id', :anchor => 'my_id') %>
+<div id="my_id"></div>
+
+https://mixandgo.com/blog/how-to-use-link_to-in-rails
+
+Anchors with link_to
+You might need to point to a specific section (anchor) in the page which you can identify by it’s dom ID. So let’s say on the target page we have a section that has the id="interesting-section". In order to point our link to that section, we’ll need to add the anchor to the generated link.
+
+<%= link_to "Section", root_path(:anchor => "interesting-section") %>
+# => <a href="/#interesting-section">Section</a>

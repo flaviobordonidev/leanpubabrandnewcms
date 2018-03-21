@@ -1,0 +1,256 @@
+# Heroku
+
+Andiamo subito in produzione così risolviamo di volta in volta gli eventuali problemi che si presentano senza essere costretti a fare un troubleshooting su tutto l'applicativo.
+
+
+
+
+## Apriamo il branch
+
+Creiamo il Branch per la pubblicazione in produzione 
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b pubprod
+~~~~~~~~
+
+
+
+
+## Heroku piattaforma cloud PaaS
+Heroku è una piattaforma cloud di programmazione progettata per aiutare a realizzare e distribuire applicazioni online. Nata nel 2007, è oggi una delle più grandi piattaforme PaaS esistenti, con centinaia di migliaia di clienti sparsi in
+tutto il mondo. Supporta sei linguaggi di programmazione (grazie ai quali sviluppare le app da distribuire sul web) ed è basata sul
+sistema operativo Debian o, più recentemente, su Ubuntu (due distribuzioni Linux).
+
+
+
+
+## Che cosa è una piattaforma cloud PaaS
+Anche se la gran parte degli internauti crede che il cloud si risolva esclusivamente nel cloud storage, la realtà è ben
+altra. Il cloud computing si compone di tante branche (e il cloud storage è una di questa), raggruppate in tre macro-gruppi:
+Infrastructure as a Service (IaaS), Platform as a Service (PaaS) e Software as a Service (SaaS).
+
+
+
+
+## Che cosa è Heroku
+Heroku è stata una delle prime piattaforme a comparire sul web a permettere ai propri utenti di sviluppare, distribuire
+e gestire app direttamente online. Nonostante inizialmente fornisse supporto solo per progetti compatibili con
+l'interfaccia di programmazione web Rack, con il tempo Heroku ha ampliato la propria offerta aggiungendo centinaia di
+servizi e il supporto per sei linguaggi di programmazione (Java, Ruby, Node.js, Scala, Clojure, Python e PHP).
+
+![heroku home page](images/beginning/heroku/heroku_entry.png)
+
+Grazie all'integrazione con Git, ad esempio, gli utenti potranno sviluppare la loro app su una piattaforma esterna per
+poi importare il progetto all'interno del proprio account Heroku, lasciando che la piattaforma PaaS faccia il resto del
+“lavoro sporco” per renderla operativa e funzionante.
+
+Nel 2011 si unisce al team Yukihiro Matsumoto, chief designer di Ruby; in quello stesso anno la piattaforma si
+arricchirà del supporto ai linguaggi Node.js e Clojure. Nel settembre 2011 nasce, dalla collaborazione tra Heroku e
+Facebook, Heroku for Facebook, piattaforma di servizi ottimizzata per ospitare app sviluppate per il social network di
+Mark Zuckerberg.
+
+
+
+
+## La storia di Heroku
+Nata da un'idea di James Lindenbaum, Adam Wiggins e Orion Henry, Heroku fa la sua comparsa sul web nella seconda parte
+del 2007, mettendo a disposizione degli utenti una piattaforma sulla quale far girare applicazioni compatibili con Rack.
+La crescita della piattaforma è molto veloce e porta con sé molte novità: nell'ottobre 2009 al gruppo dei fondatori si
+aggiunge Byron Sebastian, che va a ricoprire il ruolo di CEO; l'anno successivo la piattaforma è acquistata da
+Salesforce.com e implementata come sussidiaria dell'azienda.
+
+
+
+
+## A cosa serve e come funziona Heroku
+Lo scopo della piattaforma è quello di fornire agli utenti le risorse informatiche (sia hardware sia software)
+necessarie a distribuire e far “girare” app web-based su svariate piattaforme (ad esempio la già citata Facebook). In
+questo modo gli sviluppatori non dovranno preoccuparsi di avere un'adeguata infrastruttura informatica a supporto della
+loro creatura, ma potranno affittarla da Heroku. Non solo: la piattaforma ideata da James Lindenbaum, Adam Wiggins e
+Orion Henry si occupa anche del “lavoro sporco”, compilando ed eseguendo automaticamente l'app non appena il codice
+sorgente sarà caricato nell'ambiente operativo. I programmatori potranno così concentrarsi sullo sviluppo di un codice
+il più possibile “pulito” e privo di bug, demandando alla piattaforma PaaS il resto dei compiti.
+
+![heroku dashboard](images/beginning/heroku/heroku_metrics.png)
+
+Alla base dei servizi di Heroku troviamo i dyno, container di funzioni capace di eseguire un solo comando che può essere
+un processo web, un processo worker (batch) o un altro tipo di processo la cui sintassi è consentita nel file Procfile.
+A seconda delle esigenze e della potenza di calcolo richiesta, lo sviluppatore può decidere di affittare uno o più dyno,
+così da assicurare ai propri utenti la miglior esperienza possibile. Affinché ciò sia possibile, Heroku offre una
+piattaforma completamente scalabile e automatizzata: sarà il sistema centrale a gestire l'allocazione delle risorse per
+ogni dyno e per ogni servizio offerto tramite l'app, sgravando il programmatore di compiti di questo genere.
+
+
+
+
+## Heroku come repository remoto
+
+Heroku è quindi l'ambiente di produzione in cui viene pubblicata la nostra applicazione rails. 
+Per caricarsi, l'applicazione, come descritto in precedenza, sfrutta git.
+Heroku è infatti un repository remoto di git.
+
+
+
+
+## Inizializziamo Heroku  
+
+Pubblichiamo la nostra applicazionie sull'ambiente di produzione Heroku. 
+Per prima cosa creiamoci un account su www.heroku.com
+
+![account su heroku](images/beginning/heroku/heroku_signup.png)
+
+Logghiamoci e scarichiamo la heroku-toolbelt
+
+![heroku login](images/beginning/heroku/heroku_login.png)
+
+
+
+
+## Settaggio per la pubblicazione su Heroku
+
+ATTENZIONE con RAILS 5 non c'e bisogno di questo paragrafo. C'è già la gemma puma e la gemma rails_12factor è stata integrata nel core di rails5
+
+La gemma 'rails_12factor' è usata da Heroku per servire assets statici come le immagini e gli stylesheets.
+La gemma 'puma' è un web server professionale usato da Heroku.
+La gemma 'pg' installata nel capitolo precedente serve per gestire il database PostgreSQL.
+
+
+
+
+## Creiamo l'app su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku version
+$ heroku login
+$ heroku keys:add
+$ heroku create
+~~~~~~~~
+
+![heroku create](images/beginning/heroku/heroku_create.png)
+
+Viene creato dinamnicamente:
+Creating app... done, ⬢ rocky-reef-16594
+https://rocky-reef-16594.herokuapp.com/ | https://git.heroku.com/rocky-reef-16594.git
+
+
+In questo caso è stato creato "rocky-reef-16594" ma può essere qualsiasi nome creato dinamicamente.
+
+Per verficarlo si può usare il comando
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku domains
+
+o
+
+$ heroku apps:info
+~~~~~~~~
+
+![apps info](images/beginning/heroku/heroku_appsinfo.png)
+
+Adesso imposto il MAX_THREADS seguendo il documento di heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku config:set MAX_THREADS=1
+~~~~~~~~
+
+
+Adesso è tutto pronto. Posso fare il commit finale in locale e uploadare tutto in remoto.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "ready to public in production on heroku"
+~~~~~~~~
+
+Attenzione! per pubblicare su heroku da un branch si usa un comando specifico ( git push heroku yourbranch:master )
+(vedi https://devcenter.heroku.com/articles/git)
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku pubprod:master
+~~~~~~~~
+
+La nostra applicazione è ora in produzione su heroku. La possiamo vedere sul broser all'URL
+
+https://rocky-reef-16594.herokuapp.com/
+https://rocky-reef-16594.herokuapp.com/test_pages/page_a
+https://rocky-reef-16594.herokuapp.com/test_pages/page_b
+
+I> siccome non abbiamo ancora tabelle di database è stato sufficiente fare il "git push" ma quando avremo tabelle di database dobbiamo ricordarci di eseguire il "migrate" anche su heroku.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku run rake db:migrate
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge pubprod
+$ git branch -d pubprod
+~~~~~~~~
+
+
+![heroku homepage](images/beginning/heroku/heroku_url_homepage.png)
+
+![heroku url root](images/beginning/heroku/heroku_url_root.png)
+
+![heroku db](images/beginning/heroku/heroku_db.png)
+
+
+
+
+## Git cloning your heroku app
+
+C'è la possibilità 
+
+https://devcenter.heroku.com/articles/git-clone-heroku-app
+
+Last updated 12 September 2017
+To clone the source of an existing application from Heroku using Git, use the heroku git:clone command:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku git:clone -a myapp
+~~~~~~~~
+
+Replace myapp with the name of your app.
+This will create a new directory named after your app with its source and complete repository history, as well as adding a heroku git remote to facilitate further updates.
+Heroku provides the git service primarily for deployment, and the ability to clone from it is offered as a convenience. We strongly recommend you store your code in another git repository such as GitHub and treat that as canonical.
+
+
+
+## Trasfer your app to another Heroku Account
+
+Apps can be transferred to a collaborator on the app. If the user is not a collaborator, first add them as a collaborator.
+
+initiate the transfer of the application using the CLI, use apps:transfer.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku apps:transfer -a <app-to-transfer> <collaborator-to-transfer-it-to@example.com>
+~~~~~~~~
+
+To initiate the transfer of the application using the Dashboard:
+1. In Dashboard, click the Settings tab of the application.
+2. Scroll down to the “Transfer Ownership” section.
+3. Click the “Select a new owner” field. The list of people who are collaborators on the app and the list of Teams and Organizations to which you belong will be displayed.
+4. Select an item from the list.
+5. Click “Transfer.”
+
+
+Per approfondimenti:
+
+* https://devcenter.heroku.com/articles/transferring-apps
+

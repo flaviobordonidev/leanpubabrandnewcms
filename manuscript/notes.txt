@@ -1,20 +1,56 @@
 www.leanpub.com
 
-https://leanpub.com/integram_cms/preview
+https://leanpub.com/leanpubabrandnewcms/preview
 
 https://leanpub.com/help/getting_started_sync_dropbox
 https://leanpub.com/help/manual
 
 ---
-http://pygments.org/demo/
-vedi il codice nel menu a cascata
+http://pygments.org/demo/   ->  vedi il codice nel menu a cascata
+
+.html.erb   -> lang=HTML+Mako
+      .rb   -> lang=ruby
+      .yml  -> lang=yaml
+      .coffe -> lang=CoffeeScript
+      .scss  -> lang=ruby
 
 ---
+$ sudo service postgresql start
+
+---
+$ rails s -b $IP -p $PORT
+
+https://rebisworld2-flaviobordonidev.c9users.io/
+
+---
+http://themes.semicolonweb.com
+http://themes.semicolonweb.com/html/canvas/v5/icon-lists.html
+
+http://themes.semicolonweb.com/html/canvas/v5/index-corporate-4.php
+http://themes.semicolonweb.com/html/canvas/v5/page-title-dark.php
+
+http://support.semicolonweb.com/forums/topic/installing-in-ruby-on-rails-project/
+
+---
+*** ATTENZIONE SU RAILS 5.1.2 hanno tolto dal Gemfile la gemma **gem 'jquery-rails'** ***
+da tener presente importando il template canvas.
+
+---
+$ heroku domains
+
+https://secret-cliffs-27330.herokuapp.com/
+
+
+---
+http://themes.semicolonweb.com/html/canvas/
+http://themes.semicolonweb.com/html/canvas/intro.php
 http://themes.semicolonweb.com/html/canvas/index-corporate-4.php
 http://themes.semicolonweb.com/html/canvas/page-title-dark.php
 
----
----
----
+https://www.youtube.com/watch?v=2RkLP9h2wNA&list=PLiENd6US8xnyhFA-9KxMqrHiqG3GCTMad&index=19
 
 
+---
+WEBPACK --> molto figo ma lo userò quando è implementato direttamente su rails (probabilmente con Rails 6.0) Per il momento resto sull'asset pipeline con Sprockets.
+
+* [How we switched from Sprockets to Webpack](https://rossta.net/blog/from-sprockets-to-webpack.html#why-switch-)

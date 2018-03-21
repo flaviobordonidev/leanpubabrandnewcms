@@ -1,3 +1,0 @@
--# Preparazion ambiente di sviluppo
-
-setting the environment

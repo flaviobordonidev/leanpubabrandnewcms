@@ -77,7 +77,7 @@ doc/
 
 
 ## Un problema di sicurezza
- 
+
 Le password e le chiavi di criptatura non sono state escluse da git e vengono quindi passate sui repositories esterni. Questo non è cosa buona e giusta.
 
 A> Attenzione IMPLEMENTA LA SICUREZZA!
@@ -97,7 +97,7 @@ A>
 A> Problema di sicurezza!!!
 
 
-## Fissa la versione ruby sul Gemfile
+## Fissa la versione ruby sul Gemfile
 
 Bob vede sul terminale la versione di ruby che sta usando
 

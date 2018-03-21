@@ -91,7 +91,7 @@ I> http://stackoverflow.com/questions/33487674/heroku-fail-to-migrate-due-to-eco
 
 
 
-## Heroku images
+## Heroku images
 
 Per visualizzare le immagini su Heroku dobbiamo usare image_path. Non basta solo l'url perché altrimente alla parte finale dell'asset heroku aggiunge un hash per fare della cash sulle immaggini e quindi veniva "abnormalis-213925312321391203.png" e questo non matchava quindi con quanto scritto qui. Mettendo image_path invece si risolve e quindi le immagini non vengono solo visualizzate in debug su localhost ma anche in developping su heroku. 
 
