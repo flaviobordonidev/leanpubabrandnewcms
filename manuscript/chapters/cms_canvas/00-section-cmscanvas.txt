@@ -1,0 +1,46 @@
+-# Mettiamo il template Canvas "Blog" al nostro CMS base
+
+Dopo la sezione **beginning** e la sezione **brandnewcms** passiamo ad importare un tema sulla nostra applicazione.
+prepariamo il nostro Blog con il tema Canvas.
+
+
+
+
+## Indice delle sotto sezioni
+
+1. homepage-show-static
+2. posts-index-static
+3. posts-show-static
+4. posts-partials
+5. global-layouts
+6. posts-index-dynamic
+7. posts-show-dynamic
+8. homepage-show-dynamic
+
+
+
+
+## Scelti dal tema Canvas
+
+
+### per homepage/show
+
+* HTML/one-page/index.html
+
+(homepage: .../one-page/index.html)[http://themes.semicolonweb.com/html/canvas/v5/one-page/index.html]
+dentro themeforest-9228123-canvas-the-multipurpose-html5-template/Package-HTML/HTML
+
+
+### per view posts/index
+
+* HTML/blog-small.html
+* HTML/blog.htm -- opzione simile a quella usata in http://www.ignicaodigital.com.br/
+* HTML/blog-timeline-right-sidebar.html -- opzione che mette la concentrazione sulla data
+
+
+### per view posts/show
+
+* HTML/blog-single.html
+
+
+

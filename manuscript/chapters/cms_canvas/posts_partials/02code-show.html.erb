@@ -1,0 +1,45 @@
+<% provide(:body_extra_class, 'side-push-panel') %>
+
+  <div class="body-overlay"></div>
+
+  <%= render 'side_panel_trigger_close' %>
+
+  <!-- Document Wrapper
+  ============================================= -->
+  <div id="wrapper" class="clearfix">
+
+    <!-- Header
+    ============================================= -->
+    <header id="header" class="full-header transparent-header border-full-header dark static-sticky" data-sticky-class="not-dark" data-sticky-offset="full" data-sticky-offset-negative="100">
+      <div id="header-wrap">
+        <div class="container clearfix">
+          <div id="primary-menu-trigger"><i class="icon-reorder"></i></div>
+          <%= render 'logo_canvasone' %>
+          <%= render 'primary_navigation_canvasone' %>
+        </div>
+      </div>
+    </header><!-- #header end -->
+
+    <%= render 'slider' %>
+
+    <!-- Content
+    ============================================= -->
+    <section id="content">
+      <div class="content-wrap nopadding">
+        <%= render 'section_about' %>
+        <%= render 'section_works' %>
+        <%= render 'section_services' %>
+        <%= render 'section_blog' %>
+        <%= render 'section_contact' %>
+      </div>
+    </section><!-- #content end -->
+
+    <%= render 'footer' %>
+
+  </div><!-- #wrapper end -->
+
+  <!-- Go To Top
+  ============================================= -->
+  <div id="gotoTop" class="icon-angle-up"></div>
+  
+  <%= render 'external_javascripts' %>

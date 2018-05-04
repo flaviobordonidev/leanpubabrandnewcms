@@ -1,0 +1,200 @@
+# Installiamo Trix
+
+installiamo un rich text editor per formattare meglio i nostri posts.
+TRIX - Open source gratuito sviluppato da BaseCamp
+
+Installiamo un editor di testo per i nostri campi con Trix
+Per i campi "text" invece di usare il **text_area** usiamo la User Interface del text editor "Trix"
+questo editor di testo si appoggia ad un field_area che lascieremo nascosto e ci passa del codice html mentre visualizza il risultato formattato nella sua User Interface. In pratica è come se avessimo un piccolo microsoft-word online e quando usiamo il **grassetto** lui visualizza effettivamente il testo in grassetto ma passa nel database i tags html "<bold></bold>" prima e dopo il testo in grassetto. 
+
+Al momento è solo per il testo.
+Nel prossimo capitolo installiamo xxx per upload immagini con AWS
+Più avanti integreremo la gestione dell'upload delle immagini xxx dentro Trix usando json
+
+Upload files e immagini
+Usare Shrine per l’upload
+Usare Trix per il testo formattato
+Implementare Shrine dentro Trix 
+(How to use Trix and Shrine for WYSIWYG Editing with Drag-and-Drop Image Uploading)[http://headway.io/blog/how-to-use-trix-and-shrine-for-wysiwyg-editing-with-drag-and-drop-image-uploading/]
+
+Risorse web:
+
+* https://github.com/basecamp/trix
+* https://github.com/basecamp/trix#readme
+* https://trix-editor.org
+
+* https://gorails.com/episodes/trix-editor?autoplay=1
+* (go rails - Trix WYSIWYG Editor And File Uploads)[https://www.youtube.com/watch?v=eyM3_kdD-wY]
+
+* https://www.driftingruby.com/episodes/wysiwyg-editor-with-trix
+* (How to use Trix and Shrine for WYSIWYG Editing with Drag-and-Drop Image Uploading)[http://headway.io/blog/how-to-use-trix-and-shrine-for-wysiwyg-editing-with-drag-and-drop-image-uploading/]
+
+
+
+
+## Apriamo il branch "Text Editor Trix Install"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b teti
+~~~~~~~~
+
+
+
+
+## Installiamo la gemma
+
+Aggiungiamo la gemma **trix** alla nostra applicazione per implementare un text editor per i nostri campi "text".
+
+I> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/trix)
+I>
+I> facciamo riferimento al [tutorial github della gemma](https://github.com/maclover7/trix)
+
+{title="Gemfile", lang=ruby, line-numbers=on, starting-line-number=64}
+~~~~~~~~
+# A rich text editor for everyday writing 
+gem 'trix', '~> 0.11.1'
+~~~~~~~~
+
+![la gemma trix](images/login_authentication/login_devise/rubygems_devise.png)
+
+Eseguiamo l'installazione della gemma con bundle 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ bundle install
+~~~~~~~~
+
+
+
+
+## L'asset pipe line
+
+
+Aggiungiamo **//*= require trix** su application.scss 
+
+{title=".../app/assets/stylesheets/application.scss", lang=ruby, line-numbers=on, starting-line-number=15}
+~~~~~~~~
+//*= require trix 
+~~~~~~~~
+
+
+Aggiungiamo **//= require trix** su application.js
+
+{title=".../app/assets/javascripts/application.js", lang=ruby, line-numbers=on, starting-line-number=18}
+~~~~~~~~
+//= require trix
+~~~~~~~~
+
+
+
+
+## Aggiungiamo Trix sul view edit di descrizione componenti
+
+basta aggiungere dopo il campo text_area il tag **<trix-editor input="..."></trix-editor>** dove al posto dei puntini "..." si mette l'id del campo text_area. 
+
+Aggiungiamolo nella pagina **components/edit** nel partial **_form**
+
+{title=".../app/views/components/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=59}
+~~~~~~~~
+    <div class="field">
+      <%= f.label :description, class: "control-label" %>
+      <%= f.text_area :description, id: "description", class: 'form-control', rows: '5' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+    <%#= f.trix_editor :description %>
+    <trix-editor input="description"></trix-editor>
+~~~~~~~~
+
+Da notare che abbiamo dovuto aggiungere **, id: "description"** nel "text_area :description" perché Trix ha bisogno di riportare nell'attributo **input** l'id del campo. Inoltre notiamo che la chiamata in stile Rails di trix è commentata perché, anche se funziona, non aggiorna in tempo reale i cambiamenti nella text_area e questo è utile in fase di sviluppo; si è quindi preferito lasciare la chiamata in stile html.
+
+
+
+
+
+## Aggiungiamo Trix sul view show di descrizione componenti
+
+nei paragrafi precedenti avevamo messo l'attributo **class="preserve-line-breaks"** per mantenere gli invii a capo anche in visualizzazione. Con trix questo non è più necessario perché viene passato direttamente codice HTML. E' invece importante per la sicurezza fare il **sanitize** del testo per evitare inserimento di codice malevolo (malicious code injection) ad esempio codice javascript che cerca di prendere diritti di amministratore.
+
+
+{title=".../app/views/components/_descriptions.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="list-group left-pad right-pad">
+    <%= sanitize "#{component.description}" %>
+
+    <!-- <p class="preserve-line-breaks"><%#= "#{component.description}" %></p> -->
+    <!-- https://stackoverflow.com/questions/30593103/preserve-line-breaks-in-textarea -->
+</div>
+~~~~~~~~
+
+
+
+
+## Debug stylesheets
+
+Nella nostra visione rear_view lo sfondo grigio non rende visibile i caratteri, che comunque sono presenti e si possono evidenziare selezionando il testo con il mouse. Per risolvere questo bug si è creata la classe "trix-white" in modo da mettere lo sfondo bianco.
+
+{title=".../app/views/components/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=64}
+~~~~~~~~
+    <%#= f.trix_editor :description, class: 'trix-white' %>
+    <trix-editor input="description", class="trix-white"></trix-editor>
+~~~~~~~~
+
+
+{title=".../app/assets/stylesheets/application_global.scss", lang=HTML+Mako, line-numbers=on, starting-line-number=9}
+~~~~~~~~
+// TEXT EDITOR TRIX
+.trix-white
+{
+  background-color: #FFFFFF;
+}
+// TEXT EDITOR TRIX end
+
+~~~~~~~~
+
+
+
+
+## archiviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add trix to posts body"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku teti:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge teti
+$ git branch -d teti
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

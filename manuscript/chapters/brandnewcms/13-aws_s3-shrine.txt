@@ -1,0 +1,520 @@
+# AWS S3 on Shrine
+
+
+
+
+
+
+## Apriamo il branch "AWS S3 on Shrine"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b ass
+~~~~~~~~
+
+
+
+
+## installiamo le gemme per AWS S3 su shrine
+
+Facciamo riferimento alla Guida [Direct Uploads to S3](http://shrinerb.com/rdoc/files/doc/direct_s3_md.html) sul sito ufficiale Shrinerb.com. Consigliano di installare la gemma **aws-sdk-s3** che installa solo lo specifico servizio S3 di AWS. 
+
+~~~~~~~~
+# Gemfile
+gem "aws-sdk-s3", "~> 1.2"
+~~~~~~~~
+
+Potevamo installare la gemma **aws-sdk** che installa tutti i servizi di AWS ma a noi serve solo S3 quindi siamo più selettivi.
+The AWS SDK for Ruby is available from RubyGems. aws-sdk gem contains every available AWS service gem support. With version 3 modularization, you can also pick the specific AWS service gem to install. 
+
+
+I> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/aws-sdk)
+I>
+I> facciamo riferimento al [tutorial github della gemma](https://github.com/aws/aws-sdk-ruby)
+
+{title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=48}
+~~~~~~~~
+# Official AWS Ruby gem for Amazon Simple Storage Service (Amazon S3). This gem is part of the AWS SDK for Ruby.
+gem 'aws-sdk-s3', '~> 1.9'
+~~~~~~~~
+
+[tutto il codice: Gemfile](#brandnewcms-10code-gemfile.rb)
+
+Eseguiamo l'installazione della gemma con bundle
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ bundle install
+~~~~~~~~
+
+
+
+## Verifichiamo connessione da rails console
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+> s3 = Aws::S3::Resource.new(region: 'eu-central-1', access_key_id: 'AKIAJ5Y7LYS2TEBNE26A', secret_access_key: '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')
+> bk = s3.bucket('brandnewcms-dev')
+> obj = s3.bucket('brandnewcms-dev').object('pippo')
+> obj.upload_file(filepath)
+
+> cs3 = Aws::S3::Client.new(region: 'eu-central-1', access_key_id: 'AKIAJ5Y7LYS2TEBNE26A', secret_access_key: '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')
+~~~~~~~~
+
+
+
+
+## Un errore stupido e troubleshooting
+
+Failed to open TCP connection to eu-central-1.s3.brandnewcms-dev.amazonaws.com:443 (getaddrinfo: Name or service not known)
+
+https://docs.aws.amazon.com/AmazonS3/latest/dev/WebsiteEndpoints.html
+
+he two general forms of an Amazon S3 website endpoint are as follows:
+
+bucket-name.s3-website-region.amazonaws.com
+bucket-name.s3-website.region.amazonaws.com
+
+Io avevo invertito il bucket con il region nell'initializers/shrine.rb
+
+
+
+
+## Pubblichiamo su Heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku fi:master
+$ heroku run rails db:migrate
+~~~~~~~~
+
+
+
+
+## Implementiamo il file di inizializzazione per collegarci su AWS S3
+
+adesso che abbiamo tutte le informazioni da aws implementiamo il file di settings che permettono a Rails di collegarsi ad AWS tramite il plugin che abbiamo installato.
+
+Sul sito ufficiale Shrinerb.com prendiamo la Guida [Direct Uploads to S3](http://shrinerb.com/rdoc/files/doc/direct_s3_md.html) e copiamo i settaggi per il collegamento nel nostro file di inizializzazione di shrine
+
+{title=".../config/initializers/shrine.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+require "shrine/storage/s3"
+
+s3_options = {
+  access_key_id:       Rails.application.secrets.aws_access_key_id,
+  secret_access_key:   Rails.application.secrets.aws_secret_access_key,
+  bucket:              Rails.application.secrets.aws_region,
+  region:              Rails.application.secrets.aws_bucket,
+}
+
+Shrine.storages = {
+  cache: Shrine::Storage::S3.new(prefix: "cache", **s3_options),
+  store: Shrine::Storage::S3.new(prefix: "store", **s3_options),
+}
+
+Shrine.plugin :activerecord
+Shrine.plugin :direct_upload
+Shrine.plugin :restore_cached_data
+~~~~~~~~
+
+
+{title=".../config/secrets.yml", lang=yaml, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+  aws_access_key_id: BH***Z3V
+  aws_secret_access_key: Mr45***QZtg1b
+  aws_region: eu-central-1
+  aws_bucket: brandnewcms-dev
+~~~~~~~~
+
+
+
+
+
+
+
+
+## Aggiorniamo il file routes
+
+Continuiamo con la Guida [Direct Uploads to S3](http://shrinerb.com/rdoc/files/doc/direct_s3_md.html) nel paragrafo **Strategy A (dynamic)**
+
+(in passato si usava la gem roda con plugin :direct_upload. Oggi non servono più e si usa solo lo Shrine.plugin :presign_endpoint
+
+{title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+# config/routes.rb (Rails)
+Rails.application.routes.draw do
+  mount Shrine.presign_endpoint(:cache) => "/presign"
+end
+~~~~~~~~
+
+This will be an URL that will point to shrine's uploader for the direct stuf BUT the **ImageUploader** è una classe che dobbiamo ancora definire.
+
+
+
+## Definiamo la classe ImageUploader
+
+Per mancanza di un posto migliore, e per non creare una nuova cartella dento la cartella principale "app", creiamo il nostro file dentro la cartella model.
+
+{title=".../app/models/image_uploader.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+class ImageUploader < Shrine
+  
+end
+~~~~~~~~
+
+
+
+
+
+
+
+Le gemme che useremo sono:
+
+* gem 'shrine'
+* gem 'aws-sdk'
+
+* gem 'roda'
+   wich will allow us tu use the shrine rack application in order to give ua the AWS presigned keys in order to send a file over 
+   
+* gem 'jquery-fileupload-rails
+* gem 'bootstrap-sass'
+
+abbiamo già installato 'shrine'. Restano le altre due.
+
+I> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/aws-sdk)
+I>
+I> facciamo riferimento al [tutorial github della gemma](https://github.com/aws/aws-sdk-ruby)
+
+{title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=48}
+~~~~~~~~
+# The official AWS SDK for Ruby. 
+gem 'aws-sdk', '~> 3.0', '>= 3.0.1'
+~~~~~~~~
+
+I> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/roda)
+I>
+I> facciamo riferimento al [tutorial github della gemma](http://roda.jeremyevans.net/)
+
+{title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=48}
+~~~~~~~~
+# Routing tree web toolkit. 
+gem 'roda', '~> 3.6'
+~~~~~~~~
+
+[tutto il codice: Gemfile](#brandnewcms-10code-gemfile.rb)
+
+Eseguiamo l'installazione della gemma con bundle
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ bundle install
+~~~~~~~~
+
+
+
+
+
+
+
+
+{title=".../config/environments/development.rb", lang=ruby, line-numbers=on, starting-line-number=58}
+~~~~~~~~
+  # config/environments/development
+  config.paperclip_defaults = {
+    storage: :s3,
+    s3_credentials: {
+      bucket: 'elisinfo-dev',
+      access_key_id: 'AKIAJJ55RPPRPGHJTOMA',
+      secret_access_key: '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',
+      s3_region: 'eu-central-1'
+    }
+  }
+~~~~~~~~
+
+Facciamo ripartire il web server e adesso quando carichiamo un immagine questa viene caricata su AWS S3 nel bucket specifico creando una cartella con il nome della tabella che carica l'immagine. Nel nostro caso "companies".
+
+ATTENZIONE! Ci può volere del tempo prima che l'immagine venga uploadata quindi non abbiate fretta e fate un refresh dopo alcuni minuti.
+
+Fa upload dell'immagine su aws ma quando la devo rivedere non la trova e mi visualizza il parametro alt="..".
+Facendo l'inspect sul browser mi accorgo che l'url è sbagliato. 
+
+{title="inspector", lang=html, line-numbers=off}
+~~~~~~~~
+<img class="media-object" src="//s3.amazonaws.com/flapaperclip/companies/logos/000/000/005/original/logo-heineken.png?1485869284" alt="Logo heineken">
+~~~~~~~~
+
+infatti è:
+
+//s3.amazonaws.com/flapaperclip/companies/logos/000/000/005/original/logo-heineken.png?1485869284"
+
+Ed invece dovrebbe essere 
+
+https://s3.eu-central-1.amazonaws.com/flapaperclip/companies/logos/000/000/005/original/logo-heineken.png
+
+Mi basta correggere l'endpoint come suggerito sul manuale di heroku https://devcenter.heroku.com/articles/paperclip-s3.
+Correggiamo l'endpoint del bucket di AWS S3
+
+{title=".../config/initializers/paperclip.rb", lang=ruby, line-numbers=on, starting-line-number=58}
+~~~~~~~~
+# correction for the endpoint of the AWS S3 Bucket
+Paperclip::Attachment.default_options[:s3_host_name] = 's3.eu-central-1.amazonaws.com'
+~~~~~~~~
+
+ATTENZIONE! probabilmente il file paperclip.rb non esiste sotto config/initializers ma basta crearlo.
+
+Con questa correzione funziona tutto localmente.
+Adesso dobbiamo nascondere le chiavi segrete con figaro prima di fare il commit ed il push su heroku o github.
+
+
+
+
+## Mascheriamo i secrets con Figaro
+
+prendiamo il file dei secrets di figaro (application.yml) ed aggiungiamo le informazioni per connetterci ad AWS S3.
+
+{title=".../config/application.yml", lang=yaml, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+development:
+  SECRET_KEY_BASE: 2d64e44d814e3fdf518fb7f830e0f656bfcd015c86dfc4c5686d2b671a6e05aeaf67e780beaaa82b5f3be2c58bd28d616ffef2845233ab5dba9fade5067e0c06
+  # Connessione ad AWS S3 per Paperclip
+  S3_BUCKET_NAME: elisinfo-dev
+  AWS_ACCESS_KEY_ID: AKIAJJ55RPPRPGHJTOMA
+  AWS_SECRET_ACCESS_KEY: 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
+  AWS_REGION: eu-central-1
+
+test:
+  SECRET_KEY_BASE: 2de1ca50ad0877af447c1f414419e3eab1e0d09f612a6d24cd846bfcea38e3750d4965323aa35d39f945bb18b5f1592c1c590ffee3dbec39973ca299bbacb1ca
+
+production:
+  #SECRET_KEY_BASE: already present on heroku. See $ heroku config
+~~~~~~~~
+
+e togliamoli dal development.rb sostituendogli le variabili d'ambiente.
+
+{title=".../config/environments/development.rb", lang=ruby, line-numbers=on, starting-line-number=58}
+~~~~~~~~
+  # config/environments/development
+  config.paperclip_defaults = {
+    storage: :s3,
+    s3_credentials: {
+      bucket: ENV.fetch('S3_BUCKET_NAME'),
+      access_key_id: ENV.fetch('AWS_ACCESS_KEY_ID'),
+      secret_access_key: ENV.fetch('AWS_SECRET_ACCESS_KEY'),
+      s3_region: ENV.fetch('AWS_REGION')
+    }
+  }
+~~~~~~~~
+
+I> le variabili d'ambiente si possono chiamare con ENV.fetch('VARIABLE_NAME') oppure con ENV['VARIABLE_NAME']
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+https://elisinfo5-flaviobordonidev.c9users.io/mockup_companies/index
+
+
+verificato che funziona possiamo fare i git commit senza paura di prendere i "secrets".
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add AWS S3 connection to upload images with paperclip"
+~~~~~~~~
+
+
+## Andiamo in produzione (Heroku)
+
+Creiamo prima un nuovo bucket per mantenere distinte le immagini caricate come development da quelle caricate in produzione.
+
+
+
+
+## Connettiamoci su AWS S3 da production (Heroku)
+
+
+utilizziamo di nuovo figaro
+
+{title=".../config/application.yml", lang=yaml, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+development:
+  SECRET_KEY_BASE: 2d64e44d814e3fdf518fb7f830e0f656bfcd015c86dfc4c5686d2b671a6e05aeaf67e780beaaa82b5f3be2c58bd28d616ffef2845233ab5dba9fade5067e0c06
+  # Connessione ad AWS S3 per Paperclip
+  S3_BUCKET_NAME: elisinfo-dev
+  AWS_ACCESS_KEY_ID: AKIAJJ55RPPRPGHJTOMA
+  AWS_SECRET_ACCESS_KEY: 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
+  AWS_REGION: eu-central-1
+
+test:
+  SECRET_KEY_BASE: 2de1ca50ad0877af447c1f414419e3eab1e0d09f612a6d24cd846bfcea38e3750d4965323aa35d39f945bb18b5f1592c1c590ffee3dbec39973ca299bbacb1ca
+
+production:
+  #SECRET_KEY_BASE: already present on heroku. See $ heroku config
+  # Connessione ad AWS S3 per Paperclip
+  S3_BUCKET_NAME: elisinfo-prod
+  AWS_ACCESS_KEY_ID: AKIAJJ55RPPRPGHJTOMA
+  AWS_SECRET_ACCESS_KEY: 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
+  AWS_REGION: eu-central-1
+~~~~~~~~
+
+ed aggiungiamo la stringa di configurazione per la gemma aws_s3 sul production.rb con le variabili d'ambiente.
+
+{title=".../config/environments/production.rb", lang=ruby, line-numbers=on, starting-line-number=58}
+~~~~~~~~
+# config/environments/production.rb
+config.paperclip_defaults = {
+  storage: :s3,
+  s3_credentials: {
+    bucket: ENV.fetch('S3_BUCKET_NAME'),
+    access_key_id: ENV.fetch('AWS_ACCESS_KEY_ID'),
+    secret_access_key: ENV.fetch('AWS_SECRET_ACCESS_KEY'),
+    s3_region: ENV.fetch('AWS_REGION')
+  }
+}
+~~~~~~~~
+
+le configurazioni sono pronte quindi non ci resta che fare git add, git commit e publicare su heroku.
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add AWS S3 connection to upload images with paperclip in Production"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+Prima di pubblicare passiamo le variabili d'ambiente a Heroku.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ figaro heroku:set -e production
+
+$ git push heroku aws:master
+~~~~~~~~
+
+per passare le variabili d'ambiente abbiamo usato il comando di [Figaro](https://github.com/laserlemon/figaro), ma avremmo potuto caricarle anche manualmente da console come descritto di seguito.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku config:set S3_BUCKET_NAME='flapaperclip'
+$ heroku config:set AWS_ACCESS_KEY_ID='AKIAJJ55RPPRPGHJTOMA'
+$ heroku config:set AWS_SECRET_ACCESS_KEY='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'
+$ heroku config:set AWS_REGION='eu-central-1'
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge aws
+$ git branch -d aws
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
+
+
+
+
+
+
+
+appunti vecchi
+
+If you are using S3 storage, aws-sdk >= 2.0.0 requires you to make a few small
+changes:
+
+* You must set the `s3_region`
+* If you are explicitly setting permissions anywhere, such as in an initializer,
+  note that the format of the permissions changed from using an underscore to
+  using a hyphen. For example, `:public_read` needs to be changed to
+  `public-read`.
+
+---
+La gemma "mini_magick" ci aiuta con l'integrazione di refile su Rails e l'implementazione dell'elaborazione delle immagini. MiniMagick richiede ImageMagic installato. Per installarlo su Ubuntu/Cloud9 basta eseguire:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo apt-get install imagemagick
+~~~~~~~~
+
+Se non funziona eseguire:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo apt-get update
+$ sudo apt-get install imagemagick
+~~~~~~~~
+
+Se neanche questo funziona eseguire:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo add-apt-repository main
+$ sudo apt-get update
+$ sudo apt-get install imagemagick
+~~~~~~~~
+
+
+---
+{title=".../app/models/person.rb", lang=ruby, line-numbers=on, starting-line-number=7}
+~~~~~~~~
+  # paperclip required ---------------------------------------------------------
+  has_attached_file :image, styles: { thumb: ["64x64!", :png] }
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+abbiamo dato anche uno stile all'immagine dicendogli di caricarla come png e di scalare l'immagine a 64x64px facendo uno stretch e quindi senza mantenere le proporzioni.
+
+* [Post Processing](https://github.com/thoughtbot/paperclip#post-processing)
+* [ImageMagick's geometry documentation](http://www.imagemagick.org/script/command-line-processing.php#geometry)
+
+---
+{title=".../app/models/person.rb", lang=ruby, line-numbers=on, starting-line-number=10}
+~~~~~~~~
+
+  # VALIDATIONS
+  
+  # paperclip required ---------------------------------------------------------
+  validates_attachment :image,
+                        content_type: { content_type: ["image/jpeg", "image/gif", "image/png"] }
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+come scelgo i mime types?
+Ecco di seguito alcuni links ed una lista dei mime types:
+
+* https://www.sitepoint.com/web-foundations/mime-types-complete-list/
+* http://stackoverflow.com/questions/6554951/validate-extension-in-paperclip-ruby-on-rails
+* http://stackoverflow.com/questions/8818251/how-to-validate-file-content-type-to-pdf-word-excel-and-plain-text-for-paperc
+* http://stackoverflow.com/questions/26347844/rails-paperclip-file-type-validation-add-pdf
+
+---

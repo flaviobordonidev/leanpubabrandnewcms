@@ -1,0 +1,11 @@
+# Il Blog
+
+
+
+
+## Scelti dal tema Canvas
+
+per view posts/show
+
+* HTML/blog-single.html
+

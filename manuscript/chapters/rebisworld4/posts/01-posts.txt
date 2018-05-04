@@ -1,0 +1,30 @@
+# Rebisworld - Blog - posts
+
+adattiamo i posts a Rebisworld
+
+
+
+## Apriamo il branch "Rebisworld Blog"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b rb
+~~~~~~~~
+
+
+
+
+## Il menu di posts
+
+questo paragrafo va nel capitolo posts.
+
+* HOME 
+* LE ISOLE (sezioni -- usa i tags ed è al posto delle categorie) 
+* LE ANIME (firme / gli autori -- chi scrive gli articoli)
+* ARCHIVIO (gli articoli visualizzati enfatizzando la data)
+
+
+
+
+
+

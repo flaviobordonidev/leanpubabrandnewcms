@@ -1,0 +1,37 @@
+# Yields
+
+effettuiamo un refacotoring in modo da avere il codice javascript legato alla sezione/mattoncino-lego che vogliamo aggiungere nella nostra pagina.
+
+Per far questo prepariamo un layouts/application con le chiamate tutte le chiamate javascript possibili in fondo al body rispettando l'ordine con cui si presentano nelle varie pagine di esempio di Canvas.
+
+Attenzione! L'ordine delle chiamate javascript è importante, altrimenti non funzionano.
+
+Tutte le chiamate a javascript specifici le facciamo con degli yields così il codice viene aggiunto alla pagina solo se viene effettivamente richiesto. Le chiamate yields a cui non viene passato codice è come se non esistessero ai fini della pagina html che viene presentata al browser.
+
+Gli unici javascript che sono utilizzati per tutta l'applicazione invece li richiamiamo con dei renders.
+
+
+
+
+    <%= render 'layouts/javascripts_external' %>
+    <%= yield(:javascript_googlemap_api) %>
+    <%= render 'layouts/javascripts_footer' %>
+    <%= yield(:javascript_googlemap_show) %>
+    <%= yield(:javascript_side_navigation) %>
+
+
+
+
+## Meta-data e Semantic-data
+
+Il codice HTML "normale" mi piace chiamarlo dati "semantici" (semantic-data) per ricordarmi che qui dovrebbe esserci solo "contenuto" solo del testo che è avulso dallo stile css e dal codice javascript.
+Nei meta-data facciamo rientrare tutto il resto. Chiaramente non sempre riesco a mantenere la parte html avulsa da codice, ad esempio spesso mi fa comodo metterci delle chiamate if..do...else.. oppure alcune classi css che non sono "semantiche" nel senso che dovrebbero indicare solo l'oggetto.
+
+
+
+
+## Google map
+
+inseriamo il codice javascript dentro il partial della googlemap così resta tutto insieme; tanto l'ordine delle chiamate è gestito dagli yields su layouts/application
+
+Nel nostro caso la chiamata alla mappa di google è dentro la sezione contacts. Possiamo mettere il codice là oppure possiamo creare un partial solo per la mappa da condividere nella cartella application (che non ha bisogno di essere chiamata esplicitamente).

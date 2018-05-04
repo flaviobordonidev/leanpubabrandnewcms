@@ -36,6 +36,7 @@ ruby '2.4.0'
 
 I> La versione va riportata senza il numero di patch ('2.4.0' e non '2.4.0p0'). Se si riporta anche la patch ad esempio '2.4.0p0' si avrà un messaggio di errore nel momento in cui faremo il "bundle install".
 
+[tutto il codice:](#beginning-04code-Gemfile.rb)
 
 Ed una volta usato il "bundle install" l'installato viene registrato sul file: Gemfile.lock
 

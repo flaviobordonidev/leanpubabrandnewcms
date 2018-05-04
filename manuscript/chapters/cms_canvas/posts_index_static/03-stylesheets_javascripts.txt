@@ -1,0 +1,25 @@
+# Inseriamo i files stylesheets e javascripts
+
+questa parte la abbiamo già implementata per l'homepage. Non ci sono nuovi files da importare.
+
+
+
+
+## I files di Canvas usati nell'asset_pipeline
+
+Questi i files dal template Canvas richiesti nella nostra app Rails (da -> a). Seguiamo l'ordine delle chiamate sul file st_homepage. Siccome sul file blog_small
+
+* HTML/css/bootstrap.css        ->  .../app/assets/stylesheets/
+* HTML/style.css                ->  .../app/assets/stylesheets/
+* HTML/css/dark.css             ->  .../app/assets/stylesheets/
+* HTML/css/font-icons.css       ->  .../app/assets/stylesheets/
+* HTML/css/animate.css          ->  .../app/assets/stylesheets/
+* HTML/css/magnific-popup.css   ->  .../app/assets/stylesheets/
+* HTML/one-page/css/fonts.css   ->  .../app/assets/stylesheets/
+* HTML/css/responsive.css       ->  .../app/assets/stylesheets/
+
+* HTML/js/jquery.js             ->  .../app/assets/javascripts/
+* HTML/js/plugins.js            ->  .../app/assets/javascripts/
+* HTML/js/functions.js          ->  .../app/assets/javascripts/
+
+tutti questi files li abbiamo già importati per l'homepage, quindi in questo capitolo non facciamo nulla ^_^

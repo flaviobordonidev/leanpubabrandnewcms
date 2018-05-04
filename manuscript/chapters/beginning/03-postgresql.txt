@@ -1,6 +1,6 @@
 # PostgreSQL
 
-Risolviamo l'errore di connessione creando i databases
+Attiviamo postgreSQL ed effettuiamo la connessione creando i databases
 
 
 
@@ -34,7 +34,6 @@ Verifichiamo sul web
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ cd elisinfo
 $ rails s -b $IP -p $PORT
 ~~~~~~~~
 

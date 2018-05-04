@@ -1,0 +1,301 @@
+# Friendly_id gem
+
+FriendlyId is the “Swiss Army bulldozer” of slugging and permalink plugins for ActiveRecord. It allows you to create pretty URL’s and work with human-friendly strings as if they were numeric ids for ActiveRecord models.
+
+
+
+
+## Apriamo il branch "friendly_id"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b fi
+~~~~~~~~
+
+
+
+
+## installiamo la gemma friendly_id
+
+I> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/friendly_id)
+I>
+I> facciamo riferimento al [tutorial github della gemma](https://github.com/norman/friendly_id)
+
+{title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=48}
+~~~~~~~~
+# slugging and permalink for Active Record. For creating human-friendly strings URLs and use as if they were numeric ids.
+gem 'friendly_id', '~> 5.2', '>= 5.2.3'
+~~~~~~~~
+
+[tutto il codice: Gemfile](#brandnewcms-02code-gemfile.rb)
+
+Eseguiamo l'installazione della gemma con bundle
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ bundle install
+~~~~~~~~
+
+e lanciamo lo script di installazione
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails generate friendly_id
+~~~~~~~~
+
+risolviamo il piccolo bug della mancanza di [5.1] nel migrate
+
+{title=".../db/migrate/xxx_create_friendly_id_slugs.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class CreateFriendlyIdSlugs < ActiveRecord::Migration[5.1]
+~~~~~~~~
+
+[tutto il codice: Gemfile](#brandnewcms-02code-db-migrate-xxx_create_friendly_id_slugs.rb)
+
+eseguiamo il migrate
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails db:migrate
+~~~~~~~~
+
+Nelle precedenti versioni di friendly_id era necessario aggiungere il campo **slug:string:uniq** alla tabella in cui si voleva avere lo slug ma adesso non è più necessario. NON E' VERO! E' ancora necessario solo che se lo sono scordato nel tutorial. Cazzz...
+
+
+
+
+## Creiamo la struttura per gli articoli (posts)
+
+title       	: titolo dell'articolo. Quello che ha una bella copy.
+incipit       : il testo che è sull'indice. L'inizio di un articolo che spesso è anche troncato ad hoc.
+article	      : il testo sul post
+tags          : le parole più ricercate / le parole chiave
+date		      : data del post
+author_id		  : utente che ha scritto il post
+disques_id	  : commenti
+
+type 		      : image, video, quote, ... (il tipo di post/articolo; se ha immagine o video o altro)
+
+$ rails g migration AddIncipitArticleToPosts incipit:text article:text
+
+
+li "Read more" in italiano è tradotto "Leggi tutto"
+
+
+Usiamo lo Scaffold che mi imposta già l'applicazione in stile restful con le ultime convenzioni Rails.
+Lo scaffold crea su routes la voce resources, crea il modulo, il migration, e tutte le views un controller con le 7 azioni in stile restful:
+
+index, show, new, edit, create, update e destroy. 
+
+I> ATTENZIONE: con "rails generate scaffold ..." -> uso il SINGOLARE
+I>
+I> ATTENZIONE: dobbiamo aggiungere **slug:string:uniq** allo scaffold per friendly_id (ma lo aggiungiamo dopo per renderlo più didattico)
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g scaffold Post title:string incipit:text article:text
+~~~~~~~~
+
+questo crea il migrate:
+
+{title=".../db/migrate/xxx_create_posts.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class CreatePosts < ActiveRecord::Migration[5.1]
+  def change
+    create_table :posts do |t|
+      t.string :title
+      t.text :body
+      t.text :description
+      t.string :slug
+
+      t.timestamps
+    end
+  end
+end
+~~~~~~~~
+
+Effettuiamo il migrate del database per creare la tabella sul database
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails db:migrate
+~~~~~~~~
+
+
+
+
+## Aggiungiamo **slug:string:uniq** alla tabella posts
+
+Per usare la gemma friendly_id dobbiamo aggiungere una colonna alla nostra tabella.
+Potevamo aggiungerla subito al comando dello scaffold **$ rails g scaffold Post title:string ... slug:string:uniq** ma aggiungerla dopo è didatticamente più interessante.
+
+Il campo slug è usato da friendly_id ed è una stringa univoca usata per ritrovare il post.id dall'URL human-readable. Se per qualche motivo non avessimo inserito **slug:string:uniq** durante lo scaffold ed avessimo già eseguito il rails db migrate, come in effetti abbiamo fatto ^_^, questo paragrafo fa per noi. Creiamo un nuovo migration in cui aggiungiamo il campo slug:string e l'indice uniq.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g migration AddSlugUniqToPosts slug:string:uniq
+~~~~~~~~
+
+questo crea il migrate:
+
+{title=".../db/migrate/xxx_add_slug_uniq_to_posts.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class AddSlugUniqToPosts < ActiveRecord::Migration[5.1]
+  def change
+    add_column :posts, :slug, :string
+    add_index :posts, :slug, unique: true
+  end
+end
+~~~~~~~~
+
+eseguiamo il migrate 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails db:migrate
+~~~~~~~~
+
+
+
+
+## Implementiamo il model per friendly_id
+
+Come richersto da friendly_id inseriamo due line di codice nel nostro model per dire che l'URL human-readable è basato sul campo "title". 
+
+{title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+  extend FriendlyId
+  friendly_id :title, use: :slugged
+~~~~~~~~
+
+Inoltre implementiamo/definiamo un metodo per aggiornare lo slug in automatico ogni volta che cambiamo il titolo
+
+{title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+  def should_generate_new_friendly_id?
+    title_changed?
+  end
+~~~~~~~~
+
+[tutto il codice: models/post](#brandnewcms-02code-models-post.rb)
+
+il codice **should_generate_new_friendly_id?** è della gemma friendly_id. 
+il codice **title_changed?** è di Rails.
+
+
+
+
+## Implementiamo il controller per friendly_id
+
+nel set_post ricerchiamo tramite **:id** ma in modo "friendly" ^_^
+
+{title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=66}
+~~~~~~~~
+    def set_post
+      @post = Post.friendly.find(params[:id])
+    end
+~~~~~~~~
+
+
+
+
+## Implementiamo le routes
+
+{title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+  root 'posts#index'
+~~~~~~~~
+
+verifichiamo 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+Funziona! creo nuovo post (senza riempire il campo slug) e su submit ottengo il nuovo post con URL human-readable ed il campo slug automaticamente riempito. Se faccio edit, cambio il titolo e rifaccio submit, ottengo nuovo URL ed automaticamente nuovo slug.
+
+salviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Add scaffold Post and implement friendly_id gem"
+~~~~~~~~
+
+
+
+
+## Puliamo un po' 
+
+nel form non ci serve il campo slug perché viene gestito automaticamente. Eliminiamo le linee di codice corrispondenti.
+
+{title=".../app/views/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=29}
+~~~~~~~~
+  <div class="field">
+    <%= form.label :slug %>
+    <%= form.text_field :slug, id: :post_slug %>
+  </div>
+~~~~~~~~
+
+nel posts_controller non ci serve autorizzare il passaggio del parametro slug attraverso mass-assignment quindi lo togliamo.
+
+{title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=66}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def post_params
+      params.require(:post).permit(:title, :body, :description)
+    end
+~~~~~~~~
+
+salviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Clean up a little"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su Heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku fi:master
+$ heroku run rails db:migrate
+~~~~~~~~
+
+
+
+
+## Popoliamo manualmente
+
+inseriamo quattro articoli (posts) e mettiamo il contenuto usando https://hipsum.co/ che è simile a Lorem ipsum ma più divertente.
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge fi
+$ git branch -d fi
+~~~~~~~~
+
+
+aggiorniamo github
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
+

@@ -1,0 +1,24 @@
+# La homepage
+
+
+
+
+## Scelti dal tema Canvas
+
+per view posts/show
+
+* HTML/one-page/index.html
+
+
+
+
+## Preparazione files del Canvas da usare
+
+per il sito statico abbiamo scelto il sito one-page e nello specifico:
+
+* (homepage: .../one-page/index.html)[http://themes.semicolonweb.com/html/canvas/v5/one-page/index.html]
+
+dentro themeforest-9228123-canvas-the-multipurpose-html5-template/Package-HTML/HTML
+
+quindi iniziamo importando il codice di questo file nella nostra homepage in Rails.
+Successivamente importeremo i vari files di stylesheets, javascripts ed images mano a mano che si presenteranno.

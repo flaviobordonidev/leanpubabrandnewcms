@@ -1,0 +1,36 @@
+# Preparazione files del Canvas da usare
+
+per il sito statico abbiamo scelto il sito one-page e nello specifico:
+
+* (homepage: .../one-page/index.html)[http://themes.semicolonweb.com/html/canvas/v5/one-page/index.html]
+
+dentro themeforest-9228123-canvas-the-multipurpose-html5-template/Package-HTML/HTML
+
+
+
+
+## Selezione per Rails
+
+per iniziare selezioniamo i seguenti files/cartelle da importare nella ns app rails **rebisworld**:
+
+dalla principale
+
+* HTML/style.scss
+* HTML/sass/
+* HTML/images/
+* HTML/js/
+
+nella principale ho sia i css standard sia SASS/scss sia LESS. Rails preferisce SASS.
+
+dalla sottocartella one-page
+
+* HTML/one-page/index.html
+* HTML/one-page/onepage.css
+* HTML/one-page/css/
+* HTML/one-page/images/
+* HTML/one-page/include/
+
+purtroppo dentro one-page non ho SASS/scss e quindi uso i css standard.
+Non useremo tutti i files delle sottocartelle ma per il momento importeremo tutto.
+
+Nel prossimo capitolo iniziamo ad importare i files dentro il nostro progetto rails su Cloud9.

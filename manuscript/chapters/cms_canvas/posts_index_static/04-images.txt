@@ -1,0 +1,285 @@
+# Le immagini
+
+Non ci resta che importare le immagini sull'asset_pipeline ed associare le chiamate nel views/posts/index.html.erb
+
+
+
+
+## Apriamo il branch "Images Blog Small"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b ibs
+~~~~~~~~
+
+
+
+
+## importiamo le immagini da Canvas nell'asset_pipeline
+
+E' arrivato il momento di importare le immagini dal template Canvas nella nostra app Rails (da -> a). Seguiamo l'ordine delle chiamate su posts/index.
+
+* HTML/images/logo-dark.png            ->  .../app/assets/images/
+* HTML/images/logo.png                 ->  .../app/assets/images/
+* HTML/images/logo-dark@2x.png         ->  .../app/assets/images/
+* HTML/images/logo@2x.png              ->  .../app/assets/images/
+* HTML/images/shop/small/1.jpg         ->  .../app/assets/images/shop-small-1.jpg (rinominata)
+* HTML/images/shop/small/6.jpg         ->  .../app/assets/images/shop-small-6.jpg (rinominata)
+* HTML/images/blog/small/10.jpg        ->  .../app/assets/images/blog-small-10.jpg (rinominata)
+* HTML/images/blog/small/20.jpg        ->  .../app/assets/images/blog-small-20.jpg (rinominata)
+* HTML/images/blog/small/21.jpg        ->  .../app/assets/images/blog-small-21.jpg (rinominata)
+* HTML/images/blog/small/2.jpg         ->  .../app/assets/images/blog-small-2.jpg (rinominata)
+* HTML/images/blog/small/3.jpg         ->  .../app/assets/images/blog-small-3.jpg (rinominata)
+* HTML/images/blog/small/6-1.jpg       ->  .../app/assets/images/blog-small-6-1.jpg (rinominata)
+* HTML/images/blog/small/6-2.jpg       ->  .../app/assets/images/blog-small-6-2.jpg (rinominata)
+* HTML/images/blog/small/12.jpg        ->  .../app/assets/images/blog-small-12.jpg (rinominata)
+* HTML/images/blog/small/12-1.jpg      ->  .../app/assets/images/blog-small-12-1.jpg (rinominata)
+* HTML/images/blog/small/13.jpg        ->  .../app/assets/images/blog-small-13.jpg (rinominata)
+* HTML/images/blog/small/17.jpg        ->  .../app/assets/images/blog-small-17.jpg (rinominata)
+* HTML/images/blog/small/18.jpg        ->  .../app/assets/images/blog-small-18.jpg (rinominata)
+* HTML/images/blog/small/19.jpg        ->  .../app/assets/images/blog-small-19.jpg (rinominata)
+* HTML/images/magazine/small/3.jpg     ->  .../app/assets/images/magazine-small-3.jpg (rinominata)
+* HTML/images/magazine/small/2.jpg     ->  .../app/assets/images/magazine-small-2.jpg (rinominata)
+* HTML/images/magazine/small/1.jpg     ->  .../app/assets/images/magazine-small-1.jpg (rinominata)
+* HTML/images/portfolio/4/3.jpg   		 ->  .../app/assets/images/portfolio-4-3.jpg (rinominata)
+* HTML/images/portfolio/4/1.jpg   		 ->  .../app/assets/images/portfolio-4-1.jpg (rinominata)
+* HTML/images/icons/avatar.jpg   			 ->  .../app/assets/images/icons-avatar.jpg (rinominata)
+* HTML/images/footer-widget-logo.png   ->  .../app/assets/images/footer-widget-logo.png
+* HTML/images/world-map.png 					 ->  .../app/assets/images/world-map.png
+
+
+
+
+## Impostiamo su posts/   e=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=54}
+~~~~~~~~
+					<div id="logo">
+						<!-- <a href="index.html" class="standard-logo" data-dark-logo="images/logo-dark.png"><img src="images/logo.png" alt="Canvas Logo"></a> -->
+						<!-- <a href="index.html" class="retina-logo" data-dark-logo="images/logo-dark@2x.png"><img src="images/logo@2x.png" alt="Canvas Logo"></a> -->
+						<a href="index.html" class="standard-logo" data-dark-logo="<%=image_path('logo-dark.png')%>"><%= image_tag "logo.png", alt: "Canvas Logo" %></a>
+						<a href="index.html" class="retina-logo" data-dark-logo="<%=image_path('logo-dark@2x.png')%>"><%= image_tag "logo@2x.png", alt: "Canvas Logo" %></a>
+					</div><!-- #logo end -->
+~~~~~~~~
+
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=661}
+~~~~~~~~
+										<div class="top-cart-item-image">
+											<!-- <a href="#"><img src="images/shop/small/1.jpg" alt="Blue Round-Neck Tshirt" /></a> -->
+											<a href="#"><%= image_tag "shop-small-1.jpg", alt: "Blue Round-Neck Tshirt" %></a>
+										</div>
+~~~~~~~~
+
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=672}
+~~~~~~~~
+										<div class="top-cart-item-image">
+											<!-- <a href="#"><img src="images/shop/small/6.jpg" alt="Light Blue Denim Dress" /></a> -->
+											<a href="#"><%= image_tag "shop-small-6.jpg", alt: "Light Blue Denim Dress" %></a>
+										</div>
+~~~~~~~~
+
+
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=738}
+~~~~~~~~
+									<!-- <a href="images/blog/full/17.jpg" data-lightbox="image"><img class="image_fade" src="images/blog/small/17.jpg" alt="Standard Post with Image"></a> -->
+									<a href="images/blog/full/17.jpg" data-lightbox="image"><%= image_tag "blog-small-17.jpg", class: "image_fade", alt: "Light Blue Denim Dress" %></a>
+~~~~~~~~
+
+Per quanto riguarda i video non c'è nulla da fare lato asset_pipeline. Unico consiglio, acceriamoci di essere in **https://**
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=761}
+~~~~~~~~
+									<iframe src="https://player.vimeo.com/video/87701971" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+									<!-- <iframe id="ytplayer" type="text/html" width="500" height="281" src="https://www.youtube.com/embed/M7lc1UVf-VE?autoplay=1&origin=http://example.com" frameborder="0"></iframe> -->
+									<!-- <iframe id="vimeoplayer" type="text/html" width="500" height="281" src="https://player.vimeo.com/video/87701971" frameborder="0"></iframe> -->
+~~~~~~~~
+
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=784}
+~~~~~~~~
+										<div class="flexslider">
+											<div class="slider-wrap">
+												<!-- <div class="slide"><a href="images/blog/full/10.jpg" data-lightbox="gallery-item"><img class="image_fade" src="images/blog/small/10.jpg" alt="Standard Post with Gallery"></a></div> -->
+												<!-- <div class="slide"><a href="images/blog/full/20.jpg" data-lightbox="gallery-item"><img class="image_fade" src="images/blog/small/20.jpg" alt="Standard Post with Gallery"></a></div> -->
+												<!-- <div class="slide"><a href="images/blog/full/21.jpg" data-lightbox="gallery-item"><img class="image_fade" src="images/blog/small/21.jpg" alt="Standard Post with Gallery"></a></div> -->
+												<div class="slide"><a href="images/blog/full/10.jpg" data-lightbox="gallery-item"><%= image_tag "blog-small-10.jpg", class: "image_fade", alt: "Standard Post with Gallery" %></a></div>
+												<div class="slide"><a href="images/blog/full/20.jpg" data-lightbox="gallery-item"><%= image_tag "blog-small-20.jpg", class: "image_fade", alt: "Standard Post with Gallery" %></a></div>
+												<div class="slide"><a href="images/blog/full/21.jpg" data-lightbox="gallery-item"><%= image_tag "blog-small-21.jpg", class: "image_fade", alt: "Standard Post with Gallery" %></a></div>
+											</div>
+										</div>
+~~~~~~~~
+
+
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=836}
+~~~~~~~~
+									<div class="portfolio-single-image masonry-thumbs col-4" data-big="3" data-lightbox="gallery">
+										<!-- <a href="images/blog/full/2.jpg" data-lightbox="gallery-item"><img class="image_fade" src="images/blog/small/2.jpg" alt=""></a> -->
+										<!-- <a href="images/blog/full/3.jpg" data-lightbox="gallery-item"><img class="image_fade" src="images/blog/small/3.jpg" alt=""></a> -->
+										<!-- <a href="images/blog/full/6-1.jpg" data-lightbox="gallery-item"><img class="image_fade" src="images/blog/small/6-1.jpg" alt=""></a> -->
+										<!-- <a href="images/blog/full/6-2.jpg" data-lightbox="gallery-item"><img class="image_fade" src="images/blog/small/6-2.jpg" alt=""></a> -->
+										<!-- <a href="images/blog/full/12.jpg" data-lightbox="gallery-item"><img class="image_fade" src="images/blog/small/12.jpg" alt=""></a> -->
+										<!-- <a href="images/blog/full/12-1.jpg" data-lightbox="gallery-item"><img class="image_fade" src="images/blog/small/12-1.jpg" alt=""></a> -->
+										<!-- <a href="images/blog/full/13.jpg" data-lightbox="gallery-item"><img class="image_fade" src="images/blog/small/13.jpg" alt=""></a> -->
+										<!-- <a href="images/blog/full/18.jpg" data-lightbox="gallery-item"><img class="image_fade" src="images/blog/small/18.jpg" alt=""></a> -->
+										<!-- <a href="images/blog/full/19.jpg" data-lightbox="gallery-item"><img class="image_fade" src="images/blog/small/19.jpg" alt=""></a> -->
+										<a href="images/blog/full/2.jpg" data-lightbox="gallery-item"><%= image_tag "blog-small-2.jpg", class: "image_fade", alt: "" %></a>
+										<a href="images/blog/full/3.jpg" data-lightbox="gallery-item"><%= image_tag "blog-small-3.jpg", class: "image_fade", alt: "" %></a>
+										<a href="images/blog/full/6-1.jpg" data-lightbox="gallery-item"><%= image_tag "blog-small-6-1.jpg", class: "image_fade", alt: "" %></a>
+										<a href="images/blog/full/6-2.jpg" data-lightbox="gallery-item"><%= image_tag "blog-small-6-2.jpg", class: "image_fade", alt: "" %></a>
+										<a href="images/blog/full/12.jpg" data-lightbox="gallery-item"><%= image_tag "blog-small-12.jpg", class: "image_fade", alt: "" %></a>
+										<a href="images/blog/full/12-1.jpg" data-lightbox="gallery-item"><%= image_tag "blog-small-12-1.jpg", class: "image_fade", alt: "" %></a>
+										<a href="images/blog/full/13.jpg" data-lightbox="gallery-item"><%= image_tag "blog-small-13.jpg", class: "image_fade", alt: "" %></a>
+										<a href="images/blog/full/18.jpg" data-lightbox="gallery-item"><%= image_tag "blog-small-18.jpg", class: "image_fade", alt: "" %></a>
+										<a href="images/blog/full/19.jpg" data-lightbox="gallery-item"><%= image_tag "blog-small-19.jpg", class: "image_fade", alt: "" %></a>
+									</div>
+~~~~~~~~
+
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=985}
+~~~~~~~~
+														<!-- <a href="#" class="nobg"><img class="img-circle" src="images/magazine/small/3.jpg" alt=""></a> -->
+														<a href="#" class="nobg"><%= image_tag "magazine-small-3.jpg", class: "img-circle", alt: "" %></a>
+~~~~~~~~
+
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1000}
+~~~~~~~~
+														<!-- <a href="#" class="nobg"><img class="img-circle" src="images/magazine/small/2.jpg" alt=""></a> -->
+														<a href="#" class="nobg"><%= image_tag "magazine-small-2.jpg", class: "img-circle", alt: "" %></a>
+~~~~~~~~
+
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1015}
+~~~~~~~~
+														<!-- <a href="#" class="nobg"><img class="img-circle" src="images/magazine/small/1.jpg" alt=""></a> -->
+														<a href="#" class="nobg"><%= image_tag "magazine-small-1.jpg", class: "img-circle", alt: "" %></a>
+~~~~~~~~
+
+stessa immagine della riga 1015
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1035}
+~~~~~~~~
+														<!-- <a href="#" class="nobg"><img class="img-circle" src="images/magazine/small/1.jpg" alt=""></a> -->
+														<a href="#" class="nobg"><%= image_tag "magazine-small-1.jpg", class: "img-circle", alt: "" %></a>
+~~~~~~~~
+
+stessa immagine della riga 1000
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1050}
+~~~~~~~~
+														<!-- <a href="#" class="nobg"><img class="img-circle" src="images/magazine/small/2.jpg" alt=""></a> -->
+														<a href="#" class="nobg"><%= image_tag "magazine-small-2.jpg", class: "img-circle", alt: "" %></a>
+~~~~~~~~
+
+stessa immagine della riga 985
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1065}
+~~~~~~~~
+														<!-- <a href="#" class="nobg"><img class="img-circle" src="images/magazine/small/3.jpg" alt=""></a> -->
+														<a href="#" class="nobg"><%= image_tag "magazine-small-3.jpg", class: "img-circle", alt: "" %></a>
+~~~~~~~~
+
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1085}
+~~~~~~~~
+														<!-- <a href="#" class="nobg"><img class="img-circle" src="images/icons/avatar.jpg" alt=""></a> -->
+														<a href="#" class="nobg"><%= image_tag "icons-avatar.jpg", class: "img-circle", alt: "" %></a>
+~~~~~~~~
+
+stessa immagine della riga 1085
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1095}
+~~~~~~~~
+														<!-- <a href="#" class="nobg"><img class="img-circle" src="images/icons/avatar.jpg" alt=""></a> -->
+														<a href="#" class="nobg"><%= image_tag "icons-avatar.jpg", class: "img-circle", alt: "" %></a>
+~~~~~~~~
+
+stessa immagine della riga 1085
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1105}
+~~~~~~~~
+														<!-- <a href="#" class="nobg"><img class="img-circle" src="images/icons/avatar.jpg" alt=""></a> -->
+														<a href="#" class="nobg"><%= image_tag "icons-avatar.jpg", class: "img-circle", alt: "" %></a>
+~~~~~~~~
+
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1131}
+~~~~~~~~
+													<!-- <img src="images/portfolio/4/3.jpg" alt="Mac Sunglasses"> -->
+													<%= image_tag "portfolio-4-3.jpg", alt: "Mac Sunglasses" %>
+~~~~~~~~
+
+
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1149}
+~~~~~~~~
+													<!-- <img src="images/portfolio/4/1.jpg" alt="Open Imagination"> -->
+													<%= image_tag "portfolio-4-1.jpg", alt: "Open Imagination" %>
+~~~~~~~~
+
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1212}
+~~~~~~~~
+								<!-- <img src="images/footer-widget-logo.png" alt="" class="footer-logo"> -->
+								<%= image_tag "footer-widget-logo.png", alt: "", class: "footer-logo" %>
+~~~~~~~~
+
+riportiamo anche il background per il footer
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1217}
+~~~~~~~~
+								<!-- <div style="background: url('images/world-map.png') no-repeat center center; background-size: 100%;"> -->
+								<div style="background: url(<%=image_path('world-map.png')%>) no-repeat center center; background-size: 100%;">
+~~~~~~~~
+
+E con questo abbiamo riportato tutte le immagini.
+
+
+
+
+## archiviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Import images blog-small.html"
+~~~~~~~~
+
+
+
+
+## Publichiamo su Heroku
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku ibs:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge ibs
+$ git branch -d ibs
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

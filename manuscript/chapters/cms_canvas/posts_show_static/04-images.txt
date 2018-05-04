@@ -1,0 +1,296 @@
+# Le immagini
+
+Non ci resta che importare le immagini sull'asset_pipeline ed associare le chiamate nel views/posts/show.html.erb
+
+
+
+
+## Apriamo il branch "Images Blog Single"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b ibs
+~~~~~~~~
+
+
+
+
+## importiamo le immagini da Canvas nell'asset_pipeline
+
+E' arrivato il momento di importare le immagini dal template Canvas nella nostra app Rails (da -> a). Le nuove immagini sono:
+
+* HTML/images/blog/full/1.jpg       	 ->  .../app/assets/images/blog-full-1.jpg (rinominata)
+* HTML/images/author/1.jpg      			 ->  .../app/assets/images/author-1.jpg (rinominata)
+* HTML/images/blog/small/22.jpg        ->  .../app/assets/images/blog-small-22.jpg (rinominata)
+
+
+
+
+Seguiamo l'ordine delle chiamate su posts/show.
+
+* HTML/images/logo-dark.png            ->  .../app/assets/images/
+* HTML/images/logo.png                 ->  .../app/assets/images/
+* HTML/images/logo-dark@2x.png         ->  .../app/assets/images/
+* HTML/images/logo@2x.png              ->  .../app/assets/images/
+* HTML/images/shop/small/1.jpg         ->  .../app/assets/images/shop-small-1.jpg (rinominata)
+* HTML/images/shop/small/6.jpg         ->  .../app/assets/images/shop-small-6.jpg (rinominata)
+* HTML/images/blog/full/1.jpg       	 ->  .../app/assets/images/blog-full-1.jpg (rinominata)
+* HTML/images/author/1.jpg      			 ->  .../app/assets/images/author-1.jpg (rinominata)
+
+
+* HTML/images/blog/small/10.jpg        ->  .../app/assets/images/blog-small-10.jpg (rinominata)
+* HTML/images/blog/small/20.jpg        ->  .../app/assets/images/blog-small-20.jpg (rinominata)
+* HTML/images/blog/small/21.jpg        ->  .../app/assets/images/blog-small-21.jpg (rinominata)
+* HTML/images/blog/small/2.jpg         ->  .../app/assets/images/blog-small-2.jpg (rinominata)
+* HTML/images/blog/small/3.jpg         ->  .../app/assets/images/blog-small-3.jpg (rinominata)
+* HTML/images/blog/small/6-1.jpg       ->  .../app/assets/images/blog-small-6-1.jpg (rinominata)
+* HTML/images/blog/small/6-2.jpg       ->  .../app/assets/images/blog-small-6-2.jpg (rinominata)
+* HTML/images/blog/small/12.jpg        ->  .../app/assets/images/blog-small-12.jpg (rinominata)
+* HTML/images/blog/small/12-1.jpg      ->  .../app/assets/images/blog-small-12-1.jpg (rinominata)
+* HTML/images/blog/small/13.jpg        ->  .../app/assets/images/blog-small-13.jpg (rinominata)
+* HTML/images/blog/small/18.jpg        ->  .../app/assets/images/blog-small-18.jpg (rinominata)
+* HTML/images/blog/small/19.jpg        ->  .../app/assets/images/blog-small-19.jpg (rinominata)
+* HTML/images/blog/small/22.jpg        ->  .../app/assets/images/blog-small-22.jpg (rinominata)
+* HTML/images/magazine/small/3.jpg     ->  .../app/assets/images/magazine-small-3.jpg (rinominata)
+* HTML/images/magazine/small/2.jpg     ->  .../app/assets/images/magazine-small-2.jpg (rinominata)
+* HTML/images/portfolio/4/3.jpg   		 ->  .../app/assets/images/portfolio-4-3.jpg (rinominata)
+* HTML/images/portfolio/4/1.jpg   		 ->  .../app/assets/images/portfolio-4-1.jpg (rinominata)
+
+
+
+
+## Impostiamo su posts/show gli helpers per puntare all'asset_pipeline
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=55}
+~~~~~~~~
+						<!-- <a href="index.html" class="standard-logo" data-dark-logo="images/logo-dark.png"><img src="images/logo.png" alt="Canvas Logo"></a> -->
+						<!-- <a href="index.html" class="retina-logo" data-dark-logo="images/logo-dark@2x.png"><img src="images/logo@2x.png" alt="Canvas Logo"></a> -->
+						<a href="index.html" class="standard-logo" data-dark-logo="<%=image_path('logo-dark.png')%>"><%= image_tag "logo.png", alt: "Canvas Logo" %></a>
+						<a href="index.html" class="retina-logo" data-dark-logo="<%=image_path('logo-dark@2x.png')%>"><%= image_tag "logo@2x.png", alt: "Canvas Logo" %></a>
+~~~~~~~~
+
+Questa parte di codice è identica a quella di posts/index
+
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=660}
+~~~~~~~~
+											<!-- <a href="#"><img src="images/shop/small/1.jpg" alt="Blue Round-Neck Tshirt" /></a> -->
+											<a href="#"><%= image_tag "shop-small-1.jpg", alt: "Blue Round-Neck Tshirt" %></a>
+~~~~~~~~
+
+Questa parte di codice è identica a quella di posts/index
+
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=673}
+~~~~~~~~
+											<!-- <a href="#"><img src="images/shop/small/6.jpg" alt="Light Blue Denim Dress" /></a> -->
+											<a href="#"><%= image_tag "shop-small-6.jpg", alt: "Light Blue Denim Dress" %></a>
+~~~~~~~~
+
+Questa parte di codice è identica a quella di posts/index
+
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=757}
+~~~~~~~~
+									<!-- <a href="#"><img src="images/blog/full/1.jpg" alt="Blog Single"></a> -->
+									<a href="#"><%= image_tag "blog-full-1.jpg", alt: "Blog Single" %></a>
+~~~~~~~~
+
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=859}
+~~~~~~~~
+										<!-- <img src="images/author/1.jpg" alt="" class="img-circle"> -->
+										<%= image_tag "author-1.jpg", alt: "", class: "img-circle" %>
+~~~~~~~~
+
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=876}
+~~~~~~~~
+											<!-- <a href="#"><img src="images/blog/small/10.jpg" alt="Blog Single"></a> -->
+											<a href="#"><%= image_tag "blog-small-10.jpg", alt: "Blog Single" %></a>
+~~~~~~~~
+
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=893}
+~~~~~~~~
+											<!-- <a href="#"><img src="images/blog/small/20.jpg" alt="Blog Single"></a> -->
+											<a href="#"><%= image_tag "blog-small-20.jpg", alt: "Blog Single" %></a>
+~~~~~~~~
+
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=914}
+~~~~~~~~
+											<!-- <a href="#"><img src="images/blog/small/21.jpg" alt="Blog Single"></a> -->
+											<a href="#"><%= image_tag "blog-small-21.jpg", alt: "Blog Single" %></a>
+~~~~~~~~
+
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=931}
+~~~~~~~~
+											<!-- <a href="#"><img src="images/blog/small/22.jpg" alt="Blog Single"></a> -->
+											<a href="#"><%= image_tag "blog-small-22.jpg", alt: "Blog Single" %></a>
+~~~~~~~~
+
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1146}
+~~~~~~~~
+														<!-- <a href="#" class="nobg"><img class="img-circle" src="images/magazine/small/3.jpg" alt=""></a> -->
+														<a href="#" class="nobg"><%= image_tag "magazine-small-3.jpg", class: "img-circle", alt: "" %></a>
+~~~~~~~~
+
+Questa parte di codice è identica a quella di posts/index
+
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1161}
+~~~~~~~~
+														<!-- <a href="#" class="nobg"><img class="img-circle" src="images/magazine/small/2.jpg" alt=""></a> -->
+														<a href="#" class="nobg"><%= image_tag "magazine-small-2.jpg", class: "img-circle", alt: "" %></a>
+~~~~~~~~
+
+Questa parte di codice è identica a quella di posts/index
+
+
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1176}
+~~~~~~~~
+														<!-- <a href="#" class="nobg"><img class="img-circle" src="images/magazine/small/1.jpg" alt=""></a> -->
+														<a href="#" class="nobg"><%= image_tag "magazine-small-1.jpg", class: "img-circle", alt: "" %></a>
+~~~~~~~~
+
+Questa parte di codice è identica a quella di posts/index
+
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1196}
+~~~~~~~~
+														<!-- <a href="#" class="nobg"><img class="img-circle" src="images/magazine/small/1.jpg" alt=""></a> -->
+														<a href="#" class="nobg"><%= image_tag "magazine-small-1.jpg", class: "img-circle", alt: "" %></a>
+~~~~~~~~
+
+Questa parte di codice è identica a quella di posts/index
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1211}
+~~~~~~~~
+														<!-- <a href="#" class="nobg"><img class="img-circle" src="images/magazine/small/2.jpg" alt=""></a> -->
+														<a href="#" class="nobg"><%= image_tag "magazine-small-2.jpg", class: "img-circle", alt: "" %></a>
+~~~~~~~~
+
+Questa parte di codice è identica a quella di posts/index
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1226}
+~~~~~~~~
+														<!-- <a href="#" class="nobg"><img class="img-circle" src="images/magazine/small/3.jpg" alt=""></a> -->
+														<a href="#" class="nobg"><%= image_tag "magazine-small-3.jpg", class: "img-circle", alt: "" %></a>
+~~~~~~~~
+
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1246}
+~~~~~~~~
+														<!-- <a href="#" class="nobg"><img class="img-circle" src="images/icons/avatar.jpg" alt=""></a> -->
+														<a href="#" class="nobg"><%= image_tag "icons-avatar.jpg", class: "img-circle", alt: "" %></a>
+~~~~~~~~
+
+Questa parte di codice è identica a quella di posts/index
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1256}
+~~~~~~~~
+														<!-- <a href="#" class="nobg"><img class="img-circle" src="images/icons/avatar.jpg" alt=""></a> -->
+														<a href="#" class="nobg"><%= image_tag "icons-avatar.jpg", class: "img-circle", alt: "" %></a>
+~~~~~~~~
+
+Questa parte di codice è identica a quella di posts/index
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1266}
+~~~~~~~~
+														<!-- <a href="#" class="nobg"><img class="img-circle" src="images/icons/avatar.jpg" alt=""></a> -->
+														<a href="#" class="nobg"><%= image_tag "icons-avatar.jpg", class: "img-circle", alt: "" %></a>
+~~~~~~~~
+
+Questa parte di codice è identica a quella di posts/index
+
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1292}
+~~~~~~~~
+													<!-- <img src="images/portfolio/4/3.jpg" alt="Mac Sunglasses"> -->
+													<%= image_tag "portfolio-4-3.jpg", alt: "Mac Sunglasses" %>
+~~~~~~~~
+
+Questa parte di codice è identica a quella di posts/index
+
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1310}
+~~~~~~~~
+													<!-- <img src="images/portfolio/4/1.jpg" alt="Open Imagination"> -->
+													<%= image_tag "portfolio-4-1.jpg", alt: "Open Imagination" %>
+~~~~~~~~
+
+Questa parte di codice è identica a quella di posts/index
+
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1373}
+~~~~~~~~
+								<!-- <img src="images/footer-widget-logo.png" alt="" class="footer-logo"> -->
+								<%= image_tag "footer-widget-logo.png", alt: "", class: "footer-logo" %>
+~~~~~~~~
+
+Questa parte di codice è identica a quella di posts/index
+
+
+riportiamo anche il background per il footer
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1378}
+~~~~~~~~
+								<!-- <div style="background: url('images/world-map.png') no-repeat center center; background-size: 100%;"> -->
+								<div style="background: url(<%=image_path('world-map.png')%>) no-repeat center center; background-size: 100%;">
+~~~~~~~~
+
+Questa parte di codice è identica a quella di posts/index
+
+E con questo abbiamo riportato tutte le immagini.
+
+
+
+
+## archiviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Import images blog-single.html"
+~~~~~~~~
+
+
+
+
+## Publichiamo su Heroku
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku ibs:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge ibs
+$ git branch -d ibs
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

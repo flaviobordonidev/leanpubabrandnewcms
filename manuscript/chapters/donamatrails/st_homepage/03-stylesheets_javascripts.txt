@@ -1,0 +1,151 @@
+# Inseriamo i files stylesheets e javascripts
+
+Abbiamo preparato la nostra pagina st_homepage per l'asset_pipeline. Adesso inseriamo i files SASS/scss, css, e js nelle rispettive cartelle.
+
+
+
+
+## L'asset_pipeline
+
+Introdotto da Rails 4 l'asset_pipeline è un modo di organizzare i files con codice dedicato al frontend.
+
+Per approfondimenti:
+
+* (2.2 Asset Organization)[http://guides.rubyonrails.org/asset_pipeline.html]
+
+Ci sono fondamentalmente tre cartelle principali dove mettere il codice:
+
+1. app/assets
+2. lib/assets
+3. vendor/assets/
+
+Il codice in app/assets è quello che ha la precedenza e questa cartella è pensata per tutto il codice scritto da noi per qusta applicazione.
+Il codice in lib/assets viene per secondo ed è pensata per il codice scritto da noi a livello di libreria, ossia del codice che utilizzeremo anche in altre applicazioni.
+Il coice in vendor/assets/ è interpellato per ultimo e questa cartella è pensata per codice scritto da terze parti. Ed è proprio il nostro caso. 
+Quindi il codice js, saas e le immagini del canvas le mettiamo nella cartella vendor/assets.
+
+Nei nostri files manifest possiamo omettere il percorso principale. 
+Ad esempio nel file manifest app/asset/application.js le seguenti linee di codice:
+
+//= require home
+//= require moovinator
+//= require slider
+//= require phonebox
+
+richiamano i seguenti files:
+
+app/assets/javascripts/home.js
+lib/assets/javascripts/moovinator.js
+vendor/assets/javascripts/slider.js
+
+* Se ci fosse un file app/assets/javascripts/slider.js questo avrebbe la precedenza e maschererebbe il fil in vendor/assets/javascripts/slider.js. E' bene quindi stare attenti ed evitare files con lo stesso nome.
+* Inoltre il raggruppamento avviene in ordine alfabetico quindi si deve stare attenti alla sequenza del codice perché spesso è importante che alcuni files siano raggruppati prima di altri.
+* Inoltre si deve prestare attenzione alla gestione delle sottocartelle perché, anche se è possibile usarle, si rischia di doverle dichiarare una per una. It is important to note that files you want to reference outside a manifest must be added to the precompile array or they will not be available in the production environment.
+* Inoltre da rails 5.2 si preferisce all'asset_pipeline il webpack ma al momento i due ambienti coesistono.
+
+Per tutti questi motivi i files verranno copiati tutti dentro le due cartelle principali:
+
+* .../app/assets/javascripts
+* .../app/assets/stylesheets
+
+e non saranno usate sottocartelle. In un futuro refactoring passeremo a webpack.
+
+
+
+
+## importiamo i files da Canvas nell'asset_pipeline
+
+E' arrivato il momento di importare i files dal template Canvas nella nostra app Rails (da -> a). Seguiamo l'ordine delle chiamate sul file st_homepage. Siccome sul file st_homepage le chamate sono a codice stylesheets css inizialmente uso questo.
+
+* HTML/css/bootstrap.css        ->  .../app/assets/stylesheets/
+* HTML/style.css                ->  .../app/assets/stylesheets/
+* HTML/one-page/onepage.css     ->  .../app/assets/stylesheets/
+* HTML/css/dark.css             ->  .../app/assets/stylesheets/
+* HTML/css/font-icons.css       ->  .../app/assets/stylesheets/
+* HTML/one-page/css/et-line.css ->  .../app/assets/stylesheets/
+* HTML/css/animate.css          ->  .../app/assets/stylesheets/
+* HTML/css/magnific-popup.css   ->  .../app/assets/stylesheets/
+* HTML/one-page/css/fonts.css   ->  .../app/assets/stylesheets/
+* HTML/css/responsive.css       ->  .../app/assets/stylesheets/
+
+* HTML/js/jquery.js             ->  .../app/assets/javascripts/
+* HTML/js/plugins.js            ->  .../app/assets/javascripts/
+* HTML/js/jquery.gmap.js        ->  .../app/assets/javascripts/
+* HTML/js/functions.js          ->  .../app/assets/javascripts/
+
+per il momento ci fermiamo solo a questi files; successivamente copieremo anche i restanti per averli tutti disponibili.
+prima di copiare gli altri sostituiremo i files css con i files SASS/scsss.
+
+
+
+
+
+## Chiamate all'asset_pipeline
+
+Abbiamo tolto nel views/layouts/application.html.erb le chiamate all'asset_pipeline.
+
+{title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=7}
+~~~~~~~~
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+~~~~~~~~
+
+Senza queste chiamate non accediamo ai files manifest dell'asset_pipeline (assets/stylesheets/application.css e assets/javascripts/application.js)
+Se proviamo una volta copiati i files riceviamo errore. Invece di passare per i files manifest, aggiungiamo le nostre chiamate ai files direttamente nel precompile. 
+
+{title=".../config/application.rb", lang=ruby, line-numbers=on, starting-line-number=21}
+~~~~~~~~
+    # precompile assets stylesheets                                                             
+    config.assets.precompile += ['bootstrap.css',
+                                 'style.css',
+                                 'onepage.css',
+                                 'dark.css',
+                                 'font-icons.css',
+                                 'et-line.css',
+                                 'animate.css',
+                                 'magnific-popup.css',
+                                 'fonts.css',
+                                 'responsive.css'
+                                ]
+
+    # precompile assets javascripts                                                             
+    config.assets.precompile += ['jquery.js',
+                                 'plugins.js',
+                                 'jquery.gmap.js',
+                                 'functions.js'
+                                ]
+~~~~~~~~
+
+Così funziona ma non stiamo seguendo la convenzione Rails dell'asset_pipeline che prevede di passare per i files manifest. Quindi in seguito faremo un refactoring. Durante il refactoring sostituiremo le varie chiamate fatte sull'<head> di views/st_homepage/index ai files stylesheets con la sola chiamata al file manifest assets/stylesheets/application.css e configureremo le chiamate nel file manifest invece di inserirle direttamente nel precompile.
+
+Attenzione!
+Modificando application.rb è necessario riavviare il server rails (rails s ...) per includere le modifiche.
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+Il postgresql start possiamo anche non eseguirlo perché al momento non usiamo il database.
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "import canvas firs milestone"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku ci:master
+~~~~~~~~
+

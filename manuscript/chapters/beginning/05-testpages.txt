@@ -53,17 +53,13 @@ https://rebisworld-flaviobordonidev.c9users.io/test_pages/page_b
 
 Aggiorno il file routes per mettere l'homepage come pagina principale (root)
 
-{title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+{title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=3}
 ~~~~~~~~
-Rails.application.routes.draw do
-  
   root 'test_pages#page_a'
-  get 'test_pages/page_a'
-  get 'test_pages/page_b'
-
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-end
 ~~~~~~~~
+
+[tutto il codice:](#beginning-05code-config-routes.rb)
+
 
 vediamo che addesso sull'URL della root ci reinstrada su page_a
 

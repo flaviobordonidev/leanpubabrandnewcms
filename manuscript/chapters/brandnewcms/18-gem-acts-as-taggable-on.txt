@@ -1,0 +1,18 @@
+# Taggable
+
+In this episode we set up  tagging for blog posts using the very cool Rails gem “acts-as-taggable-on”. We also dive into some refactoring thoughts.
+
+
+
+
+
+## Apriamo il branch "Taggable Posts"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b tp
+~~~~~~~~
+
+
+ https://www.youtube.com/watch?v=0j6kySJ4EKs
+ 

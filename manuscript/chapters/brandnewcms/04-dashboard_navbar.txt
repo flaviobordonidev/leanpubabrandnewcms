@@ -1,0 +1,193 @@
+# Iniziamo a dar forma al nostro dashboard
+
+prepariamo una formattazione per la nostra applicazione. ATTENZIONE questa formattazione non ha niente a che vedere con il tema che importeremo successivamente. Questa formattazione sarà successivamente isolata ed utilizzata esclusivamente per il "dashboard" ossia per l'interfaccia grafica che si presenta agli autori che hanno effettuato il login per permettere loro di gestire i loro articoli (posts)
+
+Verifichiamo la navbar di wordpress di temi.it 
+In pratica non è presente nel sito ma quando si va su www.temi.it/wp-admin
+Appare la finestra di login ed una volta loggato in alto si ha il menu di wordpress evidenziando che si è nella sezione di autore con possibilità di modifica. 
+
+In questo capitolo prepariamo una navbar attiva su tutto il sito ma in seguito la rendiamo attiva solo per gli utenti loggati.
+A scopo didattico prepariamo anche la voce di login nella barra di menu e le voci che appaiono solo se si è loggati. Nella versione finale sarà tutta la barra di navigazione che è visibile solo se si è fatto login e non esisterà il pulsante di login perchè, come per wordpress, l'autore dovrà andare direttamente sul suo url di login: "https//mydomain.com/authors/sign_in
+
+
+
+
+## Apriamo il branch "Style our Dashboard"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b sd
+~~~~~~~~
+
+
+
+
+## Bootstrap container
+
+Mettiamo un container per permettere a bootstrap di non appiccicare i contenuti al bordo. Inoltre abilita l'adattamento al ridimensionamento.
+
+{title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=13}
+~~~~~~~~
+    <div class="container <%= controller_name %> <%= action_name %>">
+      <%= yield %>
+    </div>
+~~~~~~~~
+
+Le due chiamate rails **controller_name** e **action_name** ci permettono di creare uno stylesheet personalizzato perché l'HTML corrispondente racchiude il nome del controller e la sua azione; ad esempio:
+
+{lang=HTML+Mako, line-numbers=off}
+~~~~~~~~
+     <div class="container posts index">
+~~~~~~~~
+
+
+
+
+## La barra di navigazione per il dashboard
+
+implementiamo una barra di navigazione che inizialmente useremo per tutti i posts ma successivamente sarà presente solo nel dashboard per permettere agli autori che avranno effettuato login di gestire i loro articoli (posts)
+
+Creiamo un partial per la navbar ed adattiamo il codice di esempio di [bootstrap](http://getbootstrap.com/docs/4.0/components/navbar/)
+
+{title=".../app/views/layouts/_navbar.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+.
+.
+.
+~~~~~~~~
+
+[tutto il codice: _navbar.html.erb](#brandnewcms-04code-views-layouts-_navbar.html.erb)
+
+
+Mettiamo il navbar visibile in tutte le pagine della nosta applicazione. Più avanti lo isoleremo solo per la "dashboard".
+
+{title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+    <%= render 'layouts/navbar' %>
+~~~~~~~~
+
+
+
+
+## Risolviamo gli instradamenti dei links
+
+Usiamo un approccio partendo dalle routes e risalendo. A me personalmente non piace. Preferisco partire da un **$ rails generate ...** per rimanere il più vicino possibile alle ultime convenzioni. Ma per questo esempio è didatticamente interessante. Tanto la pagina "about" e "contact" non le sviluppiamo.
+
+implementiamo gli istradamenti file routes 
+
+{title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=9}
+~~~~~~~~
+  get 'about' => 'pages#about'
+  get 'contact' => 'pages#contact'
+~~~~~~~~
+
+creiamo un unico controller per le due pagine "about" e "contact" e le pagine le passiamo come azioni
+
+{title=".../app/controllers/pages_controller.rb", lang=ruby, line-numbers=on, starting-line-number=9}
+~~~~~~~~
+class PagesController < ApplicationController
+  def about
+  end
+  
+  def contact
+  end
+end
+~~~~~~~~
+
+creiamo le due pagine
+
+{title=".../app/views/pages/about.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<h1>About</h1>
+~~~~~~~~
+
+{title=".../app/views/pages/contact.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<h1>Contact</h1>
+~~~~~~~~
+
+
+
+## Il "contenitore vuoto" yield(:my_navbar_link)
+
+Usiamo di nuovo il "contenitore vuoto" **yield(:...)** per rendere attivi i links del menu di navigazione quando siamo sulla rispettiva pagina. 
+Li abbiamo già implementati nella nostra _navbar
+
+* <%= link_to 'Blog', root_path, class: "nav-link #{yield(:blog_active)}" %>
+* <%= link_to 'About', about_path, class: "nav-link #{yield(:about_active)}" %>
+* <%= link_to 'Contact', contact_path, class: "nav-link #{yield(:contact_active)}" %>
+
+Adesso prepariamo il "contenuto del contenitore vuoto" sulle rispettive pagine. Il contenuto è semplicemente la stringa "active" che viene passata come classe css ed usata da bootstrap per evidenziare il rispettivo link. 
+
+{title=".../app/views/blogs/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+<% provide(:blog_active, "active") %>
+~~~~~~~~
+
+{title=".../app/views/blogs/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+<% provide(:blog_active, "active") %>
+~~~~~~~~
+
+{title=".../app/views/blogs/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+<% provide(:blog_active, "active") %>
+~~~~~~~~
+
+{title=".../app/views/blogs/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+<% provide(:blog_active, "active") %>
+~~~~~~~~
+
+{title=".../app/views/pages/about.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<% provide(:about_active, "active") %>
+~~~~~~~~
+
+{title=".../app/views/pages/contact.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<% provide(:contact_active, "active") %>
+~~~~~~~~
+
+
+salviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Add navbar"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su Heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku sd:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge sd
+$ git branch -d sd
+~~~~~~~~
+
+
+aggiorniamo github
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
+

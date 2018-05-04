@@ -1,0 +1,21 @@
+
+
+
+
+## Il partial _single_post
+
+stessa cosa fatta per posts/index la facciamo per post/show solo che questa volta visualizziamo i dati presi dal database per un solo post alla volta
+
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=73}
+~~~~~~~~
+								<%= render 'single_post', post: @post %>
+~~~~~~~~
+
+
+{title=".../app/views/posts/_single_post.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=29}
+~~~~~~~~
+								  <%= post.body %>
+~~~~~~~~
+
+al momento abbiamo solo introdotto il testo che cambia dinamicamente ed è anche super semplificato perché gli abbiamo tolto molta della formattazione. Ma nei prossimi capitoli miglioreremo piano piano tutto quanto ^_^

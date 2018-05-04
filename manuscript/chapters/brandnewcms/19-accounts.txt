@@ -1,0 +1,5 @@
+# Gestione dell'account
+
+How to build a blog with Rails 5 and Bootstrap 4 - Part 12
+https://www.youtube.com/watch?v=JP31T66tU7w&t=128s
+

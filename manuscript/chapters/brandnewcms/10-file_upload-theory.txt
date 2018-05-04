@@ -1,0 +1,47 @@
+# Soluzioni Rail per upload immagini
+
+
+per gestire gli upload ed i download dei files su rails è meglio usare una gemma specifica tipo:
+
+* shrine
+* refile
+* carrierwave
+* paperclip
+* dragonfly
+
+
+
+
+## Shrine
+
+Nel 2018 è la scelta migliore perché è organizzato molto bene il codice è leggera e modulare.
+
+
+
+
+## Refile 
+
+Refile è un moderno (nel 2017) "file upload" per applicazioni Ruby. Non ha preso molto piede.
+Refile è sviluppato dalla stessa persona che ha fatto carrierwave. E' più semplice e più veloce. 
+Purtroppo su C9 mi da errore la "gem "refile-mini_magick". Al posto di Refile usiamo Paperclip. Anche Paperclip usa imagemagick ma non da errore con le sue gemme. Carrierwave sembra preferito a Paperclip ed anche Mikel Hartman lo utilizza però è un sotto capitolo ed usa "fog" per S3. Invece per Paperclip ho i tutorials con la gemma consigliata direttamente da Amazon (gem 'aws-sdk'). Stanno crescendo anche refile, dragonfly e Shrine (https://twin.github.io/file-uploads-asynchronous-world/). La documentazione di Dragonfly https://github.com/markevans/dragonfly è minimalista. Molto interessante la documentazione di Shrine https://github.com/janko-m/shrine anche se ha meno persone che contribuiscono ed ha meno commits di dragonfly, ma anche molti meno issues. ^_^
+
+
+
+
+## Paperclip
+
+  vedi leanpubelisinfo -> companies/people -> 08-upload_images_companies_people
+  
+Risorse web (sono del 2017):
+
+* https://www.sitepoint.com/uploading-files-with-paperclip/
+* https://devcenter.heroku.com/articles/paperclip-s3
+* https://github.com/thoughtbot/paperclip/wiki/Paperclip-with-Amazon-S3
+* https://github.com/thoughtbot/paperclip
+* http://stackoverflow.com/questions/36315596/how-do-i-read-files-in-rails-images-text-from-amazon-s3-that-were-uploaded-m
+* https://www.youtube.com/watch?v=0_2VBDoowHs&noredirect=1
+* https://aws.amazon.com/sdk-for-ruby/
+* https://rubygems.org/gems/aws-sdk
+
+* https://richonrails.com/articles/getting-started-with-paperclip
+* http://www.rubydoc.info/gems/paperclip/Paperclip/ClassMethods

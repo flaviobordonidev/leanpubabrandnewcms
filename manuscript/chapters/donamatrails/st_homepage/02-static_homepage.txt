@@ -1,0 +1,131 @@
+# Donamatrails - static homepage
+
+Prima di iniziare ad importare i files del Canvas creiamo la view per la pagina del sito. La potevamo chiamare static-index visto che il sito web è tutto su un'unica pagina ma abbiamo preferito static-homepage.
+
+
+
+
+## Apriamo il branch "Donamatrails Static Homepage"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b dsh
+~~~~~~~~
+
+
+
+
+## Prepariamo la pagina statica Homepage 
+
+Creiamo il controller StHomepage in cui includiamo la sola azione index. Essendo statica non usiamo lo scaffold ma **rails g controller**
+
+I> ATTENZIONE: con "rails generate controller ..." -> uso il SINGOLARE (ed ottengo un controller al singolare)
+I>
+I> Poiché è un'unica pagina statica metto il controller al singolare.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g controller StHomepage index
+~~~~~~~~
+
+non ho nessun migrate perché non mi interfaccio con il database.
+
+
+
+## semplifichiamo il layouts/application
+
+poiché metteremo tutto il codice html nella view **st_homepage/index**, semplifichiamo inizialmente il codice della view **layout/application**
+
+{title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%= yield %>
+~~~~~~~~
+
+successivamente reinseriremo la parte di <head> nel view **layout/application**, ma per il momento usiamo questa versione super semplificata
+
+
+
+
+## Pagina st_homepage/index
+
+copiamo il contenuto del file .../one-page/index.html dentro st_homepage/index
+Una volta copiato il codice adattiamo alcune chiamate al Rails asset_pipeline.
+
+Attenzione!
+* non serve l'estensione dei files
+* non serve il percorso alle varie sottocartelle perché metteremo tutto nella stessa cartella nell'asset_pipeline
+
+
+sostituiamo 
+	<link rel="stylesheet" href="***.css" type="text/css" />
+con 
+	<%= stylesheet_link_tag '***', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+{title=".../app/views/st_homepage/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=8}
+~~~~~~~~
+	<!-- Stylesheets
+	============================================= -->
+	<!-- <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700|Roboto:300,400,500,700" rel="stylesheet" type="text/css" /> -->
+	<!-- <link rel="stylesheet" href="../css/bootstrap.css" type="text/css" /> -->
+	<!-- <link rel="stylesheet" href="../style.css" type="text/css" /> -->
+	<%= stylesheet_link_tag "http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700|Roboto:300,400,500,700", media: 'all', 'data-turbolinks-track': 'reload' %>
+	<%= stylesheet_link_tag 'bootstrap', media: 'all', 'data-turbolinks-track': 'reload' %>
+	<%= stylesheet_link_tag 'style', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+	<!-- One Page Module Specific Stylesheet -->
+	<!-- <link rel="stylesheet" href="onepage.css" type="text/css" /> -->
+	<%= stylesheet_link_tag 'onepage', media: 'all', 'data-turbolinks-track': 'reload' %>
+	<!-- / -->
+
+	<!-- <link rel="stylesheet" href="../css/dark.css" type="text/css" /> -->
+	<!-- <link rel="stylesheet" href="../css/font-icons.css" type="text/css" /> -->
+	<!-- <link rel="stylesheet" href="css/et-line.css" type="text/css" /> -->
+	<!-- <link rel="stylesheet" href="../css/animate.css" type="text/css" /> -->
+	<!-- <link rel="stylesheet" href="../css/magnific-popup.css" type="text/css" /> -->
+	<%= stylesheet_link_tag 'dark', media: 'all', 'data-turbolinks-track': 'reload' %>
+	<%= stylesheet_link_tag 'font-icons', media: 'all', 'data-turbolinks-track': 'reload' %>
+	<%= stylesheet_link_tag 'et-line', media: 'all', 'data-turbolinks-track': 'reload' %>
+	<%= stylesheet_link_tag 'animate', media: 'all', 'data-turbolinks-track': 'reload' %>
+	<%= stylesheet_link_tag 'magnific-popup', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+	<!-- <link rel="stylesheet" href="css/fonts.css" type="text/css" /> -->
+	<%= stylesheet_link_tag 'fonts', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+	<!-- <link rel="stylesheet" href="../css/responsive.css" type="text/css" /> -->
+	<%= stylesheet_link_tag 'responsive', media: 'all', 'data-turbolinks-track': 'reload' %>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+~~~~~~~~
+
+
+Per la parte JavaScripts
+
+sostituiamo 
+	<script src="***.js"></script>
+con 
+	<%= javascript_include_tag '***', 'data-turbolinks-track' => true %>
+
+{title=".../app/views/st_homepage/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=856}
+~~~~~~~~
+	<!-- External JavaScripts
+	============================================= -->
+	<!-- <script src="../js/jquery.js"></script> -->
+	<!-- <script src="../js/plugins.js"></script> -->
+	<%= javascript_include_tag 'jquery', 'data-turbolinks-track' => true %>
+	<%= javascript_include_tag 'plugins', 'data-turbolinks-track' => true %>
+	
+	<!-- Google Map JavaScripts
+	============================================= -->
+	<!-- <script src="https://maps.google.com/maps/api/js?key=AIzaSyDMxJ92oBkSnVNHFX3R8XhtYQPEgk1_IiI"></script> -->
+	<!-- <script src="../js/jquery.gmap.js"></script> -->
+	<%= javascript_include_tag 'https://maps.google.com/maps/api/js?key=AIzaSyDMxJ92oBkSnVNHFX3R8XhtYQPEgk1_IiI', 'data-turbolinks-track' => true %>
+	<%= javascript_include_tag 'jquery.gmap', 'data-turbolinks-track' => true %>
+
+	<!-- Footer Scripts
+	============================================= -->
+	<!-- <script src="../js/functions.js"></script> -->
+	<%= javascript_include_tag 'functions', 'data-turbolinks-track' => true %>
+~~~~~~~~
+
+
+Siamo a buon punto con l'adattamento al Rails asset_pipeline. Ci mancano solo le chiamate alle immagini ma le attiveremo più avanti.
+Nel prossimo capitolo ci dedichiamo ad inserire i files stylesheet e javascript.

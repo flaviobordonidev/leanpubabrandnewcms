@@ -1,0 +1,31 @@
+# Refactoring manifest
+
+Nel capitolo 03 abbiamo attivato l'asset_pipeline senza usare i files manifest. Adesso è giunto il momento di adeguarci alle convenzioni standard di Rails.
+
+abstract capitolo 03:
+[...]
+Così funziona ma non stiamo seguendo la convenzione Rails dell'asset_pipeline che prevede di passare per i files manifest. Quindi in seguito faremo un refactoring. Durante il refactoring sostituiremo le varie chiamate fatte sull'<head> di views/st_homepage/index ai files stylesheets con la sola chiamata al file manifest assets/stylesheets/application.css e configureremo le chiamate nel file manifest invece di inserirle direttamente nel precompile.
+[...]
+
+
+
+## Referenziamo i files importati nei files manifest
+
+Per attivare i css e i js li inseriamo nel manifest e nel precompile
+
+.../config/application.rb
+
+.../app/assets/stylesheets/application.css.scss
+
+.../app/assets/javascripts/application.js
+
+
+* rinomino file cambiando l'estensione in .css.scss
+* cancello *= require_tree .
+* cancello *= require_self
+* aggiungo *= require angle/app
+* aggiungo *= require fonts
+
+
+
+

@@ -20,7 +20,7 @@ Su cloud9 non partiamo dal workspace con template Rails precaricato perché c'è
 * Hosted workspace  : Public
 * Choose a template : Blank
 
-![fig. 1](images/beginning/new_app/c9_create_new_workspace.png)
+![creazione nuovo workspace](beginning/01img-c9_create_new_workspace.png)
 
 Il file README.md lo lasciamo stare così com'è perché il readme di nostro interesse starà nella cartella dell'applicativo elisinfo
 
@@ -55,6 +55,7 @@ $ cd ~/workspace
 $ rails _5.1.4_ new rebisworld --database=postgresql
 ~~~~~~~~
 
+rails _5.1.4_ new brandnewcms --database=postgresql
 
 
 
@@ -79,16 +80,9 @@ I> se stiamo lavorando su un workspace "shared" non avremo il link "Share" in al
 I>
 I> Nel nostro caso l'url è https://rebisworld-flaviobordonidev.c9users.io/
 
-L'applicazione è pronta. Ci manca ancora la connessione a postgreSQL.
+L'applicazione è pronta anche se ci manca ancora la connessione a postgreSQL riusciamo a vedere la pagina di Rails attivo.
 
+![hello world](beginning/01img-localhost.png)
 
-
-
-
-
-Abbiamo un errore causato da postgreSQL che non è attivo sul nostro ambiente.
-
-![errore di connessione](images/beginning/new_app/web_error.png)
-
-lo risolviamo nel capitolo 3 perché la prima cosa da fare dopo la creazione di una nuova applicazione è implementare Git. 
-
+Nelle nuove versioni di Rails non c'è più l'errore di connessione causato da postgreSQL che non è attivo sul nostro ambiente.
+Dovremo comunque attivare postgreSQL e questo lo faremo nel capitolo 3 perché la prima cosa da fare dopo la creazione di una nuova applicazione è implementare Git. 

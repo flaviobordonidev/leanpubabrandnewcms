@@ -20,7 +20,7 @@ $ sudo service postgresql start
 ---
 $ rails s -b $IP -p $PORT
 
-https://rebisworld2-flaviobordonidev.c9users.io/
+https://rebisworld3-flaviobordonidev.c9users.io/
 
 ---
 http://themes.semicolonweb.com
@@ -30,6 +30,10 @@ http://themes.semicolonweb.com/html/canvas/v5/index-corporate-4.php
 http://themes.semicolonweb.com/html/canvas/v5/page-title-dark.php
 
 http://support.semicolonweb.com/forums/topic/installing-in-ruby-on-rails-project/
+
+---
+Articolo simpatico per LINK_TO
+https://mixandgo.com/blog/how-to-use-link_to-in-rails
 
 ---
 *** ATTENZIONE SU RAILS 5.1.2 hanno tolto dal Gemfile la gemma **gem 'jquery-rails'** ***
@@ -54,3 +58,78 @@ https://www.youtube.com/watch?v=2RkLP9h2wNA&list=PLiENd6US8xnyhFA-9KxMqrHiqG3GCT
 WEBPACK --> molto figo ma lo userò quando è implementato direttamente su rails (probabilmente con Rails 6.0) Per il momento resto sull'asset pipeline con Sprockets.
 
 * [How we switched from Sprockets to Webpack](https://rossta.net/blog/from-sprockets-to-webpack.html#why-switch-)
+
+---
+Organizzare i models
+https://www.zmwolski.com/Organizing-Ruby-on-Rails-Models
+
+  # == Constants ============================================================
+
+  # == Attributes ===========================================================
+  
+  # == Extensions ===========================================================
+
+  # == Relationships ========================================================
+
+  # == Validations ==========================================================
+
+  # == Scopes ===============================================================
+
+  # == Callbacks ============================================================
+
+  # == Class Methods ========================================================
+
+  # == Instance Methods =====================================================
+
+Esempio:
+
+  # == Constants ============================================================
+  
+  GENDERS = [[‘Male’, ‘m’], [‘Female’, ’f’]].freeze
+
+  # == Attributes ===========================================================
+  
+  # ATTRIBUTES NOT MAPPED IN DATABASE (getter and setter methods)
+
+  # paperclip ------------------------------------------------------------------
+  attr_accessor :remove_logo
+  #-----------------------------------------------------------------------------
+
+  # globalize required ---------------------------------------------------------
+  translates :sector, :memo, :fallbacks_for_empty_translations => true
+  #-----------------------------------------------------------------------------
+
+  # == Extensions ===========================================================
+
+  # paperclip required ---------------------------------------------------------
+  has_attached_file :logo, styles: { thumb: ["64x64!", :png] }
+
+  has_attached_file :avatar, styles: {
+    square_100: ‘100x100#’,
+    square_300: ‘300x300#’
+  }
+  #-----------------------------------------------------------------------------
+
+  # == Relationships ========================================================
+  
+  # association one-to-many ----------------------------------------------------
+  has_many :documents
+  #-----------------------------------------------------------------------------
+
+  # == Validations ==========================================================
+  
+  validates: email, presence:     true,
+                    uniqueness:   true,
+                    email_format: true
+
+  # == Scopes ===============================================================
+
+  # == Callbacks ============================================================
+
+  # == Class Methods ========================================================
+  
+  def self.for_select
+    all.collect{|u| [“#{u.name} (#{u.email})”, u.id]}
+  end
+
+  # == Instance Methods =====================================================

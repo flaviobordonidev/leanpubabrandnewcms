@@ -1,0 +1,80 @@
+<%# == Meta_data ============================================================ %>
+
+<% provide(:body_extra_class, 'side-push-panel') %>
+<% provide(:page_title, 'Pagina iniziale') %>
+<% provide :facebook_sharing do %>
+    	<!-- Open Graph Protocol -->
+    <meta property="og:locale" content="it_IT" />
+    <meta property="og:type" content="website" /><!-- website | article -->
+    <meta property="og:title" content="<%= yield(:page_title) %>" />
+    <meta property="og:url" content="<%= request.original_url %>" /><!-- URL della pagina (es: http://www.donachiaro.com/news_unhcr02.html) -->
+    <meta property="og:site_name" content="rebisworld"/>
+    <meta property="og:description" content="rebisworld desctiption con 160-180 caratteri" /><!-- max 160 caratteri -->
+  	<meta property="og:image" content="http://www.donachiaro.com/images/events/varie/share9fb.jpg" /><!-- image 476x249 px -->
+<% end %>
+<% provide :twitter_sharing do %>
+  	<!-- Twitter Card -->
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@donachiaro"/><!-- account twitter -->
+    <meta name="twitter:title" content="<%= yield(:page_title) %>"/>
+    <meta name="twitter:description" content="#Rebisworld"/>
+    <meta name="twitter:url" content="<%= request.original_url %>"/><!-- URL della pagina (es: http://www.donachiaro.com/news_unhcr02.html) -->
+    <meta name="twitter:image:src" content="http://www.donachiaro.com/images/events/varie/share9fb.jpg"/><!-- image 476x249 px -->
+<% end %>
+
+<%# == Meta_data - end ====================================================== %>
+
+
+<div class="body-overlay"></div>
+
+<%= render 'side_panel_trigger_close' %>
+
+<!-- Document Wrapper
+============================================= -->
+<div id="wrapper" class="clearfix">
+
+  <!-- Header
+  ============================================= -->
+  <header id="header" class="full-header transparent-header border-full-header dark static-sticky" data-sticky-class="not-dark" data-sticky-offset="full" data-sticky-offset-negative="100">
+    <div id="header-wrap">
+      <div class="container clearfix">
+        <div id="primary-menu-trigger"><i class="icon-reorder"></i></div>
+        <%= render 'logo_canvasone' %>
+        <%= render 'primary_navigation_canvasone' %>
+      </div>
+    </div>
+  </header><!-- #header end -->
+
+  <%= render 'slider' %>
+
+  <!-- Content
+  ============================================= -->
+  <section id="content">
+    <div class="content-wrap nopadding">
+      <%= render 'section_about' %>
+      <%= render 'three_columns' %>
+      <%= render 'promo' %>
+      <%= render 'section_works' %>
+			<div class="container clearfix">
+				<%= render 'side_navigation' %><!-- usa Javascript -->
+			</div>
+      <%= render 'section_services' %>
+      <%= render 'section_blog' %>
+			<div class="container clearfix">
+				<div class="clear"></div><div class="line"></div>
+				<%= render 'meet_our_clients' %>
+			</div>
+      <%= render 'button_pre_footer' %>
+      <%= render 'section_contact' %><!-- usa Javascript -->
+      <%= render 'slider_testimonials' %><!-- Attenzione se le frasi hanno numero righe diverso c'è uno sfarfallio nei contenuti in basso -->
+
+    </div>
+  </section><!-- #content end -->
+
+  <%= render 'footer' %>
+
+</div><!-- #wrapper end -->
+
+<!-- Go To Top
+============================================= -->
+<div id="gotoTop" class="icon-angle-up"></div>

@@ -1,0 +1,338 @@
+# Inseriamo facebook e twitter sharing (condivisioni)
+
+Inseriamo nell'<head> i metadata per la condivisione su facebook e su twitter
+
+
+
+
+## Apriamo il branch "Sharing Facebook and Twitter"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b sft
+~~~~~~~~
+
+
+
+
+## Impostiamo il layouts/application
+
+metto un unico yield per lo sharing e delego tutto il blocco di campi alle rispettive views. In futuro per mantenere il codice "dry" (do not repeat yourself) riporteremo vari campi all'interno di layouts/application ma per ora lo lasciamo semplice.
+
+{title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=29}
+~~~~~~~~
+  	<%= yield(:facebook_sharing) %>
+  	<%= yield(:twitter_sharing) %>
+~~~~~~~~
+
+
+
+## Impostiamo su posts/show
+
+Lo sharing è usato praticamente per condividere gli articoli del blog quindi iniziamo dal singolo articolo.
+Per la condivisione di facebook si usano gli Open Graph.
+Per la condivisione di twitter si usano le Twitter Cards
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%# == Meta_data ============================================================ %>
+
+<% provide(:page_title, 'Perché funziona') %>
+<% provide :facebook_sharing do %>
+    	<!-- Open Graph Protocol -->
+    <meta property="og:locale" content="it_IT" />
+    <meta property="og:type" content="website" /><!-- website | article -->
+    <meta property="og:title" content="<%= yield(:page_title) %>" />
+    <meta property="og:url" content="<%= request.original_url %>" /><!-- URL della pagina (es: http://www.donachiaro.com/news_unhcr02.html) -->
+    <meta property="og:site_name" content="rebisworld"/>
+    <meta property="og:description" content="rebisworld desctiption con 160-180 caratteri" /><!-- max 160 caratteri -->
+  	<meta property="og:image" content="http://www.donachiaro.com/images/events/varie/share9fb.jpg" /><!-- image 476x249 px -->
+<% end %>
+<% provide :twitter_sharing do %>
+  	<!-- Twitter Card -->
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@donachiaro"/><!-- account twitter -->
+    <meta name="twitter:title" content="<%= yield(:page_title) %>"/>
+    <meta name="twitter:description" content="#Rebisworld"/>
+    <meta name="twitter:url" content="<%= request.original_url %>"/><!-- URL della pagina (es: http://www.donachiaro.com/news_unhcr02.html) -->
+    <meta name="twitter:image:src" content="http://www.donachiaro.com/images/events/varie/share9fb.jpg"/><!-- image 476x249 px -->
+<% end %>
+
+<%# == Meta_data - end ====================================================== %>
+~~~~~~~~
+
+La maggior parte dei campi la possiamo riempire staticamente perché è la stessa per tutta l'applicazione (e questi campi è meglio che stiano su layouts/application).
+Dobbiamo invece aggiungere alla tabella posts le colonne sharing_description e sharing_image.
+
+
+
+
+## Aggiungiamo **sharing_description** e **sharing_image** alla tabella posts
+
+Per la descrizione uso una semplice colonna di testo che limito a 160 caratteri sul model. In reatà accettano anche più caratteri ma 160 è un buon compromesso lato SEO.
+Per l'immagine, siccome uso Shrine per l'upload, chiamo la colonna **sharing_image_data** usando la convenzione di Shrine. (vedi brandnewcms 11-gem-shrine-file_upload)
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g migration AddSharingDescriptionSharingImageToPosts sharing_description:string sharing_image_data:text
+~~~~~~~~
+
+questo crea il migrate:
+
+{title=".../db/migrate/xxx_add_sharing_description_sharing_image_to_posts.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class AddSharingDescriptionSharingImageToPosts < ActiveRecord::Migration[5.1]
+  def change
+    add_column :posts, :sharing_description, :string
+    add_column :posts, :sharing_image_data, :text
+  end
+end
+~~~~~~~~
+
+eseguiamo il migrate 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails db:migrate
+~~~~~~~~
+
+
+nel model Post mettiamo una validazione per limitare a 160 caratteri. (http://guides.rubyonrails.org/active_record_validations.html#length)
+
+{title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=30}
+~~~~~~~~
+  validates :sharing_description, length: { maximum: 160 }
+~~~~~~~~
+
+inoltre leghiamo shrine alla colonna sharing_image_data
+
+{title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+  include ImageUploader[:sharing_image]
+~~~~~~~~
+
+al posto di **include ImageUploader[:sharing_image]** si poteva usare
+  # include ImageUploader::Attachment.new(:sharing_image) # adds a `sharing_image` virtual attribute
+oppure
+  # include ImageUploader.new(:sharing_image)
+  
+la voce :sharing_image viene associata automaticamente da shrine alla colonna :sharing_image_data
+
+I> Informazione!
+I>
+I> ImageUploader lo abbiamo già creato per :image. Usiamo lo stesso file .../app/models/image_uploader.rb
+I>
+I> Se vogliamo dei comportamenti differenti possiamo creare ad esempio un nuovo uploader .../app/models/sharing_image_uploader.rb e sul model post passare **include SharingImageUploader[:sharing_image]**
+
+I> Informazione!
+I>
+I> l'immagine è già caricata su AWS S3 perché abbiamo attivato il tutto nel capitolo brandnewcms/12-aws_s3.txt
+
+
+
+
+## Aggiorniamo le views
+
+
+{title=".../app/views/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=29}
+~~~~~~~~
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :sharing_image, 'sharing image 476x249 px' %>
+              <% if post.sharing_image.present? %>
+                <%= image_tag post.sharing_image_url, class: "card-img-top" %>
+              <% end %>
+              <%#= form.hidden_field :sharing_image, value: form.object.cached_sharing_image_data %>
+              <%= form.file_field :sharing_image, class: "form-control" %>  <!-- image 476x249 px -->
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :sharing_description %><!-- max 160 caratteri -->
+              <%= form.text_area :sharing_description, id: :sharing_description, class: "form-control" %>
+            </div>
+          </li>
+~~~~~~~~
+
+usiamo **f.object** al posto della variabile d'istanza **@sharing_image** così non siamo costretti a definire la variabile sul controller e la nostra view è più "self-contained" e quindi riutilizzabile anche su pagine multiple. 
+
+Per personalizzare la label è meglio usare i18n in config/locales/en.yml e rinominare le labeles del model Post
+
+title=".../config/locales/en.yml", lang=yaml, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+helpers:
+    label:
+      post:
+        sharing_image: sharing image 476x249 px
+~~~~~~~~
+
+così possiamo lasciare sul view **<%= form.label :sharing_image %>** senza dover forzare nel codice (hardcode) la lable 'sharing image 476x249 px'
+
+
+
+
+## Aggiorniamo il mass-assignment del controller
+
+
+{title=".../app/controllers/controller_posts.rb", lang=ruby, line-numbers=on, starting-line-number=75}
+~~~~~~~~
+        params.require(:post).permit(:title, :body, :description, :author_id, :image, :sharing_image, :sharing_description)
+~~~~~~~~
+
+
+
+
+## Aggiorniamo la pagina show
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%# == Meta_data ============================================================ %>
+
+<% provide(:page_title, @post.title) %>
+<% provide :facebook_sharing do %>
+    	<!-- Open Graph Protocol -->
+    <meta property="og:locale" content="it_IT" />
+    <meta property="og:type" content="article" /><!-- website | article -->
+    <meta property="og:title" content="<%= yield(:page_title) %>" />
+    <meta property="og:url" content="<%= request.original_url %>" /><!-- URL della pagina (es: http://www.webisworld.com/posts/mio-articolo2.html) -->
+    <meta property="og:site_name" content="rebisworld"/>
+    <meta property="og:description" content="<%= @post.sharing_description %>" /><!-- max 160 caratteri -->
+  	<meta property="og:image" content="<%= @post.image_url %>" /><!-- image 476x249 px (es: http://www.webisworld.com/images/events/varie/share9fb.jpg) -->
+<% end %>
+<% provide :twitter_sharing do %>
+  	<!-- Twitter Card -->
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@donachiaro"/><!-- account twitter -->
+    <meta name="twitter:title" content="<%= yield(:page_title) %>"/>
+    <meta name="twitter:description" content="#Rebisworld"/>
+    <meta name="twitter:url" content="<%= request.original_url %>"/><!-- URL della pagina (es: http://www.webisworld.com/posts/mio-articolo2.html) -->
+    <meta name="twitter:image:src" content="<%= @post.image_url %>"/><!-- image 476x249 px (es: http://www.webisworld.com/images/events/varie/share9fb.jpg) -->
+<% end %>
+
+<%# == Meta_data - end ====================================================== %>
+~~~~~~~~
+
+
+vediamo se funziona
+
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+
+
+
+
+## Rendiamo pubblica l'immagine
+
+Funziona tutto ma l'immagine è visibile solo se si passano i parametri di accesso ad AWS S3. Invece per condividerla sui social è meglio renderla pubblica.
+Per farlo si eseguono i seguenti due passaggi:
+1. sul nostro codice usiamo il parametro "public: true" di shrine in modo da dichiarare che l'url è pubblico e non servono tutte le credenziali di accesso passate nell'URL
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+  	<meta property="og:image" content="<%= @post.image_url(public: true) %>" /><!-- image 476x249 px (es: http://www.webisworld.com/images/events/varie/share9fb.jpg) -->
+~~~~~~~~
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=21}
+~~~~~~~~
+    <meta name="twitter:image:src" content="<%= @post.image_url(public: true) %>"/><!-- image 476x249 px (es: http://www.webisworld.com/images/events/varie/share9fb.jpg) -->
+~~~~~~~~
+
+2. sul sito AWS S3 
+
+* Effetttuiamo il login sul sito di amazon web service https://console.aws.amazon.com. Cerchiamo il service - storage - S3.
+* selezioniamo il nostro bucket "brandnewcms_dev"
+* mettiamo flag sulla cartelle "store". Andiamo su "More" -> "Make Public" (questo rende reiterativamente pubblici (in lettura) tutti i file presenti nella cartella ma i nuovi file uploadati con shrine saranno privati.
+
+Adesso le immagini sono publiche e quindi le possiamo vedere senza credenziali di accesso.
+
+
+## Verifichiamo la parte Facebook
+
+vediamo se funziona
+
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+
+apriamo il browser su https://developers.facebook.com/
+e passiamo l'url della nostra pagina posts/show -> https://brandnewcms-flaviobordonidev.c9users.io/posts/la-bella-lavanderina
+
+
+I> Attenzione!
+I>
+I> Ho la sensazione che funziona anche con le immagini private ma non ricevi un errore chiaro nel caso ci siano problemi. Devo fare qualche altro test, la cosa sembrava funzionare ma avevo un errore che ho scoperto essere immagine troppo piccola (almeno 200x200) quando l'ho resa pubblica.
+
+Riferimenti web:
+
+* https://codyeatworld.com/2017/04/18/rails-uploading-images-confidently-with-shrine-rb/
+* http://shrinerb.com/rdoc/classes/Shrine/Storage/S3.html
+* https://twin.github.io/better-file-uploads-with-shrine-direct-uploads/
+
+
+
+## Rendiamo pubblici i files durante l'upload
+
+# The S3 storage plugin handles uploads to Amazon S3 service, using the aws-sdk gem.
+Shrine.storages = {
+  # With Shrine both temporary (:cache) and permanent (:store) storage are first-class citizens and fully configurable, so you can also have files cached on S3.
+  cache: Shrine::Storage::S3.new(prefix: 'cache', upload_options: { acl: 'public-read' }, **s3_options),
+  store: Shrine::Storage::S3.new(prefix: 'store', upload_options: { acl: 'public-read' }, **s3_options)
+}
+
+Se non ho **upload_options** specificato il comportamento di default è ** acl: 'private' **.
+questo:
+  store: Shrine::Storage::S3.new(prefix: "store", **s3_options),
+  
+è uguale a questo:
+  store: Shrine::Storage::S3.new(prefix: "store", upload_options: { acl: 'private' }, **s3_options),
+
+
+
+
+salviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Add social sharing - facebook and twitter"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su Heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku fi:master
+$ heroku run rails db:migrate
+~~~~~~~~
+
+
+
+
+## Popoliamo manualmente
+
+inseriamo quattro articoli (posts) e mettiamo il contenuto usando https://hipsum.co/ che è simile a Lorem ipsum ma più divertente.
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge fi
+$ git branch -d fi
+~~~~~~~~
+
+
+aggiorniamo github
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

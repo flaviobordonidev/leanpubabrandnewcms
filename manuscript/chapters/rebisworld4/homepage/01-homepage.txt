@@ -1,0 +1,64 @@
+# Rebisworld - homepage
+
+iniziamo ad adattare l'homepage a Rebisworld
+
+
+
+## Apriamo il branch "Rebisworld Homepage"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b rh
+~~~~~~~~
+
+
+
+
+## Immagine di background
+
+sostituiamo   .../app/assets/images/main.jpg  con la nostra immagine.
+
+
+
+
+## Il menu di homepage
+
+* HOME
+* PERCHÉ FUNZIONA
+* NUOVO A REBISWORLD
+* LA STORIA
+* IL GIOCO
+* BLOG
+
+
+
+
+## Il favicon
+
+sostituiamo   .../app/public/favicon.ico  con la nostra favicon.
+
+
+
+
+
+## Lo slider
+
+
+{title=".../app/views/homepage/_slider.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=15}
+~~~~~~~~
+                    <span class="t-rotate t700 font-body opm-large-word">Nuove Attitudini.|PNL.|Coaching.|Crescita Personale.|Differente.|Creativo.|Crescita Professionale.|Divertente.|Neuroscienze.|Nuove Abitudini.</span>
+~~~~~~~~
+
+
+
+
+## La sezione about
+
+{title=".../app/views/homepage/_section_about.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=15}
+~~~~~~~~
+            <h2 class="divcenter bottommargin font-body" style="max-width: 700px; font-size: 40px;">Rebisworld è un ponte tra la presa di coscienza e la realizzazione di un comportamento che trasforma la vita.</h2>
+            <p class="lead divcenter bottommargin" style="max-width: 800px;">Un gioco per aprire la tua mente e darti delle linee guida differenti, una mezz’ora divertente di riflessione tra genitori, figli, amici e parenti per parlare di Valori e di come prepararsi per “affrontare la vita”.</p>
+~~~~~~~~
+
+Il "Learn more" / "apprendi di più" può portare alla pagina: "perché funziona"
+

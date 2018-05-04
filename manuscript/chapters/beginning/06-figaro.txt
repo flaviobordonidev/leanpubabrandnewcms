@@ -3,6 +3,9 @@
 Un problema di sicurezza.
 Le password e le chiavi di criptatura non sono state escluse da git e vengono quindi passate sui repositories esterni. Questo non è cosa buona e giusta. Implementiamo la sicurezza con la gemma Figaro.
 
+Attenzione:
+da Rails 5.2.0 Figaro può andare in pensione perché è implementato un sistema analogo direttamente su Rails
+
 
 
 
@@ -53,9 +56,9 @@ Con rails 5.2 la situazione è migliorata ed il file è criptato quindi si può 
 
 ## Installiamo figaro
 
-I> Verifica sempre le ultime versioni su https://rubygems.org
+I> Verifichiamo sempre le ultime versioni su https://rubygems.org
 I>
-I> Verifica sempre gli ultimi aggiornamenti sul readme.md di https://github.com/laserlemon/figaro
+I> Verifichiao sempre gli ultimi aggiornamenti sul readme.md di https://github.com/laserlemon/figaro
 
 
 ![la gemma figaro](images/beginning/figaro/figaro-rubygems.png)
@@ -138,7 +141,7 @@ test:
   secret_key_base: 2de1ca50ad0877af447c1f414419e3eab1e0d09f612a6d24cd846bfcea38e3750d4965323aa35d39f945bb18b5f1592c1c590ffee3dbec39973ca299bbacb1ca
 ~~~~~~~~
 
-Passiamoli sul file di Figaro 
+Passiamoli sul file di Figaro e scriviamo in maiuscolo le variabili d'ambiente per rispettare la convenzione
 
 {title=".../config/application.yml", lang=yaml, line-numbers=on, starting-line-number=1}
 ~~~~~~~~

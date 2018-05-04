@@ -1,0 +1,297 @@
+# Pubblicato
+
+
+aggiungiamo il pulsante per gli articoli pubblicati.
+
+
+
+
+## Apriamo il branch "PUBlished"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b pub
+~~~~~~~~
+
+
+
+
+## Aggiungiamo le colonne per publish su posts
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g migration AddPublishedToPosts published:boolean published_at:datetime
+~~~~~~~~
+
+aggiungiamo al migrate creato il **default: false** alla colonna :published
+
+{title=".../db/migrate/xxx_add_slug_uniq_to_posts.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class AddPublishedToPosts < ActiveRecord::Migration[5.1]
+  def change
+    add_column :posts, :published, :boolean, default: false
+    add_column :posts, :published_at, :datetime
+  end
+end
+~~~~~~~~
+
+eseguiamo il migrate 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails db:migrate
+~~~~~~~~
+
+
+
+
+## Aggiorniamo il model
+
+aggiungiamo uno scope per gli articoli pubblicati
+
+{title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=13}
+~~~~~~~~
+  scope :published, -> { where(published: true) }
+~~~~~~~~
+
+
+
+
+## Aggiorniamo il posts_controller di default
+
+usiamo lo scope appena creato nel posts_controller (e non in author/posts_controller) sull'azione index
+
+{title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+  def index
+    @posts = Post.most_recent.published
+  end
+~~~~~~~~
+
+
+
+
+## Prepariamo il posts_controller di authors
+
+creiamo le due nuove azioni **publish** ed **unpublish** in authors/posts_controller. Queste due azioni saranno chiamate da due pulsanti/links che implementeremo nella nostra pagina authors/posts/index.
+
+siccome entrambe le azioni avranno necessità di accedere a @post le includo nella chiamata  **before_action :set_post**
+
+{title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+    before_action :set_post, only: [:show, :edit, :update, :destroy, :publish, :unpublish]
+~~~~~~~~
+
+implementiamo le due nuove azioni
+
+{title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+    def publish
+      @post.update(published: true)
+      redirect_to authors_posts_url
+    end
+
+    def unpublish
+      @post.update(published: false)
+      redirect_to authors_posts_url
+    end
+~~~~~~~~
+
+Il redirect_to ricarica la pagina ma sfruttando il turbolinks di Rails la sensazione è che cambia solo il pulsante. Si sarebbe potuto usare ajax ma è una complicazione che non da grandi vantaggi.
+
+
+
+
+## Creiamo i pulsanti publish e unpublish
+
+nella pagina authors/posts/index creiamo due nuovi links per i pulsanti publish e unpublish
+
+{title=".../app/views/authors/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=29}
+~~~~~~~~
+          <% if post.published? %>
+            <td><%= link_to 'Unpublis', authors_post_unpublish_path(post), method: :put, class: 'btn btn-sm btn-primary' %></td>
+          <% else %>
+            <td><%= link_to 'Publish', authors_post_publish_path(post), method: :put, class: 'btn btn-sm btn-success' %></td>
+          <% end %>
+~~~~~~~~
+
+
+
+
+
+## Implementiamo gli instradamenti per i pulsanti publish e unpublish
+
+il pulsante publish è un link che deve chiamare un'azione nel controller author/posts_controller. Per far questo impostiamo l'instradamento nel file routes.
+Per aggiungere anltre azioni dentro il resources post aggiungiamo un blocco do...end
+
+{title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=11}
+~~~~~~~~
+    resources :posts, :except => [:show] do
+      put 'publish' => 'posts#publish' 
+      put 'publish' => 'posts#publish' 
+    end
+~~~~~~~~
+
+L'azione aggiunta è un **put** e non un **get** perché è una richiesta di aggiornamento del record del database.
+
+
+Verifichiamo che instradamenti abbiamo aggiunto
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails routes
+~~~~~~~~
+
+                Prefix Verb   URI Pattern                                 Controller#Action
+                  root GET    /                                           posts#index
+                 posts GET    /posts(.:format)                            posts#index
+                  post GET    /posts/:id(.:format)                        posts#show
+    new_author_session GET    /authors/sign_in(.:format)                  devise/sessions#new
+        author_session POST   /authors/sign_in(.:format)                  devise/sessions#create
+destroy_author_session DELETE /authors/sign_out(.:format)                 devise/sessions#destroy
+   new_author_password GET    /authors/password/new(.:format)             devise/passwords#new
+  edit_author_password GET    /authors/password/edit(.:format)            devise/passwords#edit
+       author_password PATCH  /authors/password(.:format)                 devise/passwords#update
+                       PUT    /authors/password(.:format)                 devise/passwords#update
+                       POST   /authors/password(.:format)                 devise/passwords#create
+  authors_post_publish PUT    /authors/posts/:post_id/publish(.:format)   authors/posts#publish
+authors_post_unpublish PUT    /authors/posts/:post_id/unpublish(.:format) authors/posts#unpublish
+         authors_posts GET    /authors/posts(.:format)                    authors/posts#index
+                       POST   /authors/posts(.:format)                    authors/posts#create
+      new_authors_post GET    /authors/posts/new(.:format)                authors/posts#new
+     edit_authors_post GET    /authors/posts/:id/edit(.:format)           authors/posts#edit
+          authors_post PATCH  /authors/posts/:id(.:format)                authors/posts#update
+                       PUT    /authors/posts/:id(.:format)                authors/posts#update
+                       DELETE /authors/posts/:id(.:format)                authors/posts#destroy
+     test_pages_page_a GET    /test_pages/page_a(.:format)                test_pages#page_a
+     test_pages_page_b GET    /test_pages/page_b(.:format)                test_pages#page_b
+                 about GET    /about(.:format)                            pages#about
+               contact GET    /contact(.:format)                          pages#contact
+
+Come si può vedere abbiamo aggiunto le linee 
+  authors_post_publish PUT    /authors/posts/:post_id/publish(.:format)   authors/posts#publish
+authors_post_unpublish PUT    /authors/posts/:post_id/unpublish(.:format) authors/posts#unpublish
+
+Un modo più breve di verificarlo è fare un chain/pipe del comando ed aggiungere il comando di ricerca **grep**
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails routes | grep publish
+~~~~~~~~
+
+  authors_post_publish PUT    /authors/posts/:post_id/publish(.:format)   authors/posts#publish
+authors_post_unpublish PUT    /authors/posts/:post_id/unpublish(.:format) authors/posts#unpublish
+  
+Questo secondo comando ci restituisce direttamente le due linee che cercavamo evidenziando la scritta "publish" 
+
+Notiamo un problema perché è passato **:post_id** ma a noi serve **:id** nel nostro **set_post**. Lo risolviamo aggiungendo l'opzione **on: :member** 
+
+{title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=11}
+~~~~~~~~
+    resources :posts, :except => [:show] do
+      put 'publish' => 'posts#publish', on: :member
+      put 'unpublish' => 'posts#unpublish', on: :member
+    end
+~~~~~~~~
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails routes | grep publish
+~~~~~~~~
+
+  publish_authors_post PUT    /authors/posts/:id/publish(.:format)   authors/posts#publish
+unpublish_authors_post PUT    /authors/posts/:id/unpublish(.:format) authors/posts#unpublish
+
+Adesso è tutto pronto e possiamo verificarlo
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+
+
+
+## Utiliziamo il published_at
+
+andiamo nel model post ed implementiamolo
+
+{title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=13}
+~~~~~~~~
+  def display_day_published
+    if published_at.present?
+      "published #{published_at.strftime('%-b %-d, %Y')}"
+    else
+      "not published yet"
+    end
+  end
+~~~~~~~~
+
+questo ci crea dei problemi perché non possiamo rendere una stringa il valore "nil"
+
+andiamo quindi nel controller ed assegnamo un timestamps quando è pubblicato
+
+{title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+    def publish
+      @post.update(published: true, published_at: Time.now)
+      redirect_to authors_posts_url
+    end
+
+    def unpublish
+      @post.update(published: false, published_at: nil)
+      redirect_to authors_posts_url
+    end
+~~~~~~~~
+
+
+
+
+
+## archiviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add published to posts"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku pub:master
+$ heroku run rails db:migrate
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge pub
+$ git branch -d pub
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

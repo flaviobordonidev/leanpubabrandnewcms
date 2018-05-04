@@ -57,19 +57,22 @@ Se lo abbiamo già logghiamoci.
 
 ![account su github](images/beginning/github_readme/github_signin.png)
 
-Una volta loggati creiamo un nuovo repository e lo chiamiamo "rebisworld1" con descrizione "gioco basato su canvas"
+Una volta loggati creiamo un nuovo repository:
 
-![account su github](images/beginning/github_readme/github_new_repository.png)
+* nome        : rebisworld3
+* descrizione : sito web con template Canvas
+
+![account su github](beginning/09img-github_new_repository.png)
 
 Appena creato il nuovo repository ci viene presentato un "Quick setup"
 
-![account su github](images/beginning/github_readme/github_quick_setup.png)
+![account su github](beginning/09img-github_quick_setup.png)
 
 Aggiungiamo sul nostro git il repository remoto "rebisworld1.git" creato sul nostro account github "flaviobordonidev" usando SSH.
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ git remote add origin git@github.com:flaviobordonidev/rebisworld1.git
+$ git remote add origin git@github.com:flaviobordonidev/rebisworld3.git
 ~~~~~~~~
 
 Se avessimo voluto usare HTTPS avremmo usato "git remote add origin https://github.com/flaviobordonidev/elisinfo6.git"
@@ -77,7 +80,23 @@ Se avessimo voluto usare HTTPS avremmo usato "git remote add origin https://gith
 Il comando "git remote" è per attivare il repository remoto su un server esterno (nel nostro caso github.com).
 con "add origin" si dichiara che il nome di riferimento del repositroy remoto è "origin" (potevamo chiamarlo github ma per convenzione storica la stessa Github ha scelto di chiamarlo "origin").  
 
-Spostiamo il nostro git locale sul repository remoto Github
+Prima di spostare il nostro git locale sul repository remoto Github dobbiamo chiudere il branch locale, tornare sul branch master ed effettuare il merge. 
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge gh
+$ git branch -d gh
+~~~~~~~~
+
+aggiorniamo github
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
@@ -93,18 +112,6 @@ Spostiamo in remoto anche la parte dei tag in cui abbiamo messo la versione v.0.
 $ git push origin master --tag
 ~~~~~~~~
 
-![github overview](images/beginning/github_readme/github_repository_overview.png)
+![github overview](beginning/09img-github_repository_overview.png)
 
 
-
-
-## Chiudiamo il branch
-
-se abbiamo finito le modifiche e va tutto bene:
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ git checkout master
-$ git merge gh
-$ git branch -d gh
-~~~~~~~~

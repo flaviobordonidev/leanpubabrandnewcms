@@ -1,0 +1,156 @@
+# Blog - lista di articoli
+
+rendiamo dinamica la lista di articoli prendendoli dal database
+
+
+
+## Apriamo il branch "Dynamic Blog Small"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b dbs
+~~~~~~~~
+
+
+
+
+## Il partial _posts
+
+prima di rendere dinamica la lista di articoli, separiamola dall'index creando un partial.
+
+
+
+
+## Rendiamo dinamico il partial _posts
+
+Riadattiamo la parte di visualizzazione dei posts in modo che prenda i dati dal database. Scegliamo uno dei possibili formati dei post ed utilizziamo quello. Nel nostro caso quello con una immagine e del testo. In futuro creeremo anche la possibilità di scegliere che tipo di post visualizzare ma per il momento manteniamo le cose semplici.
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=331}
+~~~~~~~~
+					<%= render 'posts', posts: @posts %>
+~~~~~~~~
+
+
+{title=".../app/views/posts/_posts.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!-- Posts
+============================================= -->
+<div id="posts" class="small-thumbs">
+	<% posts.each do |post| %>
+		<div class="entry clearfix">
+			<div class="entry-image">
+				<!-- <a href="images/blog/full/17.jpg" data-lightbox="image"><img class="image_fade" src="images/blog/small/17.jpg" alt="Standard Post with Image"></a> -->
+				<a href="images/blog/full/17.jpg" data-lightbox="image"><%= image_tag "blog-small-17.jpg", class: "image_fade", alt: "Light Blue Denim Dress" %></a>
+			</div>
+			<div class="entry-c">
+				<div class="entry-title">
+					<h2><a href="blog-single.html"><%= post.title %></a></h2>
+				</div>
+				<ul class="entry-meta clearfix">
+					<li><i class="icon-calendar3"></i> 10th Feb 2014</li>
+					<li><a href="#"><i class="icon-user"></i> admin</a></li>
+					<li><i class="icon-folder-open"></i> <a href="#">General</a>, <a href="#">Media</a></li>
+					<li><a href="blog-single.html#comments"><i class="icon-comments"></i> 13</a></li>
+					<li><a href="#"><i class="icon-camera-retro"></i></a></li>
+				</ul>
+				<div class="entry-content">
+					<p><%= post.body %></p>
+					<a href="blog-single.html"class="more-link">Read More</a>
+				</div>
+			</div>
+		</div>
+	<% end %>
+</div><!-- #posts end -->
+~~~~~~~~
+
+
+
+
+## Ordiniamo per ordine decrescente
+
+
+{title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+  scope :most_recent, -> { order(id: :desc) }
+~~~~~~~~
+
+
+{title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=6}
+~~~~~~~~
+  def index
+    #@posts = Post.all
+    @posts = Post.most_recent
+~~~~~~~~
+
+
+
+
+## Data di pubblicazione dal database
+
+{title=".../app/views/posts/_posts.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=15}
+~~~~~~~~
+					<li><i class="icon-calendar3"></i> <%= post.display_day_published %></li>
+~~~~~~~~
+
+{title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=11}
+~~~~~~~~
+  def display_day_published
+    created_at.strftime('%-d %-b %Y')
+    #"Published #{created_at.strftime('%-d %-b %Y')}"
+  end
+~~~~~~~~
+
+
+
+
+
+
+
+
+
+
+
+## archiviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Dynamic posts blog-small.html"
+~~~~~~~~
+
+
+
+
+## Publichiamo su Heroku
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku bs:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge bs
+$ git branch -d bs
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
