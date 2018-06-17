@@ -330,7 +330,11 @@ $ git branch -d sft
 ~~~~~~~~
 
 
-aggiorniamo github
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~

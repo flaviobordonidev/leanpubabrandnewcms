@@ -21,19 +21,17 @@ $ git checkout -b gh
 
 Quando ci colleghiamo su github la pagina che ci presenta l'applicazione è quella scritta sul file README.md ed è quindi importante tenere aggiornato il file readme con quello che fa l'applicazione. Spieghiamo cos'è il nostro progetto e quali sono i benefici per chi lo userà. Spieghiamo il perché e scriviamo le varie storie che sono state prese in fase di idealizzazione.
 
-[codice: 01](#code-beginning-github_readme-01)
-
-{title="README.md",lang=markdown, line-numbers=on, starting-line-number=1}
+{title=".../README.md",lang=markdown, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
 # Rebiworld v0.1.0
 ==
 ~~~~~~~~
 
-{title="README.md",lang=markdown, line-numbers=on, starting-line-number=34}
+{title=".../README.md",lang=markdown, line-numbers=on, starting-line-number=34}
 ~~~~~~~~
 history:
 
-* v0.1.0  21.03.18  creazione dell'applicazione su rails 5.1.4
+* v0.1.0  18.06.18  creazione dell'applicazione su rails 5.2.0
 ~~~~~~~~
 
 Mano a mano che sviluppiamo l'applicazione aggiorniamo anche il readme. Nello specifico la versione e l'history delle versioni.
@@ -59,7 +57,7 @@ Se lo abbiamo già logghiamoci.
 
 Una volta loggati creiamo un nuovo repository:
 
-* nome        : rebisworld3
+* nome        : rebisworldbr1
 * descrizione : sito web con template Canvas
 
 ![account su github](beginning/09img-github_new_repository.png)
@@ -68,11 +66,11 @@ Appena creato il nuovo repository ci viene presentato un "Quick setup"
 
 ![account su github](beginning/09img-github_quick_setup.png)
 
-Aggiungiamo sul nostro git il repository remoto "rebisworld1.git" creato sul nostro account github "flaviobordonidev" usando SSH.
+Aggiungiamo sul nostro git il repository remoto "rebisworldbr1.git" creato sul nostro account github "flaviobordonidev" usando SSH.
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ git remote add origin git@github.com:flaviobordonidev/rebisworld3.git
+$ git remote add origin git@github.com:flaviobordonidev/rebisworldbr1.git
 ~~~~~~~~
 
 Se avessimo voluto usare HTTPS avremmo usato "git remote add origin https://github.com/flaviobordonidev/elisinfo6.git"
@@ -96,7 +94,12 @@ $ git merge gh
 $ git branch -d gh
 ~~~~~~~~
 
-aggiorniamo github
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~

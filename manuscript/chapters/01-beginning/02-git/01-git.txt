@@ -89,7 +89,7 @@ Altri files che è importante escludere sono quelli riguardanti password/secrets
 
 Cloud9 nel workspace rails inserisce un gitignore di default che al momento lasciamo così ma che modificheremo in seguito
 
-{title=".gitignore", lang=text, line-numbers=on, starting-line-number=1}
+{title=".../.gitignore", lang=text, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
 # See https://help.github.com/articles/ignoring-files for more about ignoring files.
 #

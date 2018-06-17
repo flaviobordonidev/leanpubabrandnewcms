@@ -1,18 +1,12 @@
 # Heroku
 
-Andiamo subito in produzione così risolviamo di volta in volta gli eventuali problemi che si presentano senza essere costretti a fare un troubleshooting su tutto l'applicativo.
-
+Una storica piattaforma per la produzione con il vantaggio di presentarsi come un repository remoto (tipo GitHub) che semplifica enormemente la pubblicazione in produzione della nostra app.
 
 
 
 ## Apriamo il branch
 
-Creiamo il Branch per la pubblicazione in produzione 
-
-{title="terminale", lang=bash, line-numbers=off}
-~~~~~~~~
-$ git checkout -b pubprod
-~~~~~~~~
+Non serve perché in questo capitolo parliamo solo di cosa è Heroku della sua storia e del perché lo abbiamo scelto.
 
 
 
@@ -107,150 +101,11 @@ Logghiamoci e scarichiamo la heroku-toolbelt
 
 
 
-## Settaggio per la pubblicazione su Heroku
+## Settaggio fino a Rails 4.0 per la pubblicazione su Heroku
 
 ATTENZIONE con RAILS 5 non c'e bisogno di questo paragrafo. C'è già la gemma puma e la gemma rails_12factor è stata integrata nel core di rails5
 
 La gemma 'rails_12factor' è usata da Heroku per servire assets statici come le immagini e gli stylesheets.
 La gemma 'puma' è un web server professionale usato da Heroku.
 La gemma 'pg' installata nel capitolo precedente serve per gestire il database PostgreSQL.
-
-
-
-
-## Creiamo l'app su heroku
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ heroku version
-$ heroku login
-$ heroku keys:add
-$ heroku create
-~~~~~~~~
-
-![heroku create](images/beginning/heroku/heroku_create.png)
-
-Viene creato dinamnicamente:
-Creating app... done, ⬢ rocky-reef-16594
-https://rocky-reef-16594.herokuapp.com/ | https://git.heroku.com/rocky-reef-16594.git
-
-
-In questo caso è stato creato "rocky-reef-16594" ma può essere qualsiasi nome creato dinamicamente.
-
-Per verficarlo si può usare il comando
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ heroku domains
-
-o
-
-$ heroku apps:info
-~~~~~~~~
-
-![apps info](images/beginning/heroku/heroku_appsinfo.png)
-
-Adesso imposto il MAX_THREADS seguendo il documento di heroku
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ heroku config:set MAX_THREADS=1
-~~~~~~~~
-
-
-Adesso è tutto pronto. Posso fare il commit finale in locale e uploadare tutto in remoto.
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ git add -A
-$ git commit -m "ready to public in production on heroku"
-~~~~~~~~
-
-Attenzione! per pubblicare su heroku da un branch si usa un comando specifico ( git push heroku yourbranch:master )
-(vedi https://devcenter.heroku.com/articles/git)
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ git push heroku pubprod:master
-~~~~~~~~
-
-La nostra applicazione è ora in produzione su heroku. La possiamo vedere sul broser all'URL
-
-https://rocky-reef-16594.herokuapp.com/
-https://rocky-reef-16594.herokuapp.com/test_pages/page_a
-https://rocky-reef-16594.herokuapp.com/test_pages/page_b
-
-I> siccome non abbiamo ancora tabelle di database è stato sufficiente fare il "git push" ma quando avremo tabelle di database dobbiamo ricordarci di eseguire il "migrate" anche su heroku.
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ heroku run rake db:migrate
-~~~~~~~~
-
-
-
-
-## Chiudiamo il branch
-
-se abbiamo finito le modifiche e va tutto bene:
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ git checkout master
-$ git merge pubprod
-$ git branch -d pubprod
-~~~~~~~~
-
-
-![heroku homepage](images/beginning/heroku/heroku_url_homepage.png)
-
-![heroku url root](images/beginning/heroku/heroku_url_root.png)
-
-![heroku db](images/beginning/heroku/heroku_db.png)
-
-
-
-
-## Git cloning your heroku app
-
-C'è la possibilità 
-
-https://devcenter.heroku.com/articles/git-clone-heroku-app
-
-Last updated 12 September 2017
-To clone the source of an existing application from Heroku using Git, use the heroku git:clone command:
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ heroku git:clone -a myapp
-~~~~~~~~
-
-Replace myapp with the name of your app.
-This will create a new directory named after your app with its source and complete repository history, as well as adding a heroku git remote to facilitate further updates.
-Heroku provides the git service primarily for deployment, and the ability to clone from it is offered as a convenience. We strongly recommend you store your code in another git repository such as GitHub and treat that as canonical.
-
-
-
-## Trasfer your app to another Heroku Account
-
-Apps can be transferred to a collaborator on the app. If the user is not a collaborator, first add them as a collaborator.
-
-initiate the transfer of the application using the CLI, use apps:transfer.
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ heroku apps:transfer -a <app-to-transfer> <collaborator-to-transfer-it-to@example.com>
-~~~~~~~~
-
-To initiate the transfer of the application using the Dashboard:
-1. In Dashboard, click the Settings tab of the application.
-2. Scroll down to the “Transfer Ownership” section.
-3. Click the “Select a new owner” field. The list of people who are collaborators on the app and the list of Teams and Organizations to which you belong will be displayed.
-4. Select an item from the list.
-5. Click “Transfer.”
-
-
-Per approfondimenti:
-
-* https://devcenter.heroku.com/articles/transferring-apps
 

@@ -251,7 +251,10 @@ nel posts_controller non ci serve autorizzare il passaggio del parametro slug at
     end
 ~~~~~~~~
 
-salviamo su git
+
+
+
+## salviamo su git
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
@@ -292,7 +295,9 @@ $ git branch -d fi
 ~~~~~~~~
 
 
-aggiorniamo github
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~

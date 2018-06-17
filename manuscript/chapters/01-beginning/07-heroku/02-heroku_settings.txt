@@ -1,0 +1,369 @@
+# Heroku
+
+Andiamo subito in produzione così risolviamo di volta in volta gli eventuali problemi che si presentano senza essere costretti a fare un troubleshooting su tutto l'applicativo.
+
+Risorse web:
+
+* https://devcenter.heroku.com/articles/getting-started-with-rails5
+
+
+
+
+## Apriamo il branch
+
+Creiamo il Branch per la pubblicazione in produzione 
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b pubprod
+~~~~~~~~
+
+
+
+
+## Creiamo l'app su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku version
+$ heroku login
+$ heroku keys:add
+$ heroku create
+~~~~~~~~
+
+![heroku create](images/beginning/heroku/heroku_create.png)
+
+Viene creato dinamnicamente:
+Creating app... done, ⬢ rocky-reef-16594
+https://rocky-reef-16594.herokuapp.com/ | https://git.heroku.com/rocky-reef-16594.git
+
+In questo caso è stato creato "rocky-reef-16594" ma può essere qualsiasi nome creato dinamicamente.
+
+
+Per verficarlo si può usare il comando
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku domains
+
+o
+
+$ heroku apps:info
+~~~~~~~~
+
+![apps info](images/beginning/heroku/heroku_appsinfo.png)
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+flaviobordonidev:~/workspace/rebisworldbr (rs) $ heroku create
+Creating app... done, ⬢ quiet-shelf-47596
+https://quiet-shelf-47596.herokuapp.com/ | https://git.heroku.com/quiet-shelf-47596.git
+flaviobordonidev:~/workspace/rebisworldbr (rs) $ heroku apps:info
+=== quiet-shelf-47596
+Auto Cert Mgmt: false
+Dynos:          
+Git URL:        https://git.heroku.com/quiet-shelf-47596.git
+Owner:          flavio.bordoni.dev@gmail.com
+Region:         us
+Repo Size:      0 B
+Slug Size:      0 B
+Stack:          heroku-16
+Web URL:        https://quiet-shelf-47596.herokuapp.com/
+~~~~~~~~
+
+
+Possiamo verificare che abbiamo la configurazione git corretta con
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+git config --list | grep heroku
+# remote.heroku.url=https://git.heroku.com/quiet-shelf-47596.git
+# remote.heroku.fetch=+refs/heads/*:refs/remotes/heroku/*
+~~~~~~~~
+
+If you see fatal: not in a git directory then you are likely not in the correct directory. Otherwise you may deploy your code. 
+
+
+Adesso è tutto pronto. Posso fare il commit finale in locale e uploadare tutto in remoto.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "ready to public in production on heroku"
+~~~~~~~~
+
+Attenzione! per pubblicare su heroku da un branch si usa un comando specifico ( git push heroku yourbranch:master )
+(vedi https://devcenter.heroku.com/articles/git)
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku pubprod:master
+~~~~~~~~
+
+La nostra applicazione è ora in produzione su heroku. La possiamo vedere sul broser all'URL
+
+https://rocky-reef-16594.herokuapp.com/
+https://rocky-reef-16594.herokuapp.com/test_pages/page_a
+https://rocky-reef-16594.herokuapp.com/test_pages/page_b
+
+I> siccome non abbiamo ancora tabelle di database è stato sufficiente fare il "git push" ma quando avremo tabelle di database dobbiamo ricordarci di eseguire il "migrate" anche su heroku.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku run rake db:migrate
+~~~~~~~~
+
+
+## Vediamo i warnings
+
+abbiamo 3 warnings interessanti.
+
+~~~~~~~~
+remote: ###### WARNING:
+remote:        You set your `config.active_storage.service` to :local in production.
+remote:        If you are uploading files to this app, they will not persist after the app
+remote:        is restarted, on one-off dynos, or if the app has multiple dynos.
+remote:        Heroku applications have an ephemeral files system. To
+remote:        persist uploaded files, please use a service such as S3 and update your Rails
+remote:        configuration.
+remote:        
+remote:        For more information can be found in this article:
+remote:          https://devcenter.heroku.com/articles/active-storage-on-heroku
+remote:        
+remote: 
+remote: ###### WARNING:
+remote:        We detected that some binary dependencies required to
+remote:        use all the preview features of Active Storage are not
+remote:        present on this system.
+remote:        
+remote:        For more information please see:
+remote:          https://devcenter.heroku.com/articles/active-storage-on-heroku
+remote:        
+remote: 
+remote: ###### WARNING:
+remote:        No Procfile detected, using the default web server.
+remote:        We recommend explicitly declaring how to boot your server process via a Procfile.
+remote:        https://devcenter.heroku.com/articles/ruby-default-web-server
+remote: 
+~~~~~~~~
+
+Il primo ed il secondo relativi ad active_storage li risolviamo più avanti quando implementiamo l'upload dei files.
+Il terzo relativo al Procfile lo risolviamo fra poco in questo capitolo.
+
+
+
+
+## Impostiamo i dynos
+
+Vediamo quanti dynos abbiamo associato alla nostra app in produzione su heroku 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku ps
+
+# Free dyno hours quota remaining this month: 939h 47m (93%)
+# For more information on dyno sleeping and how to upgrade, see:
+# https://devcenter.heroku.com/articles/dyno-sleeping
+# 
+# === web (Free): bin/rails server -p $PORT -e $RAILS_ENV (1)
+# web.1: up 2018/06/17 20:37:54 +0000 (~ 5m ago)
+~~~~~~~~
+
+abbiamo 1 dyno attivo **web.1: up**
+
+Se vogliamo assegnare più dynos usiamo il comando **ps:scale**. Ad esempio assicuriamoci di avere 1 dyno attivo per il web.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku ps:scale web=1
+
+# Scaling dynos... done, now running web at 1:Free
+~~~~~~~~
+
+Possiamo verificare che non è cambiato nulla perché era già attivo di default 1 dyno.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku ps
+
+# Free dyno hours quota remaining this month: 939h 47m (93%)
+# For more information on dyno sleeping and how to upgrade, see:
+# https://devcenter.heroku.com/articles/dyno-sleeping
+# 
+# === web (Free): bin/rails server -p $PORT -e $RAILS_ENV (1)
+# web.1: up 2018/06/17 20:37:54 +0000 (~ 9m ago)
+~~~~~~~~
+
+
+
+
+## Vediamo la log
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku logs
+~~~~~~~~
+
+Se vogliamo più dettagli
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku logs --tail
+~~~~~~~~
+
+
+
+
+## Il webserver puma
+
+Siamo arrivati a gestire il terzo warning; quello relativo al Procfile.
+
+* [Heroku - deplowing rails with puma](https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server)
+* [Michael Hartl - Rails Tutorial 7.5.2 Production webserver](https://www.railstutorial.org/book/_single-page)
+
+Rails 5.2 ha di default nel Gemfile il webserver puma che quindi abbiamo già installato con il precedente **$ bundle install**.
+
+{title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=48}
+~~~~~~~~
+# Use Puma as the app server
+gem 'puma', '~> 3.11'
+~~~~~~~~
+
+Non ci resta che creare il nuovo file Procfile nella cartella principale della nostra applicazione
+
+{title=".../Procfile", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+web: bundle exec puma -C config/puma.rb
+~~~~~~~~
+
+Questo Procfile rimanda la lettura della configurazione al file config/puma.rb che è già creato di default da Rails. Vediamolo senza i commenti.
+
+{title=".../config/puma.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+threads_count = ENV.fetch("RAILS_MAX_THREADS") { 5 }
+threads threads_count, threads_count
+
+port        ENV.fetch("PORT") { 3000 }
+
+environment ENV.fetch("RAILS_ENV") { "development" }
+
+plugin :tmp_restart
+~~~~~~~~
+
+Ma noi usiamo quest'altra configurazione che è suggerita da heroku 
+
+{title=".../config/puma.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+workers Integer(ENV['WEB_CONCURRENCY'] || 2)
+threads_count = Integer(ENV['RAILS_MAX_THREADS'] || 5)
+threads threads_count, threads_count
+
+preload_app!
+
+rackup      DefaultRackup
+port        ENV['PORT']     || 3000
+environment ENV['RACK_ENV'] || 'development'
+
+on_worker_boot do
+  # Worker specific setup for Rails 4.1+
+  # See: https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server#on-worker-boot
+  ActiveRecord::Base.establish_connection
+end
+~~~~~~~~
+
+workers consume more RAM and threads consume more CPU, and both provide more concurrency.
+we have 5 Puma-threads and 2 Puma-worker
+With a typical Rails memory footprint, you can expect to run 2-4 Puma worker processes on a free, hobby or standard-1x dyno.
+
+
+
+
+## salviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Add Puma webserver Procfile and config"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su Heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku pubprod:master
+$ heroku run rails pubprod:migrate
+~~~~~~~~
+
+Adesso non ho più il terzo warning. Per il momento è tutto su Heroku
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge pubprod
+$ git branch -d pubprod
+~~~~~~~~
+
+
+![heroku homepage](images/beginning/heroku/heroku_url_homepage.png)
+
+![heroku url root](images/beginning/heroku/heroku_url_root.png)
+
+![heroku db](images/beginning/heroku/heroku_db.png)
+
+
+
+
+## Git cloning your heroku app
+
+C'è la possibilità 
+
+https://devcenter.heroku.com/articles/git-clone-heroku-app
+
+Last updated 12 September 2017
+To clone the source of an existing application from Heroku using Git, use the heroku git:clone command:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku git:clone -a myapp
+~~~~~~~~
+
+Replace myapp with the name of your app.
+This will create a new directory named after your app with its source and complete repository history, as well as adding a heroku git remote to facilitate further updates.
+Heroku provides the git service primarily for deployment, and the ability to clone from it is offered as a convenience. We strongly recommend you store your code in another git repository such as GitHub and treat that as canonical.
+
+
+
+## Trasfer your app to another Heroku Account
+
+Apps can be transferred to a collaborator on the app. If the user is not a collaborator, first add them as a collaborator.
+
+initiate the transfer of the application using the CLI, use apps:transfer.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku apps:transfer -a <app-to-transfer> <collaborator-to-transfer-it-to@example.com>
+~~~~~~~~
+
+To initiate the transfer of the application using the Dashboard:
+1. In Dashboard, click the Settings tab of the application.
+2. Scroll down to the “Transfer Ownership” section.
+3. Click the “Select a new owner” field. The list of people who are collaborators on the app and the list of Teams and Organizations to which you belong will be displayed.
+4. Select an item from the list.
+5. Click “Transfer.”
+
+
+Per approfondimenti:
+
+* https://devcenter.heroku.com/articles/transferring-apps
+
