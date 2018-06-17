@@ -31,6 +31,8 @@ http://themes.semicolonweb.com/html/canvas/v5/page-title-dark.php
 
 http://support.semicolonweb.com/forums/topic/installing-in-ruby-on-rails-project/
 
+http://themes.semicolonweb.com/html/canvas/rs-demo-premium-beforeafter.html
+
 ---
 Articolo simpatico per LINK_TO
 https://mixandgo.com/blog/how-to-use-link_to-in-rails

@@ -1,0 +1,84 @@
+<%# == Meta_data ============================================================ %>
+
+<% provide(:page_title, @post.title) %>
+<% provide :facebook_sharing do %>
+    	<!-- Open Graph Protocol -->
+    <meta property="og:locale" content="it_IT" />
+    <meta property="og:type" content="article" /><!-- website | article -->
+    <meta property="og:title" content="<%= yield(:page_title) %>" />
+    <meta property="og:url" content="<%= request.original_url %>" /><!-- URL della pagina (es: http://www.webisworld.com/posts/mio-articolo2.html) -->
+    <meta property="og:site_name" content="rebisworld"/>
+    <meta property="og:description" content="<%= @post.sharing_description %>" /><!-- max 160 caratteri -->
+  	<!--<meta property="og:image" content="<%#= @post.sharing_image_url(public: true) %>" />-->
+  	<meta property="og:image" content="<%= @post.sharing_image_url(public: true) %>" /><!-- image 476x249 px (es: http://www.webisworld.com/images/events/varie/share9fb.jpg) -->
+  	<meta property="og:image:width" content="476" /><!-- image 476x249 px -->
+  	<meta property="og:image:height" content="249" /><!-- image 476x249 px -->
+<% end %>
+<% provide :twitter_sharing do %>
+  	<!-- Twitter Card -->
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:site" content="@donachiaro"/><!-- account twitter -->
+    <meta name="twitter:title" content="<%= yield(:page_title) %>"/>
+    <meta name="twitter:description" content="#Rebisworld"/>
+    <meta name="twitter:url" content="<%= request.original_url %>"/><!-- URL della pagina (es: http://www.webisworld.com/posts/mio-articolo2.html) -->
+    <meta name="twitter:image:src" content="<%= @post.sharing_image_url %>"/><!-- image 476x249 px (es: http://www.webisworld.com/images/events/varie/share9fb.jpg) -->
+<% end %>
+
+<%# == Meta_data - end ====================================================== %>
+
+
+  <!-- Document Wrapper
+  ============================================= -->
+  <div id="wrapper" class="clearfix">
+
+    <!-- Header
+    ============================================= -->
+    <header id="header" class="full-header">
+      <div id="header-wrap">
+        <div class="container clearfix">
+          <div id="primary-menu-trigger"><i class="icon-reorder"></i></div>
+          <%= render 'logo' %>
+          <%= render 'primary_navigation' %>
+        </div>
+      </div>
+    </header><!-- #header end -->
+
+    <%= render 'page_title_show' %>
+
+
+    <!-- Content
+    ============================================= -->
+    <section id="content">
+      <div class="content-wrap">
+        <div class="container clearfix">
+
+          <!-- Post Content
+          ============================================= -->
+          <div class="postcontent nobottommargin clearfix">
+            <div class="single-post nobottommargin">
+              <%= render 'post_single', post: @post %>
+              <%= render 'post_single_navigation', post: @post %>
+              <div class="line"></div>
+              <%= render 'post_single_author_info' %>
+              <div class="line"></div>
+              <h4>Related Posts:</h4>
+              <%= render 'post_single_related_posts' %>
+              <%= render 'post_single_comments' %>
+            </div>
+          </div><!-- .postcontent end -->
+
+          <%= render 'post_single_sidebar' %>
+
+        </div><!-- .container end -->
+      </div><!-- .content-wrap end -->
+    </section><!-- #content end -->
+
+    <%= render 'footer' %>
+
+  </div><!-- #wrapper end -->
+
+  <!-- Go To Top
+  ============================================= -->
+  <div id="gotoTop" class="icon-angle-up"></div>
+  
+  <%= render 'external_javascripts' %>

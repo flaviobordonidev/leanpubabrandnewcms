@@ -1,0 +1,43 @@
+# Pagina statica della privacy
+
+creaimo questa pagina statica perché facebook per attivarci l'applicazione di gestione dei commenti vuole che gli sia messo l'url della nostra pagina per la privacy.
+
+
+
+
+## Apriamo il branch "Rebisworld Privacy Page"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b rpp
+~~~~~~~~
+
+
+
+
+## Prepariamo la pagina Privacy
+
+Iniziamo creando una pagina statica; eventualmente la renderemo dinamica più avanti. Essendo statica non usiamo lo scaffold ma **rails g controller**. Quindi creiamo il controller privacy in cui includiamo la sola azione show. 
+
+I> ATTENZIONE: con "rails generate controller ..." -> uso il SINGOLARE (ed ottengo un controller al singolare)
+I>
+I> Poiché è un'unica pagina statica metto il controller al singolare.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g controller Privacy show
+~~~~~~~~
+
+non ho nessun migrate perché non mi interfaccio con il database.
+
+
+
+
+## routes
+
+Aggiorna il file routes per mettere l'homepage come pagina principale (root)
+
+{title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+  root 'homepage#show'
+~~~~~~~~

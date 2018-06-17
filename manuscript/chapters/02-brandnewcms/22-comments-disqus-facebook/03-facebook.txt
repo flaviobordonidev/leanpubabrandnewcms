@@ -1,0 +1,210 @@
+# Facebook
+
+Altra alternativa è usare i commenti di facebook.
+Non serve nessuna gemma e nessun campo nel database. Basta inserire un codice generato dal sito [facebook.com](https://facebook.com/)
+
+
+You don't need to setup Facebook Connect for comments.
+
+You have to first create a Facebook app, then generate the comments plugin. 
+After, put the Javascript code in your application.html.erb after the body tag (my suggestion is to make a partial). 
+In the end, drop the div with the fb-comments class where you want the comments box to appear.
+
+I have a question though, when I generate the comments plugin, there's a field 'URL to comment on'. 
+Should I only put there the root domain? Or do I have to change the data-href attribute to the url of each page? 
+Like set the data-href of the fb-comments div to "#{request.protocol}#{request.host_with_port}#{request.fullpath}"? 
+It depends on your needs: 
+  if you want a single comment "topic" over all your website, just include the protocol and host 
+  If you want different comment "topics", like for each article on your website use request.url to generate
+Thanks, though I think request.url is now deprecated based on stackoverflow.com/questions/2165665/… 
+
+Possiamo usare "<%= request.original_url %>" come fatto nel capitolo precedente con Disqus
+
+
+Altre risorse web per un'interazione più profonda con facebook:
+
+* http://www.nascenia.com/integration-of-facebook-graph-api-in-rails-application/
+* http://railscasts.com/episodes/361-facebook-graph-api?view=asciicast
+
+
+
+
+## Apriamo il branch "Facebook Comments"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b fc
+~~~~~~~~
+
+
+
+
+## Creiamo una Facebook app
+
+
+
+Logghiamoci sul facebook per sviluppatori. https://developers.facebook.com/
+Da facebook principale in basso nel footer ho trovato il link a "developer" e da li mi ha creato l'account e la creazione della prima app.
+
+creiamo la facebook app "rebisworld_comments"
+
+
+
+Per poter usare l'app publicamente dobbiamo indicare la pagina della privacy nel nostro sito web.
+
+Privacy Policy URL
+
+
+
+
+
+https://developers.facebook.com/docs/plugins/comments/
+
+![fb_app_comments_warning](brandnewcms/comments-disqus-facebook/img-fb_app_comments_warning.png)
+
+
+
+
+https://www.popwebdesign.net/how-to-create-facebook-app.html
+
+
+
+
+
+
+
+
+[tutto il codice: Gemfile](#brandnewcms-comments-disqus-01a-views-posts-_post_single_comments.html.erb)
+
+
+ed al momento è tutto.
+
+
+verifichiamo 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+
+
+## How to display comment count
+
+Place the following code before your site's closing </body> tag:
+
+{title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=9}
+~~~~~~~~
+<script id="dsq-count-scr" src="//www-rebisworld-com.disqus.com/count.js" async></script>
+~~~~~~~~
+
+Append #disqus_thread to the href attribute in your links. This will tell Disqus which links to look up and return the comment count. For example: <a href="http://foo.com/bar.html#disqus_thread">Link</a>
+
+
+verifichiamo 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+
+
+
+## salviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Add disqus for post comments"
+~~~~~~~~
+
+
+
+
+## Problema! i commenti sono gli stessi per tutti i posts.
+
+Dobbiamo far si che i commenti siano differenziati per post. !!!!!!!!!!!!!!!!!
+
+
+Abbiamo:
+  request.original_url                : absolute URL della pagina attiva
+  url_for(post)                       : relative URL dell'oggetto post
+  request.base_url                    : basic URL della pagina attiva
+  request.base_url + url_for(post)    : absolute URL dell'oggetto post
+  
+  post_path(post)                     : relative URL dell'oggetto post
+  post_url(post)                      : absolute URL dell'oggetto post
+
+li possiamo vedere all'opera nel view
+~~~~~~~~
+		<p>request.original_url: <%= request.original_url %></p>
+		<p>url_for(post): <%= url_for(post) %></p>
+		<p>request.base_url: <%= request.base_url %></p>
+		<p>request.base_url + url_for(post): <%= request.base_url + url_for(post) %></p>
+		<p>post_path(post): <%= post_path(post) %></p>
+		<p>post_url(post): <%= post_url(post) %></p>
+~~~~~~~~
+
+per il singolo articolo invece dell'url fisso possiamo usare <%= request.original_url %> nell'indice invece facciamo <%= request.base_url + url_for(post) %>
+
+{title=".../app/views/posts/_posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+            <li><a href="#"><i class="icon-comments"></i> <span class="fb-comments-count" data-href="<%= request.base_url + url_for(post) %>"></span> comentários </a></li>
+~~~~~~~~
+
+{title=".../app/views/posts/_post_single.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+  <li><a href="#"><i class="icon-comments"></i> <span class="fb-comments-count" data-href="<%= request.base_url + url_for(post) %>"></span> comentários </a></li>
+
+  <!--<div class="fb-comments" data-href="https://rebisworld.herokuapp.com/posts/l-immondizia-della-casa-della-nostra-mente" data-numposts="5"></div>-->
+  <div class="fb-comments" data-href="<%= request.original_url %>" data-numposts="5"></div>
+~~~~~~~~
+
+
+Ma poiché su Rails si usano moltissimo i **path** è più elegante la soluzione che usa **_path** come relative URL e **_url** come absolute URL
+
+{title=".../app/views/posts/_posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+            <li><a href="#"><i class="icon-comments"></i> <span class="fb-comments-count" data-href="<%= post_url(post) %>"></span> comentários </a></li>
+~~~~~~~~
+
+{title=".../app/views/posts/_post_single.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+  <li><a href="#"><i class="icon-comments"></i> <span class="fb-comments-count" data-href="<%= post_url(post) %>"></span> comentários </a></li>
+
+  <div class="fb-comments" data-href="<%= post_url(post) %>" data-numposts="5"></div>
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su Heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku dc:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge dc
+$ git branch -d dc
+~~~~~~~~
+
+
+aggiorniamo github
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
+

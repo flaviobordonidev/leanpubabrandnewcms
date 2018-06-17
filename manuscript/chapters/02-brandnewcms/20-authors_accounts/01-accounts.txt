@@ -1,0 +1,266 @@
+# Gestione dell'account
+
+How to build a blog with Rails 5 and Bootstrap 4 - Part 12
+https://www.youtube.com/watch?v=JP31T66tU7w&t=128s
+
+
+
+## Il link account
+
+Partiamo con il nostro link account. abbiamo bisogno di una route (instradamento), di una controller action e di una view.
+
+Iniziamo creando il link nel nostro navbar putandolo alla pagina principale (root)
+
+{title=".../app/views/layouts/_navbar.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+      <li class="nav-item">
+        <%= link_to 'My account', root_path, class: "btn btn-sm btn-success mx-1" %>
+      </li>
+~~~~~~~~
+
+adesso prepariamo l'instradamento a cui punteremo il nostro link 'My account'
+
+
+
+
+### Implementiamo l'istradamento (route)
+
+creiamo un percorso per il nostro link che punti ad un URL .../authors/account e chiami l'azione **edit** del controller **accounts_controller**
+
+{title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+    #get '/account' => 'accounts#edit', as: :account
+    get '/account' => 'accounts#edit'
+~~~~~~~~
+
+verifichiamo sulla console l'instradamento
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails routes | grep account
+
+  authors_account GET    /authors/account(.:format)             authors/accounts#edit
+~~~~~~~~
+
+vediamo che abbiamo un prefix **authors_account** che punta al controller#azione -> authors/accounts#edit. Questo vuol dire che possiamo usare nel nostro link il percorso **authors_account_paht**
+
+{title=".../app/views/layouts/_navbar.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+        <%= link_to 'My account', authors_account_paht, class: "btn btn-sm btn-success mx-1" %>
+~~~~~~~~
+
+
+
+
+### Implementiamo il controller
+
+creiao un nuovo controller. Potremmo farlo usando la console.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g controller Accounts edit
+~~~~~~~~
+
+ma preferiamo farlo manualmente perché è un controller dentro il modulo authors. Creiamo il file **.../app/controllers/authors/accounts_controller.rb** 
+
+{title=".../app/controllers/authors/accounts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+module Authors
+  class AccountsController < AuthorsController
+
+    # GET authors/accounts/1/edit
+    def edit
+    end
+  
+  end
+end
+~~~~~~~~
+
+
+
+
+### Implementiamo la view
+
+nella nostra view creiamo due colonne. In quella di sinistra mettiamo le informazioni sull'utetne. In quella di destra implementiamo un cambio della password.
+
+{title=".../app/views/authors/accounts/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+  <div class="row">
+    <!-- Basic info section -->
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Basic info</h5>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <div class="field">
+              <%= label_tag :name %>
+              <%= text_field_tag :name, nil, id: :name, class: "form-control" %>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= label_tag :email %>
+              <%= email_field_tag :email, nil, id: :email, class: "form-control" %>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= label_tag :bio %>
+              <%= text_area_tag :bio, nil, id: :bio, class: "form-control" %>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- Change password section -->
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Change password</h5>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <div class="field">
+              <%= label_tag :current_password %>
+              <%= password_field_tag :current_password, nil, id: :current_password, class: "form-control" %>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= label_tag :new_password %>
+              <%= password_field_tag :new_password, nil, id: :new_password, class: "form-control" %>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= label_tag :new_password_confirmation %>
+              <%= password_field_tag :new_password_confirmation, nil, id: :new_password_confirmation, class: "form-control" %>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+~~~~~~~~
+
+Questa form usa i campi **_tag** di **form_tag** che è la vecchia alternativa a **form_for**. 
+
+Interessante anche la carrellata di tipologie di campi utilizzati:
+
+* text_field_tag
+* email_field_tag
+* text_area_tag
+* password_field_tag
+
+Ma da Rails 5.1 dobbiamo usare **form_with** che le rimpiazza entrambe.
+
+I> Attenzione!
+Prior to Rails 5.1, Rails provided 2 form helpers, **form_for** and **form_tag**. Rails 5.1 combined the two with **form_with**. https://m.patrikonrails.com/rails-5-1s-form-with-vs-old-form-helpers-3a5f72a8c78a
+
+
+Al momento i campi non sono legati a nulla. Li implementiamo nel prossimo paragrafo.
+
+
+
+
+## Attiviamo i campi collegandoli alla tabella authors
+
+Inseriamo il **form_tag** puntandolo all'instradamento, o percorso (path), **authors_info_path**
+
+{title=".../app/views/authors/accounts/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+    <%= form_tag authors_info_path, method: :put do  %>
+~~~~~~~~
+
+aggiorniamo il file degli instradamenti
+
+{title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+    #put '/info' => 'accounts#update_info', as: :info
+    put '/info' => 'accounts#update_info'
+~~~~~~~~
+
+usiamo **put** perché stiamo inviando i dati di un aggiornamento al database tramite il submit del form.
+
+
+stessa cosa per il cambio della password
+
+
+{title=".../app/views/authors/accounts/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=34}
+~~~~~~~~
+    <%= form_tag authors_password_path, method: :put do  %>
+~~~~~~~~
+
+
+{title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+    #put '/change_password' => 'accounts#change_password', as: :change_password
+    put '/change_password' => 'accounts#change_password'
+~~~~~~~~
+
+Se proviamo adesso riceviamo errore che mancano le azioni **update_info** e **update_password**. Quindi implementiamoli nel controller.
+
+
+
+## Implementiamo le azioni nel controller
+
+
+{title=".../app/controllers/authors/accounts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=8}
+~~~~~~~~
+    def update_info
+    end
+    
+    def change_password
+    end
+~~~~~~~~
+
+siccome questo controller gestisce due azioni di update differenti divido il permesso di aggiornamento dei parametri "permit" in due chiamate distinte. Si poteva mettere tutto sotto un unico **def author_params** ma separandolo siamo più eleganti.
+
+{title=".../app/controllers/authors/accounts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=16}
+~~~~~~~~
+    private
+
+      # Never trust parameters from the scary internet, only allow the white list through.
+      def author_info_params
+        params.require(:author).permit(:name, :email, :bio)
+      end
+      
+      # Never trust parameters from the scary internet, only allow the white list through.
+      def author_password_params
+        params.require(:author).permit(:current_password, :new_password, :new_password_confirmation)
+      end
+~~~~~~~~
+
+Adesso implementiamo l'update sul database
+
+{title=".../app/controllers/authors/accounts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=8}
+~~~~~~~~
+    def update_info
+      current_author.update(author_info_params)
+      redirect_to authors_account_path    
+    end
+~~~~~~~~
+
+Ovviamente non funziona perché non abbiamo la colonna "bio" nella tabella authors
+
+
+
+### Aggiungiamo colonna "bio" ad authors
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g migration AddBioToAuthors bio:text
+~~~~~~~~
+
+Aggiorniamo il database
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails db:migrate
+~~~~~~~~
+
+Attenzione! ricordiamoci di aggiornare il database anche su Heroku
+

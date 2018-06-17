@@ -1,0 +1,82 @@
+## Visualizziamo gli ultimi posts segnati come popolari e gli ultimi posts più recenti
+
+concludiamo la parte dei popolari e dei recenti implementandoli nella sezione
+
+
+
+
+## Apriamo il branch "Latest Posts"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b lp
+~~~~~~~~
+
+
+
+
+## Aggiorniamo sezione Latest Post (_post_single_sidebar)
+
+la implementiamo direttamente su canvas. didatticamente questa sarà una sezione da chiamare latest_posts e comprende articoli più popolari ed i più recenti.
+
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=68}
+~~~~~~~~
+          <%= render 'post_single_sidebar', popular_posts: @popular_posts %>
+~~~~~~~~
+
+
+
+{title=".../app/views/posts/_post_single_sidebar.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=32}
+~~~~~~~~
+                    <div class="tab-content clearfix" id="tabs-1">
+                      <div id="popular-post-list-sidebar">
+                      	<% popular_posts.each do |popular_post| %>
+                          <div class="spost clearfix">
+                            <div class="entry-image">
+                              <!-- <a href="#" class="nobg"><img class="img-circle" src="images/magazine/small/3.jpg" alt=""></a> -->
+                              <!-- <a href="#" class="nobg"><%#= image_tag "magazine-small-3.jpg", class: "img-circle", alt: "" %></a> -->
+                              <% if popular_post.image.present? %>
+                                <%= image_tag popular_post.image_url, class: "img-circle", alt: "" %>
+                              <% end %>
+                            </div>
+                            <div class="entry-c">
+                              <div class="entry-title">
+                                <!--<h4><a href="#">Debitis nihil placeat, illum est nisi</a></h4>-->
+                                <h4><%= link_to popular_post.title, popular_post %></h4>
+                              </div>
+                              <ul class="entry-meta">
+                                <!--<li><i class="icon-comments-alt"></i> 35 Comments</li>-->
+                                <li><i class="icon-comments-alt"></i> <span class="fb-comments-count" data-href="<%= post_url(popular_post) %>"></span> comentários</li>
+                              </ul>
+                            </div>
+                          </div>
+    	                  <% end %>
+                      </div><!-- #popular-post-list-sidebar end -->
+                    </div><!-- #tabs-1 end -->
+
+                    <div class="tab-content clearfix" id="tabs-2">
+                      <div id="recent-post-list-sidebar">
+                      	<% recent_posts.each do |recent_post| %>
+                          <div class="spost clearfix">
+                            <div class="entry-image">
+                              <!-- <a href="#" class="nobg"><img class="img-circle" src="images/magazine/small/1.jpg" alt=""></a> -->
+                              <!--<a href="#" class="nobg"><%#= image_tag "magazine-small-1.jpg", class: "img-circle", alt: "" %></a>-->
+                              <% if recent_post.image.present? %>
+                                <%= image_tag recent_post.image_url, class: "img-circle", alt: "" %>
+                              <% end %>
+                            </div>
+                            <div class="entry-c">
+                              <div class="entry-title">
+                                <!--<h4><a href="#">Lorem ipsum dolor sit amet, consectetur</a></h4>-->
+                                <h4><%= link_to recent_post.title, recent_post %></h4>
+                              </div>
+                              <ul class="entry-meta">
+                                <li><%= recent_post.display_day_published %></li>
+                              </ul>
+                            </div>
+                          </div>
+    	                  <% end %>
+                      </div><!-- #recent-post-list-sidebar end -->
+                    </div><!-- #tabs-1 end -->
+~~~~~~~~

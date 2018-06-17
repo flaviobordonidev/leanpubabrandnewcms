@@ -1,0 +1,95 @@
+<%= form_with(model: post, local: true, url: url) do |form| %>
+  <% if post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul>
+      <% post.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-4">
+      <!--<div class="card" style="width: 18rem;">-->
+      <div class="card">
+        <div class="card-body">
+          <% if post.new_record? %>
+            <h5 class="card-title">Nuovo articolo</h5>
+          <% else %>
+            <h5 class="card-title"><%= yield(:page_title) %></h5>
+          <% end %>
+          <div class="field">
+            <%= form.label :title %>
+            <%= form.text_field :title, id: :post_title, class: "form-control" %>
+          </div>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :image %>
+              <% if post.image.present? %>
+                <%= image_tag post.image_url, class: "card-img-top" %>
+              <% end %>
+              <%#= form.hidden_field :image, value: form.object.cached_image_data %>
+              <%= form.file_field :image, class: "form-control" %>  
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :sharing_image, 'sharing image 476x249 px' %>
+              <% if post.sharing_image.present? %>
+                <%= image_tag post.sharing_image_url, class: "card-img-top" %>
+              <% end %>
+              <%#= form.hidden_field :sharing_image, value: form.object.cached_sharing_image_data %>
+              <%= form.file_field :sharing_image, class: "form-control" %>  <!-- image 476x249 px -->
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :sharing_description %><!-- max 160 caratteri -->
+              <%= form.text_area :sharing_description, id: :sharing_description, class: "form-control" %>
+            </div>
+          </li>
+
+          <li class="list-group-item">
+            <div class="actions">
+              <%= form.submit "save the blog", class: "btn btn-success btn-lg btn-block" %>
+            </div>
+          </li>
+        </ul>
+      </div>
+      
+      <!-- visualizziamo Show solo su edit e non su new -->
+      <% if post.persisted? %>
+        <%= link_to 'Show', post %> |
+      <% end %>
+      <%= link_to 'Back', posts_path %>
+
+    </div>
+    
+    <div class="col-md-8">
+      <div class="field">
+        <%#= form.label :body, class: "control-label" %>
+        <%= form.hidden_field :body, id: :post_body, class: 'form-control', rows: '10' %>
+        <span class="help-block"></span>
+      </div> <!-- /.field -->
+      <trix-editor input="post_body"></trix-editor>
+      
+      <div class="field">
+        <h6>---Read More---</h6>
+      </div> <!-- /.field -->
+      
+      <div class="field">
+        <%= form.label :description, 'incipit', class: "control-label" %>
+        <%= form.hidden_field :description, id: :post_description, class: 'form-control', rows: '3' %>
+        <span class="help-block"></span>
+      </div> <!-- /.field -->
+      <trix-editor input="post_body2"></trix-editor>
+    </div>
+  </div>
+  
+
+<% end %>

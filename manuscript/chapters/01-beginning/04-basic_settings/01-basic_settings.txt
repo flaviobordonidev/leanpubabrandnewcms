@@ -1,0 +1,72 @@
+# Settaggi Base
+
+
+
+
+## Apriamo il branch "Basic"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b basic
+~~~~~~~~
+
+
+
+
+## Fissiamo la versione di Ruby sul Gemfile
+
+Scriviamo sul gemfile con che versione di ruby è stata create così tutte le volte che farà un bundle avrà un allarme se è su un ambiente rbenv con la versione di ruby errata.
+
+verifichiamo la versione di ruby che stiamo usando
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ ruby -v
+
+ruby 2.4.0p0 (2016-12-24 revision 57164) [x86_64-linux]
+~~~~~~~~
+
+e la scriviamo sul gemfile (da rails 5.2 viene già messa in automatico)
+
+{title="Gemfile", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+# versione di ruby usata
+ruby '2.4.0'
+~~~~~~~~
+
+I> La versione va riportata senza il numero di patch ('2.4.0' e non '2.4.0p0'). Se si riporta anche la patch ad esempio '2.4.0p0' si avrà un messaggio di errore nel momento in cui faremo il "bundle install".
+
+[tutto il codice:](#beginning-04code-Gemfile.rb)
+
+Ed una volta usato il "bundle install" l'installato viene registrato sul file: Gemfile.lock
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ bundle install
+
+$ bundle update
+$ bundle install
+~~~~~~~~
+
+I> Lo stesso Heroku che tratteremo più avanti da un warning se non trova la versione di ruby fissata
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "first bundle"
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge basic
+$ git branch -d basic
+~~~~~~~~
