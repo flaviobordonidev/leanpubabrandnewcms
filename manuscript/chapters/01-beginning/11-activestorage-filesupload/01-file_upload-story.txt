@@ -1,7 +1,6 @@
 # Soluzioni Rail per upload immagini
 
-
-per gestire gli upload ed i download dei files su rails è meglio usare una gemma specifica tipo:
+Prima di Rails 5.2 e della comparsa di ActiveRecord esistevano varie gemme per gestire gli upload ed i download dei files su rails è meglio usare una gemma specifica tipo:
 
 * shrine
 * refile

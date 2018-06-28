@@ -1,0 +1,355 @@
+# Files Upload con ActiveStorage - installazione
+
+Da rails 5.2 è inserito un gestore di files upload chiamato ActiveStorage. Vediamo come implementarlo
+Attiviamo active record per development e facciamo upload dei files in locale. Quindi su Cloud9.
+
+Risorse web:
+
+  * [GoRails File uploading with ActiveStorage in Rails 5.2](https://gorails.com/episodes/file-uploading-with-activestorage-rails-5-2)
+  * [GoRails Direct Uploads with Rails ActiveStorage](https://gorails.com/episodes/direct-uploads-with-rails-active-storage)
+  * [Rails Active Storage: Uploading files to Amazon S3 - March 20, 2018](https://keithpblog.org/post/active-storage-on-amazon-s3/)
+
+
+
+
+## Apriamo il branch "Active Storage Files Upload"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b asfu
+~~~~~~~~
+
+
+
+## Attiviamo il migrate per ActiveStorage
+
+Poiché questa non è una gemma da aggiungere ma è già integrata in Rails dobbiamo solo implementarla. Usiamo lo script seguente:
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails active_storage:install
+~~~~~~~~
+
+questo crea il migrate:
+
+{title=".../db/migrate/xxx_create_active_storage_tables.active_storage.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+# This migration comes from active_storage (originally 20170806125915)
+class CreateActiveStorageTables < ActiveRecord::Migration[5.2]
+  def change
+    create_table :active_storage_blobs do |t|
+      t.string   :key,        null: false
+      t.string   :filename,   null: false
+      t.string   :content_type
+      t.text     :metadata
+      t.bigint   :byte_size,  null: false
+      t.string   :checksum,   null: false
+      t.datetime :created_at, null: false
+
+      t.index [ :key ], unique: true
+    end
+
+    create_table :active_storage_attachments do |t|
+      t.string     :name,     null: false
+      t.references :record,   null: false, polymorphic: true, index: false
+      t.references :blob,     null: false
+
+      t.datetime :created_at, null: false
+
+      t.index [ :record_type, :record_id, :name, :blob_id ], name: "index_active_storage_attachments_uniqueness", unique: true
+    end
+  end
+end
+~~~~~~~~
+
+Questo migrate crea due tabelle:
+
+ * la tabella blobs che archivia tutti i metadata
+ * la tabella attachements che contiene il collegamento tra il tuo model su cui vuoi fare upload ed il tuo archivio-remoto (o locale) dove immagazzini i files. Questo ci permette di non dover fare nuovi migrate per implemenare vari campi di upload.
+
+Effettuiamo il migrate del database per creare la tabella sul database
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails db:migrate
+~~~~~~~~
+
+
+
+
+## Settiamo config development
+
+Attiviamo active record per development e facciamo upload dei files in locale. Quindi su Cloud9.
+Il settaggio per il production lo facciamo nel prossimo capitolo.
+In realtà per l'upload in locale è già preconfigurato di default
+
+{title=".../app/config/environments/development.rb", lang=ruby, line-numbers=on, starting-line-number=30}
+~~~~~~~~
+  # Store uploaded files on the local file system (see config/storage.yml for options)
+  config.active_storage.service = :local
+~~~~~~~~
+
+Verifichiamo la variabile ":local" nello storage.yml
+
+{title=".../app/config/storage.yml", lang=yaml, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+local:
+  service: Disk
+  root: <%= Rails.root.join("storage") %>
+  #host: "http://localhost:5000" #se usi una porta logica diversa dalla 3000.
+~~~~~~~~
+
+
+
+
+## Attiviamo upload immagine per post
+
+Implementiamo un campo in cui carichiamo le immagini per i nostri articoli usando **has_one_attached** di active_storage
+
+{title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+  has_one_attached :header_image
+~~~~~~~~
+
+Ogni volta che facciamo l'upload di un'immagine come "header_image" questa chiamata aggiorna in automatico i metatdata della tabella blobs ed il collegamento della tabella attachments. 
+
+
+
+
+## Implementiamo il controller
+
+{title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=70}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def post_params
+      params.require(:post).permit(:title, :incipit, :user_id, :header_image)
+    end
+~~~~~~~~
+
+[tutto il codice](#beginning-activestorage-filesupload-02x-controllers-posts_controller.rb)
+
+
+
+
+## Implementiamo la view
+
+{title=".../app/views/example_posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=70}
+~~~~~~~~
+  <div class="field">
+    <%= form.label :header_image %>
+    <%= form.file_field :header_image %>
+  </div>
+~~~~~~~~
+
+Per visualizzare l'immagine basta **image_tag @example_post.header_image** ma per sicurezza mettiamo anche un controllo
+
+{title=".../app/views/example_posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=70}
+~~~~~~~~
+<% if @example_post.header_image.present? %>
+  <%= image_tag @example_post.header_image %>
+<% else %>
+  <p>Nessuna immagine presente</p>
+<% end %>
+~~~~~~~~
+
+
+
+
+## Verifichiamo che funziona sul browser
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+Per verificarlo andiamo alla pagina **/example_posts**
+https://rebisworldbr1-flaviobordonidev.c9users.io/example_posts
+
+Creaiamo un nuovo articolo ed aggiungiamo un'immagine.
+possiamo vedere nelle log che è stata caricata
+~~~~~~~~
+Started PATCH "/example_posts/1" for 92.223.151.11 at 2018-06-25 11:29:20 +0000
+Cannot render console from 92.223.151.11! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by ExamplePostsController#update as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"uSUwK5/usNUNkuaHnYrkxFfYbDUFPKxZuKpQQII32bYvbCUJhYVOwPj/znNoMcHj9h+ccH/pUAf+lkwwplEUiw==", "example_post"=>{"title"=>"uno", "incipit"=>"unouno", "header_image"=>#<ActionDispatch::Http::UploadedFile:0x007f02e83b7b48 @tempfile=#<Tempfile:/tmp/RackMultipart20180625-1748-b7qotc.png>, @original_filename="20180622-090307UTC_summary Acqua Fontanella in Elabori.png", @content_type="image/png", @headers="Content-Disposition: form-data; name=\"example_post[header_image]\"; filename=\"20180622-090307UTC_summary Acqua Fontanella in Elabori.png\"\r\nContent-Type: image/png\r\n">, "user_id"=>"1"}, "commit"=>"Update Example post", "id"=>"1"}
+  ExamplePost Load (0.5ms)  SELECT  "example_posts".* FROM "example_posts" WHERE "example_posts"."id" = $1 LIMIT $2  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/example_posts_controller.rb:67
+   (0.2ms)  BEGIN
+  ↳ app/controllers/example_posts_controller.rb:44
+  ActiveStorage::Attachment Load (0.4ms)  SELECT  "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = $1 AND "active_storage_attachments"."record_type" = $2 AND "active_storage_attachments"."name" = $3 LIMIT $4  [["record_id", 1], ["record_type", "ExamplePost"], ["name", "header_image"], ["LIMIT", 1]]
+  ↳ app/controllers/example_posts_controller.rb:44
+  Disk Storage (2.2ms) Uploaded file to key: WBTnxUajeVTiihjyCRaX6mrt (checksum: vc6OiMW16MdzGcW5wbsERw==)
+  ActiveStorage::Blob Create (1.0ms)  INSERT INTO "active_storage_blobs" ("key", "filename", "content_type", "metadata", "byte_size", "checksum", "created_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["key", "WBTnxUajeVTiihjyCRaX6mrt"], ["filename", "20180622-090307UTC_summary Acqua Fontanella in Elabori.png"], ["content_type", "image/png"], ["metadata", "{\"identified\":true}"], ["byte_size", 79889], ["checksum", "vc6OiMW16MdzGcW5wbsERw=="], ["created_at", "2018-06-25 11:29:20.695879"]]
+  ↳ app/controllers/example_posts_controller.rb:44
+  ActiveStorage::Attachment Create (1.1ms)  INSERT INTO "active_storage_attachments" ("name", "record_type", "record_id", "blob_id", "created_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["name", "header_image"], ["record_type", "ExamplePost"], ["record_id", 1], ["blob_id", 2], ["created_at", "2018-06-25 11:29:20.712523"]]
+  ↳ app/controllers/example_posts_controller.rb:44
+  User Load (0.4ms)  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/example_posts_controller.rb:44
+  ExamplePost Update (0.8ms)  UPDATE "example_posts" SET "updated_at" = $1 WHERE "example_posts"."id" = $2  [["updated_at", "2018-06-25 11:29:20.715227"], ["id", 1]]
+  ↳ app/controllers/example_posts_controller.rb:44
+   (3.5ms)  COMMIT
+  ↳ app/controllers/example_posts_controller.rb:44
+[ActiveJob] Enqueued ActiveStorage::AnalyzeJob (Job ID: a791c993-5ea1-4847-90f8-4d93e4afa756) to Async(default) with arguments: #<GlobalID:0x007f02e0c5f1e0 @uri=#<URI::GID gid://rebisworldbr/ActiveStorage::Blob/2>>
+Redirected to https://rebisworldbr1-flaviobordonidev.c9users.io/example_posts/1
+Completed 302 Found in 166ms (ActiveRecord: 12.4ms)
+~~~~~~~~
+
+ed andando su show possiamo vedere anche l'immagine nel browser.
+
+
+
+
+## Ridimensioniamo l'immagine
+
+Per ridimensionare l'immagine possiamo chiamare il **.variant(...)**
+
+{title=".../app/views/example_posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=70}
+~~~~~~~~
+  <%= image_tag @example_post.header_image.variant(resize: "400x400") %>
+~~~~~~~~
+
+Attenzione! per funzionare il .variand necessita di minimagic
+
+
+
+
+## installiamo la gemma minimagic
+
+La gemma "mini_magick" ci aiuta con l'integrazione di refile su Rails e l'implementazione dell'elaborazione delle immagini. MiniMagick richiede ImageMagic installato. Per installarlo su Ubuntu/Cloud9 basta eseguire:
+
+I> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/mini_magick)
+I>
+I> facciamo riferimento al [tutorial github della gemma](https://github.com/minimagick/minimagick)
+
+{title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=48}
+~~~~~~~~
+# Manipulate images with minimal use of memory via ImageMagick / GraphicsMagick
+gem 'mini_magick', '~> 4.8'
+~~~~~~~~
+
+[tutto il codice: Gemfile](#brandnewcms-10code-gemfile.rb)
+
+
+Eseguiamo l'installazione della gemma con bundle
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ bundle install
+~~~~~~~~
+
+
+
+
+### Installiamo imagemagick su Cloud9
+
+Per funzionare mini_magick ha bisogno di imagemagick presente, quindi installiamolo su Cloud9. (Per la produzione, Heroku lo installa automaticamente)
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo apt-get install imagemagick
+~~~~~~~~
+
+Se non funziona eseguire:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo apt-get update
+$ sudo apt-get install imagemagick
+~~~~~~~~
+
+Se neanche questo funziona eseguire:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo add-apt-repository main
+$ sudo apt-get update
+$ sudo apt-get install imagemagick
+~~~~~~~~
+
+Eseguiamo l'installazione della gemma con bundle
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ bundle install
+~~~~~~~~
+
+
+
+
+## Verifichiamo che funziona sul browser
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+https://rebisworldbr1-flaviobordonidev.c9users.io/example_posts/1
+
+
+
+
+## salviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Install ActiveStorage and start implementation"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su Heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku asfu:master
+$ heroku run rails db:migrate
+~~~~~~~~
+
+~~~~~~~~
+remote: ###### WARNING:
+remote:        We detected that some binary dependencies required to
+remote:        use all the preview features of Active Storage are not
+remote:        present on this system.
+remote:        
+remote:        For more information please see:
+remote:          https://devcenter.heroku.com/articles/active-storage-on-heroku
+~~~~~~~~
+
+Heroku accetta uploads di immagini direttamente sul suo sito ma è bene attivare un servizio terzo: Amazon S3, Google GCS, Microsoft AzureStorage, Digitalocean, ...
+Attenzione. Anche se le immagini heroku le accetta si rischia che queste vengono cancellate dopo un po' di tempo. E comunque occupano del prezioso spazio su Heroku.
+es: 
+Effettuato l'upload del file "Screen Shot 2018-06-14 at 11.35.28.png" ed è stata caricata su:
+
+https://quiet-shelf-47596.herokuapp.com/rails/active_storage/disk/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJbWQyWVhKcFlXNTBjeTl6UmxKM2IxYzNjamN4UzNWU2VGcFdXbWQwY2tSdFkwMHZZalZpTkdFMFpXTXhPREF6TW1abU5HRmxNemhrTURaaU5EWmxOV1k1WVRWbE5qQTFOalExWkRNeFpUaGpNbVEzWWpBeU9ESXpaakl4WmpFM09Ua3paZ1k2QmtWVSIsImV4cCI6IjIwMTgtMDYtMjVUMTQ6NDY6MjcuNjkyWiIsInB1ciI6ImJsb2Jfa2V5In19--2d9e91046d31c6045815219e10ec136825b9ae6e/Screen%20Shot%202018-06-14%20at%2011.35.28.png?content_type=image%2Fpng&disposition=inline%3B+filename%3D%22Screen+Shot+2018-06-14+at+11.35.28.png%22%3B+filename%2A%3DUTF-8%27%27Screen%2520Shot%25202018-06-14%2520at%252011.35.28.png
+
+Nel prossimo capitolo attiviamo Amazon Web Service S3.
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge asfu
+$ git branch -d asfu
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

@@ -1,23 +1,30 @@
-## Creare ruoli
+# Roles - enum
 
-né cancancan né pundit gestiscono i ruoli. puoi farlo manualmente da codice.
+Questo approccio è semplice e permette di avere più ruoli fissi (es: user, vip, admin) o (es: silver, gold, platinum, diamond) 
 
-Se vogliamo gestire un Blog e fare in modo che un autore possa modificare solo i suoi records ci serve Rolify.
-Se vogliamo gestire che un utente veda solo le transazioni dell'azienda a cui appartiene ci serve Rolify.
-
-ottimo articolo http://railsapps.github.io/rails-authorization.html 
-vedi più avanti nell'articolo i paragrafi:
-  Implementing Roles
-  Single or Multiple Roles
-  Binary Role (perché non usarlo)
-  String Roles (perché non usarlo)
-  Bitmask Roles (perché non usarlo)
-  Role Model (se gli users hanno più di un ruolo. meglio usare una gemma)
-  Royce or Rolify Gems
-    Rolify is well-documented on its wiki. (https://github.com/EppO/rolify/wiki)
-    Both Royce and Rolify are convenient and well-tested, so there is little reason to implement your own Role model, if your application requires users with more than one role.
-  Enum Roles (è la scelta vincente!)
+Nel prossimo capitolo vedremo il livello più alto di gestione dei ruoli:
   
+  * rolify - massima flessibilità con una gemma ed una tabella roles con relazione molti-a-molti
+
+Volendo usare "rolify" possiamo saltare questo capitolo
+
+
+Risorse web:
+
+* [articolo lungo vai al paragrafo Implementing Roles - Enum Roles](http://railsapps.github.io/rails-authorization.html)
+
+
+
+
+## Apriamo il branch "Roles Enum"
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b re
+~~~~~~~~
+
+
+
     For an enum attribute named role, with the values admin, vip, and user, we can use these methods:
     
     User.roles # => {"user"=>0, "vip"=>1, "admin"=>2} – list all roles
