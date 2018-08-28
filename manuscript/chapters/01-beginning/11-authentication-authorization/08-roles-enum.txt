@@ -1,12 +1,9 @@
 # Roles - enum
 
-Questo approccio è semplice e permette di avere più ruoli fissi (es: user, vip, admin) o (es: silver, gold, platinum, diamond) 
-
-Nel prossimo capitolo vedremo il livello più alto di gestione dei ruoli:
-  
-  * rolify - massima flessibilità con una gemma ed una tabella roles con relazione molti-a-molti
-
-Volendo usare "rolify" possiamo saltare questo capitolo
+Questo approccio è semplice e permette di avere più ruoli fissi (es: user, vip, admin) o (es: silver, gold, platinum, diamond).
+Questo livello permette di gestire più del 90% delle esigenze delle applicazioni web. Usato con pundit e devise riesce a coprire quasi tutte le esigenze di autorizzazione.
+Per questo motivo rolify è stato messo su una sezione distinta, proprio perché è una gemma che, quasi sempre, possiamo evitare di installare.
+Volendo usare "rolify" possiamo saltare direttamente alla sezione 12-rolification
 
 
 Risorse web:
@@ -97,9 +94,8 @@ end
   #enum role: [:user, :admin, :moderator, :author]
   enum role: {user: 0, admin: 1, moderator:2, author:3}
 ~~~~~~~~
-  
 
-Se non volessimo usare il default lato database con **, default: 0** potremmo farlo sul model così:  
+Se non avessimo voluto usare il default lato database con **default: 0** potevamo farlo sul model così:  
   
 {title=".../models/user.rb", lang=ruby, line-numbers=on, starting-line-number=7}
 ~~~~~~~~
@@ -110,27 +106,7 @@ Se non volessimo usare il default lato database con **, default: 0** potremmo fa
   end
 ~~~~~~~~
 
-
-
-
-## Aggiorniamo il model
-
-models/user.rb
-~~~~~~~~
-class User < ApplicationRecord
-  enum role: [:user, :vip, :admin]
-  after_initialize :set_default_role, :if => :new_record?
-
-  def set_default_role
-    self.role ||= :user
-  end
-
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
-end
-~~~~~~~~
+ma lato database è più pulito e più prestazionale.
 
 
 
@@ -201,7 +177,14 @@ $ rails c
 
 
 
+
 ## Risolviamo il problema di registerable
+
+* ATTENZIONE! QUESTO PARAGRAFO E' INTERESSANTE DIDATTICAMENTE MA LA VERITA' E' CHE REGISTERABLE NON CI SERVE.
+* REGISTERABLE PERMETTE DI CAMBIARE I DATI ALL'UTENTE LOGGATO E NON AD UN AMMINISTRATORE PER GLI ALTRI UTENTI.
+Register permette di fare i cambi solo per l'utente che è loggato. noi invece vogliamo una gestione come amministratore di vedere tutti gli utenti e cambiare i ruoli degli altri utenti.
+
+E' INTERESSANTE DIDATTICAMENTE PERCHE' FA VEDERE COME E' SEMPLICE RIATTIVARE REGISTERABLE CHE INIZIALMENTE ERA STATO TOLTO COMMENTANDOLO
 
 Siccome precedentemente avevamo tolto registerable perché non ci serviva adesso lo rimettiamo dentro.
 Basta aggiornare il model
@@ -439,13 +422,6 @@ Per evitare che si cambi il suo ruolo metterei
 
 
 
-## CAZZO ho sbagliato
-
-Register permette di fare i cambi solo per l'utente che è loggato. noi invece vogliamo una gestione come amministratore di vedere tutti gli utenti e cambiare i ruoli degli altri utenti.
-
- *_*
-
-Devo rivedere questo MERDA!
 
 
 

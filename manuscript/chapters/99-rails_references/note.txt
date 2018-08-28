@@ -1,0 +1,175 @@
+www.leanpub.com
+
+https://leanpub.com/leanpubrailsreferences/preview
+
+https://leanpub.com/help/getting_started_sync_dropbox
+https://leanpub.com/help/manual
+
+---
+http://pygments.org/demo/
+vedi il codice nel menu a cascata
+
+---
+$ sudo service postgresql start
+
+---
+$ rails s -b $IP -p $PORT
+
+
+---
+---
+
+---
+CURSORE MULTIPLO su UBUNTU
+
+Hold down CTRL+ALT and click in multiple locations
+Hold down ALT+SHIFT, click the mouse, and drag the cursor up or down in the editor
+Through the menu bar at Edit > Selection > Multiple Selections
+
+---
+Sul Gemfile per mettere più gruppi su un'unica riga si usa un array []. Es:
+
+# Call 'byebug' anywhere in the code to stop execution and get a debugger console
+gem 'byebug', group: [:development, :test]
+
+---
+Rails 5
+
+https://community.c9.io/t/running-a-rails-app/1615
+
+o run a Rails application:
+
+1. Open the terminal and type gem install rails
+2. When done, type rails new example -d mysql
+3. Edit your database configuration in config/database.yml
+4. Type rails s -b $IP -p $PORT
+That's it! Your rails app will now be running.
+
+---
+https://www.railstutorial.org/book/beginning
+
+1.2.2 Installing Rails
+
+The development environment from Section 1.2.1 includes all the software we need to get started except for Rails itself. To install Rails, we’ll use the gem command provided by the RubyGems package manager, which involves typing the command shown in Listing 1.1 into your command-line terminal. (If developing on your local system, this means using a regular terminal window; if using the cloud IDE, this means using the command-line area shown in Figure 1.2.)
+
+Listing 1.1: Installing Rails with a specific version number.
+
+$ gem install rails -v 5.0.0.1
+
+$ cd ~/workspace
+$ rails _5.0.0.1_ new hello_app
+
+
+---
+
+$ gem install rails -v 5.0.0.1
+
+$ cd ~/workspace
+$ rails _5.0.0.1_ new hello_app -d postgresql
+
+$ rails _5.0.0.1_ new hello_app --database=postgresql
+
+
+$ rails s -b $IP -p $PORT
+
+on the cloud IDE, go to Share and click on the Application address to open it (Figure 1.9).
+
+----
+----
+
+Implementiamo Heroku per RAILS 4
+
+[codice: application 02](#code-application-02)
+
+{title="Gemfile", lang=ruby, line-numbers=on, starting-line-number=53}
+~~~~~~~~
+# Needed on Heroku. Enables serving assets in production and setting your logger to standard out.
+gem 'rails_12factor', '~> 0.0.3',   group: :production
+
+# Fast, threaded, and highly concurrent web server. Suggested by Heroku
+gem 'puma', '~> 3.6', group: :production
+~~~~~~~~
+
+
+installiamo le gemme
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ bundle install
+~~~~~~~~
+
+Creiamo il file Procfile che ha una sola linea di codice
+
+
+{title="Procfile", lang=text, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+web: bundle exec puma -C config/puma.rb
+~~~~~~~~
+
+
+Creiamo il file puma.rb 
+
+
+{title="config/puma.rb", lang=text, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+workers Integer(ENV['WEB_CONCURRENCY'] || 2)
+threads_count = Integer(ENV['MAX_THREADS'] || 5)
+threads threads_count, threads_count
+
+preload_app!
+
+rackup      DefaultRackup
+port        ENV['PORT']     || 3000
+environment ENV['RACK_ENV'] || 'development'
+
+on_worker_boot do
+  # Worker specific setup for Rails 4.1+
+  # See: https://devcenter.heroku.com/articles/
+  # deploying-rails-applications-with-the-puma-web-server#on-worker-boot
+  ActiveRecord::Base.establish_connection
+end
+~~~~~~~~
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku version
+$ heroku login
+$ heroku keys:add
+$ heroku create
+~~~~~~~~
+
+
+Adesso imposto il MAX_THREADS seguendo il documento di heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku config:set MAX_THREADS=1
+~~~~~~~~
+
+
+Adesso è tutto pronto. Posso fare il commit finale in locale e uploadare tutto in remoto.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ RAILS_ENV=production bundle exec rake assets:precompile
+
+oppure (http://guides.rubyonrails.org/asset_pipeline.html#precompiling-assets):
+
+$ RAILS_ENV=production bin/rails assets:precompile
+
+$ git add -A
+$ git commit -m "Add gems for production on Heroku with Puma webserver"
+$ git push heroku master
+~~~~~~~~
+
+
+---
+Updating Git remotes
+è possibile cambiare manualmente usando il CLI l'app di heroku.
+~~~~~~~~
+$ git remote rm heroku
+$ heroku git:remote -a newname 
+~~~~~~~~
+
+---

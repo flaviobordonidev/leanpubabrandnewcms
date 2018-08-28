@@ -25,20 +25,20 @@ $ git checkout -b ra
 
 
 
-## Aggiungiamo l'attributo admin
+## Aggiungiamo l'attributo role_admin
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ rails generate migration add_admin_to_users admin:boolean
+$ rails generate migration add_admin_to_users role_admin:boolean
 ~~~~~~~~
 
-Aggiungiamo al migration l'opzione ** defautl: false ** per la colonna admin
+Aggiungiamo al migration l'opzione ** defautl: false ** per la colonna role_admin
 
 {title=".../db/migrate/xxx_add_admin_to_users.rb", lang=ruby, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
 class AddAdminToUsers < ActiveRecord::Migration
   def change
-    add_column :users, :admin, :boolean, default: false
+    add_column :users, :role_admin, :boolean, default: false
   end
 end
 ~~~~~~~~
@@ -54,7 +54,7 @@ Adesso possiamo identificare su un utente loggato è amministratore.
 
 {title="verifichiamo se amministratore", lang=ruby, line-numbers=off}
 ~~~~~~~~
-if current_user.admin?
+if current_user.role_admin?
   # do something
 end
 ~~~~~~~~
@@ -65,7 +65,7 @@ Se *current_user* è *nil* non viene generato un errore (raising an undefined me
 
 {title="verifichiamo se amministratore", lang=ruby, line-numbers=off}
 ~~~~~~~~
-if current_user.try(:admin?)
+if current_user.try(:role_admin?)
   # do something
 end
 ~~~~~~~~
@@ -74,7 +74,7 @@ Se voglio dare i diritti di amministratore (grant admin status) da codice posso:
 
 {title="grant admin status", lang=ruby, line-numbers=off}
 ~~~~~~~~
-current_user.update_attribute :admin, true
+current_user.update_attribute :role_admin, true
 ~~~~~~~~
 
 
@@ -95,6 +95,16 @@ Non funziona perché su heroku non abbiamo eseguito il migrate.
 ~~~~~~~~
 $ heroku run rake db:migrate
 ~~~~~~~~
+
+
+
+
+## Togliamo la colonna admin
+
+Togliamo la colonna "role_admin" di tipo boolean dalla tabella users perché nel prossimo capitolo la sostituiremo con la più potente colonna "role" di tipo "integer / enum".
+Per togliere la colonna eseguiamo il rollback ed eliminiamo il migrate?
+Non sò se è la scelta giusta visto che abbiamo già pubblicato su heroku. Ci possiamo provare.
+Altra possibilità è creare un nuovo migration di eliminazione della colonna.
 
 
 
