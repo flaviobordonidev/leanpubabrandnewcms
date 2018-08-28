@@ -1,0 +1,5 @@
+-# Migrations
+
+db/migrate
+
+* [Active Record Migrations](http://guides.rubyonrails.org/active_record_migrations.html)

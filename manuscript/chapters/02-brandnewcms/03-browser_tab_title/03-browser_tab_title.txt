@@ -26,22 +26,22 @@ Implementiamo il cambio del titolo nel layout application con un **yield(:mytitl
 
 Sulle views di nostro interesse collochiamo i "contenuti" per il nostro "contenitore vuoto" yield(:page_title). I contenuti sono passati al "contenitore vuoto" con **provide(:mytitle, "il mio contenuto")**
 
-{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
 ~~~~~~~~
 <% provide(:page_title, "All posts") %>
 ~~~~~~~~
 
-{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
 ~~~~~~~~
 <% provide(:page_title, @post.title) %>
 ~~~~~~~~
 
-{title=".../app/views/posts/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+{title=".../app/views/posts/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
 ~~~~~~~~
 <% provide(:page_title, "Edit #{@post.title}") %>
 ~~~~~~~~
 
-{title=".../app/views/posts/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+{title=".../app/views/posts/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
 ~~~~~~~~
 <% provide(:page_title, "new post") %>
 ~~~~~~~~

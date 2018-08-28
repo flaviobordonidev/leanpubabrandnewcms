@@ -1,0 +1,125 @@
+# Scope and Lambda
+
+Railcasts 202-active-record-queries-in-rails-3
+Railcasts 215-advanced-queries-in-rails-3
+
+Models: Subject
+  scope :search, -> { |query| where(["name LIKE ?", "%#{query}%"]) }
+
+Models: AdminUser
+  scope :named, -> { |first,last| where(first_name: first, last_name: last) }
+
+Models: People
+  scope :search, -> { |query| where(["first_name LIKE ? OR last_name LIKE ?", "%#{query}%", "%#{query}%"]) }
+
+Models: Article
+
+  scope :sorted, -> { order(:name) }
+
+rails c
+  Article.none # restituisce un ActiveRecord::Relation vuota. Utile per prepararsi a fare chaining successivi con vari scope.
+
+  Article.where.not(name: "Hello")
+  Article.order(name: :desc)
+
+  Article.find_by_name("Hello") # il vecchio modo di fare dynamic binding
+  Article.find_by name: "Hello" # il nuovo modo (doesn't require method missing)
+
+  Article.find_or_create_by name: "Hello"
+  Article.find_or_initializate_by name: "Hello"
+
+Railcasts 415-upgrading-to-rails-4
+Models: Episode
+  scope :published, -> { where('published_on <= ?', Time.now.to_date) }
+
+
+
+## Simple Search and Scope and Lambda
+
+Railscasts 037-simple-search-form
+
+Fonte: Lynda.com.Ruby.on.Rails.3.Essential.Training.2010-ADDiCT
+-> 7. Models, ActiveRecord, and ActiveRelation -> 08 Named scopes.wmv 04:33
+
+class Subject < ActiveRecord::Base
+
+  scope :search, lambda {|query| where(["name LIKE ?", "%#{query}%"])}
+
+end
+
+
+Fonte: Lynda.com.Ruby.on.Rails.3.Essential.Training.2010-ADDiCT
+-> 7. Models, ActiveRecord, and ActiveRelation -> 08 Named scopes.wmv 05:40
+
+class AdminUser < ActiveRecord::Base
+
+  scope :named, lambda {|first,last| where(:first_name => first, :last_name => last)}
+
+end
+
+
+Fonte: Flavio - Cerca in qualsiasi punto del Nome o del Cognome della persona
+
+class People < ActiveRecord::Base
+
+  scope :search, lambda {|query| where(["first_name LIKE ? OR last_name LIKE ?", "%#{query}%", "%#{query}%"])}
+
+end
+
+
+
+## search scope and will pagination
+
+@relateds = Related.all
+
+  add old will_pagination
+  @relateds = Related.paginate :page => params[:page], :order => 'created_at DESC', :per_page => 6
+
+add will_pagination
+@relateds = Related.page(params[:page]).order('created_at ASC').per_page(6)
+
+add search scope and will_pagination
+@relateds = Related.search(params[:search]).page(params[:page]).per_page(6).order('created_at ASC')
+
+
+models/users.rb
+~~~~~~~~
+  scope :search, lambda {|query| where(["email LIKE ?","%#{query}%"])}
+~~~~~~~~
+
+
+## Deprecation warning when using has_many through uniq in Rails 4
+
+http://stackoverflow.com/questions/16569994/deprecation-warning-when-using-has-many-through-uniq-in-rails-4
+
+Deprecation warning when using has_many :through :uniq in Rails 4
+
+Q.---
+Rails 4 has introduced a deprecation warning when using :uniq => true with has_many :through. For example:
+
+has_many :donors, :through => :donations, :uniq => true
+
+Yields the following warning:
+
+DEPRECATION WARNING: The following options in your Goal.has_many :donors declaration are deprecated: :uniq. Please use a scope block instead. For example, the following:
+
+    has_many :spam_comments, conditions: { spam: true }, class_name: 'Comment'
+
+should be rewritten as the following:
+
+    has_many :spam_comments, -> { where spam: true }, class_name: 'Comment'
+
+What is the correct way to rewrite the above has_many declaration?
+
+A.---
+The uniq option needs to be moved into a scope block. Note that the scope block needs to be the second parameter to has_many (i.e. you can't leave it at the end of the line, it needs to be moved before the :through => :donations part):
+
+has_many :donors, -> { uniq }, :through => :donations
+
+It may look odd, but it makes a little more sense if you consider the case where you have multiple parameters. For example, this:
+
+has_many :donors, :through => :donations, :uniq => true, :order => "name", :conditions => "age < 30"
+
+becomes:
+
+has_many :donors, -> { where("age < 30").order("name").uniq }, :through => :donations

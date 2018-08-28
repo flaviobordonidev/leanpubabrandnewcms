@@ -1,0 +1,80 @@
+
+* http://stackoverflow.com/questions/885414/a-concise-explanation-of-nil-v-empty-v-blank-in-ruby-on-rails
+* http://stackoverflow.com/questions/11029256/difference-between-nil-blank-and-empty
+
+I find myself repeatedly looking for a clear definition of the differences of nil?, blank?, and empty? in Ruby on Rails. Here's the closest I've come:
+
+blank? objects are false, empty, or a whitespace string. For example, "", " ", nil, [], and {} are blank.
+nil? objects are instances of NilClass.
+empty? objects are class-specific, and the definition varies from class to class. A string is empty if it has no characters, and an array is empty if it contains no items.
+Is there anything missing, or a tighter comparison that can be made?
+
+One gotcha is an empty array returns false for present?. Which is because blank? returns true for an empty array. 
+
+--
+
+.nil? can be used on any object and is true if the object is nil.
+
+.empty? can be used on strings, arrays and hashes and returns true if:
+
+String length == 0
+Array length == 0
+Hash length == 0
+Running .empty? on something that is nil will throw a NoMethodError.
+
+That is where .blank? comes in. It is implemented by Rails and will operate on any object as well as work like .empty? on strings, arrays and hashes.
+
+nil.blank? == true
+false.blank? == true
+[].blank? == true
+{}.blank? == true
+"".blank? == true
+5.blank? == false
+0.blank? == false
+.blank? also evaluates true on strings which are non-empty but contain only whitespace:
+
+"  ".blank? == true
+"  ".empty? == false
+Rails also provides .present?, which returns the negation of .blank?.
+
+Array gotcha: blank? will return false even if all elements of an array are blank. To determine blankness in this case, use all? with blank?, for example:
+
+[ nil, '' ].blank? == false
+[ nil, '' ].all? &:blank? == true 
+
+---
+
+NIL?
+
+nil.nil?
+#=> true
+[].nil?
+#=> false
+"".nil?
+#=> false
+" ".nil?
+#=> false
+
+
+EMPTY?
+
+[].empty?
+#=> true
+nil.empty?
+#=> undefined method
+"".empty?
+#=> true
+" ".empty?
+#=> false
+
+
+BLANK?
+
+[].blank?
+#=> true
+nil.blank?
+#=> true
+"".blank?
+#=> true
+" ".blank?
+#=> true

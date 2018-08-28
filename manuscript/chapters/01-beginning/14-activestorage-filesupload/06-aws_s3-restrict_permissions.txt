@@ -1,0 +1,9 @@
+# Restringiamo i permessi
+
+E' arrivato il momento di lavorare sui files CORS restringendo i permessi di accesso.
+
+In questo capitolo:
+
+* Lo IAM user botbrandnewcmsdev può accedere solo al bucket brandnewcmsdev 
+* Lo IAM user botbrandnewcmsprod può accedere solo al bucket brandnewcmsprod
+* a scopo didattico creiamo IAM user botbrandnewcmsprodro (read only) che può solo visualizzare i file

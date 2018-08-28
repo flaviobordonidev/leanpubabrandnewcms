@@ -1,0 +1,35 @@
+# Introduzione
+
+Questa sezione è una parte importante per la gestione dell'applicazione in quanto permette l'accesso ed identifica chi può fare cosa a seconda del suo ruolo.
+
+
+
+
+## Distinguiamo
+
+Il processo di autorizzazione è distinto da quello di autenticazione. Mentre l'autenticazione è il processo di verificare che "tu sei chi tu dici di essere", l'autorizzazione è il processo di verificare che "tu hai il permesso di fare quello che stai cercando di fare". La verifica del permesso è fatta in funzione del ruolo o dei ruoli che hai.
+L'autenticazione sono porte di ingresso che si aprono tutte con la chiave chiamata login. Una volta entrato l'utente può fare tutto. Per limitarne l'azione gli si assegnano uno o più ruoli e per ogni ruolo si abilitano delle autorizzazioni a fare certe azioni.
+
+Autenticazione è essere in grado di verificare l'identità dell'utente. E' fare accesso/login --> Devise, Authlogic, Clearance
+Autorizzazione è chi può fare cosa una volta autenticato. (è dare livelli di accesso differente) --> CanCanCan, Pundit, Authority
+Ruolificazione è dare un ruolo ad ogni utente. Questo ci permette di dare autorizzazioni in funzione del ruolo. --> rolify
+
+Per l'Autenticazione scelgo Devise.
+Per l'autorizzazione scelgo Pundit.
+Per la ruolificazione scelgo Rolify.
+
+
+Risorse web:
+
+* [ruby-toolbox rails_authorization](https://www.ruby-toolbox.com/categories/rails_authorization)
+* [sitepoint - Straightforward Rails Authorization with Pundit](https://www.sitepoint.com/straightforward-rails-authorization-with-pundit/)
+* [Pundit](https://github.com/elabs/pundit)
+
+* http://stackoverflow.com/questions/35989990/authorization-and-associations-between-user-and-posts
+* Episode #188 – Nov 16, 2009 - Declarative Authorization
+
+* [Rails Authorization With Pundit](https://www.youtube.com/watch?v=qruGD_8ry7k)
+* [Codeplace | User Authorization in Ruby on Rails using CanCan](https://www.youtube.com/watch?v=0ZCvLDZQ5HM)
+* [rolify](https://github.com/RolifyCommunity/rolify)
+
+* [Rails Authorization With Pundit - parte da zero ed installa anche devise ed usa anche spec tests](https://www.youtube.com/watch?v=qruGD_8ry7k)

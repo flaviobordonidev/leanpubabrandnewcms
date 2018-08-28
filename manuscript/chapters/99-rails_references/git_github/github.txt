@@ -1,0 +1,79 @@
+# Github
+
+Github rende disponibile a livello web i progetti gestiti da git.
+Github è un repository remoto di git.
+
+{title="Sommario del capitolo", lang=bash, line-numbers=off}
+~~~~~~~~
+# dal sito github creiamo un nuovo repository
+$ git remote add origin https://github.com/Integram-System/donamat.git
+$ git push origin master
+$ git push origin master --tag
+~~~~~~~~
+
+
+
+## Iniziamo la storia
+
+Non mi creo il branch perché faccio tutto sul master
+
+
+
+
+## Github
+
+Iniziamo portando la nostra applicazionie su Github. Per prima cosa creiamoci un account su www.github.com
+
+![account su github](images/01/08/github_homepage.png)
+
+![account su github](images/01/08/github_signin.png)
+
+
+Una volta loggati creiamo un nuovo repository e lo chiamiamo "donamat"
+
+![account su github](images/01/08/github_new_repository.png)
+
+![account su github](images/01/08/github_new_repository2.png)
+
+Aggiungiamo sul nostro git il repository remoto "donamat.git" creato sul nostro account  github "Integram-System".
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git remote add origin https://github.com/Integram-System/donamat.git
+~~~~~~~~
+
+Il comando "git remote" è per attivare il repository remoto su un server esterno (nel nostro caso github.com).
+con "add origin" si dichiara che il nome di riferimento del repositroy remoto è "origin" (potevamo chiamarlo github ma per convenzione storica la stessa Github ha scelto di chiamarlo "origin").  
+
+Spostiamo il nostro git locale sul repository remoto Github
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
+
+il comando "git push" sposta sul branch remoto "origin" il branch locale "master".
+Spostiamo in remoto anche la parte dei tag in cui abbiamo messo la versione v.0.1.0
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master --tag
+~~~~~~~~
+
+![github overview1](images/01/08/github_repository_overview1.png)
+
+![github overview2](images/01/08/github_repository_overview2.png)
+
+![github overview3](images/01/08/github_repository_overview3.png)
+
+![github branches](images/01/08/github_branches.png)
+
+![github branches2](images/01/08/github_branches2.png)
+
+![github commits](images/01/08/github_commits.png)
+
+![github git pull](images/01/08/github_git_pull_origin_master.png)
+
+![github git pull](images/01/08/github_git_push_origin_branchname.png)
+
+![github tags](images/01/08/github_tags.png)

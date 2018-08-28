@@ -1,0 +1,17 @@
+# include vs join
+
+http://asciicasts.com/episodes/181-include-vs-joins
+Railscasts 181-include-vs-joins
+
+
+Abnormalis models/company.rb
+
+in postgresql ILIKE is case insensitive. LIKE is case sensitive.
+
+~~~~~~~~
+  scope :search, lambda {|query| where(["name ILIKE ?","%#{query}%"])}
+  scope :complex_search, lambda {|query| includes(:employments).where(["name ILIKE ? OR summary ILIKE ?","%#{query}%","%#{query}%"])}
+  #scope :complex_search, lambda {|query| joins(:employments).where(["name ILIKE ? OR employments.summary ILIKE ?","%#{query}%","%#{query}%"])}
+~~~~~~~~
+
+per joins ho dovuto specificare la tabella su summary per evitare disanbiguità ma comunque continua a funzionare male. Dà dei record duplicati.

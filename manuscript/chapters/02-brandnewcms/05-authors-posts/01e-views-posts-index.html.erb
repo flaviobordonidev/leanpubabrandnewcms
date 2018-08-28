@@ -1,0 +1,32 @@
+<%# == Meta_data ============================================================ %>
+
+<% provide(:page_title, "All posts") %>
+<% provide(:blog_active, "active") %>
+
+<%# == Meta_data - end ====================================================== %>
+
+<p id="notice"><%= notice %></p>
+
+<h1>Posts</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Incipit</th>
+      <th colspan="1"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @posts.each do |post| %>
+      <tr>
+        <td><%= post.title %></td>
+        <td><%= post.incipit %></td>
+        <td><%= link_to 'Show', post %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

@@ -1,68 +1,21 @@
-# Creiamo la pagina della storia
+# Rebisworld - homepage
 
-creiamo la view per la pagina del sito.
-
-
-
-
-
-**************
-**************
-**************
-**************
-**************
-**************
-
-
-Creiamo il modulo **Static_Pages** come abbiamo fatto per **authors**
-così abbiamo
-
-* views/static_pages/shared/_footer
-* views/static_pages/shared/_logo_convasone
-
-* views/static_pages/story/show
-* views/static_pages/story/_section1
-* views/static_pages/story/_section2
-* views/static_pages/story/_sectionN
-
-* views/static_pages/the_game/show
-* views/static_pages/the_game/_section1
-* views/static_pages/the_game/_section2
-* views/static_pages/the_game/_sectionN
-
-* views/static_pages/why_play/show
-* views/static_pages/why_play/_section1
-* views/static_pages/why_play/_section2
-* views/static_pages/why_play/_sectionN
-
-* views/static_pages/why_works/show
-* views/static_pages/why_works/_section1
-* views/static_pages/why_works/_section2
-* views/static_pages/why_works/_sectionN
-
-
-**************
-**************
-**************
-**************
-**************
+Prima di iniziare ad importare i files del Canvas creiamo la view per la pagina del sito.
 
 
 
 
-
-
-## Apriamo il branch "Page Story"
+## Apriamo il branch "Rebisworld Homepage"
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ git checkout -b ps
+$ git checkout -b rh
 ~~~~~~~~
 
 
 
 
-## Prepariamo la pagina PageStory
+## Prepariamo la pagina Homepage 
 
 Iniziamo creando una pagina statica; eventualmente la renderemo dinamica più avanti. Essendo statica non usiamo lo scaffold ma **rails g controller**. Quindi creiamo il controller Homepage in cui includiamo la sola azione show. 
 
@@ -79,11 +32,10 @@ I> Poiché è un'unica pagina statica metto il controller al singolare.
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ rails g controller PageStory show
+$ rails g controller Homepage show
 ~~~~~~~~
 
 non ho nessun migrate perché non mi interfaccio con il database.
-
 
 
 

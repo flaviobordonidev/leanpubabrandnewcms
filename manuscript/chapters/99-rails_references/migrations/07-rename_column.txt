@@ -1,0 +1,86 @@
+# Rinomina colonna (Rename column)
+
+rename_column :table_name, :old_column_name, :new_column_name
+
+
+
+
+## Esempio1: Rename favorite_id column/field in Employments table
+
+A> rails g migration RenameFavoriteIdInEmployments
+
+[db/migration/xxx_rename_favorite_id_in_employments.rb](#code/models-migrations/07-db-migration-xxx_rename_favorite_id_in_employments.rb)
+
+{lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+rename_column :employments, :favorite_id, :favorite_id_person
+~~~~~~~~
+
+
+
+
+## Esempio2: rename more columns
+
+A> rails g migration FixColumnNames
+
+[db/migration/xxx_fix_column_names.rb](#code/models-migrations/08-db-migration-xxx_fix_column_names.rb)
+
+{lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+change_table :table_name do |t|
+  t.rename :old_column1, :new_column1
+  t.rename :old_column2, :new_column2
+  ...
+~~~~~~~~
+
+
+
+
+## Esempio3: Change foreign key column name
+
+I have a migration class project like this
+
+~~~~~~~~
+class CreateProjects < ActiveRecord::Migration
+ def change
+  create_table :projects do |t|
+   t.string :title
+   t.text :description
+   t.boolean :public
+   t.references :user, index: true, foreign_key: true
+
+   t.timestamps null: false
+  end
+ end
+end
+~~~~~~~~
+
+it creates a column name user_id in projects table but i want to name the column owner_id so i can use project.owner instead of project.user.
+
+You can do it two ways:
+
+~~~~~~~~
+#app/models/project.rb
+class Project < ActiveRecord::Base
+   belongs_to :owner, class_name: "User", foreign_key: :user_id
+end 
+~~~~~~~~
+
+OR
+
+$ rails g migration ChangeForeignKeyForProjects
+
+~~~~~~~~
+# db/migrate/change_foreign_key_for_projects.rb
+class ChangeForeignKeyForProjects < ActiveRecord::Migration
+   def change
+      rename_column :projects, :user_id, :owner_id
+   end
+end
+~~~~~~~~
+
+then:
+
+$ rake db:migrate
+
+I was happy to find out that rename_column also takes care of renaming indexes.

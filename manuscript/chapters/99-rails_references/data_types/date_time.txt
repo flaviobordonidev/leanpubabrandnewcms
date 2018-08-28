@@ -1,0 +1,26 @@
+
+http://rpanachi.com/2016/07/04/ruby-is-time-to-talk-about-timezones
+
+The Rails way
+If you are using Ruby on Rails, you don’t need to concern with all this time and time zone related issues. You just need to remember this:
+
+Always configure your application time zone on config/application.rb:
+config.time_zone = 'Brasilia'
+
+Always get the current time via current method:
+Time.current
+=> Sun, 03 Jul 2016 22:46:35 BRT -03:00
+
+Always parse time using the configured time zone:
+Time.zone.parse("2016-07-03 22:33:45")
+=> Sun, 03 Jul 2016 22:33:45 BRT -03:00
+
+And if you are using a database with time zone supports, instead of the classic t.timestamps, do this on database migrations:
+
+create_table :posts do |t|
+  # columns definition
+end
+add_column :posts, :created_at, :timestamptz
+add_column :posts, :updated_at, :timestamptz
+
+I> quest'ultimo consiglio è eccessivo. Con Time.zone.parse il timestampt archivia sul database in UTC e va benissimo.

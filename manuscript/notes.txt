@@ -1,3 +1,10 @@
+tab aperti:
+* https://devcenter.heroku.com/articles/custom-domains
+* https://support.google.com/analytics/answer/2365329
+* https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html?icmpid=docs_iam_console
+* google search: adding custom fields to your devise user model in rails 5
+* google search: devise admin user management
+---
 www.leanpub.com
 
 https://leanpub.com/leanpubabrandnewcms/preview
@@ -21,6 +28,10 @@ $ sudo service postgresql start
 $ rails s -b $IP -p $PORT
 
 https://rebisworld3-flaviobordonidev.c9users.io/
+
+---
+WEBPACK TUTORIAL
+https://www.youtube.com/watch?v=8DDVr6wjJzQ
 
 ---
 http://themes.semicolonweb.com

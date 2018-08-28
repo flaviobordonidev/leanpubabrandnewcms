@@ -1,0 +1,3 @@
+-# Models
+
+gestiamo la parte models di un progetto Rails.

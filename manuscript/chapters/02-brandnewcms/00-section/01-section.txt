@@ -1,0 +1,10 @@
+-# Prepariamo un CMS base
+
+dopo aver eseguito tutta la fase di **beginning** prepariamo l'applicazione per un Blog.
+
+facciamo tutta la parte di "dashboard" che permette all'autore di creare i vari articoli (posts).
+Prepariamo anche una "bozza" di quello che è il Blog visibile da tutti.
+
+Successivamente su questa bozza si potranno caricare diversi temi.
+
+Il primo tema che utilizzeremo in un'altra sezione sarà Canvas. (vedi cms_canvas)

@@ -1,0 +1,42 @@
+# Aggiungi colonna (Add column)
+
+add_column :table_name, :column_name, type, options
+
+
+Esempio: Add lab column to Tester table
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g migration AddCorporateToCompany corporate:string
+~~~~~~~~
+
+{lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+add_column :companies, :corporate, :string
+~~~~~~~~
+
+
+Esempio: Add addresses columns to Kiosk table
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g migration AddAddressesToKiosk line1:string line2:string line3:string locality:string region:string postcode:string country:string latitude:string longitude:string
+~~~~~~~~
+
+
+{lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class AddAddressesToKiosk < ActiveRecord::Migration[5.0]
+  def change
+    add_column :kiosks, :line1, :string
+    add_column :kiosks, :line2, :string
+    add_column :kiosks, :line3, :string
+    add_column :kiosks, :locality, :string
+    add_column :kiosks, :region, :string
+    add_column :kiosks, :postcode, :string
+    add_column :kiosks, :country, :string
+    add_column :kiosks, :latitude, :string
+    add_column :kiosks, :longitude, :string
+  end
+end
+~~~~~~~~

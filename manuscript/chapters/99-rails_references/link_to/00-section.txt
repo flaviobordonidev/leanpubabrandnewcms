@@ -1,0 +1,3 @@
+-# link_to sui views
+
+il comando link_to per creare dei link è uno dei più usati su rails. Ci sono molti esempi sugli usi ma in questo capitolo scopriremo degli usi meno noti nei forum ma molto usati nella vita reale.

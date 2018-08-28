@@ -1,0 +1,193 @@
+# Devise Sign_in view
+
+
+Prima di inserire il nostro tema personalizzato nella pagina di login (sign_in) nella nostra app Rails dobbiamo visualizzarla perché devise inizialmente mantiene nascosta. 
+
+
+
+## Apriamo il branch "Devise Sign_in View"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b dsw
+~~~~~~~~
+
+
+
+
+## visualizziamo le views di devise e prepariamoci per passargli lo stile del nostro tema
+
+La gemma devise di default lascia nascoste le sue views ed i suoi controlers. Possiamo visualizzarli per apportarci le nostre personalizzazioni.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails generate devise:views users
+$ rails generate devise:controllers users
+
+===============================================================================
+
+Some setup you must do manually if you haven't yet:
+
+  Ensure you have overridden routes for generated controllers in your routes.rb.
+  For example:
+
+    Rails.application.routes.draw do
+      devise_for :users, controllers: {
+        sessions: 'users/sessions'
+      }
+    end
+
+===============================================================================
+~~~~~~~~
+
+Adesso abbiamo la sottocartella /app/controller/users/ con tutti i controllers gestiti da devise 
+Inoltre abbiamo la sottocartella /app/views/users/ con tutti le pagine gestite da devise 
+
+I> se avessimo fatto subito il punto 4, ossia il **rails generate devise:views** avremmo dovuto copiare le views da devise/sessions a users/sessions. 
+I>
+I> Poiché visualizzando il controller non usiamo più le views di default che mette in devise/sessions.
+
+
+
+
+## Aggiorniamo gli instradamenti
+
+Modifichiamo le routes **devise_for :users** indicando a devise di usare i nuovi controllers (e non quelli di default)
+
+{title="/config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=7}
+~~~~~~~~
+  #devise_for :users, controllers: { sessions: 'users/sessions' }
+  devise_for :users, controllers: {sessions: 'users/sessions'}, path: '', path_names: {sign_in: 'login'}
+~~~~~~~~
+
+
+
+
+## Verifichiamo che funziona sul browser
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+https://rebisworldbr1-flaviobordonidev.c9users.io/login
+
+
+
+
+## La pagina di login su devise
+
+la nostra pagina per fare login è sotto **users/sessions/new**. Facciamo una piccola modifica al titolo
+
+{title=".../app/views/users/sessions/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<h2>Entra nel sito</h2>
+~~~~~~~~
+
+adesso che abbiamo identificato la pagina occupiamoci di passargli il nostro tema
+
+
+
+
+## Creiamo il nostro layouts/my_login_page
+
+Inizialmente passeremo tuto il codice html della index.html del nostro template sulla pagina **users/sessions/new**
+Quindi creiamo la nostra pagina my_login_page.html.erb in cui inseriamo la sola chiamata **yield** sul layout e lasciamo tutto il codice html su **users/sessions/new**
+
+{title=".../app/views/layouts/my_login_page.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%= yield %>
+~~~~~~~~
+
+successivamente reinseriremo la parte di <head> e gli script javascript nel nostro layout, ma per il momento usiamo questa versione super semplificata.
+
+
+
+
+## Passiamo il nostro tema alle views di devise 
+
+Puntiamo le views di devise ad un nostro layout. Per far si che le views di devise usino un nostro layout basta indicarlo nel suo controller che abbiamo visualizzato nel paragrafo precedente.
+Nel controller di devise possiamo passare una funzione che chiama il nostro layout
+
+{title="/app/controllers/users/sessions_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+layout :for_devise
+
+def for_devise
+  'our_custom_layout'
+end
+~~~~~~~~
+
+o più semplicemente chiamiamo direttamente il nostro layout
+
+~~~~~~~~
+layout 'our_custom_layout'
+~~~~~~~~
+
+Usiamo il metodo più semplice per inserire la nostra pagina di layout "my_login_page"
+
+{title="/app/controllers/users/sessions_controller.rb", lang=ruby, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+  layout 'my_login_page'
+~~~~~~~~
+
+Mettendola fuori dalle singole azioni il layout si applica automaticamente a tutte quante le azioni del controller. Nel nostro caso specifico l'unica che effettivamente lo usa è l'azione **new**.
+Se volevamo essere più specifici sarebbe stato più corretto metterlo dentro l'azione che ci interessava decommentando tutta l'azione **new** ed inserendo la chiamata al layout.
+
+{title="/app/controllers/users/sessions_controller.rb", lang=ruby, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+  # GET /resource/sign_in
+  def new
+    layout 'my_login_page'
+    super
+  end
+~~~~~~~~
+
+Per questo capitolo è tutto. 
+
+
+
+
+## aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add template mylogin on devise view users/sessions/new"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku dsw:master
+~~~~~~~~
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge dsw
+$ git branch -d dsw
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

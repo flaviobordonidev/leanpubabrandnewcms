@@ -1,0 +1,50 @@
+# many_to_many association
+
+* https://www.sitepoint.com/master-many-to-many-associations-with-activerecord/
+Intransitive Associations --> has_and_belongs_to_many
+Mono-transitive Associations --> has_many :through
+Multi-transitive Associations --> has_many :through :source
+
+
+Railscasts 047-two-many-to-many [04:40]
+has_many :through
+
+  rails g model categorization product_id:integer category_id:integer position:integer
+
+Models: Categorization
+  belongs_to :product #has the foreign key (product_id)
+  belongs_to :category #has the foreign key (category_id)
+
+Models: Product
+  has_many :categorizations
+  has_many :categories, :through => :categorizations
+
+Models: Category
+  has_many :categorizations
+  has_many :products, :through => :categorizations
+
+
+Railscasts 181-include-vs-joins
+Railscasts 154-polymorphic-association-revised
+
+
+
+## productField belongs_to product_type
+
+Railscasts 403-dynamic-forms
+rails g model ProductField name field_type required:boolean product_type:belongs_to
+
+Models: ProductType
+  has_many :productFields # o :product_fields ? (da verificare)
+  --->
+  has_many :fields, class_name: "ProductField"
+  accept_nested_attributes_for :fields, allow_destroy: true # vedi Railcasts 196
+
+
+rails g migration add_type_to_products product_type_id:integer properties:text # properties:text serializza i valori.
+    in alternativa si può usare un campo hstore che permette di archiviare un Hash vedi Railcasts 345 hstore
+    in alternativa si può usare una tabella properties con associazione many_to_one
+
+Models: Product
+  belongs_to :product_type
+  serialize :properties, Hash
