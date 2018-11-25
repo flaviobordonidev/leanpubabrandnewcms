@@ -1,9 +1,10 @@
 # Bootstrap
 
+Abbiamo già usato la libreria bootstrap nella sezione precedente "theme-mylogin" ma adesso lo inseriamo a livello di gemma.
 
 
 
-# Perchè Bootstrap?
+## Perchè Bootstrap?
 
 Bootstrap è un framework sviluppato da Mark Otto e Jacob Thornton (aka @mdo and @fat) a Twitter con l’obiettivo di mettere a punto un set di strumenti
 che uniformasse l’interfaccia web del Social Network facilitandone la manutenzione.

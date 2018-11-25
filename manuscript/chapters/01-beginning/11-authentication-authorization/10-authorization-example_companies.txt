@@ -1,0 +1,9 @@
+## Autorizzazione per la gestione delle aziende
+
+Attiviamo la sicurezza e permettiamo 
+
+identifichiamo il nostro problema che richiede autenticazione:
+
+Nel sistema di gestione delle aziende abbiamo 2 ruoli, quello del manager e quello del dipendente. 
+Il Manager può visualizzare tutte le schermate del sistema. 
+Il dipendente non può creare, modificare o cancellare alcuna azienda.

@@ -1,5 +1,7 @@
 # Gem bootstrap
 
+Abbiamo già usato la libreria bootstrap nella sezione precedente "theme-mylogin" ma adesso lo inseriamo a livello di gemma.
+
 Per una completa integrazione con Rails è meglio caricare bootstrap tramite la gemma.
 Ad esempio attivandolo dal gemfile possiamo gestire correttamente il codice per il **link di delete** che altrimenti non funziona e si deve ricorrere al **button**.
 

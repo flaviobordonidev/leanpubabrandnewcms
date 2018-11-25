@@ -1,0 +1,261 @@
+# Implementiamo le autorizzazioni per posts
+
+Usiamo il seguente schema per le autorizzazioni
+
+Legenda:
+ * per "records" si intendono gli "articoli di esempio" (example_posts)
+ * per "propri records" si intendono gli "articoli di esempio di cui l'utente è proprietario". Ossia dove ha una relazione uno-a-molti.
+
+index
+ * Utente non loggato           : autorizzato su tutti i records
+ * Utente con ruolo "user"      : autorizzato su tutti i records
+ * Utente con ruolo "author"    : autorizzato su tutti i records
+ * Utente con ruolo "moderator" : autorizzato su tutti i records
+ * Utente con ruolo "admin"     : autorizzato su tutti i records
+
+show
+ * Utente non loggato           : NON autorizzato su tutti i records
+ * Utente con ruolo "user"      : autorizzato su tutti i records
+ * Utente con ruolo "author"    : autorizzato su tutti i records
+ * Utente con ruolo "moderator" : autorizzato su tutti i records
+ * Utente con ruolo "admin"     : autorizzato su tutti i records
+
+new/create
+ * Utente non loggato           : NON autorizzato su tutti i records
+ * Utente con ruolo "user"      : NON autorizzato su tutti i records
+ * Utente con ruolo "author"    : autorizzato SOLO sui propri records
+ * Utente con ruolo "moderator" : autorizzato SOLO sui propri records
+ * Utente con ruolo "admin"     : autorizzato SOLO sui propri records
+
+
+edit/update
+ * Utente non loggato           : NON autorizzato su tutti i records
+ * Utente con ruolo "user"      : NON autorizzato su tutti i records
+ * Utente con ruolo "author"    : autorizzato SOLO sui propri records
+ * Utente con ruolo "moderator" : autorizzato SOLO sui propri records
+ * Utente con ruolo "admin"     : autorizzato su tutti i records
+
+destroy
+ * Utente non loggato           : NON autorizzato su tutti i records
+ * Utente con ruolo "user"      : NON autorizzato su tutti i records
+ * Utente con ruolo "author"    : autorizzato SOLO sui propri records
+ * Utente con ruolo "moderator" : autorizzato su tutti i records
+ * Utente con ruolo "admin"     : autorizzato su tutti i records
+
+
+
+
+
+## Apriamo il branch "Authorization Post"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b ap
+~~~~~~~~
+
+
+
+
+## Aggiungiamo policy per Post ed implementiamo le policies per tutte le azioni
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g pundit:policy Post
+~~~~~~~~
+
+{title=".../app/policies/post_policy.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+  def index?
+    if @user.present?
+      case @user.role
+      when 'user'
+        true
+      when 'author'
+        true
+      when 'moderator'
+        true
+      when 'admin'
+        true
+      else
+        false #se arrivo qui c'è un errore quindi non autorizzo
+      end
+    else
+      true
+    end
+  end
+
+  def show?
+    if @user.present?
+      case @user.role
+      when 'user'
+        true
+      when 'author'
+        true
+      when 'moderator'
+        true
+      when 'admin'
+        true
+      else
+        false #se arrivo qui c'è un errore quindi non autorizzo
+      end
+    else
+      false
+    end
+  end
+  
+  def create?
+    if @user.present?
+      case @user.role
+      when 'user'
+        false
+      when 'author'
+        true
+      when 'moderator'
+        true
+      when 'admin'
+        true
+      else
+        false #se arrivo qui c'è un errore quindi non autorizzo
+      end
+    else
+      false
+    end
+  end
+  
+  def update?
+    if @user.present?
+      case @user.role
+      when 'user'
+        false
+      when 'author'
+        @user.id == @record.user_id
+      when 'moderator'
+        @user.id == @record.user_id
+      when 'admin'
+        true
+      else
+        false #se arrivo qui c'è un errore quindi non autorizzo
+      end
+    else
+      false
+    end
+  end
+
+  def destroy?
+    if @user.present?
+      case @user.role
+      when 'user'
+        false
+      when 'author'
+        @user.id == @record.user_id
+      when 'moderator'
+        true
+      when 'admin'
+        true
+      else
+        false #se arrivo qui c'è un errore quindi non autorizzo
+      end
+    else
+      false
+    end
+  end
+~~~~~~~~
+
+[tutto il codice](#brandnewcms-posts_seeds-03a-policies-post_policy.rb)
+
+
+
+
+
+## Implementiamo nel controller
+
+{title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=6}
+~~~~~~~~
+  def index
+    @posts = Post.all
+    authorize @posts
+~~~~~~~~
+
+{title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=17}
+~~~~~~~~
+  def new
+    @post = Post.new
+    authorize @post
+~~~~~~~~
+
+{title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=28}
+~~~~~~~~
+  def create
+    @post = Post.new(post_params)
+    authorize @post
+~~~~~~~~
+
+Per le azioni [:show, :edit, :update, :destroy], che chiamano la funzione "set_user" con il before_action, inserisco l'autorizzazione direttamente sulla funzione "set_user"
+
+{title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=71}
+~~~~~~~~
+    def set_post
+      @post = Post.find(params[:id])
+      authorize @post
+~~~~~~~~
+
+
+[tutto il codice](#branch-posts_seeds-03b-controllers-posts_controller.rb)
+
+
+
+
+## verifichiamo
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+
+
+
+## aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add pundit authorization on all actions of post"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku ap:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge ap
+$ git branch -d ap
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

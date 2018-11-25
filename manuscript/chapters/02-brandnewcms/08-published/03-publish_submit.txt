@@ -1,0 +1,82 @@
+# Alternativa ai pulsanti publish unpublish
+
+invece di avere i pulsanti nell'index preferisco avere una semplice indicazione se l'articolo è pubblicato (published) o è in bozza (draft).
+La pubblicazione la portiamo dentro il form con un check-box che indica se pubblicato. In seguito possiamo formattare il check-box in stile iphone.
+
+
+
+
+## Apriamo il branch "Published Submit"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b ps
+~~~~~~~~
+
+
+
+
+## Prepariamo il posts_controller di authors
+
+Per passare i valori di published e published_at tramite form li abilito nella whitelist. 
+Potevo passare solo "published" ed inserire "published_at" automaticamente come abbiamo fatto nel caso dei bottoni nel capitolo precedente. In questo caso diamo più flessibilità all'autore impostandogli il valore di "published_at" con il giorno della modifica ma lasciandogli la libertà di cambiarlo in modo da gestirsi gli articoli come vuole.
+
+{title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+    before_action :set_post, only: [:edit, :update, :destroy, :publish, :unpublish, :published, :published_at]
+~~~~~~~~
+
+
+
+## Creiamo il check_box "published" ed il text_field "published_at"
+
+{title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=29}
+~~~~~~~~
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :published %>
+              <%#= form.text_area :published, class: "form-control" %>
+              <%= form.check_box :published,  class: "form-control" %>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :published_at %>
+              <%= form.text_area :published_at, class: "form-control" %>
+            </div>
+          </li>
+~~~~~~~~
+
+      <%= f.check_box :remove_logo, "data-size" => "medium", "data-on-color" => "primary", "data-on-text" => "SI", "data-off-color" => "default", "data-off-text" => "NO" %>
+
+
+
+## Riempiamo in automatico il campo published_at
+
+In questo caso agiamo sulle azioni new ed edit del controller.
+Per il nuovo articolo ha poco senso che già si metta la data di pubblicazione.
+Per una modifica su un articolo è fastidioso il fatto di impostare la data di pubblicazione.
+quindi l'idea qui di seguito di aggiungere anhce un campo "revised_at" non aiuta l'usabilità
+
+{title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+   # GET /posts/new
+    def new
+      @post = Post.new
+      @post.published_at = Time.now
+      @post.revised_at = Time.now
+      authorize @post
+    end
+
+    # GET /posts/1/edit
+    def edit
+      authorize @post
+      @post.revised_at = Time.now
+    end
+~~~~~~~~
+
+Dovremmo aggiungere un pulsante "aggiorna ad adesso" affianco a published_at. Questa funzione richiama l'azione edit ma inoltre imposta @post.published_at = Time.now
+
+Non mi va di farlo ma i passaggi sono simili a quelli fatti nel capitolo precedente.
+
+ 

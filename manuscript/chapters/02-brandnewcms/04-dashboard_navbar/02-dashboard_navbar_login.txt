@@ -1,0 +1,58 @@
+# Inseriamo l'authenticazione al dashboard
+
+Implementiamo l'authenticazione per gli autori. Una volta autenticati, ossia fatto login, ci appare la dashboard_navbar.
+
+
+
+
+## Apriamo il branch "Dashboard Authentication"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b da
+~~~~~~~~
+
+
+
+## Inseriamo il link per l'area riservata autori
+
+In pratica un link alla pagina di login di devise che ci permette di autenticarci.
+
+Ci sono due opzioni:
+
+1. Gli autori cliccano il link e vanno al login
+2. Gli autori puntano direttamente sull'URL alla pagina di login. http://www.mydomain.com/login
+
+In questo paragrafo gli prepariamo il link sulla pagina posts/index
+
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=34}
+~~~~~~~~
+<%= link_to 'Area riservata Autori', new_user_session_path %>
+~~~~~~~~
+
+
+
+
+## Mettiamo il logout sulla dashboard_navbar
+
+Visualizziamo la dashboard_navbar solo se siamo loggati/autenticati
+
+{title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=13}
+~~~~~~~~
+    <% if user_signed_in? %> <%= render 'layouts/dashboard_navbar' %><% end %>
+~~~~~~~~
+
+{title=".../app/views/layouts/_dashboard_navbar.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=34}
+~~~~~~~~
+        <li>
+          <%#= link_to 'Edit Profile', edit_user_registration_path %>
+          <%= link_to current_user.email, edit_user_registration_path %>
+        </li>
+        <li>
+          <%= link_to('Logout', destroy_user_session_path, method: :delete) %>        
+        </li>
+~~~~~~~~
+
+
+

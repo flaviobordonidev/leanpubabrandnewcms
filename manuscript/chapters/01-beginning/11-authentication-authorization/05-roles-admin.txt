@@ -1,0 +1,115 @@
+# Roles - admin
+
+Questo è l'approccio più semplice della gestione dei ruoli. Esiste solo la possibilità di Amministratore o Utente normale. 
+Aggiungiamo il ruolo di amministratore utilizzando un attributo (admin attribute) e non un intero modello.
+Questo vuol dire aggiungere una colonna "admin" di tipo boolean sulla tabella **users**
+
+Volendo usare livelli più alti di gestione dei ruoli con "enum" o "rolify" possiamo saltare questo capitolo
+
+
+
+
+## Apriamo il branch "Roles Admin"
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b ra
+~~~~~~~~
+
+
+
+
+## Aggiungiamo l'attributo role_admin
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails generate migration add_admin_to_users role_admin:boolean
+~~~~~~~~
+
+Aggiungiamo al migration l'opzione ** defautl: false ** per la colonna role_admin
+
+{title=".../db/migrate/xxx_add_admin_to_users.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class AddAdminToUsers < ActiveRecord::Migration
+  def change
+    add_column :users, :role_admin, :boolean, default: false
+  end
+end
+~~~~~~~~
+
+Eseguiamo il migrate
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rake db:migrate
+~~~~~~~~
+
+Adesso possiamo identificare su un utente loggato è amministratore.
+
+{title="verifichiamo se amministratore", lang=ruby, line-numbers=off}
+~~~~~~~~
+if current_user.role_admin?
+  # do something
+end
+~~~~~~~~
+
+
+Se ho un caso particolare in cui una pagina può non avere un utente loggato usiamo .try() per evitare l'errore.
+Se *current_user* è *nil* non viene generato un errore (raising an undefined method admin? for nil:NilClass exception)
+
+{title="verifichiamo se amministratore", lang=ruby, line-numbers=off}
+~~~~~~~~
+if current_user.try(:role_admin?)
+  # do something
+end
+~~~~~~~~
+
+Se voglio dare i diritti di amministratore (grant admin status) da codice posso:
+
+{title="grant admin status", lang=ruby, line-numbers=off}
+~~~~~~~~
+current_user.update_attribute :role_admin, true
+~~~~~~~~
+
+
+
+
+## Testiamo la parte di login in produzione.
+
+Abbiamo finito. Non ci resta che fare il "deployment in production" pubblicando la nostra applicazione su heroku.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku login:master
+~~~~~~~~
+
+Non funziona perché su heroku non abbiamo eseguito il migrate.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku run rake db:migrate
+~~~~~~~~
+
+
+
+
+## Togliamo la colonna admin
+
+Togliamo la colonna "role_admin" di tipo boolean dalla tabella users perché nel prossimo capitolo la sostituiremo con la più potente colonna "role" di tipo "integer / enum".
+Per togliere la colonna eseguiamo il rollback ed eliminiamo il migrate?
+Non sò se è la scelta giusta visto che abbiamo già pubblicato su heroku. Ci possiamo provare.
+Altra possibilità è creare un nuovo migration di eliminazione della colonna.
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge admin
+$ git branch -d admin
+~~~~~~~~

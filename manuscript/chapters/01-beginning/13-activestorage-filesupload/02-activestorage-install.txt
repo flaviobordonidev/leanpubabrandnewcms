@@ -148,12 +148,14 @@ Per visualizzare l'immagine basta **image_tag @example_post.header_image** ma pe
 {title=".../app/views/example_posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=70}
 ~~~~~~~~
 <% if @example_post.header_image.attached? %>
-<%# if @example_post.header_image.present? %>
   <%= image_tag @example_post.header_image %>
 <% else %>
   <p>Nessuna immagine presente</p>
 <% end %>
 ~~~~~~~~
+
+INFO:
+non usiamo ".present?" perché darebbe sempre "true". Per verificare la presenza del file allegato dobbiamo usare ".attached?"
 
 
 

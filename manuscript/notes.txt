@@ -13,6 +13,13 @@ https://leanpub.com/help/getting_started_sync_dropbox
 https://leanpub.com/help/manual
 
 ---
+http://themes.semicolonweb.com/html/canvas/intro.html
+https://themeforest.net/item/canvas-the-multipurpose-html5-template/9228123/support
+
+---
+https://developers.facebook.com/docs/plugins/comments/#counter
+
+---
 http://pygments.org/demo/   ->  vedi il codice nel menu a cascata
 
 .html.erb   -> lang=HTML+Mako
@@ -146,3 +153,35 @@ Esempio:
   end
 
   # == Instance Methods =====================================================
+
+
+---
+Appunti
+
+views/posts/show
+—
+<%= @post.user.email.split(‘@‘)[0].capitalize %>
+—
+
+#@post.user.email —> flavio@test.abc
+
+#@post.user.email.split(‘@‘) —> [flavio, test.abc]
+
+#@post.user.email.split(‘@‘)[0] —> flavio
+
+#@post.user.email.split(‘@‘)[0].capitalize —> Flavio
+
+
+**************
+
+views/models/user.rb
+—
+def username
+	return self.email.split(‘@‘)[0].capitalize
+end
+—
+
+views/posts/show
+—
+<%= @post.user.username %>
+—

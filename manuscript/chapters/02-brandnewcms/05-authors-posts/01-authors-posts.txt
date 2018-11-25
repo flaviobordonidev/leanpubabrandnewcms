@@ -13,10 +13,13 @@ Permette di avere un index dedicato alla dashboard che ha tutti i posts dell’a
 Togliere edit, new e delete dal posts normale. Sarà lui a prendersi il template. Nel nostro caso il template Canvas. Ma questo lo metteremo solo alla fine.
 Invece su authors/posts usiamo un template stile dashboard. Usiamo quello personalizzato fatto dal tizio di cui stiamo seguendo il tutorial.
 
+
+
 Risorse web:
 siamo all'inizio del video [How to build a blog with Rails 5 and Bootstrap 4 - Part 3](https://www.youtube.com/watch?v=fPpJsAU4qIY)
 
 * [Rails Authorization With Pundit - parte da zero ed installa anche devise ed usa anche spec tests](https://www.youtube.com/watch?v=qruGD_8ry7k)
+
 
 
 
@@ -80,21 +83,10 @@ $ rails routes | egrep "posts"
 
 
 
-## Creiamo il controller
-
-################################################################################
-DA ELIMINARE
-Creiamo authors_controller.rb 
-
-{title=".../app/controllers/authors_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
-class AuthorsController < ApplicationController
-end
-~~~~~~~~
-################################################################################
+## Creiamo la cartella authors
 
 creiamo la cartella **authors** che sarà il nostro modulo su cui inglobare i **posts**.
-Dentro la cartella copiamp il file posts_controller.rb 
+Dentro la cartella copiamo il file posts_controller.rb 
 Siccome questo file è dentro la sottocartella **authors** dobbiamo indicargli che si trova là e questo lo facciamo indicandogli che è in un "module"
 Per far questo racchiudiamo tutto dentro il **module Authors**.
 
@@ -113,18 +105,18 @@ end
 
 questo fa si che le chiamate siano del tipo Auhtors::PostsController
 
-
-################################################################################
-DA ELIMINARE
-adesso invece di ereditare da ApplicationController diciamogli di ereditare da AuthorsController
+un'alternativa, usata anche da devise, è quella di dichiarare che è in un modulo/sottocartella direttamente nella definizione della classe.
 
 {title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
-module Authors
-  class PostsController < AuthorsController
+class Authors::PostsController < ApplicationController
+.
+.
+.
+end
 ~~~~~~~~
-################################################################################
 
+Le due definizioni sono identiche.
 
 
 
@@ -132,7 +124,9 @@ module Authors
 ## puliamo le routes
 
 vogliamo che l'utente normale possa visualizzare tutti i posts pubblicati sia l'elenco che i singoli.
-vogliamo che l'autore abbia un elenco di "lavoro" dei suoi posts, possa crearne di nuovi, editarli ed eliminarli. Per la visualizzazioe del singolo posts usa lo stesso di tutti gli altri (così non devo caricare un nuovo tema anche dentro authors/posts/show)
+vogliamo che l'autore abbia un elenco di "lavoro" dei suoi posts, possa crearne di nuovi, editarli ed eliminarli. 
+Da notare che ho due "index" perché quello dell'autore ha una struttura ed un layout diverso da quello del lettore (reader), ossia dell'utente non loggato.
+Per la visualizzazioe del singolo posts invece usiamo solo quello del lettore così l'autore vedrà il suo articolo con lo stesso layout/theme del lettore.
 
 {title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=4}
 ~~~~~~~~
@@ -143,7 +137,7 @@ vogliamo che l'autore abbia un elenco di "lavoro" dei suoi posts, possa crearne 
   end
 ~~~~~~~~
 
-[tutto il codice](#brandnewcms-authors_posts-01c)
+[tutto il codice](#brandnewcms-authors_posts-01c-routes)
 
 Verifichiamo i vari percorsi/instradamenti (paths) sul terminale
 
@@ -158,7 +152,8 @@ $ rails routes | egrep "posts"
 
 ## puliamo i controllers posts
 
-Iniziamo a differenziare lo standard posts da quello incapsulato authors/posts e nello specifico lasciamo ai controllers solo le azioni che sono effettivamente usate.
+Iniziamo a differenziare lo standard posts (quello per il lettore) da quello incapsulato authors/posts (quello per l'autore). 
+Nello specifico lasciamo ai controllers solo le azioni che sono effettivamente usate.
 
 posts         -> :index, :show
 authors/posts -> :index, :edit, :update, :new, :create, :destroy
@@ -181,10 +176,16 @@ class PostsController < ApplicationController
 end
 ~~~~~~~~
 
-[tutto il codice](#brandnewcms-authors_posts-01d)
+[tutto il codice](#brandnewcms-authors_posts-01d-controllers-posts_controller.rb)
 
+Puliamo il codice:
 Non ha più senso avere il codice separato nel metodo private "set_post" chiamato da "before_action" e quindi lo riporto dentro l'azione show.
 Inoltre non modificando i records non ci serve il metodo private "post_params"
+
+Implementiamo nel codice:
+L'alenco di tutti gli authors/posts è filtrato per l'autore che si è loggato.
+Non vede tutti gli articoli ma solo i suoi articoli sia pubblicati che non.
+(L'amministratore invece vedrà tutti gli articoli sia pubblicati che non.)
 
 
 {title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
@@ -197,7 +198,9 @@ module Authors
     # GET /posts
     # GET /posts.json
     def index
-      @posts = Post.all
+      #@posts = Post.all
+      @posts = current_author.posts unless current_author.admin?
+      @posts = Post.all if current_author.admin?
     end
 
     # GET /posts/new
@@ -323,7 +326,7 @@ aggiorniamo i vari links_to
         <td><%= link_to 'Destroy', authors_post_path(post), method: :delete, data: { confirm: 'Are you sure?' } %></td>
 ~~~~~~~~
 
-{title=".../app/views/authors/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=34}
+{title=".../app/views/authors/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=34}
 ~~~~~~~~
 <%= link_to 'New Post', new_authors_post_path %>
 ~~~~~~~~
@@ -332,176 +335,6 @@ aggiorniamo i vari links_to
 
 le views edit, new e _form le aggiorniamo più avanti
 
-
-
-
-## Creiamo un layout personalizzato per la dashboard
-
-Duplichiamo il layouts/application e rinominiamo la copia layouts/dashboard
-
-* .../app/views/layouts/application.html.erb    ->  .../app/views/layouts/dashboard.html.erb (copia, incolla e rinomina)
-
-Inoltre aggiungiamo il container per bootstrap ed un semplice **<h2>Solo per autori</h2>** per differenziarlo.
-
-{title=".../app/views/layouts/dashboard.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=14}
-~~~~~~~~
-    <div class="container">
-      <p class="notice"><%= notice %></p>
-      <p class="alert"><%= alert %></p>
-      <h2>Solo per Autori</h2>
-      <%= yield %>
-    </div>
-~~~~~~~~
-
-[tutto il codice](#brandnewcms-authors_posts-01h)
-
-
-
-
-
-## Assegnamo il layout dashboard alle pagine degli autori
-
-{title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
-~~~~~~~~
-  layout 'dashboard'
-~~~~~~~~
-
-[tutto il codice](#brandnewcms-authors_posts-01i)
-
-
-
-
-## Iniziamo a personalizzare la dashboard
-
-rendiamo auhtors/posts/index più simile ad un ambiente di "lavoro" per i posts dell'autore
-
-{title=".../app/views/authors/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
-<%# == Meta_data ============================================================ %>
-
-<% provide(:page_title, "All posts") %>
-<% provide(:authors_active, "active") %>
-
-<%# == Meta_data - end ====================================================== %>
-
-<div class="row">
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Title</th>
-        <th>Incipit</th>
-        <th colspan="3"></th>
-      </tr>
-    </thead>
-  
-    <tbody>
-      <% @posts.each do |post| %>
-        <tr>
-          <td><%= post.title %></td>
-          <td><%= post.incipit %></td>
-          <td><%= link_to 'Show', authors_post_path(post) %></td>
-          <td><%= link_to 'Edit', edit_authors_post_path(post) %></td>
-          <td><%= link_to 'Destroy', authors_post_path(post), method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
-
-
-<%= link_to 'New Post', new_authors_post_path %>
-<p id="notice"><%= notice %></p>
-~~~~~~~~
-
-abbiamo inserito "authors_active" per evidenziare la nuova voce della navbar che inseriamo nel prossimo paragrafo
-
-volendo potremmo rendere il titolo del post un link che va su show
-
-{title=".../app/views/authors/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=18}
-~~~~~~~~
-          <td><%= link_to post.title, authors_post_path(post) %></td>
-~~~~~~~~
-
-
-
-
-## Aggiorniamo la barra di navigazione (navbar)
-
-aggiungiamo una voce alla nostra navbar per i posts degli autori (index, edit e new)
-
-{title=".../app/views/layouts/_navbar.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=18}
-~~~~~~~~
-      <li class="nav-item <%= yield(:authors_active) %>">
-        <%= link_to 'Area Modifiche', authors_posts_path, class: "nav-link" %>
-      </li>
-~~~~~~~~
-
-ed i relativi **provide**, per lo **yield** nei rispettivi views
-
-{title=".../app/views/authors/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=2}
-~~~~~~~~
-<% provide(:authors_active, "active") %>
-~~~~~~~~
-
-{title=".../app/views/authors/posts/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=2}
-~~~~~~~~
-<% provide(:authors_active, "active") %>
-~~~~~~~~
-
-{title=".../app/views/authors/posts/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=2}
-~~~~~~~~
-<% provide(:authors_active, "active") %>
-~~~~~~~~
-
-
-
-
-
-## Correggiamo i reinstradamenti delle azioni di modifica dei posts
-
-Nel nostro controller authors/posts_controller correggiamo i reinstradamenti delle azioni update, create e destroy
-
-in realtà mi va bene che dopo la creazione e l'aggiornamento vada sul posts standard. l'unica modifica è per il destroy
-
-{title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=61}
-~~~~~~~~
-        format.html { redirect_to authors_posts_url, notice: 'Post was successfully destroyed.' }
-~~~~~~~~
-
-
-
-
-## Correggiamo il sumbit del form
-
-Effettuato il submit del nostro form dobbiamo arrivare all'azione create o update sul controller auhtors/posts_controller.
-Per convenzione rails dopo il submit siamo reinstradati sull'azione create o update del controller posts_controller.
-Dobbiamo quindi specificare, effettuato il submit, l'url a cui deve andare con post/patch perché il percorso non è più in convenzione rails.
-Per far questo dobbiamo passargli l'url comprensivo del namespace.
-Siccome sono due percorsi diversi uno per edit e l'altro per new usiamo una variabile che chiamiamo **url** e passiamo il valore dal render di edit e dal render di new.
-Detto in altro modo:
-Siccome l'url è diverso a seconda se sono su edit o su new, gli passiamo una variabile con il valore settato nelle rispettive pagine. Questa variabile la chiamiamo "url".
-
-
-{title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
-<%= form_with(model: post, local: true, url: url) do |form| %>
-~~~~~~~~
-
-
-{title=".../app/views/authors/posts/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=6}
-~~~~~~~~
-<%= render 'form', post: @post, url: authors_post_url(@post) %>
-~~~~~~~~
-
-{title=".../app/views/authors/posts/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
-<%= render 'form', post: @post, url: authors_posts_url %>
-~~~~~~~~
-
-
-
-
-Per questo capitolo è tutto
 
 
 
@@ -544,5 +377,3 @@ aggiorniamo github
 ~~~~~~~~
 $ git push origin master
 ~~~~~~~~
-
-

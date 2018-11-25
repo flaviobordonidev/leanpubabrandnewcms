@@ -1,0 +1,57 @@
+# Installiamo gemma Kaminari per paginazione (pagination)
+
+iniziamo attivando il search ed il pagination con l'elenco completo.
+Due tra le gemme più utilizzate ci sono will_paginate e kaminari. Scegliamo kaminari perché è più aggiornata. Will_paginate è rimasta ferma nello sviluppo.
+
+
+
+
+## Apriamo il branch "Pagination with Kaminari"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b pk
+~~~~~~~~
+
+
+
+
+## Pagination con Kaminari
+
+Per dividere l'elenco su più pagine usiamo la gemma kaminari.
+
+
+
+
+## Installiamo Kaminari
+
+I> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/kaminari)
+I>
+I> facciamo riferimento al [tutorial github della gemma](https://github.com/kaminari/kaminari)
+
+{title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=68}
+~~~~~~~~
+# a powerful paginator for Rails. 
+gem 'kaminari', '~> 1.1', '>= 1.1.1'
+~~~~~~~~
+
+[tutto il codice](#brandnewcms-gem-kaminari-pagination-01a-gemfile.rb)
+
+Eseguiamo l'installazione della gemma con bundle
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ bundle install
+~~~~~~~~
+
+
+
+
+## archiviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "instll kaminari for pagination"
+~~~~~~~~
+

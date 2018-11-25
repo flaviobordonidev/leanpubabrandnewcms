@@ -1,0 +1,72 @@
+# Reinstradamento su login se utente non loggato
+
+Implementiamo la "protezione" di devise che è una restrizione all'accesso. Ossia, decidere a livello di controller quali pagine vengono inviate al login in caso un utente non loggato tenti visualizzarle.
+
+
+
+
+## Proteggiamo il controller users
+
+Forziamo il reinstradamento alla pagina di login per utente non autenticato, eccetto show ed index.
+
+{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=60}
+~~~~~~~~
+  before_action :authenticate_user!, except: [:show, :index]
+~~~~~~~~
+
+
+
+
+## Proteggiamo il controller example_posts
+
+Forziamo il reinstradamento alla pagina di login per utente non autenticato, eccetto index.
+
+{title=".../app/controllers/example_posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=60}
+~~~~~~~~
+  before_action :authenticate_user!, except: [:index]
+~~~~~~~~
+
+
+
+
+
+## Esempio di protezione per una azione non Restful
+
+Sul controller "pages" invece di una azione restful (index, show, new/create, edit/update), vogliamo restringere l'accesso a chi non è autenticato all'azione "secret".
+
+Restricting Access
+We’ve done a good job so far, but what about restricting access to a certain pages? How can that be done?
+
+It appears that Devise takes care of that too: you only have to use the corresponding method as a before_action. First things first, we need a special page to restrict. Let’s call it “Secret” for simplicity:
+
+config/routes.rb
+
+[...]
+get '/secret', to: 'pages#secret', as: :secret
+[...]
+A dead simple view:
+
+views/pages/secret.html.erb
+
+<% header "Secret!" %>
+You don’t even need to add the secret method to the PagesController – Rails will define it implicitly.
+
+Modify the menu a bit:
+
+views/layouts/application.html.erb
+
+[...]
+<ul class="nav navbar-nav">
+  <li><%= link_to 'Home', root_path %></li>
+  <% if user_signed_in? %>
+    <li><%= link_to 'Secret', secret_path %></li>
+  <% end %>
+</ul>
+[...]
+And now tweak the controller:
+
+pages_controller.rb
+
+[...]
+before_action :authenticate_user!, only: [:secret]
+[...]

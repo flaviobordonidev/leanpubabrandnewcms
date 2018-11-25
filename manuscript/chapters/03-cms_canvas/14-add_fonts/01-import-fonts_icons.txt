@@ -1,0 +1,94 @@
+# I fonts
+
+Come abbiamo già fatto nel capitolo 01 (homepage_show_static) importiamo un nuovo font.
+Non ci resta che importare i fonts sull'asset_pipeline ed associare le chiamate nel views/st_homepage/index.html.erb
+
+
+
+
+## Apriamo il branch "Import New Fonts"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b inf
+~~~~~~~~
+
+
+
+
+## importiamo un nuovo set di fonts nell'asset_pipeline
+
+Possiamo fare una nuova chiamata ad un nuovo file .css nel nostro layout oppure possiamo usare la chiamata al file **font-icons.css**, che già abbiamo, ed aggiungere il nuovo font dentro il file **font-icons.css**
+
+{title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=25}
+~~~~~~~~
+  	<%= stylesheet_link_tag 'font-icons', media: 'all', 'data-turbolinks-track': 'reload' %>
+~~~~~~~~
+
+Scegliamo questa seconda opzione.
+Apriamo il file **font-icons.scss** ed aggiungiamo le chiamate al font Better Glory di cui abbiamo il file otf
+
+Prima copiamo il nostro file "Better Glory.otf" nella cartella .../assets/stylesheets/fonts
+Poi lo rinominiamo "better-glory.otf"
+
+Nella chiamata usiamo il nome dato al file ossia "better-glory"
+
+{title=".../app/assets/stylesheets/font-icons.scss", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+@font-face {
+	font-family: 'better-glory';
+	src:font-url('fonts/better-glory.otf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+~~~~~~~~
+
+Abbiamo già usato l'helper rails font-url(...) che, oltre a funzionare in locale, permette di far lavorare i fonts anche in remoto su Heroku.
+
+
+
+
+## archiviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Add Better Glory font and update fonts-icons.scss"
+~~~~~~~~
+
+
+
+
+## Publichiamo su Heroku
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku icf:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge icf
+$ git branch -d icf
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

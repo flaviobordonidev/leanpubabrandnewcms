@@ -1,0 +1,422 @@
+# Roles - enum
+
+Questo approccio è semplice e permette di avere più ruoli fissi (es: user, vip, admin) o (es: silver, gold, platinum, diamond).
+Questo livello permette di gestire più del 90% delle esigenze delle applicazioni web. Usato con pundit e devise riesce a coprire quasi tutte le esigenze di autorizzazione.
+Per questo motivo rolify è stato messo su una sezione distinta, proprio perché è una gemma che, quasi sempre, possiamo evitare di installare.
+
+Aggiungiamo i vari ruoli utilizzando un attributo (role attribute) e non un intero modello.
+Questo vuol dire aggiungere una colonna "role" di tipo integer sulla tabella **users** e dichiarare l'uso di **enum** sul model User.
+
+Volendo usare "rolify" possiamo saltare direttamente alla sezione 12-rolification
+
+
+Risorse web:
+
+* [articolo lungo vai al paragrafo Implementing Roles - Enum Roles](http://railsapps.github.io/rails-authorization.html)
+* [esempio roles](https://github.com/RailsApps/rails-devise-roles/blob/master/app/views/users/_user.html.erb)
+* [esempio pundit](https://github.com/RailsApps/rails-devise-pundit/blob/master/app/views/users/_user.html.erb)
+
+* [Ruby on Rails - how to create perfect enum in 5 steps](https://naturaily.com/blog/ruby-on-rails-enum)
+* [Ruby on Rails 5.2.0 - Module - ActiveRecord::Enum](https://api.rubyonrails.org/v5.2.0/classes/ActiveRecord/Enum.html)
+
+
+
+
+## Apriamo il branch "Roles Enum"
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b re
+~~~~~~~~
+
+
+
+
+## Aggiungiamo il campo roles:enum alla tabella users
+
+nel db postgresql si possono implementare dei campi "enum" ma nel nostro caso restiamo con il semplice "integer" nel db.
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g migration add_role_to_users role:integer
+~~~~~~~~
+
+Modifichiamo il migrate aggiungendo un default e l'indice per velocizzare queries che usano "role"
+
+{title=".../db/migrate/xxx_create_posts.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class AddRoleToUsers < ActiveRecord::Migration[5.2]
+  def change
+    add_column :users, :role, :integer, default: 0
+    add_index :users, :role, unique: false
+  end
+end
+~~~~~~~~
+
+Effettuiamo il migrate del database per creare la tabella sul database
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails db:migrate
+~~~~~~~~
+
+ed otteniamo le seguenti modifiche alla tabella "users"
+
+{title=".../db/schema.rb", lang=ruby, line-numbers=on, starting-line-number=95}
+~~~~~~~~
+    t.integer "role", default: 0
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["role"], name: "index_users_on_role"
+  end
+~~~~~~~~
+
+Avremmo potuto aggiungere l'indice anche in un secondo momemento
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g migration add_index_to_role_to_users
+~~~~~~~~
+
+{title=".../db/migrate/xxx_add_index_to_role_to_users.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class AddIndexToRoleToUsers < ActiveRecord::Migration
+  def change
+    add_index :users, :role, unique: false
+  end
+end
+~~~~~~~~
+
+
+
+
+## Aggiorniamo il Model implementando ENUM
+
+{title=".../models/user.rb", lang=ruby, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+  #enum role: [:user, :admin, :moderator, :author]
+  enum role: {user: 0, admin: 1, moderator:2, author:3}
+~~~~~~~~
+
+Se non avessimo voluto usare il default lato database con **default: 0** potevamo farlo sul model così:  
+  
+{title=".../models/user.rb", lang=ruby, line-numbers=on, starting-line-number=7}
+~~~~~~~~
+  after_initialize :set_default_role, :if => :new_record?
+
+  def set_default_role
+    self.role ||= :user
+  end
+~~~~~~~~
+
+ma lato database è più pulito e più prestazionale.
+
+
+
+
+
+## Assegnamo un ruolo ai nostri utenti da console rails
+
+
+* verifichiamo tutti i ruoli presenti nella colonna "role" assegnata ad enum.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+> User.roles 
+ => {"user"=>0, "admin"=>1, "moderator"=>2, "author"=>3} 
+~~~~~~~~
+
+* verifichiamo che tutti gli utenti hanno il campo della colonna role con il valore di default "0", che per enum corrisponde al valore "user".
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+
+> User.all
+ => #<ActiveRecord::Relation [#<User id: 3, name: "B", email: "bob@test.abc", created_at: "2018-06-20 10:34:00", updated_at: "2018-06-20 10:34:00", role: "user">, #<User id: 4, name: "C", email: "carl@test.abc", created_at: "2018-06-20 10:34:13", updated_at: "2018-06-20 10:34:13", role: "user">, #<User id: 1, name: "Flavio Bordoni", email: "flavio@test.abc", created_at: "2018-06-18 12:32:53", updated_at: "2018-08-08 22:28:52", role: "user">, #<User id: 2, name: "A", email: "ann@test.abc", created_at: "2018-06-20 10:33:45", updated_at: "2018-08-08 22:31:04", role: "user">]> 
+~~~~~~~~
+
+* rendiamo il primo utente amministratore
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+> User.first.admin! 
+ User Update (10.2ms)  UPDATE ...
+ => true 
+
+# Oppure
+
+> u= User.first 
+> u.role = :admin 
+> u.save 
+ User Update (10.2ms)  UPDATE ...
+ => true 
+
+# Oppure
+
+> User.first.update(role: :admin)
+ User Update (10.2ms)  UPDATE ...
+ => true 
+~~~~~~~~
+
+* verifichiamo che ruolo hanno il primo ed il secondo utente
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+> User.first.admin? 
+ => true 
+
+> User.second.admin? 
+ => false 
+
+> User.first.role
+ => "admin" 
+
+> User.second.role
+ => "user" 
+~~~~~~~~
+
+* prendiamo una lista di tutti gli :admin
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+> User.admin
+ => #<ActiveRecord::Relation [#<User id: 1, name: "Flavio Bordoni", email: "flavio@test.abc", created_at: "2018-06-18 12:32:53", updated_at: "2018-08-11 10:19:05", role: "admin">]> 
+~~~~~~~~
+
+* prendiamo una lista di tutti gli :user
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+> User.user
+ => #<ActiveRecord::Relation [#<User id: 3, name: "B", email: "bob@test.abc", created_at: "2018-06-20 10:34:00", updated_at: "2018-06-20 10:34:00", role: "user">, #<User id: 4, name: "C", email: "carl@test.abc", created_at: "2018-06-20 10:34:13", updated_at: "2018-06-20 10:34:13", role: "user">, #<User id: 2, name: "A", email: "ann@test.abc", created_at: "2018-06-20 10:33:45", updated_at: "2018-08-08 22:31:04", role: "user">]> 
+~~~~~~~~
+
+* prendiamo una lista di tutti i :moderator
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+> User.moderator
+ => #<ActiveRecord::Relation []> 
+
+>exit
+~~~~~~~~
+
+
+
+
+## Attiviamo la white list
+
+Invece di cambiare i ruoli da console adesso li cambiamo sulla nostra view.
+Abbiamo un piccolo problema. Devise non è come lo scaffold. Non ci crea già le azioni sul controller e le views.
+
+Per poter passare i parametri attraverso le views, o meglio il sumbit del form, dobbiamo inserirli nella white list del controller. Una procedura detta strong-parameters or mass-assignment. Ma questo non è così facile su Devise perché di default ci nasconde tutto.
+Abbiamo già visualizzato i controllers e le views di devise-users nei capitoli precedenti.
+Possiamo passare i parametri in due modi:
+
+1. Usando il controller application (metodo raccomandato dalla Plataformatec creatrice di Devise)
+2. Usando il controller user/registration_controller ma in questo caso dobbiamo dichiararlo nella routes
+
+
+1. Il metodo raccomandato da plataformatec. Il metodo Lazy way.
+
+{title=".../app/controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class ApplicationController < ActionController::Base
+  before_action :configure_permitted_parameters, if: :devise_controller?
+
+  protected
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_in, keys: [:role])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:role])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:role])
+  end
+end
+~~~~~~~~
+
+[tutto il codice](#beginning-authentication-authorization-08a-application_controller.rb)
+
+    * [Ruby on Rails: Customize the devise user (Screencast #1)](https://www.youtube.com/watch?v=5inpxIHKhkE)
+    * https://github.com/plataformatec/devise
+    
+    Their names and default permitted parameters are:
+    
+    sign_in (Devise::SessionsController#create) - Permits only the authentication keys (like email)
+    sign_up (Devise::RegistrationsController#create) - Permits authentication keys plus password and password_confirmation
+    account_update (Devise::RegistrationsController#update) - Permits authentication keys plus password, password_confirmation and current_password
+
+
+    ---
+    Strong_params and Edit Profile Page
+    If you are using Rails with strong_params (which are enabled in Rails 4 by default), one more step is needed:
+    the :name attribute has to be whitelisted.
+    
+    application_controller.rb
+    
+    [...]
+    before_action :configure_permitted_parameters, if: :devise_controller?
+    
+    protected
+    
+    def configure_permitted_parameters
+      devise_parameter_sanitizer.for(:sign_up) << :name
+      devise_parameter_sanitizer.for(:account_update) << :name
+    end
+    [...]
+    ---
+
+    
+    2. Questa alternativa è una bozza da sistemare meglio
+    
+    {title=".../app/controllers/users/registrations_controller.rb", lang=ruby, line-numbers=on, starting-line-number=11}
+    ~~~~~~~~
+    class RegistrationsController < Devise::RegistrationsController
+    
+      ...
+    
+      private
+    
+      def sign_up_params
+        params.require(:user).permit(:role, :email, :password, :password_confirmation)
+      end
+    
+      def account_update_params
+        params.require(:user).permit(:role, :email, :password, :password_confirmation, :current_password)
+      end
+    end
+    ~~~~~~~~
+    
+    Aggiungiamo instradamento users/registrations per devise
+    
+    {title=".../app/config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=8}
+    ~~~~~~~~
+      devise_for :users, controllers: {sessions: 'users/sessions', registration: 'users/registration'}, path: '', path_names: {sign_in: 'login'}
+    ~~~~~~~~
+    
+
+
+
+
+## Aggiorniamo la view
+
+Aggiungiamo un selettore per permettere di cambiare ruolo
+
+{title=".../app/views/users/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+    <%= form.select(:role, User.roles.keys.map {|role| [role.titleize, role]}) %>
+~~~~~~~~
+
+[tutto il codice](#beginning-authentication-authorization-06b-views-users-_form.html.erb)
+
+
+
+
+## Spiegazione didattica su **.select**
+
+Per il selettore avremmo potuto usare form.collection_select al posto di form.select ?
+
+~~~~~~~~
+    <%= form.collection_select(:city_id, City.all, :id, :name) %>
+~~~~~~~~
+
+Nel nostro caso no perché form.collection_select lavora su una tabella; invece noi stiamo usando |enum| sulla colonna :role della tabella users.
+  
+
+Altri esempi di form.select per chiarire meglio come lavora:
+
+~~~~~~~~
+<%= form_for @post do |form| %>
+  <%= form.select :person_id, Person.all.map { |p| [ p.name, p.id ] }, include_blank: true %>
+  <%= form.submit %>
+<% end %>
+~~~~~~~~
+
+~~~~~~~~
+@users = User.all
+<% form_for @user, :html => { :method => :post } do |form| %>
+  <%= form.select :user_id, @users %>
+~~~~~~~~
+
+~~~~~~~~
+<% form_for @user, :html => { :method => :post } do |form| %>
+  <%= form.select :user_id, @users.collect { |user| [user.name, user.id] } %>
+~~~~~~~~
+
+~~~~~~~~
+<%= form.select :estados, ['SP', 'PA', 'RJ'] %>
+~~~~~~~~
+
+~~~~~~~~
+<%= form.select :estados, [['São Paulo', 'SP'], ['Pará', 'PA'], ['Rio de Janeiro', 'RJ']] %>
+~~~~~~~~
+
+
+
+
+## Spiegazione didattica su differenza fra each, map, collect
+
+http://queirozf.com/entries/ruby-map-each-collect-inject-reject-select-quick-reference
+https://stackoverflow.com/questions/9429034/what-is-the-difference-between-map-each-and-collect
+
+
+
+
+### each
+Executes an action using as parameter each element of the array. Returns the unmodified array.
+
+[1,2,3,4,5,6,7,8,9,10].each{|e| print e.to_s+"!" }
+# prints "1!2!3!4!5!6!7!8!9!10!"
+# returns [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] 
+
+each performs the enclosed block for each element in the (Enumerable) receiver:
+
+[1,2,3,4].each {|n| puts n*2}
+# Outputs:
+# 2
+# 4
+# 6
+# 8
+
+
+
+### map
+Performs an action on each array element. Returns the modified array. The original array is NOT modified.
+
+[1,2,3,4,5,6,7,8,9,10].map{|e| e*3 }
+# returns [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]
+
+map produce a new Array containing the results of the block applied to each element of the receiver:
+
+[1,2,3,4].map {|n| n*2}
+# => [2,4,6,8]
+
+
+
+
+#### map! 
+Performs an action on each array element. Returns the modified array. The original array IS modified.
+
+a = [1,2,3,4]
+
+a.map {|n| n*2} # => [2,4,6,8]
+puts a.inspect  # prints: "[1,2,3,4]"
+
+a.map! {|n| n+1}
+puts a.inspect  # prints: "[2,3,4,5]"
+
+
+
+
+### collect 
+Alias for map
+map and collect are the same. Technically map is an alias for collect, but map is used a lot more frequently.
+map is the community-choosen version ( https://github.com/bbatsov/ruby-style-guide#map-fine-select-reduce-size )
+
+
+
+
+## Implementiamo le autorizzazioni
+
+nel prossimo capitolo finalmente attiviamo la sicurezza implementando le autorizzazioni alle varie azioni.
