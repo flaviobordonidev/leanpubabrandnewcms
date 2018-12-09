@@ -1,0 +1,156 @@
+# Installiamo PostgreSQL
+
+Il database postgreSQL non è installato di default su AWS Cloud9
+Poiché vogliamo creare una nuova applicazione Rails che sfrutta PostgreSQL invece di sqlite3 è bene installarlo.
+Usiamo PostgreSQL perché è lo stesso database che Heroku usa; e noi useremo Heroku per mettere la nostra app in produzione.
+
+
+Risorse web:
+
+* [Setting up Postgres on Cloud9 IDE](https://medium.com/@floodfx/setting-up-postgres-on-cloud9-ide-720e5b879154)
+
+
+## Installiamo PostgreSQL
+
+Setting up Postgres on Cloud9 IDE
+Install Postgres via Yum
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo yum install postgresql postgresql-server postgresql-devel postgresql-contrib postgresql-docs
+--> y
+~~~~~~~~
+
+
+
+
+## Run postgres service init
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql initdb
+
+Initializing database:                                     [  OK  ]
+~~~~~~~~
+
+
+
+
+## Edit postgres conf to connect via localhost:5432
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+sudo vim /var/lib/pgsql9/data/postgresql.conf
+~~~~~~~~
+
+Uncomment listen_addresses and port
+#listen_addresses = 'localhost'
+#port = 5432
+
+-->
+listen_addresses = 'localhost'
+port = 5432
+
+I comandi da usare in vim sono:
+
+* muoversi con le frecce. 
+* [i] per entrare in modalità modifica. 
+* [canc] per cancellare.
+* [ESC] per uscire dalla modifica.
+* [:w] per salvare
+* [:q] per uscire
+
+
+
+
+## Update pg_hba.conf file for ec2-user auth:
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+sudo vim /var/lib/pgsql9/data/pg_hba.conf
+~~~~~~~~
+
+Trovare la parte che è
+
+~~~~~~~~
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+# "local" is for Unix domain socket connections only
+local   all             all                                     peer
+# IPv4 local connections:
+host    all             all             127.0.0.1/32            ident
+# IPv6 local connections:
+host    all             all             ::1/128                 ident
+~~~~~~~~
+
+E modificare in
+
+~~~~~~~~
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+# "local" is for Unix domain socket connections only
+local   all             all                                     trust
+# IPv4 local connections:
+host    all             ec2-user        127.0.0.1/0             trust
+# IPv6 local connections:
+host    all             all             ::1/128                 md5
+~~~~~~~~
+
+
+
+
+## Start / Restart postgres server
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+sudo service postgresql start
+~~~~~~~~
+
+or
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+sudo service postgresql restart
+~~~~~~~~
+
+
+
+
+## Login as Postgres User and Change Password / Add ec2-user
+
+* login as postgres user
+* login to postgres db as postgres user
+* cambia la password
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo su - postgres 
+$ psql -U postgres
+
+#Change Password:
+
+ALTER USER postgres WITH PASSWORD 'YOUR_PASSWORD';
+ALTER USER postgres WITH PASSWORD '2001onsFB';
+
+#Add ec2-user :
+
+CREATE USER "ec2-user" SUPERUSER;
+ALTER USER "ec2-user" WITH PASSWORD 'YOUR_PASSWORD';
+ALTER USER "ec2-user" WITH PASSWORD '2001onsFB';
+
+#Exit postgres:
+
+postgres=# \q
+
+#Logout of postgres user account:
+
+exit
+~~~~~~~~
+
+Login to Postgres from ec2-user
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ psql postgres
+#Create your custom databases from there…
+~~~~~~~~

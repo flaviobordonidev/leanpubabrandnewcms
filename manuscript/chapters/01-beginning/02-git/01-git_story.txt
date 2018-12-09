@@ -1,0 +1,5 @@
+# Git
+
+In questo capitolo parliamo solo di cosa è Git della sua storia e del perché lo abbiamo scelto.
+
+blablabla

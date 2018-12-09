@@ -21,6 +21,21 @@ $ git checkout -b pubprod
 
 
 
+
+## Inizializziamo Heroku  
+
+Pubblichiamo la nostra applicazionie sull'ambiente di produzione Heroku. 
+Per prima cosa creiamoci un account su www.heroku.com
+
+![account su heroku](images/beginning/heroku/heroku_signup.png)
+
+Logghiamoci e scarichiamo la heroku-toolbelt
+
+![heroku login](images/beginning/heroku/heroku_login.png)
+
+
+
+
 ## Creiamo l'app su heroku
 
 {title="terminal", lang=bash, line-numbers=off}
@@ -366,4 +381,15 @@ To initiate the transfer of the application using the Dashboard:
 Per approfondimenti:
 
 * https://devcenter.heroku.com/articles/transferring-apps
+
+
+
+
+## Settaggio fino a Rails 4.0 per la pubblicazione su Heroku
+
+ATTENZIONE con RAILS 5 non c'e bisogno di questo paragrafo. C'è già la gemma puma e la gemma rails_12factor è stata integrata nel core di rails5
+
+La gemma 'rails_12factor' è usata da Heroku per servire assets statici come le immagini e gli stylesheets.
+La gemma 'puma' è un web server professionale usato da Heroku.
+La gemma 'pg' installata nel capitolo precedente serve per gestire il database PostgreSQL.
 

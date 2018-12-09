@@ -5,26 +5,6 @@ Version Control System. Un gestore che controlla le versioni del software in fas
 
 
 
-## Implementiamo Git 
-
-implementare git richiede i pochi comandi presentati su questo paragrafo. Se volete implementarlo con più calma usando anche altri comandi di controllo passate al paragrafo successivo. 
-
-{title="Sommario del capitolo Git", lang=bash, line-numbers=off}
-~~~~~~~~
-$ cd rebisworldbr
-$ git init
-
-$ git add -A
-$ git commit -m "new rails app"
-
-$ git tag v0.1.0
-~~~~~~~~
-
-I> Ricordiamoci di entrare nella directory del nostro nuovo applicativo "rebisworldbr" altrimenti si inizializza git per tutto il workspace e questo è un problema per quando si fa il push su heroku.
-
-
-
-
 ## Inizializziamo
 
 Entriamo nella directory del nostro nuovo applicativo
@@ -34,7 +14,7 @@ Entriamo nella directory del nostro nuovo applicativo
 $ cd rebisworld
 ~~~~~~~~
 
-Vediamo che non ci sono le cartelle nascoste di git
+Vediamo che non c'è le cartelle nascoste **.git**
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
@@ -48,7 +28,13 @@ inizializziamo git.
 $ git init
 ~~~~~~~~
 
+I> Ricordiamoci di entrare nella directory del nostro nuovo applicativo "rebisworldbr" altrimenti si inizializza git per tutto il workspace e questo è un problema per quando si fa il push su heroku.
+
 Questo genera anche la cartella nascosta git ed i vari files tra cui gitignore per vedere possiamo visualizzare i files nascosti dalla ruota dentata al lato del nome del workspace scegliendo dal menu a discesa la voce "show hidden files"
+
+![Fig. a](beginning/git/01a-aws_cloud9-show_hidden_files.png)
+
+
 Oppure da terminale
 
 {title="terminal", lang=bash, line-numbers=off}
@@ -59,7 +45,7 @@ $ ls -a
 
 
 
-## Verifichiamo configurazione globale 
+## La configurazione globale 
 
 Verifichiamo la configurazione globale di git che è utilizzata per i repository esterni quali Github, Heroku, Gitbuchet, ...
 Per verificare le impostazioni di git eseguiamo
@@ -69,13 +55,23 @@ Per verificare le impostazioni di git eseguiamo
 $ git config -l
 ~~~~~~~~
 
-Se serve modificarle
+First-time system setup
+Before using Git, you should perform a couple of one-time setup steps. These are system setups, meaning you only have to do them once per computer:
+
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ git config --global user.name "Your Name"
 $ git config --global user.email "your@email.com"
-$ git config --global push.default matching
+~~~~~~~~
+
+Note that the name and email address you use in your Git configuration will be available in any repositories you make public.
+
+Verifichiamo le aggiunte fatte
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git config -l
 ~~~~~~~~
 
 
@@ -88,6 +84,9 @@ pacchetti accessori [Gitignore - ignoring files](https://help.github.com/article
 Altri files che è importante escludere sono quelli riguardanti password/secrets. Ma questi ultimi li trattiamo nel futuro capitolo che si intitola Figaro.
 
 Cloud9 nel workspace rails inserisce un gitignore di default che al momento lasciamo così ma che modificheremo in seguito
+
+![Fig. a](beginning/git/01a-aws_cloud9-show_hidden_files.png)
+
 
 {title=".../.gitignore", lang=text, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
@@ -118,6 +117,8 @@ Cloud9 nel workspace rails inserisce un gitignore di default che al momento lasc
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 ~~~~~~~~
+
+![tutto il codice](beginning/git/01b-.gitignore)
 
 
 

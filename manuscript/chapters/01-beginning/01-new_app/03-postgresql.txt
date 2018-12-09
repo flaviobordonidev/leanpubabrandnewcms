@@ -5,58 +5,29 @@ Attiviamo postgreSQL ed effettuiamo la connessione creando i databases
 
 
 
-## Apriamo il branch "postgreSQL"
+## Gestiamo l'errore
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ git checkout -b pg
-~~~~~~~~
-
-
-
-
-## Implementiamo PostgreSQL
-
-nel primo capitolo abbiamo creato una nuova applicazione usando i settaggi del database postgreSQL
-** $ rails _5.1.2_ new rebisworld --database=postgresql **
-adesso implementiamo postgreSQL sul nostro workspace di cloud9.
-
-PostgreSQL è preinstallato su ogni workspace di Cloud9, basta attivarlo.
-
-I> Il "sudo sudo" su alcuni comandi non è un errore di digitazione ma è necessario su Cloud9 per evitare che il prompt ti richieda una password per l'utente ubuntu interrompendo il comando perché non viene fornita una password per l'utente ubuntu.
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ sudo service postgresql start
-~~~~~~~~
-
-Verifichiamo sul web
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ rails s -b $IP -p $PORT
-~~~~~~~~
-
-Vediamo che l'errore è cambiato. Adesso si connette a PostgreSQL ma non trova i databases di svilluppo e di test. Questi sono definiti sul file /config/database.yml
+L'errore è perché PostgreSQL non trova i databases di svilluppo e di test. Questi sono definiti sul file /config/database.yml
 
 Come si vede sul database.yml di postgresql diamo il nome dei database con la convenzione "nome-applicazione + _development (o _test)" 
 Non creiamo il database di produzione (_production) perché la produzione la teniamo su heroku.
 
+![Fig. b]()
 
-[codice: beginning postgresql 01](#code-beginning-postgresql-01)
+[codice a](#beginning/new_app/03a-config-database.yml)
 
 {title=".../config/database.yml", lang=yaml, line-numbers=on, starting-line-number=24}
 ~~~~~~~~
 development:
   <<: *default
-  database: rebisworld_development
+  database: rigenerabatterie_development
 ~~~~~~~~
 
 {title=".../config/database.yml", lang=yaml, line-numbers=on, starting-line-number=58}
 ~~~~~~~~
 test:
   <<: *default
-  database: rebisworld_test
+  database: rigenerabatterie_test
 ~~~~~~~~
 
 {title=".../config/database.yml", lang=yaml, line-numbers=on, starting-line-number=81}
@@ -84,16 +55,28 @@ Il servizio postgresql è gia attivo quindi creiamo i databases solo per develop
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ createdb rebisworldbr_development
-$ createdb rebisworldbr_test
+$ createdb rigenerabatterie_development
+$ createdb rigenerabatterie_test
 ~~~~~~~~
+
+verifichiamo che adesso c'è comunicazione eseguendo
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails db:migrate
+~~~~~~~~
+
+Il comando adesso non da nessun errore.
+
+
+
+
+## Verifichiamo i databases creati da linea di comando di pg
 
 Per verificare i databases dalla linea di comando di PostgreSQL:
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ rails s -b $IP -p $PORT
-
 $ psql
 postgres=# \list
 postgres=# \q
@@ -137,30 +120,7 @@ Verifichiamo sul web
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ cd elisinfo
-$ rails s -b $IP -p $PORT
+$ rails s
 ~~~~~~~~
 
-
-
-
-## Salviamo su git
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ git add -A
-$ git commit -m "implement postgreSQL"
-~~~~~~~~
-
-
-
-
-## Chiudiamo il branch
-
-se abbiamo finito le modifiche e va tutto bene:
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ git checkout master
-$ git merge pg
-$ git branch -d pg
-~~~~~~~~
+![Fig. b](beginning/new_app/03b-preview-app_working.png)

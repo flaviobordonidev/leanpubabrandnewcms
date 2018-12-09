@@ -39,12 +39,14 @@ Vediamo la nostra applicazione rails funzionante:
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ rails s -b $IP -p $PORT
+$ sudo service postgresql start
+$ rails s
 ~~~~~~~~
 
-https://rebisworld-flaviobordonidev.c9users.io
-https://rebisworld-flaviobordonidev.c9users.io/example_static_pages/page_a
-https://rebisworld-flaviobordonidev.c9users.io/example_static_pages/page_b
+https://5b7c4783cd554badb3b2453e1653ff4d.vfs.cloud9.eu-west-1.amazonaws.com
+https://5b7c4783cd554badb3b2453e1653ff4d.vfs.cloud9.eu-west-1.amazonaws.com/example_static_pages/page_a
+https://5b7c4783cd554badb3b2453e1653ff4d.vfs.cloud9.eu-west-1.amazonaws.com/example_static_pages/page_b
+
 
 
 
@@ -65,10 +67,38 @@ vediamo che addesso sull'URL della root ci reinstrada su page_a
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ rails s -b $IP -p $PORT
+$ rails s
 ~~~~~~~~
 
-https://rebisworld-flaviobordonidev.c9users.io
+https://5b7c4783cd554badb3b2453e1653ff4d.vfs.cloud9.eu-west-1.amazonaws.com
+
+
+
+
+## Vediamo gli instradamenti
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails routes
+~~~~~~~~
+
+otteniamo
+
+~~~~~~~~
+cloud9:~/environment/rigenerabatterie (esp) $ rails routes
+                     Prefix Verb URI Pattern                                                                              Controller#Action
+                       root GET  /                                                                                        example_static_pages#page_a
+example_static_pages_page_a GET  /example_static_pages/page_a(.:format)                                                   example_static_pages#page_a
+example_static_pages_page_b GET  /example_static_pages/page_b(.:format)                                                   example_static_pages#page_b
+         rails_service_blob GET  /rails/active_storage/blobs/:signed_id/*filename(.:format)                               active_storage/blobs#show
+  rails_blob_representation GET  /rails/active_storage/representations/:signed_blob_id/:variation_key/*filename(.:format) active_storage/representations#show
+         rails_disk_service GET  /rails/active_storage/disk/:encoded_key/*filename(.:format)                              active_storage/disk#show
+  update_rails_disk_service PUT  /rails/active_storage/disk/:encoded_token(.:format)                                      active_storage/disk#update
+       rails_direct_uploads POST /rails/active_storage/direct_uploads(.:format)                                           active_storage/direct_uploads#create
+~~~~~~~~
+
+Il **Prefix** è quello che utiliziamo come "path" nei nostri links.
 
 
 
@@ -80,14 +110,14 @@ https://rebisworld-flaviobordonidev.c9users.io
 <h1> Pagina A </h1>
 <p> Il testo verrà preso dal database ma alcuni messaggi sono passati dall'applicazione ed è quindi bene che vengano tradotti per essere pronti a supportare più lingue. </p>
 <br>
-<p>  <%= link_to 'andiamo alla pagina B', test_pages_page_b_path %> </p>
+<p>  <%= link_to 'andiamo alla pagina B', example_static_pages_page_b_path %> </p>
 ~~~~~~~~
 
 
 {title="views/example_static_pages/page_b.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
 <h1> Benvenuti nella pagina B </h1>
-<p>  <%= link_to 'Torniamo alla pagina A', test_pages_page_a_path %> </p>
+<p>  <%= link_to 'Torniamo alla pagina A',example_static_pages_page_a_path %> </p>
 <p>  <%= link_to 'Torniamo alla homepage', root_path %> </p>
 ~~~~~~~~
 
@@ -97,12 +127,10 @@ Vediamo la nostra applicazione rails funzionante:
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ sudo service postgresql start
-$ rails s -b $IP -p $PORT
+$ rails s
 ~~~~~~~~
 
-https://rebisworld-flaviobordonidev.c9users.io
-https://rebisworld-flaviobordonidev.c9users.io/example_static_pages/page_a
-https://rebisworld-flaviobordonidev.c9users.io/example_static_pages/page_b
+adesso invece di scrivere sull'url possiamo cliccare sui links delle pagine.
 
 
 
