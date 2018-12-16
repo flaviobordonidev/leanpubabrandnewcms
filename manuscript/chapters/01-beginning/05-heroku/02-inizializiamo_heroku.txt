@@ -1,0 +1,384 @@
+# Heroku
+
+Pubblichiamo la nostra applicazionie sull'ambiente di produzione Heroku.
+
+Andiamo subito in produzione così risolviamo di volta in volta gli eventuali problemi che si presentano senza essere costretti a fare un troubleshooting su tutto l'applicativo.
+
+Risorse web:
+
+* https://devcenter.heroku.com/articles/getting-started-with-rails5
+* https://devcenter.heroku.com/articles/heroku-cli#download-and-install
+* https://www.railstutorial.org/book/_single-page#sec-deploying
+
+
+## Apriamo il branch
+
+Creiamo il Branch per la pubblicazione in produzione 
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b pubprod
+~~~~~~~~
+
+
+
+
+## Verifichiamo se abbiamo Heroku installato su aws Cloud9  
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku --version
+
+bash: heroku: command not found
+~~~~~~~~
+
+Nel nostro caso non è installato.
+
+
+
+
+## Creiamoci un account Heroku  
+
+Per prima cosa creiamoci un account su www.heroku.com
+
+![account su heroku](beginning/heroku/02a-heroku_signup.png)
+
+
+
+
+## Installiamo Heroku CLI
+
+Potremmo logarci, scaricare ed installare la heroku CLI (ex heroku-toolbelt).
+Seguendo le indicazioni di [Heroku](https://devcenter.heroku.com/articles/heroku-cli) il comando che dobbiamo usare da aws cloud9, che è un "docker container" è questo:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo -s
+$ curl https://cli-assets.heroku.com/install.sh | sh
+$ exit
+~~~~~~~~
+
+
+
+
+### Alternativa tramite stringa Michael Hartl
+
+Un'alternativa è eseguire la stringa di comando preparata da Michael Hartl del railstutorial.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ source <(curl -sL https://cdn.learnenough.com/heroku_install)
+~~~~~~~~
+
+Questo comando esegue uno script fatto da Michael che esegue i seguenti passi:
+* Scarica il pacchetto per linux dal sito di heroku (https://cli-assets.heroku.com/heroku-linux-x64.tar.gz) tramite curl. 
+* Scompatta e rimuove il pacchetto.
+* Sposta i files scompattati su /usr/local. 
+* Poi attiva il puntamento su $HOME/.profile per permettere di eseguire il comando "heroku" da qualsiasi path ci troviamo.  
+
+Ne possiamo vedere il contenuto qui:
+
+[cod. b](beginning-heroku-02b-learnenogh-heroku_install)
+
+I> Questa alternativa funziona ma tutte le volte che riapro l'istanza di cloud9 sono costretto a rilanciare il comando altrimenti non mi riconosce il comando "heroku ..."
+
+proviamo a lanciarla come super user
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo -s
+$ source <(curl -sL https://cdn.learnenough.com/heroku_install)
+$ exit
+~~~~~~~~
+
+
+
+
+## Alternativa tramite npm
+
+Update npm
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ nvm i v8         # Any version > 8 will do e.g. nvm i v9 
+~~~~~~~~
+
+Install heroku cli
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ npm install -g heroku
+~~~~~~~~
+
+Done!
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku --version
+
+heroku/7.0.15 linux-x64 node-v8.11.1
+~~~~~~~~
+
+You can now clone your projects from github, gitlab etc. and deploy them to heroku from anywhere!!
+# Example: deploy a dockerised django application
+$ git clone https://gitlab.com/Banzyme2/frag-weather.git
+$ heroku login
+$ heroku container:login
+$ heroku container:push <django-container-name>
+$ heroku container:release <django-container-name>
+
+
+
+
+## Verifichiamo che l'installazione è andata a buon fine.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku --version
+
+cloud9:~/environment/rigenerabatterie (pubprod) $ heroku --version
+heroku/7.19.3 linux-x64 node-v11.3.0
+~~~~~~~~
+
+
+
+
+## Creiamo l'app su heroku
+
+Loghiamoci con le credenziali usate nella creazione dell'account heroku (sign_up).
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku login
+
+cloud9:~/environment/rigenerabatterie (pubprod) $ heroku login
+heroku: Press any key to open up the browser to login or q to exit: 
+ ›   Warning: Cannot open browser. Go to https://cli-auth.heroku.com/auth/browser/5f9c8850-0bf7-44b1-baa4-dc6bcf406e3e to finish login or run heroku login 
+ ›   --interactive
+ ›
+Logging in... done
+~~~~~~~~
+
+Questa procedura ti fa fare il login sulla pagina web. Basta cliccare sul link, scegliere "open" ed eseguire il login.
+
+
+Aggiungiamo la nostra chiave di criptatura in modo da stabilire un canale sicuro tra aws Cloud9 ed Heroku.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku keys:add
+
+cloud9:~/environment/rigenerabatterie (pubprod) $ heroku keys:add
+Could not find an existing SSH key at ~/.ssh/id_rsa.pub
+? Would you like to generate a new one? Yes
+Generating public/private rsa key pair.
+Your identification has been saved in /home/ec2-user/.ssh/id_rsa.
+Your public key has been saved in /home/ec2-user/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:5E3kMz4kx60QJW3Mj6uXCZMwvYghqsQst5IvK9HHH3Y ec2-user@ip-172-31-7-7
+The key's randomart image is:
++---[RSA 2048]----+
+|        o=o      |
+|         *=.     |
+|       .+.Oo.    |
+|  . . oo.O.+.    |
+|oo o o +So=.     |
+|++o + + E ..     |
+|++ o o o + o     |
+|* .   . . +      |
+|o=.      .       |
++----[SHA256]-----+
+Uploading /home/ec2-user/.ssh/id_rsa.pub SSH key... done
+~~~~~~~~
+
+
+Creiamo una nuova app su heroku.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku create
+
+cloud9:~/environment/rigenerabatterie (pubprod) $ heroku create
+Creating app... done, ⬢ pacific-sea-70617
+https://pacific-sea-70617.herokuapp.com/ | https://git.heroku.com/pacific-sea-70617.git
+~~~~~~~~
+
+l'app viene creata dinamnicamente. In questo caso è stato creato "pacific-sea-70617" ma può essere qualsiasi nome.
+
+
+Per verficarlo si può usare il comando
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku domains
+
+cloud9:~/environment/rigenerabatterie (pubprod) $ heroku domains
+=== pacific-sea-70617 Heroku Domain
+pacific-sea-70617.herokuapp.com
+~~~~~~~~
+
+o
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku apps:info
+
+cloud9:~/environment/rigenerabatterie (pubprod) $ heroku apps:info
+=== pacific-sea-70617
+Auto Cert Mgmt: false
+Dynos:          
+Git URL:        https://git.heroku.com/pacific-sea-70617.git
+Owner:          flavio.bordoni.dev@gmail.com
+Region:         us
+Repo Size:      0 B
+Slug Size:      0 B
+Stack:          heroku-18
+Web URL:        https://pacific-sea-70617.herokuapp.com/
+~~~~~~~~
+
+
+Possiamo verificare che abbiamo la configurazione git corretta con
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git config --list | grep heroku
+
+cloud9:~/environment/rigenerabatterie (pubprod) $ git config --list | grep heroku
+remote.heroku.url=https://git.heroku.com/pacific-sea-70617.git
+remote.heroku.fetch=+refs/heads/*:refs/remotes/heroku/*
+~~~~~~~~
+
+Se vedi "fatal: not in a git directory" allora probabilmente non sei nella directory corretta. Altrimenti puoi mandare in produzione il tuo codice.
+
+
+
+
+## Rinominiamo l'app
+
+Diamo all'app di heroku lo stesso nome della nostra app così è più facile associarli.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku rename rigenerabatterie1
+
+cloud9:~/environment/rigenerabatterie (pubprod) $ heroku rename rigenerabatterie1
+Renaming pacific-sea-70617 to rigenerabatterie1... done
+https://rigenerabatterie1.herokuapp.com/ | https://git.heroku.com/rigenerabatterie1.git
+Git remote heroku updated
+ ▸    Don't forget to update git remotes for all other local checkouts of the app.
+~~~~~~~~
+
+
+verifichiamo di nuovo le informazione della nostra app
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku apps:info
+
+cloud9:~/environment/rigenerabatterie (pubprod) $ heroku apps:info
+=== rigenerabatterie1
+Auto Cert Mgmt: false
+Dynos:          
+Git URL:        https://git.heroku.com/rigenerabatterie1.git
+Owner:          flavio.bordoni.dev@gmail.com
+Region:         us
+Repo Size:      0 B
+Slug Size:      0 B
+Stack:          heroku-18
+Web URL:        https://rigenerabatterie1.herokuapp.com/
+~~~~~~~~
+
+e la configurazione di git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git config --list | grep heroku
+
+cloud9:~/environment/rigenerabatterie (pubprod) $ git config --list | grep heroku
+remote.heroku.url=https://git.heroku.com/rigenerabatterie1.git
+remote.heroku.fetch=+refs/heads/*:refs/remotes/heroku/*
+~~~~~~~~
+
+Adesso è tutto pronto. Posso fare il commit finale in locale e uploadare tutto in remoto.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "ready to public in production on heroku"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su heroku
+
+Attenzione! per pubblicare su heroku da un branch si usa un comando specifico ( git push heroku yourbranch:master )
+(vedi https://devcenter.heroku.com/articles/git)
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku pubprod:master
+~~~~~~~~
+
+La nostra applicazione è ora in produzione su heroku. La possiamo vedere sul broser all'URL
+
+https://rigenerabatterie1.herokuapp.com/
+ 
+I> siccome non abbiamo ancora tabelle di database è stato sufficiente fare il "git push" ma quando avremo tabelle di database dobbiamo ricordarci di eseguire il "migrate" anche su heroku.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku run rake db:migrate
+~~~~~~~~
+
+
+
+
+## Impostiamo i dynos
+
+Per visualizzare la nostra app sul web stiamo usando un dyno di tipo web.
+Vediamo quanti dynos abbiamo associato alla nostra app in produzione su heroku 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku ps
+
+# Free dyno hours quota remaining this month: 939h 47m (93%)
+# For more information on dyno sleeping and how to upgrade, see:
+# https://devcenter.heroku.com/articles/dyno-sleeping
+# 
+# === web (Free): bin/rails server -p $PORT -e $RAILS_ENV (1)
+# web.1: up 2018/06/17 20:37:54 +0000 (~ 5m ago)
+~~~~~~~~
+
+abbiamo 1 dyno attivo **web.1: up**
+
+Se vogliamo assegnare più dynos usiamo il comando **ps:scale**. Ad esempio assicuriamoci di avere 1 dyno attivo per il web.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku ps:scale web=1
+
+# Scaling dynos... done, now running web at 1:Free
+~~~~~~~~
+
+Possiamo verificare che non è cambiato nulla perché era già attivo di default 1 dyno.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku ps
+
+# Free dyno hours quota remaining this month: 939h 47m (93%)
+# For more information on dyno sleeping and how to upgrade, see:
+# https://devcenter.heroku.com/articles/dyno-sleeping
+# 
+# === web (Free): bin/rails server -p $PORT -e $RAILS_ENV (1)
+# web.1: up 2018/06/17 20:37:54 +0000 (~ 9m ago)
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+Lo chiudiamo nel prossimo capitolo

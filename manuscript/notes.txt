@@ -20,6 +20,9 @@ https://themeforest.net/item/canvas-the-multipurpose-html5-template/9228123/supp
 https://developers.facebook.com/docs/plugins/comments/#counter
 
 ---
+https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-byebug-gem
+
+---
 http://pygments.org/demo/   ->  vedi il codice nel menu a cascata
 
 .html.erb   -> lang=HTML+Mako
@@ -30,8 +33,8 @@ http://pygments.org/demo/   ->  vedi il codice nel menu a cascata
 
 ---
 $ sudo service postgresql start
+$ rails s
 
----
 $ rails s -b $IP -p $PORT
 
 https://rebisworld3-flaviobordonidev.c9users.io/

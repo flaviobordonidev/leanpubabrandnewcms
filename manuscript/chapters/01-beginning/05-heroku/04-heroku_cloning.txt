@@ -1,0 +1,45 @@
+## Git cloning your heroku app
+
+
+Risorse web:
+
+* https://devcenter.heroku.com/articles/transferring-apps
+* https://devcenter.heroku.com/articles/git-clone-heroku-app
+
+
+
+## Clonare il sorgente usando Git
+
+To clone the source of an existing application from Heroku using Git, use the heroku git:clone command:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku git:clone -a myapp
+~~~~~~~~
+
+Replace myapp with the name of your app.
+This will create a new directory named after your app with its source and complete repository history, as well as adding a heroku git remote to facilitate further updates.
+Heroku provides the git service primarily for deployment, and the ability to clone from it is offered as a convenience. We strongly recommend you store your code in another git repository such as GitHub and treat that as canonical.
+
+
+
+
+## Trasfer your app to another Heroku Account
+
+Apps can be transferred to a collaborator on the app. If the user is not a collaborator, first add them as a collaborator.
+
+initiate the transfer of the application using the CLI, use apps:transfer.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku apps:transfer -a <app-to-transfer> <collaborator-to-transfer-it-to@example.com>
+~~~~~~~~
+
+To initiate the transfer of the application using the Dashboard:
+1. In Dashboard, click the Settings tab of the application.
+2. Scroll down to the “Transfer Ownership” section.
+3. Click the “Select a new owner” field. The list of people who are collaborators on the app and the list of Teams and Organizations to which you belong will be displayed.
+4. Select an item from the list.
+5. Click “Transfer.”
+
+

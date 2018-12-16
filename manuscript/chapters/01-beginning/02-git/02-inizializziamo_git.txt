@@ -66,6 +66,7 @@ $ git config --global user.email "your@email.com"
 ~~~~~~~~
 
 Note that the name and email address you use in your Git configuration will be available in any repositories you make public.
+Questo ci sarà utile più avanti quando attiveremo GitHub perché useremo la stessa email per avere accesso.
 
 Verifichiamo le aggiunte fatte
 

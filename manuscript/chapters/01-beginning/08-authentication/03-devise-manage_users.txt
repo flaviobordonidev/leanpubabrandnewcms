@@ -1,0 +1,148 @@
+# Gestiamo gli utenti
+
+Come amministatore creiamo nuovi utenti e gestiamo i loro ruoli
+Adesso che abbiamo tutto predisposto iniziamo ad incorporare l'autorizzazione nel template della nostra applicazione
+
+
+Risorse web:
+
+* https://github.com/plataformatec/devise/wiki/How-To:-Manage-users-through-a-CRUD-interface
+
+
+
+
+## Apriamo il branch "SignIn SignOut"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b siso
+~~~~~~~~
+
+
+
+
+## Aggiungiamo logout
+
+{title=".../app/views/example_static_pages/page_a.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=10}
+~~~~~~~~
+<%= link_to "Sign Out", destroy_user_session_path, method: :delete %>
+~~~~~~~~
+
+[cod. a](#beginning-authentication-03a-views-example_static_pages-page_a.html.erb)
+
+Se lo proviamo verrà ricaricata la stessa pagina homepage/show perché è la pagina di root. La differenza è che apparirà il messaggio di corretto logout.
+
+
+
+
+
+## Aggiungiamo login
+
+invece di usare l'url mettiamo un pulsante di login su page_a
+
+{title=".../app/views/example_static_pages/page_a.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=10}
+~~~~~~~~
+<p>  <%= link_to "login", new_user_session_path %> </p>
+~~~~~~~~
+
+[cod. b](#beginning-authentication-03b-views-example_static_pages-page_a.html.erb)
+
+Se lo proviamo verrà ricaricata la stessa pagina homepage/show perché è la pagina di root. La differenza è che apparirà il messaggio di corretto login.
+
+
+
+
+## Personalizziamo gli url per login e logout
+
+
+{title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=9}
+~~~~~~~~
+  devise_for :users, controllers: {sessions: 'users/sessions', registrations: 'users/registrations'}, path: '', path_names: {sign_in: 'login'}
+  resources :users
+~~~~~~~~
+
+Non mi ricordo a che serve path:'' comunque elimina qualche instradamnento
+path_names seve a rinominare le chiamate sull'URL per il sign_in, sign_out, sign_up, ...
+
+
+
+
+## Verifichiamo gli instradamenti
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails routes | egrep "users"
+
+~~~~~~~~
+
+
+
+
+## Nascondiamo login o logout a seconda se siamo loggati o no
+
+user_signed_in? è la stessa cosa di 
+
+
+## Visualiziamo nome ed email dell'utente autenticato
+
+current_user
+
+
+      <p> utente attivo: <%= current_user.email if current_user.present? == true %> </p>
+      <p> utente attivo: <%= current_user.present? == true ? current_user.email : "nessun utente loggato" %> </p>
+
+
+
+{title=".../app/views/example_static_pages/page_a.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=10}
+~~~~~~~~
+<p>  <%= link_to "login", new_user_session_path %> </p>
+~~~~~~~~
+
+[cod. c](#beginning-authentication-03c-views-example_static_pages-page_a.html.erb)
+
+
+
+## Salviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Implement devise links signin signout"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su Heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku siso:master
+$ heroku run rails db:migrate
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge siso
+$ git branch -d siso
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

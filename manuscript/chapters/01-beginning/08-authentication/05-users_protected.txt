@@ -1,0 +1,12 @@
+# Implementiamo la protezione di Devise
+
+Rendiamo non accessibili le pagine di gestione degli utenti a chi non è autenticato.
+Questa è quasi una forma di autorizzazione ma l'autorizzazione vera è basata su ruoli differenti che hanno i vari utenti che fanno login / che si autenticano.
+Quando implementeremo la parte di autorizzazione nei prossimi capitoli disattiveremo temporaneamente la non accessibilità creata con Devise alle pagine a cui possono accedere solo gli utenti loggati.
+
+
+## Su login vai a users_index
+
+Prima di proteggere le pagine facciamo in modo che una volta fatto login si va direttamente su users/index
+
+...

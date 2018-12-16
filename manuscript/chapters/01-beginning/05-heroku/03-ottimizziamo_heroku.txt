@@ -1,0 +1,251 @@
+# Heroku
+
+Ottimizziamo la nostra app per l'ambiente di produzione Heroku.
+
+
+Risorse web:
+
+* https://devcenter.heroku.com/articles/getting-started-with-rails5
+* https://www.railstutorial.org/book/_single-page
+
+* [Michael Hartl - Rails Tutorial 7.5.2 Production webserver](https://www.railstutorial.org/book/_single-page#sec-production_webserver)
+* [Heroku - deplowing rails with puma](https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server)
+
+
+
+
+## Apriamo il branch
+
+Continuiamo con il branch aperto nel capitolo precedente
+
+
+
+
+## Vediamo i warnings
+
+Pubblicando su heroku abbiamo ricevuto diversi avvisi di miglioramenti da fare. Per molti di questi sono anche riportate le pagine web di tutorial di heroku.
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+remote: Building source:
+remote: 
+remote:  !     Warning: Multiple default buildpacks reported the ability to handle this app. The first buildpack in the list below will be used.
+remote:                         Detected buildpacks: Ruby,Node.js
+remote:                         See https://devcenter.heroku.com/articles/buildpacks#buildpack-detect-order
+~~~~~~~~
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+remote:        Ruby Sass is deprecated and will be unmaintained as of 26 March 2019.
+remote:        
+remote:        * If you use Sass as a command-line tool, we recommend using Dart Sass, the new
+remote:          primary implementation: https://sass-lang.com/install
+remote:        
+remote:        * If you use Sass as a plug-in for a Ruby web framework, we recommend using the
+remote:          sassc gem: https://github.com/sass/sassc-ruby#readme
+remote:        
+remote:        * For more details, please refer to the Sass blog:
+remote:          http://sass.logdown.com/posts/7081811
+~~~~~~~~
+
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+remote:        Warning: the running version of Bundler (1.15.2) is older than the version that created the lockfile (1.17.1). We suggest you upgrade to the latest version of Bundler by running `gem install bundler`.
+remote:        The latest bundler is 2.0.0.pre.2, but you are currently running 1.15.2.
+remote:        To update, run `gem install bundler --pre`
+~~~~~~~~
+
+
+~~~~~~~~
+remote: -----> Detecting rails configuration
+remote: 
+remote: ###### WARNING:
+remote: 
+remote:        You set your `config.active_storage.service` to :local in production.
+remote:        If you are uploading files to this app, they will not persist after the app
+remote:        is restarted, on one-off dynos, or if the app has multiple dynos.
+remote:        Heroku applications have an ephemeral file system. To
+remote:        persist uploaded files, please use a service such as S3 and update your Rails
+remote:        configuration.
+remote:        
+remote:        For more information can be found in this article:
+remote:          https://devcenter.heroku.com/articles/active-storage-on-heroku
+remote:        
+remote: 
+remote: ###### WARNING:
+remote: 
+remote:        We detected that some binary dependencies required to
+remote:        use all the preview features of Active Storage are not
+remote:        present on this system.
+remote:        
+remote:        For more information please see:
+remote:          https://devcenter.heroku.com/articles/active-storage-on-heroku
+remote:        
+remote: 
+remote: ###### WARNING:
+remote: 
+remote:        No Procfile detected, using the default web server.
+remote:        We recommend explicitly declaring how to boot your server process via a Procfile.
+remote:        https://devcenter.heroku.com/articles/ruby-default-web-server
+~~~~~~~~
+
+Di questi ultimi tre WARNING: 
+Il primo ed il secondo relativi ad active_storage li risolviamo più avanti quando implementiamo l'upload dei files.
+Il terzo relativo al Procfile lo risolviamo fra poco in questo capitolo.
+
+
+
+## Vediamo la log
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku logs
+~~~~~~~~
+
+Se vogliamo più dettagli
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku logs --tail
+~~~~~~~~
+
+
+
+
+## Il webserver puma
+
+Siamo arrivati a gestire il terzo warning; quello relativo al Procfile. Questo è il file con la configurazione per il webserver Puma.
+
+Rails 5.2 ha di default nel Gemfile il webserver puma che quindi abbiamo già installato con il precedente **$ bundle install**.
+
+{title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=10}
+~~~~~~~~
+# Use Puma as the app server
+gem 'puma', '~> 3.11'
+~~~~~~~~
+
+Non ci resta che creare il nuovo file Procfile nella cartella principale della nostra applicazione
+
+{title=".../Procfile", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+web: bundle exec puma -C config/puma.rb
+~~~~~~~~
+
+Questo Procfile rimanda la lettura della configurazione al file config/puma.rb che è già creato di default da Rails. Vediamolo senza i commenti.
+
+{title=".../config/puma.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+threads_count = ENV.fetch("RAILS_MAX_THREADS") { 5 }
+threads threads_count, threads_count
+
+port        ENV.fetch("PORT") { 3000 }
+
+environment ENV.fetch("RAILS_ENV") { "development" }
+
+plugin :tmp_restart
+~~~~~~~~
+
+Ma noi usiamo quest'altra configurazione che è suggerita da heroku 
+
+{title=".../config/puma.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+workers Integer(ENV['WEB_CONCURRENCY'] || 2)
+threads_count = Integer(ENV['RAILS_MAX_THREADS'] || 5)
+threads threads_count, threads_count
+
+preload_app!
+
+rackup      DefaultRackup
+port        ENV['PORT']     || 3000
+environment ENV['RACK_ENV'] || 'development'
+
+on_worker_boot do
+  # Worker specific setup for Rails 4.1+
+  # See: https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server#on-worker-boot
+  ActiveRecord::Base.establish_connection
+end
+~~~~~~~~
+
+workers consume more RAM and threads consume more CPU, and both provide more concurrency.
+we have 5 Puma-threads and 2 Puma-worker
+With a typical Rails memory footprint, you can expect to run 2-4 Puma worker processes on a free, hobby or standard-1x dyno.
+
+
+
+## Thread safe
+
+If your app is not thread safe, you will only be able to use workers. Set your min and max threads to 1
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku config:set MIN_THREADS=1 RAILS_MAX_THREADS=1
+~~~~~~~~
+
+You can still gain concurrency by adding workers. Since a worker runs in a different process and does not share memory, code that is not thread safe can be run across multiple worker processes.
+Once you have your application running on workers, you can try increasing the number of threads on staging and in development to 2
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku config:set MIN_THREADS=2 RAILS_MAX_THREADS=2
+~~~~~~~~
+
+You need to monitor exceptions and look for errors such as *deadlock detected (fatal), race conditions, and locations where you’re modifying global or shared variables.
+Concurrency bugs can be difficult to detect and fix, so make sure to test your application thoroughly before deploying to production. If you can make your application thread safe, the benefit is greatly worth it, as scaling out with Puma threads and workers provide significantly more throughput than using workers alone.
+
+
+
+
+## salviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Add Puma webserver Procfile and config"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su Heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku pubprod:master
+$ heroku run rails pubprod:migrate
+~~~~~~~~
+
+Adesso non ho più il terzo warning. Per il momento è tutto su Heroku
+
+Inoltre il web dyno sta lavorando sul web server puma
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku ps
+
+cloud9:~/environment/rigenerabatterie (pubprod) $ heroku ps                                                                                                                                                 
+Free dyno hours quota remaining this month: 937h 44m (93%)
+Free dyno usage for this app: 0h 0m (0%)
+For more information on dyno sleeping and how to upgrade, see:
+https://devcenter.heroku.com/articles/dyno-sleeping
+
+=== web (Free): bundle exec puma -C config/puma.rb (1)
+web.1: up 2018/12/10 10:36:12 +0000 (~ 39s ago)
+~~~~~~~~
+
+In questo caso abbiamo "=== web (Free): bundle exec puma -C config/puma.rb" mentre nel capitolo precedente, prima di creare il Procfile, avevamo "=== web (Free): bin/rails server -p $PORT -e $RAILS_ENV"
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge pubprod
+$ git branch -d pubprod
+~~~~~~~~

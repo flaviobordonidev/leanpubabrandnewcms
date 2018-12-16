@@ -1,0 +1,221 @@
+cloud9:~/environment/rigenerabatterie (pubprod) $ git push heroku pubprod:master
+Counting objects: 112, done.
+Compressing objects: 100% (97/97), done.
+Writing objects: 100% (112/112), 25.90 KiB | 1.44 MiB/s, done.
+Total 112 (delta 11), reused 0 (delta 0)
+remote: Compressing source files... done.
+remote: Building source:
+remote: 
+remote:  !     Warning: Multiple default buildpacks reported the ability to handle this app. The first buildpack in the list below will be used.
+remote:                         Detected buildpacks: Ruby,Node.js
+remote:                         See https://devcenter.heroku.com/articles/buildpacks#buildpack-detect-order
+remote: -----> Ruby app detected
+remote: -----> Compiling Ruby/Rails
+remote: -----> Using Ruby version: ruby-2.4.1
+remote: -----> Installing dependencies using bundler 1.15.2
+remote:        Running: bundle install --without development:test --path vendor/bundle --binstubs vendor/bundle/bin -j4 --deployment
+remote:        Warning: the running version of Bundler (1.15.2) is older than the version that created the lockfile (1.17.1). We suggest you upgrade to the latest version of Bundler by running `gem install bundler`.
+remote:        Fetching gem metadata from https://rubygems.org/.........
+remote:        Fetching version metadata from https://rubygems.org/..
+remote:        Fetching dependency metadata from https://rubygems.org/.
+remote:        Fetching rake 12.3.2
+remote:        Fetching concurrent-ruby 1.1.3
+remote:        Fetching minitest 5.11.3
+remote:        Installing minitest 5.11.3
+remote:        Installing rake 12.3.2
+remote:        Installing concurrent-ruby 1.1.3
+remote:        Fetching thread_safe 0.3.6
+remote:        Fetching builder 3.2.3
+remote:        Installing thread_safe 0.3.6
+remote:        Installing builder 3.2.3
+remote:        Fetching erubi 1.7.1
+remote:        Installing erubi 1.7.1
+remote:        Fetching mini_portile2 2.3.0
+remote:        Fetching crass 1.0.4
+remote:        Installing mini_portile2 2.3.0
+remote:        Installing crass 1.0.4
+remote:        Fetching rack 2.0.6
+remote:        Fetching nio4r 2.3.1
+remote:        Fetching websocket-extensions 0.1.3
+remote:        Installing rack 2.0.6
+remote:        Installing nio4r 2.3.1 with native extensions
+remote:        Installing websocket-extensions 0.1.3
+remote:        Fetching mini_mime 1.0.1
+remote:        Installing mini_mime 1.0.1
+remote:        Fetching arel 9.0.0
+remote:        Installing arel 9.0.0
+remote:        Fetching mimemagic 0.3.2
+remote:        Fetching msgpack 1.2.4
+remote:        Installing mimemagic 0.3.2
+remote:        Installing msgpack 1.2.4 with native extensions
+remote:        Using bundler 1.15.2
+remote:        Fetching coffee-script-source 1.12.2
+remote:        Installing coffee-script-source 1.12.2
+remote:        Fetching execjs 2.7.0
+remote:        Installing execjs 2.7.0
+remote:        Fetching method_source 0.9.2
+remote:        Installing method_source 0.9.2
+remote:        Fetching thor 0.20.3
+remote:        Installing thor 0.20.3
+remote:        Fetching ffi 1.9.25
+remote:        Installing ffi 1.9.25 with native extensions
+remote:        Fetching multi_json 1.13.1
+remote:        Installing multi_json 1.13.1
+remote:        Fetching pg 1.1.3
+remote:        Installing pg 1.1.3 with native extensions
+remote:        Fetching puma 3.12.0
+remote:        Installing puma 3.12.0 with native extensions
+remote:        Fetching rb-fsevent 0.10.3
+remote:        Installing rb-fsevent 0.10.3
+remote:        Fetching tilt 2.0.9
+remote:        Installing tilt 2.0.9
+remote:        Fetching turbolinks-source 5.2.0
+remote:        Installing turbolinks-source 5.2.0
+remote:        Fetching tzinfo 1.2.5
+remote:        Installing tzinfo 1.2.5
+remote:        Fetching nokogiri 1.8.5
+remote:        Installing nokogiri 1.8.5 with native extensions
+remote:        Fetching i18n 1.1.1
+remote:        Installing i18n 1.1.1
+remote:        Fetching websocket-driver 0.7.0
+remote:        Installing websocket-driver 0.7.0 with native extensions
+remote:        Fetching mail 2.7.1
+remote:        Installing mail 2.7.1
+remote:        Fetching rack-test 1.1.0
+remote:        Installing rack-test 1.1.0
+remote:        Fetching sprockets 3.7.2
+remote:        Installing sprockets 3.7.2
+remote:        Fetching marcel 0.3.3
+remote:        Installing marcel 0.3.3
+remote:        Fetching coffee-script 2.4.1
+remote:        Installing coffee-script 2.4.1
+remote:        Fetching uglifier 4.1.20
+remote:        Installing uglifier 4.1.20
+remote:        Fetching bootsnap 1.3.2
+remote:        Installing bootsnap 1.3.2 with native extensions
+remote:        Fetching rb-inotify 0.9.10
+remote:        Installing rb-inotify 0.9.10
+remote:        Fetching turbolinks 5.2.0
+remote:        Installing turbolinks 5.2.0
+remote:        Fetching activesupport 5.2.2
+remote:        Installing activesupport 5.2.2
+remote:        Fetching loofah 2.2.3
+remote:        Installing loofah 2.2.3
+remote:        Fetching sass-listen 4.0.0
+remote:        Installing sass-listen 4.0.0
+remote:        Fetching rails-dom-testing 2.0.3
+remote:        Fetching globalid 0.4.1
+remote:        Installing rails-dom-testing 2.0.3
+remote:        Installing globalid 0.4.1
+remote:        Fetching activemodel 5.2.2
+remote:        Fetching jbuilder 2.8.0
+remote:        Installing activemodel 5.2.2
+remote:        Installing jbuilder 2.8.0
+remote:        Fetching rails-html-sanitizer 1.0.4
+remote:        Fetching sass 3.7.2
+remote:        Installing rails-html-sanitizer 1.0.4
+remote:        Fetching activejob 5.2.2
+remote:        Installing sass 3.7.2
+remote:        Installing activejob 5.2.2
+remote:        Fetching activerecord 5.2.2
+remote:        Fetching actionview 5.2.2
+remote:        Installing activerecord 5.2.2
+remote:        Installing actionview 5.2.2
+remote:        Fetching actionpack 5.2.2
+remote:        Installing actionpack 5.2.2
+remote:        Fetching actioncable 5.2.2
+remote:        Fetching actionmailer 5.2.2
+remote:        Fetching activestorage 5.2.2
+remote:        Installing actionmailer 5.2.2
+remote:        Installing activestorage 5.2.2
+remote:        Installing actioncable 5.2.2
+remote:        Fetching railties 5.2.2
+remote:        Fetching sprockets-rails 3.2.1
+remote:        Installing sprockets-rails 3.2.1
+remote:        Installing railties 5.2.2
+remote:        Fetching rails 5.2.2
+remote:        Fetching coffee-rails 4.2.2
+remote:        Fetching sass-rails 5.0.7
+remote:        Installing rails 5.2.2
+remote:        Installing coffee-rails 4.2.2
+remote:        Installing sass-rails 5.0.7
+remote:        Bundle complete! 18 Gemfile dependencies, 61 gems now installed.
+remote:        Gems in the groups development and test were not installed.
+remote:        Bundled gems are installed into ./vendor/bundle.
+remote:        Post-install message from sass:
+remote:        
+remote:        Ruby Sass is deprecated and will be unmaintained as of 26 March 2019.
+remote:        
+remote:        * If you use Sass as a command-line tool, we recommend using Dart Sass, the new
+remote:          primary implementation: https://sass-lang.com/install
+remote:        
+remote:        * If you use Sass as a plug-in for a Ruby web framework, we recommend using the
+remote:          sassc gem: https://github.com/sass/sassc-ruby#readme
+remote:        
+remote:        * For more details, please refer to the Sass blog:
+remote:          http://sass.logdown.com/posts/7081811
+remote:        
+remote:        Bundle completed (42.71s)
+remote:        Cleaning up the bundler cache.
+remote:        Warning: the running version of Bundler (1.15.2) is older than the version that created the lockfile (1.17.1). We suggest you upgrade to the latest version of Bundler by running `gem install bundler`.
+remote:        The latest bundler is 2.0.0.pre.2, but you are currently running 1.15.2.
+remote:        To update, run `gem install bundler --pre`
+remote: -----> Installing node-v8.10.0-linux-x64
+remote: -----> Detecting rake tasks
+remote: -----> Preparing app for Rails asset pipeline
+remote:        Running: rake assets:precompile
+remote:        Yarn executable was not detected in the system.
+remote:        Download Yarn at https://yarnpkg.com/en/docs/install
+remote:        I, [2018-12-10T00:11:25.055626 #1409]  INFO -- : Writing /tmp/build_c241f365e2251b15599ee34c58de5a38/public/assets/application-9622f0fe63bfad91bdeaa3a771e86262263840678fd66849b311b6cfb3f7cc85.js
+remote:        I, [2018-12-10T00:11:25.056238 #1409]  INFO -- : Writing /tmp/build_c241f365e2251b15599ee34c58de5a38/public/assets/application-9622f0fe63bfad91bdeaa3a771e86262263840678fd66849b311b6cfb3f7cc85.js.gz
+remote:        I, [2018-12-10T00:11:25.065817 #1409]  INFO -- : Writing /tmp/build_c241f365e2251b15599ee34c58de5a38/public/assets/application-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css
+remote:        I, [2018-12-10T00:11:25.066268 #1409]  INFO -- : Writing /tmp/build_c241f365e2251b15599ee34c58de5a38/public/assets/application-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css.gz
+remote:        Asset precompilation completed (3.57s)
+remote:        Cleaning assets
+remote:        Running: rake assets:clean
+remote: -----> Detecting rails configuration
+remote: 
+remote: ###### WARNING:
+remote: 
+remote:        You set your `config.active_storage.service` to :local in production.
+remote:        If you are uploading files to this app, they will not persist after the app
+remote:        is restarted, on one-off dynos, or if the app has multiple dynos.
+remote:        Heroku applications have an ephemeral file system. To
+remote:        persist uploaded files, please use a service such as S3 and update your Rails
+remote:        configuration.
+remote:        
+remote:        For more information can be found in this article:
+remote:          https://devcenter.heroku.com/articles/active-storage-on-heroku
+remote:        
+remote: 
+remote: ###### WARNING:
+remote: 
+remote:        We detected that some binary dependencies required to
+remote:        use all the preview features of Active Storage are not
+remote:        present on this system.
+remote:        
+remote:        For more information please see:
+remote:          https://devcenter.heroku.com/articles/active-storage-on-heroku
+remote:        
+remote: 
+remote: ###### WARNING:
+remote: 
+remote:        No Procfile detected, using the default web server.
+remote:        We recommend explicitly declaring how to boot your server process via a Procfile.
+remote:        https://devcenter.heroku.com/articles/ruby-default-web-server
+remote: 
+remote: 
+remote: -----> Discovering process types
+remote:        Procfile declares types     -> (none)
+remote:        Default types for buildpack -> console, rake, web
+remote: 
+remote: -----> Compressing...
+remote:        Done: 46.9M
+remote: -----> Launching...
+remote:        Released v6
+remote:        https://rigenerabatterie1.herokuapp.com/ deployed to Heroku
+remote: 
+remote: Verifying deploy... done.
+To https://git.heroku.com/rigenerabatterie1.git
+ * [new branch]      pubprod -> master
+cloud9:~/environment/rigenerabatterie (pubprod) $ 

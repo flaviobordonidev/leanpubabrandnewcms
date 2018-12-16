@@ -1,0 +1,104 @@
+# Tabelle di esempio
+
+Abbiamo già creato la tabella **users** inizializzando **devise** adesso creiamo la tabelle di esempio **example_posts** che ci ci aiuterà a verificare le future implementazioni che faremo nei prossimi capitoli.
+
+
+
+
+## Apriamo il branch "Examples Posts"
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b ep
+~~~~~~~~
+
+
+
+
+## Impementiamo tabella example_posts
+
+implementiamo tutta la gestione degli articoli come esempio inclusa la tabella example_posts per gestire gli articoli creati da utenti con ruolo di autore.
+Generiamo tutto lo **scaffold** perché vogliamo anche i controllers e le views. 
+ - il **migrate** crea la sola tabella
+ - il **model** oltre alla tabella crea il model per il collegamento uno-a-molti.
+ - lo **scaffold** crea anche il controller e le views.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g scaffold ExamplePost title:string incipit:text user:references
+~~~~~~~~
+
+La cosa bella di **user:references** è che, oltre a creare un migration "ottimizzato" per la relazione uno a molti, ci predispone parte della relazione uno-a-molti anche lato model.
+
+vediamo il migrate creato
+
+{title=".../db/migrate/xxx_create_posts.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class CreatePosts < ActiveRecord::Migration[5.2]
+  def change
+    create_table :posts do |t|
+      t.string :title
+      t.text :incipit
+      t.references :user, foreign_key: true
+
+      t.timestamps
+    end
+  end
+end
+~~~~~~~~
+
+la **t.references :user, foreign_key: true** crea un campo "t.integer :user_id" ed attiva il legame uno a molti lato database.
+
+
+eseguiamo il migrate 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails db:migrate
+~~~~~~~~
+
+
+
+
+### Completiamo la relazione uno-a-molti
+
+
+{title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+  belongs_to :user
+~~~~~~~~
+
+{title=".../app/models/user.rb", lang=ruby, line-numbers=on, starting-line-number=9}
+~~~~~~~~
+  has_many :posts
+~~~~~~~~
+
+
+
+
+### Inseriamo qualche articolo da console
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+> u1 = User.find(1)
+> u1.posts.create(title: "Il mio primo articolo", incipit: "Perché scrivere questo articolo")
+> u1.posts.create(title: "Il mio secondo articolo", incipit: "Ci ho preso gusto")
+> u1.posts.create(title: "Il mio terzo articolo", incipit: "Adesso sono esperto")
+
+> u2 = User.find(2)
+> u2.posts.create(title: "La conferenza uno", incipit: "Una interessante conferenza sul cielo")
+> u2.posts.create(title: "La conferenza due", incipit: "Perché si formano le nuvole? Capiamo il ciclo dell'acqua")
+> u2.posts.create(title: "La conferenza tre", incipit: "Il sole è una stella nana")
+
+
+> u3 = User.find(3)
+> u3.posts.create(title: "Studio di caso alfa", incipit: "In questo studio la nostra azienda è stata brava")
+> u3.posts.create(title: "Studio di caso beta", incipit: "In questo studio identifichiamo i pesci nell'acquario")
+> u3.posts.create(title: "Studio di caso gamma", incipit: "Questo studio è praticamente identico a quello dell'architetto")
+
+> exit
+~~~~~~~~
+
+

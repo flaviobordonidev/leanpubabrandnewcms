@@ -1,0 +1,134 @@
+# Internazionalizzazione della pagina di test.
+
+Attiviamo l'internazionalizzazione statica
+
+Invece di scrivere i contenuti statici (quelli non presi dal database) già tradotti è più elegante mettere dei "segnaposto" che saranno poi usati dai vari files di traduzione nelle varie lingue.
+Questo permette di avere un'applicazione già pronta per essere tradotta in più lingue.
+
+Il nome dei "segnaposto" li mettiamo in inglese per dare un'impronta world-wide al nostro applicativo che ci permetterà in futuro di assumere sviluppatori da tutto il mondo.
+
+
+
+
+## Apriamo il branch "Test Pages Internazionalizazione (I18n)"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b tpi18n
+~~~~~~~~
+
+
+
+
+## Internazionalizazione (i18n)
+
+Per internazionalizzazione si intende la traduzione dell'applicazione nelle varie lingue.
+
+L'internazionalizzazione si divide in due parti.
+statica = traduzione delle stringhe usate nell'applicazione. Non traduce i dati del database.
+dinamica = traduzione dei dati del database.
+
+Al momento noi ci occupiamo solo di quella statica.
+
+
+
+
+## I18n statico con YAML
+
+Per tradurre in varie lingue il contenuto statico della nostra applicazione (quello che non è contenuto nel database) utilizziamo il file yaml che è disponibile di default su Rails. Non c'è necessità di installare una nuova gemma. Rimane comunque la possibilità di cambiare successivamente solo il backend ed usarne uno differente invece dei files yaml. Tutto il resto dell'interalizzazione resta invariato.
+
+Usiamo l'helper "t" per tutte le stringhe che dobbiamo internazionalizzare.
+la stringa che viene passata all'helper "t" è un segnaposto che si usa nel file yaml associandogli la stringa corretta nella lingua scelta.
+
+{title=".../app/views/example_static_pages/page_a.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<h1> <%= t ".first_header" %> </h1>
+<p> <%= t ".first_paragraph" %> </p>
+<br>
+<p>  <%= link_to t(".link_goto_page_B"), example_static_pages_page_b_path %> </p>
+~~~~~~~~
+
+Se visualizziamo sul browser vediamo che si visualizzano i segnaposto.  
+Per far apparire le descrizioni invece dei segnaposti implementiamo il backend Yaml. Iniziamo con il file en.yml perché l'inglese (en) è la lingua che viene selezionata di default.
+Avendo usato il "." davanti al nome del segnaposto, per convenzione Rails cerca il segnaposto catalogato nella rispettiva view. In questo caso sotto en -> homepage -> index.
+
+
+[tutto il codice](#code-beginning-testpages_i18n-01)
+
+{title=".../config/locales/en.yml", lang=yaml, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+en:
+  example_static_pages:
+    page_a:
+      first_header: "This is the homepage"
+      first_paragraph: "the text will be taken from the database, but some messages are passed by the application and is therefore well that are translated to be ready to support more languages."
+      link_goto_page_B: "Let's go to page B."
+~~~~~~~~
+
+I> ATTENZIONE! i files YAML (.yml) sono sensibili all'indentatura. Per indentare usate gli "spazi" e non i "tabs".
+
+I> Attenzione! C'è un bug e sui partials non mi funziona il "." come previsto quando uso i partials. Ho quindi scelto di usare tutto il percorso:
+
+
+{title=".../app/views/example_static_pages/page_a.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<h1> <%= t "example_static_pages.page_a.first_header" %> </h1>
+<p> <%= t "example_static_pages.page_a.first_paragraph" %> </p>
+<br>
+<p>  <%= link_to t("example_static_pages.page_a.link_goto_page_B"), example_static_pages_page_b_path %> </p>
+~~~~~~~~
+
+
+Adesso creiamo il file it.yml per implementare la lingua italiana (it).
+
+[codice: beginning-testpages_i18n 02](#code-beginning-testpages_i18n-02)
+
+{title=".../config/locales/it.yml", lang=yaml, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+it:
+  example_static_pages:
+    page_a:
+      first_header: "Questa è l'homepage"
+      first_paragraph: "il testo verrà preso dal database ma alcuni messaggi sono passati dall'applicazione ed è quindi bene che vengano tradotti per essere pronti a supportare più lingue."
+      link_goto_page_B: "Andiamo alla pagina B"
+~~~~~~~~
+
+
+
+
+## Verifichiamo
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+la lingua che si presenta è quella inglese di en.yml perché è quella di default.
+
+
+
+## Salviamo su Git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "set i18n static"
+~~~~~~~~
+
+
+
+
+## publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku tpi18n:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+Lo chiudiamo nel prossimo capitolo
