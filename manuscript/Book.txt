@@ -9,38 +9,9 @@ chapters/frontmatter/introduction.txt
 
 mainmatter:
 
-chapters/environment/00-section-environment.txt
-chapters/environment/01-bash_shortcuts.txt
+chapters/01-beginning/00-section/00-section-beginning.txt
 
-chapters/beginning/00-section-beginning.txt
-chapters/beginning/01-create_the_app.txt
-chapters/beginning/06-a_brand_new_cms.txt
-chapters/beginning/07-why_bootstrap.txt
-
-chapters/mocks/00-section-web_designer.txt
-chapters/mocks/b01-mocks_homepage.txt
-chapters/mocks/b02-mocks_comingsoon.txt
-chapters/mocks/b03-mocks_post_index.txt
-
-chapters/core/c00-section-web_developper.txt
-chapters/core/c00b-figaro.txt
-chapters/core/c01-homepage.txt
-chapters/core/c02-homepage_In18.txt
-chapters/core/c21-posts.txt
-chapters/core/c22-posts_clean.txt
-chapters/core/c23-posts_refile.txt
-chapters/core/c24-posts_refile_heroku.txt
-chapters/core/c25-posts_index.txt
-chapters/core/c26-posts_show.txt
-chapters/core/c27-posts_edit_destroy.txt
-chapters/core/c28-posts_tinymce.txt
-chapters/core/c51-homepage_index.txt
-
-chapters/troubleshooting/z01-bugs_and_troubleshootings.txt
-
-
-code/section-code.txt
-code/application.txt
-code/mocks.txt
-code/homepage.txt
-code/posts.txt
+chapters/01-beginning/01-new_app/00-aws_cloud9.txt
+chapters/01-beginning/01-new_app/01-install_postgresql.txt
+chapters/01-beginning/01-new_app/02-new_app.txt
+chapters/01-beginning/01-new_app/03-postgresql.txt
