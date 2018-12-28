@@ -3,6 +3,15 @@
 Impostiamo che autorizzazioni ha l'utente, una volta autenticato attraverso il login. 
 Noi usiamo Pundit
 
+Attiviamo pundit per autorizzare le modifiche degli utenti solo se la persona è loggata (autenticata) ed ha il ruolo di amministratore (autorizzata).
+
+Ma prima di approfondire Pundit identifichiamo il nostro problema che richiede autenticazione:
+
+Nel sistema di gestione delle aziende abbiamo 2 ruoli, quello del manager e quello del dipendente. 
+Il Manager può visualizzare tutte le schermate del sistema. 
+Il dipendente non può creare, modificare o cancellare alcuna azienda.
+
+
 Risorse web
 
 * https://rubygems.org/gems/pundit
@@ -14,13 +23,6 @@ Risorse web
 * https://medium.com/@stacietaylorcima/implement-user-authorization-with-pundit-rails-80d921cdbf28
 
 * [Episode #047 - Authorization with Pundit](https://www.youtube.com/watch?v=PWizyTjCAdg)
-
-
-Ma prima di approfondire Pundit identifichiamo il nostro problema che richiede autenticazione:
-
-Nel sistema di gestione delle aziende abbiamo 2 ruoli, quello del manager e quello del dipendente. 
-Il Manager può visualizzare tutte le schermate del sistema. 
-Il dipendente non può creare, modificare o cancellare alcuna azienda.
 
 
 

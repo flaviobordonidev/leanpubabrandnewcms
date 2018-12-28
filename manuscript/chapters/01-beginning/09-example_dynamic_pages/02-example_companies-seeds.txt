@@ -31,13 +31,13 @@ $ rails g scaffold ExampleCompany name:string sector:text
 
 vediamo il migrate creato
 
-{title=".../db/migrate/xxx_create_companies.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+{title=".../db/migrate/xxx_create_example_companies.rb", lang=ruby, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
-class CreatePosts < ActiveRecord::Migration[5.2]
+class CreateExampleCompanies < ActiveRecord::Migration[5.2]
   def change
-    create_table :posts do |t|
-      t.string :title
-      t.text :incipit
+    create_table :example_companies do |t|
+      t.string :name
+      t.text :sector
 
       t.timestamps
     end
@@ -45,6 +45,7 @@ class CreatePosts < ActiveRecord::Migration[5.2]
 end
 ~~~~~~~~
 
+[cod. a](beginning-example_dynamic_pages-02a-xxx_create_example_companies.rb)
 
 
 eseguiamo il migrate 
@@ -63,9 +64,57 @@ $ rails db:migrate
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ rails c
-> Company.new(name: "AAA srl", sector: "industria chimica").save
-> Company.new(name: "BAB snc", sector: "industria farmaceutica").save
-> Company.new(name: "CABBA SpA", sector: "ITC").save
+> ExampleCompany.new(name: "AAA srl", sector: "industria chimica").save
+> ExampleCompany.new(name: "BAB snc", sector: "industria farmaceutica").save
+> ExampleCompany.new(name: "CABBA SpA", sector: "ITC").save
 
 > exit
+~~~~~~~~
+
+
+
+
+## Salviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Add table example_companies"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su Heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku ec:master
+$ heroku run rails db:migrate
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge ec
+$ git branch -d ec
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
 ~~~~~~~~

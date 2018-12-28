@@ -23,8 +23,13 @@ I> Nota che “users” è plurale quando si crea il controller. (al contrario d
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ rails g controller users show
+$ rails g controller users index
 ~~~~~~~~
+
+Inizializiamo con la sola azione **index** perché le altre le aggiungiamo di volta in volta.
+Avremmo potuto inizializzare tutte e 7 le azioni restfull con ** $ rails g controller users index show new edit create update destroy **
+
+
 
 
 ## Un controller di esempio
@@ -42,7 +47,6 @@ Per i campi possiamo rifarci allo schema del database
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-
 ~~~~~~~~
 
 [cod. a](beginning-authentication-04a-db-schema.rb)
@@ -77,18 +81,40 @@ $ sudo service postgresql start
 $ rails db:migrate
 ~~~~~~~~
 
+Vediamo che lo schema del database si è aggiornato
+
+[cod. c](beginning-authentication-04c-db-schema.rb)
+
+
 
 
 ### Una furbata
 
-invece di crearci lo scaffold di una tabella example_users avremmo potuto lanciare il comando come se stessimo creando la tabella users ma non eseguendo il "$ rails db:migrate" e cancellando il file di migrate
+invece di crearci lo scaffold di una tabella example_users avremmo potuto lanciare il comando come se stessimo creando la tabella users senza eseguire il "$ rails db:migrate" e cancellando il file di migrate
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ rails g scaffold User integer:bla blablabla
+$ rails g scaffold User name:string email:string encrypted_password:string remember_created_at:datetime
 ~~~~~~~~
 
-in questo modo abbiamo già tutto pronto. :)
+in questo modo avremmo avuto tutto già pronto. :)
+Però per la didattica di questo libro creiamo il controller User da zero aiutandoci con ExampleUser.
+
+
+
+
+## Implementiamo l'azione index 
+
+Aggiorniamo il controller implementando l'azione index per visualizzare l'elenco di tutti gli utenti
+
+{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+  def index
+    @users = User.all
+  end
+~~~~~~~~
+
+[cod. d](beginning-authentication-04d-controllers-users_controller.rb)
 
 
 
@@ -101,34 +127,16 @@ Creiamo il nuovo file "index.html.erb" dentro la cartella "views/users". Ci copi
 ~~~~~~~~
 <p id="notice"><%= notice %></p>
 
-<h1>Example Posts</h1>
+<h1>Users</h1>
 
 <table>
   <thead>
     <tr>
-      <th>email</th>
-      <th>role</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @users.each do |user| %>
-      <tr>
-        <td><%= user.email %></td>
-        <td><%= user.role %></td>
-        <td><%= link_to 'Show', user %></td>
-        <td><%= link_to 'Edit', edit_user_path(user) %></td>
-        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New User', new_user_path %>
+      <th>Name</th>
+      <th>Email</th>
 ~~~~~~~~
+
+[cod. e](beginning-authentication-04e-views-users-index.html.erb)
 
 Se avessimo voluto tenere tutto organizzato in una sottocartella tipo "views/users/accounts" avremmo dovuto lavorare sul controller e sulla routes come faremo più avanti per authors/posts.
 
@@ -137,27 +145,25 @@ Se avessimo voluto tenere tutto organizzato in una sottocartella tipo "views/use
 
 ## Verifichiamo che tutto funziona
 
-
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ sudo service postgresql start
-$ rails s -b $IP -p $PORT
+$ rails s
 ~~~~~~~~
 
-https://rebisworldbr1-flaviobordonidev.c9users.io/users
-
-Continuiamo implementando le altre azioni.
+https://mycloud9path.amazonaws.com/users
 
 
 
 
 ## Implementiamo l'azione show
 
-copiamo ed implementiamo la parte di codice per l'azione show, il before_action lo lascio pronto anche per le prossime azioni.
+Aggiorniamo il controller implementando l'azione show per visualizzare il singolo utente.
+Copiamo ed implementiamo la parte di codice per l'azione show, il before_action lo lascio pronto anche per le prossime azioni.
 
 {title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=2}
 ~~~~~~~~
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show]
 ~~~~~~~~
 
 {title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=10}
@@ -174,6 +180,21 @@ copiamo ed implementiamo la parte di codice per l'azione show, il before_action 
     end
 ~~~~~~~~
 
+[cod. f](beginning-authentication-04f-controllers-users_controller.rb)
+
+Per la sola azione user non serviva il before_action con il metodo private. Bastava:
+
+{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=off}
+~~~~~~~~
+  # GET /users/1
+  # GET /users/1.json
+  def show
+      @user = User.find(params[:id])
+  end
+~~~~~~~~
+
+Ma è utile ed elegante estrarre **@user = User.find(params[:id])** in un metodo private perché questo è chiamato anche da altre azioni (:show, :edit, :update e :destroy)
+
 
 
 
@@ -186,41 +207,44 @@ Creiamo il nuovo file "show.html.erb" dentro la cartella "views/users". Ci copia
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Email:</strong>
-  <%= @user.email %>
+  <strong>Name:</strong>
+  <%= @user.name %>
 </p>
-
-<p>
-  <strong>Password:</strong>
-  <%= @user.password %>
-</p>
-
-<p>
-  <strong>Password confirmation:</strong>
-  <%= @user.password_confirmation %>
-</p>
-
-<p>
-  <strong>Role:</strong>
-  <%= @user.role %>
-</p>
-
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
 ~~~~~~~~
+
+[cod. g](beginning-authentication-04g-views-users-show.html.erb)
+
+
+
+## Verifichiamo che tutto funziona
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+https://mycloud9path.amazonaws.com/users/1
 
 
 
 
 ## Implementiamo l'azione edit
 
-copiamo ed implementiamo la parte di codice per l'azione show, il before_action lo lascio pronto anche per le prossime azioni.
+Aggiorniamo il controller implementando le azioni edit ed update per editare i campi del singolo utente.
+Copiamo ed implementiamo la parte di codice per le azioni edit ed update.
+
+{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+  before_action :set_user, only: [:show, :edit, :update]
+~~~~~~~~
 
 {title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=15}
 ~~~~~~~~
   # GET /users/1/edit
   def edit
   end
+
 
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
@@ -237,14 +261,15 @@ copiamo ed implementiamo la parte di codice per l'azione show, il before_action 
   end
 ~~~~~~~~
 
-{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=39}
+{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=40}
 ~~~~~~~~
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:email, :password, :password_confirmation, :role)
+      params.require(:user).permit(:name, :email, :encrypted_password, :remember_created_at)
     end
 ~~~~~~~~
 
+[cod. h](beginning-authentication-04h-controllers-users_controller.rb)
 
 
 
@@ -252,36 +277,17 @@ copiamo ed implementiamo la parte di codice per l'azione show, il before_action 
 
 Creiamo i nuovi files "edit.html.erb" e "_form.html.erb" dentro la cartella "views/users". Ci copiamo il contenuto dei files su "views/example_users/..." e lo riadattiamo.
 
-{title=".../app/views/users/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+{title=".../app/views/users/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
 ~~~~~~~~
-<h1>Editing User</h1>
-
 <%= render 'form', user: @user %>
-
-<%= link_to 'Show', @user %> |
-<%= link_to 'Back', users_path %>
 ~~~~~~~~
+
+[cod. i](beginning-authentication-04i-views-users-edit.html.erb)
 
 
 {title=".../app/views/users/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
 <%= form_with(model: user, local: true) do |form| %>
-  <% if user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
-
-      <ul>
-      <% user.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :email %>
-    <%= form.text_field :email %>
-  </div>
 
   <div class="field">
     <%= form.label :password %>
@@ -292,27 +298,65 @@ Creiamo i nuovi files "edit.html.erb" e "_form.html.erb" dentro la cartella "vie
     <%= form.label :password_confirmation %>
     <%= form.text_field :password_confirmation %>
   </div>
-
-  <div class="field">
-    <%= form.label :role %>
-    <%= form.number_field :role %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
 ~~~~~~~~
 
-L'update funziona ma possiamo cambiare email e password a tutti, nostro utente compreso. Inoltre le validazioni di Devise ci chiedono sempre di ricambiare la password. Ed il campo role ancora non funziona perché va gestito diversamente essendo definito "enum".
-Questi aggiusti li facciamo più avanti nel capitolo.
+[cod. j](beginning-authentication-04j-views-users-_form.html.erb)
+
+
+
+
+## Verifichiamo che tutto funziona
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+https://mycloud9path.amazonaws.com/users/1/edit
+
+Con questo form possiamo cambiare il nome e l'email ma non possiamo cambiare la password perché è criptata. O meglio, se cambiamo la password criptata non possiamo più loggarci perché non possiamo risalire alla password in chiaro.
+
+
+
+
+## Implementiamo i campi password e password_confirmation
+
+Devise ci offre la soluzione perché accetta la password passata attraverso i campi **password** e **password_confirmation**
+Quindi usiamo questi campi al posto del campo **encrypted_password**
+
+{title=".../app/views/users/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=24}
+~~~~~~~~
+  <div class="field">
+    <%= form.label :password %>
+    <%= form.text_field :password %>
+  </div>
+
+  <div class="field">
+    <%= form.label :password_confirmation %>
+    <%= form.text_field :password_confirmation %>
+  </div>
+~~~~~~~~
+
+Ed aggiorniamo la white-list del controller 
+
+{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=40}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def user_params
+      params.require(:user).permit(:name, :email, :password, :password_confirmation, :remember_created_at)
+    end
+~~~~~~~~
+
+Adesso L'update funziona per tutti i campi ma abbiamo un problema di sicurezza perché ogni utente può cambiare nome, email e password a tutti gli utenti.
+Questo problema di sicurezza lo risolveremo nei prossimi capitoli.
 
 
 
 
 ## Implementiamo l'azione new
-
-copiamo ed implementiamo la parte di codice per l'azione new.
+Aggiorniamo il controller implementando le azioni new e create per creare un nuovo utente.
+Copiamo ed implementiamo la parte di codice per le azioni new e create.
 
 {title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=15}
 ~~~~~~~~
@@ -341,6 +385,8 @@ copiamo ed implementiamo la parte di codice per l'azione new.
   end
 ~~~~~~~~
 
+[cod. k](beginning-authentication-04k-controllers-users_controller.rb)
+
 
 
 
@@ -348,21 +394,51 @@ copiamo ed implementiamo la parte di codice per l'azione new.
 
 Creiamo il nuovo file "new.html.erb" dentro la cartella "views/users". Ci copiamo il contenuto del file su "views/example_users/..." e lo riadattiamo.
 
-{title=".../app/views/users/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+{title=".../app/views/users/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
 ~~~~~~~~
-<h1>New User</h1>
-
 <%= render 'form', user: @user %>
-
-<%= link_to 'Back', users_path %>
 ~~~~~~~~
+
+[cod. l](beginning-authentication-04l-views-users-new.html.erb)
+
+Il file "_form.html.erb" lo abbiamo già creato implementando "edit".
+In pratica la differenza tra "edit" e "new" è tutta nelle azioni del controller.
+
+
+
+
+## Verifichiamo che tutto funziona
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+https://mycloud9path.amazonaws.com/users/new
+
+Creiamo 6 utenti
+name  | email           | password
+------------------------------------------
+Ann	  | ann@test.abc    | passworda
+Bob	  | bob@test.abc    | passwordb
+Carl	| carl@test.abc   | passwordc
+David	| david@test.abc  | passwordd
+Elvis	| elvis@test.abc  | passworde
+flav  | flav@test.abc   | passwordf
 
 
 
 
 ## Implementiamo l'azione destroy
 
+Aggiorniamo il controller implementando l'azione destroy per eliminare un utente.
 copiamo ed implementiamo la parte di codice per l'azione destroy.
+
+{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
+~~~~~~~~
 
 {title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=15}
 ~~~~~~~~
@@ -377,198 +453,77 @@ copiamo ed implementiamo la parte di codice per l'azione destroy.
   end
 ~~~~~~~~
 
-Adesso che abbiamo finito la parte di copia/incolla rendiamo funzionante il tutto.
+[cod. m](beginning-authentication-04m-controllers-users_controller.rb)
 
 
 
 
-## Aggiorniamo la fase di aggiornamento utente
+## Verifichiamo il link "destroy" nella view index
 
-Evitiamo di fare come nei film comici e "tagliarci il ramo su cui stiamo seduti". 
-In realtà ce lo tagliamo ma ci logghiamo di nuovo automaticamente col sign_in di Devise bypassando le validazioni.
-
-{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=15}
+{title=".../app/views/users/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=25}
 ~~~~~~~~
-  # PATCH/PUT /users/1
-  # PATCH/PUT /users/1.json
-  def update
-    respond_to do |format|
-      # if current_user.present? and current_user == @user
-      #   raise "Attento! Current_user #{current_user.email} vuoi modificare te stesso! utente #{@user.email}"
-      # elsif current_user.present? and current_user != @user
-      #   raise "Current_user #{current_user.email} vuole modificare utente #{@user.email}"
-      # else
-      #   raise "NON SEI LOGGATO"
-      # end
-      if current_user.present? and current_user == @user
-        if @user.update(user_params)
-          #format.html { redirect_to @user, notice: 'User was successfully updated.' }
-          format.html do
-            # ci siamo tagliati il ramo! Logghiamoci di nuovo automaticamente bypassando le validazioni
-            sign_in(@user, bypass: true)
-            redirect_to @user, notice: 'User was successfully updated.'
-          end
-          format.json { render :show, status: :ok, location: @user }
-        else
-          format.html { render :edit }
-          format.json { render json: @user.errors, status: :unprocessable_entity }
-        end
-      else
-        if @user.update(user_params)
-          format.html { redirect_to @user, notice: 'User was successfully updated.' }
-          format.json { render :show, status: :ok, location: @user }
-        else
-          format.html { render :edit }
-          format.json { render json: @user.errors, status: :unprocessable_entity }
-        end
-      end
-    end
-  end
-~~~~~~~~
-
-Questo codice funziona ma è veramente brutto perché duplichiamo due grandi pezzi di codice. Facciamo un refactoring.
-Il problema è sulla riga "if @user.update(user_params)" che fa sia l'azionie di update che il controllo se è andata a buon fine.
-Quando l'update è fatto sull'utente loggato (ossia il current_user) questo è immediatamente buttato fuori (logged out) ed il current_user è svuotato (=nil).
-Questo mi impedisce di fare un più elegante ** sign_in(@user, bypass: true) if @user == current_user **
-Possiamo farlo usando una variabile di appoggio che chiamiamo current_user_temp e che ci manterrà attivo l'utente che era loggato giusto il tempo di loggarlo di nuovo in automatico.
-
-{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=15}
-~~~~~~~~
-  # PATCH/PUT /users/1
-  # PATCH/PUT /users/1.json
-  def update
-    current_user_temp = current_user
-    respond_to do |format|
-      if @user.update(user_params)
-        #format.html { redirect_to @user, notice: 'User was successfully updated.' }
-        format.html do
-          # ci siamo tagliati il ramo! Logghiamoci di nuovo automaticamente bypassando le validazioni
-          sign_in(@user, bypass: true) if @user == current_user_temp
-          redirect_to @user, notice: 'User was successfully updated.'
-        end
-        format.json { render :show, status: :ok, location: @user }
-      else
-        format.html { render :edit }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-~~~~~~~~
-
-Adesso è molto meglio ^_^
-
-
-
-
-## Evitiamo di dover sempre dare una password
-
-In your UsersController, you will also need to remove the password key of the params hash if it's blank. If not, Devise will fail to validate. Add something like this to your update method:
-
-
-{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=15}
-~~~~~~~~
-  # PATCH/PUT /users/1
-  # PATCH/PUT /users/1.json
-  def update
-    current_user_temp = current_user
-
-    if params[:user][:password].blank?
-      params[:user].delete(:password)
-      params[:user].delete(:password_confirmation)
-    end
+        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
 ~~~~~~~~
 
 
 
 
-## Evitiamo che l'amministratore loggato possa eliminare se stesso
+## Verifichiamo che tutto funziona
 
-{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=63}
+{title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-    @user.destroy unless @user == current_user
-~~~~~~~~
-
-e diamo un messaggio differente se eliminato o non eliminato
-
-{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=60}
-~~~~~~~~
-  # DELETE /users/1
-  # DELETE /users/1.json
-  def destroy
-    @user.destroy unless @user == current_user
-    respond_to do |format|
-      format.html do 
-        redirect_to users_url, notice: 'User was successfully destroyed.' unless @user == current_user
-        redirect_to users_url, notice: 'Non posso eliminare utente loggato.' if @user == current_user
-      end
-      format.json { head :no_content }
-    end
-  end
+$ sudo service postgresql start
+$ rails s
 ~~~~~~~~
 
-sulla view potremmo mostrare il link di eliminazione solo se non è l'utente loggato
+https://mycloud9path.amazonaws.com/users
 
+Eliminiamo l'utente "flav" (id: 6)
+
+
+
+
+## Salviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-  <%= link_to("Delete user", user_path(user), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'button-xs') unless user == current_user %>
-~~~~~~~~
-
-ma questa gestione la faremo più avanti in maniera più dettagliata usando le autorizzazioni di pundit.
-
-
-
-
-## Evitiamo conflitti 
-
-QUESTO PARAGRAFO NON L'HO IMPLEMENTATO
-
-Since the **registration routes** and **user managing routes** can conflict, you need to change one of them. You can either put devise under a specific prefix:
-
-~~~~~~~~
-devise_for :users, :path_prefix => 'my'
-resources :users
-~~~~~~~~
-
-Or your users
-
-~~~~~~~~
-devise_for :users
-scope "/admin" do
-  resources :users
-end
+$ git add -A
+$ git commit -m "Implement views to manage users"
 ~~~~~~~~
 
 
 
 
-## Permettiamo agli utenti di editare la loro password
+## Pubblichiamo su Heroku
 
-QUESTO PARAGRAFO NON L'HO IMPLEMENTATO
-
-Questo non so se mi serve... Mi sa che lo posso eliminare....
-
-ApplicationController.rb:
+{title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-class ApplicationController < ActionController::Base
-  before_action :configure_permitted_parameters, if: :devise_controller?
-
-  def configure_permitted_parameters
-    update_attrs = [:password, :password_confirmation, :current_password]
-    devise_parameter_sanitizer.permit :account_update, keys: update_attrs
-  end
-end
+$ git push heroku gu:master
+$ heroku run rails db:migrate
 ~~~~~~~~
 
-... Questo paragrafo forse è da eliminare *_*
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge gu
+$ git branch -d gu
+~~~~~~~~
 
 
 
 
-## Risolviamo problema di sicurezza
+## Facciamo un backup su Github
 
-Al momento tutte le azioni possono essere fatte da chiunque, anche da una pesona non loggata.
-Risolviamo prima con l'autorizzazione di pundit e poi con l'obbligo di autenticazione con devise.
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
-Attiviamo pundit per autorizzare le modifiche degli utenti solo se la persona è loggata, quindi è autenticata, ed ha il ruolo di amministratore.
-
-Tutto questo nei prossimi capitoli! La protezione effettiva la iniziamo nel capitolo 7!
-07-authorization-pundit.txt
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

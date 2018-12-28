@@ -1,12 +1,279 @@
-# Implementiamo la protezione di Devise
+# Implementiamo la sicurezza e la protezione di Devise
 
 Rendiamo non accessibili le pagine di gestione degli utenti a chi non è autenticato.
 Questa è quasi una forma di autorizzazione ma l'autorizzazione vera è basata su ruoli differenti che hanno i vari utenti che fanno login / che si autenticano.
 Quando implementeremo la parte di autorizzazione nei prossimi capitoli disattiveremo temporaneamente la non accessibilità creata con Devise alle pagine a cui possono accedere solo gli utenti loggati.
 
 
-## Su login vai a users_index
 
-Prima di proteggere le pagine facciamo in modo che una volta fatto login si va direttamente su users/index
 
-...
+
+
+## Apriamo il branch "Protect With Login"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b pwl
+~~~~~~~~
+
+
+
+
+## Proteggiamo le views users
+Permettiamo l'accesso alle views users solo a chi ha fatto login, ossia a chi si è autenticato.
+
+{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+  before_action :authenticate_user!
+~~~~~~~~
+
+
+
+
+
+## Evitiamo di dover sempre dare una password
+
+Una volta attivata la protezione **before_action :authenticate_user!** si attiva anche la validazione per la presenza della password. Questo vuol dire che se si lascia vuoto il campo password si riceve un errore di validazione. In quel caso è utile rimuovere nel controller la chiave "password" dall'hash "params" nel caso in cui non venisse passata; ossia nel caso in cui il campo password del form è lasciato vuoto. (In your UsersController remove the password key of the params hash if it's blank.) Per farlo aggiungiamo il seguente codice nell'azione di update:
+
+{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=15}
+~~~~~~~~
+  # PATCH/PUT /users/1
+  # PATCH/PUT /users/1.json
+  def update
+    if params[:user][:password].blank?
+      params[:user].delete(:password)
+      params[:user].delete(:password_confirmation)
+    end
+~~~~~~~~
+
+[cod. a](beginning-authentication-05a-controllers-users_controller.rb)
+
+
+
+
+## Evitiamo che l'amministratore loggato possa eliminare se stesso
+
+Evitiamo di fare come nei film comici e "tagliarci il ramo su cui stiamo seduti": **@user.destroy unless @user == current_user** e diamo un messaggio differente se eliminato o non eliminato
+
+{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=60}
+~~~~~~~~
+  # DELETE /users/1
+  # DELETE /users/1.json
+  def destroy
+    @user.destroy unless @user == current_user
+    respond_to do |format|
+      format.html do 
+        redirect_to users_url, notice: 'User was successfully destroyed.' unless @user == current_user
+        redirect_to users_url, notice: 'Non posso eliminare utente loggato.' if @user == current_user
+      end
+      format.json { head :no_content }
+    end
+  end
+~~~~~~~~
+
+[cod. b](beginning-authentication-05b-controllers-users_controller.rb)
+
+Al momento tutti gli utenti hanno autorizzazione a fare tutto; nei futuri capitoli implementeremo le autorizzazioni restringendo la possibilità di eliminazione degli utenti ai soli utenti con ruolo di amministratore.
+
+
+Sulla view mostriamo il link di eliminazione solo se non è l'utente loggato **unless user == current_user**
+
+{title=".../app/views/users/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=25}
+~~~~~~~~
+        <td><%= link_to 'Destroy', user,  method: :delete, data: { confirm: 'Are you sure?' } unless user == current_user %></td>
+~~~~~~~~
+
+[cod. c](beginning-authentication-05c-views-users-index.html.erb)
+
+
+
+
+## Implementiamo un re-login automatico su cambio password
+
+Al momento cambiando la password siamo automaticamente riportati al login. Facciamo in modo di essere loggati di nuovo automaticamente col sign_in di Devise bypassando le validazioni.
+Scriviamo la logica interrompendo il codice con **raise** che fa sorgere un errore:
+
+{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=15}
+~~~~~~~~
+  # PATCH/PUT /users/1
+  # PATCH/PUT /users/1.json
+  def update
+   if current_user.present? and current_user == @user
+     raise "Current_user #{current_user.email} vuole modificare se stesso! (utente #{@user.email})"
+   elsif current_user.present? and current_user != @user
+     raise "Current_user #{current_user.email} vuole modificare utente #{@user.email}"
+   else
+     raise "NON SEI LOGGATO"
+   end
+~~~~~~~~
+
+Nel caso si voglia modificare se stesso impostiamo il login automatico altrimenti lasciamo il codice così com'era.
+
+{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=15}
+~~~~~~~~
+  # PATCH/PUT /users/1
+  # PATCH/PUT /users/1.json
+  def update
+    if params[:user][:password].blank?
+      params[:user].delete(:password)
+      params[:user].delete(:password_confirmation)
+    end
+    respond_to do |format|
+      if current_user.present? and current_user == @user
+        if @user.update(user_params)
+          #format.html { redirect_to @user, notice: 'User was successfully updated.' }
+          format.html do
+            # Logghiamoci di nuovo automaticamente bypassando le validazioni
+            sign_in(@user, bypass: true)
+            redirect_to @user, notice: 'User was successfully updated.'
+          end
+          format.json { render :show, status: :ok, location: @user }
+        else
+          format.html { render :edit }
+          format.json { render json: @user.errors, status: :unprocessable_entity }
+        end
+      else
+        if @user.update(user_params)
+          format.html { redirect_to @user, notice: 'User was successfully updated.' }
+          format.json { render :show, status: :ok, location: @user }
+        else
+          format.html { render :edit }
+          format.json { render json: @user.errors, status: :unprocessable_entity }
+        end
+      end
+    end
+  end
+~~~~~~~~
+
+[cod. d](beginning-authentication-05d-controllers-users_controller.rb)
+
+Questo codice funziona ma è veramente brutto perché duplichiamo due grandi pezzi di codice. Facciamo un refactoring.
+Il problema è sulla riga "if @user.update(user_params)" che fa sia l'azione di update che il controllo se è andata a buon fine.
+Quando l'update è fatto sull'utente loggato (ossia il current_user) questo è immediatamente buttato fuori (logged out) ed il current_user è svuotato (=nil).
+Questo mi impedisce di fare un più elegante ** sign_in(@user, bypass: true) if @user == current_user **
+Possiamo farlo usando una variabile di appoggio che chiamiamo **current_user_temp** e che ci manterrà attivo l'utente che era loggato giusto il tempo di loggarlo di nuovo in automatico.
+
+{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=15}
+~~~~~~~~
+  # PATCH/PUT /users/1
+  # PATCH/PUT /users/1.json
+  def update
+    if params[:user][:password].blank?
+      params[:user].delete(:password)
+      params[:user].delete(:password_confirmation)
+    end
+    current_user_temp = current_user
+    respond_to do |format|
+      if @user.update(user_params)
+        format.html do
+          # Logghiamoci di nuovo automaticamente bypassando le validazioni
+          sign_in(@user, bypass: true) if @user == current_user_temp
+          redirect_to @user, notice: 'User was successfully updated.'
+        end
+        format.json { render :show, status: :ok, location: @user }
+      else
+        format.html { render :edit }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+~~~~~~~~
+
+[cod. e](beginning-authentication-05e-controllers-users_controller.rb)
+
+Adesso è molto meglio ^_^
+
+
+
+
+## Evitiamo conflitti 
+
+QUESTO PARAGRAFO NON L'HO IMPLEMENTATO
+
+Since the **registration routes** and **user managing routes** can conflict, you need to change one of them. You can either put devise under a specific prefix:
+
+~~~~~~~~
+devise_for :users, :path_prefix => 'my'
+resources :users
+~~~~~~~~
+
+Or your users
+
+~~~~~~~~
+devise_for :users
+scope "/admin" do
+  resources :users
+end
+~~~~~~~~
+
+
+
+
+## Salviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Implement devise protection to users and more"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su Heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku pwl:master
+$ heroku run rails db:migrate
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge pwl
+$ git branch -d pwl
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
+
+
+
+
+## Permettiamo agli utenti di editare la loro password
+
+QUESTO PARAGRAFO NON L'HO IMPLEMENTATO
+
+Questo non so se mi serve... Mi sa che lo posso eliminare....
+
+ApplicationController.rb:
+~~~~~~~~
+class ApplicationController < ActionController::Base
+  before_action :configure_permitted_parameters, if: :devise_controller?
+
+  def configure_permitted_parameters
+    update_attrs = [:password, :password_confirmation, :current_password]
+    devise_parameter_sanitizer.permit :account_update, keys: update_attrs
+  end
+end
+~~~~~~~~
+
+
+

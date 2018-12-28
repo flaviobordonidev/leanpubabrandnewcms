@@ -96,6 +96,17 @@ $ exit
 
 ## Alternativa tramite npm
 
+Visualizza la versione di nvm
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ nvm
+
+$ nvm ls
+
+$ nvm ls-remote
+~~~~~~~~
+
 Update npm
 
 {title="terminal", lang=bash, line-numbers=off}
@@ -108,6 +119,8 @@ Install heroku cli
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ npm install -g heroku
+
+$ npm install -g npm
 ~~~~~~~~
 
 Done!

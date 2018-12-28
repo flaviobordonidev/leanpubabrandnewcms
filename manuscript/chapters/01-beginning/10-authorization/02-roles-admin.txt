@@ -44,7 +44,7 @@ Eseguiamo il migrate
 $ rake db:migrate
 ~~~~~~~~
 
-Adesso possiamo identificare su un utente loggato è amministratore.
+Adesso possiamo identificare se un utente loggato è amministratore.
 
 {title="verifichiamo se amministratore", lang=ruby, line-numbers=off}
 ~~~~~~~~
@@ -74,13 +74,24 @@ current_user.update_attribute :role_admin, true
 
 
 
+## Salviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Add role_admin from table users"
+~~~~~~~~
+
+
+
+
 ## Testiamo la parte di login in produzione.
 
 Abbiamo finito. Non ci resta che fare il "deployment in production" pubblicando la nostra applicazione su heroku.
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ git push heroku login:master
+$ git push heroku ra:master
 ~~~~~~~~
 
 Non funziona perché su heroku non abbiamo eseguito il migrate.
@@ -97,8 +108,39 @@ $ heroku run rake db:migrate
 
 Togliamo la colonna "role_admin" di tipo boolean dalla tabella users perché nel prossimo capitolo la sostituiremo con la più potente colonna "role" di tipo "integer / enum".
 Per togliere la colonna eseguiamo il rollback ed eliminiamo il migrate?
-Non sò se è la scelta giusta visto che abbiamo già pubblicato su heroku. Ci possiamo provare.
-Altra possibilità è creare un nuovo migration di eliminazione della colonna.
+Non è la scelta migliore perché abbiamo già pubblicato su heroku. Invece creiamo un nuovo migration di eliminazione della colonna.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+rails g migration RemoveRoleAdminFromUsers role_admin:boolean
+~~~~~~~~
+
+{lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+remove_column :users, :role_admin, :boolean
+~~~~~~~~
+
+
+
+
+## Salviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Remove role_admin from table users"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su Heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku ra:master
+$ heroku run rails db:migrate
+~~~~~~~~
 
 
 
@@ -110,6 +152,18 @@ se abbiamo finito le modifiche e va tutto bene:
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ git checkout master
-$ git merge admin
-$ git branch -d admin
+$ git merge ra
+$ git branch -d ra
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
 ~~~~~~~~

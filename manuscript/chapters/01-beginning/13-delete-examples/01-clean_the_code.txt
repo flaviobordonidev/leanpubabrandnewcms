@@ -1,0 +1,4 @@
+# Puliamo il codice dalla parte degli esempi.
+
+Eliminiamo le tabelle di esempio e togliamo il codice relativo agli esempi.
+Questa sezione si può saltare se uno vuole tenersi gli esempi.

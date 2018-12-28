@@ -19,6 +19,9 @@ Risorse web:
 * [Ruby on Rails - how to create perfect enum in 5 steps](https://naturaily.com/blog/ruby-on-rails-enum)
 * [Ruby on Rails 5.2.0 - Module - ActiveRecord::Enum](https://api.rubyonrails.org/v5.2.0/classes/ActiveRecord/Enum.html)
 
+* [Ruby on Rails: Customize the devise user (Screencast #1)](https://www.youtube.com/watch?v=5inpxIHKhkE)
+* https://github.com/plataformatec/devise
+    
 
 
 
@@ -43,7 +46,7 @@ $ rails g migration add_role_to_users role:integer
 
 Modifichiamo il migrate aggiungendo un default e l'indice per velocizzare queries che usano "role"
 
-{title=".../db/migrate/xxx_create_posts.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+{title=".../db/migrate/xxx_add_role_to_users.rb", lang=ruby, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
 class AddRoleToUsers < ActiveRecord::Migration[5.2]
   def change
@@ -52,6 +55,8 @@ class AddRoleToUsers < ActiveRecord::Migration[5.2]
   end
 end
 ~~~~~~~~
+
+[cod. a](beginning-authorization-03a-xxx_add_role_to_users.rb)
 
 Effettuiamo il migrate del database per creare la tabella sul database
 
@@ -63,14 +68,17 @@ $ rails db:migrate
 
 ed otteniamo le seguenti modifiche alla tabella "users"
 
-{title=".../db/schema.rb", lang=ruby, line-numbers=on, starting-line-number=95}
+{title=".../db/schema.rb", lang=ruby, line-numbers=on, starting-line-number=52}
 ~~~~~~~~
     t.integer "role", default: 0
-    t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["role"], name: "index_users_on_role"
-  end
 ~~~~~~~~
+
+{title=".../db/schema.rb", lang=ruby, line-numbers=on, starting-line-number=55}
+~~~~~~~~
+    t.index ["role"], name: "index_users_on_role"
+~~~~~~~~
+
+[cod. b](beginning-authorization-03b-db-schema.rb)
 
 Avremmo potuto aggiungere l'indice anche in un secondo momemento
 
@@ -119,7 +127,12 @@ ma lato database è più pulito e più prestazionale.
 ## Assegnamo un ruolo ai nostri utenti da console rails
 
 
-* verifichiamo tutti i ruoli presenti nella colonna "role" assegnata ad enum.
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+~~~~~~~~
+
+verifichiamo tutti i ruoli presenti nella colonna "role" assegnata ad enum.
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
@@ -127,22 +140,30 @@ ma lato database è più pulito e più prestazionale.
  => {"user"=>0, "admin"=>1, "moderator"=>2, "author"=>3} 
 ~~~~~~~~
 
-* verifichiamo che tutti gli utenti hanno il campo della colonna role con il valore di default "0", che per enum corrisponde al valore "user".
+verifichiamo che tutti gli utenti hanno il campo della colonna role con il valore di default "0", che per enum corrisponde al valore "user".
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ rails c
-
 > User.all
- => #<ActiveRecord::Relation [#<User id: 3, name: "B", email: "bob@test.abc", created_at: "2018-06-20 10:34:00", updated_at: "2018-06-20 10:34:00", role: "user">, #<User id: 4, name: "C", email: "carl@test.abc", created_at: "2018-06-20 10:34:13", updated_at: "2018-06-20 10:34:13", role: "user">, #<User id: 1, name: "Flavio Bordoni", email: "flavio@test.abc", created_at: "2018-06-18 12:32:53", updated_at: "2018-08-08 22:28:52", role: "user">, #<User id: 2, name: "A", email: "ann@test.abc", created_at: "2018-06-20 10:33:45", updated_at: "2018-08-08 22:31:04", role: "user">]> 
+  User Load (0.3ms)  SELECT  "users".* FROM "users" LIMIT $1  [["LIMIT", 11]]
+ => #<ActiveRecord::Relation [#<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2018-12-12 13:05:10", updated_at: "2018-12-26 12:51:27", role: "user">, #<User id: 2, name: "Bob", email: "bob@test.abc", created_at: "2018-12-26 14:29:26", updated_at: "2018-12-26 14:29:26", role: "user">, #<User id: 3, name: "Carl", email: "carl@test.abc", created_at: "2018-12-26 14:30:56", updated_at: "2018-12-26 14:30:56", role: "user">, #<User id: 4, name: "David", email: "david@test.abc", created_at: "2018-12-26 14:31:32", updated_at: "2018-12-26 14:31:32", role: "user">, #<User id: 5, name: "Elvis", email: "elvis@test.abc", created_at: "2018-12-26 14:32:04", updated_at: "2018-12-26 23:25:49", role: "user">, #<User id: 7, name: "flavio", email: "flavio@test.abc", created_at: "2018-12-26 14:50:20", updated_at: "2018-12-26 23:25:58", role: "user">]> 
 ~~~~~~~~
 
-* rendiamo il primo utente amministratore
+rendiamo il primo utente amministratore
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-> User.first.admin! 
- User Update (10.2ms)  UPDATE ...
+> User.first.admin!
+  User Load (0.3ms)  SELECT  "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1  [["LIMIT", 1]]
+   (0.2ms)  BEGIN
+  User Update (0.5ms)  UPDATE "users" SET "role" = $1, "updated_at" = $2 WHERE "users"."id" = $3  [["role", 1], ["updated_at", "2018-12-28 00:15:00.861440"], ["id", 1]]
+   (0.7ms)  COMMIT
+ => true 
+
+# Oppure
+
+> User.first.update(role: :admin)
+  User Update (0.5ms)  UPDATE ...
  => true 
 
 # Oppure
@@ -150,21 +171,15 @@ $ rails c
 > u= User.first 
 > u.role = :admin 
 > u.save 
- User Update (10.2ms)  UPDATE ...
- => true 
-
-# Oppure
-
-> User.first.update(role: :admin)
- User Update (10.2ms)  UPDATE ...
+  User Update (0.5ms)  UPDATE ...
  => true 
 ~~~~~~~~
 
-* verifichiamo che ruolo hanno il primo ed il secondo utente
+verifichiamo che ruolo hanno il primo ed il secondo utente
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-> User.first.admin? 
+> User.first.admin?
  => true 
 
 > User.second.admin? 
@@ -177,29 +192,34 @@ $ rails c
  => "user" 
 ~~~~~~~~
 
-* prendiamo una lista di tutti gli :admin
+prendiamo una lista di tutti gli :admin
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 > User.admin
- => #<ActiveRecord::Relation [#<User id: 1, name: "Flavio Bordoni", email: "flavio@test.abc", created_at: "2018-06-18 12:32:53", updated_at: "2018-08-11 10:19:05", role: "admin">]> 
+ => #<ActiveRecord::Relation [#<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2018-12-12 13:05:10", updated_at: "2018-12-28 00:15:00", role: "admin">]> 
 ~~~~~~~~
 
-* prendiamo una lista di tutti gli :user
+prendiamo una lista di tutti gli :user
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 > User.user
- => #<ActiveRecord::Relation [#<User id: 3, name: "B", email: "bob@test.abc", created_at: "2018-06-20 10:34:00", updated_at: "2018-06-20 10:34:00", role: "user">, #<User id: 4, name: "C", email: "carl@test.abc", created_at: "2018-06-20 10:34:13", updated_at: "2018-06-20 10:34:13", role: "user">, #<User id: 2, name: "A", email: "ann@test.abc", created_at: "2018-06-20 10:33:45", updated_at: "2018-08-08 22:31:04", role: "user">]> 
+ => #<ActiveRecord::Relation [#<User id: 2, name: "Bob", email: "bob@test.abc", created_at: "2018-12-26 14:29:26", updated_at: "2018-12-26 14:29:26", role: "user">, #<User id: 3, name: "Carl", email: "carl@test.abc", created_at: "2018-12-26 14:30:56", updated_at: "2018-12-26 14:30:56", role: "user">, #<User id: 4, name: "David", email: "david@test.abc", created_at: "2018-12-26 14:31:32", updated_at: "2018-12-26 14:31:32", role: "user">, #<User id: 5, name: "Elvis", email: "elvis@test.abc", created_at: "2018-12-26 14:32:04", updated_at: "2018-12-26 23:25:49", role: "user">, #<User id: 7, name: "flavio", email: "flavio@test.abc", created_at: "2018-12-26 14:50:20", updated_at: "2018-12-26 23:25:58", role: "user">]>
 ~~~~~~~~
 
-* prendiamo una lista di tutti i :moderator
+prendiamo una lista di tutti i :moderator
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 > User.moderator
  => #<ActiveRecord::Relation []> 
+~~~~~~~~
 
+usciamo
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
 >exit
 ~~~~~~~~
 
@@ -211,7 +231,8 @@ $ rails c
 Invece di cambiare i ruoli da console adesso li cambiamo sulla nostra view.
 Abbiamo un piccolo problema. Devise non è come lo scaffold. Non ci crea già le azioni sul controller e le views.
 
-Per poter passare i parametri attraverso le views, o meglio il sumbit del form, dobbiamo inserirli nella white list del controller. Una procedura detta strong-parameters or mass-assignment. Ma questo non è così facile su Devise perché di default ci nasconde tutto.
+Per poter passare i parametri attraverso le views, o meglio il sumbit del form, dobbiamo inserirli nella white list del controller. Una procedura detta "Strong_params" o "mass-assignment". Ma questo non è così facile su Devise perché di default ci nasconde tutto.
+
 Abbiamo già visualizzato i controllers e le views di devise-users nei capitoli precedenti.
 Possiamo passare i parametri in due modi:
 
@@ -219,7 +240,11 @@ Possiamo passare i parametri in due modi:
 2. Usando il controller user/registration_controller ma in questo caso dobbiamo dichiararlo nella routes
 
 
-1. Il metodo raccomandato da plataformatec. Il metodo Lazy way.
+
+
+### 1. Il metodo raccomandato da plataformatec. Il metodo Lazy way.
+
+Mettiamo nella whitelist la colonna :role
 
 {title=".../app/controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
@@ -236,65 +261,43 @@ class ApplicationController < ActionController::Base
 end
 ~~~~~~~~
 
-[tutto il codice](#beginning-authentication-authorization-08a-application_controller.rb)
+[cod. c](beginning-authorization-03c-application_controller.rb)
 
-    * [Ruby on Rails: Customize the devise user (Screencast #1)](https://www.youtube.com/watch?v=5inpxIHKhkE)
-    * https://github.com/plataformatec/devise
-    
-    Their names and default permitted parameters are:
-    
-    sign_in (Devise::SessionsController#create) - Permits only the authentication keys (like email)
-    sign_up (Devise::RegistrationsController#create) - Permits authentication keys plus password and password_confirmation
-    account_update (Devise::RegistrationsController#update) - Permits authentication keys plus password, password_confirmation and current_password
+Their names and default permitted parameters are:
+
+* sign_in (Devise::SessionsController#create) - Permits only the authentication keys (like email)
+* sign_up (Devise::RegistrationsController#create) - Permits authentication keys plus password and password_confirmation
+* account_update (Devise::RegistrationsController#update) - Permits authentication keys plus password, password_confirmation and current_password
 
 
-    ---
-    Strong_params and Edit Profile Page
-    If you are using Rails with strong_params (which are enabled in Rails 4 by default), one more step is needed:
-    the :name attribute has to be whitelisted.
-    
-    application_controller.rb
-    
-    [...]
-    before_action :configure_permitted_parameters, if: :devise_controller?
-    
-    protected
-    
-    def configure_permitted_parameters
-      devise_parameter_sanitizer.for(:sign_up) << :name
-      devise_parameter_sanitizer.for(:account_update) << :name
-    end
-    [...]
-    ---
 
+
+### 2. Questa alternativa è una bozza da sistemare meglio
     
-    2. Questa alternativa è una bozza da sistemare meglio
-    
-    {title=".../app/controllers/users/registrations_controller.rb", lang=ruby, line-numbers=on, starting-line-number=11}
-    ~~~~~~~~
-    class RegistrationsController < Devise::RegistrationsController
-    
-      ...
-    
-      private
-    
-      def sign_up_params
-        params.require(:user).permit(:role, :email, :password, :password_confirmation)
-      end
-    
-      def account_update_params
-        params.require(:user).permit(:role, :email, :password, :password_confirmation, :current_password)
-      end
-    end
-    ~~~~~~~~
-    
-    Aggiungiamo instradamento users/registrations per devise
-    
-    {title=".../app/config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=8}
-    ~~~~~~~~
-      devise_for :users, controllers: {sessions: 'users/sessions', registration: 'users/registration'}, path: '', path_names: {sign_in: 'login'}
-    ~~~~~~~~
-    
+{title=".../app/controllers/users/registrations_controller.rb", lang=ruby, line-numbers=on, starting-line-number=11}
+~~~~~~~~
+class RegistrationsController < Devise::RegistrationsController
+
+  ...
+
+  private
+
+  def sign_up_params
+    params.require(:user).permit(:role, :email, :password, :password_confirmation)
+  end
+
+  def account_update_params
+    params.require(:user).permit(:role, :email, :password, :password_confirmation, :current_password)
+  end
+end
+~~~~~~~~
+
+Aggiungiamo instradamento users/registrations per devise
+
+{title=".../app/config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=8}
+~~~~~~~~
+  devise_for :users, controllers: {sessions: 'users/sessions', registration: 'users/registration'}, path: '', path_names: {sign_in: 'login'}
+~~~~~~~~
 
 
 
