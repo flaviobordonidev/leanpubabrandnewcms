@@ -172,10 +172,7 @@ apriamolo su una nuovo tab del browser
 ## Il codice del capitolo
 
 
-{#SirHDavyResults}
-cod. a
-
-{title=".../config/database.yml", lang=yaml, line-numbers=on, starting-line-number=24}
+{id="SirHDavyResults", title=".../config/database.yml", lang=yaml, line-numbers=on, starting-line-number=24}
 ~~~~~~~~
 # PostgreSQL. Versions 9.1 and up are supported.
 #
