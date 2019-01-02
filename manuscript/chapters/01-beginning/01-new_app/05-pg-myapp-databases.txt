@@ -16,7 +16,7 @@ development:
   database: myapp_development
 ~~~~~~~~
 
-[cod. a](#SirHDavyResults)
+[](#01-beginning-01-new_app-05_01-config-database)
 
 Come si vede il nome dei database è dato con la seguente convenzione:
 
@@ -172,7 +172,7 @@ apriamolo su una nuovo tab del browser
 ## Il codice del capitolo
 
 
-{id="SirHDavyResults", title=".../config/database.yml", lang=yaml, line-numbers=on, starting-line-number=24}
+{id="01-beginning-01-new_app-05_01-config-database", title=".../config/database.yml", lang=yaml, line-numbers=on, starting-line-number=24}
 ~~~~~~~~
 # PostgreSQL. Versions 9.1 and up are supported.
 #
