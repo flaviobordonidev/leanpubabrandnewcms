@@ -12,6 +12,7 @@ Risorse web:
 
 
 
+
 ## Apriamo il branch "Active Storage Files Upload"
 
 {title="terminal", lang=bash, line-numbers=off}
@@ -65,8 +66,8 @@ end
 
 Questo migrate crea due tabelle:
 
- * la tabella blobs che archivia tutti i metadata
- * la tabella attachements che contiene il collegamento tra il tuo model su cui vuoi fare upload ed il tuo archivio-remoto (o locale) dove immagazzini i files. Questo ci permette di non dover fare nuovi migrate per implemenare vari campi di upload.
+ * la tabella active_storage_blobs che archivia tutti i metadata
+ * la tabella active_storage_attachments che contiene il collegamento tra il tuo model su cui vuoi fare upload ed il tuo archivio-remoto (o locale) dove immagazzini i files. Questo ci permette di non dover fare nuovi migrate per implemenare vari campi di upload.
 
 Effettuiamo il migrate del database per creare la tabella sul database
 
@@ -104,31 +105,36 @@ local:
 
 
 
-## Attiviamo upload immagine per post
+## Attiviamo upload immagine per il model example_post
 
 Implementiamo un campo in cui carichiamo le immagini per i nostri articoli usando **has_one_attached** di active_storage
 
-{title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=4}
+{title=".../app/models/example_post.rb", lang=ruby, line-numbers=on, starting-line-number=4}
 ~~~~~~~~
   has_one_attached :header_image
 ~~~~~~~~
+
+[cod. a](beginning-activestorage-filesupload-02a-models-example_posts.rb)
 
 Ogni volta che facciamo l'upload di un'immagine come "header_image" questa chiamata aggiorna in automatico i metatdata della tabella blobs ed il collegamento della tabella attachments. 
 
 
 
 
-## Implementiamo il controller
+## Aggiorniamo il controller
 
-{title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=70}
+Inseriamo il nostro nuovo campo "header_image" nella whitelist
+
+{title=".../app/controllers/example_posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=73}
 ~~~~~~~~
     # Never trust parameters from the scary internet, only allow the white list through.
-    def post_params
-      params.require(:post).permit(:title, :incipit, :user_id, :header_image)
+    def example_post_params
+      params.require(:example_post).permit(:title, :incipit, :user_id, :header_image)
     end
 ~~~~~~~~
 
-[tutto il codice](#beginning-activestorage-filesupload-02x-controllers-posts_controller.rb)
+[cod. b](beginning-activestorage-filesupload-02b-example_posts_controller.rb)
+
 
 
 
@@ -143,16 +149,21 @@ Ogni volta che facciamo l'upload di un'immagine come "header_image" questa chiam
   </div>
 ~~~~~~~~
 
+[cod. c](beginning-activestorage-filesupload-02c-views-example_posts-_form.html.erb)
+
+
 Per visualizzare l'immagine basta **image_tag @example_post.header_image** ma per sicurezza mettiamo anche un controllo
 
 {title=".../app/views/example_posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=70}
 ~~~~~~~~
 <% if @example_post.header_image.attached? %>
-  <%= image_tag @example_post.header_image %>
+  <p><%= image_tag @example_post.header_image %></p>
 <% else %>
   <p>Nessuna immagine presente</p>
 <% end %>
 ~~~~~~~~
+
+[cod. d](beginning-activestorage-filesupload-02d-views-example_posts-show.html.erb)
 
 INFO:
 non usiamo ".present?" perché darebbe sempre "true". Per verificare la presenza del file allegato dobbiamo usare ".attached?"
@@ -165,7 +176,7 @@ non usiamo ".present?" perché darebbe sempre "true". Per verificare la presenza
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ sudo service postgresql start
-$ rails s -b $IP -p $PORT
+$ rails s
 ~~~~~~~~
 
 Per verificarlo andiamo alla pagina **/example_posts**
@@ -211,7 +222,7 @@ Per ridimensionare l'immagine possiamo chiamare il **.variant(...)**
 
 {title=".../app/views/example_posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=70}
 ~~~~~~~~
-  <%= image_tag @example_post.header_image.variant(resize: "400x400") %>
+  <p><%= image_tag @example_post.header_image.variant(resize: "400x400") %></p>
 ~~~~~~~~
 
 Attenzione! per funzionare il .variand necessita di minimagic
@@ -227,7 +238,7 @@ I> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/mini_m
 I>
 I> facciamo riferimento al [tutorial github della gemma](https://github.com/minimagick/minimagick)
 
-{title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=48}
+{title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=30}
 ~~~~~~~~
 # Use ActiveStorage variant
 # Manipulate images with minimal use of memory via ImageMagick / GraphicsMagick
@@ -236,7 +247,7 @@ gem 'mini_magick', '~> 4.8'
 
 I> In realtà la gemma è già presente nel Gemfile basta solo decommentarla
 
-[tutto il codice: Gemfile](#brandnewcms-10code-gemfile.rb)
+[cod. e](beginning-activestorage-filesupload-02e-gemfile.rb)
 
 
 Eseguiamo l'installazione della gemma con bundle
@@ -252,6 +263,13 @@ $ bundle install
 ### Installiamo imagemagick su Cloud9
 
 Per funzionare mini_magick ha bisogno di imagemagick presente, quindi installiamolo su Cloud9. (Per la produzione, Heroku lo installa automaticamente)
+
+
+
+
+#### usiamo "apt-get" 
+
+Nella maggior parte dei casi usiamo "apt-get". Ma non su aws Cloud9.
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
@@ -275,6 +293,23 @@ $ sudo apt-get update
 $ sudo apt-get install imagemagick
 ~~~~~~~~
 
+
+
+
+#### Usiamo "yum" 
+
+Ma su aws Cloud9 usiamo "yum" (On Amazon Linux use yum instead of apt-get)
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo yum install ImageMagick
+~~~~~~~~
+
+
+
+
+## Comletiamo l'installazione di mini_magick
+
 Eseguiamo l'installazione della gemma con bundle
 
 {title="terminal", lang=bash, line-numbers=off}
@@ -290,7 +325,7 @@ $ bundle install
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ sudo service postgresql start
-$ rails s -b $IP -p $PORT
+$ rails s
 ~~~~~~~~
 
 https://rebisworldbr1-flaviobordonidev.c9users.io/example_posts/1

@@ -7,3 +7,131 @@ In questo capitolo:
 * Lo IAM user botbrandnewcmsdev può accedere solo al bucket brandnewcmsdev 
 * Lo IAM user botbrandnewcmsprod può accedere solo al bucket brandnewcmsprod
 * a scopo didattico creiamo IAM user botbrandnewcmsprodro (read only) che può solo visualizzare i file
+
+
+
+
+
+
+### il file CORS per la sicurezza
+
+AWS -> Service -> S3 -> Bucket name -> Permissions -> CORS configuration 
+
+Di default ci sono permessi GET da qualsiasi origine ma nessun PUT.
+
+{title="CORS configuration",lang=markdown, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!-- Sample policy -->
+<CORSConfiguration>
+	<CORSRule>
+		<AllowedOrigin>*</AllowedOrigin>
+		<AllowedMethod>GET</AllowedMethod>
+		<MaxAgeSeconds>3000</MaxAgeSeconds>
+		<AllowedHeader>Authorization</AllowedHeader>
+	</CORSRule>
+</CORSConfiguration>
+~~~~~~~~
+
+Lasciamo tutti i domini (<AllowedOrigin>*</AllowedOrigin>) ed aggiungiamo anche la possibilità di fare PUT e POST per poter caricare i files.
+
+{title="CORS configuration",lang=markdown, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!-- Sample policy -->
+<CORSConfiguration>
+	<CORSRule>
+		<AllowedOrigin>*</AllowedOrigin>
+		<AllowedMethod>GET</AllowedMethod>
+		<MaxAgeSeconds>3000</MaxAgeSeconds>
+		<AllowedHeader>Authorization</AllowedHeader>
+	</CORSRule>
+	<CORSRule>
+		<AllowedOrigin>*</AllowedOrigin>
+		<AllowedMethod>PUT</AllowedMethod>
+		<AllowedMethod>POST</AllowedMethod>
+		<MaxAgeSeconds>3000</MaxAgeSeconds>
+		<AllowedHeader>*</AllowedHeader>
+	</CORSRule>
+</CORSConfiguration>
+~~~~~~~~
+
+Click su SAVE per applicarli al nostro bucket.
+
+
+In futuro implementeremo la sicurezza del browser HTTP access control configurando il file CORS (Cross-Origin Resource Sharing). 
+Diremo al server di Amazon di accettare richieste solo dai nostri domini. Nel nostro caso mettiamo il dominio di cloud9 ed il dominio di Heroku (o il dominio di produzione).
+
+![AWS S3](brandnewcms/12img-s3-bucket-cors.png)
+
+{title="CORS configuration",lang=markdown, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!-- Sample policy -->
+<CORSConfiguration>
+	<CORSRule>
+		<AllowedOrigin>https://brandnewcms-flaviobordonidev.c9users.io</AllowedOrigin>
+		<AllowedOrigin>https://fast-brook-60500.herokuapp.com</AllowedOrigin>
+		<AllowedMethod>GET</AllowedMethod>
+		<MaxAgeSeconds>3000</MaxAgeSeconds>
+		<AllowedHeader>Authorization</AllowedHeader>
+	</CORSRule>
+</CORSConfiguration>
+~~~~~~~~
+
+
+
+
+## Ripetiamo il processo per il bucket per i files di produzione
+
+
+Creiamo il bucket
+  Create bucket
+    Name and region
+      Bucket name : rebisworldbr-prod
+      Region      : EU (Frankfurt)
+    Set properties
+      lascia tutto come sta e fai click su "next"
+    Set permissions
+      lascia tutto come sta e fai click su "next"
+    Review
+      Il resoconto del bucket con praticamente tutti i valori di defalts. 
+      Accettiamo e creiamo il bucket.
+
+
+AWS -> Service -> S3 -> Bucket name -> Permissions -> CORS configuration 
+
+Lasciamo tutti i domini (<AllowedOrigin>*</AllowedOrigin>) ed aggiungiamo anche la possibilità di fare PUT e POST per poter caricare i files.
+
+{title="CORS configuration",lang=markdown, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!-- Sample policy -->
+<CORSConfiguration>
+	<CORSRule>
+		<AllowedOrigin>*</AllowedOrigin>
+		<AllowedMethod>GET</AllowedMethod>
+		<MaxAgeSeconds>3000</MaxAgeSeconds>
+		<AllowedHeader>Authorization</AllowedHeader>
+	</CORSRule>
+	<CORSRule>
+		<AllowedOrigin>*</AllowedOrigin>
+		<AllowedMethod>PUT</AllowedMethod>
+		<AllowedMethod>POST</AllowedMethod>
+		<MaxAgeSeconds>3000</MaxAgeSeconds>
+		<AllowedHeader>*</AllowedHeader>
+	</CORSRule>
+</CORSConfiguration>
+~~~~~~~~
+
+Click su SAVE per applicarli al nostro bucket.
+
+
+
+----
+Messaggio di avviso su upload su heroku.
+
+remote: ###### WARNING:
+remote: 
+remote:        We detected that some binary dependencies required to
+remote:        use all the preview features of Active Storage are not
+remote:        present on this system.
+remote:        
+remote:        For more information please see:
+remote:          https://devcenter.heroku.com/articles/active-storage-on-heroku

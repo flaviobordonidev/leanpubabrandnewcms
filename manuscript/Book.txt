@@ -1,17 +1,18 @@
 frontmatter:
 
-chapters/frontmatter/acknowledgments.txt
-chapters/frontmatter/preface.txt
-chapters/frontmatter/introduction.txt
+chapters/frontmatter/01-acknowledgments.txt
+chapters/frontmatter/02-preface.txt
+chapters/frontmatter/03-introduction.txt
 
 
 
 
 mainmatter:
 
-chapters/01-beginning/00-section/00-section-beginning.txt
-
-chapters/01-beginning/01-new_app/00-aws_cloud9.txt
-chapters/01-beginning/01-new_app/01-install_postgresql.txt
-chapters/01-beginning/01-new_app/02-new_app.txt
-chapters/01-beginning/01-new_app/03-postgresql.txt
+chapters/01-beginning/01-new_app/00-section_begin.txt
+chapters/01-beginning/01-new_app/01-aws_cloud9-as-root.txt
+chapters/01-beginning/01-new_app/02-aws_cloud9-as-user.txt
+chapters/01-beginning/01-new_app/03-install_postgresql.txt
+chapters/01-beginning/01-new_app/04-new_app.txt
+chapters/01-beginning/01-new_app/05-pg-myapp-databases.txt
+chapters/01-beginning/01-new_app/06-section_end.txt

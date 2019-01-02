@@ -1,20 +1,15 @@
 # La homepage
 
+scegliamo un file html che vogliamo importare e lavoriamo a partire da quello per importare tutte le librerie necessarie.
+
 
 
 
 ## Scelti dal tema Canvas
 
-per view posts/show
+per view posts/show abbiamo scelto il seguente file:
 
 * HTML/one-page/index.html
-
-
-
-
-## Preparazione files del Canvas da usare
-
-per il sito statico abbiamo scelto il sito one-page e nello specifico:
 
 * (homepage: .../one-page/index.html)[http://themes.semicolonweb.com/html/canvas/v5/one-page/index.html]
 

@@ -1,0 +1,3 @@
+-# Creaimo una nuova applicazione
+
+in questi capitoli creiamo una nuova app Rails con database PostgreSql e ne visualizziamo il preview

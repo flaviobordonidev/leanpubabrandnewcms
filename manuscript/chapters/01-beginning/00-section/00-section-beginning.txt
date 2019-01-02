@@ -1,3 +1,0 @@
--# Iniziamo
-
-creiamo nuova app Rails con database PostgreSql e publicata su Heroku

@@ -1,0 +1,167 @@
+# PostgreSQL Databases per myapp
+
+Creiamo i databases su postgreSQL in modo da attivare la connessione con la nostra applicazione myapp
+
+
+
+
+## Gestiamo l'errore
+
+L'errore è perché PostgreSQL non trova i databases di svilluppo e di test. Questi sono definiti sul file "/config/database.yml". 
+
+{title=".../config/database.yml", lang=yaml, line-numbers=on, starting-line-number=24}
+~~~~~~~~
+development:
+  <<: *default
+  database: myapp_development
+~~~~~~~~
+
+[cod. a](#beginning/new_app/05ca-config-database.yml)
+
+Come si vede il nome dei database è dato con la seguente convenzione:
+
+* sviluppo    : "nome applicazione" più suffisso "_development"
+* test        : "nome applicazione" più suffisso "_test"
+* produzione  : si usa il nome dato sul server remoto. Nel nostro caso sul server di Heroku.
+
+
+
+
+## Verifichiamo connessione
+
+Anche se già visto nel preview, verifichiamo da terminale che non c'è comunicazione con il database.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails db:migrate
+
+
+ec2-user:~/environment/myapp (master) $ rails db:migrate
+rails aborted!
+ActiveRecord::NoDatabaseError: FATAL:  database "myapp_development" does not exist
+/usr/local/rvm/gems/ruby-2.4.1/gems/activerecord-5.2.2/lib/active_record/connection_adapters/postgresql_adapter.rb:696:in `rescue in connect'
+...
+~~~~~~~~
+
+Prende errore perché non esistono ancora i databases.
+
+
+
+
+## Creiamo i databases
+
+Creiamo i databases sul postgreSQL del workspace di cloud9.
+Creiamo i databases per development e test usando il comando "createdb" di postgreSQL.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ createdb myapp_development
+$ createdb myapp_test
+
+
+ec2-user:~/environment/myapp (master) $ sudo service postgresql start
+Starting postgresql service:                               [  OK  ]
+ec2-user:~/environment/myapp (master) $ createdb myapp_development
+ec2-user:~/environment/myapp (master) $ createdb myapp_test
+ec2-user:~/environment/myapp (master) $ 
+~~~~~~~~
+
+Nella creazione dei databases non ho messaggi di creazione effettuata sul terminale. 
+
+verifichiamo che adesso c'è comunicazione eseguendo
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails db:migrate
+
+ec2-user:~/environment/myapp (master) $ rails db:migrate
+ec2-user:~/environment/myapp (master) $ 
+~~~~~~~~
+
+Come per la creazione dei databases, anche per il db:migrate non ho messaggi di conferma sul terminale. Sappiamo che c'è comunicazione perché il comando adesso non da nessun errore.
+
+
+
+
+## Verifichiamo i databases creati da linea di comando di pg
+
+Per verificare i databases dalla linea di comando di PostgreSQL:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ psql postgres
+-> \list
+-> \q
+
+
+ec2-user:~/environment/myapp (master) $ psql postgres
+psql (9.2.24)
+Type "help" for help.
+
+postgres=# \list
+                                      List of databases
+       Name        |  Owner   | Encoding |   Collate   |    Ctype    |   Access privileges   
+-------------------+----------+----------+-------------+-------------+-----------------------
+ myapp_development | ec2-user | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ myapp_test        | ec2-user | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ postgres          | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ template0         | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+                   |          |          |             |             | postgres=CTc/postgres
+ template1         | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+                   |          |          |             |             | postgres=CTc/postgres
+(5 rows)
+
+postgres=# \q
+ec2-user:~/environment/myapp (master) $ 
+~~~~~~~~
+
+oppure
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ psql --list
+
+
+ec2-user:~/environment/myapp (master) $ psql --list
+                                      List of databases
+       Name        |  Owner   | Encoding |   Collate   |    Ctype    |   Access privileges   
+-------------------+----------+----------+-------------+-------------+-----------------------
+ myapp_development | ec2-user | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ myapp_test        | ec2-user | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ postgres          | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+ template0         | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+                   |          |          |             |             | postgres=CTc/postgres
+ template1         | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+                   |          |          |             |             | postgres=CTc/postgres
+(5 rows)
+
+ec2-user:~/environment/myapp (master) $ 
+~~~~~~~~
+
+Avremmo potuto creare i databases anche da dentro la linea di comando di postgreSQL:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ psql
+-> CREATE DATABASE "myapp_development";
+-> CREATE DATABASE "myapp_test";
+-> \list
+-> \q
+~~~~~~~~
+
+
+
+## Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails s
+~~~~~~~~
+
+![Fig. a](beginning/new_app/05fa-preview-working.png)
+
+apriamolo su una nuovo tab del browser
+
+![Fig. b](beginning/new_app/05fb-preview-working-new_tab.png)

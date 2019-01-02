@@ -12,6 +12,20 @@ In questo capitolo:
 * inseriamo manualmente un file di testo (example_prod.txt)
 * accessiamo il file da terminale rails tramite la gemma aws-sdk-s3
 
+Risorse web:
+
+* docs.aws.amazon.com/AmazonS3/latest/dev/UsingHTTPPOST.html
+
+* https://www.sitepoint.com/uploading-files-with-paperclip/
+* https://devcenter.heroku.com/articles/paperclip-s3
+* http://stackoverflow.com/questions/32919273/access-denied-s3-with-paperclip
+* https://github.com/thoughtbot/paperclip/wiki/Paperclip-with-Amazon-S3
+* http://rexstjohn.com/how-to-solve-access-denied-with-heroku-paperclip-s3-ror/
+* https://console.aws.amazon.com/iam/home#users/botpaperclip
+
+
+[Apri anche il capitolo 04 e riadatta il contenuto che al momento è mischiato]
+
 
 
 
@@ -24,8 +38,6 @@ quindi non creiamo un branch sulla nostra applicazione rails
 
 
 ## Best practise di AWS S3
-
-docs.aws.amazon.com/AmazonS3/latest/dev/UsingHTTPPOST.html
 
 * La forma più semplice di fare upload è esare AmazonS3 PUTs che carica il file prima nel server dove gira l'applicazione Rails (Heroku nel nostro caso) e poi nel server di Amazon. Questo doppio passaggio è molto più lento. E lo stesso Heroku scoraggia fortemente questo approccio mettendo un taglio a 30s che può causare l'impossibilità di caricare files molto grandi.
 * La forma più performante è usare Amazon S3 POST che passa al browser dell'utente un token di autorizzazione ed il file è direttamente caricato sul server Amazon.
@@ -73,4 +85,139 @@ Una volta creato facciamo il download delle "user security credentials". E' un f
 Se torniamo sullo IAM user possiamo solo rivisualizzare la access_key_id. Per la secret_access_key dobbiamo eliminarlo e crearne uno nuovo.
 
 
+
+## Aggiungiamo i permessi - Permissions
+
+clicco sul link "botbrandnewcms" e sul tab Permission 
+  -> Add Permission (Attach existing policies directly)
+  -> "AmazonS3FullAccess - AWS Managed policy"
+
+aws -> services -> IAM -> users -> botbrandnewcms -> Permissions -> 
+  -> apriamo la policy AmazonS3FullAccess che abbiamo dato:
+
+![AWS S3](brandnewcms/12img-aws-iam-user-permissions.png)
+
+Il file json si presenta così
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "s3:*",
+            "Resource": "*"
+        }
+    ]
+}
+
+possiamo dare pieno accesso o selezionare solo quelle che ci servono
+
+* GetObject
+* PutObject
+* PutObjectAcl
+
+quella di gorail è
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "Stmt147561171600",
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject",
+                "s3:DeleteObject",
+                "s3:PutObject",
+                "s3:PutObjectAcl"
+                ],
+            "Resource": [
+                "arn:aws:s3:::shrine-example/*"
+            ]
+        }
+    ]
+}
+
+valida la policy per vedere che non hai fatto errori.
+
+la Resource continene l'ARN dei bucket che vogliamo includere per questo utente. Per trovare l'ARN basta cliccare sulla riga del bucket (e non sul link del bucket) e premere il link "Copy Bucket ARN".
+
+
+
+## Connessione al bucket di amazon web service S3.
+
+Per connetterci al "cestello dei files" (bucket) di AWS S3 abbiamo bisogno delle seguenti informazioni:
+
+* access_key_id
+* secret_access_key
+* s3_region
+* nome del bucket
+
+Le credentials, ossia access_key_id e secret_access_key, identificano l'utente IAM e quindi i diritti di accesso ad AmazonWebService (nel nostro caso al solo servizio S3).
+La s3_region ed il nome del bucket identificano dove archiviare i files.
+
+
+
+
+## Il Bucket
+
+creiamo il cestello (Bucket) dove archivieremo i files.
+andiamo sul sito di amazon web service https://console.aws.amazon.com e facciamo login (o creiamo un nuovo account). Cerchiamo il service - storage - S3.
+
+![console AWS dopo login](brandnewcms/12img-aws-login.png)
+selezioniamo S3 per creare il nostro cestino dei files (bucket)
+
+* Siamo sulla ConsoleHome AWS. -> click su S3. -> click su create bucket.
+
+![AWS S3](brandnewcms/12img-aws-s3.png)
+
+Che nome gli diamo?
+Per i nomi dei buckets possiamo rifarci ai nomi dei databases della nostra app: rebisworldbr_development e rebisworldbr_production.
+Quindi avremo i seguenti due buckets:
+
+  * rebisworldbr-dev
+  * rebisworldbr-prod
+
+(l'underscore "_" non è accettato nel nome del bucket.)
+
+Creiamo il bucket
+  Create bucket
+  
+    Name and region
+      Bucket name : rebisworldbr-dev
+      Region      : EU (Frankfurt)
+
+      ![AWS S3](brandnewcms/12img-s3-new_bucket.png)
+    
+    Set properties
+      lascia tutto come sta e fai click su "next"
+      
+      ![AWS S3](brandnewcms/12img-s3-new_bucket.png)
+
+    Set permissions
+      lascia tutto come sta e fai click su "next"
+      
+      ![AWS S3](brandnewcms/12img-s3-new_bucket.png)
+
+    Review
+      Il resoconto del bucket con praticamente tutti i valori di defalts. 
+      Accettiamo e creiamo il bucket.
+      
+      ![AWS S3](brandnewcms/12img-s3-new_bucket.png)
+
+
+
+
+## Per recuperare la s3_region del bucket appena creato
+
+AWS -> Service -> S3 -> Bucket name -> Properties -> Static website hosting -> Endpoint 
+
+Una volta fatto login dalla ConsoleHome AWS fare click sul service "S3". Ci si presenterà un elenco con tutti i bucket creati con relativo nome. Facciamo click sul bucket, andiamo sul tab "properties" e facciamo click sul "quadrato" Static web hosting. Lì troveremo un Endpoint simile al seguente:
+
+  Endpoint : http://rebisworldbr-dev.s3-website.eu-central-1.amazonaws.com
+
+La region in questo caso è "eu-central-1" e corrisponde alla region di Frankfurt.
+
+La nostra s3_region è **eu-central-1**
+
+![bucket endpoint](images/companies_people/upload_images_aws_s3/bucket_endpoint.png)
 

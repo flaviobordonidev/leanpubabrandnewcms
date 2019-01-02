@@ -1,0 +1,75 @@
+# Nuova app Rails 5 utilizzando Cloud9 workspace
+
+
+## Installiamo Rails 5
+
+Per installare Rails carichiamo la corrispondente gemma ruby.
+
+I> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/rails)
+I>
+I> facciamo riferimento al [tutorial della gemma](https://rubyonrails.org/)
+
+Poiché pubblicheremo in produzione la nostra applicazione su Heroku verifichiamo che quale versione Rails è supportata su 
+
+* [Heroku devcenter - Getting Started on Heroku with Rails 5.x](https://devcenter.heroku.com/articles/getting-started-with-rails5)
+
+Altra fonte utile è 
+
+* [Michael Hartl - Rails Tutorial 1.2.2 Installing Rails](https://www.railstutorial.org/book/beginning)
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ cd ~/environment
+$ gem install rails -v 5.2.1.1
+~~~~~~~~
+
+
+
+
+## Creiamo l'applicazione
+
+Una volta installato Rails passiamo a creare l'applicazione
+In produzione Heroku utilizza postgreSQL quindi lo installiamo anche localmente.
+Possiamo gestire postgreSQL localmente nell'ambiente di sviluppo e test perché su cloud9 è già preinstallato postgreSQL e dobbiamo solo farlo partire. Un'alternativa era quella di caricare la gemma "pg" solo per l'ambiente di produzione. Ma se possibile è preferibile usare nell'ambiente di sviluppo le stesse risorse usate in produzione.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ cd ~/environment
+$ rails _5.2.1.1_ new myapp --database=postgresql
+~~~~~~~~
+
+Per l'applicazione non metto la numerazione (es: myapp_1) tanto la ho già a livello di workspace aws cloud9.
+
+
+
+
+## Apriamo l'applicazione localmente
+
+Per aprire la nuova applicazione entriamo nella cartella elisinfo5 e facciamo partire il web server
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ cd myapp
+$ rails s
+
+
+ec2-user:~/environment/myapp (master) $ rails s                                                                                                                  
+=> Booting Puma
+=> Rails 5.2.2 application starting in development 
+=> Run `rails server -h` for more startup options
+Puma starting in single mode...
+* Version 3.12.0 (ruby 2.4.1-p111), codename: Llamas in Pajamas
+* Min threads: 5, max threads: 5
+* Environment: development
+* Listening on tcp://localhost:8080
+Use Ctrl-C to stop
+~~~~~~~~
+
+su cloud9 clicchiamo sul link di "Preview" in alto e scegliamo "Preview Running Application"
+In basso a destra si apre la finestra di preview con un messaggio di errore perché manca la connessione al database PostgreSQL.
+
+![Fig. a](beginning/new_app/02a-c9_preview.png)
+
+Per vedere il preview su un tab separato del browser fare click sull'icona di espansione. Quella che quando vai sopra con il cursore apre tip "Pop Out into new windows"
+
+Questo errore lo risolviamo nel prossimo capitolo. 

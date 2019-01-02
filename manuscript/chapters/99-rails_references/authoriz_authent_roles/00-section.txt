@@ -1,3 +1,0 @@
--# Authorization Authentication Roles
-
-gestiamo l'autorizzazione, l'autenticazione e l'appartenenza ad un ruolo.

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+   <meta name="description" content="Bootstrap Admin App + Ruby on Rails">
+   <meta name="keywords" content="app, responsive, jquery, bootstrap, dashboard, admin">
+   <meta name="google-site-verification" content="XEJSsqOJQw2k86VbJ5dPy4KbzrD5syyhfTX3JRa_w34" />
+   <title>Donamat - Dashboard</title>
+   <!-- =============== VENDOR STYLES ===============-->
+   <%= stylesheet_link_tag 'base' %>
+   <!-- =============== VIEW VENDOR STYLES ===============-->
+   <%= stylesheet_link_tag params[:controller] %>
+   <!-- =============== APP STYLES ===============-->
+   <%= stylesheet_link_tag 'application', media: 'all', id: "maincss" %>
+
+   <%= csrf_meta_tags %>
+</head>
+
+<body>
+   <div class="wrapper">
+      <!-- Alert messages -->
+      <p class="notice"><%= notice %></p>
+      <p class="alert"><%= alert %></p>
+      <!-- end alert messages -->
+      <%= yield %>
+   </div>
+   <div class="p-lg text-center">
+      <span>&copy;</span>
+      <span>2016</span>
+      <span>-</span>
+      <span>Angle</span>
+      <br>
+      <span>Bootstrap Admin Template</span>
+   </div>
+   <!-- =============== VENDOR SCRIPTS ===============-->
+   <%= javascript_include_tag 'base' %>
+   <!-- =============== VIEW VENDOR SCRIPTS ===============-->
+   <%= javascript_include_tag params[:controller] %>
+   <!-- =============== APP SCRIPTS ===============-->
+   <%= javascript_include_tag 'application' %>
+</body>
+
+</html>

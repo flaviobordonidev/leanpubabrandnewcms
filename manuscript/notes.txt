@@ -1,26 +1,8 @@
-tab aperti:
-* https://devcenter.heroku.com/articles/custom-domains
-* https://support.google.com/analytics/answer/2365329
-* https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html?icmpid=docs_iam_console
-* google search: adding custom fields to your devise user model in rails 5
-* google search: devise admin user management
----
 www.leanpub.com
-
 https://leanpub.com/leanpubabrandnewcms/preview
 
 https://leanpub.com/help/getting_started_sync_dropbox
 https://leanpub.com/help/manual
-
----
-http://themes.semicolonweb.com/html/canvas/intro.html
-https://themeforest.net/item/canvas-the-multipurpose-html5-template/9228123/support
-
----
-https://developers.facebook.com/docs/plugins/comments/#counter
-
----
-https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-byebug-gem
 
 ---
 http://pygments.org/demo/   ->  vedi il codice nel menu a cascata
@@ -38,6 +20,17 @@ $ rails s
 $ rails s -b $IP -p $PORT
 
 https://rebisworld3-flaviobordonidev.c9users.io/
+
+
+---
+http://themes.semicolonweb.com/html/canvas/intro.html
+https://themeforest.net/item/canvas-the-multipurpose-html5-template/9228123/support
+
+---
+https://developers.facebook.com/docs/plugins/comments/#counter
+
+---
+https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-byebug-gem
 
 ---
 WEBPACK TUTORIAL

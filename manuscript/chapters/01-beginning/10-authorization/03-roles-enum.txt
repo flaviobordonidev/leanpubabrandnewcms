@@ -21,7 +21,8 @@ Risorse web:
 
 * [Ruby on Rails: Customize the devise user (Screencast #1)](https://www.youtube.com/watch?v=5inpxIHKhkE)
 * https://github.com/plataformatec/devise
-    
+* https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-edit-their-password
+
 
 
 
@@ -263,11 +264,24 @@ end
 
 [cod. c](beginning-authorization-03c-application_controller.rb)
 
-Their names and default permitted parameters are:
+I loro nomi e parametri di default permessi sono:
 
-* sign_in (Devise::SessionsController#create) - Permits only the authentication keys (like email)
-* sign_up (Devise::RegistrationsController#create) - Permits authentication keys plus password and password_confirmation
-* account_update (Devise::RegistrationsController#update) - Permits authentication keys plus password, password_confirmation and current_password
+* sign_in (Devise::SessionsController#create) - Permette solo le chiavi di autenticazione come il campo :email
+* sign_up (Devise::RegistrationsController#create) - Permette le chiavi di autenticazione più i campi :password e :password_confirmation
+* account_update (Devise::RegistrationsController#update) - Permette le chiavi di autenticazione più i campi :password, :password_confirmation e :current_password
+
+
+Inoltre mettiamo il campo :role nella whitelist di users_controller
+
+{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=83}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def user_params
+      params.require(:user).permit(:name, :email, :password, :password_confirmation, :remember_created_at, :role)
+    end
+~~~~~~~~
+
+[cod. d](beginning-authorization-03d-users_controller.rb)
 
 
 
@@ -308,114 +322,18 @@ Aggiungiamo un selettore per permettere di cambiare ruolo
 
 {title=".../app/views/users/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
 ~~~~~~~~
-    <%= form.select(:role, User.roles.keys.map {|role| [role.titleize, role]}) %>
+  <div class="field">    
+    <%= form.label :role %>
+    <%#= form.text_field :role %>
+    <%= form.select(:role, User.roles.keys.map {|role| [role.titleize,role]}) %>
+  </div>
 ~~~~~~~~
 
-[tutto il codice](#beginning-authentication-authorization-06b-views-users-_form.html.erb)
+[cod. d](beginning-authorization-03d-views-users-_form.html.erb)
 
+Attenzione: deve essere attivo solo uno dei due campi: "form.text_field :role" o "form.select(:role...". Se attiviamo entrambi i campi verrà passato come params solo il valore dell'ultimo campo perché hanno lo stesso nome.
 
-
-
-## Spiegazione didattica su **.select**
-
-Per il selettore avremmo potuto usare form.collection_select al posto di form.select ?
-
-~~~~~~~~
-    <%= form.collection_select(:city_id, City.all, :id, :name) %>
-~~~~~~~~
-
-Nel nostro caso no perché form.collection_select lavora su una tabella; invece noi stiamo usando |enum| sulla colonna :role della tabella users.
-  
-
-Altri esempi di form.select per chiarire meglio come lavora:
-
-~~~~~~~~
-<%= form_for @post do |form| %>
-  <%= form.select :person_id, Person.all.map { |p| [ p.name, p.id ] }, include_blank: true %>
-  <%= form.submit %>
-<% end %>
-~~~~~~~~
-
-~~~~~~~~
-@users = User.all
-<% form_for @user, :html => { :method => :post } do |form| %>
-  <%= form.select :user_id, @users %>
-~~~~~~~~
-
-~~~~~~~~
-<% form_for @user, :html => { :method => :post } do |form| %>
-  <%= form.select :user_id, @users.collect { |user| [user.name, user.id] } %>
-~~~~~~~~
-
-~~~~~~~~
-<%= form.select :estados, ['SP', 'PA', 'RJ'] %>
-~~~~~~~~
-
-~~~~~~~~
-<%= form.select :estados, [['São Paulo', 'SP'], ['Pará', 'PA'], ['Rio de Janeiro', 'RJ']] %>
-~~~~~~~~
-
-
-
-
-## Spiegazione didattica su differenza fra each, map, collect
-
-http://queirozf.com/entries/ruby-map-each-collect-inject-reject-select-quick-reference
-https://stackoverflow.com/questions/9429034/what-is-the-difference-between-map-each-and-collect
-
-
-
-
-### each
-Executes an action using as parameter each element of the array. Returns the unmodified array.
-
-[1,2,3,4,5,6,7,8,9,10].each{|e| print e.to_s+"!" }
-# prints "1!2!3!4!5!6!7!8!9!10!"
-# returns [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] 
-
-each performs the enclosed block for each element in the (Enumerable) receiver:
-
-[1,2,3,4].each {|n| puts n*2}
-# Outputs:
-# 2
-# 4
-# 6
-# 8
-
-
-
-### map
-Performs an action on each array element. Returns the modified array. The original array is NOT modified.
-
-[1,2,3,4,5,6,7,8,9,10].map{|e| e*3 }
-# returns [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]
-
-map produce a new Array containing the results of the block applied to each element of the receiver:
-
-[1,2,3,4].map {|n| n*2}
-# => [2,4,6,8]
-
-
-
-
-#### map! 
-Performs an action on each array element. Returns the modified array. The original array IS modified.
-
-a = [1,2,3,4]
-
-a.map {|n| n*2} # => [2,4,6,8]
-puts a.inspect  # prints: "[1,2,3,4]"
-
-a.map! {|n| n+1}
-puts a.inspect  # prints: "[2,3,4,5]"
-
-
-
-
-### collect 
-Alias for map
-map and collect are the same. Technically map is an alias for collect, but map is used a lot more frequently.
-map is the community-choosen version ( https://github.com/bbatsov/ruby-style-guide#map-fine-select-reduce-size )
+I> Per approfondimenti vedi sezione rails_references/data_types/select-collection_select
 
 
 
@@ -423,3 +341,51 @@ map is the community-choosen version ( https://github.com/bbatsov/ruby-style-gui
 ## Implementiamo le autorizzazioni
 
 nel prossimo capitolo finalmente attiviamo la sicurezza implementando le autorizzazioni alle varie azioni.
+
+
+
+
+## Salviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Add role:enum to table users"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su Heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku re:master
+$ heroku run rails db:migrate
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge re
+$ git branch -d re
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
