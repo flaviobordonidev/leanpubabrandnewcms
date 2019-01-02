@@ -27,7 +27,7 @@ Services -> Developer Tools -> Cloud9
 
 Selezioniamo la "AWS Region" più vicina a noi. Ad esempio "Ireland"
 
-![Fig. a](chapters/01-beginning/01-new_app/01fa-awscloud9-root_account.PNG)
+![Fig. a](images/01-beginning/01-new_app/01fa-awscloud9-root_account.PNG)
 
 Ed iniziamo a creare un nuovo ambiente. E' un processo in 3 passi.
 
