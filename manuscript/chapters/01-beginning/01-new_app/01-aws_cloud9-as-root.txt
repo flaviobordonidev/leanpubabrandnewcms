@@ -43,7 +43,7 @@ Diamo il nome della nostra app rails con un numero progressivo in fondo in modo 
 * Name: myapp_1 
 * Description : la mia applicazione fatta con Ruby on Rails
 
-![Fig. b](chapters/01-beginning/01-new_app/01fb-create_environment-step1.PNG)
+![Fig. b](images/01-beginning/01-new_app/01fb-create_environment-step1.PNG)
 
 
 
@@ -57,7 +57,7 @@ Più potenza diamo più ci costa.
 * t2.micro (1 GiB RAM + 1 vCPU)
 * Cost-saving setting: After 30 minutes (default)
 
-![Fig. c](chapters/01-beginning/01-new_app/01fc-create_environment-step2.PNG)
+![Fig. c](images/01-beginning/01-new_app/01fc-create_environment-step2.PNG)
 
 
 
@@ -66,7 +66,7 @@ Più potenza diamo più ci costa.
 
 Review
 
-![Fig. d](chapters/01-beginning/01-new_app/01fd-create_environment-step3.PNG)
+![Fig. d](images/01-beginning/01-new_app/01fd-create_environment-step3.PNG)
 
 Click "Create environment"
 
@@ -87,12 +87,12 @@ Main theme: AWS Cloud9 Classic Dark Theme
 Editor theme: Cloud9 Day
 Keyboard Mode: Default
 
-![Fig. e](chapters/01-beginning/01-new_app/01fe-dark_theme.PNG)
+![Fig. e](images/01-beginning/01-new_app/01fe-dark_theme.PNG)
 
 
 Su preferences -> Soft tabs: 2
 
-![Fig. f](chapters/01-beginning/01-new_app/01ff-soft_tabs.PNG)
+![Fig. f](images/01-beginning/01-new_app/01ff-soft_tabs.PNG)
 
 
 L'ambiente è impostato. Adesso possiamo creare una nuova applicazione Rails.
