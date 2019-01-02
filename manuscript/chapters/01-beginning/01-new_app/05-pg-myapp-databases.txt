@@ -9,14 +9,14 @@ Creiamo i databases su postgreSQL in modo da attivare la connessione con la nost
 
 L'errore è perché PostgreSQL non trova i databases di svilluppo e di test. Questi sono definiti sul file "/config/database.yml". 
 
-{title=".../config/database.yml", lang=yaml, line-numbers=on, starting-line-number=24}
+{id="01-01-05_01", title=".../config/database.yml", lang=yaml, line-numbers=on, starting-line-number=24}
 ~~~~~~~~
 development:
   <<: *default
   database: myapp_development
 ~~~~~~~~
 
-[Codice 01](#01-01-05_01)
+[Codice 01](#01-01-05_01all)
 
 Come si vede il nome dei database è dato con la seguente convenzione:
 
@@ -176,7 +176,7 @@ apriamolo su una nuovo tab del browser
 
 [Codice 01](#01-01-05_01)
 
-{id="01-01-05_01", title=".../config/database.yml", lang=yaml, line-numbers=on, starting-line-number=24}
+{id="01-01-05_01all", title=".../config/database.yml", lang=yaml, line-numbers=on, starting-line-number=24}
 ~~~~~~~~
 # PostgreSQL. Versions 9.1 and up are supported.
 #
