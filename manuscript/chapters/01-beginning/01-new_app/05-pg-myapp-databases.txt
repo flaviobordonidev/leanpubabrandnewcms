@@ -174,9 +174,9 @@ apriamolo su una nuovo tab del browser
 
 
 
-#### cod. a {#beginning-new_app-05ca-config-database.yml}
+#### cod. a
 
-{title=".../config/database.yml", lang=yaml, line-numbers=on, starting-line-number=24}
+{id='beginning-new_app-05ca-config-database.yml', title=".../config/database.yml", lang=yaml, line-numbers=on, starting-line-number=24}
 ~~~~~~~~
 # PostgreSQL. Versions 9.1 and up are supported.
 #
