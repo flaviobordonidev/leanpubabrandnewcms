@@ -15,6 +15,7 @@ development:
   <<: *default
   database: myapp_development
 ~~~~~~~~
+
 [cod. a](#beginning-new_app-05ca-config-database.yml)
 
 Come si vede il nome dei database è dato con la seguente convenzione:
