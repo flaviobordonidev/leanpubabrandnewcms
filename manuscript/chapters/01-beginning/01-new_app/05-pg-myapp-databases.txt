@@ -15,8 +15,7 @@ development:
   <<: *default
   database: myapp_development
 ~~~~~~~~
-
-[cod. a](#beginning/new_app/05ca-config-database.yml)
+[cod. a](#beginning-new_app-05ca-config-database.yml)
 
 Come si vede il nome dei database è dato con la seguente convenzione:
 
@@ -174,7 +173,7 @@ apriamolo su una nuovo tab del browser
 
 
 
-#### cod. a {#beginning/new_app/05ca-config-database.yml}
+#### cod. a {#beginning-new_app-05ca-config-database.yml}
 
 {title=".../config/database.yml", lang=yaml, line-numbers=on, starting-line-number=24}
 ~~~~~~~~
