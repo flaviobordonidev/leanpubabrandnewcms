@@ -1,4 +1,4 @@
-# Git
+# Inizializziamo Git
 
 Version Control System. Un gestore che controlla le versioni del software in fase di sviluppo.
 
@@ -36,7 +36,7 @@ I> Ricordiamoci di entrare nella directory del nostro nuovo applicativo "myapp" 
 
 Questo genera anche la cartella nascosta git ed i vari files tra cui gitignore per vedere possiamo visualizzare i files nascosti dalla ruota dentata al lato del nome del workspace scegliendo dal menu a discesa la voce "show hidden files"
 
-![Fig. a](images/01-beginning/02-git/02a-aws_cloud9-show_hidden_files.PNG)
+![Fig. 01](images/01-beginning/02-git/02_01-aws_cloud9-show_hidden_files.PNG)
 
 
 Oppure da terminale

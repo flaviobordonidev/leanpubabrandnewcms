@@ -160,11 +160,11 @@ $ psql
 $ rails s
 ~~~~~~~~
 
-![Fig. a](beginning/new_app/05fa-preview-working.png)
+![Fig. 01](01-beginning/01-new_app/05_01-preview-working.png)
 
 apriamolo su una nuovo tab del browser
 
-![Fig. b](beginning/new_app/05fb-preview-working-new_tab.png)
+![Fig. 02](01-beginning/01-new_app/05_02-preview-working-new_tab.png)
 
 
 

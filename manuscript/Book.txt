@@ -22,3 +22,6 @@ chapters/01-beginning/02-git/02-inizializziamo_git.txt
 chapters/01-beginning/02-git/03-daily_routine.txt
 
 chapters/01-beginning/03-example_static_pages/01-example_static_pages.txt
+
+chapters/01-beginning/04-heroku/01-heroku_story.txt
+chapters/01-beginning/04-heroku/02-inizializiamo_heroku.txt

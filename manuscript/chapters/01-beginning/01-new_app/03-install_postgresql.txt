@@ -59,7 +59,7 @@ I comandi VIM da usare sono:
 * [:w] per salvare
 * [:q] per uscire
 
-![Fig. a](01-beginning/01-new_app/03fa-postgresql_conf-uncomment-addresses_and_port.PNG)
+![Fig. 01](01-beginning/01-new_app/03_01-postgresql_conf-uncomment-addresses_and_port.PNG)
 
 
 
@@ -153,7 +153,7 @@ logout
 ec2-user:~/environment $ 
 ~~~~~~~~
 
-![Fig. b](01-beginning/01-new_app/03fb-pg_change_password_and_create_user.PNG)
+![Fig. 02](01-beginning/01-new_app/03_02-pg_change_password_and_create_user.PNG)
 
 Adesso è tutto inizializzato e pronto per lavorare su aws Cloud9.
 

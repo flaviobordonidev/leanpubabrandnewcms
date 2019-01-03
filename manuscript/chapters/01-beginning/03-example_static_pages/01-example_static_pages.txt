@@ -35,7 +35,11 @@ Creiamo due azioni page_a page_b per avere due pagine per fare delle prove con u
 non ho nessun migrate perché non mi interfaccio con il database.
 
 
-Vediamo la nostra applicazione rails funzionante:
+
+
+### Verifichiamo preview
+
+Vediamo la nostra applicazione rails funzionante. Attiviamo il webserver
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
@@ -43,9 +47,11 @@ $ sudo service postgresql start
 $ rails s
 ~~~~~~~~
 
-https://5b7c4783cd554badb3b2453e1653ff4d.vfs.cloud9.eu-west-1.amazonaws.com
-https://5b7c4783cd554badb3b2453e1653ff4d.vfs.cloud9.eu-west-1.amazonaws.com/example_static_pages/page_a
-https://5b7c4783cd554badb3b2453e1653ff4d.vfs.cloud9.eu-west-1.amazonaws.com/example_static_pages/page_b
+e vediamo i vari URLs sul nostro browser:
+
+* https://mycloud9path.amazonaws.com
+* https://mycloud9path.amazonaws.com/example_static_pages/page_a
+* https://mycloud9path.amazonaws.com/example_static_pages/page_b
 
 
 
@@ -63,30 +69,35 @@ Aggiorno il file routes per mettere l'homepage come pagina principale (root)
 [Codice 01](#01-03-01_01all)
 
 
-vediamo che addesso sull'URL della root ci reinstrada su page_a
+
+
+### Verifichiamo preview
+
+Attiviamo il webserver
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
+$ sudo service postgresql start
 $ rails s
 ~~~~~~~~
 
-https://5b7c4783cd554badb3b2453e1653ff4d.vfs.cloud9.eu-west-1.amazonaws.com
+e vediamo che addesso sull'URL della root "/" ci reinstrada su page_a:
+
+* https://mycloud9path.amazonaws.com
+* https://mycloud9path.amazonaws.com/example_static_pages/page_a
+* https://mycloud9path.amazonaws.com/example_static_pages/page_b
 
 
 
 
-## Vediamo gli instradamenti
+## Vediamo gli instradamenti da terminale
 
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ rails routes
-~~~~~~~~
 
-otteniamo
-
-~~~~~~~~
-cloud9:~/environment/rigenerabatterie (esp) $ rails routes
+ec2-user:~/environment/myapp (esp) $ rails routes
                      Prefix Verb URI Pattern                                                                              Controller#Action
                        root GET  /                                                                                        example_static_pages#page_a
 example_static_pages_page_a GET  /example_static_pages/page_a(.:format)                                                   example_static_pages#page_a
@@ -98,7 +109,13 @@ example_static_pages_page_b GET  /example_static_pages/page_b(.:format)         
        rails_direct_uploads POST /rails/active_storage/direct_uploads(.:format)                                           active_storage/direct_uploads#create
 ~~~~~~~~
 
-Il **Prefix** è quello che utiliziamo come "path" nei nostri links.
+Nella colonna "Prefix" c'è la voce che utiliziamo per creare i "paths" nei nostri links: "Prefix"+"_path"
+
+esempi:
+
+* root_path
+* example_static_pages_page_a_path
+* example_static_pages_page_b_path
 
 
 
@@ -122,7 +139,11 @@ Il **Prefix** è quello che utiliziamo come "path" nei nostri links.
 ~~~~~~~~
 
 
-Vediamo la nostra applicazione rails funzionante:
+
+
+## Verifichiamo
+
+Attiviamo il webserver
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
@@ -130,7 +151,13 @@ $ sudo service postgresql start
 $ rails s
 ~~~~~~~~
 
-adesso invece di scrivere sull'url possiamo cliccare sui links delle pagine.
+e vediamo i vari URLs sul nostro browser:
+
+* https://mycloud9path.amazonaws.com
+* https://mycloud9path.amazonaws.com/example_static_pages/page_a
+* https://mycloud9path.amazonaws.com/example_static_pages/page_b
+
+adesso invece di scrivere sull'URL, per spostarsi tra le pagine, possiamo cliccare sui links.
 
 
 
