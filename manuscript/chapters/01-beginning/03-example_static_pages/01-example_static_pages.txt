@@ -9,7 +9,7 @@ Esempio di pagine statiche dello sviluppatore. Inizio con delle example_static_p
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ cd rebisworld
+$ cd myapp
 $ git checkout -b esp
 ~~~~~~~~
 
@@ -55,12 +55,12 @@ https://5b7c4783cd554badb3b2453e1653ff4d.vfs.cloud9.eu-west-1.amazonaws.com/exam
 
 Aggiorno il file routes per mettere l'homepage come pagina principale (root)
 
-{title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+{id="01-03-01_01", title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=3}
 ~~~~~~~~
   root 'example_static_pages#page_a'
 ~~~~~~~~
 
-[tutto il codice:](#beginning-05code-config-routes.rb)
+[Codice 01](#01-03-01_01all)
 
 
 vediamo che addesso sull'URL della root ci reinstrada su page_a
@@ -155,4 +155,26 @@ se abbiamo finito le modifiche e va tutto bene:
 $ git checkout master
 $ git merge esp
 $ git branch -d esp
+~~~~~~~~
+
+
+
+
+## Il codice del capitolo
+
+
+
+
+[Codice 01](#01-03-01_01)
+
+{id="01-03-01_01all", title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+Rails.application.routes.draw do
+
+  root 'example_static_pages#page_a'
+  
+  get 'example_static_pages/page_a'
+  get 'example_static_pages/page_b'
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+end
 ~~~~~~~~

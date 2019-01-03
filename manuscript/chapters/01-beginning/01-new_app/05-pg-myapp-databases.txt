@@ -176,7 +176,7 @@ apriamolo su una nuovo tab del browser
 
 [Codice 01](#01-01-05_01)
 
-{id="01-01-05_01all", title=".../config/database.yml", lang=yaml, line-numbers=on, starting-line-number=24}
+{id="01-01-05_01all", title=".../config/database.yml", lang=yaml, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
 # PostgreSQL. Versions 9.1 and up are supported.
 #

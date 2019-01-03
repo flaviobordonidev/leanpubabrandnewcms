@@ -1,0 +1,8 @@
+-# Iniziamo una nuova app su Rails
+
+in questi capitoli: 
+
+* Creiamo una nuova app Rails con database PostgreSql e ne visualizziamo il preview
+* Attiviamo il sistema di controllo delle versioni "Git"
+* Inseriamo la versione di ruby e gestiamo le credenziali di accesso (i secrets)
+* Creiamo una pagina statica di esempio

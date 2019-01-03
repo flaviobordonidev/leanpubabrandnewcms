@@ -9,10 +9,16 @@ chapters/frontmatter/03-introduction.txt
 
 mainmatter:
 
-chapters/01-beginning/01-new_app/00-section_begin.txt
+chapters/01-beginning/00-section/01-section.txt
+
 chapters/01-beginning/01-new_app/01-aws_cloud9-as-root.txt
 chapters/01-beginning/01-new_app/02-aws_cloud9-as-user.txt
 chapters/01-beginning/01-new_app/03-install_postgresql.txt
 chapters/01-beginning/01-new_app/04-new_app.txt
 chapters/01-beginning/01-new_app/05-pg-myapp-databases.txt
-chapters/01-beginning/01-new_app/06-section_end.txt
+
+chapters/01-beginning/02-git/01-git_story.txt
+chapters/01-beginning/02-git/02-inizializziamo_git.txt
+chapters/01-beginning/02-git/03-daily_routine.txt
+
+chapters/01-beginning/03-example_static_pages/01-example_static_pages.txt

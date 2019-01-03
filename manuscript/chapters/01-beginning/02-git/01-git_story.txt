@@ -1,5 +1,32 @@
 # Git
 
-In questo capitolo parliamo solo di cosa è Git della sua storia e del perché lo abbiamo scelto.
+Version Control System. Un gestore che controlla le versioni del software in fase di sviluppo.
 
-blablabla
+
+
+
+## Cos'è un Version Control System
+
+Un gestore che controlla le versioni del software in fase di sviluppo.
+
+Il version control system Git è utile per:
+
+1. tener traccia dell'andamento dei lavori. 
+2. avere tranquillità di poter tornare indietro con i branches
+3. pubblicare la nostra applicazione su Heroku
+
+
+
+
+## La storia di git
+
+Vedi su wikipedia
+
+
+
+
+## Perché git
+
+git è fondamentale per andare in produzione su Heroku.
+
+Altro pregio è quello di permetterci di fare dei backups su Github
