@@ -36,25 +36,28 @@ class ApplicationController < ActionController::Base
 end
 ~~~~~~~~
 
-I> ti ricordo che il default_locale lo abbiamo già impostato nella capitolo beginning/testpages_i18n
+I> ti ricordo che il default_locale lo abbiamo già impostato nella capitolo precedente
 I>
 I> il before_action sostituisce il before_filter che si usava su Rails 3
 
 
 
 
-## Proviamolo
+### Verifichiamo preview
 
 Attiviamo il database postgresql e facciamo partire il nostro webserver puma su cloud9
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ sudo service postgresql start
-$ rails s -b $IP -p $PORT
-https://elisinfo6-flaviobordonidev.c9users.io/homepage/show
-https://elisinfo6-flaviobordonidev.c9users.io/homepage/show?locale=en
-https://elisinfo6-flaviobordonidev.c9users.io/homepage/show?locale=it
+$ rails s
 ~~~~~~~~
+
+Visualizziamo sul browser i vari URLs:
+
+* https://mycloud9path.amazonaws.com/example_static_pages/page_a
+* https://mycloud9path.amazonaws.com/example_static_pages/page_a?locale=en
+* https://mycloud9path.amazonaws.com/example_static_pages/page_a?locale=it
 
 
 

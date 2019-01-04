@@ -1,7 +1,0 @@
-# Github
-
-Cos'è e perché lo usiamo.
-
-Github rende disponibile a livello web i progetti gestiti da git.
-Github è un repository remoto di git.
-Noi lo utilizziamo per avere un backup del nostro applicativo e per predisporre la possibilità di uno sviluppo multiutenti.

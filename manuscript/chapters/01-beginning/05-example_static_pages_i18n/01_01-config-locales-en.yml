@@ -1,0 +1,6 @@
+en:
+  example_static_pages:
+    page_a:
+      first_header: "This is the homepage"
+      first_paragraph: "the text will be taken from the database, but some messages are passed by the application and is therefore well that are translated to be ready to support more languages."
+      link_goto_page_B: "Let's go to page B."

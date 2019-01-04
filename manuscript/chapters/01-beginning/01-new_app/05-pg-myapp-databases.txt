@@ -153,10 +153,11 @@ $ psql
 
 
 
-## Verifichiamo preview
+### Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
+$ sudo service postgresql start
 $ rails s
 ~~~~~~~~
 

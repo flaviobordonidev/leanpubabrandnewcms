@@ -9,6 +9,7 @@ Risorse web
 
 
 ## Apriamo il branch
+
 non serve perché è rimasto aperto dal capitolo precedente
 
 
@@ -16,13 +17,13 @@ non serve perché è rimasto aperto dal capitolo precedente
 
 ## Github sign_up sign_in
 
-Per prima cosa creiamoci un account su www.github.com
+Per prima cosa creiamoci un account su Github. Andimao su www.github.com e clicchiamo "Sign up"
 
-![fig. a](01-beginning/07-github/03a-github_signup.png)
+![fig. 01](01-beginning/06-github/03_01-github_signup.PNG)
 
 Se lo abbiamo già logghiamoci.
 
-![fig. b](01-beginning/07-github/03b-github_signin.png)
+![fig. 02](01-beginning/06-github/03_02-github_signin.PNG)
 
 
 
@@ -30,50 +31,44 @@ Se lo abbiamo già logghiamoci.
 ## Github connessione con aws Cloud9
 
 Per far comunicare Github con aws Cloud9 dobbiamo fargli condividere la chiave pubblica.
+Andiamo sul terminale di aws Cloud9 e visualizziamo e copiamoci la chiave pubblica (public key) di aws Cloud9.
 
 {title="terminale", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ cat ~/.ssh/id_rsa.pub
+
+ec2-user:~/environment/myapp (espi) $ cat ~/.ssh/id_rsa.pub
+ssh-rsa AAAAB3...[...]...MmDRyKWg5 ec2-user@ip-172-56-27-218
 ~~~~~~~~
 
-Visualizziamo e copiamoci la chiave pubblica (public key) di aws Cloud9.
+Copiare tutta la chiave pubblica, compreso 'ssh-rsa', e passarla su Github -> Settings -> SSH and GPG keys.
 
-{title="terminale", lang=bash, line-numbers=off}
-~~~~~~~~
-$ cat ~/.ssh/id_rsa.pub
-~~~~~~~~
-
-users of the cloud IDE might be able to view their public key using the cat command, which can then be selected and copied. 
-
-Once you’ve signed up for GitHub, you’ll need to add SSH keys to your account, which serve as a way to identify trusted computers without requiring passwords.1 To do this, follow the steps in the GitHub article “Generating SSH Keys” (Figure 2.2).
-
-
+![fig. 03](01-beginning/06-github/03_03-github_ssh_public_key.PNG)
 
 
 
 
 ## Github nuovo repository
 
+Creiamo un nuovo repository:
 
-Una volta loggati creiamo un nuovo repository:
+* nome        : myapp-01
+* descrizione : mia applicazione su Rails
 
-* nome        : rigenerabatterie1
-* descrizione : sito web per ricarica batterie
-
-![fig. c](01-beginning/07-github/03c-github_new_repository.png)
+![fig. 04](01-beginning/06-github/03_04-github_new_repository.PNG)
 
 Appena creato il nuovo repository ci viene presentato un "Quick setup"
 
-![fig. d](01-beginning/07-github/03d-github_quick_setup.png)
+![fig. 05](01-beginning/06-github/03_05-github_quick_setup.PNG)
 
-Aggiungiamo sul nostro git il repository remoto "rigenerabatterie1.git" creato sul nostro account github "flaviobordonidev" usando SSH.
+Aggiungiamo sul nostro git il repository remoto "myapp-01.git" creato sul nostro account github "flaviobordonidev" usando SSH.
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ git remote add origin git@github.com:flaviobordonidev/rigenerabatterie1.git
+$ git remote add origin git@github.com:flaviobordonidev/myapp-01.git
 ~~~~~~~~
 
-Se avessimo voluto usare HTTPS avremmo usato "git remote add origin https://github.com/flaviobordonidev/rigenerabatterie1.git"
+Se avessimo voluto usare HTTPS avremmo usato "git remote add origin https://github.com/flaviobordonidev/myapp-01.git"
 
 Il comando "git remote" è per attivare il repository remoto su un server esterno (nel nostro caso github.com).
 con "add origin" si dichiara che il nome di riferimento del repositroy remoto è "origin" (potevamo chiamarlo github ma per convenzione storica la stessa Github ha scelto di chiamarlo "origin").  
@@ -115,4 +110,7 @@ Spostiamo in remoto anche la parte dei tag in cui abbiamo messo la versione v.0.
 $ git push origin master --tag
 ~~~~~~~~
 
-![fig. e](01-beginning/07-github/03e-github_repository_overview.png)
+Se adesso facciamo un refresh alla pagina di Github vedremo il nostro nuovo repository con la nostra myapp-01
+
+![fig. 06](01-beginning/06-github/03_06-github_repository_overview.png)
+

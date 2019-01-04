@@ -128,10 +128,13 @@ gem 'puma', '~> 3.11'
 
 Non ci resta che creare il nuovo file Procfile nella cartella principale della nostra applicazione
 
-{title=".../Procfile", lang=ruby, line-numbers=on, starting-line-number=1}
+{id="01-04-03_01", title=".../Procfile", lang=ruby, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
 web: bundle exec puma -C config/puma.rb
 ~~~~~~~~
+
+[Codice 01](#01-04-03_01all)
+
 
 Questo Procfile rimanda la lettura della configurazione al file config/puma.rb che è già creato di default da Rails. Vediamolo senza i commenti.
 
@@ -149,7 +152,7 @@ plugin :tmp_restart
 
 Ma noi usiamo quest'altra configurazione che è suggerita da heroku 
 
-{title=".../config/puma.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+{id="01-04-03_02", title=".../config/puma.rb", lang=ruby, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
 workers Integer(ENV['WEB_CONCURRENCY'] || 2)
 threads_count = Integer(ENV['RAILS_MAX_THREADS'] || 5)
@@ -168,6 +171,9 @@ on_worker_boot do
 end
 ~~~~~~~~
 
+[Codice 02](#01-04-03_02all)
+
+
 workers consume more RAM and threads consume more CPU, and both provide more concurrency.
 we have 5 Puma-threads and 2 Puma-worker
 With a typical Rails memory footprint, you can expect to run 2-4 Puma worker processes on a free, hobby or standard-1x dyno.
@@ -181,6 +187,12 @@ If your app is not thread safe, you will only be able to use workers. Set your m
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ heroku config:set MIN_THREADS=1 RAILS_MAX_THREADS=1
+
+
+ec2-user:~/environment/myapp (master) $ heroku config:set MIN_THREADS=1 RAILS_MAX_THREADS=1
+Setting MIN_THREADS, RAILS_MAX_THREADS and restarting ⬢ myapp-1-blabla... done, v7
+MIN_THREADS:       1
+RAILS_MAX_THREADS: 1
 ~~~~~~~~
 
 You can still gain concurrency by adding workers. Since a worker runs in a different process and does not share memory, code that is not thread safe can be run across multiple worker processes.
@@ -212,8 +224,8 @@ $ git commit -m "Add Puma webserver Procfile and config"
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ git push heroku pubprod:master
-$ heroku run rails pubprod:migrate
+$ git push heroku pp:master
+$ heroku run rails db:migrate
 ~~~~~~~~
 
 Adesso non ho più il terzo warning. Per il momento è tutto su Heroku
@@ -248,4 +260,84 @@ se abbiamo finito le modifiche e va tutto bene:
 $ git checkout master
 $ git merge pubprod
 $ git branch -d pubprod
+~~~~~~~~
+
+
+
+
+## Il codice del capitolo
+
+
+
+
+[Codice 01](#01-04-03_01)
+
+
+{id="01-04-03_01all", title=".../Procfile", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+web: bundle exec puma -C config/puma.rb
+~~~~~~~~
+
+
+
+
+[Codice 02](#01-04-03_02)
+
+{id="01-04-03_02all", title=".../config/puma.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+workers Integer(ENV['WEB_CONCURRENCY'] || 2)
+threads_count = Integer(ENV['RAILS_MAX_THREADS'] || 5)
+threads threads_count, threads_count
+
+preload_app!
+
+rackup      DefaultRackup
+port        ENV['PORT']     || 3000
+environment ENV['RACK_ENV'] || 'development'
+
+on_worker_boot do
+  # Worker specific setup for Rails 4.1+
+  # See: https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server#on-worker-boot
+  ActiveRecord::Base.establish_connection
+end
+~~~~~~~~
+
+Il vecchio codice messo in automatico da Rails:
+
+{title=".../config/puma.rb OLD-code", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+# Puma can serve each request in a thread from an internal thread pool.
+# The `threads` method setting takes two numbers: a minimum and maximum.
+# Any libraries that use thread pools should be configured to match
+# the maximum value specified for Puma. Default is set to 5 threads for minimum
+# and maximum; this matches the default thread size of Active Record.
+#
+threads_count = ENV.fetch("RAILS_MAX_THREADS") { 5 }
+threads threads_count, threads_count
+
+# Specifies the `port` that Puma will listen on to receive requests; default is 3000.
+#
+port        ENV.fetch("PORT") { 3000 }
+
+# Specifies the `environment` that Puma will run in.
+#
+environment ENV.fetch("RAILS_ENV") { "development" }
+
+# Specifies the number of `workers` to boot in clustered mode.
+# Workers are forked webserver processes. If using threads and workers together
+# the concurrency of the application would be max `threads` * `workers`.
+# Workers do not work on JRuby or Windows (both of which do not support
+# processes).
+#
+# workers ENV.fetch("WEB_CONCURRENCY") { 2 }
+
+# Use the `preload_app!` method when specifying a `workers` number.
+# This directive tells Puma to first boot the application and load code
+# before forking the application. This takes advantage of Copy On Write
+# process behavior so workers use less memory.
+#
+# preload_app!
+
+# Allow puma to be restarted by `rails restart` command.
+plugin :tmp_restart
 ~~~~~~~~

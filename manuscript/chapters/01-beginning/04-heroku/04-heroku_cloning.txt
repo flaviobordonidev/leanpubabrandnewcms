@@ -1,5 +1,7 @@
 ## Git cloning your heroku app
 
+Per il nostro tutorial possiamo saltare questo capitolo.
+
 
 Risorse web:
 
