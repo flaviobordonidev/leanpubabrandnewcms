@@ -27,3 +27,9 @@ chapters/01-beginning/04-heroku/01-heroku_story.txt
 chapters/01-beginning/04-heroku/02-inizializiamo_heroku.txt
 chapters/01-beginning/04-heroku/03-ottimizziamo_heroku.txt
 chapters/01-beginning/04-heroku/04-heroku_cloning.txt
+
+chapters/01-beginning/05-example_static_pages_i18n/01-example_pages_i18n.txt
+chapters/01-beginning/05-example_static_pages_i18n/02-default_language.txt
+chapters/01-beginning/05-example_static_pages_i18n/03-change_language.txt
+
+chapters/01-beginning/06-github/01-github_story.txt
