@@ -25,3 +25,91 @@ Se lo abbiamo già logghiamoci.
 
 ![fig. 02](images/01-beginning/06-github/03_02-github_signin.PNG)
 
+
+
+
+## Github connessione con aws Cloud9
+
+Per far comunicare Github con aws Cloud9 dobbiamo fargli condividere la chiave pubblica.
+Andiamo sul terminale di aws Cloud9 e visualizziamo e copiamoci la chiave pubblica (public key) di aws Cloud9.
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ cat ~/.ssh/id_rsa.pub
+
+ec2-user:~/environment/myapp (espi) $ cat ~/.ssh/id_rsa.pub
+ssh-rsa AAAAB3...[...]...MmDRyKWg5 ec2-user@ip-172-56-27-218
+~~~~~~~~
+
+Copiare tutta la chiave pubblica, compreso 'ssh-rsa', e passarla su Github -> Settings -> SSH and GPG keys.
+
+![fig. 03](images/01-beginning/06-github/03_03-github_ssh_public_key.PNG)
+
+
+
+
+## Github nuovo repository
+
+Creiamo un nuovo repository:
+
+* nome        : myapp-01
+* descrizione : mia applicazione su Rails
+
+![fig. 04](images/01-beginning/06-github/03_04-github_new_repository.PNG)
+
+Appena creato il nuovo repository ci viene presentato un "Quick setup"
+
+![fig. 05](images/01-beginning/06-github/03_05-github_quick_setup.PNG)
+
+Aggiungiamo sul nostro git il repository remoto "myapp-01.git" creato sul nostro account github "flaviobordonidev" usando SSH.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git remote add origin git@github.com:flaviobordonidev/myapp-01.git
+~~~~~~~~
+
+Se avessimo voluto usare HTTPS avremmo usato "git remote add origin https://github.com/flaviobordonidev/myapp-01.git"
+
+Il comando "git remote" è per attivare il repository remoto su un server esterno (nel nostro caso github.com).
+con "add origin" si dichiara che il nome di riferimento del repositroy remoto è "origin" (potevamo chiamarlo github ma per convenzione storica la stessa Github ha scelto di chiamarlo "origin").  
+
+Prima di spostare il nostro git locale sul repository remoto Github dobbiamo chiudere il branch locale, tornare sul branch master ed effettuare il merge. 
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge gh
+$ git branch -d gh
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
+
+il comando "git push" sposta sul branch remoto "origin" il branch locale "master".
+
+Spostiamo in remoto anche la parte dei tag in cui abbiamo messo la versione v.0.1.0
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master --tag
+~~~~~~~~
+
+Se adesso facciamo un refresh alla pagina di Github vedremo il nostro nuovo repository con la nostra myapp-01
+
+![fig. 06](images/01-beginning/06-github/03_06-github_repository_overview.PNG)
