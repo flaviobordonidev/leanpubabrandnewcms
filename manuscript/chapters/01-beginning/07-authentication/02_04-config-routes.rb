@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-
+  
   root 'example_static_pages#page_a'
   
   get 'example_static_pages/page_a'

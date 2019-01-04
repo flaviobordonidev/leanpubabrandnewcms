@@ -22,6 +22,8 @@ Risorse web:
     We are likely going to need at least two to three posts just to customize devise. The first thing I want to do is add the FriendlyId gem, so we can create nice looking user and post urls, such as: https://yourdomain/users/your-name.
 
   * https://github.com/plataformatec/devise/wiki/How-Tos1
+  
+  *https://devcenter.heroku.com/articles/using-the-cli
 
 
 
@@ -42,13 +44,13 @@ I> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/devise
 I>
 I> facciamo riferimento al [tutorial github della gemma](https://github.com/plataformatec/devise)
 
-{title="Gemfile", lang=ruby, line-numbers=on, starting-line-number=40}
+{id="01-07-02_01", title="Gemfile", lang=ruby, line-numbers=on, starting-line-number=40}
 ~~~~~~~~
 # Flexible authentication solution for Rails with Warden 
 gem 'devise', '~> 4.5'
 ~~~~~~~~
 
-[cod. a](#beginning-authentication-authorization-02a-Gemfile)
+[Codice 01](#01-07-02_01all)
 
 Eseguiamo l'installazione della gemma con bundle
 
@@ -69,8 +71,9 @@ Il "generator" installerà un inizializzatore che descrive tutte le opzioni di c
 ~~~~~~~~
 $ rails g devise:install
 
-cloud9:~/environment/rigenerabatterie (ep) $ rails g devise:install
-Running via Spring preloader in process 6784
+
+ec2-user:~/environment/myapp (ldi) $ rails g devise:install
+Running via Spring preloader in process 8570
       create  config/initializers/devise.rb
       create  config/locales/devise.en.yml
 ===============================================================================
@@ -112,14 +115,13 @@ Completiamo i 4 punti riportati sul testo che appare dopo devise:install.
 
 relativo alla parte di settaggio sia in sviluppo che in produzione.
 
-{title=".../config/environments/development.rb", lang=ruby, line-numbers=on, starting-line-number=38}
+{id="01-07-02_02", title=".../config/environments/development.rb", lang=ruby, line-numbers=on, starting-line-number=38}
 ~~~~~~~~
   # Devise config
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 ~~~~~~~~
 
-[cod. b](#beginning-authentication-authorization-02b-config-environments-development.rb)
-
+[Codice 02](#01-07-02_02all)
 
 Nel prossimo passaggio dobbiamo mettere l'host di produzione. Nel nostro caso quello di heroku. 
 Per trovare il nome host su heroku o ci loggiamo oppure usiamo il comando:
@@ -127,17 +129,22 @@ Per trovare il nome host su heroku o ci loggiamo oppure usiamo il comando:
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ heroku domains
+
+
+ec2-user:~/environment/myapp (ldi) $ heroku domains
+=== myapp-1-blabla Heroku Domain
+myapp-1-blabla.herokuapp.com
 ~~~~~~~~
 
 Adesso che abbiamo il nome dell'host su heroku lo possiamo usare nel file di configurazione.
 
-{title=".../config/environments/production.rb", lang=ruby, line-numbers=on, starting-line-number=72}
+{id="01-07-02_03", title=".../config/environments/production.rb", lang=ruby, line-numbers=on, starting-line-number=72}
 ~~~~~~~~
   # Devise config
-  config.action_mailer.default_url_options = { host: 'rigenerabatterie1.herokuapp.com', port: 3000 }
+  config.action_mailer.default_url_options = { host: 'myapp-1-blabla.herokuapp.com', port: 3000 }
 ~~~~~~~~
 
-[cod. c](#beginning-authentication-authorization-02c-config-environments-production.rb)
+[Codice 03](#01-07-02_03all)
 
 
 I> Attenzione!
@@ -154,13 +161,12 @@ I> (https://devcenter.heroku.com/articles/using-the-cli).
 
 Abbiamo già impostato la root sul root file e per il momento lo lasciamo così.
 
-
-{title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+{id="01-07-02_04", title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=3}
 ~~~~~~~~
   root 'example_static_pages#page_a'
 ~~~~~~~~
 
-[cod. d](#beginning-authentication-authorization-02d-config-routes.rb)
+[Codice 04](#01-07-02_04all)
 
 
 
@@ -169,19 +175,15 @@ Abbiamo già impostato la root sul root file e per il momento lo lasciamo così.
 
 mettiamo su layouts/application la visualizzazione dei messaggi di avviso
 
-{title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=4}
+{title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=13}
 ~~~~~~~~
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
 ~~~~~~~~
 
-[cod. e](#beginning-authentication-authorization-02e-views-layouts-application.html.erb)
-
-
-
 miglioriamoli un poco, quando installeremo bootstrap saranno ancora meglio.
 
-{title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=4}
+{title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=13}
 ~~~~~~~~
     <p class="alert alert-info"><%= notice %></p>
     <p class="alert alert-warning"><%= alert %></p>
@@ -189,11 +191,13 @@ miglioriamoli un poco, quando installeremo bootstrap saranno ancora meglio.
 
 visualizziamoli solo quando servono
 
-{title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=4}
+{id="01-07-02_05", title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=13}
 ~~~~~~~~
     <% if notice %><p class="alert alert-info"><%= notice %></p><% end %>
     <% if alert %><p class="alert alert-warning"><%= alert %></p><% end %>
 ~~~~~~~~
+
+[Codice 05](#01-07-02_05all)
 
 Successivamente implementeremo un partial più completo **<%= render 'layouts/flash_messages' %>** ma per il momento va bene così.
 
@@ -210,14 +214,26 @@ Questa operazione la posticipiamo al momento della creazione della tabella **use
 
 ## Attiviamo la tabella users con devise
 
-Implementiamo il MODEL di devise "User" che crea anche la tabella users usando il **rails** **generate** **devise** ***Model***.
+Implementiamo il MODEL di devise "User" che crea anche la tabella users usando il "rails generate devise MyModel".
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ rails g devise User
+
+
+ec2-user:~/environment/myapp (ldi) $ rails g devise User
+Running via Spring preloader in process 9533
+      invoke  active_record
+      create    db/migrate/20190104111729_devise_create_users.rb
+      create    app/models/user.rb
+      invoke    test_unit
+      create      test/models/user_test.rb
+      create      test/fixtures/users.yml
+      insert    app/models/user.rb
+       route  devise_for :users
 ~~~~~~~~
 
-(in un tutorial precedente usavamo "author" perché erano gli autori degli articoli che si loggavano ($ rails g devise Author) ma è meglio restare su un generico "user" che più avanti prenderà un "ruolo" a seguito dell'autenticazione)
+I> La maggior parte delle volte il MyModel usato è "User", ma esistono situazioni in cui si preferisce dare un nome più esplicito. Ad esempio per gli utenti di un Blog si può usare "Author" invece di "User". Questo per evidenziare che sono gli autori degli articoli che si loggano. Ma come "best practise" è meglio restare su un generico "User" che più avanti prenderà un "ruolo" a seguito dell'autenticazione.
 
 
 Aggiungiamo una colonna di tipo string al migrate
@@ -227,7 +243,14 @@ Aggiungiamo una colonna di tipo string al migrate
       t.string :name
 ~~~~~~~~
 
-[cod. f](#beginning-authentication-authorization-02f-db-migrate-xxx_devise_create_authors.rb)
+Aggiungiamogli anche che non può avere un valore "null" e che di default ha una stringa vuota "".
+
+{id="01-07-02_06", title=".../db/migrate/xxx_devise_create_users.rb", lang=ruby, line-numbers=on, starting-line-number=7}
+~~~~~~~~
+      t.string :name,               null: false, default: ""
+~~~~~~~~
+
+[Codice 06](#01-07-02_06all)
 
 
 Prima di effettuare il migrate verifichiamo il MODEL per eventuali ulteriori opzioni di configurazione che si potrebbe desiderare di aggiungere, ad esempio "confirmable" o "lockable". Se si aggiunge un'opzione, assicurarsi di ispezionare il file di migrate (creato dal generator) e decommentare la sezione appropriata. Ad esempio, se si aggiunge l'opzione "confirmable" nel modello, è necessario togliere il commento alla sezione Confirmable nel migrate.
@@ -238,14 +261,15 @@ Questa è la lista dei moduli Devise che sono attivi per questo modello:
 * registerable – Gli utenti saranno in grado di registrare, aggiornare e distruggere i loro profili.
 * recoverable – Fornisce un meccanismo per reimpostare le password dimenticate.
 * rememberable – Abilita la funzionalità "ricordami(remember me)" che utilizza i cookie.
-* trackable – Tracks sign in count, timestamps, and IP address.
-* validatable – Validates e-mail and password (custom validators can be used).
-* confirmable – Users will have to confirm their e-mails after registration before being allowed to sign in.
-* lockable – Users’ accounts will be locked out after a number of unsuccessful authentication attempts.
+* trackable – Tiene traccia del conteggio dei sign in, dei timestamps, e degli indirizzi IP.
+* validatable – Valida e-mail e password (possono essere usati validatori personalizzati).
+* confirmable – Gli utenti dovranno confermare le loro e-mail dopo la registrazione prima di poter accedere.
+* lockable – Gli account degli utenti verranno bloccati dopo un numero di tentativi di autenticazione non riusciti.
 
-commentiamo :registerable nel model perché non vogliamo che sia possibile per gli utenti registrarsi come utente.
 
-{title=".../app/models/user.rb", lang=ruby, line-numbers=on, starting-line-number=4}
+Commentiamo :registerable nel model perché non vogliamo che sia possibile per gli utenti registrarsi come utente.
+
+{title=".../app/models/user.rb", lang=ruby, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
@@ -255,15 +279,24 @@ class User < ApplicationRecord
 end
 ~~~~~~~~
 
-[cod. g](#beginning-authentication-authorization-02g-models-user.rb)
 
-
-Effettuiamo il migration.
+Effettuiamo il migrate.
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ sudo service postgresql start
 $ rails db:migrate
+
+
+ec2-user:~/environment/myapp (ldi) $ rails db:migrate
+== 20190104111729 DeviseCreateUsers: migrating ================================
+-- create_table(:users)
+   -> 0.0351s
+-- add_index(:users, :email, {:unique=>true})
+   -> 0.0060s
+-- add_index(:users, :reset_password_token, {:unique=>true})
+   -> 0.0039s
+== 20190104111729 DeviseCreateUsers: migrated (0.0467s) =======================
 ~~~~~~~~
 
 
@@ -274,13 +307,13 @@ $ rails db:migrate
 Sistemiamo gli instradamenti per la parte di autenticazione gestita tramite Devise.
 Mettiamo gli instradamenti per tutte le azioni Restful di user aggiungendo "resources :users" dopo "devise_for :users"
 
-{title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+{id="01-07-02_07", title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=5}
 ~~~~~~~~
   devise_for :users
   resources :users
 ~~~~~~~~
 
-[cod. h](#beginning-authentication-authorization-02h-config-routes.rb)
+[Codice 07](#01-07-02_07all)
 
 
 I> Attenzione!
@@ -288,13 +321,18 @@ I>
 I> La route **devise_for :users** deve essere messa prima di **resources :users**
 
 
-verifichiamo gli instradamenti che si sono attivati per "user"
+
+
+### Verifichiamo instradamenti
+
+verifichiamo gli instradamenti che si sono attivati per "user" a seguto del cambio su routes
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ rails routes | egrep "user"
 
-cloud9:~/environment/rigenerabatterie (ep) $ rails routes | egrep "user"
+
+ec2-user:~/environment/myapp (ldi) $ rails routes | egrep "user"
            new_user_session GET    /users/sign_in(.:format)                                                                 devise/sessions#new
                user_session POST   /users/sign_in(.:format)                                                                 devise/sessions#create
        destroy_user_session DELETE /users/sign_out(.:format)                                                                devise/sessions#destroy
@@ -320,19 +358,24 @@ cloud9:~/environment/rigenerabatterie (ep) $ rails routes | egrep "user"
 
 Registerable permette all'utente loggato di cambiare i suoi propri dati (email, password,...). Non è utile se vogliamo permettere ad un amministratore di cambiare i dati ai vari utenti.
 
-Se volessimo riattivare :registerable Basta aggiornare il model 
+Se volessimo riattivare :registerable Basta aggiornare il model, decommentando  :registerable
 
-models/user.rb
+
+{title=".../app/models/user.rb", lang=ruby, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
+class User < ApplicationRecord
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :validatable
+end
 ~~~~~~~~
 
 e rieseguire il migrate
 
-
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
+$ sudo service postgresql start
 $ rails db:migrate
 ~~~~~~~~
 
@@ -343,7 +386,6 @@ Adesso se riverifichiamo gli instradamenti vediamo che è presente anche "regist
 $ rails routes | egrep "user"
 ~~~~~~~~
 
-
 Il link per arrivare sulla view di "registerable" risulta quindi
 
 ~~~~~~~~
@@ -353,20 +395,24 @@ Il link per arrivare sulla view di "registerable" risulta quindi
 
 
 
-### Aggiungiamo un utente/autore da console
+## Aggiungiamo un utente da console
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ rails c
-> User.create(name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda')
+-> User.create(name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda')
 
+
+ec2-user:~/environment/myapp (ldi) $ rails c
+Running via Spring preloader in process 10818
+Loading development environment (Rails 5.2.2)
 2.4.1 :001 > User.create(name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda')
-   (0.1ms)  BEGIN
-  User Exists (0.7ms)  SELECT  1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2  [["email", "ann@test.abc"], ["LIMIT", 1]]
-  User Create (0.4ms)  INSERT INTO "users" ("name", "email", "encrypted_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["name", "Ann"], ["email", "ann@test.abc"], ["encrypted_password", "$2a$11$5uyTKwH.F4sVs0dFXedZt.rIb2qBlokUhPDlsdzi5RRStHmMTmnte"], ["created_at", "2018-12-12 13:05:10.170335"], ["updated_at", "2018-12-12 13:05:10.170335"]]
-   (0.8ms)  COMMIT
- => #<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2018-12-12 13:05:10", updated_at: "2018-12-12 13:05:10"> 
-2.4.1 :002 > 
+   (0.2ms)  BEGIN
+  User Exists (0.6ms)  SELECT  1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2  [["email", "ann@test.abc"], ["LIMIT", 1]]
+  User Create (0.4ms)  INSERT INTO "users" ("name", "email", "encrypted_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["name", "Ann"], ["email", "ann@test.abc"], ["encrypted_password", "$2a$11$SlGA3/yc2ISHV39yGddjBeisBx/776VaZhT44XRELrs2qJZOF8tea"], ["created_at", "2019-01-04 11:53:46.123330"], ["updated_at", "2019-01-04 11:53:46.123330"]]
+   (0.9ms)  COMMIT
+ => #<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2019-01-04 11:53:46", updated_at: "2019-01-04 11:53:46"> 
+2.4.1 :002 > exit
 ~~~~~~~~
 
 Oppure
@@ -374,26 +420,29 @@ Oppure
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ rails c
-> u = User.new({name: 'Flavio Bordoni', email: 'flavio@example.abc', password: 'password', password_confirmation: 'password'})
-> u.save
+-> u = User.new({name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda'})
+-> u.save
 ~~~~~~~~
 
 Da notare che, a differenza dei normali inserimenti nel database, questa volta abbiamo anche delle parentesi graffe **{}** da inserire.
+
 
 Se avessimo attivato l'opzione **:confirmable** avremmo dovuto **skippare** la **confirmation**
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ rails c
-> u = User.new({email: 'flavio@example.com', password: 'password', password_confirmation: 'password'})
-> u.skip_confirmation!
-> u.save
+-> u = User.new({name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda'})
+-> u.skip_confirmation!
+-> u.save
 ~~~~~~~~
 
 
 
 
-### Verifichiamo che funziona sul browser
+### Verifichiamo preview
+
+Attiviamo il webserver
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
@@ -401,16 +450,19 @@ $ sudo service postgresql start
 $ rails s
 ~~~~~~~~
 
-Per verificarlo dobbiamo andare alla pagina **users/sign_in**
+Per verificarlo dobbiamo andare alla pagina **users/sign_in** quindi all'URL:
 
-https://5b7c4783cd554badb3b2453e1653ff4d.vfs.cloud9.eu-west-1.amazonaws.com/users/sign_in
+* https://mycloud9path.amazonaws.com/users/sign_in
+
 
 Con le credenziali giuste ci loggiamo e veniamo portati nella pagina di root.
-Abbiamo impostato nei paragrafi precedenti:
-user: flavio@test.abc
-password: password
+
+  user: ann@test.abc
+  password: passworda
 
 I> Poiché non abbiamo ancora implementato il pulsante di logout, una volta loggati per provare di nuovo usare una nuova pagina del browser in navigazione privata 
+
+
 
 
 ## salviamo su git
@@ -436,115 +488,45 @@ $ git push heroku ldi:master
 
 ### ERRORE su Heroku - Manca la secret_key
 
-il **git push heroku ...** potrebbe fermarsi con il seguente errore nella log
+Questo errore non si dovrebbe presentare, ma...
 
+...se il **git push heroku ...** si fermarsse con il seguente errore nella log
+
+~~~~~~~~
 remote:        rake aborted!
 remote:        Devise.secret_key was not set. Please add the following to your Devise initializer:
 remote:        
 remote:          config.secret_key = '496bf68dc3...5e3'
 remote:        
 remote:        Please ensure you restarted your application after installing Devise or setting the key.
+~~~~~~~~
 
-Dobbiamo attivare questo secrets. Non editiamo il file config/credentials.yml.enc perché usiamo la secret_key_base che è già impostata.
-
-In Rails 5.2, you have the new credentials file and you must set your credentials secret_key_base to the Devise secret key.
+Dovremmo attivare questo secrets. 
+Non editiamo il file config/credentials.yml.enc perché usiamo la secret_key_base che è già impostata.
 
 {title=".../config/initializers/devise.rb", lang=ruby, line-numbers=on, starting-line-number=11}
 ~~~~~~~~
   config.secret_key = Rails.application.credentials.secret_key_base
 ~~~~~~~~
 
-You'll need to put your RAILS_MASTER_KEY env variable in as well so your app can decrypt the credentials file.
+Per far si che heroku riesca a decrittare il file config/credentials.yml.enc dobbiamo passargli la variabile d'ambiente con la master key. (RAILS_MASTER_KEY env variable)
 
-Per far si che heroku riesca a decrittare il file config/credentials.yml.enc dobbiamo passargli la master key.
-Quindi apriamo heroku andiamo nella nostra app "quiet-shelf-47596.herokuapp.com"
+Quindi apriamo heroku andiamo nella nostra app "myapp-1-blabla.herokuapp.com"
+
 -> nel tab "settings"
 -> nella sezione "Config Vars" facciamo click su "Reveal Config Vars"
 -> aggiungiamo RAILS_MASTER_KEY   f458b1a...c4
 
-[vedi immagine 02img-heroku_config_vars.png]
+![Fig. 01](images/01-beginning/07-authentication/02_01-heroku_config_vars.PNG)
 
 adesso siamo pronti per poter andare in produzione.
 
 
 
 
-## salviamo su git
+## Cambio della secret_key
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ git add -A
-$ git commit -m "Implement Devise on heroku"
-~~~~~~~~
-
-
-
-
-## Riproviamo a Pubblicare su Heroku
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ git push heroku ldi:master
-$ heroku run rails db:migrate
-~~~~~~~~
-
-Installando devise siamo intervenuti sul database locale e quindi dobbiamo aggiornare anche quello remoto su Heroku
-
-
-
-
-## Popoliamo da terminale il database su Heroku
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ heroku run rails c
-> User.create(name: 'FB', email: 'flavio@test.abc', password: 'passwordf', password_confirmation: 'passwordf')
-> exit
-~~~~~~~~
-
-facciamo login su heroku
-
-https://rigenerabatterie1.herokuapp.com/users/sign_in
-email: flavio@test.abc
-password: passwordf
-
- Signed in successfully.
-
-
-
-
-## Chiudiamo il branch
-
-se abbiamo finito le modifiche e va tutto bene:
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ git checkout master
-$ git merge ldi
-$ git branch -d ldi
-~~~~~~~~
-
-
-
-
-## Facciamo un backup su Github
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ git push origin master
-~~~~~~~~
-
-
-
-
-
-
-
-
-
-
-## Paragrafo didattico. Possiamo saltarlo
-
+Paragrafo didattico. Possiamo saltarlo
 Se avessimo voluto cambiare il file credentials.yml.enc per impostare la secret di devise allora
 
 Come abbiamo visto nel precedente capitolo sui "secrets" è bene non passare la chiave in chiaro nel file devise.rb ma invece usiamo config/credentials.yml.enc
@@ -592,4 +574,473 @@ Adesso possiamo passare il secret nel file di inizializzazione di devise
   config.secret_key = Rails.application.credentials.devise[:secret_key]
 ~~~~~~~~
 
-Solo che ad oggi 19/06/2018 questa non funziona. Si deve fare come spiegato nel paragrafo precedente. ^_^
+Solo che al momento questa non funziona. Funziona solo con il segret di default e quindi al momento non possiamo fare un secret personalizzato per devise.
+
+
+
+
+### Salviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Implement Devise on heroku"
+~~~~~~~~
+
+
+
+
+### Riproviamo a Pubblicare su Heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku ldi:master
+$ heroku run rails db:migrate
+~~~~~~~~
+
+
+
+
+## Popoliamo da terminale il database su Heroku
+
+Installando devise siamo intervenuti sul database locale e quindi dobbiamo aggiornare anche quello remoto su Heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku run rails c
+-> User.create(name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda')
+
+
+ec2-user:~/environment/myapp (ldi) $ heroku run rails c
+Running rails c on ⬢ myapp-1-blabla... up, run.7563 (Free)
+Loading production environment (Rails 5.2.2)
+irb(main):001:0> User.create(name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda')
+D, [2019-01-04T12:56:51.839882 #4] DEBUG -- :    (1.8ms)  BEGIN
+D, [2019-01-04T12:56:51.847509 #4] DEBUG -- :   User Exists (3.0ms)  SELECT  1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2  [["email", "ann@test.abc"], ["LIMIT", 1]]
+D, [2019-01-04T12:56:51.851607 #4] DEBUG -- :   User Create (2.1ms)  INSERT INTO "users" ("name", "email", "encrypted_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["name", "Ann"], ["email", "ann@test.abc"], ["encrypted_password", "$2a$11$pnNIjm86ocR5jfO.X4rePOdiX.0n2x8SagD85PtbSnhZppxZs1Gci"], ["created_at", "2019-01-04 12:56:51.848138"], ["updated_at", "2019-01-04 12:56:51.848138"]]
+D, [2019-01-04T12:56:51.854986 #4] DEBUG -- :    (2.7ms)  COMMIT
+=> #<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2019-01-04 12:56:51", updated_at: "2019-01-04 12:56:51">
+irb(main):002:0> exit
+~~~~~~~~
+
+
+
+
+### Verifichiamo produzione
+
+verifichiamo la nostra applicazione in produzione.
+I servers sono quelli di Heroku e quindi non li dobbiamo attvare.
+andiamo direttametne all'URL:
+
+* https://myapp-1-blabla.herokuapp.com//users/sign_in
+
+Usiamo le credenziali di login appena create su heroku.
+
+  user: ann@test.abc
+  password: passworda
+
+I> Poiché non abbiamo ancora implementato il pulsante di logout, una volta loggati per provare di nuovo usare una nuova pagina del browser in navigazione privata 
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge ldi
+$ git branch -d ldi
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
+
+
+
+
+## Il codice del capitolo
+
+
+
+
+[Codice 01](#01-07-02_01)
+
+{id="01-07-02_01all", title="Gemfile", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+source 'https://rubygems.org'
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
+
+ruby '2.4.1'
+
+# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'rails', '~> 5.2.1', '>= 5.2.1.1'
+# Use postgresql as the database for Active Record
+gem 'pg', '>= 0.18', '< 2.0'
+# Use Puma as the app server
+gem 'puma', '~> 3.11'
+# Use SCSS for stylesheets
+gem 'sass-rails', '~> 5.0'
+# Use Uglifier as compressor for JavaScript assets
+gem 'uglifier', '>= 1.3.0'
+# See https://github.com/rails/execjs#readme for more supported runtimes
+# gem 'mini_racer', platforms: :ruby
+
+# Use CoffeeScript for .coffee assets and views
+gem 'coffee-rails', '~> 4.2'
+# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
+gem 'turbolinks', '~> 5'
+# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+gem 'jbuilder', '~> 2.5'
+# Use Redis adapter to run Action Cable in production
+# gem 'redis', '~> 4.0'
+# Use ActiveModel has_secure_password
+# gem 'bcrypt', '~> 3.1.7'
+
+# Use ActiveStorage variant
+# gem 'mini_magick', '~> 4.8'
+
+# Use Capistrano for deployment
+# gem 'capistrano-rails', group: :development
+
+# Reduces boot times through caching; required in config/boot.rb
+gem 'bootsnap', '>= 1.1.0', require: false
+
+# Flexible authentication solution for Rails with Warden 
+gem 'devise', '~> 4.5'
+
+group :development, :test do
+  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+end
+
+group :development do
+  # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
+  gem 'web-console', '>= 3.3.0'
+  gem 'listen', '>= 3.0.5', '< 3.2'
+  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  gem 'spring'
+  gem 'spring-watcher-listen', '~> 2.0.0'
+end
+
+group :test do
+  # Adds support for Capybara system testing and selenium driver
+  gem 'capybara', '>= 2.15'
+  gem 'selenium-webdriver'
+  # Easy installation and use of chromedriver to run system tests with Chrome
+  gem 'chromedriver-helper'
+end
+
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+~~~~~~~~
+
+
+
+
+[Codice 02](#01-07-02_02)
+
+
+{id="01-07-02_02all", title=".../config/environments/development.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+Rails.application.configure do
+  # Settings specified here will take precedence over those in config/application.rb.
+
+  # In the development environment your application's code is reloaded on
+  # every request. This slows down response time but is perfect for development
+  # since you don't have to restart the web server when you make code changes.
+  config.cache_classes = false
+
+  # Do not eager load code on boot.
+  config.eager_load = false
+
+  # Show full error reports.
+  config.consider_all_requests_local = true
+
+  # Enable/disable caching. By default caching is disabled.
+  # Run rails dev:cache to toggle caching.
+  if Rails.root.join('tmp', 'caching-dev.txt').exist?
+    config.action_controller.perform_caching = true
+
+    config.cache_store = :memory_store
+    config.public_file_server.headers = {
+      'Cache-Control' => "public, max-age=#{2.days.to_i}"
+    }
+  else
+    config.action_controller.perform_caching = false
+
+    config.cache_store = :null_store
+  end
+
+  # Store uploaded files on the local file system (see config/storage.yml for options)
+  config.active_storage.service = :local
+
+  # Don't care if the mailer can't send.
+  config.action_mailer.raise_delivery_errors = false
+
+  config.action_mailer.perform_caching = false
+
+  # Devise config
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  
+  # Print deprecation notices to the Rails logger.
+  config.active_support.deprecation = :log
+
+  # Raise an error on page load if there are pending migrations.
+  config.active_record.migration_error = :page_load
+
+  # Highlight code that triggered database queries in logs.
+  config.active_record.verbose_query_logs = true
+
+  # Debug mode disables concatenation and preprocessing of assets.
+  # This option may cause significant delays in view rendering with a large
+  # number of complex assets.
+  config.assets.debug = true
+
+  # Suppress logger output for asset requests.
+  config.assets.quiet = true
+
+  # Raises error for missing translations
+  # config.action_view.raise_on_missing_translations = true
+
+  # Use an evented file watcher to asynchronously detect changes in source code,
+  # routes, locales, etc. This feature depends on the listen gem.
+  config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+end
+~~~~~~~~
+
+
+
+
+[Codice 03](#01-07-02_03)
+
+{id="01-07-02_03all", title=".../config/environments/production.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+Rails.application.configure do
+  # Settings specified here will take precedence over those in config/application.rb.
+
+  # Code is not reloaded between requests.
+  config.cache_classes = true
+
+  # Eager load code on boot. This eager loads most of Rails and
+  # your application in memory, allowing both threaded web servers
+  # and those relying on copy on write to perform better.
+  # Rake tasks automatically ignore this option for performance.
+  config.eager_load = true
+
+  # Full error reports are disabled and caching is turned on.
+  config.consider_all_requests_local       = false
+  config.action_controller.perform_caching = true
+
+  # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
+  # or in config/master.key. This key is used to decrypt credentials (and other encrypted files).
+  # config.require_master_key = true
+
+  # Disable serving static files from the `/public` folder by default since
+  # Apache or NGINX already handles this.
+  config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
+
+  # Compress JavaScripts and CSS.
+  config.assets.js_compressor = :uglifier
+  # config.assets.css_compressor = :sass
+
+  # Do not fallback to assets pipeline if a precompiled asset is missed.
+  config.assets.compile = false
+
+  # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
+
+  # Enable serving of images, stylesheets, and JavaScripts from an asset server.
+  # config.action_controller.asset_host = 'http://assets.example.com'
+
+  # Specifies the header that your server uses for sending files.
+  # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
+  # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
+
+  # Store uploaded files on the local file system (see config/storage.yml for options)
+  config.active_storage.service = :local
+
+  # Mount Action Cable outside main process or domain
+  # config.action_cable.mount_path = nil
+  # config.action_cable.url = 'wss://example.com/cable'
+  # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
+
+  # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
+  # config.force_ssl = true
+
+  # Use the lowest log level to ensure availability of diagnostic information
+  # when problems arise.
+  config.log_level = :debug
+
+  # Prepend all log lines with the following tags.
+  config.log_tags = [ :request_id ]
+
+  # Use a different cache store in production.
+  # config.cache_store = :mem_cache_store
+
+  # Use a real queuing backend for Active Job (and separate queues per environment)
+  # config.active_job.queue_adapter     = :resque
+  # config.active_job.queue_name_prefix = "myapp_#{Rails.env}"
+
+  config.action_mailer.perform_caching = false
+
+  # Ignore bad email addresses and do not raise email delivery errors.
+  # Set this to true and configure the email server for immediate delivery to raise delivery errors.
+  # config.action_mailer.raise_delivery_errors = false
+
+  # Devise config
+  config.action_mailer.default_url_options = { host: 'myapp-1-blabla.herokuapp.com', port: 3000 }
+  
+  # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
+  # the I18n.default_locale when a translation cannot be found).
+  config.i18n.fallbacks = true
+
+  # Send deprecation notices to registered listeners.
+  config.active_support.deprecation = :notify
+
+  # Use default logging formatter so that PID and timestamp are not suppressed.
+  config.log_formatter = ::Logger::Formatter.new
+
+  # Use a different logger for distributed setups.
+  # require 'syslog/logger'
+  # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
+
+  if ENV["RAILS_LOG_TO_STDOUT"].present?
+    logger           = ActiveSupport::Logger.new(STDOUT)
+    logger.formatter = config.log_formatter
+    config.logger    = ActiveSupport::TaggedLogging.new(logger)
+  end
+
+  # Do not dump schema after migrations.
+  config.active_record.dump_schema_after_migration = false
+end
+~~~~~~~~
+
+
+
+
+
+[Codice 04](#01-07-02_04)
+
+{id="01-07-02_04all", title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+Rails.application.routes.draw do
+  
+  root 'example_static_pages#page_a'
+  
+  get 'example_static_pages/page_a'
+  get 'example_static_pages/page_b'
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+end
+~~~~~~~~
+
+
+
+
+
+[Codice 05](#01-07-02_05)
+
+{id="01-07-02_05all", title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Myapp</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <% if notice %><p class="alert alert-info"><%= notice %></p><% end %>
+    <% if alert %><p class="alert alert-warning"><%= alert %></p><% end %>
+    
+    <%= yield %>
+  </body>
+</html>
+~~~~~~~~
+
+
+
+
+
+[Codice 06](#01-07-02_06)
+
+{id="01-07-02_06all", title=".../db/migrate/xxx_devise_create_users.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+# frozen_string_literal: true
+
+class DeviseCreateUsers < ActiveRecord::Migration[5.2]
+  def change
+    create_table :users do |t|
+      ## Database authenticatable
+      t.string :name,               null: false, default: ""
+      t.string :email,              null: false, default: ""
+      t.string :encrypted_password, null: false, default: ""
+
+      ## Recoverable
+      t.string   :reset_password_token
+      t.datetime :reset_password_sent_at
+
+      ## Rememberable
+      t.datetime :remember_created_at
+
+      ## Trackable
+      # t.integer  :sign_in_count, default: 0, null: false
+      # t.datetime :current_sign_in_at
+      # t.datetime :last_sign_in_at
+      # t.inet     :current_sign_in_ip
+      # t.inet     :last_sign_in_ip
+
+      ## Confirmable
+      # t.string   :confirmation_token
+      # t.datetime :confirmed_at
+      # t.datetime :confirmation_sent_at
+      # t.string   :unconfirmed_email # Only if using reconfirmable
+
+      ## Lockable
+      # t.integer  :failed_attempts, default: 0, null: false # Only if lock strategy is :failed_attempts
+      # t.string   :unlock_token # Only if unlock strategy is :email or :both
+      # t.datetime :locked_at
+
+
+      t.timestamps null: false
+    end
+
+    add_index :users, :email,                unique: true
+    add_index :users, :reset_password_token, unique: true
+    # add_index :users, :confirmation_token,   unique: true
+    # add_index :users, :unlock_token,         unique: true
+  end
+end
+~~~~~~~~
+
+
+
+
+[Codice 07](#01-07-02_07)
+
+{id="01-07-02_07", title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+Rails.application.routes.draw do
+
+  root 'example_static_pages#page_a'
+  
+  devise_for :users
+  resources :users
+
+  get 'example_static_pages/page_a'
+  get 'example_static_pages/page_b'
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+end
+~~~~~~~~

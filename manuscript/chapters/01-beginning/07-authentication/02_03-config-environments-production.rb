@@ -61,7 +61,7 @@ Rails.application.configure do
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
   # config.active_job.queue_adapter     = :resque
-  # config.active_job.queue_name_prefix = "rigenerabatterie_#{Rails.env}"
+  # config.active_job.queue_name_prefix = "myapp_#{Rails.env}"
 
   config.action_mailer.perform_caching = false
 
@@ -70,8 +70,8 @@ Rails.application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   # Devise config
-  config.action_mailer.default_url_options = { host: 'rigenerabatterie1.herokuapp.com', port: 3000 }
-
+  config.action_mailer.default_url_options = { host: 'myapp-1-blabla.herokuapp.com', port: 3000 }
+  
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
   config.i18n.fallbacks = true
