@@ -33,3 +33,4 @@ chapters/01-beginning/05-example_static_pages_i18n/02-default_language.txt
 chapters/01-beginning/05-example_static_pages_i18n/03-change_language.txt
 
 chapters/01-beginning/06-github/01-github_story.txt
+chapters/01-beginning/06-github/02-github_readme.txt
