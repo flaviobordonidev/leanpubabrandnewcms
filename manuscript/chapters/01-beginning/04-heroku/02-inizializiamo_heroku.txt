@@ -44,7 +44,7 @@ Nel nostro caso non è installato.
 
 Per prima cosa creiamoci un account su www.heroku.com
 
-![fig. 01](01-beginning/04-heroku/02_01-heroku_signup.PNG)
+![fig. 01](images/01-beginning/04-heroku/02_01-heroku_signup.PNG)
 
 
 
@@ -204,7 +204,7 @@ Logging in... done
 
 Questa procedura ti fa fare il login sulla pagina web. Basta cliccare sul link, scegliere "open" ed eseguire il login.
 
-![fig. 02](01-beginning/04-heroku/02_02-heroku-login-via_aws_cloud9.PNG)
+![fig. 02](images/01-beginning/04-heroku/02_02-heroku-login-via_aws_cloud9.PNG)
 
 
 Aggiungiamo la nostra chiave di criptatura in modo da stabilire un canale sicuro tra aws Cloud9 ed Heroku.

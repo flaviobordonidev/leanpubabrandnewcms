@@ -63,7 +63,7 @@ $ git push heroku espi:master
 
 https://myapp-1-blabla.herokuapp.com/
 
-![Fig. 01](01-beginning/05-example_static_pages_i18n/05_01-production-working.PNG)
+![Fig. 01](images/01-beginning/05-example_static_pages_i18n/05_01-production-working.PNG)
 
 
 

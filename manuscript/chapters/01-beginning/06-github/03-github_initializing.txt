@@ -19,11 +19,11 @@ non serve perché è rimasto aperto dal capitolo precedente
 
 Per prima cosa creiamoci un account su Github. Andimao su www.github.com e clicchiamo "Sign up"
 
-![fig. 01](01-beginning/06-github/03_01-github_signup.PNG)
+![fig. 01](images/01-beginning/06-github/03_01-github_signup.PNG)
 
 Se lo abbiamo già logghiamoci.
 
-![fig. 02](01-beginning/06-github/03_02-github_signin.PNG)
+![fig. 02](images/01-beginning/06-github/03_02-github_signin.PNG)
 
 
 
@@ -43,7 +43,7 @@ ssh-rsa AAAAB3...[...]...MmDRyKWg5 ec2-user@ip-172-56-27-218
 
 Copiare tutta la chiave pubblica, compreso 'ssh-rsa', e passarla su Github -> Settings -> SSH and GPG keys.
 
-![fig. 03](01-beginning/06-github/03_03-github_ssh_public_key.PNG)
+![fig. 03](images/01-beginning/06-github/03_03-github_ssh_public_key.PNG)
 
 
 
@@ -55,11 +55,11 @@ Creiamo un nuovo repository:
 * nome        : myapp-01
 * descrizione : mia applicazione su Rails
 
-![fig. 04](01-beginning/06-github/03_04-github_new_repository.PNG)
+![fig. 04](images/01-beginning/06-github/03_04-github_new_repository.PNG)
 
 Appena creato il nuovo repository ci viene presentato un "Quick setup"
 
-![fig. 05](01-beginning/06-github/03_05-github_quick_setup.PNG)
+![fig. 05](images/01-beginning/06-github/03_05-github_quick_setup.PNG)
 
 Aggiungiamo sul nostro git il repository remoto "myapp-01.git" creato sul nostro account github "flaviobordonidev" usando SSH.
 
@@ -112,5 +112,4 @@ $ git push origin master --tag
 
 Se adesso facciamo un refresh alla pagina di Github vedremo il nostro nuovo repository con la nostra myapp-01
 
-![fig. 06](01-beginning/06-github/03_06-github_repository_overview.png)
-
+![fig. 06](images/01-beginning/06-github/03_06-github_repository_overview.png)

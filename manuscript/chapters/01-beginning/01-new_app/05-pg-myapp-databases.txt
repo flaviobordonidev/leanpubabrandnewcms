@@ -161,11 +161,11 @@ $ sudo service postgresql start
 $ rails s
 ~~~~~~~~
 
-![Fig. 01](01-beginning/01-new_app/05_01-preview-working.png)
+![Fig. 01](images/01-beginning/01-new_app/05_01-preview-working.png)
 
 apriamolo su una nuovo tab del browser
 
-![Fig. 02](01-beginning/01-new_app/05_02-preview-working-new_tab.png)
+![Fig. 02](images/01-beginning/01-new_app/05_02-preview-working-new_tab.png)
 
 
 

@@ -42,9 +42,9 @@ Nel menu che appare sulla sinistra scegliamo Groups -> Create New Group
 * Attach Policies 
     arn:aws:iam::aws:policy/AWSCloud9Administrator 
 
-![Fig. 01](01-beginning/01-new_app/02_01-aws-iam-group.PNG)
+![Fig. 01](images/01-beginning/01-new_app/02_01-aws-iam-group.PNG)
 
-
+02_01-aws-iam-group
 
 
 ## Creiamo un nuovo utente per usare Cloud9
@@ -64,4 +64,4 @@ Effettuiamo il logout come amministratore
 
 Nel login scegliamo -> "Sign in to a different account"
 
-![Fig. 02](01-beginning/01-new_app/02_02-aws-login-as-iam-user-cloud9.PNG)
+![Fig. 02](images/01-beginning/01-new_app/02_02-aws-login-as-iam-user-cloud9.PNG)
