@@ -1,5 +1,10 @@
 # Implementiamo la gestione degli utenti
 
+Gestiamo gli utenti
+
+Come amministatore creiamo nuovi utenti e gestiamo i loro ruoli
+Adesso che abbiamo tutto predisposto iniziamo ad incorporare l'autorizzazione nel template della nostra applicazione
+
 
 
 

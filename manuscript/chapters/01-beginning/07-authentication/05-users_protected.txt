@@ -27,6 +27,30 @@ Permettiamo l'accesso alle views users solo a chi ha fatto login, ossia a chi si
   before_action :authenticate_user!
 ~~~~~~~~
 
+I> before_action ha sostituito il "deprecated" before_filter
+
+I> Attenzione!
+I>
+I> For Rails 5, note that protect_from_forgery is no longer prepended to the before_action chain, so if you have set authenticate_user before protect_from_forgery, your request will result in "Can't verify CSRF token authenticity." To resolve this, either change the order in which you call them, or use protect_from_forgery prepend: true.
+
+
+I> Attenzione!
+I> Strong Parameters
+I> The Parameter Sanitizer API has changed for Devise 4
+
+Al momento non mi preoccupo dei due avvisi in alto ma ne terremo conto nei capitoli successivi.
+
+
+
+
+## Se volessimo reindirizzare user show sull'homepage
+
+{title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+get 'users/show', as: :user_root # creates user_root_path (default path after sign_in)
+~~~~~~~~
+
+ma al momento non ci interessa e quindi non lo facciamo.
 
 
 

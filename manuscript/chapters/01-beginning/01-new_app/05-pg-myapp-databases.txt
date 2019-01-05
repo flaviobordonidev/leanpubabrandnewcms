@@ -153,6 +153,7 @@ $ psql
 
 
 
+
 ### Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}

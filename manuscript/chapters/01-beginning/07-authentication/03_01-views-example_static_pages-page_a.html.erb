@@ -1,0 +1,6 @@
+<h1> <%= t "example_static_pages.page_a.first_header" %> </h1>
+<p> <%= t "example_static_pages.page_a.first_paragraph" %> </p>
+<br>
+<p>  <%= link_to t("example_static_pages.page_a.link_goto_page_B"), example_static_pages_page_b_path %> </p>
+<br/>
+<p> utente attivo: <%= current_user.present? == true ? current_user.email : "nessun utente loggato" %>
