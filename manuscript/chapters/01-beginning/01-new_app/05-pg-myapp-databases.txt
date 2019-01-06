@@ -168,6 +168,10 @@ apriamolo su una nuovo tab del browser
 
 ![Fig. 02](images/01-beginning/01-new_app/05_02-preview-working-new_tab.png)
 
+il preview ci apre il browser sull'URL del root_path:
+
+* https://mycloud9path.amazonaws.com/
+
 
 
 
