@@ -39,3 +39,5 @@ chapters/01-beginning/06-github/03-github_initializing.txt
 chapters/01-beginning/07-authentication/01-devise_story.txt
 chapters/01-beginning/07-authentication/02-authentication-devise_install.txt
 chapters/01-beginning/07-authentication/03-devise-finish.txt
+chapters/01-beginning/07-authentication/04-manage_users.txt
+chapters/01-beginning/07-authentication/05-users_protected.txt
