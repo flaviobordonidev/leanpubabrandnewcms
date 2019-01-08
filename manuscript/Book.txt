@@ -41,3 +41,5 @@ chapters/01-beginning/07-authentication/02-authentication-devise_install.txt
 chapters/01-beginning/07-authentication/03-devise-finish.txt
 chapters/01-beginning/07-authentication/04-manage_users.txt
 chapters/01-beginning/07-authentication/05-users_protected.txt
+
+chapters/01-beginning/08-example_dynamic_pages/01-example_posts-seeds.txt

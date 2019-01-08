@@ -45,9 +45,6 @@ class CreateExampleCompanies < ActiveRecord::Migration[5.2]
 end
 ~~~~~~~~
 
-[cod. a](beginning-example_dynamic_pages-02a-xxx_create_example_companies.rb)
-
-
 eseguiamo il migrate 
 
 {title="terminal", lang=bash, line-numbers=off}
@@ -64,11 +61,11 @@ $ rails db:migrate
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ rails c
-> ExampleCompany.new(name: "AAA srl", sector: "industria chimica").save
-> ExampleCompany.new(name: "BAB snc", sector: "industria farmaceutica").save
-> ExampleCompany.new(name: "CABBA SpA", sector: "ITC").save
+-> ExampleCompany.new(name: "AAA srl", sector: "industria chimica").save
+-> ExampleCompany.new(name: "BAB snc", sector: "industria farmaceutica").save
+-> ExampleCompany.new(name: "CABBA SpA", sector: "ITC").save
 
-> exit
+-> exit
 ~~~~~~~~
 
 
@@ -92,6 +89,16 @@ $ git commit -m "Add table example_companies"
 $ git push heroku ec:master
 $ heroku run rails db:migrate
 ~~~~~~~~
+
+per popolare il database di heroku 
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku run rails c
+~~~~~~~~
+
+e rifare i passi fatti precedentemente per il database locale
 
 
 
