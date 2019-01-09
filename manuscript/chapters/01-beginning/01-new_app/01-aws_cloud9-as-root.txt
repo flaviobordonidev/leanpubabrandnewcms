@@ -33,6 +33,18 @@ Selezioniamo la "AWS Region" più vicina a noi. Ad esempio "Ireland"
 
 Ed iniziamo a creare un nuovo ambiente. E' un processo in 3 passi.
 
+ATTENZIONE! Gli ambienti visualizzati sono in funzione della AWS Region selezionata. Se cambiamo Region non vedremo più degli ambienti caricati con la Region precedente. Basta riselezionare la Region precedente per rivisualizzarli.
+Inoltre ogni Region ha dei costi di fatturazione differenti. Ad esempio: 
+
+* EU (Frankfurt)        : n/a
+* EU (Ireland)          : $0.11 per GB-month of General Purpose SSD (gp2) 
+* US East (N. Virginia) : $0.10 per GB-month of General Purpose SSD (gp2) 
+
+
+![Fig. 02b](images/01-beginning/01-new_app/01_02b-aws-region_billing.PNG)
+
+Un consiglio è quello di lasciare inizialmente la AWS Region di default perché normalmente è quella più economica ed intervenire in un secondo momento nel cambio della Region; una volta valutate le prestazioni.
+
 
 
 

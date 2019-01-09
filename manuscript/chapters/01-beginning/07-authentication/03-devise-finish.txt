@@ -5,7 +5,8 @@ Implementiamo i link di login/sign_in e di logout/sign_out, mostriamo utente log
 
 Risorse web:
 
-* https://github.com/plataformatec/devise/wiki/How-To:-Manage-users-through-a-CRUD-interface
+* [Sito di devise](https://github.com/plataformatec/devise)
+* [Permetti agli utenti di editare la loro password](https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-edit-their-password)
 
 
 

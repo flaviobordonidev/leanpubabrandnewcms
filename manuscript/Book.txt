@@ -46,4 +46,7 @@ chapters/01-beginning/08-example_dynamic_pages/01-example_posts-seeds.txt
 chapters/01-beginning/08-example_dynamic_pages/02-example_companies-seeds.txt
 
 chapters/01-beginning/09-authorization/01-roles-overview.txt
-chapters/01-beginning/09-authorization/01-roles-overview.txt
+chapters/01-beginning/09-authorization/02-roles-admin.txt
+chapters/01-beginning/09-authorization/03-roles-enum.txt
+chapters/01-beginning/09-authorization/04-authorization-pundit.txt
+chapters/01-beginning/09-authorization/05-authorization-users.txt

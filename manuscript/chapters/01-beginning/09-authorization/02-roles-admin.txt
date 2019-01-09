@@ -1,5 +1,8 @@
 # Roles - admin
 
+Questo capitolo può essere saltato ai fini della creazione della nostra app. 
+E' un capitolo didattico in cui le modifiche inserite ad inizio capitolo sono poi tolte alla fine del capitolo.
+
 Questo è l'approccio più semplice della gestione dei ruoli. Esiste solo la possibilità di Amministratore o Utente normale. 
 Aggiungiamo il ruolo di amministratore utilizzando un attributo (admin attribute) e non un intero modello.
 Questo vuol dire aggiungere una colonna "admin" di tipo boolean sulla tabella **users**
@@ -41,6 +44,7 @@ Eseguiamo il migrate
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
+$ sudo service postgresql start
 $ rake db:migrate
 ~~~~~~~~
 
@@ -64,7 +68,7 @@ if current_user.try(:role_admin?)
 end
 ~~~~~~~~
 
-Se voglio dare i diritti di amministratore (grant admin status) da codice posso:
+Se voglio dare i diritti di amministratore (grant admin status) da codice posso dare:
 
 {title="grant admin status", lang=ruby, line-numbers=off}
 ~~~~~~~~

@@ -6,6 +6,11 @@ Come amministatore creiamo nuovi utenti e gestiamo i loro ruoli
 Adesso che abbiamo tutto predisposto iniziamo ad incorporare l'autorizzazione nel template della nostra applicazione
 
 
+Risorse web:
+
+* [Gestire gli utenti tramite interfaccia CRUD](https://github.com/plataformatec/devise/wiki/How-To:-Manage-users-through-a-CRUD-interface)
+
+
 
 
 ## Apriamo il branch "Gestione Utenti"
