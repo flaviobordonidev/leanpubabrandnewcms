@@ -18,7 +18,7 @@ Nel 2018 è la scelta migliore perché è organizzato molto bene il codice è le
 
 
 
-## Refile 
+## Refile
 
 Refile è un moderno (nel 2017) "file upload" per applicazioni Ruby. Non ha preso molto piede.
 Refile è sviluppato dalla stessa persona che ha fatto carrierwave. E' più semplice e più veloce. 

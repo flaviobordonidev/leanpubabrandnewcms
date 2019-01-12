@@ -27,6 +27,7 @@ class ExamplePostsController < ApplicationController
   # POST /example_posts.json
   def create
     @example_post = ExamplePost.new(example_post_params)
+    authorize @example_post
 
     respond_to do |format|
       if @example_post.save

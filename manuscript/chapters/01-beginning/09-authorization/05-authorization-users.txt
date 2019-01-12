@@ -1,5 +1,7 @@
 # Implementiamo le autorizzazioni per users
 
+Autentichiamo ed Autorizziamo in funzione del ruolo
+
 Finalmente cominciamo ad attivare la sicurezza ed iniziamo definendo le autorizzazioni per la gestione degli utenti; tabella users.
 
 
@@ -7,6 +9,7 @@ Risorse web
 * [Devise authentication 48:50](https://www.youtube.com/watch?v=qruGD_8ry7k
 * [current_user present? and signed_in](https://stackoverflow.com/questions/45398702/what-is-the-difference-between-current-user-present-and-if-user-signed-in)
 * [Differenza fra public e private](https://www.codementor.io/anuraag.jpr/the-difference-between-public-private-and-protected-methods-in-ruby-6zsvkeeqr)
+* [Rails Authorization With Pundit - parte da zero ed installa anche devise ed usa anche spec tests](https://www.youtube.com/watch?v=qruGD_8ry7k)
 
 
 
@@ -449,6 +452,15 @@ $ git commit -m "Protect views/users/edit"
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ git push heroku au:master
+$ heroku run rails db:migrate
+~~~~~~~~
+
+rendiamo amministratore anche il primo utente nel database di heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku run rails c
+-> User.first.admin!
 ~~~~~~~~
 
 

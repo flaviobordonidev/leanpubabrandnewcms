@@ -16,7 +16,7 @@
 </p>
 
 <% if @example_post.header_image.attached? %>
-  <%= image_tag @example_post.header_image %>
+  <p><%= image_tag @example_post.header_image %></p>
 <% else %>
   <p>Nessuna immagine presente</p>
 <% end %>

@@ -1,6 +1,8 @@
 # Definiamo i ruoli includendo le aziende
 
-http://groselhas.maurogeorge.com.br/rolify-com-pundit-para-uma-autorizacao-com-multiplos-papeis.html#sthash.9XW2D14b.4ghYl5vd.dpbs
+Risorse web:
+
+* [Pundit autorizzazione con ruoli multipli](http://groselhas.maurogeorge.com.br/rolify-com-pundit-para-uma-autorizacao-com-multiplos-papeis.html#sthash.9XW2D14b.4ghYl5vd.dpbs)
 
 Nel sistema di gestione aziendale abbiamo 3 ruoli:
 

@@ -50,3 +50,11 @@ chapters/01-beginning/09-authorization/02-roles-admin.txt
 chapters/01-beginning/09-authorization/03-roles-enum.txt
 chapters/01-beginning/09-authorization/04-authorization-pundit.txt
 chapters/01-beginning/09-authorization/05-authorization-users.txt
+chapters/01-beginning/09-authorization/06-authorization-example_posts.txt
+chapters/01-beginning/09-authorization/07-authorization-example_companies.txt
+
+chapters/01-beginning/10-rolification/01-roles-rolify.txt
+chapters/01-beginning/10-rolification/01-roles-rolify.txt
+chapters/01-beginning/10-rolification/01-roles-rolify.txt
+chapters/01-beginning/10-rolification/01-roles-rolify.txt
+chapters/01-beginning/10-rolification/01-roles-rolify.txt
