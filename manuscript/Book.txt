@@ -54,7 +54,10 @@ chapters/01-beginning/09-authorization/06-authorization-example_posts.txt
 chapters/01-beginning/09-authorization/07-authorization-example_companies.txt
 
 chapters/01-beginning/10-rolification/01-roles-rolify.txt
-chapters/01-beginning/10-rolification/01-roles-rolify.txt
-chapters/01-beginning/10-rolification/01-roles-rolify.txt
-chapters/01-beginning/10-rolification/01-roles-rolify.txt
-chapters/01-beginning/10-rolification/01-roles-rolify.txt
+chapters/01-beginning/10-rolification/02-authorization-example_posts.txt
+chapters/01-beginning/10-rolification/03-pundit-rolify-example_posts.txt
+chapters/01-beginning/10-rolification/04-pundit-rolify-example_companies.txt
+chapters/01-beginning/10-rolification/05-authorization-more_roles.txt
+
+chapters/01-beginning/11-activestorage-filesupload/01-file_upload-story.txt
+chapters/01-beginning/11-activestorage-filesupload/02-activestorage-install.txt
