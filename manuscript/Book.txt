@@ -61,3 +61,5 @@ chapters/01-beginning/10-rolification/05-authorization-more_roles.txt
 
 chapters/01-beginning/11-activestorage-filesupload/01-file_upload-story.txt
 chapters/01-beginning/11-activestorage-filesupload/02-activestorage-install.txt
+chapters/01-beginning/11-activestorage-filesupload/03-aws_s3-iam_full_access.txt
+chapters/01-beginning/11-activestorage-filesupload/04-aws_s3_activestorage.txt

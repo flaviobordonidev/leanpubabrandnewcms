@@ -11,6 +11,70 @@ In questo capitolo:
 
 
 
+---
+Questo è da sistemare:
+
+
+## Aggiungiamo i permessi - Permissions
+
+clicco sul link "botbrandnewcms" e sul tab Permission 
+  -> Add Permission (Attach existing policies directly)
+  -> "AmazonS3FullAccess - AWS Managed policy"
+
+aws -> services -> IAM -> users -> botbrandnewcms -> Permissions -> 
+  -> apriamo la policy AmazonS3FullAccess che abbiamo dato:
+
+![AWS S3](brandnewcms/12img-aws-iam-user-permissions.png)
+
+Il file json si presenta così
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "s3:*",
+            "Resource": "*"
+        }
+    ]
+}
+
+possiamo dare pieno accesso o selezionare solo quelle che ci servono
+
+* GetObject
+* PutObject
+* PutObjectAcl
+
+quella di gorail è
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "Stmt147561171600",
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject",
+                "s3:DeleteObject",
+                "s3:PutObject",
+                "s3:PutObjectAcl"
+                ],
+            "Resource": [
+                "arn:aws:s3:::shrine-example/*"
+            ]
+        }
+    ]
+}
+
+valida la policy per vedere che non hai fatto errori.
+
+la Resource continene l'ARN dei bucket che vogliamo includere per questo utente. Per trovare l'ARN basta cliccare sulla riga del bucket (e non sul link del bucket) e premere il link "Copy Bucket ARN".
+
+---
+
+
+
+
 
 
 ### il file CORS per la sicurezza

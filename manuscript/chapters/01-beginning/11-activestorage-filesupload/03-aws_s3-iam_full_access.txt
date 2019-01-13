@@ -6,25 +6,16 @@ Successivamente restringeremo i permessi (CORS) ai soli buckets produzione e svi
 In questo capitolo:
 
 * creiamo l'utente, 
-* creiamo il buckets per i files di sviluppo (botrebisworldbrdev) 
+* creiamo il buckets per i files di sviluppo (botmyappdev) 
 * inseriamo manualmente un file di testo (example_dev.txt)
-* creiamo il buckets per i files di sviluppo (botrebisworldbrprod) 
+* creiamo il buckets per i files di sviluppo (botmyappprod) 
 * inseriamo manualmente un file di testo (example_prod.txt)
 * accessiamo il file da terminale rails tramite la gemma aws-sdk-s3
 
+
 Risorse web:
 
-* docs.aws.amazon.com/AmazonS3/latest/dev/UsingHTTPPOST.html
-
-* https://www.sitepoint.com/uploading-files-with-paperclip/
-* https://devcenter.heroku.com/articles/paperclip-s3
-* http://stackoverflow.com/questions/32919273/access-denied-s3-with-paperclip
-* https://github.com/thoughtbot/paperclip/wiki/Paperclip-with-Amazon-S3
-* http://rexstjohn.com/how-to-solve-access-denied-with-heroku-paperclip-s3-ror/
-* https://console.aws.amazon.com/iam/home#users/botpaperclip
-
-
-[Apri anche il capitolo 04 e riadatta il contenuto che al momento è mischiato]
+* [Amazon S3 POST](docs.aws.amazon.com/AmazonS3/latest/dev/UsingHTTPPOST.html)
 
 
 
@@ -50,10 +41,7 @@ Più avanti nel libro implementeremo la seconda forma più performante inserendo
 
 ### Effettuiamo il login su AWS
 
-andiamo sul sito di amazon web service https://console.aws.amazon.com e facciamo login (o creiamo un nuovo account).
-
-![console AWS dopo login](beginning/activestorage-filesupload/03img-aws-login.png)
-
+andiamo sul sito di amazon web service https://console.aws.amazon.com e facciamo login.
 Di tutti i servizi (services) di AWS noi ne useremo solo due: 
 
 * Identity and Access Management (IAM)
@@ -67,79 +55,63 @@ Di tutti i servizi (services) di AWS noi ne useremo solo due:
 E' utile avere un utente per ogni dominio web che ha i diritti di archiviare e visualizzare i files su AWS S3. Questo utente che non è un utente fisico ma del codice che si autentica ed archivia o visualizza i files viene definito "bot". Per comodità creeremo un utente "bot" per ogni nostra applicazione rails.
 
 AWS -> Service -> IAM -> Users
+
 * Una volta fatto login dalla ConsoleHome AWS fare click sul service "IAM". 
 * Andiamo sul link Users creiamone uno nuovo. "Add user"
-* Come nome dell'utente usiamo bot+nome_app_rails; nel nostro caso "botrebisworldbr".
 
-User name   : botrebisworldbr
+
+
+
+#### Step1
+
+Come nome dell'utente usiamo bot+nome_app_rails; nel nostro caso "botmyapp".
+
+User name   : botmyapp
 Access type : Programmatic access
+
+![Fig. 01](images/01-beginning/11-activestorage-filesupload/03_01-new-iam_user-step1.png)
 
 "bot" convenzionalemente indica che non è un utente fisico ma un accesso per una applicazione.
 
-Andiamo avanti senza mettere credenziali di sicurezza che aggiungeremo in seguito.
+
+
+#### Step2
+
+Come autorizzazioni diamo pieno accesso al nostro utente.
+Iniziamo con permission di tipo accesso pieno senza altre configurazioni. Questo ci permette di concentrarci sulla connessione tra Rails e lo storage in AWS S3. 
+
+gli diamo permissions "AmazonS3FullAccess" senza altre configurazioni.
+
+![Fig. 02](images/01-beginning/11-activestorage-filesupload/03_02-new-iam_user-step2.png)
+
+Una volta che tutto sta funzionando possiamo restringere gli accessi ed aumentare la sicurezza.
+
+
+
+#### Step3
+
+Non aggiungiamo nessun taglio
+
+![Fig. 03](images/01-beginning/11-activestorage-filesupload/03_03-new-iam_user-step3.png)
+
+
+
+#### Step4
+
+Visualizza il riepilogo delle scelte fatte
+
+
+
+#### Step5
+
 Una volta creato facciamo il download delle "user security credentials". E' un file csv dove abbiamo
 
 * access_key_id : UL...WGERY
 * secret_access_key : zx3I...ela+hg
 
+
 Se torniamo sullo IAM user possiamo solo rivisualizzare la access_key_id. Per la secret_access_key dobbiamo eliminarlo e crearne uno nuovo.
 
-
-
-## Aggiungiamo i permessi - Permissions
-
-clicco sul link "botbrandnewcms" e sul tab Permission 
-  -> Add Permission (Attach existing policies directly)
-  -> "AmazonS3FullAccess - AWS Managed policy"
-
-aws -> services -> IAM -> users -> botbrandnewcms -> Permissions -> 
-  -> apriamo la policy AmazonS3FullAccess che abbiamo dato:
-
-![AWS S3](brandnewcms/12img-aws-iam-user-permissions.png)
-
-Il file json si presenta così
-
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": "s3:*",
-            "Resource": "*"
-        }
-    ]
-}
-
-possiamo dare pieno accesso o selezionare solo quelle che ci servono
-
-* GetObject
-* PutObject
-* PutObjectAcl
-
-quella di gorail è
-
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "Stmt147561171600",
-            "Effect": "Allow",
-            "Action": [
-                "s3:GetObject",
-                "s3:DeleteObject",
-                "s3:PutObject",
-                "s3:PutObjectAcl"
-                ],
-            "Resource": [
-                "arn:aws:s3:::shrine-example/*"
-            ]
-        }
-    ]
-}
-
-valida la policy per vedere che non hai fatto errori.
-
-la Resource continene l'ARN dei bucket che vogliamo includere per questo utente. Per trovare l'ARN basta cliccare sulla riga del bucket (e non sul link del bucket) e premere il link "Copy Bucket ARN".
 
 
 
@@ -161,48 +133,57 @@ La s3_region ed il nome del bucket identificano dove archiviare i files.
 ## Il Bucket
 
 creiamo il cestello (Bucket) dove archivieremo i files.
-andiamo sul sito di amazon web service https://console.aws.amazon.com e facciamo login (o creiamo un nuovo account). Cerchiamo il service - storage - S3.
 
-![console AWS dopo login](brandnewcms/12img-aws-login.png)
-selezioniamo S3 per creare il nostro cestino dei files (bucket)
+AWS -> Service -> S3
 
-* Siamo sulla ConsoleHome AWS. -> click su S3. -> click su create bucket.
+Facciamo click su create bucket.
 
-![AWS S3](brandnewcms/12img-aws-s3.png)
+![Fig. 04](images/01-beginning/11-activestorage-filesupload/03_04-new-bucket-step1.png)
+
+
+
+
+#### Step1
 
 Che nome gli diamo?
-Per i nomi dei buckets possiamo rifarci ai nomi dei databases della nostra app: rebisworldbr_development e rebisworldbr_production.
+Per i nomi dei buckets possiamo rifarci ai nomi dei databases della nostra app: 
+
+* myapp_development  
+* myapp_production
+
 Quindi avremo i seguenti due buckets:
 
-  * rebisworldbr-dev
-  * rebisworldbr-prod
+  * myapp-dev
+  * myapp-prod
 
 (l'underscore "_" non è accettato nel nome del bucket.)
 
-Creiamo il bucket
-  Create bucket
-  
-    Name and region
-      Bucket name : rebisworldbr-dev
-      Region      : EU (Frankfurt)
+Iniziamo con 
 
-      ![AWS S3](brandnewcms/12img-s3-new_bucket.png)
-    
-    Set properties
-      lascia tutto come sta e fai click su "next"
-      
-      ![AWS S3](brandnewcms/12img-s3-new_bucket.png)
+Bucket name : myapp-dev
+Region      : EU (Ireland)
 
-    Set permissions
-      lascia tutto come sta e fai click su "next"
-      
-      ![AWS S3](brandnewcms/12img-s3-new_bucket.png)
 
-    Review
-      Il resoconto del bucket con praticamente tutti i valori di defalts. 
-      Accettiamo e creiamo il bucket.
-      
-      ![AWS S3](brandnewcms/12img-s3-new_bucket.png)
+
+
+#### Step2
+
+Lasciamo le opzioni di default
+
+
+
+
+#### Step3
+
+Lasciamo le autorizzazioni di default
+
+
+
+#### Step4
+
+Visualizza il riepilogo delle scelte fatte
+
+Accettiamo e creiamo il bucket.
 
 
 
@@ -213,11 +194,14 @@ AWS -> Service -> S3 -> Bucket name -> Properties -> Static website hosting -> E
 
 Una volta fatto login dalla ConsoleHome AWS fare click sul service "S3". Ci si presenterà un elenco con tutti i bucket creati con relativo nome. Facciamo click sul bucket, andiamo sul tab "properties" e facciamo click sul "quadrato" Static web hosting. Lì troveremo un Endpoint simile al seguente:
 
-  Endpoint : http://rebisworldbr-dev.s3-website.eu-central-1.amazonaws.com
+Endpoint : http://myapp-dev.s3-website-eu-west-1.amazonaws.com
 
-La region in questo caso è "eu-central-1" e corrisponde alla region di Frankfurt.
+La region in questo caso è "eu-west-1" e corrisponde alla region di UE (Irlanda)
 
-La nostra s3_region è **eu-central-1**
+Se avessimo scelto la region di Frankfurt avremmo avuto La nostra s3_region è "eu-central-1" ed un endpoint:
 
-![bucket endpoint](images/companies_people/upload_images_aws_s3/bucket_endpoint.png)
+Endpoint : http://myapp-dev.s3-website-eu-central-1.amazonaws.com
 
+![Fig. 05](images/01-beginning/11-activestorage-filesupload/03_05-bucket_endpoint.png)
+
+E con questo abbiamo tutti i dati che ci servono per collegarci. Nel prossimo capitolo ci collegheremo tramite Rails.
