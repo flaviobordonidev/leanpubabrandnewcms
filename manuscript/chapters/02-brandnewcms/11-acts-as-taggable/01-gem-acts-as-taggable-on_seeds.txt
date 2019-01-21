@@ -2,7 +2,11 @@
 
 In this episode we set up  tagging for blog posts using the very cool Rails gem “acts-as-taggable-on”. We also dive into some refactoring thoughts.
 
-https://www.youtube.com/watch?v=0j6kySJ4EKs
+tags          : le parole più ricercate / le parole chiave (sarà usato dalla gemma acs-as-taggable)
+
+Risorse web:
+
+* [video](https://www.youtube.com/watch?v=0j6kySJ4EKs)
  
 
 

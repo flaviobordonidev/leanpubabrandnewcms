@@ -1,11 +1,10 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-# versione di ruby usata
-ruby '2.4.0'
+ruby '2.4.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2.0'
+gem 'rails', '~> 5.2.1', '>= 5.2.1.1'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 # Use Puma as the app server
@@ -29,13 +28,9 @@ gem 'jbuilder', '~> 2.5'
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use ActiveStorage variant
-# gem 'mini_magick', '~> 4.8'
-
-# Manipulate images with minimal use of memory via ImageMagick / GraphicsMagick
 gem 'mini_magick', '~> 4.8'
 
-# API clients for AWS services. Comunicazione con Amazon Web Service S3 per ActiveStorage
-#gem 'aws-sdk', '~> 3.0', '>= 3.0.1'
+# API clients for AWS S3 services. Comunicazione con Amazon Web Service S3 per ActiveStorage
 gem "aws-sdk-s3", require: false
 
 # Use Capistrano for deployment
@@ -45,22 +40,18 @@ gem "aws-sdk-s3", require: false
 gem 'bootsnap', '>= 1.1.0', require: false
 
 # Flexible authentication solution for Rails with Warden 
-gem 'devise', '~> 4.4', '>= 4.4.3'
-
-# Very simple Roles library
-gem 'rolify', '~> 5.2'
+gem 'devise', '~> 4.5'
 
 # Object oriented authorization for Rails applications
 gem 'pundit', '~> 2.0'
 
 # The most popular HTML, CSS, and JavaScript framework. http://getbootstrap.com
-gem 'bootstrap', '~> 4.1', '>= 4.1.3'
-
+gem 'bootstrap', '~> 4.2', '>= 4.2.1'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 
 # slugging and permalink for Active Record. For creating human-friendly strings URLs and use as if they were numeric ids.
-gem 'friendly_id', '~> 5.2', '>= 5.2.4'
+gem 'friendly_id', '~> 5.2', '>= 5.2.5'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -78,7 +69,7 @@ end
 
 group :test do
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '>= 2.15', '< 4.0'
+  gem 'capybara', '>= 2.15'
   gem 'selenium-webdriver'
   # Easy installation and use of chromedriver to run system tests with Chrome
   gem 'chromedriver-helper'

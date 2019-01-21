@@ -3,6 +3,12 @@
 Creiamo il cuore del nostro CMS (Content Management System) ossia gli articoli del nostro blog.
 
 
+I> il "Read more" in italiano è tradotto come "Leggi tutto" o "Continua a leggere" o  "Approfondisci". A volte non si mette solo il simbolo di continua "[...]" senza link "Leggi tutto" e si lascia solo il link sul titolo.
+
+
+* Date.today
+
+
 
 
 ## Apriamo il branch "Posts Seeds"
@@ -17,20 +23,25 @@ $ git checkout -b ps
 
 ## Creiamo la struttura per gli articoli (posts)
 
-title       	: titolo dell'articolo. Quello che ha una bella copy.
-incipit       : il testo che è sull'indice. L'inizio di un articolo che spesso è anche troncato ad hoc.
-content       : il testo principale del post
-type 		      : image, video su youtube, video su vimeo, quote, podcast, ... (il tipo di post/articolo; se ha immagine o video o altro). Di tipo ENUM
-image         : l'eventuale foto
-video         : l'eventuale video (al posto della foto)
-seocontent    : il testo che appare sui motori di ricerca (spesso coincide con l'incipit)
-tags          : le parole più ricercate / le parole chiave
-date_chosen   : data che assegnamo al post. Utile per gestire pubblicazioni automatiche o allineare le date con le campagne di email marketing.
-user_id		    : utente che ha scritto il post
-comment_id	  : commenti (in realtà non serve perché usiamo disqus o facebook)
+* title       	: titolo dell'articolo. Quello che ha una bella copy.
+* incipit       : il testo che è sull'indice. L'inizio di un articolo che spesso è anche troncato ad hoc.
+* content       : il testo principale del post
+* type 		      : image, video su youtube, video su vimeo, quote, podcast, ... (il tipo di post/articolo; se ha immagine o video o altro). Di tipo ENUM
+* image         : l'eventuale foto
+* video_youtube : l'eventuale video caricato su youtube (al posto della foto)
+* video_vimeo   : l'eventuale video caricato su vimeo (al posto della foto)
+* seocontent    : il testo che appare sui motori di ricerca (spesso coincide con l'incipit)
+* seoimage      : l'immagine che appare sui motori di ricerca (spesso coincide con l'image)
+* tags          : le parole più ricercate / le parole chiave (sarà usato dalla gemma acs-as-taggable)
+* date_chosen   : data che assegnamo al post. Utile per gestire pubblicazioni automatiche o allineare le date con le campagne di email marketing.
+* user_id		    : utente che ha scritto il post (chiave esterna per un collegamento uno-a-molti)
+* comment_id	  : i commenti fatti agli articoli
 
-
-il "Read more" in italiano è tradotto come "Leggi tutto" o "Continua a leggere" o  "Approfondisci". A volte non si mette solo il simbolo di continua "[...]" senza link "Leggi tutto" e si lascia solo il link sul titolo.
+I> image e seoimage le gestiamo con activestorage e quindi le inseriamo a livello di Model.
+I>
+I> tags li gestiamo nei prossimi capitoli con la gemma act-as-taggable
+I>
+I> comment_id non ci serve perché non usiamo una relazione uno-a-molti ma utiliziamo i plugin di Disqus oppure di Facebook
 
 Iniziamo con una parte della struttura e poi via via implementiamo il resto.
 
@@ -45,9 +56,7 @@ I> ATTENZIONE: con "rails generate scaffold ..." -> uso il SINGOLARE
 $ rails g scaffold Post title:string incipit:text content:text type:integer video_youtube:string video_vimeo:string seocontent:text date_chosen:date user:references
 ~~~~~~~~
 
-* La cosa bella di **user_references** è che, oltre a creare la colonna **user_id:integer**, ci aggiunge anche l'indice in tabella e ci predispone la relazione uno-a-molti.
-* il campo :image non lo uso sulla tabella perchè con activestorage viene definito a livello di Models
-* Date.today
+La cosa bella di "user_references" è che, oltre a creare la colonna "user_id:integer", ci aggiunge anche l'indice in tabella e ci predispone la relazione uno-a-molti.
 
 questo crea il migrate:
 
@@ -59,9 +68,12 @@ class CreatePosts < ActiveRecord::Migration[5.2]
       t.string :title
       t.text :incipit
       t.text :content
-      .
-      .
-      .
+      t.integer :type
+      t.string :video_youtube
+      t.string :video_vimeo
+      t.text :seocontent
+      t.date :date_chosen
+      t.references :user, foreign_key: true
 
       t.timestamps
     end
@@ -155,39 +167,108 @@ $ rails db:migrate
 
 
 
-
-## Verifichiamo se funziona tutto
+### Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ sudo service postgresql start
-$ rails s -b $IP -p $PORT
+$ rails s
 ~~~~~~~~
 
-Potrebbe essere necessaria una modifica per il new perché non associa l'user in automatico
-lo risolvo passando l'user nel create "@post.user = current_user" ma questo è poco elegante. Meglio "@post = current_user.posts.new(post_params)"
+apriamo il browser sull'URL:
 
-{title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+* https://mycloud9path.amazonaws.com/posts
+
+Potremmo ricevere un errore per il campo ":date_chosen" a cui rails da in automatico il "form.date_select". In questo caso rinominarlo come "form.text_field"
+
+{title=".../app/views/authors/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=15}
 ~~~~~~~~
-    def create
-      @post = Post.new(post_params)
-      @post.user = current_user
+  <div class="field">
+    <%= form.label :date_chosen %>
+    <%#= form.date_select :date_chosen %>
+    <%= form.text_field :date_chosen %>
+  </div>
 ~~~~~~~~
 
-Non possiamo agire a livello di azione "new" perché non abbiamo la colonna "id" abilitata nella white list e non abbiamo il form.hidden nella view _form.
-E' molto più semplice passare la chiave esterna "user_id" direttamente nell'azione create.
-Volendo si può comunque uniformare anche l'azione new:
+Riempiamo i vari campi ma lasciamo vuoto il campo type perché dobbiamo ancora attivargli enum. Inoltre dobbiamo riempire manualmente il campo user_id.
+
+
+
+
+## Impostiamo in automatico l'utente loggato
+
+Per prima cosa mettiamo la protezione di Devise così siamo sicuri che la persona sia loggata, altrimenti current_user risulta null.
+
+{title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+  before_action :authenticate_user!
+~~~~~~~~
+
+Adesso che abbiamo la certezza che current_user non sia un valore null possiamo implementare la relazione uno-a-molti nell'azione "new".
+il codice più elegante è
 
 {title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
 ~~~~~~~~
     def new
-      #@post = Post.new
       @post = current_user.posts.new
 ~~~~~~~~
 
-comunque se non implementiamo il relativo campo nel _form e nella whitelist del controller avere "@post = current_user.posts.new" non cambia nulla.
-Diventerà invece interessante più avanti nei prossimi capitoli quando implementeremo che l'amministratore può cambiare l'autore dell'articolo.
-In quel caso passeremo l'id dell'autore scelto nel submit del form.
+Ma lo stesso risultato lo potevamo ottenere con
+
+{title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+  def new
+    @post = Post.new
+    @post.user = current_user
+  end
+~~~~~~~~
+
+oppure con
+
+{title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+  def new
+    @post = Post.new
+    @post.user_id = current_user.id
+  end
+~~~~~~~~
+
+Questo codice funziona.
+Questo codice fa si che il nuovo post sia creato legandolo all'utente loggato (current_user).
+
+
+
+
+#### Alternativa con forzatura su azione "create"
+
+Se volessimo togliere il campo user_id dal form potremmo impostarlo come ".hidden" oppure potremmo eliminarlo ed usare il current_user nell'azione "create"
+
+{title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+    def create
+      @post = current_user.posts.new(post_params)
+~~~~~~~~
+
+Ma questa forzatura scegliamo di non usarla nel nostro tutorial.
+
+
+
+
+## Aggiungiamo la colonna con l'email dell'autore che si è loggato in posts/index
+
+Una volta loggato visualizzo anche il nome dell'autore nell'elenco
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=15}
+~~~~~~~~
+        <th>Autore</th>
+~~~~~~~~
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=25}
+~~~~~~~~
+          <td><%= post.user.email %></td>
+~~~~~~~~
+
+[tutto il codice](#brandnewcms-posts_seeds-01a-views-authors-posts-index.html.erb)
 
 
 
@@ -217,27 +298,6 @@ $ heroku run rails db:migrate
 ## Popoliamo manualmente
 
 inseriamo quattro articoli (posts) e mettiamo il contenuto usando https://hipsum.co/ che è simile a Lorem ipsum ma più divertente.
-
-
-
-
-## Aggiungiamo la colonna con l'email dell'autore che si è loggato in authors/posts/index
-
-Una volta loggato visualizzo anche il nome dell'autore nell'elenco
-
-{title=".../app/views/authors/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=15}
-~~~~~~~~
-        <th>Published</th>
-~~~~~~~~
-
-{title=".../app/views/authors/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=25}
-~~~~~~~~
-          <td><%= post.user.email %></td>
-~~~~~~~~
-
-[tutto il codice](#brandnewcms-posts_seeds-01a-views-authors-posts-index.html.erb)
-
-
 
 
 

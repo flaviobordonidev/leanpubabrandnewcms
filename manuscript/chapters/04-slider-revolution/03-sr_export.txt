@@ -1,0 +1,473 @@
+# Slider Revolution Export to HTML
+
+Prendiamo la cartella "sr" con tutti i files creati con il comando "export to HTML" di Slider Revolution Stand Alone.
+
+
+Risorse web
+
+*[URL helpers](https://stackoverflow.com/questions/2165665/how-do-i-get-the-current-absolute-url-in-ruby-on-rails)
+
+
+
+
+## Partiamo dal file slider.html
+
+ci sono 2 files html: json_slider.html e slider.html
+A noi serve il solo file "slider.html"
+
+copiamolo nella nostra cartella example_static_pages, insieme a page_a e page_b, ed aggiungiamo l'estensione ".erb"
+
+* 01-exported_slider/slider.html    -> .../app/example_static_pages/slider.html.erb
+
+
+
+
+## Aggiorniamo gli instradamenti
+
+
+{id="04-01-03_01", title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=15}
+~~~~~~~~
+  get 'example_static_pages/slider'
+~~~~~~~~
+
+[Codice 01](#04-01-03_01all)
+
+
+
+
+## Il nuovo layout
+
+creiamo un nuovo layout che chiamiamo "yield" perché dentro ha la sola riga <%= yield %> che permette di usare tutto il codice HTML della pagina chiamante.
+
+{id="04-01-03_02", title=".../app/views/layouts/yield.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%= yield %>
+~~~~~~~~
+
+[Codice 02](#04-01-03_02all)
+
+
+
+
+## Implementiamo nel controller
+Nel nostro caso la pagina chiamante è slider.html.erb e per indicare che userà il layout personalizzato lo richiamiamo dentro l'azione nel controller.
+
+{id="04-01-03_03", title=".../app/controllers/example_static_pages_controller.rb", lang=ruby, line-numbers=on, starting-line-number=8}
+~~~~~~~~
+  def slider
+    #applica un layout differente
+    render layout: 'yield'
+  end
+~~~~~~~~
+
+[Codice 03](#04-01-03_03all)
+
+
+
+
+### Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+andiamo sull'URL:
+
+* https://mycloud9path.amazonaws.com/example_static_pages_controller/slider
+
+La pagina è tutta bianca perché ci mancano le chiamate javascripts per visualizzare il caricamento della pagina e togliere poi il bianco visualizzando la pagina risultante.
+Possiamo verificare che il codice HTML è stato correttamente caricato facendo clic con il tasto destro del mouse e selezionando "visualizza sorgente di pagina".
+
+
+
+
+## Adattiamo slide html per asset_pipeline
+
+convertiamo le chiamate di slide mano a mano che le incontriamo ed importiamo il file nella nostra app Rails:
+
+* da -> a
+
+
+Inizialmente abbiamo una chiamata javascript a jquery tramite googleapis
+
+{title=".../app/views/example_static_pages/slider.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=18}
+~~~~~~~~
+		<!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>-->
+		<%= javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js", 'data-turbolinks-track' => true %>
+~~~~~~~~
+
+
+poi una chiamata stylesheet ai fonts tramite googleapis
+
+{title=".../app/views/example_static_pages/slider.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=22}
+~~~~~~~~
+        <!--<link href="http://fonts.googleapis.com/css?family=Open+Sans:800" rel="stylesheet" property="stylesheet" type="text/css" media="all">-->
+        <%= stylesheet_link_tag "http://fonts.googleapis.com/css?family=Open+Sans:800", media: 'all', 'data-turbolinks-track': 'reload' %>
+~~~~~~~~
+
+
+poi due chiamate stylesheet a dei fonts caricate sulla macchina in cui gira l'app Rails
+
+{title=".../app/views/example_static_pages/slider.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=25}
+~~~~~~~~
+		<!--<link rel="stylesheet" type="text/css" href="fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css">-->
+		<%= stylesheet_link_tag "fonts/pe-icon-7-stroke/css/pe-icon-7-stroke", media: 'all', 'data-turbolinks-track': 'reload' %>
+~~~~~~~~
+
+* .../fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css     ->  .../vendor/assets/stylesheets/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css
+
+
+{title=".../app/views/example_static_pages/slider.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=28}
+~~~~~~~~
+ 		<!--<link rel="stylesheet" type="text/css" href="fonts/font-awesome/css/font-awesome.css">-->
+		<%= stylesheet_link_tag "fonts/font-awesome/css/font-awesome", media: 'all', 'data-turbolinks-track': 'reload' %>
+~~~~~~~~
+
+* .../fonts/font-awesome/css/font-awesome.css             ->  .../vendor/assets/stylesheets/fonts/font-awesome/css/font-awesome.css
+
+
+poi il file stylesheet per Revolution Slider
+
+{title=".../app/views/example_static_pages/slider.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=32}
+~~~~~~~~
+		<!--<link rel="stylesheet" type="text/css" href="css/settings.css">-->
+		<%= stylesheet_link_tag "css/settings.css", 'data-turbolinks-track': 'reload' %>
+~~~~~~~~
+
+* .../css/settings.css             ->  .../vendor/assets/stylesheets/css/settings.css
+
+
+poi il file javascript per Revolution Slider
+
+{title=".../app/views/example_static_pages/slider.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=47}
+~~~~~~~~
+		<!--<script type="text/javascript" src="js/jquery.themepunch.tools.min.js"></script>-->
+		<%= javascript_include_tag "js/jquery.themepunch.tools.min.js", 'data-turbolinks-track' => true %>
+~~~~~~~~
+
+* .../js/jquery.themepunch.tools.min.js             ->  .../vendor/assets/javascripts/js/jquery.themepunch.tools.min.js
+
+
+poi il file javascript per Revolution Slider
+
+{title=".../app/views/example_static_pages/slider.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=49}
+~~~~~~~~
+		<!--<script type="text/javascript" src="js/jquery.themepunch.revolution.min.js"></script>-->
+		<%= javascript_include_tag "js/jquery.themepunch.revolution.min.js", 'data-turbolinks-track' => true %>
+~~~~~~~~
+
+* .../js/jquery.themepunch.revolution.min.js             ->  .../vendor/assets/javascripts/js/jquery.themepunch.revolution.min.js
+
+
+poi i files javascript per Revolution Slider Extensions
+
+{title=".../app/views/example_static_pages/slider.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=54}
+~~~~~~~~
+		<!--<script type="text/javascript" src="js/extensions/revolution.extension.actions.min.js"></script>-->
+		<!--<script type="text/javascript" src="js/extensions/revolution.extension.carousel.min.js"></script>-->
+		<!--<script type="text/javascript" src="js/extensions/revolution.extension.kenburn.min.js"></script>-->
+		<!--<script type="text/javascript" src="js/extensions/revolution.extension.layeranimation.min.js"></script>-->
+		<!--<script type="text/javascript" src="js/extensions/revolution.extension.migration.min.js"></script>-->
+		<!--<script type="text/javascript" src="js/extensions/revolution.extension.navigation.min.js"></script>-->
+		<!--<script type="text/javascript" src="js/extensions/revolution.extension.parallax.min.js"></script>-->
+		<!--<script type="text/javascript" src="js/extensions/revolution.extension.slideanims.min.js"></script>-->
+		<!--<script type="text/javascript" src="js/extensions/revolution.extension.video.min.js"></script>-->
+		<%= javascript_include_tag "js/extensions/revolution.extension.actions.min.js", 'data-turbolinks-track' => true %>
+		<%= javascript_include_tag "js/extensions/revolution.extension.carousel.min.js", 'data-turbolinks-track' => true %>
+		<%= javascript_include_tag "js/extensions/revolution.extension.kenburn.min.js", 'data-turbolinks-track' => true %>
+		<%= javascript_include_tag "js/extensions/revolution.extension.layeranimation.min.js", 'data-turbolinks-track' => true %>
+		<%= javascript_include_tag "js/extensions/revolution.extension.migration.min.js", 'data-turbolinks-track' => true %>
+		<%= javascript_include_tag "js/extensions/revolution.extension.navigation.min.js", 'data-turbolinks-track' => true %>
+		<%= javascript_include_tag "js/extensions/revolution.extension.parallax.min.js", 'data-turbolinks-track' => true %>
+		<%= javascript_include_tag "js/extensions/revolution.extension.slideanims.min.js", 'data-turbolinks-track' => true %>
+		<%= javascript_include_tag "js/extensions/revolution.extension.video.min.js", 'data-turbolinks-track' => true %>
+~~~~~~~~
+
+* .../js/extensions/revolution.extension.actions.min.js         ->  .../vendor/assets/javascripts/js/extensions/revolution.extension.actions.min.js
+* .../js/extensions/revolution.extension.carousel.min.js        ->  .../vendor/assets/javascripts/js/extensions/revolution.extension.carousel.min.js
+* .../js/extensions/revolution.extension.kenburn.min.js         ->  .../vendor/assets/javascripts/js/extensions/revolution.extension.kenburn.min.js
+* .../js/extensions/revolution.extension.layeranimation.min.js  ->  .../vendor/assets/javascripts/js/extensions/revolution.extension.layeranimation.min.js
+* .../js/extensions/revolution.extension.migration.min.js       ->  .../vendor/assets/javascripts/js/extensions/revolution.extension.migration.min.js
+* .../js/extensions/revolution.extension.navigation.min.js      ->  .../vendor/assets/javascripts/js/extensions/revolution.extension.navigation.min.js
+* .../js/extensions/revolution.extension.parallax.min.js        ->  .../vendor/assets/javascripts/js/extensions/revolution.extension.parallax.min.js
+* .../js/extensions/revolution.extension.slideanims.min.js      ->  .../vendor/assets/javascripts/js/extensions/revolution.extension.slideanims.min.js
+* .../js/extensions/revolution.extension.video.min.js           ->  .../vendor/assets/javascripts/js/extensions/revolution.extension.video.min.js
+
+
+poi abbiamo la chiamata al file "ic_expand_more_24px.svg" che è sulla cartella "asset" insieme alle immagini. Questo file lo consideriamo come fosse un'immagine e lo copiamo su vendor images.
+
+da:
+
+{title=".../app/views/example_static_pages/slider.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=189}
+~~~~~~~~
+            data-svg_src="assets/ic_expand_more_24px.svg" 
+~~~~~~~~
+
+a:
+
+{title=".../app/views/example_static_pages/slider.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=189}
+~~~~~~~~
+            data-svg_src="<%=image_path('ic_expand_more_24px.svg')%>" 
+~~~~~~~~
+
+ed aggiungiamo per il precompile
+
+{title=".../config/application.rb", lang=ruby, line-numbers=on, starting-line-number=25}
+~~~~~~~~
+    # precompile assets images (and other files)                                                             
+    config.assets.precompile += ['ic_expand_more_24px.svg'
+                                ]
+~~~~~~~~
+
+
+poi dedichiamoci alle immagini
+
+da: 
+
+{title=".../app/views/example_static_pages/slider.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=189}
+~~~~~~~~
+            style="z-index: 6;"><img src="assets/dummy.png" alt="" data-ww="['709px','500','500px','400']" data-hh="['852px','833','833px','667']" data-lazyload="assets/9f84f-RB-Box-fronte.png" data-no-retina> </div>
+~~~~~~~~
+
+a: 
+
+{title=".../app/views/example_static_pages/slider.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=189}
+~~~~~~~~
+            style="z-index: 6;"><%= image_tag "dummy.png", alt:"", 'data-ww': "['709px','500','500px','400']", 'data-hh': "['852px','833','833px','667']", 'data-lazyload': image_path('9f84f-RB-Box-fronte.png'), 'data-no-retina':"" %> </div>
+~~~~~~~~
+
+h : <img src="images/logo.png" alt="Canvas Logo">
+r : <%= image_tag "logo.png", alt: "Canvas Logo" %>
+
+* <%= image_tag "...", alt: "Canvas Logo" %>
+* <%= image_path('...')%>
+
+
+poi
+
+da: 
+
+{title=".../app/views/example_static_pages/slider.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=367}
+~~~~~~~~
+            style="z-index: 6;"><img src="assets/dummy.png" alt="" data-ww="['709px','500','500px','400']" data-hh="['852px','833','833px','667']" data-lazyload="assets/29cba-RB-Card-Storia-open.png" data-no-retina> </div>
+~~~~~~~~
+
+a: 
+
+{title=".../app/views/example_static_pages/slider.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=367}
+~~~~~~~~
+            style="z-index: 6;"><%= image_tag "dummy.png", alt: "", 'data-ww': "['709px','500','500px','400']", 'data-hh': "['852px','833','833px','667']", 'data-lazyload': image_path('29cba-RB-Card-Storia-open.png'), 'data-no-retina': "" %> </div>
+~~~~~~~~
+
+
+poi
+
+da: 
+
+{title=".../app/views/example_static_pages/slider.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=484}
+~~~~~~~~
+            style="z-index: 6;"><img src="assets/dummy.png" alt="" data-ww="['709px','500','500px','400']" data-hh="['852px','833','833px','667']" data-lazyload="assets/47d95-RB-Cards-open.png" data-no-retina> </div>
+~~~~~~~~
+
+a: 
+
+{title=".../app/views/example_static_pages/slider.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=367}
+~~~~~~~~
+            style="z-index: 6;"><%= image_tag "dummy.png", alt: "", 'data-ww': "['709px','500','500px','400']", 'data-hh': "['852px','833','833px','667']", 'data-lazyload': image_path('47d95-RB-Cards-open.png'), 'data-no-retina': "" %> </div>
+~~~~~~~~
+
+
+
+poi
+
+da: 
+
+{title=".../app/views/example_static_pages/slider.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=484}
+~~~~~~~~
+            style="z-index: 6;"><img src="assets/dummy.png" alt="" data-ww="['709px','500','500px','400']" data-hh="['852px','833','833px','667']" data-lazyload="assets/560e1-RB-Box-retro.png" data-no-retina> </div>
+~~~~~~~~
+
+a: 
+
+{title=".../app/views/example_static_pages/slider.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=367}
+~~~~~~~~
+            style="z-index: 6;"><%= image_tag "dummy.png", alt: "", 'data-ww': "['709px','500','500px','400']", 'data-hh': "['852px','833','833px','667']", 'data-lazyload': image_path('560e1-RB-Box-retro.png'), 'data-no-retina': "" %> </div>
+~~~~~~~~
+
+
+
+poi il puntamento ai files javascripts riportato nel codice javascript in linea.
+su questa linea è richiesto il percorso ai files javascript utilizzati dalla pagina slider.html. Possiamo indicarlo cambiando la linea di codice
+
+da:
+
+{title=".../app/views/example_static_pages/slider.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=598}
+~~~~~~~~
+jsFileLocation:"//localhost:88/revslider-standalone/revslider/public/assets/js/",
+~~~~~~~~
+
+a:
+
+{title=".../app/views/example_static_pages/slider.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=598}
+~~~~~~~~
+jsFileLocation:"<%= request.base_url + '/assets/js/' %>",
+~~~~~~~~
+
+La chiamata request.base_url passa l'URL dell'applicazione. A titolo didattico ecco altri esempi di chiamate:
+
+* request.original_url          => "https://2f1de42498c044ff840e5bf7bb1058a4.vfs.cloud9.eu-west-1.amazonaws.com/example_static_pages/slider"
+* request.base_url              => "https://2f1de42498c044ff840e5bf7bb1058a4.vfs.cloud9.eu-west-1.amazonaws.com"
+* request.original_fullpath     => "/example_static_pages/slider"
+* request.base_url+'assets/js/' => "https://2f1de42498c044ff840e5bf7bb1058a4.vfs.cloud9.eu-west-1.amazonaws.com/assets/js/"
+
+Attenzione:
+l'url passato alla variabile "jsFileLocation" non è veramente utilizzata nel codice javascript e qualsiasi cosa scriviamo andrebbe bene. Nel caso in cui sia effettivamente utilizzata bisogna stare attenti perché i files dentro l'asset_pipeline sono anche rinominati e quindi potrebbe non bastare passargli l'url cpn il percorso a cui si trovano.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Attiviamo le chiamate all'asset_pipeline
+
+Non siamo ancora pronti. 
+Nel nostro views/layouts/yield.html.erb non ci sono le chiamate all'asset_pipeline come nel layout di default application.
+
+{title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=7}
+~~~~~~~~
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+~~~~~~~~
+
+Senza queste chiamate non accediamo ai files manifest dell'asset_pipeline (assets/stylesheets/application.css e assets/javascripts/application.js)
+
+Se provassimo sul browser riceveremmo l'errore: 
+
+  Sprockets::Rails::Helper::AssetNotPrecompiled
+
+
+Invece di passare per i files manifest, aggiungiamo le nostre chiamate ai files direttamente nel precompile. 
+
+Attenzione:
+* In questo file mettiamo l'estensione dei files ".js"
+
+{title=".../config/application.rb", lang=ruby, line-numbers=on, starting-line-number=25}
+~~~~~~~~
+# il codice in basso andrebbe su config/initializers/assets.rb
+
+    # precompile assets images (and other files)                                                             
+    config.assets.precompile += ['ic_expand_more_24px.svg'
+                                ]
+
+    # precompile assets stylesheets                                                             
+    config.assets.precompile += ['fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css',
+                                 'fonts/font-awesome/css/font-awesome.css',
+                                 'css/settings.css'
+                                ]
+
+    # precompile assets javascripts                                                             
+    config.assets.precompile += ['js/jquery.themepunch.tools.min.js',
+                                 'js/jquery.themepunch.revolution.min.js',
+                                 'js/extensions/revolution.extension.actions.min.js',
+                                 'js/extensions/revolution.extension.carousel.min.js',
+                                 'js/extensions/revolution.extension.kenburn.min.js',
+                                 'js/extensions/revolution.extension.layeranimation.min.js',
+                                 'js/extensions/revolution.extension.migration.min.js',
+                                 'js/extensions/revolution.extension.navigation.min.js',
+                                 'js/extensions/revolution.extension.parallax.min.js',
+                                 'js/extensions/revolution.extension.slideanims.min.js',
+                                 'js/extensions/revolution.extension.video.min.js'
+                                ]
+~~~~~~~~
+
+Attenzione!
+Modificando application.rb è necessario riavviare il server rails (rails s ...) per includere le modifiche.
+
+
+
+
+
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+Il postgresql start possiamo anche non eseguirlo perché al momento non usiamo il database.
+
+
+
+
+## Il codice del capitolo
+
+
+
+
+[Codice 01](#04-01-03_01)
+
+{id="04-01-03_01all", title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+Rails.application.routes.draw do
+
+  resources :example_companies
+  resources :example_posts
+  root 'example_static_pages#page_a'
+  
+  devise_for :users, path_names: {sign_in: 'login'}, path: '', controllers: { sessions: 'users/sessions' }
+  resources :users  
+
+
+  resources :example_users
+  
+  get 'example_static_pages/page_a'
+  get 'example_static_pages/page_b'
+  get 'example_static_pages/slider'
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+end
+~~~~~~~~
+
+
+
+
+[Codice 02](#04-01-03_02)
+
+{id="04-01-03_02all", title=".../app/views/layouts/yield.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%= yield %>
+~~~~~~~~
+
+
+
+
+[Codice 03](#04-01-03_03)
+
+{id="04-01-03_03all", title=".../app/controllers/example_static_pages_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class ExampleStaticPagesController < ApplicationController
+  def page_a
+  end
+
+  def page_b
+  end
+
+  def slider
+    #applica un layout differente
+    render layout: 'yield'
+  end
+end
+~~~~~~~~

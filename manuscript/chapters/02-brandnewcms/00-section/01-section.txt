@@ -2,9 +2,107 @@
 
 dopo aver eseguito tutta la fase di **beginning** prepariamo l'applicazione per un Blog.
 
-facciamo tutta la parte di "dashboard" che permette all'autore di creare i vari articoli (posts).
-Prepariamo anche una "bozza" di quello che è il Blog visibile da tutti.
+in questi capitoli: 
 
-Successivamente su questa bozza si potranno caricare diversi temi.
+* facciamo tutta la parte di "dashboard" che permette all'autore di creare i vari articoli (posts).
+* Prepariamo anche una "bozza" di quello che è il Blog visibile da tutti.
+* Successivamente su questa bozza si potranno caricare diversi temi.
+* Il primo tema che utilizzeremo in un'altra sezione sarà Canvas. (vedi cms_canvas)
 
-Il primo tema che utilizzeremo in un'altra sezione sarà Canvas. (vedi cms_canvas)
+
+
+
+Risorse web:
+
+TechmakerTV
+* [How to build a blog with Rails 5 and Bootstrap 4 - Part 1](https://www.youtube.com/watch?v=VpNBCpAgEsY)
+  In this episode, we go over setting up a basic project with Ruby on Rails 5 and Bootstrap 4. We talk about how to build nice looking URLs for your blog posts using the FriendlyId gem.
+  We also go over how to pass variables between the layout and the view using yield and provide.
+* [How to build a blog with Rails 5 and Bootstrap 4 - Part 2](https://www.youtube.com/watch?v=svXHXep4qdI)
+  This episode covers more basic Rails and Bootstrap setup for our blog - things like layout, adding active classes to our navbar dynamically, and our grid system.
+  We also cover how you can add items to your database structure using Rails migrations.
+* [How to build a blog with Rails 5 and Bootstrap 4 - Part 3](https://www.youtube.com/watch?v=fPpJsAU4qIY)
+  split for devise
+* [How to build a blog with Rails 5 and Bootstrap 4 - Part 4](https://www.youtube.com/watch?v=YCJqAZ--Sd8)
+  devise
+* [How to build a blog with Rails 5 and Bootstrap 4 - Part 5](https://www.youtube.com/watch?v=H8C9HjGb0IA)
+  tinymce
+* [How to build a blog with Rails 5 and Bootstrap 4 - Part 6](https://www.youtube.com/watch?v=MmO1JV9Uk-0)
+  style with Bootstrap cardText
+* [How to build a blog with Rails 5 and Bootstrap 4 - Part 7](https://www.youtube.com/watch?v=MVm38olFxis)
+  In this episode we tackle how to manage published and unpublished content. We get into just a little bit of Rails backend work, and we have a short discussion about object oriented code.
+* [How to build a blog with Rails 5 and Bootstrap 4 - Part 8](https://www.youtube.com/watch?v=6wNnGRShKYc)
+  In this episode we work through a bug from the previous episode, and we set up pagination with the will_paginate gem.
+* [How to build a blog with Rails 5 and Bootstrap 4 - Part 9](https://www.youtube.com/watch?v=0j6kySJ4EKs) 
+  In this episode we set up  tagging for blog posts using the very cool Rails gem “acts-as-taggable-on”. We also dive into some refactoring thoughts.
+* [How to build a blog with Rails 5 and Bootstrap 4 - Part 10](https://www.youtube.com/watch?v=bQrgjo3gp10)
+  In this episode, we set up a commenting system using Disqus.
+* [How to build a blog with Rails 5 and Bootstrap 4 - Part 11](https://www.youtube.com/watch?v=QvGnAlCns20)
+  This episode was a bit of an experiment with implementing some styling - free style. Let me know what you think in the comments!
+* [How to build a blog with Rails 5 and Bootstrap 4 - Part 12](https://www.youtube.com/watch?v=JP31T66tU7w)
+  1. This episode covers setting up a basic account management page for Authors.
+  2. We didn't quite finish, and part 13 will go through wrapping up some error handling and some styling.
+  3. Don't be scared of error messages!
+* [How to build a blog with Rails 5 and Bootstrap 4 - Part 13](https://www.youtube.com/watch?v=NZ4l0ZbxA_8)
+  This episode covers adding flash messages to success and error scenarios when we update an Author.
+* [How to build a blog with Rails 5 and Bootstrap 4 - Part 14](https://www.youtube.com/watch?v=zaqvNwPpDF0)
+  Author Bio
+* [How to build a blog with Rails 5 and Bootstrap 4 - Part 15](https://www.youtube.com/watch?v=kL7xPuCOjMw)
+  Publishing on Heroku
+
+
+
+
+
+## Altre risorse web:
+
+[What are the best blogs about Ruby on Rails?](https://www.quora.com/What-are-the-best-blogs-about-Ruby-on-Rails)
+
+* https://scotch.io/tutorials/build-a-blog-with-ruby-on-rails-part-1
+* https://medium.com/@bruno_boehm/full-blog-app-tutorial-on-rails-zero-to-deploy-4c19e8174791
+
+
+* [How To Build A Blog Using Rails 5](https://www.youtube.com/watch?v=i2x995hm8r8)
+interessante come carica da CDN sia bootstrap (4:50) che font-awesome (5:20)
+
+
+* https://medium.freecodecamp.org/lets-create-an-intermediate-level-ruby-on-rails-application-d7c6e997c63f
+il blog fa schifo ma ha una gestione della chat online.
+
+
+* [Rails Admin Interfaces with ActiveAdmin](https://www.youtube.com/watch?v=NJYtzznKrg0)
+una gemma che ti prepara tutto il dashboard. Resti troppo legato alla loro interfaccia. Modifiche future sono difficili.
+
+
+* [Let’s Build: With Ruby on Rails – A Blog with Comments](https://web-crunch.com/lets-build-with-ruby-on-rails-blog-with-comments/)
+interessante per uso di better-error, guard, ed altro lato develop.
+
+
+* [Creating a chocolate store using Ruby on Rails](https://www.youtube.com/watch?v=be_EHQnpb8k)
+  interessante la parte di pagamento con carta di credito
+
+*[Creating an Online Shop in Rails - Part 1](https://www.youtube.com/watch?v=TwoafJC7vlw)
+*[Creating an Online Shop in Rails - Part 2]()
+*[Creating an Online Shop in Rails - Part 3](https://www.youtube.com/watch?v=q4ciKOT1oHs)
+*[Creating an Online Shop in Rails - Part 4](https://www.youtube.com/watch?v=orDmqI-dlCo)
+*[Creating an Online Shop in Rails - Part 5](https://www.youtube.com/watch?v=HfV8WP28QFk)
+
+
+
+WYSIWYG TESTO E UPLOAD IMAGES ON AWS S3
+
+TRIX - Open source gratuito sviluppato da BaseCamp
+* (go rails - Trix WYSIWYG Editor And File Uploads)[https://www.youtube.com/watch?v=eyM3_kdD-wY]
+* https://github.com/basecamp/trix
+* https://www.driftingruby.com/episodes/wysiwyg-editor-with-trix
+* (How to use Trix and Shrine for WYSIWYG Editing with Drag-and-Drop Image Uploading)[http://headway.io/blog/how-to-use-trix-and-shrine-for-wysiwyg-editing-with-drag-and-drop-image-uploading/]
+
+FROALA - Eccellente WYSIWYG a pagamento una tantum
+* https://www.froala.com/wysiwyg-editor/plugins
+* (Ruby Snack #22: Froala WYSIWYG)[https://www.youtube.com/watch?v=BrR4dmp2Y8c]
+* (Ruby Snack 28: Simple Blog with Froala V2 and Sanitize Gem)[https://www.youtube.com/watch?time_continue=6&v=QVOOBncTe8s]
+* (Ruby Snack #23: Froala WYSIWYG Saving Images on Amazon-S3)[https://www.youtube.com/watch?v=WZqztFZpfxQ]
+* https://www.froala.com/wysiwyg-editor/docs/framework-plugins/rails
+
+TinyMCE - Ottimo WYSIWYG a pagamento continuativo
+* https://www.tinymce.com

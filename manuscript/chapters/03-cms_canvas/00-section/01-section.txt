@@ -29,4 +29,3 @@ dentro themeforest-9228123-canvas-the-multipurpose-html5-template/Package-HTML/H
 * HTML/blog-single.html
 
 
-

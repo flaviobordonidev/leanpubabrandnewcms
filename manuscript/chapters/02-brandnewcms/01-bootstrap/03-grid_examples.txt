@@ -5,12 +5,9 @@ Implementiamo la grid bootstrap nelle nostre pagine example_static_pages
 
 
 
-## Apriamo il branch "BootStrap Grid"
+## Apriamo il branch
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ git checkout -b bsg
-~~~~~~~~
+continuiamo con il branch aperto nel capitolo precedente
 
 
 
@@ -30,9 +27,38 @@ Proviamo gli esempi scaricati direttamente dal sito di bootstrap
 
 Creiamo la nuova page_c per fare le prove per la grid di bootstrap
 
-* creiamo una nuova azione (page_c) nel controller (example_static_pages_controller.rb)
-* creiamo una nuova view
-* aggiorniamo gli instradamenti (routes.rb)
+
+
+
+### implementiamo nel controller
+creiamo la nuova azione "page_c" nel controller example_static_pages_controller.rb
+
+{title=".../app/controllers/example_static_pages_controller.rb", lang=ruby, line-numbers=on, starting-line-number=8}
+~~~~~~~~
+  def page_c
+  end
+~~~~~~~~
+
+
+
+
+### aggiorniamo gli instradamenti (routes.rb)
+
+{id="01-03-01_01", title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=15}
+~~~~~~~~
+  root 'example_static_pages#page_c'
+~~~~~~~~
+
+
+
+
+### creiamo la nuova view
+
+
+{title="views/example_static_pages/page_c.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<h1> Pagina C </h1>
+~~~~~~~~
 
 
 
@@ -42,20 +68,30 @@ Creiamo la nuova page_c per fare le prove per la grid di bootstrap
 Proviamo gli esempi del sito [bootstrap](https://getbootstrap.com/docs/4.1/layout/grid/)
 
 Al fine di comprendere meglio come funzionano le griglie aggiungiamo uno stile di debug che ne evidenzi la struttura.
+Creiamo un file di stile
 
-{title=".../app/assets/stylesheets/application.scss", lang=ruby, line-numbers=on, starting-line-number=17}
-~~~~~~~~
-@import "debug_bootstrap_grid";
-~~~~~~~~
-
-{title=".../app/assets/stylesheets/debug_bootstrap_grid.css", lang=ruby, line-numbers=on, starting-line-number=1}
+{id="02-01-03_01", title=".../app/assets/stylesheets/debug_bootstrap_grid.css", lang=ruby, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
 .row > div { min-height:100px; border:1px solid red;}
 ~~~~~~~~
 
-proviamo l'esempio 1
+[Codice 01](#02-01-03_01all)
 
-{title=".../app/views/example_static_pages/page_c.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+e lo importiamo sul nostro manifest
+
+{id="02-01-03_02", title=".../app/assets/stylesheets/application.scss", lang=ruby, line-numbers=on, starting-line-number=17}
+~~~~~~~~
+@import "debug_bootstrap_grid";
+~~~~~~~~
+
+[Codice 02](#02-01-03_02all)
+
+
+
+
+### proviamo l'esempio 1
+
+{title="views/example_static_pages/page_c.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
 <!-- contenitore responsivo a larghezze fisse -->
 <div class="container">
@@ -66,7 +102,28 @@ proviamo l'esempio 1
 </div>
 ~~~~~~~~
 
-proviamo l'esempio 2
+
+
+
+#### Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+andiamo con il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/example_static_pages/page_c
+
+![Fig. 01](images/02-brandnewcms/01-bootstrap/03_01-grid-example_1.png)
+
+
+
+
+
+### proviamo l'esempio 2
 
 {title=".../app/views/example_static_pages/page_c.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
@@ -79,7 +136,27 @@ proviamo l'esempio 2
 </div>
 ~~~~~~~~
 
-proviamo l'esempio 3
+
+
+
+#### Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+andiamo con il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/example_static_pages/page_c
+
+![Fig. 02](images/02-brandnewcms/01-bootstrap/03_02-grid-example_2.png)
+
+
+
+
+### proviamo l'esempio 3
 Le righe permettono di isolare gruppi orizzontali di colonne delineando confini ben precisi nel layout responsivo.
 
 {title=".../app/views/example_static_pages/page_c.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
@@ -102,7 +179,27 @@ Le righe permettono di isolare gruppi orizzontali di colonne delineando confini 
 </div>
 ~~~~~~~~
 
-proviamo l'esempio 4
+
+
+
+#### Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+andiamo con il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/example_static_pages/page_c
+
+![Fig. 03](images/02-brandnewcms/01-bootstrap/03_03-grid-example_3.png)
+
+
+
+
+### proviamo l'esempio 4
 Per garantire il corretto funzionamento della griglia responsiva il contenuto deve essere collocato all’interno delle colonne e solamente le colonne possono essere figlie delle righe. Le colonne sono spaziate fra loro con il padding. Tramite le righe il padding dell’ultima e della prima colonna sono compensati da un margin negativo.
 
 {title=".../app/views/example_static_pages/page_c.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
@@ -133,6 +230,23 @@ Per garantire il corretto funzionamento della griglia responsiva il contenuto de
 
 
 
+#### Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+andiamo con il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/example_static_pages/page_c
+
+![Fig. 04](images/02-brandnewcms/01-bootstrap/03_04-grid-example_4.png)
+
+
+
+
 ## salviamo su git
 
 {title="terminal", lang=bash, line-numbers=off}
@@ -148,7 +262,7 @@ $ git commit -m "Implement bootstrap grid on example_static_pages page_c"
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ git push heroku bsg:master
+$ git push heroku bs:master
 ~~~~~~~~
 
 
@@ -161,14 +275,57 @@ se abbiamo finito le modifiche e va tutto bene:
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ git checkout master
-$ git merge bsg
-$ git branch -d bsg
+$ git merge bs
+$ git branch -d bs
 ~~~~~~~~
 
-aggiorniamo github
+
+
+
+## Facciamo un backup su Github
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ git push origin master
 ~~~~~~~~
 
+
+
+
+## Il codice del capitolo
+
+
+
+
+[Codice 01](#02-01-03_01)
+
+{id="02-01-03_01all", title=".../app/assets/stylesheets/debug_bootstrap_grid.css", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+.row > div { min-height:100px; border:1px solid red;}
+~~~~~~~~
+
+
+
+
+[Codice 02](#02-01-03_02all)
+
+{id="02-01-03_02", title=".../app/assets/stylesheets/application.scss", lang=ruby, line-numbers=on, starting-line-number=17}
+~~~~~~~~
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ */
+
+// Custom bootstrap variables must be set or imported *before* bootstrap.
+@import "bootstrap";
+@import "debug_bootstrap_grid";
+~~~~~~~~

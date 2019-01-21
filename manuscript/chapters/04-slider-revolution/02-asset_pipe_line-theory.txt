@@ -1,0 +1,113 @@
+# Asset pipeline teoria
+
+Risorse web:
+
+* http://rajatsingla.in/2017/05/15/how-to-manage-assets-in-rails-difference-between-app-vendor-and-lib-assets-what-is-asset-pipeline
+* https://launchschool.com/blog/rails-asset-pipeline-best-practices
+* https://guides.rubyonrails.org/asset_pipeline.html
+
+
+
+
+## Gestione cartelle
+
+~~~~~~~~
+rails-app/
+    app/
+        assets/
+            images/      # Image assets
+
+            javascripts/ # Custom Javascript/coffeescript
+
+            stylesheets/ # Custom CSS/Sass
+
+    ...
+    vendor/
+        assets/
+            javascripts/ # Javascript libraries, etc.
+
+            stylesheets/ # Vendor themes, javascript library theme
+~~~~~~~~
+
+
+~~~~~~~~
+.class { background-image: url(<%= asset_path 'image.png' %>) }
+~~~~~~~~
+
+
+
+
+## Precompile
+css and js used for only one of the page in application, can’t compile in app or vendor.js. Where to keep these files?
+
+{title=".../config/application.rb", lang=ruby, line-numbers=off}
+~~~~~~~~
+Rails.application.config.assets.precompile += %w( some-other-file.js even-another.css )
+~~~~~~~~
+
+Files you don’t want to compile to a common file can be compiled seperately by adding them seperately in asset pipeline array and these files can now be used in erb files of that one particular page, like this 
+
+~~~~~~~~
+<script src="<%= asset_path 'some-other-file.js' %>"><script/>
+~~~~~~~~
+
+
+
+
+### Un altro modo di scrivere il precompile
+
+{title=".../config/application.rb", lang=ruby, line-numbers=off}
+~~~~~~~~
+    # precompile assets stylesheets                                                             
+    config.assets.precompile += ['bootstrap.css',
+                                 'style.css',
+                                 'onepage.css',
+                                 'dark.css',
+                                 'font-icons.css',
+                                 'et-line.css',
+                                 'animate.css',
+                                 'magnific-popup.css',
+                                 'fonts.css',
+                                 'responsive.css'
+                                ]
+
+    # precompile assets javascripts                                                             
+    config.assets.precompile += ['jquery.js',
+                                 'plugins.js',
+                                 'jquery.gmap.js',
+                                 'functions.js'
+                                ]
+
+~~~~~~~~
+
+
+
+
+## Attiviamo styleSheets
+
+Attiviamo lo stylesheets per primo perché diverse funzioni javascript si aspettano di trovare determinato stile css per funzionare correttamente.
+
+
+Per la parte stylesheets adattiamo il codice nella nostra pagina slider.html.erb per puntare all'asset_pipeline. Cambiamo:
+
+* da  : <link rel="stylesheet" href=".../.../xxx.css" type="text/css" />
+* a   : <%= stylesheet_link_tag '.../.../xxx', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+Attenzione!
+* non mettiamo l'estensione dei files
+* lasciamo il percorso alle varie sottocartelle perché copieremo i files stylesheets con tutte le loro cartelle nella cartella "vendor" che è la cartella dell'asset_pipeline dedicata ai files di terze parti.
+
+
+
+
+## Attiviamo javascripts
+
+Per la parte JavaScripts adattiamo il codice nella nostra pagina slider.html.erb per puntare all'asset_pipeline. Cambiamo:
+
+* da  : <script type="text/javascript" src=".../.../xxx.js"></script>
+* a   : <%= javascript_include_tag "xxx", 'data-turbolinks-track' => true %>
+
+Attenzione!
+* non mettiamo l'estensione dei files
+* lasciamo il percorso alle varie sottocartelle perché copieremo i files javascripts con tutte le loro cartelle nella cartella "vendor" che è la cartella dell'asset_pipeline dedicata ai files di terze parti.
+

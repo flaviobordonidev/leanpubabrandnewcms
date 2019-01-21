@@ -1,6 +1,8 @@
 # Bootstrap
 
-Abbiamo già usato la libreria bootstrap nella sezione precedente "theme-mylogin" ma adesso lo inseriamo a livello di gemma.
+Prepariamo un'interfaccia grafica per la dashboard di gestione degli articoli. Questa parte è sganciata dal template scelto per la presentazione del Blog.
+Inizialmente preperiamo una dashboard molto semplice sfruttando la potente libreria bootstrap. In seguito sceglieremo un tema più elaborato per abbellire la dashboard ed aggiungervi ulteriori funzionalità.
+
 
 
 
@@ -24,7 +26,7 @@ Questi portali da soli elencano perlomeno l’80% delle risorse più rilevanti.
 
 
 
-## Bootsnipp
+### Bootsnipp
 
 ![Bootsnipp Home Page](images/originals/bootsnipp.jpg)
 
@@ -35,7 +37,7 @@ Fra le risorse da segnalare trova posto un form builder per la creazione visuale
 
 
 
-## Expo Get Bootstrap
+### Expo Get Bootstrap
 
 expo.getbootstrap è uno showcase che elenca progetti di elevata qualità realizzati utilizzando Bootstrap.
 La gallery è minimale ed organizzata in ordine cronologico ma può fornire indubbiamente delle indicazioni su quelle che sono le potenzialità della piattaforma.
@@ -44,7 +46,7 @@ La gallery ha anche una sezione risorse da consultare.
 
 
 
-## The Big Badass List of Twitter Bootstrap Resources
+### The Big Badass List of Twitter Bootstrap Resources
 bootstraphero.com propone una lista molto corposa di risorse (ad oggi 319) organizzata per componenti, framework Integrations, interface builders,
 tool per il mockup, strumenti e servizi, how to e javascript addons.
 
@@ -53,13 +55,13 @@ I> Spiccano le integrazioni e i temi per diversi CMS come Joomla e WordPress.
 
 
 
-## Design Posts: 50 risorse, tool e design
+### Design Posts: 50 risorse, tool e design
 Designposts ci propone un post che elenca 50 risorse per Bootstrap, fra questi la maggior parte sono plugin javascript facilmente integrabili in Bootstrap.
 La maggior parte sono espressamente pensati per questa piattaforma.
 
 
 
 
-## Bootstrap Bay
+### Bootstrap Bay
 Bootstrap Bay è un marketplace di temi focalizzato sul framework. La qualità delle proposta è medio alta mentre i prezzi sono contenuti e comunque in linea con il mercato.
 Fra le proposte abbiamo anche il Boostrap Theme Start Kit sostanzialmente un theme builder estremamente veloce ed efficace.
