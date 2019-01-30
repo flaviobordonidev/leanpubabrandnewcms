@@ -1,0 +1,46 @@
+<%# == Meta_data ============================================================ %>
+
+<% provide(:page_title, "All posts") %>
+<% provide(:menu_blog_nav_link, "active") %>
+
+<%# == Meta_data - end ====================================================== %>
+
+<p id="notice"><%= notice %></p>
+
+<h1>Posts</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Incipit</th>
+      <th>Content</th>
+      <th>Type</th>
+      <th>Video youtube</th>
+      <th>Video vimeo</th>
+      <th>Seocontent</th>
+      <th>Date chosen</th>
+      <th>User</th>
+      <th>Autore</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @posts.each do |post| %>
+      <tr>
+        <td><%= post.title %></td>
+        <td><%= post.incipit %></td>
+        <td><%= post.content %></td>
+        <td><%= post.type %></td>
+        <td><%= post.video_youtube %></td>
+        <td><%= post.video_vimeo %></td>
+        <td><%= post.seocontent %></td>
+        <td><%= post.date_chosen %></td>
+        <td><%= post.user %></td>
+        <td><%= post.user.email %></td>
+        <td><%= link_to 'Show', post %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

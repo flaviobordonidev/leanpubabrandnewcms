@@ -18,11 +18,10 @@ Risorse web
 * [varvet pundit](https://github.com/varvet/pundit)
 * [rails authorization](http://railsapps.github.io/rails-authorization.html)
 * [rails authorization freecodecamp](https://medium.freecodecamp.org/rails-authorization-with-pundit-a3d1afcb8fd2)
-
 * [authorization with pundit tutplus](https://code.tutsplus.com/tutorials/authorization-with-pundit--cms-28202)
 * [authorization with pundit medium](https://medium.com/@stacietaylorcima/implement-user-authorization-with-pundit-rails-80d921cdbf28)
-
 * [Episode #047 - Authorization with Pundit](https://www.youtube.com/watch?v=PWizyTjCAdg)
+* [Rails Authorization With Pundit - parte da zero ed installa anche devise ed usa anche spec tests](https://www.youtube.com/watch?v=qruGD_8ry7k)
 
 
 

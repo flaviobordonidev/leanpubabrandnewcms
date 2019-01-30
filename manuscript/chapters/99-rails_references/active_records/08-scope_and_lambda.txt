@@ -123,3 +123,15 @@ has_many :donors, :through => :donations, :uniq => true, :order => "name", :cond
 becomes:
 
 has_many :donors, -> { where("age < 30").order("name").uniq }, :through => :donations
+
+
+
+
+## Filtriamo gli articoli di un blog per i soli pubblicati
+
+aggiungiamo uno scope per gli articoli pubblicati nella sezione "# == Scopes" del model Post.
+
+{id="02-08-01_01", title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=28}
+~~~~~~~~
+  scope :published, -> { where(published: true) }
+~~~~~~~~

@@ -277,7 +277,7 @@ usciamo
 
 
 
-## Attiviamo la white list
+## Attiviamo la white list sul controller
 
 Invece di cambiare i ruoli da console adesso li cambiamo sulla nostra view.
 Abbiamo un piccolo problema. Devise non è come lo scaffold. Non ci crea già le azioni sul controller e le views.

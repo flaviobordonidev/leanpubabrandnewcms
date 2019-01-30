@@ -4,6 +4,14 @@
 aggiungiamo il pulsante per gli articoli pubblicati.
 
 
+## Creiamo il checkbox published ed il text_field published_at
+
+{title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=29}
+~~~~~~~~
+
+~~~~~~~~
+
+
 
 
 ## Apriamo il branch "Published Buttons"

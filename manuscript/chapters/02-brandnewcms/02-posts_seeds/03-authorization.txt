@@ -3,8 +3,8 @@
 Usiamo il seguente schema per le autorizzazioni
 
 Legenda:
- * per "records" si intendono gli "articoli di esempio" (example_posts)
- * per "propri records" si intendono gli "articoli di esempio di cui l'utente è proprietario". Ossia dove ha una relazione uno-a-molti.
+ * per "records" si intendono gli "articoli" (posts)
+ * per "propri records" si intendono gli "articoli di cui l'utente è proprietario". Ossia dove ha una relazione uno-a-molti.
 
 index
  * Utente non loggato           : autorizzato su tutti i records
@@ -63,7 +63,7 @@ $ git checkout -b ap
 $ rails g pundit:policy Post
 ~~~~~~~~
 
-{title=".../app/policies/post_policy.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+{id="02-02-03_01", title=".../app/policies/post_policy.rb", lang=ruby, line-numbers=on, starting-line-number=3}
 ~~~~~~~~
   def index?
     if @user.present?
@@ -161,7 +161,7 @@ $ rails g pundit:policy Post
   end
 ~~~~~~~~
 
-[tutto il codice](#brandnewcms-posts_seeds-03a-policies-post_policy.rb)
+[Codice 01](#02-02-03_01all)
 
 
 
@@ -192,26 +192,39 @@ $ rails g pundit:policy Post
 
 Per le azioni [:show, :edit, :update, :destroy], che chiamano la funzione "set_user" con il before_action, inserisco l'autorizzazione direttamente sulla funzione "set_user"
 
-{title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=71}
+{id="02-02-03_02", title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=71}
 ~~~~~~~~
     def set_post
       @post = Post.find(params[:id])
       authorize @post
 ~~~~~~~~
 
-
-[tutto il codice](#branch-posts_seeds-03b-controllers-posts_controller.rb)
-
+[Codice 02](#02-02-03_02all)
 
 
 
-## verifichiamo
+
+### Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ sudo service postgresql start
-$ rails s -b $IP -p $PORT
+$ rails s
 ~~~~~~~~
+
+apriamo il browser all'URL:
+
+* https://mycloud9path.amazonaws.com/posts
+
+e ci logghiamo come Ann che è amministratore, ed impostiamo i seguenti ruoli ai vari utenti:
+
+- Bob    : author
+- Carl   : moderator
+- Elvis  : user
+
+e facciamo le prove di autorizzazione andando all'URL:
+
+* https://mycloud9path.amazonaws.com/posts
 
 
 
@@ -258,4 +271,210 @@ Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ git push origin master
+~~~~~~~~
+
+
+
+
+## Il codice del capitolo
+
+
+
+
+[Codice 01](#02-02-03_01)
+
+{id="02-02-03_01all", title=".../app/policies/post_policy.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class PostPolicy < ApplicationPolicy
+  
+  def index?
+    if @user.present?
+      case @user.role
+      when 'user'
+        true
+      when 'author'
+        true
+      when 'moderator'
+        true
+      when 'admin'
+        true
+      else
+        false #se arrivo qui c'è un errore quindi non autorizzo
+      end
+    else
+      true
+    end
+  end
+
+  def show?
+    if @user.present?
+      case @user.role
+      when 'user'
+        true
+      when 'author'
+        true
+      when 'moderator'
+        true
+      when 'admin'
+        true
+      else
+        false #se arrivo qui c'è un errore quindi non autorizzo
+      end
+    else
+      false
+    end
+  end
+  
+  def create?
+    if @user.present?
+      case @user.role
+      when 'user'
+        false
+      when 'author'
+        true
+      when 'moderator'
+        true
+      when 'admin'
+        true
+      else
+        false #se arrivo qui c'è un errore quindi non autorizzo
+      end
+    else
+      false
+    end
+  end
+  
+  def update?
+    if @user.present?
+      case @user.role
+      when 'user'
+        false
+      when 'author'
+        @user.id == @record.user_id
+      when 'moderator'
+        @user.id == @record.user_id
+      when 'admin'
+        true
+      else
+        false #se arrivo qui c'è un errore quindi non autorizzo
+      end
+    else
+      false
+    end
+  end
+
+  def destroy?
+    if @user.present?
+      case @user.role
+      when 'user'
+        false
+      when 'author'
+        @user.id == @record.user_id
+      when 'moderator'
+        true
+      when 'admin'
+        true
+      else
+        false #se arrivo qui c'è un errore quindi non autorizzo
+      end
+    else
+      false
+    end
+  end
+    
+  class Scope < Scope
+    def resolve
+      scope.all
+    end
+  end
+end
+~~~~~~~~
+
+
+
+
+[Codice 02](#02-02-03_02)
+
+{id="02-02-03_02all", title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class PostsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :set_post, only: [:show, :edit, :update, :destroy]
+
+  # GET /posts
+  # GET /posts.json
+  def index
+    @posts = Post.all
+    authorize @posts
+  end
+
+  # GET /posts/1
+  # GET /posts/1.json
+  def show
+  end
+
+  # GET /posts/new
+  def new
+    #@post = Post.new
+    @post = current_user.posts.new
+    authorize @post
+  end
+
+  # GET /posts/1/edit
+  def edit
+  end
+
+  # POST /posts
+  # POST /posts.json
+  def create
+    @post = Post.new(post_params)
+    authorize @post
+
+    respond_to do |format|
+      if @post.save
+        format.html { redirect_to @post, notice: 'Post was successfully created.' }
+        format.json { render :show, status: :created, location: @post }
+      else
+        format.html { render :new }
+        format.json { render json: @post.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /posts/1
+  # PATCH/PUT /posts/1.json
+  def update
+    respond_to do |format|
+      if @post.update(post_params)
+        format.html { redirect_to @post, notice: 'Post was successfully updated.' }
+        format.json { render :show, status: :ok, location: @post }
+      else
+        format.html { render :edit }
+        format.json { render json: @post.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /posts/1
+  # DELETE /posts/1.json
+  def destroy
+    @post.destroy
+    respond_to do |format|
+      format.html { redirect_to posts_url, notice: 'Post was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_post
+      @post = Post.friendly.find(params[:id])
+      authorize @post
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def post_params
+      params.require(:post).permit(:title, :incipit, :content, :type, :video_youtube, :video_vimeo, :seocontent, :date_chosen, :user_id)
+    end
+end
 ~~~~~~~~

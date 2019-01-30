@@ -72,3 +72,6 @@ chapters/02-brandnewcms/01-bootstrap/03-grid_examples.txt
 
 chapters/02-brandnewcms/02-posts_seeds/01-posts_seeds.txt
 chapters/02-brandnewcms/02-posts_seeds/02-gem-friendly_id.txt
+chapters/02-brandnewcms/02-posts_seeds/03-authorization.txt
+
+chapters/02-brandnewcms/03-browser_tab_title/01-browser_tab_title.txt

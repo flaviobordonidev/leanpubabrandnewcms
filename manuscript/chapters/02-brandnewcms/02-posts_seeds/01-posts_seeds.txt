@@ -43,6 +43,14 @@ I> tags li gestiamo nei prossimi capitoli con la gemma act-as-taggable
 I>
 I> comment_id non ci serve perché non usiamo una relazione uno-a-molti ma utiliziamo i plugin di Disqus oppure di Facebook
 
+I> Attenzione!
+I>
+I> il campo "type" ci darebbe un errore perché "ActiveStore" usa il campo "type" e quindi va in conflitto con il nostro campo type. 
+I>
+I> Per evitare di rinominarlo in seguito lo chiamiamo da subito "content_type".
+I>
+I> Non lo chiamo "type_of_content" perché una volta applicato ENUM avremmo un elenco dei vari tipi di contenuto chiamato "Post.type_of_contents" (tipo di contenuti). Molto meglio "Post.content_types" (tipi di contenuto).
+
 Iniziamo con una parte della struttura e poi via via implementiamo il resto.
 
 Usiamo lo Scaffold che mi imposta già l'applicazione in stile restful con le ultime convenzioni Rails.
@@ -53,7 +61,7 @@ I> ATTENZIONE: con "rails generate scaffold ..." -> uso il SINGOLARE
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ rails g scaffold Post title:string incipit:text content:text type:integer video_youtube:string video_vimeo:string seocontent:text date_chosen:date user:references
+$ rails g scaffold Post title:string incipit:text content:text type_of_content:integer video_youtube:string video_vimeo:string seocontent:text date_chosen:date user:references
 ~~~~~~~~
 
 La cosa bella di "user_references" è che, oltre a creare la colonna "user_id:integer", ci aggiunge anche l'indice in tabella e ci predispone la relazione uno-a-molti.
@@ -68,7 +76,7 @@ class CreatePosts < ActiveRecord::Migration[5.2]
       t.string :title
       t.text :incipit
       t.text :content
-      t.integer :type
+      t.integer :type_of_content
       t.string :video_youtube
       t.string :video_vimeo
       t.text :seocontent

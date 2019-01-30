@@ -1,0 +1,55 @@
+<%# == Meta_data ============================================================ %>
+
+<% provide(:page_title, @post.title) %>
+<% provide(:menu_blog_nav_link, "active") %>
+
+<%# == Meta_data - end ====================================================== %>
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @post.title %>
+</p>
+
+<p>
+  <strong>Incipit:</strong>
+  <%= @post.incipit %>
+</p>
+
+<p>
+  <strong>Content:</strong>
+  <%= @post.content %>
+</p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @post.type %>
+</p>
+
+<p>
+  <strong>Video youtube:</strong>
+  <%= @post.video_youtube %>
+</p>
+
+<p>
+  <strong>Video vimeo:</strong>
+  <%= @post.video_vimeo %>
+</p>
+
+<p>
+  <strong>Seocontent:</strong>
+  <%= @post.seocontent %>
+</p>
+
+<p>
+  <strong>Date chosen:</strong>
+  <%= @post.date_chosen %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @post.user %>
+</p>
+
+<%= link_to 'Back', posts_path %>

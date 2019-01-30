@@ -47,30 +47,31 @@ $ rails db:migrate
 
 ## Aggiorniamo il model
 
-aggiungiamo uno scope per gli articoli pubblicati
+aggiungiamo uno scope per gli articoli pubblicati nella sezione "# == Scopes" del model Post.
 
-{title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=28}
+{id="02-08-01_01", title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=28}
 ~~~~~~~~
   scope :published, -> { where(published: true) }
 ~~~~~~~~
 
-[tutto il codice](#brandnewcms-published-01a-models-post.rb)
+[Codice 01](#02-08-01_01all)
 
 
 
 
-## Aggiorniamo il posts_controller di default
+## Aggiorniamo il posts_controller
 
-usiamo lo scope appena creato nel posts_controller (e non in authors/posts_controller) sull'azione index
+Per limitare la visibilità ai soli articoli pubblicati per una persona non loggata,
+usiamo lo scope appena creato nel posts_controller (e non in authors/posts_controller) sull'azione index.
 
-{title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+{id="02-08-01_02", title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
 ~~~~~~~~
   def index
-    @posts = Post.most_recent.published
+    @posts = Post.all.published
   end
 ~~~~~~~~
 
-[tutto il codice](#brandnewcms-published-01b-controllers-posts_controller.rb)
+[Codice 02](#02-08-01_02all)
 
 
 
@@ -82,6 +83,49 @@ usiamo lo scope appena creato nel posts_controller (e non in authors/posts_contr
 $ git add -A
 $ git commit -m "add published to posts"
 ~~~~~~~~
+
+
+
+## Impostiamo da terminale un articolo come pubblicato
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails c
+-> Post.first.update(published: true)
+
+
+2.4.1 :004 > Post.first.published
+  Post Load (0.4ms)  SELECT  "posts".* FROM "posts" ORDER BY "posts"."id" ASC LIMIT $1  [["LIMIT", 1]]
+ => nil 
+2.4.1 :005 > Post.first.update(published: true)
+  Post Load (0.5ms)  SELECT  "posts".* FROM "posts" ORDER BY "posts"."id" ASC LIMIT $1  [["LIMIT", 1]]
+   (0.1ms)  BEGIN
+  User Load (0.3ms)  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2  [["id", 1], ["LIMIT", 1]]
+  Post Update (0.4ms)  UPDATE "posts" SET "published" = $1, "updated_at" = $2 WHERE "posts"."id" = $3  [["published", true], ["updated_at", "2019-01-30 14:47:01.166223"], ["id", 1]]
+   (1.4ms)  COMMIT
+ => true 
+2.4.1 :006 > Post.first.published
+  Post Load (0.4ms)  SELECT  "posts".* FROM "posts" ORDER BY "posts"."id" ASC LIMIT $1  [["LIMIT", 1]]
+ => true 
+~~~~~~~~
+
+
+
+
+## Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+apriamo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/posts
+
+Adesso viene visualizzato solo l'articolo in cui abbiamo impostato "published: true"
 
 
 
@@ -118,4 +162,78 @@ Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ git push origin master
+~~~~~~~~
+
+
+
+
+## Il codice del capitolo
+
+
+
+
+[Codice 01](#02-08-01_01)
+
+{id="02-08-01_01all", title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class Post < ApplicationRecord
+  # == Constants ============================================================
+
+  # == Attributes ===========================================================
+
+  enum type_of_content: {image: 0, video_youtube: 1, video_vimeo:2, audio:3}
+  
+  ## ActiveStorage
+  has_one_attached :main_image
+  
+  # == Extensions ===========================================================
+
+  ## friendly_id
+  extend FriendlyId
+  friendly_id :title, use: :slugged
+
+  # == Relationships ========================================================
+
+  belongs_to :user
+
+  # == Validations ==========================================================
+
+  # == Scopes ===============================================================
+
+  scope :published, -> { where(published: true) }
+
+  # == Callbacks ============================================================
+
+  # == Class Methods ========================================================
+
+  # == Instance Methods =====================================================
+  
+  def should_generate_new_friendly_id?
+    title_changed?
+  end
+  
+end
+~~~~~~~~
+
+
+
+
+[Codice 02](#02-08-01_02)
+
+{id="02-08-01_02all", title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class PostsController < ApplicationController
+  # GET /posts
+  # GET /posts.json
+  def index
+    @posts = Post.all.published
+    authorize @posts
+  end
+
+  # GET /posts/1
+  # GET /posts/1.json
+  def show
+    @post = Post.friendly.find(params[:id])
+  end
+end
 ~~~~~~~~

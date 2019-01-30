@@ -1,0 +1,194 @@
+# Inseriamo l'authenticazione al dashboard
+
+Implementiamo l'authenticazione per gli autori. Una volta autenticati, ossia fatto login, ci appare la dashboard_navbar.
+
+Prepariamo una "navbar" per gli "autori" che effettuano il login. Su questa navbar non mettiamo il pulsante di login perchè, come per wordpress, l'autore deve andare direttamente sull'url per il login: "https//mydomain.com/authors/sign_in
+
+Appare la finestra di login ed una volta loggato in alto si ha il menu di wordpress evidenziando che si è nella sezione di autore con possibilità di modifica. 
+
+
+
+
+## Apriamo il branch "Dashboard Authentication"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b da
+~~~~~~~~
+
+
+
+## Inseriamo il link per l'area riservata autori
+
+In pratica un link alla pagina di login di devise che ci permette di autenticarci.
+
+Ci sono due opzioni:
+
+1. Gli autori cliccano il link e vanno al login
+2. Gli autori puntano direttamente sull'URL alla pagina di login. http://www.mydomain.com/login
+
+Iniziamo inserendo il link di login e logout sul menu.
+
+{id="02-03-03_01", title=".../app/views/layouts/_dashboard_navbar.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=34}
+~~~~~~~~
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <%= link_to current_user.email, user_path(current_user.id), class: "nav-link" if current_user.present? == true %>
+          <%= link_to "guest", "#", class: "nav-link" if current_user.present? == false %>
+        </li>
+        <li class="nav-item">
+          <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-danger" if current_user.present? == true %>
+          <%= link_to "Login", new_user_session_path, class: "btn btn-danger" if current_user.present? == false %>
+        </li>
+      </ul>
+~~~~~~~~
+
+[Codice 01](#02-03-03_01all)
+
+
+Visualizziamo la dashboard_navbar solo se siamo loggati/autenticati
+
+{id="02-03-03_02", title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=13}
+~~~~~~~~
+    <% if user_signed_in? %> <%= render 'layouts/dashboard_navbar' %><% end %>
+~~~~~~~~
+
+[Codice 02](#02-03-03_02all)
+
+
+
+
+### Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+apriamo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/posts
+
+
+
+
+
+
+salviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Add navbar login-logout"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su Heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku da:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge da
+$ git branch -d da
+~~~~~~~~
+
+
+aggiorniamo github
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
+
+
+
+
+## Il codice del capitolo
+
+
+
+
+[Codice 01](#02-03-03_01)
+
+{id="02-03-03_01all", title=".../app/views/layouts/_dashboard_navbar.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="container">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Mio menu:</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <%= link_to 'Blog', posts_path, class: "nav-link #{yield(:menu_blog_nav_link)}" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to 'Sezioni', sections_path, class: "nav-link #{yield(:menu_sections_nav_link)}" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to 'Le firme', signatures_path, class: "nav-link #{yield(:menu_signatures_nav_link)}" %>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <%= link_to current_user.email, user_path(current_user.id), class: "nav-link" if current_user.present? == true %>
+          <%= link_to "guest", "#", class: "nav-link" if current_user.present? == false %>
+        </li>
+        <li class="nav-item">
+          <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-danger" if current_user.present? == true %>
+          <%= link_to "Login", new_user_session_path, class: "btn btn-danger" if current_user.present? == false %>
+        </li>
+      </ul>
+
+
+    </div>
+  </nav>
+</div>
+~~~~~~~~
+
+
+
+
+[Codice 02](#02-03-03_02)
+
+{id="02-03-03_02all", title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= yield(:page_title) %> | MyApp</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <% if user_signed_in? %> <%= render 'layouts/dashboard_navbar' %><% end %>
+
+    <% if notice %><p class="alert alert-info"><%= notice %></p><% end %>
+    <% if alert %><p class="alert alert-warning"><%= alert %></p><% end %>
+    
+    <%= yield %>
+  </body>
+</html>
+~~~~~~~~

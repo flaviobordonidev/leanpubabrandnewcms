@@ -129,7 +129,7 @@ $ rails db:migrate
 
 ## Implementiamo il model per friendly_id
 
-Come richersto da friendly_id inseriamo due linee di codice nel nostro model per dire che l'URL human-readable è basato sul campo "title". 
+Come richersto da friendly_id inseriamo due linee di codice nel nostro model per dire che l'URL "human-readable" è basato sul campo "title". 
 
 {title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=14}
 ~~~~~~~~
@@ -142,26 +142,28 @@ Come richersto da friendly_id inseriamo due linee di codice nel nostro model per
 
 Inoltre implementiamo/definiamo un metodo per aggiornare lo slug in automatico ogni volta che cambiamo il titolo
 
-{title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+{id="02-02-02_04", title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=5}
 ~~~~~~~~
+  # == Instance Methods =====================================================
+
   def should_generate_new_friendly_id?
     title_changed?
   end
 ~~~~~~~~
 
-[tutto il codice](#brandnewcms-posts_seeds-slug_friendly_id-models-post.rb)
+[Codice 04](#02-02-02_04all)
 
-il codice **should_generate_new_friendly_id?** è della gemma friendly_id. 
-il codice **title_changed?** è di Rails.
+* il codice **should_generate_new_friendly_id?** è della gemma friendly_id. 
+* il codice **title_changed?** è di Rails.
 
 
 
 
 ## Implementiamo friendly_id nel controller degli articoli
 
-nel set_post ricerchiamo tramite **:id** ma in modo "friendly" ^_^
+nel metodo "set_post" ricerchiamo tramite ":id" ma in modo "friendly" ^_^
 
-{title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=66}
+{title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=68}
 ~~~~~~~~
     def set_post
       @post = Post.friendly.find(params[:id])
@@ -171,14 +173,20 @@ nel set_post ricerchiamo tramite **:id** ma in modo "friendly" ^_^
 
 
 
-## Verifichiamo 
+### Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ rails s -b $IP -p $PORT
+$ sudo service postgresql start
+$ rails s
 ~~~~~~~~
 
-Funziona! creo nuovo post (senza riempire il campo slug) e su submit ottengo il nuovo post con URL human-readable ed il campo slug automaticamente riempito. Se faccio edit, cambio il titolo e rifaccio submit, ottengo nuovo URL ed automaticamente nuovo slug.
+apriamolo sul browser all'URL:
+
+* https://mycloud9path.amazonaws.com/posts
+
+Creiamo nuovo post (senza riempire il campo slug) e su submit ottengo il nuovo post con URL human-readable ed il campo slug automaticamente riempito. Se faccio edit, cambio il titolo e rifaccio submit, ottengo nuovo URL ed automaticamente nuovo slug.
+Per gli articoli già inseriti basta modificare un poco il nome del titolo e gli verrà applicato lo "slug" e quindi sull'URL si avrà il titolo dell'articolo invece del numero identificativo "id".
 
 
 
@@ -257,6 +265,8 @@ $ git checkout master
 $ git merge fi
 $ git branch -d fi
 ~~~~~~~~
+
+
 
 
 ## Facciamo un backup su Github
@@ -402,6 +412,44 @@ class AddSlugUniqToPosts < ActiveRecord::Migration[5.2]
   def change
     add_column :posts, :slug, :string
     add_index :posts, :slug, unique: true
+  end
+end
+~~~~~~~~
+
+
+
+
+[Codice 04](#02-02-02_04)
+
+{id="02-02-02_04all", title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class Post < ApplicationRecord
+  # == Constants ============================================================
+
+  # == Attributes ===========================================================
+  
+  # == Extensions ===========================================================
+
+  ## friendly_id
+  extend FriendlyId
+  friendly_id :title, use: :slugged
+
+  # == Relationships ========================================================
+
+  belongs_to :user
+
+  # == Validations ==========================================================
+
+  # == Scopes ===============================================================
+
+  # == Callbacks ============================================================
+
+  # == Class Methods ========================================================
+
+  # == Instance Methods =====================================================
+  
+  def should_generate_new_friendly_id?
+    title_changed?
   end
 end
 ~~~~~~~~

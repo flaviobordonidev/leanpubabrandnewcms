@@ -463,6 +463,14 @@ $ git push origin master
 
 
 
+## Se avessimo attivato la registrazione
+
+          <%#= link_to 'Edit Profile', edit_user_registration_path %>
+          <%= link_to current_user.email, edit_user_registration_path %>
+
+
+
+
 ## Il codice del capitolo
 
 

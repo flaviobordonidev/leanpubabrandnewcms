@@ -1,0 +1,53 @@
+<%= form_with(model: post, local: true, url: url) do |form| %>
+  <% if post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul>
+      <% post.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-4">
+      <!--<div class="card" style="width: 18rem;">-->
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><%= yield(:page_title) %></h5>
+            <div class="field">
+              <%= form.label :title %>
+              <%= form.text_field :title, class: "form-control" %>
+            </div>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :main_image %>
+              <%= form.file_field :main_image %>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :title %>
+              <%= form.text_area :title, class: "form-control" %>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="col-md-8">
+      <%= form.trix_editor :incipit, required: true, autofocus: true %>
+    </div>
+  </div>
+  
+
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+
