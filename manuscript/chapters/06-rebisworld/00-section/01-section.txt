@@ -1,0 +1,16 @@
+-# VOLUME 6
+
+Sviluppiamo il sito www.rebisworld.com usando il tema Pofo. (In un secondo tempo inseriamo anche qualche revoloution-sliders)
+
+
+Questo volume continua a partire da quanto già fatto nei seguenti volumi:
+
+* 01-beginnning
+* 02-brandnewcms
+* 03-cms_pofo
+
+in questo volume: 
+
+* Creiamo la pagina "homepage"
+* Creiamo la pagina "Il gioco"
+* Adattiamo la sezione posts

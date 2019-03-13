@@ -1,0 +1,278 @@
+# Cambiamo la lingua
+
+Questo capitolo è del tutto opzionale. Se non vogliamo implementare il cambio della lingua andiamo direttamente alla chiusura del branch
+
+Per il cambio della lingua (Internazionalizzazione) ci sono varie soluzioni ad esempio dei sottodomini .it .en e questo per funzionare ha bisogno di cambi sul file routes. Altrimenti si può passare il cambio tramite parameters.
+
+
+
+
+## Scelta del "locale" dall'URL
+
+Implementiamo la multilingua (i18n) passando sull'url **it** o **en** come parametro **locale**.
+
+Impostiamo il fatto di poter cambiare il locale direttamente dall'URL. Per far questo creiamo un parametro che chiamiamo params[:locale]. Il nome del parametro è ininfluente. Scegliamo :locale solo per maggior chiarezza. Questo parametro lo utiliziamo sull'azione che chiamiamo "set_locale" e mettiamo su application_controller così viene eseguita per tutta l'applicazione. Per farla eseguire la richiamiamo dal before_action
+
+{title=".../app/controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class ApplicationController < ActionController::Base
+  protect_from_forgery with: :exception
+
+  before_action :set_locale
+
+  #-----------------------------------------------------------------------------
+  private
+  
+  #set language for internationalization
+  def set_locale
+    I18n.locale = params[:locale] if params[:locale].present?
+                # "en"
+                # params[:locale] if params[:locale].present?
+                # current_user.locale
+                # request.subdomain
+                # request.env["HTTP_ACCEPT_LANGUAGE"]
+                # request.remote_ip
+  end
+end
+~~~~~~~~
+
+I> ti ricordo che il default_locale lo abbiamo già impostato nella capitolo precedente
+I>
+I> il before_action sostituisce il before_filter che si usava su Rails 3
+
+
+
+
+### Verifichiamo preview
+
+Attiviamo il database postgresql e facciamo partire il nostro webserver puma su cloud9
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+Visualizziamo sul browser i vari URLs:
+
+* https://mycloud9path.amazonaws.com/example_static_pages/page_a
+* https://mycloud9path.amazonaws.com/example_static_pages/page_a?locale=en
+* https://mycloud9path.amazonaws.com/example_static_pages/page_a?locale=it
+
+
+
+
+## Implementiamo il pannello *lingua* sui *settaggi globali*. 
+
+implementiamo su global_settings la possibilità di cambiare lingua. Al momento sono presenti solo due lingue inglese ed italiano. Aggiungiamo al tab/panel logout anche il tab/panel language e lo impostiamo come tab/panel attivo. 
+
+{title=".../app/views/global_settings/index.html.erb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="container-fluid rear_mode">
+
+  <div class="row">
+    <div class="col-xs-9 col-sm-10 col-lg-11">
+      <ul class="nav nav-pills bottom-pad top-pad left-pad">
+        <li class="<%= 'active' if params[:tab_active].nil? or params[:tab_active] == 'language' %>">
+          <%= link_to "#pane_language", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_language" %>
+          <% end %>
+          <!-- <a href="#pane_language" data-toggle="tab"><span class="glyphiconmy ico_language"></span></a> -->
+        </li>
+
+        <li class="<%= 'active' if params[:tab_active] == 'logout' %>">
+          <%= link_to "#pane_logout", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_logout" %>
+          <% end %>
+          <!-- <a href="#pane_logout" data-toggle="tab"><span class="glyphiconmy ico_logout"></span></a> -->
+        </li>
+      </ul>
+    </div>
+    <div class="col-xs-3 col-sm-2 col-lg-1">
+      <%= render "button_close" %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="tab-content">
+        <div id="pane_language" class="tab-pane <%= 'active' if params[:tab_active] == nil or params[:tab_active] == 'language'  %>">
+          <div class="text-center bottom-pad">
+            <h4>Language</h4>
+          </div>
+          <%= render 'pane_language' %>
+        </div>
+        
+        <div id="pane_logout" class="tab-pane <%= 'active' if params[:tab_active] == 'logout'  %>">
+          <div class="text-center bottom-pad">
+            <h4>Logout</h4>
+          </div>
+          <%= render 'pane_logout' %>
+        </div>
+      </div><!-- /.tab-content -->
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+</div> <!-- /rear_mode -->
+~~~~~~~~
+
+
+{title=".../app/views/global_settings/_pane_language.html.erb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+<div class="list-group left-pad right-pad bottom-pad">
+  <%= link_to params.permit(:locale).merge(locale: 'en'), class: "list-group-item #{'active' if params[:locale] == 'en'}" do %>
+    <span class="glyphiconmy ico_language_us right-pad"></span> Inglese
+  <% end %>
+  <%= link_to params.permit(:locale).merge(locale: "it"), class: "list-group-item #{'active' if params[:locale] == 'it'}" do %>
+    <span class="glyphiconmy ico_language_it right-pad"></span> Italiano
+  <% end %>
+</div>
+
+<div class="list-group left-pad right-pad bottom-pad">
+  <%= link_to homepage_show_path, class: "btn btn-primary btn-block" do %>
+   ok
+  <% end %>
+</div>
+~~~~~~~~
+
+
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Cambio lingua sull'URL
+
+Passiamo il cambio lingua tramite parameters.
+
+Per cambiare il "locale" uso un before_action sul file application_controller.rb così si ripercuote su tutta l'applicazione.
+
+
+{title="controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=6}
+~~~~~~~~
+before_action :set_locale
+~~~~~~~~
+
+{title="controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=9}
+~~~~~~~~
+private
+
+#set language for internationalization
+def set_locale
+  I18n.locale = params[:locale] if params[:locale].present?
+end
+~~~~~~~~
+
+[tutto il codice](#beginning-example_static_pages_i18n-03a-application_controller.rb)
+
+
+Mettiamo la selezione della lingua all'interno dell'URL. Così avremo
+localhost:3000/it
+localhost:3000/en
+Per far questo mettiamo tutti i nostri percorsi "routes" dentro un blocco "scope".
+
+[codice: application config 08](#code-application-config-08)
+
+{title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+scope "(:locale)", locale: /en|it/ do
+~~~~~~~~
+
+potevo lasciare uno scope più ampio 
+
+~~~~~~~~
+scope "(:locale)" do
+~~~~~~~~
+
+ma questo mi creava un problema di sicurezza. Molto meglio verificare che sia passato un "locale" valido. Nel nostro caso o "it" o "en" che ho gestito nei miei files yml con la traduzione.
+
+
+
+può essere necessario riavviare il webserver per permettere a Rails di caricare il file it.yml
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+CTRL+C        (per stoppare)
+$ rails s     (per ripartire)
+~~~~~~~~
+
+
+verifichiamo sul browser http://localhost:3000
+
+
+
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "set i18n static at the end of the URL"
+~~~~~~~~
+
+
+
+## Risolvo problema sui link_to
+
+Avere un blocco "scope" su routes mi crea un problema sul comportamento di default di Rails di tutti i links. Per risolverlo:
+
+[Codice: application controllers 02](#code-application-controllers-02)
+
+{title="controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=21}
+~~~~~~~~
+def default_url_options(options = {})
+  {locale: I18n.locale}
+end
+~~~~~~~~
+
+
+
+
+
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "set i18n change language on url"
+~~~~~~~~
+
+publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku tpi18n:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge tpi18n
+$ git branch -d tpi18n
+~~~~~~~~

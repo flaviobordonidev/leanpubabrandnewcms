@@ -1,0 +1,1 @@
+# Vedi capitolo 02-brandnewcms/05-enum_with_i18n

@@ -1,0 +1,17 @@
+
+
+{title=".../app/views/posts/_post_single.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+                <% if post.image.present? %>
+                  <!-- Entry Image
+                  ============================================= -->
+                  <div class="entry-image">
+                    <!-- <a href="#"><img src="images/blog/full/1.jpg" alt="Blog Single"></a> -->
+                    <!--<a href="#"><%#= image_tag "blog-full-1.jpg", alt: "Blog Single" %></a>-->
+                    <!--<a href="#"><%#= image_tag @post.image_url, alt: "Blog Single" %></a>-->
+                    <%= link_to image_path(post.image_url), target: "_blank" do %>
+                      <%= image_tag post.image_url, alt: "Blog Single" %>
+                    <% end %>
+                  </div><!-- .entry-image end -->
+                <% end %>
+~~~~~~~~

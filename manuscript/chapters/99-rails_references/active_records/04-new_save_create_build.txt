@@ -1,8 +1,8 @@
 # methods .new .save .create .build
 
 
-1. .create  is equivalent to .new followed by .save. It's just more succinct.
-2. .create! is equivalent to .new followed by .save! (throws an error if saving fails).
+* .create  is equivalent to .new followed by .save. It's just more succinct.
+* .create! is equivalent to .new followed by .save! (throws an error if saving fails).
 
 For create, one cannot pass false as an argument which you can do with save. Passing false as an argument will skip all rails validations
 Although it is correct that create calls new and then save there is a big difference between the two alternatives in their return values.

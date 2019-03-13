@@ -1,0 +1,690 @@
+# acts-as-taggable-on gem
+
+In questo episodio impostiamo i tags per gli articoli del blog utilizzando la gemma Rails "act-as-taggable-on".
+
+tags : le parole più ricercate / le parole chiave (sarà usato dalla gemma acs-as-taggable)
+
+
+Risorse web:
+
+* [video](https://www.youtube.com/watch?v=0j6kySJ4EKs)
+ 
+
+
+
+## Apriamo il branch "Taggable Posts"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b tp
+~~~~~~~~
+
+
+
+
+## installiamo la gemma acts-as-taggable-on
+
+I> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/acts-as-taggable-on)
+I>
+I> facciamo riferimento al [tutorial github della gemma](https://github.com/mbleigh/acts-as-taggable-on)
+
+{id="02-14-01_01", title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=66}
+~~~~~~~~
+# tag a single model on several contexts, such as skills, interests, and awards.
+gem 'acts-as-taggable-on', '~> 6.0'
+~~~~~~~~
+
+[Codice 01](#02-14-01_01all)
+
+Eseguiamo l'installazione della gemma con bundle
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ bundle install
+~~~~~~~~
+
+e lanciamo lo script di installazione/upgrade
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rake acts_as_taggable_on_engine:install:migrations
+
+
+ec2-user:~/environment/myapp (if) $ rake acts_as_taggable_on_engine:install:migrations
+Copied migration 20190215152203_acts_as_taggable_on_migration.acts_as_taggable_on_engine.rb from acts_as_taggable_on_engine
+Copied migration 20190215152204_add_missing_unique_indices.acts_as_taggable_on_engine.rb from acts_as_taggable_on_engine
+Copied migration 20190215152205_add_taggings_counter_cache_to_tags.acts_as_taggable_on_engine.rb from acts_as_taggable_on_engine
+Copied migration 20190215152206_add_missing_taggable_index.acts_as_taggable_on_engine.rb from acts_as_taggable_on_engine
+Copied migration 20190215152207_change_collation_for_tag_names.acts_as_taggable_on_engine.rb from acts_as_taggable_on_engine
+Copied migration 20190215152208_add_missing_indexes_on_taggings.acts_as_taggable_on_engine.rb from acts_as_taggable_on_engine
+~~~~~~~~
+
+Mi crea sei migrations con della logica per le varie versioni di Rails. Non mi piace molto anche perché sembra limitato a [4.2] e non [5.1] ma per il momento ci adeguiamo e lasciamo così.
+
+{id="02-14-01_02", title=".../db/migrate/xxx_acts_as_taggable_on_migration.acts_as_taggable_on_engine.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+# This migration comes from acts_as_taggable_on_engine (originally 1)
+if ActiveRecord.gem_version >= Gem::Version.new('5.0')
+  class ActsAsTaggableOnMigration < ActiveRecord::Migration[4.2]; end
+~~~~~~~~
+
+[Codice 02](#02-14-01_02all)
+
+
+{id="02-14-01_03", title=".../db/migrate/xxx_add_missing_unique_indices.acts_as_taggable_on_engine.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+# This migration comes from acts_as_taggable_on_engine (originally 2)
+if ActiveRecord.gem_version >= Gem::Version.new('5.0')
+  class AddMissingUniqueIndices < ActiveRecord::Migration[4.2]; end
+~~~~~~~~
+
+[Codice 03](#02-14-01_03all)
+
+
+{id="02-14-01_04", title=".../db/migrate/xxx_add_taggings_counter_cache_to_tags.acts_as_taggable_on_engine.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+# This migration comes from acts_as_taggable_on_engine (originally 3)
+if ActiveRecord.gem_version >= Gem::Version.new('5.0')
+  class AddTaggingsCounterCacheToTags < ActiveRecord::Migration[4.2]; end
+~~~~~~~~
+
+[Codice 04](#02-14-01_04all)
+
+
+{id="02-14-01_05", title=".../db/migrate/xxx_add_missing_taggable_index.acts_as_taggable_on_engine.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+# This migration comes from acts_as_taggable_on_engine (originally 4)
+if ActiveRecord.gem_version >= Gem::Version.new('5.0')
+  class AddMissingTaggableIndex < ActiveRecord::Migration[4.2]; end
+~~~~~~~~
+
+[Codice 05](#02-14-01_05all)
+
+
+{id="02-14-01_06", title=".../db/migrate/xxx_change_collation_for_tag_names.acts_as_taggable_on_engine.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+# This migration comes from acts_as_taggable_on_engine (originally 5)
+# This migration is added to circumvent issue #623 and have special characters
+# work properly
+if ActiveRecord.gem_version >= Gem::Version.new('5.0')
+  class ChangeCollationForTagNames < ActiveRecord::Migration[4.2]; end
+~~~~~~~~
+
+[Codice 06](#02-14-01_06all)
+
+
+{id="02-14-01_07", title=".../db/migrate/xxx_add_missing_indexes_on_taggings.acts_as_taggable_on_engine.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+# This migration comes from acts_as_taggable_on_engine (originally 6)
+if ActiveRecord.gem_version >= Gem::Version.new('5.0')
+  class AddMissingIndexesOnTaggings < ActiveRecord::Migration[4.2]; end
+~~~~~~~~
+
+[Codice 07](#02-14-01_07all)
+
+
+eseguiamo il migrate
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails db:migrate
+~~~~~~~~
+
+
+
+
+## Verifichiamo le routes?
+
+non dobbiamo cambiare niente, verifichiamo solo come sono stati inseriti gli instradamenti.
+
+{title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+...
+~~~~~~~~
+
+E non è stato inserito nessun instradamento :). Non c'è nessun instradamento perché i tags lavorano all'interno di pagine esistenti; non sono delle nuove pagine da visualizzare.
+
+
+
+
+## Aggiorniamo il model Post
+
+Aggiorniamo il model aggiungendo il nuovo attributo ":tags" di acts_as_taggable_on nella sezione "# == Attributes".
+
+{id="02-14-01_08", title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=13}
+~~~~~~~~
+  ## acts_as_taggable_on
+  acts_as_taggable # Alias for acts_as_taggable_on :tags
+~~~~~~~~
+
+[Codice 08](#02-14-01_08all)
+
+
+
+
+## Verifichiamo l'utilizzo su console
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+> post = Post.last
+ => #<Post id: 8, title:...
+
+> post.tags
+ => #<ActiveRecord::Associations::CollectionProxy []>
+
+> post.tag_list.add("good post", "decent post", "too long")
+ => ["good post", "decent post", "too long"] 
+
+> post.save
+ => true
+
+> post.reload
+ => #<Post id: 8, title:
+
+> post.tags
+ => #<ActiveRecord::Associations::CollectionProxy [#<ActsAsTaggableOn::Tag id: 3, name: "too long", taggings_count: 1>, #<ActsAsTaggableOn::Tag id: 2, name: "decent post", taggings_count: 1>, #<ActsAsTaggableOn::Tag id: 1, name: "good post", taggings_count: 1>]>
+ 
+> post.tag_list.remove("decent post", "good post")
+ => ["too long"]
+
+> post.save
+ => true
+
+> post.reload
+ => #<Post id: 8, title:
+
+> post.tags
+ => #<ActiveRecord::Associations::CollectionProxy [#<ActsAsTaggableOn::Tag id: 3, name: "too long", taggings_count: 1>]>
+~~~~~~~~
+
+
+
+
+## Aggiorniamo il controller
+
+Aggiorniamo i posts nella parte Authors perché vogliamo inserire, modificare ed eliminare i tags. Inseriamo la variabile ":tag_list" nella withe-list dei params.
+
+{title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=84}
+~~~~~~~~
+      # Never trust parameters from the scary internet, only allow the white list through.
+      def post_params
+        params.require(:post).permit(:title, :body, :description, :author_id, :image, :incipit, :sharing_image, :sharing_description, :tag_list)
+      end
+~~~~~~~~
+
+
+
+
+## Aggiorniamo il views 
+
+inseriamo il campo tags
+
+{title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=56}
+~~~~~~~~
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :tag_list %><!-- separati da virgola -->
+              <%= form.text_area :tag_list, id: :tag_list, class: "form-control" %>
+            </div>
+          </li>
+~~~~~~~~
+
+
+
+
+### Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+apriamo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/authors/posts
+
+Entriamo nell'ultimo post e verifichiamo che c'è la parola **too long** cancelliamo e sostituiamo con le tre parole separate da virgola: **Biciclette, Tape VHS, gomma da masticare** e clickiamo update.
+
+entriamo in console e verifichiamo che ha funzionato
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+> post = Post.last
+ => #<Post id: 8, title:...
+
+> post.tags
+ => #<ActiveRecord::Associations::CollectionProxy [#<ActsAsTaggableOn::Tag id: 6, name: "gomma da masticare", taggings_count: 1>, #<ActsAsTaggableOn::Tag id: 5, name: "Tape VHS", taggings_count: 1>, #<ActsAsTaggableOn::Tag id: 4, name: "Biciclette", taggings_count: 1>]> 
+~~~~~~~~
+
+
+
+
+## Implementiamo views posts/index
+
+Aggiungiamo i vari tags come links e passiamo il parametro params[:tag] con il nome del tag. Questo ci servirà in seguito per fare un filtro degli articoli in funzione del tag. 
+
+{title=".../app/views/posts/_posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=32}
+~~~~~~~~
+  				<div class="entry-content">
+  				  <%#= post.tags.map(&:name).join(', ') %>
+  				  <% post.tags.each do |tag| %>
+  				    <%= link_to tag.name, posts_path(tag: tag.name) %>
+  				  <% end %>
+  				</div>    
+~~~~~~~~
+
+
+
+
+## Aggiorniamo il controller per filtrare i tags
+
+usiamo il params[:tag] per filtrare gli articoli in funzione del tag. Nello specifico usiamo la funzione della gemma installata **tagged_with(params[:tag])**
+
+{title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+  def index
+    if params[:tag].present?
+      @posts = Post.most_recent.published.tagged_with(params[:tag])
+    else
+      @posts = Post.most_recent.published
+    end
+  end
+~~~~~~~~
+
+
+verifichiamo 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+
+
+
+## salviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Add acts-as-taggable-on gem"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su Heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku tp:master
+$ heroku run rails db:migrate
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge tp
+$ git branch -d tp
+~~~~~~~~
+
+
+aggiorniamo github
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
+
+
+
+
+## Il codice del capitolo
+
+
+
+
+[Codice 01](#02-14-01_01)
+
+{id="02-14-01_01all", title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+source 'https://rubygems.org'
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
+
+ruby '2.4.1'
+
+# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'rails', '~> 5.2.1', '>= 5.2.1.1'
+# Use postgresql as the database for Active Record
+gem 'pg', '>= 0.18', '< 2.0'
+# Use Puma as the app server
+gem 'puma', '~> 3.11'
+# Use SCSS for stylesheets
+gem 'sass-rails', '~> 5.0'
+# Use Uglifier as compressor for JavaScript assets
+gem 'uglifier', '>= 1.3.0'
+# See https://github.com/rails/execjs#readme for more supported runtimes
+# gem 'mini_racer', platforms: :ruby
+
+# Use CoffeeScript for .coffee assets and views
+gem 'coffee-rails', '~> 4.2'
+# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
+gem 'turbolinks', '~> 5'
+# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+gem 'jbuilder', '~> 2.5'
+# Use Redis adapter to run Action Cable in production
+# gem 'redis', '~> 4.0'
+# Use ActiveModel has_secure_password
+# gem 'bcrypt', '~> 3.1.7'
+
+# Use ActiveStorage variant
+gem 'mini_magick', '~> 4.8'
+
+# API clients for AWS S3 services. Comunicazione con Amazon Web Service S3 per ActiveStorage
+gem "aws-sdk-s3", require: false
+
+# Use Capistrano for deployment
+# gem 'capistrano-rails', group: :development
+
+# Reduces boot times through caching; required in config/boot.rb
+gem 'bootsnap', '>= 1.1.0', require: false
+
+# Flexible authentication solution for Rails with Warden 
+gem 'devise', '~> 4.5'
+
+# Object oriented authorization for Rails applications
+gem 'pundit', '~> 2.0'
+
+# The most popular HTML, CSS, and JavaScript framework. http://getbootstrap.com
+gem 'bootstrap', '~> 4.2', '>= 4.2.1'
+# Use jquery as the JavaScript library
+gem 'jquery-rails'
+
+# slugging and permalink for Active Record. For creating human-friendly strings URLs and use as if they were numeric ids.
+gem 'friendly_id', '~> 5.2', '>= 5.2.5'
+
+# A rich text editor for everyday writing 
+gem 'trix-rails', '~> 2.0', require: 'trix'
+
+# Agnostic pagination in plain ruby
+gem 'pagy', '~> 1.3', '>= 1.3.2'
+
+# tag a single model on several contexts, such as skills, interests, and awards.
+gem 'acts-as-taggable-on', '~> 6.0'
+
+group :development, :test do
+  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+end
+
+group :development do
+  # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
+  gem 'web-console', '>= 3.3.0'
+  gem 'listen', '>= 3.0.5', '< 3.2'
+  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  gem 'spring'
+  gem 'spring-watcher-listen', '~> 2.0.0'
+end
+
+group :test do
+  # Adds support for Capybara system testing and selenium driver
+  gem 'capybara', '>= 2.15'
+  gem 'selenium-webdriver'
+  # Easy installation and use of chromedriver to run system tests with Chrome
+  gem 'chromedriver-helper'
+end
+
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+~~~~~~~~
+
+
+
+
+[Codice 02](#02-14-01_02)
+
+{id="02-14-01_02all", title=".../db/migrate/xxx_acts_as_taggable_on_migration.acts_as_taggable_on_engine.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+# This migration comes from acts_as_taggable_on_engine (originally 1)
+if ActiveRecord.gem_version >= Gem::Version.new('5.0')
+  class ActsAsTaggableOnMigration < ActiveRecord::Migration[4.2]; end
+else
+  class ActsAsTaggableOnMigration < ActiveRecord::Migration; end
+end
+ActsAsTaggableOnMigration.class_eval do
+  def self.up
+    create_table :tags do |t|
+      t.string :name
+    end
+
+    create_table :taggings do |t|
+      t.references :tag
+
+      # You should make sure that the column created is
+      # long enough to store the required class names.
+      t.references :taggable, polymorphic: true
+      t.references :tagger, polymorphic: true
+
+      # Limit is created to prevent MySQL error on index
+      # length for MyISAM table type: http://bit.ly/vgW2Ql
+      t.string :context, limit: 128
+
+      t.datetime :created_at
+    end
+
+    add_index :taggings, :tag_id
+    add_index :taggings, [:taggable_id, :taggable_type, :context]
+  end
+
+  def self.down
+    drop_table :taggings
+    drop_table :tags
+  end
+end
+~~~~~~~~
+
+
+
+
+[Codice 03](#02-14-01_03)
+
+{id="02-14-01_03all", title=".../db/migrate/xxx_add_missing_unique_indices.acts_as_taggable_on_engine.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+# This migration comes from acts_as_taggable_on_engine (originally 2)
+if ActiveRecord.gem_version >= Gem::Version.new('5.0')
+  class AddMissingUniqueIndices < ActiveRecord::Migration[4.2]; end
+else
+  class AddMissingUniqueIndices < ActiveRecord::Migration; end
+end
+AddMissingUniqueIndices.class_eval do
+  def self.up
+    add_index :tags, :name, unique: true
+
+    remove_index :taggings, :tag_id if index_exists?(:taggings, :tag_id)
+    remove_index :taggings, [:taggable_id, :taggable_type, :context]
+    add_index :taggings,
+              [:tag_id, :taggable_id, :taggable_type, :context, :tagger_id, :tagger_type],
+              unique: true, name: 'taggings_idx'
+  end
+
+  def self.down
+    remove_index :tags, :name
+
+    remove_index :taggings, name: 'taggings_idx'
+
+    add_index :taggings, :tag_id unless index_exists?(:taggings, :tag_id)
+    add_index :taggings, [:taggable_id, :taggable_type, :context]
+  end
+end
+~~~~~~~~
+
+
+
+
+[Codice 04](#02-14-01_04)
+
+{id="02-14-01_04all", title=".../db/migrate/xxx_add_taggings_counter_cache_to_tags.acts_as_taggable_on_engine.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+# This migration comes from acts_as_taggable_on_engine (originally 3)
+if ActiveRecord.gem_version >= Gem::Version.new('5.0')
+  class AddTaggingsCounterCacheToTags < ActiveRecord::Migration[4.2]; end
+else
+  class AddTaggingsCounterCacheToTags < ActiveRecord::Migration; end
+end
+AddTaggingsCounterCacheToTags.class_eval do
+  def self.up
+    add_column :tags, :taggings_count, :integer, default: 0
+
+    ActsAsTaggableOn::Tag.reset_column_information
+    ActsAsTaggableOn::Tag.find_each do |tag|
+      ActsAsTaggableOn::Tag.reset_counters(tag.id, :taggings)
+    end
+  end
+
+  def self.down
+    remove_column :tags, :taggings_count
+  end
+end
+~~~~~~~~
+
+
+
+
+[Codice 05](#02-14-01_05)
+
+{id="02-14-01_05all", title=".../db/migrate/xxx_add_missing_taggable_index.acts_as_taggable_on_engine.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+# This migration comes from acts_as_taggable_on_engine (originally 4)
+if ActiveRecord.gem_version >= Gem::Version.new('5.0')
+  class AddMissingTaggableIndex < ActiveRecord::Migration[4.2]; end
+else
+  class AddMissingTaggableIndex < ActiveRecord::Migration; end
+end
+AddMissingTaggableIndex.class_eval do
+  def self.up
+    add_index :taggings, [:taggable_id, :taggable_type, :context]
+  end
+
+  def self.down
+    remove_index :taggings, [:taggable_id, :taggable_type, :context]
+  end
+end
+~~~~~~~~
+
+
+
+
+[Codice 06](#02-14-01_06)
+
+{id="02-14-01_06all", title=".../db/migrate/xxx_change_collation_for_tag_names.acts_as_taggable_on_engine.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+# This migration comes from acts_as_taggable_on_engine (originally 5)
+# This migration is added to circumvent issue #623 and have special characters
+# work properly
+if ActiveRecord.gem_version >= Gem::Version.new('5.0')
+  class ChangeCollationForTagNames < ActiveRecord::Migration[4.2]; end
+else
+  class ChangeCollationForTagNames < ActiveRecord::Migration; end
+end
+ChangeCollationForTagNames.class_eval do
+  def up
+    if ActsAsTaggableOn::Utils.using_mysql?
+      execute("ALTER TABLE tags MODIFY name varchar(255) CHARACTER SET utf8 COLLATE utf8_bin;")
+    end
+  end
+end
+~~~~~~~~
+
+
+
+
+[Codice 07](#02-14-01_07)
+
+{id="02-14-01_07all", title=".../db/migrate/xxx_add_missing_indexes_on_taggings.acts_as_taggable_on_engine.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+# This migration comes from acts_as_taggable_on_engine (originally 6)
+if ActiveRecord.gem_version >= Gem::Version.new('5.0')
+  class AddMissingIndexesOnTaggings < ActiveRecord::Migration[4.2]; end
+else
+  class AddMissingIndexesOnTaggings < ActiveRecord::Migration; end
+end
+AddMissingIndexesOnTaggings.class_eval do
+  def change
+    add_index :taggings, :tag_id unless index_exists? :taggings, :tag_id
+    add_index :taggings, :taggable_id unless index_exists? :taggings, :taggable_id
+    add_index :taggings, :taggable_type unless index_exists? :taggings, :taggable_type
+    add_index :taggings, :tagger_id unless index_exists? :taggings, :tagger_id
+    add_index :taggings, :context unless index_exists? :taggings, :context
+
+    unless index_exists? :taggings, [:tagger_id, :tagger_type]
+      add_index :taggings, [:tagger_id, :tagger_type]
+    end
+
+    unless index_exists? :taggings, [:taggable_id, :taggable_type, :tagger_id, :context], name: 'taggings_idy'
+      add_index :taggings, [:taggable_id, :taggable_type, :tagger_id, :context], name: 'taggings_idy'
+    end
+  end
+end
+~~~~~~~~
+
+
+
+
+[Codice 08](#02-14-01_08)
+
+{id="02-14-01_08all", title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=13}
+~~~~~~~~
+class Post < ApplicationRecord
+  # == Constants ============================================================
+
+  # == Attributes ===========================================================
+
+  enum type_of_content: {image: 0, video_youtube: 1, video_vimeo:2, audio:3}
+  
+  ## ActiveStorage
+  has_one_attached :main_image
+  has_one_attached :paragraph_image
+  has_one_attached :paragraph2_image
+
+  ## acts_as_taggable_on
+  acts_as_taggable # Alias for acts_as_taggable_on :tags
+  
+  # == Extensions ===========================================================
+
+  ## friendly_id
+  extend FriendlyId
+  friendly_id :title, use: :slugged
+
+  # == Relationships ========================================================
+
+  belongs_to :user
+
+  # == Validations ==========================================================
+
+  # == Scopes ===============================================================
+
+  scope :published, -> { where(published: true) }
+
+  # == Callbacks ============================================================
+
+  # == Class Methods ========================================================
+
+  # == Instance Methods =====================================================
+  
+  def should_generate_new_friendly_id?
+    title_changed?
+  end
+  
+end
+~~~~~~~~

@@ -22,7 +22,7 @@ Il file README che ci interessa è quello dentro la cartella della nostra applic
 
 {id="01-06-02_01", title=".../README.md",lang=markdown, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
-# Myapp v0.1.0
+# Myapp-1 BlaBlaBla
 ==
 ~~~~~~~~
 
@@ -30,7 +30,7 @@ Il file README che ci interessa è quello dentro la cartella della nostra applic
 ~~~~~~~~
 history:
 
-* v0.1.0  01.01.19  creazione dell'applicazione su rails 5.2.0
+* v0.1.0  08.03.19  creazione dell'applicazione su rails 5.2.2
 ~~~~~~~~
 
 [Codice 01](#01-06-02_01all)

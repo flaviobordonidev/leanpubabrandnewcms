@@ -20,7 +20,7 @@ Altra fonte utile è
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ cd ~/environment
-$ gem install rails -v 5.2.1.1
+$ gem install rails -v 5.2.2
 ~~~~~~~~
 
 
@@ -35,7 +35,7 @@ Possiamo gestire postgreSQL localmente nell'ambiente di sviluppo e test perché 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ cd ~/environment
-$ rails _5.2.1.1_ new myapp --database=postgresql
+$ rails _5.2.2_ new myapp --database=postgresql
 ~~~~~~~~
 
 Per l'applicazione non metto la numerazione (es: myapp_1) tanto la ho già a livello di workspace aws cloud9.

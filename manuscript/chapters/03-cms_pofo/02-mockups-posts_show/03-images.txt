@@ -1,0 +1,235 @@
+# Le immagini
+
+Non ci resta che importare le immagini sull'asset_pipeline ed associare le chiamate
+
+
+
+
+## Apriamo il branch "Import Images"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b ii
+~~~~~~~~
+
+
+
+
+## importiamo le immagini da Pofo all'asset_pipeline
+
+Impostiamo su posts_show gli helpers per puntare all'asset_pipeline ed aggiungiamo le nuove immagini all'occorrenza.
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=15}
+~~~~~~~~
+        <link rel="shortcut icon" href="<%=image_path('pofo/favicon.png')%>">
+        <link rel="apple-touch-icon" href="<%=image_path('pofo/apple-touch-icon-57x57.png')%>">
+        <link rel="apple-touch-icon" sizes="72x72" href="<%=image_path('pofo/apple-touch-icon-72x72.png')%>">
+        <link rel="apple-touch-icon" sizes="114x114" href="<%=image_path('pofo/apple-touch-icon-114x114.png')%>">
+~~~~~~~~
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=59}
+~~~~~~~~
+                            <a href="index.html" title="Pofo" class="logo"><%= image_tag "pofo/logo.png", 'data-rjs': image_path('pofo/logo@2x.png'), class: "logo-dark", alt: "Pofo" %><%= image_tag "pofo/logo-white.png", 'data-rjs': image_path('pofo/logo-white@2x.png'), alt: "Pofo", class: "logo-light default" %></a>
+~~~~~~~~
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=288}
+~~~~~~~~
+                                                            <a href="home-creative-studio.html" class="menu-banner-image"><%= image_tag "pofo/menu-banner-01.png", alt: "portfolio" %></a>
+~~~~~~~~
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=291}
+~~~~~~~~
+                                                            <a href="home-creative-business.html" class="menu-banner-image"><%= image_tag "pofo/menu-banner-02.png", alt: "portfolio" %></a>
+~~~~~~~~
+
+la seguente immagine del menu è differente: 
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=593}
+~~~~~~~~
+        <section class="wow fadeIn parallax" data-stellar-background-ratio="0.5" style="background-image:url('<%= image_path('pofo/parallax-bg54.jpg') %>');">
+~~~~~~~~
+
+* .../images/parallax-bg54.jpg  ->  .../app/assets/images/pofo/parallax-bg54.jpg
+
+
+Abbiamo finito la parte del menu che è identica ed adesso iniziano le immagini su linee di codice differenti
+
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=620}
+~~~~~~~~
+                        <%= image_tag "pofo/blog-details-img7.jpg", alt: "", class: "width-100 margin-50px-tb" %>
+~~~~~~~~
+
+* .../images/blog-details-img7.jpg  ->  .../app/assets/images/pofo/blog-details-img7.jpg
+
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=637}
+~~~~~~~~
+        <section class="wow fadeIn parallax big-section" data-stellar-background-ratio="0.4" style="background-image: url('<%= image_path('pofo/parallax-bg55.jpg') %>')">
+~~~~~~~~
+
+* .../images/parallax-bg55.jpg  ->  .../app/assets/images/pofo/parallax-bg55.jpg
+
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=659}
+~~~~~~~~
+                        <figure class="wp-caption alignright"><%= image_tag "pofo/blog-details-img10.jpg", alt: "" %><figcaption class="wp-caption-text">There is no sincerer love than the love of food.</figcaption></figure>
+~~~~~~~~
+
+* .../images/blog-details-img10.jpg  ->  .../app/assets/images/pofo/blog-details-img10.jpg
+
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=664}
+~~~~~~~~
+                        <figure class="wp-caption alignleft"><%= image_tag "pofo/blog-details-img11.jpg", alt: "" %><figcaption class="wp-caption-text">There is no sincerer love than the love of food.</figcaption></figure>
+~~~~~~~~
+
+* .../images/blog-details-img11.jpg  ->  .../app/assets/images/pofo/blog-details-img11.jpg
+
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=705}
+~~~~~~~~
+                                <%= image_tag "pofo/avtar-01.jpg", class: "img-circle width-100px", alt:"" %>
+~~~~~~~~
+
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=734}
+~~~~~~~~
+                                    <%= image_tag "pofo/blog-img15.jpg", alt: "" %>
+~~~~~~~~
+
+* .../images/blog-img15.jpg  ->  .../app/assets/images/pofo/blog-img15.jpg
+
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=751}
+~~~~~~~~
+                                    <%= image_tag "pofo/blog-img16.jpg", alt: "" %>
+~~~~~~~~
+
+* .../images/blog-img16.jpg  ->  .../app/assets/images/pofo/blog-img16.jpg
+
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=768}
+~~~~~~~~
+                                    <%= image_tag "pofo/blog-img17.jpg", alt: "" %>
+~~~~~~~~
+
+* .../images/blog-img17.jpg  ->  .../app/assets/images/pofo/blog-img17.jpg
+
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=785}
+~~~~~~~~
+                                    <%= image_tag "pofo/blog-img18.jpg", alt: "" %>
+~~~~~~~~
+
+* .../images/blog-img18.jpg  ->  .../app/assets/images/pofo/blog-img18.jpg
+
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=817}
+~~~~~~~~
+                                        <%= image_tag "pofo/avtar-02.jpg", class: "img-circle width-85 xs-width-100", alt: "" %>
+~~~~~~~~
+
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=830}
+~~~~~~~~
+                                                <%= image_tag "pofo/avtar-01.jpg", class: "img-circle width-85 xs-width-100", alt: "" %>
+~~~~~~~~
+
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=845}
+~~~~~~~~
+                                        <%= image_tag "pofo/avtar-04.jpg", class: "img-circle width-85 xs-width-100", alt: "" %>
+~~~~~~~~
+
+Iniziamo il footer
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=908}
+~~~~~~~~
+                                <a href="index.html"><<%= image_tag "pofo/logo-white.png", class: "footer-logo", 'data-rjs': image_path('pofo/logo-white@2x.png'), alt: "Pofo" %></a>
+~~~~~~~~
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=945}
+~~~~~~~~
+                                        <a href="blog-post-layout-01.html"><%= image_tag "pofo/latest-blog2.jpg", alt: "" %></a>
+~~~~~~~~
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=951}
+~~~~~~~~
+                                        <a href="blog-post-layout-02.html"><%= image_tag "pofo/latest-blog3.jpg", alt: "" %></a>
+~~~~~~~~
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=957}
+~~~~~~~~
+                                        <a href="blog-post-layout-03.html"><%= image_tag "pofo/latest-blog4.jpg", alt: "" %></a>
+~~~~~~~~
+
+
+
+
+### Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+apriamo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/example_static_pages/posts_show
+
+Vediamo che tutto funziona come ci si aspettava.
+
+
+
+
+## archiviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add pofo images"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku mp:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge mp
+$ git branch -d mp
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
+
+
+
+
+## Il codice del capitolo
+

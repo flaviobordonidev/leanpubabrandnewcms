@@ -1,0 +1,24 @@
+# Implementiamo in homepage la sezione del titolo con tasto play
+
+Nella pagina principale mettiamo subito sotto al menu una sezione con titolo ad effetto ed un tasto play che attiva una finesta modale con un video di youtube.
+
+
+
+
+## 
+
+
+        <!-- start video style section -->
+        <section class="parallax wow fadeIn" data-stellar-background-ratio="0.1" style="background-image:url('images/parallax-bg6.jpg');">
+            <div class="opacity-extra-medium bg-black"></div>
+            <div class="container position-relative">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 text-center center-col">
+                        <a  href="https://player.vimeo.com/video/75976293" class="popup-vimeo"><img src="images/icon-play.png" class="width-30" alt=""/></a>
+                        <h5 class="alt-font text-white">Unique. Powerful. Creative.</h5>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- end video style section -->
+        

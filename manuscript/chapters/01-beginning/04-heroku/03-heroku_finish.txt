@@ -258,8 +258,8 @@ se abbiamo finito le modifiche e va tutto bene:
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ git checkout master
-$ git merge pubprod
-$ git branch -d pubprod
+$ git merge pp
+$ git branch -d pp
 ~~~~~~~~
 
 

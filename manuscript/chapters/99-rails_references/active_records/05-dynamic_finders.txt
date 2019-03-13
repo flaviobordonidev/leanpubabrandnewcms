@@ -24,3 +24,33 @@ Models: EpisodesController
   @episodes = Episode.published.find_all_by_pro(false) # DEPRECATED!
   -->
   @episodes = Episode.published.where(pro: false)
+
+
+
+
+## Domanda su Stackoverflow
+
+I have a database that has stored information of some users. I know for example: User.find(1) will return the user with id:1
+
+What should I call to find a user by email? I searched a lot but could not find anything.
+
+I also tried User.find(:email => "xyz@abc.com") but it doesn't work.
+
+
+Use
+
+~~~~~~~~
+User.find_by_email("abc@xyz.com")
+~~~~~~~~
+
+Must check these two post from railscast (For rails3)
+http://railscasts.com/episodes/202-active-record-queries-in-rails-3
+http://railscasts.com/episodes/215-advanced-queries-in-rails-3
+
+Just to add something, there's also a rails guide on queries. And here is shown that the find_by_* is dynamically available. – Rik Poggi Oct 1 '12 at 7:06
+
+Oppure si può usare
+
+~~~~~~~~
+User.where(email: "abc@xyz.com").first
+~~~~~~~~

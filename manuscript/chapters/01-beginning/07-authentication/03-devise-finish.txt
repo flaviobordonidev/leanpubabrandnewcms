@@ -168,7 +168,7 @@ Il parametro "path: ''" elimina gli instradamnenti di default di devise
   resources :users
 ~~~~~~~~
 
-Per quello che ci interessa avremo un più pulito "/login" invece di "/users/login"
+Così avremo un più pulito "/login" invece di "/users/login"
 
 
 

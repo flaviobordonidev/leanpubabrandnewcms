@@ -1,4 +1,4 @@
-# Myapp v0.1.0
+# Myapp-1 BlaBlaBla
 ==
 Questa app è stata fatta da me e serve a fare quello che voglio io.
 Segue una lunga spiegazione del perché e del percome.
@@ -11,4 +11,4 @@ BlaBlaBla
 
 history:
 
-* v0.1.0  18.06.18  creazione dell'applicazione su rails 5.2.0
+* v0.1.0  08.03.19  creazione dell'applicazione su rails 5.2.2

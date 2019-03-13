@@ -1,0 +1,196 @@
+# Asset pipeline
+
+verifichiamo tutte le implementazioni già fatte per posts_index ed eventualmente aggiungiamo le nuove.
+
+
+
+
+## Apriamo il branch "Asset Pipeline"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b ap
+~~~~~~~~
+
+
+
+
+### Impostiamo su posts_show gli helpers per puntare all'asset_pipeline
+
+Avendo già inserito le librerie javascripts e stylesheets per posts_index passiamo direttamente a questa fase di adattamento delle chiamate per rispondere alle convenzioni dell'asset_pipeline Rails.
+E' praticamente un copia incolla di quanto già fatto su posts_index ed un modo di verificare se ci sono alcune differenti librerie richieste che aggiungeremo.
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=19}
+~~~~~~~~
+        <!-- animation -->
+        <%= stylesheet_link_tag 'pofo/css/animate', media: 'all', 'data-turbolinks-track': 'reload' %>
+        <!-- bootstrap -->
+        <%= stylesheet_link_tag 'pofo/css/bootstrap.min', media: 'all', 'data-turbolinks-track': 'reload' %>
+        <!-- et line icon --> 
+        <%= stylesheet_link_tag 'pofo/css/et-line-icons', media: 'all', 'data-turbolinks-track': 'reload' %>
+        <!-- font-awesome icon -->
+        <%= stylesheet_link_tag 'pofo/css/font-awesome.min', media: 'all', 'data-turbolinks-track': 'reload' %>
+        <!-- themify icon -->
+        <%= stylesheet_link_tag 'pofo/css/themify-icons', media: 'all', 'data-turbolinks-track': 'reload' %>
+        <!-- swiper carousel -->
+        <%= stylesheet_link_tag 'pofo/css/swiper.min', media: 'all', 'data-turbolinks-track': 'reload' %>
+        <!-- justified gallery  -->
+        <%= stylesheet_link_tag 'pofo/css/justified-gallery.min', media: 'all', 'data-turbolinks-track': 'reload' %>
+        <!-- magnific popup -->
+        <%= stylesheet_link_tag 'pofo/css/magnific-popup', media: 'all', 'data-turbolinks-track': 'reload' %>
+        <!-- revolution slider -->
+        <%= stylesheet_link_tag 'pofo/revolution/css/settings', media: 'all', 'data-turbolinks-track': 'reload' %>
+        <%= stylesheet_link_tag 'pofo/revolution/css/layers', media: 'all', 'data-turbolinks-track': 'reload' %>
+        <%= stylesheet_link_tag 'pofo/revolution/css/navigation', media: 'all', 'data-turbolinks-track': 'reload' %>
+        <!-- bootsnav -->
+        <%= stylesheet_link_tag 'pofo/css/bootsnav', media: 'all', 'data-turbolinks-track': 'reload' %>
+        <!-- style -->
+        <%= stylesheet_link_tag 'pofo/css/style', media: 'all', 'data-turbolinks-track': 'reload' %>
+        <!-- responsive css -->
+        <%= stylesheet_link_tag 'pofo/css/responsive', media: 'all', 'data-turbolinks-track': 'reload' %>
+~~~~~~~~
+
+...
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=891}
+~~~~~~~~
+        <!-- javascript libraries -->
+        <%= javascript_include_tag 'js/jquery', 'data-turbolinks-track' => true %>
+        <%= javascript_include_tag 'js/modernizr', 'data-turbolinks-track' => true %>
+        <%= javascript_include_tag 'js/bootstrap.min', 'data-turbolinks-track' => true %>
+        <%= javascript_include_tag 'js/jquery.easing.1.3', 'data-turbolinks-track' => true %>
+        <%= javascript_include_tag 'js/skrollr.min', 'data-turbolinks-track' => true %>
+        <%= javascript_include_tag 'js/smooth-scroll', 'data-turbolinks-track' => true %>
+        <%= javascript_include_tag 'js/jquery.appear', 'data-turbolinks-track' => true %>
+        <!-- menu navigation -->
+        <%= javascript_include_tag 'js/bootsnav.js', 'data-turbolinks-track' => true %>
+        <%= javascript_include_tag 'js/jquery.nav.js', 'data-turbolinks-track' => true %>
+        <!-- animation -->
+        <%= javascript_include_tag 'js/wow.min.js', 'data-turbolinks-track' => true %>
+        <!-- page scroll -->
+        <%= javascript_include_tag 'js/page-scroll.js', 'data-turbolinks-track' => true %>
+        <!-- swiper carousel -->
+        <%= javascript_include_tag 'js/swiper.min.js', 'data-turbolinks-track' => true %>
+        <!-- counter -->
+        <%= javascript_include_tag 'js/jquery.count-to.js', 'data-turbolinks-track' => true %>
+        <!-- parallax -->
+        <%= javascript_include_tag 'js/jquery.stellar.js', 'data-turbolinks-track' => true %>
+        <!-- magnific popup -->
+        <%= javascript_include_tag 'js/jquery.magnific-popup.min.js', 'data-turbolinks-track' => true %>
+        <!-- portfolio with shorting tab -->
+        <%= javascript_include_tag 'js/isotope.pkgd.min.js', 'data-turbolinks-track' => true %>
+        <!-- images loaded -->
+        <%= javascript_include_tag 'js/imagesloaded.pkgd.min.js', 'data-turbolinks-track' => true %>
+        <!-- pull menu -->
+        <%= javascript_include_tag 'js/classie.js', 'data-turbolinks-track' => true %>
+        <%= javascript_include_tag 'js/hamburger-menu.js', 'data-turbolinks-track' => true %>
+        <!-- counter  -->
+        <%= javascript_include_tag 'js/counter.js', 'data-turbolinks-track' => true %>
+        <!-- fit video  -->
+        <%= javascript_include_tag 'js/jquery.fitvids.js', 'data-turbolinks-track' => true %>
+        <!-- equalize -->
+        <%= javascript_include_tag 'js/equalize.min.js', 'data-turbolinks-track' => true %>
+        <!-- skill bars  -->
+        <%= javascript_include_tag 'js/skill.bars.jquery.js', 'data-turbolinks-track' => true %> 
+        <!-- justified gallery  -->
+        <%= javascript_include_tag 'js/justified-gallery.min.js', 'data-turbolinks-track' => true %>
+        <!--pie chart-->
+        <%= javascript_include_tag 'js/jquery.easypiechart.min.js', 'data-turbolinks-track' => true %>
+        <!-- instagram -->
+        <%= javascript_include_tag 'js/instafeed.min.js', 'data-turbolinks-track' => true %>
+        <!-- retina -->
+        <%= javascript_include_tag 'js/retina.min.js', 'data-turbolinks-track' => true %>
+        <!-- revolution -->
+        <%= javascript_include_tag 'revolution/js/jquery.themepunch.tools.min.js', 'data-turbolinks-track' => true %>
+        <%= javascript_include_tag 'revolution/js/jquery.themepunch.revolution.min.js', 'data-turbolinks-track' => true %>
+        <!-- revolution slider extensions (load below extensions JS files only on local file systems to make the slider work! The following part can be removed on server for on demand loading) -->
+        <!--<script type="text/javascript" src="revolution/js/extensions/revolution.extension.actions.min.js"></script>
+        <script type="text/javascript" src="revolution/js/extensions/revolution.extension.carousel.min.js"></script>
+        <script type="text/javascript" src="revolution/js/extensions/revolution.extension.kenburn.min.js"></script>
+        <script type="text/javascript" src="revolution/js/extensions/revolution.extension.layeranimation.min.js"></script>
+        <script type="text/javascript" src="revolution/js/extensions/revolution.extension.migration.min.js"></script>
+        <script type="text/javascript" src="revolution/js/extensions/revolution.extension.navigation.min.js"></script>
+        <script type="text/javascript" src="revolution/js/extensions/revolution.extension.parallax.min.js"></script>
+        <script type="text/javascript" src="revolution/js/extensions/revolution.extension.slideanims.min.js"></script>
+        <script type="text/javascript" src="revolution/js/extensions/revolution.extension.video.min.js"></script>-->
+        <!-- setting -->
+        <%= javascript_include_tag 'js/main.js', 'data-turbolinks-track' => true %>
+~~~~~~~~
+
+Verificato che è tutto uguale non dobbiamo fare nientaltro.
+
+
+
+## Precompile
+
+Non essendoci novità, non è necessario fare nessuna aggiunta al precompile.
+
+
+
+
+### Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+apriamo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/example_static_pages/posts_show
+
+Vediamo che tutto funziona come ci si aspettava. Mancano solo le immagini. (I fonts delle icone sono visibili perché sono gli stessi già implementati per posts_index)
+
+
+
+
+## archiviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add pofo stylesheets e javascripts to posts_show"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku mp:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge mp
+$ git branch -d mp
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
+
+
+
+
+## Il codice del capitolo
+

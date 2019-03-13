@@ -1,0 +1,172 @@
+# Aggiungiamo un nuovo font da usare sul menu
+
+Importiamo un nuovo font per usarlo nel menu di navigazione.
+
+ATTENZIONE:
+A volte ci vuole molta pazienza e vari tentativi per far funzionare il tutto. A volte serve cambiare il nome di alcuni files altre volte è necessario pulire la cache.
+Ad esempio chiamando il file stylesheets "font-better-glory.scss" non mi ha funzionato. Rinominato "better-glory.scss" ha funzionato! (Forse una coincidenza? devo fare la controprova)
+
+
+
+
+## Apriamo il branch "Import New Fonts"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b inf
+~~~~~~~~
+
+
+
+
+## Importiamo il font better-glory
+
+Vogliamo importare il font better-glory. A disposizione abbiamo il solo file "Better Glory.otf". Lo copiamo e lo rinominiamo (da -> a)
+
+* .../offline-rebisworld/Better Glory.otf   ->  .../app/assets/stylesheets/pofo/fonts/better-glory.otf
+
+Lo abbiamo rinominato per evitare di usare spazi e caratteri maiuscoli nel codice della nostra applicazione.
+
+
+
+
+### Creiamo il file di stylesheet Sass better-glory.scss
+
+Creiamo il file "better-glory.scss" ed aggiungiamo la chiamata al font Better Glory.
+
+* .../app/assets/stylesheets/pofo/css/better-glory.scss
+
+{title=".../app/assets/stylesheets/pofo/css/better-glory.scss", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+@font-face {
+	font-family: 'better-glory';
+	src:font-url('../fonts/better-glory.otf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+~~~~~~~~
+
+Nella chiamata usiamo il nome dato al file ossia "better-glory"
+
+Abbiamo già usato l'helper rails font-url(...) che, oltre a funzionare in locale, permette di far lavorare i fonts anche in remoto su Heroku.
+
+
+
+
+### Richiamiamo il file di stylesheet sul nostro layouts/application
+
+Aggiungiamo una nuova chiamata al file .css nel nostro layout
+
+{title=".../app/views/layouts/_pofo_stylesheets.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=13}
+~~~~~~~~
+        <!-- font better-glory -->
+        <%= stylesheet_link_tag 'pofo/css/better-glory', media: 'all', 'data-turbolinks-track': 'reload' %>
+~~~~~~~~
+
+
+
+
+### Aggiungiamo al precompile
+
+
+{title=".../config/application.rb", lang=ruby, line-numbers=on, starting-line-number=67}
+~~~~~~~~
+    # precompile assets pofo stylesheets                                                             
+    config.assets.precompile += ['pofo/css/animate.css',
+                                 'pofo/css/bootstrap.min.css',
+                                 'pofo/css/et-line-icons.css',
+                                 'pofo/css/font-awesome-via_gem.css',
+                                 'pofo/css/better-glory.css',
+                                 'pofo/css/themify-icons.css',
+                                 'pofo/css/swiper.min.css',
+                                 'pofo/css/justified-gallery.min.css',
+                                 'pofo/css/magnific-popup.css',
+                                 'pofo/revolution/css/settings.css',
+                                 'pofo/revolution/css/layers.css',
+                                 'pofo/revolution/css/navigation.css',
+                                 'pofo/css/bootsnav.css',
+                                 'pofo/css/style.css',
+                                 'pofo/css/responsive.css'
+                                ]
+~~~~~~~~
+
+
+
+
+## Usiamo il nuovo font sul menu
+
+Lo possiamo chiamare direttamente "inline" come:
+
+*  style="font-family:better-glory; font-size: 24px;"
+
+{id="03-03-01_03", title=".../app/views/layouts/_pofo_navigation_menu.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=17}
+~~~~~~~~
+            <li><a href="#" style="font-family:better-glory; font-size: 18px; display:inline-block;">HOME</a></li>
+            <li><a href="#" style="font-family:better-glory; font-size: 18px; display:inline-block;">IL GIOCO</a></li>
+            <li><a href="#" style="font-family:better-glory; font-size: 18px; display:inline-block;">IL MONDO</a></li>
+~~~~~~~~
+
+
+
+
+### Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+apriamo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/posts
+
+Funziona! (anche se ci ho messo vari tentativi *_*)
+
+
+
+
+## archiviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Add better-glory font and used on the menu"
+~~~~~~~~
+
+
+
+
+## Publichiamo su Heroku
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku icf:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge icf
+$ git branch -d icf
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

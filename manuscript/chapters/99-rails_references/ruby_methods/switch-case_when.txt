@@ -1,0 +1,82 @@
+# Switch "case"
+
+Risorse web:
+
+* [](https://stackoverflow.com/questions/6603362/ruby-on-rails-switch)
+
+
+## Case .. when
+
+I assume you refer to case/when.
+
+~~~~~~~~
+case a_variable # a_variable is the variable we want to compare
+when 1    #compare to 1
+  puts "it was 1" 
+when 2    #compare to 2
+  puts "it was 2"
+else
+  puts "it was something else"
+end
+~~~~~~~~
+
+or
+
+~~~~~~~~
+puts case a_variable
+when 1
+  "it was 1"
+when 2
+  "it was 2"
+else
+  "it was something else"
+end
+~~~~~~~~
+
+EDIT
+
+Something that maybe not everyone knows about but what can be very useful is that you can use regexps in a case statement.
+
+~~~~~~~~
+foo = "1Aheppsdf"
+
+what = case foo
+when /^[0-9]/
+  "Begins with a number"
+when /^[a-zA-Z]/
+  "Begins with a letter"
+else
+  "Begins with something else"
+end
+puts "String: #{what}"
+~~~~~~~~
+
+Thanks a lot. Can I replace a_variable with params[:id] right? – glarkou Jul 6 '11 at 22:11 
+Absolutely, just make sure you are comparing variables of the same type, e.g "1" is not equal to 1. However "1".to_i is equal to 1 (to_i converts a string to an integer). If you want to compare params[:id] with an integer you need to do "case params[:id].to_i". It looks a bit strange to me to test params[:id] with "case", are you sure about what you are doing?
+
+There are some differences from a traditional switch..case. The most notable being there is no cascading onto the next item. Another being that you can list multiple (comma separated) items in each when. Lastly, they don't just match on equality, they match on the === operator, so: String === "thing" is true, therefore when String then whatever would be matched.
+Important: Unlike switch statements in many other languages, Ruby’s case does NOT have fall-through, so there is no need to end each when with a break.
+
+
+
+
+## Esempio su views/posts/show
+
+
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<% case @post.type_of_content %>
+<% when "image" %>
+  <% raise "image" %>
+<% when "video_youtube" %>
+  <% raise "video_youtube" %>
+<% when "video_vimeo" %>
+  <% raise "video_vimeo" %>
+<% when "audio" %>
+  <% raise "audio" %>
+<% else %>
+  <% raise "menu a cascata type_of_content null o con valore non consentito" %>
+<% end %>
+~~~~~~~~
+

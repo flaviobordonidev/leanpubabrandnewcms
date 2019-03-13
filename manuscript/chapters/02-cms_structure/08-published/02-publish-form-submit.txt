@@ -1,0 +1,497 @@
+# Implementiamo un check_box per la pubblicazione
+
+Dentro il partial authors/posts/_form implementiamo un check-box che indica se pubblicato. In seguito possiamo formattare il check-box in stile iphone.
+Nella pagina authors/posts/index implementiamo una semplice indicazione se l'articolo è pubblicato (published) o è in bozza (draft).
+
+
+
+
+## Apriamo il branch "Published Submit"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b ps
+~~~~~~~~
+
+
+
+
+## Aggiorniamo il posts_controller di authors
+
+Per passare i valori a published e published_at tramite form abilitiamo i campi nella whitelist.
+
+{id="02-08-02_01", title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def post_params
+      params.require(:post).permit(:title, :incipit, :content, :type_of_content, :video_youtube, :video_vimeo, :seocontent, :user_id, :main_image, :published, :published_at)
+    end
+~~~~~~~~
+
+[Codice 01](#02-08-02_01all)
+
+
+
+
+## Creiamo il check_box "published" ed il text_field "published_at"
+
+{id="02-08-02_02", title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=29}
+~~~~~~~~
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :published, class: "control-label" %>
+              <%= form.check_box :published, class: "form-control" %>
+              <%#= f.check_box :remove_logo, "data-size" => "medium", "data-on-color" => "primary", "data-on-text" => "SI", "data-off-color" => "default", "data-off-text" => "NO" %>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :published_at, class: "control-label" %>
+              <%= form.text_field :published_at, class: "form-control" %>
+            </div>
+          </li>
+~~~~~~~~
+
+[Codice 02](#02-08-02_02all)
+
+
+
+## Riempiamo in automatico il campo published_at sul database
+
+Se published_at è "nil" ed il check_box "published" è flaggato allora impostiamo in automatico il valore con la data attuale. Se invece il check_box è deflaggato togliamo la data a published_at.
+Visto che lavoriamo sui parametri che vengono passati sul submit del form è meglio lavorare su params.
+Aggiorniamo sia l'azione " update " sia l'azione " create " del controller.
+
+{id="02-08-02_03", title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+  def update
+    #raise "published è #{params[:post][:published] == "1"} - published_at è #{params[:post][:published_at].blank?} - La data di oggi è #{DateTime.current}"
+    # params restituisce una stringa ed il check-box restituisce "1" se flaggato.
+    params[:post][:published_at] = "#{DateTime.current}" if params[:post][:published] == "1" and params[:post][:published_at].blank?
+    params[:post][:published_at] = "" if params[:post][:published] == "0"
+~~~~~~~~
+
+
+{id="02-08-02_03", title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+  def create
+    # params restituisce una stringa ed il check-box restituisce "1" se flaggato.
+    params[:post][:published_at] = "#{DateTime.current}" if params[:post][:published] == "1" and params[:post][:published_at].blank?
+    params[:post][:published_at] = "" if params[:post][:published] == "0"
+~~~~~~~~
+
+
+[Codice 03](#02-08-02_03all)
+
+
+Il seguente codice non funzionerebbe:
+
+~~~~~~~~
+    @post.published_at |= Time.now if @post.published == true  
+
+oppure
+
+    @post.update(published_at: DateTime.current) if @post.published == true and @post.published_at.blank?
+~~~~~~~~
+
+
+
+
+## Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+apriamo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/authors/posts
+
+Nella pagina edit, sul submit del form:
+
+* se published è flaggato e published_at è vuoto, allora è messa in automatico la data attuale.
+* se published è flaggato e published_at ha una data, allora è lasciata quella data.
+* se published non è flaggato, allora published_at è automaticamente cancellato
+
+
+
+
+## archiviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add published to views/authors/posts with automatic update of published_at"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku ps:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge ps
+$ git branch -d ps
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
+
+
+
+
+## Il codice del capitolo
+
+
+
+
+[Codice 01](#02-08-02_01)
+
+{id="02-08-02_01all", title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class Authors::PostsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :set_post, only: [:edit, :update, :destroy]
+  layout 'dashboard'
+
+  # GET /authors/posts
+  # GET /authors/posts.json
+  def index
+    @posts = current_user.posts unless current_user.admin?
+    @posts = Post.all if current_user.admin?
+    authorize @posts
+  end
+
+  # GET /authors/posts/new
+  def new
+    #@post = Post.new
+    @post = current_user.posts.new
+    authorize @post
+  end
+
+  # GET /authors/posts/1/edit
+  def edit
+  end
+
+  # POST /authors/posts
+  # POST /authors/posts.json
+  def create
+    @post = Post.new(post_params)
+    authorize @post
+
+    respond_to do |format|
+      if @post.save
+        format.html { redirect_to @post, notice: 'Post was successfully created.' }
+        format.json { render :show, status: :created, location: @post }
+      else
+        format.html { render :new }
+        format.json { render json: @post.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /authors/posts/1
+  # PATCH/PUT /authors/posts/1.json
+  def update
+    respond_to do |format|
+      if @post.update(post_params)
+        format.html { redirect_to @post, notice: 'Post was successfully updated.' }
+        format.json { render :show, status: :ok, location: @post }
+      else
+        format.html { render :edit }
+        format.json { render json: @post.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /authors/posts/1
+  # DELETE /authors/posts/1.json
+  def destroy
+    @post.destroy
+    respond_to do |format|
+      format.html { redirect_to authors_posts_url, notice: 'Post was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_post
+      @post = Post.friendly.find(params[:id])
+      authorize @post
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def post_params
+      params.require(:post).permit(:title, :incipit, :content, :type_of_content, :video_youtube, :video_vimeo, :seocontent, :date_chosen, :user_id, :main_image, :published, :published_at)
+    end
+end
+~~~~~~~~
+
+
+
+
+[Codice 02](#02-08-02_02)
+
+{id="02-08-02_02all", title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%= form_with(model: post, local: true, url: authors_url) do |form| %>
+  <% if post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul>
+      <% post.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id %>
+  </div>
+
+
+  <div class="row">
+    <div class="col-md-4">
+      <!--<div class="card" style="width: 18rem;">-->
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title"><%= yield(:page_title) %></h5>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <%= form.label :title %>
+            <%= form.text_field :title, class: "form-control" %>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <%= form.label :type_of_content, class: "control-label" %>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <div class="field">    
+              <%= form.select(:type_of_content, Post.type_of_contents.keys.map {|type| [Post.human_attribute_name("type.#{type}"),type]}) %><!-- menu a cascata (drop-down list) -->
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :main_image, class: "control-label" %>
+              <%= form.file_field :main_image, class: "form-control" %>
+              <br>
+              <% if post.main_image.attached? %>
+                <%= image_tag post.main_image.variant(resize: "200x200") %>
+              <% else %>
+                <p>Nessuna immagine presente</p>
+              <% end %>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :video_youtube, class: "control-label" %>
+              <%= form.text_field :video_youtube, class: "form-control" %><!-- parte di URL youtube che identifica il video -->
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :video_vimeo, class: "control-label" %>
+              <%= form.text_field :video_vimeo, class: "form-control" %><!-- parte di URL vimeo che identifica il video -->
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <p>Social</p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <div class="field">
+              <label class="control-label">Immagine per i social. (476x249px)</label>
+              <br><img src="https://images.pexels.com/photos/634843/pexels-photo-634843.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=476&w=249" alt="Immagine demo presa da pexels.com" width="200" height="200"><br>
+              <input type="file" name="myFile"><!-- image 476x249 px -->
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :seocontent, class: "control-label" %>
+              <%= form.text_area :seocontent, row: "3", class: "form-control" %><!-- max 160 caratteri -->
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <label class="control-label">Tags (separati da virgola)</label>
+              <textarea name="incipit" rows="2" class='form-control'>salute, sport, cucina mediterranea, mantenersi in forma</textarea>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :date_chosen, class: "control-label"  %>
+              <%#= form.date_select :date_chosen %>
+              <%= form.text_field :date_chosen, class: "form-control", row: "2" %>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :published, class: "control-label" %>
+              <%= form.check_box :published, class: "form-control" %>
+              <%#= f.check_box :remove_logo, "data-size" => "medium", "data-on-color" => "primary", "data-on-text" => "SI", "data-off-color" => "default", "data-off-text" => "NO" %>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :published_at, class: "control-label" %>
+              <%= form.text_field :published_at, class: "form-control" %>
+            </div>
+          </li>
+
+          <li class="list-group-item">
+            <div class="actions">
+              <%= form.submit "Salva l'articolo", class: "btn btn-success btn-lg btn-block" %>
+            </div>
+          </li>
+        </ul>
+      </div><!--.card end-->
+
+    </div><!--.col-md-4 end-->
+    
+    <div class="col-md-8">
+      <div class="field">
+        <%= form.label :incipit %>
+        <%= form.text_area :incipit, rows: "3", class:'form-control' %>
+        <%#= form.trix_editor :incipit, required: true, autofocus: true %>
+      </div>
+  
+      <div class="field"><h6>---Read More---</h6></div>
+    
+      <div class="field">
+        <%= form.label :content, class: "control-label" %>
+        <%#= form.text_area :content, rows: "8", class:'form-control' %>
+        <%= form.trix_editor :content, required: true, autofocus: true %>
+      </div>
+    </div>
+  </div>
+
+<% end %>
+~~~~~~~~
+
+
+
+
+[Codice 03](#02-08-02_03)
+
+{id="02-08-02_03all", title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class Authors::PostsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :set_post, only: [:edit, :update, :destroy]
+  layout 'dashboard'
+
+  # GET /authors/posts
+  # GET /authors/posts.json
+  def index
+    @posts = current_user.posts unless current_user.admin?
+    @posts = Post.all if current_user.admin?
+    authorize @posts
+  end
+
+  # GET /authors/posts/new
+  def new
+    #@post = Post.new
+    @post = current_user.posts.new
+    authorize @post
+  end
+
+  # GET /authors/posts/1/edit
+  def edit
+  end
+
+  # POST /authors/posts
+  # POST /authors/posts.json
+  def create
+    @post = Post.new(post_params)
+    authorize @post
+
+    respond_to do |format|
+      if @post.save
+        format.html { redirect_to @post, notice: 'Post was successfully created.' }
+        format.json { render :show, status: :created, location: @post }
+      else
+        format.html { render :new }
+        format.json { render json: @post.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /authors/posts/1
+  # PATCH/PUT /authors/posts/1.json
+  def update
+    #raise "published è #{params[:post][:published] == "1"} - published_at è #{params[:post][:published_at].blank?} - La data di oggi è #{DateTime.current}"
+    # params restituisce una stringa ed il check-box restituisce "1" se flaggato.
+    params[:post][:published_at] = "#{DateTime.current}" if params[:post][:published] == "1" and params[:post][:published_at].blank?
+    params[:post][:published_at] = "" if params[:post][:published] == "0"
+    respond_to do |format|
+      if @post.update(post_params)
+        format.html { redirect_to @post, notice: 'Post was successfully updated.' }
+        format.json { render :show, status: :ok, location: @post }
+      else
+        format.html { render :edit }
+        format.json { render json: @post.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /authors/posts/1
+  # DELETE /authors/posts/1.json
+  def destroy
+    @post.destroy
+    respond_to do |format|
+      format.html { redirect_to authors_posts_url, notice: 'Post was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_post
+      @post = Post.friendly.find(params[:id])
+      authorize @post
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def post_params
+      params.require(:post).permit(:title, :incipit, :content, :type_of_content, :video_youtube, :video_vimeo, :seocontent, :date_chosen, :user_id, :main_image, :published, :published_at)
+    end
+end
+~~~~~~~~

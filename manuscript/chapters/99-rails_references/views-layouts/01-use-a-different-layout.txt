@@ -15,7 +15,11 @@ dentro le views/layouts aggiungere il file mylayout.html.erb
 Dentro l'azione richiesta del controller mettere 
 
 ~~~~~~~~
+  def xxx
+    ...
     render layout: 'mylayout'
+    ...
+  end
 ~~~~~~~~
 
 https://brandnewcms-flaviobordonidev.c9users.io/test_pages/slider

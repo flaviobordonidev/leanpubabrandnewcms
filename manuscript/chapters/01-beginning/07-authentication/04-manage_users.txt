@@ -65,20 +65,19 @@ Per i campi possiamo rifarci allo schema del database
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ rails g scaffold ExampleUser name:string email:string encrypted_password:string remember_created_at:datetime
+$ rails g scaffold EgUser name:string email:string encrypted_password:string
 ~~~~~~~~
 
 questo crea il migrate:
 
-{title=".../db/migrate/xxx_create_example_users.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+{title=".../db/migrate/xxx_create_eg_users.rb", lang=ruby, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
-class CreateExampleUsers < ActiveRecord::Migration[5.2]
+class CreateEgUsers < ActiveRecord::Migration[5.2]
   def change
-    create_table :example_users do |t|
+    create_table :eg_users do |t|
       t.string :name
       t.string :email
       t.string :encrypted_password
-      t.datetime :remember_created_at
 
       t.timestamps
     end
@@ -98,7 +97,7 @@ Vediamo che lo schema del database si è aggiornato
 
 {id="01-07-04_02", title=".../db/schema.rb", lang=ruby, line-numbers=on, starting-line-number=18}
 ~~~~~~~~
-  create_table "example_users", force: :cascade do |t|
+  create_table "eg_users", force: :cascade do |t|
 .
 .
 .
@@ -122,7 +121,7 @@ $ rails g scaffold User name:string email:string encrypted_password:string remem
 ~~~~~~~~
 
 in questo modo avremmo avuto tutto già pronto. :)
-Però per la didattica di questo libro creiamo il controller User da zero aiutandoci con ExampleUser.
+Però per la didattica di questo libro creiamo il controller User da zero aiutandoci con EgUser.
 
 
 
@@ -217,7 +216,7 @@ Per la sola azione user non serviva il before_action con il metodo private. Bast
   end
 ~~~~~~~~
 
-Ma è utile ed elegante estrarre **@user = User.find(params[:id])** in un metodo private perché questo è chiamato anche da altre azioni (:show, :edit, :update e :destroy)
+Ma è utile ed elegante estrarre "@user = User.find(params[:id])" in un metodo private perché questo è chiamato anche da altre azioni (:show, :edit, :update e :destroy)
 
 
 
@@ -290,7 +289,7 @@ Copiamo ed implementiamo la parte di codice per le azioni edit ed update.
 ~~~~~~~~
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :email, :encrypted_password, :remember_created_at)
+      params.require(:user).permit(:name, :email, :encrypted_password)
     end
 ~~~~~~~~
 

@@ -1,0 +1,131 @@
+# Organizziamo i nostri Modelli
+
+Impostiamo i "divisori" visti nel metodo di organizzazione
+
+
+
+## example_company
+
+{title=".../app/models/example_company.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class ExampleCompany < ApplicationRecord
+  # == Constants ============================================================
+  
+  # == Extensions ===========================================================
+
+  # == Attributes ===========================================================
+
+  # == Relationships ========================================================
+
+  # == Validations ==========================================================
+
+  # == Scopes ===============================================================
+
+  # == Callbacks ============================================================
+
+  # == Class Methods ========================================================
+
+  # == Instance Methods =====================================================
+
+end
+~~~~~~~~
+
+
+
+## example_post
+
+{title=".../app/models/example_post.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class ExamplePost < ApplicationRecord
+  # == Constants ============================================================
+  
+  # == Extensions ===========================================================
+
+  # == Attributes ===========================================================
+
+  ## Active Storage
+  has_one_attached :header_image
+
+  # == Relationships ========================================================
+
+  belongs_to :user
+
+  # == Validations ==========================================================
+
+  # == Scopes ===============================================================
+
+  # == Callbacks ============================================================
+
+  # == Class Methods ========================================================
+
+  # == Instance Methods =====================================================
+
+end
+~~~~~~~~
+
+
+
+## example_user
+
+{title=".../app/models/example_user.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class ExampleUser < ApplicationRecord
+  # == Constants ============================================================
+  
+  # == Extensions ===========================================================
+
+  # == Attributes ===========================================================
+
+  # == Relationships ========================================================
+
+  # == Validations ==========================================================
+
+  # == Scopes ===============================================================
+
+  # == Callbacks ============================================================
+
+  # == Class Methods ========================================================
+
+  # == Instance Methods =====================================================
+
+end
+~~~~~~~~
+
+
+
+
+## post
+
+{title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class User < ApplicationRecord
+  # == Constants ============================================================
+  
+  # == Extensions ===========================================================
+
+  # == Attributes ===========================================================
+
+  enum role: {user: 0, admin: 1, moderator:2, author:3}
+
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :registerable, :timeoutable, :trackable and :omniauthable
+  devise :database_authenticatable,
+         :recoverable, :rememberable, :validatable
+
+  # == Relationships ========================================================
+
+  has_many :example_posts
+  has_many :posts
+
+  # == Validations ==========================================================
+
+  # == Scopes ===============================================================
+
+  # == Callbacks ============================================================
+
+  # == Class Methods ========================================================
+
+  # == Instance Methods =====================================================
+
+end
+~~~~~~~~

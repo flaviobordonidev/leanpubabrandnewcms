@@ -1,0 +1,47 @@
+# Link_to con params
+
+Risorse web:
+
+* [Go Rail link_to current page with params](https://gorails.com/episodes/rails-link-to-current-page-with-params)
+* [Go Rail link_to current page with params - link alternativo](https://www.youtube.com/watch?v=FT-yVFiq9ZQ)
+
+
+## Esempio hard coded
+
+<%= link_to "Customers", root_path %>
+
+<%= link_to "Paid Customers", root_path(paid: true) %>
+
+<%= link_to "Customers Date Range", root_path(start: params[:start], end: params[:end]) %>
+
+<%= link_to "Paid Customers Data Range", root_path(paid: true) %>
+
+
+
+
+## Esempio passando un hash
+
+Non indicando il "path" viene utilizzato lo stesso path/URL e vengono passati i parametri
+
+<%= link_to "Customers Date Range", { start: params[:start], end: params[:end] } %>
+
+
+
+
+## Prendiamo tutti i parametri
+
+<%= link_to "Customers Date Range", request.params %>
+
+
+
+
+### Escludiamo qualche parametro
+
+
+<%= link_to "Customers Date Range", request.params.except(:paid) %>
+
+
+
+### Includiamo qualche parametro
+
+<%= link_to "Customers Date Range", request.params.merge(paid: true) %>

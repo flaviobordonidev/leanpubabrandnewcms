@@ -1,0 +1,168 @@
+# Rendiamo dinamico posts/show
+
+Adesso che abbiamo predisposto e popolato le nuove colonne sulla tabella posts siamo pronti a visualizzarle su posts/show
+
+
+
+## Apriamo il branch
+
+
+
+
+## Il partial pofo_page_title_section2
+
+Andiamo ad analizzare il primo partial che incontriamo
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+        <%= render "pofo_page_title_section2", post: @post %>
+~~~~~~~~
+
+
+
+
+### Immagine presa dal database
+
+apriamo il partial e sostituiamo la chiamata dell'immagine da
+
+{title=".../app/views/posts/_pofo_page_title_section2.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+        <section class="wow fadeIn parallax" data-stellar-background-ratio="0.5" style="background-image:url('<%= image_path('pofo/parallax-bg54.jpg') %>');">
+~~~~~~~~
+
+a
+
+{title=".../app/views/posts/_pofo_page_title_section2.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+        <section class="wow fadeIn parallax" data-stellar-background-ratio="0.5" style="background-image:url('<%= url_for(@post.main_image) %>');">
+~~~~~~~~
+
+impostiamo un'immagine di default nel caso non sia caricata nessuna immagine nel database altrimenti avremmo un errore
+
+{title=".../app/views/posts/_pofo_page_title_section2.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+        <section class="wow fadeIn parallax" data-stellar-background-ratio="0.5" style="background-image:url('<%= post.main_image.attached? ? url_for(@post.main_image) : image_path('pofo/parallax-bg55.jpg') %>');">
+~~~~~~~~
+
+
+
+
+### Titolo preso dal database
+
+inseriamo il testo del titolo dal database
+
+{title=".../app/views/posts/_pofo_page_title_section2.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+<h1 class="text-white alt-font font-weight-600 margin-10px-bottom"><%= @post.title %></h1>
+~~~~~~~~
+
+
+
+
+### Data pubblicazione presa dal database
+
+inseriamo la data di pubblicazione dal database usando la stessa formattazione del tema pofo ossia "25 APRIL 2017"
+
+{title=".../app/views/posts/_pofo_page_title_section2.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+                            <span class="text-white opacity6 alt-font no-margin-bottom text-uppercase text-small"><%= @post.published_at.strftime("%d %^B %Y") %>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;by <a href="blog-masonry.html" class="text-white">Jay Benjamin</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="blog-masonry.html" class="text-white">Design</a>, <a href="blog-masonry.html" class="text-white">Branding</a></span>
+~~~~~~~~
+
+la variabile "@post.published_at" l'abbiamo formattata con ".strftime("%d %^B %Y")" di cui questi sono i parametri più usati:
+
+* %Y - Anno con incluso il secolo, ossia almeno con 4 cifre. Può essere anche negativo. Es: -0001, 0000, 1995, 2009, 14292, etc.
+* %y - Anno senza il secolo, ossia con solo 2 cifre. Es: 00..99
+* %C - Secolo (Anno / 100 arrotondato per difetto). Es: il secolo dell'anno 2019 è rappresentato con "20" 
+
+* %m  - Mese,  zero-padded (01..12).            Es: gennaio è rappresentato con "01"
+* %-m - Mese,     no-padded (1..12).            Es: gennaio è rappresentato con "1"
+* %_m - Mese, blank-padded ( 1..12).            Es: gennaio è rappresentato con " 1"
+* %B  - Mese, con nome pieno.                   Es: gennaio è rappresentato con "January"
+* %^B - Mese, con nome pieno in maiuscolo.      Es: gennaio è rappresentato con "JANUARY"
+* %b  - Mese, con nome abbreviato.              Es: gennaio è rappresentato con "Jan"
+* %^b - Mese, con nome abbreviato in maiuscolo. Es: gennaio è rappresentato con "JAN"
+
+* %d  - Giorno del mese,   zero-padded (01..31). Es: il primo di gennaio è rappresentato con "01"
+* %-d - Giorno del mese,      no-padded (1..31). Es: il primo di gennaio è rappresentato con "1"
+* %e  - Giorno del mese,  blank-padded ( 1..31). Es: il primo di gennaio è rappresentato con " 1"
+* %j  - Giorno dell'anno (001..366)
+* %A  - Giorno della settimana nome pieno.                        Es: domenica è rappresentata con "Sunday"
+* %^A - Giorno della settimana nome pieno in maiuscolo.           Es: domenica è rappresentata con "SUNDAY"
+* %a  - Giorno della settimana abbreviato.                        Es: domenica è rappresentata con "Sun"
+* %^a - Giorno della settimana abbreviato in maiuscolo.           Es: domenica è rappresentata con "SUN"
+* %u  - Giorno della settimana in numero (1..7) con Monday is 1.  Es: domenica è rappresentata con "7"
+* %w  - Giorno della settimana in numero (0..6) con Sunday is 0.  Es: domenica è rappresentata con "0"
+
+* %H - Hour of the day, 24-hour clock, zero-padded (00..23)
+* %k - Hour of the day, 24-hour clock, blank-padded ( 0..23)
+* %I - Hour of the day, 12-hour clock, zero-padded (01..12)
+* %l - Hour of the day, 12-hour clock, blank-padded ( 1..12)
+* %P - Meridian indicator, lowercase (``am'' or ``pm'')
+* %p - Meridian indicator, uppercase (``AM'' or ``PM'')
+
+* %M - Minute of the hour (00..59)
+
+* %S - Second of the minute (00..59)
+
+* %L - Millisecond of the second (000..999)
+
+Per una lista completa dei formati per il metodo "strftime" visitare [APIDock](http://apidock.com/ruby/DateTime/strftime)
+
+
+
+
+### Autore preso dal database
+
+da
+ <a href="blog-masonry.html" class="text-white">Jay Benjamin</a>
+a
+ <a href="blog-masonry.html" class="text-white"><%= @post.user.name %></a>
+a
+ <%= link_to "@post.user.name" author_account_path, class: "text-white" %>
+
+{title=".../app/views/posts/_pofo_page_title_section2.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+                            <span class="text-white opacity6 alt-font no-margin-bottom text-uppercase text-small"><%= @post.published_at.strftime("%d %^B %Y") %>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;by <a href="blog-masonry.html" class="text-white"><%= @post.user.name %></a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="blog-masonry.html" class="text-white">Design</a>, <a href="blog-masonry.html" class="text-white">Branding</a></span>
+~~~~~~~~
+
+
+
+
+### Tags presi dal database
+
+usiamo taggable ... DA FARE
+
+{title=".../app/views/posts/_pofo_page_title_section2.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+~~~~~~~~
+
+
+
+
+## Il partial pofo_post_section
+
+Andiamo ad analizzare il primo partial che incontriamo
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+        <%= render "pofo_post_section", post: @post %>
+~~~~~~~~
+
+
+
+
+### Immagine presa dal database
+
+apriamo il partial e sostituiamo la chiamata dell'immagine da
+
+{title=".../app/views/posts/_pofo_post_section.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=7}
+~~~~~~~~
+                        <figure class="wp-caption alignright"><%= image_tag "pofo/blog-details-img10.jpg", alt: "" %><figcaption class="wp-caption-text">There is no sincerer love than the love of food.</figcaption></figure>
+~~~~~~~~
+
+a
+
+{title=".../app/views/posts/_pofo_post_section.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=7}
+~~~~~~~~
+                        <figure class="wp-caption alignright"><%= post.paragraph_image.attached? image_tag post.paragraph_image : image_tag "pofo/blog-details-img10.jpg", alt: "" %><figcaption class="wp-caption-text">There is no sincerer love than the love of food.</figcaption></figure>
+~~~~~~~~

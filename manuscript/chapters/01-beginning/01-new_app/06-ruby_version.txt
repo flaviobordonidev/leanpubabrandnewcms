@@ -2,7 +2,7 @@
 
 
 
-## Fissiamo la versione di Ruby sul Gemfile
+## Verifichiamo la versione di Ruby sul Gemfile
 
 Verifichiamo che la versione di ruby scritta in automatico sul Gemfile coincida con quella che stiamo usando.
 Questo è usato sia dal bundler che da Heroku.
@@ -13,19 +13,20 @@ verifichiamo la versione di ruby che stiamo usando
 ~~~~~~~~
 $ ruby -v
 
-ruby 2.4.1p111 (2017-03-22 revision 58053) [x86_64-linux]
+ec2-user:~/environment/myapp (master) $ ruby -v
+ruby 2.6.0p0 (2018-12-25 revision 66547) [x86_64-linux]
 ~~~~~~~~
 
 verifichiamo sul gemfile 
 
 {id="01-01-06_01", title="Gemfile", lang=ruby, line-numbers=on, starting-line-number=4}
 ~~~~~~~~
-ruby '2.4.1'
+ruby '2.6.0'
 ~~~~~~~~
 
 [Codice 01](#01-01-06_01all)
 
-I> La versione va riportata senza il numero di patch ('2.4.1' e non '2.4.1p111'). Se si riporta anche il numero di patch si avrà un messaggio di errore nel momento in cui faremo il "bundle install".
+I> La versione viene riportata senza il numero di patch ('2.6.0' e non '2.6.0p111').
 
 
 Ed una volta usato il "bundle install" l'installato viene registrato sul file: Gemfile.lock

@@ -1,0 +1,6 @@
+-# Mettiamo il template Canvas "Blog" al nostro CMS base
+
+Dopo la sezione **beginning** e la sezione **brandnewcms** passiamo ad importare un tema sulla nostra applicazione.
+prepariamo il nostro Blog con il tema Canvas.
+
+

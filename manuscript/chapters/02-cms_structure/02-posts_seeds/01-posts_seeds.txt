@@ -1,0 +1,339 @@
+# Gli articoli del blog
+
+Creiamo il cuore del nostro CMS (Content Management System) ossia gli articoli del nostro blog.
+
+
+I> il "Read more" in italiano è tradotto come "Leggi tutto" o "Continua a leggere" o  "Approfondisci". A volte non si mette solo il simbolo di continua "[...]" senza link "Leggi tutto" e si lascia solo il link sul titolo.
+
+
+* Date.today
+
+
+
+
+## Apriamo il branch "Posts Seeds"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b ps
+~~~~~~~~
+
+
+
+
+## Creiamo la struttura per gli articoli (posts)
+
+* title       	: titolo dell'articolo. Quello che ha una bella copy.
+* incipit       : il testo che è sull'indice. L'inizio di un articolo che spesso è anche troncato ad hoc.
+* content       : il testo principale del post
+* type 		      : image, video su youtube, video su vimeo, quote, podcast, ... (il tipo di post/articolo; se ha immagine o video o altro). Di tipo ENUM
+* image         : l'eventuale foto
+* video_youtube : l'eventuale video caricato su youtube (al posto della foto)
+* video_vimeo   : l'eventuale video caricato su vimeo (al posto della foto)
+* seocontent    : il testo che appare sui motori di ricerca (spesso coincide con l'incipit)
+* seoimage      : l'immagine che appare sui motori di ricerca (spesso coincide con l'image)
+* tags          : le parole più ricercate / le parole chiave (sarà usato dalla gemma acs-as-taggable)
+* user_id		    : utente che ha scritto il post (chiave esterna per un collegamento uno-a-molti)
+* comment_id	  : i commenti fatti agli articoli
+
+I> image e seoimage le gestiamo con activestorage e quindi le inseriamo a livello di Model.
+I>
+I> tags li gestiamo nei prossimi capitoli con la gemma act-as-taggable
+I>
+I> comment_id non ci serve perché non usiamo una relazione uno-a-molti ma utiliziamo i plugin di Disqus oppure di Facebook
+
+I> Attenzione!
+I>
+I> il campo "type" ci darebbe un errore perché "ActiveStore" usa il campo "type" e quindi va in conflitto con il nostro campo type. 
+I>
+I> Per evitare di rinominarlo in seguito lo chiamiamo da subito "content_type".
+I>
+I> Non lo chiamo "type_of_content" perché una volta applicato ENUM avremmo un elenco dei vari tipi di contenuto chiamato "Post.type_of_contents" (tipo di contenuti). Molto meglio "Post.content_types" (tipi di contenuto).
+
+Iniziamo con una parte della struttura e poi via via implementiamo il resto.
+
+Usiamo lo Scaffold che mi imposta già l'applicazione in stile restful con le ultime convenzioni Rails.
+Lo scaffold crea su routes la voce resources, crea il modulo, il migration, e tutte le views un controller con le 7 azioni in stile restful:
+index, show, new, edit, create, update e destroy. 
+
+I> ATTENZIONE: con "rails generate scaffold ..." -> uso il SINGOLARE
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g scaffold Post title:string incipit:text content:text content_type:integer video_youtube:string video_vimeo:string seocontent:text user:references
+~~~~~~~~
+
+La cosa bella di "user_references" è che, oltre a creare la colonna "user_id:integer", ci aggiunge anche l'indice in tabella e ci predispone la relazione uno-a-molti.
+
+questo crea il migrate:
+
+{title=".../db/migrate/xxx_create_posts.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class CreatePosts < ActiveRecord::Migration[5.2]
+  def change
+    create_table :posts do |t|
+      t.string :title
+      t.text :incipit
+      t.text :content
+      t.integer :content_type
+      t.string :video_youtube
+      t.string :video_vimeo
+      t.text :seocontent
+      t.date :date_chosen
+      t.references :user, foreign_key: true
+
+      t.timestamps
+    end
+  end
+end
+~~~~~~~~
+
+Effettuiamo il migrate del database per creare la tabella sul database
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails db:migrate
+~~~~~~~~
+
+
+
+
+## Sistemiamo le routes
+
+Lo scaffold già ci ha creato il "resources :posts" diamo solo una sistemata alle righe per una questione di ordine e non di funzionalità
+
+{title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=10}
+~~~~~~~~
+  resources :posts
+~~~~~~~~
+
+
+
+
+## Completiamo la relazione uno-a-molti con user
+
+nella sezione "# == Relationships" --> "## one-to-many"
+
+{title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=18}
+~~~~~~~~
+  belongs_to :user
+~~~~~~~~
+
+{title=".../app/models/user.rb", lang=ruby, line-numbers=on, starting-line-number=18}
+~~~~~~~~
+  has_many :posts
+~~~~~~~~
+
+
+
+
+## Didattico - Aggiunta successiva di colonne
+
+Se per fare una prova avessimo implementato lo scaffold con solo le colonne "title", "incipit" e l'indice esterno di users "user_id" (user:references) possiamo aggiungere le restanti con questo migrate
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g migration AddContentTypeVideoSeoDateToPost content:text type:integer video_youtube:string video_vimeo:string seocontent:text date_chosen:date
+~~~~~~~~
+
+questo crea il migrate:
+
+{title=".../db/migrate/xxx_add_content_type_video_seo_date_to_post.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class AddContentTypeVideoSeoDateToPost < ActiveRecord::Migration[5.2]
+  def change
+    add_column :posts, :content, :text
+    add_column :posts, :type, :integer
+    add_column :posts, :video_youtube, :string
+    add_column :posts, :video_vimeo, :string
+    add_column :posts, :seocontent, :text
+    add_column :posts, :date_chosen, :date
+  end
+end
+~~~~~~~~
+
+Effettuiamo il migrate del database per creare la tabella sul database
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails db:migrate
+~~~~~~~~
+
+### In questo caso avremmo dovuto anche aggiornare il controller
+
+{title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=70}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def post_params
+      params.require(:post).permit(:title, :incipit, :content, :type, :video_youtube, :video_vimeo, :seocontent, :date_chosen, :user_id)
+    end
+~~~~~~~~
+
+
+
+
+## Elenco dei posts con i più recenti visualizzati per primi
+
+impostiamo l'elenco degli articoli visualizzando prima i più recenti quidni in ordine decrescente di data-creazione
+
+
+{title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+  def index
+    @posts = Post.all.order(created_at: "DESC")
+~~~~~~~~
+
+Si potava anche mettere tutto nella stringa ma è meno conforme agli standard:
+
+~~~~~~~~
+    @posts = Post.all.order('created_at DESC')
+~~~~~~~~
+
+
+
+
+## Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+apriamo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/posts
+
+Riempiamo i vari campi ma lasciamo vuoto il campo type perché dobbiamo ancora attivargli enum. Inoltre dobbiamo riempire manualmente il campo user_id.
+
+
+
+
+## Impostiamo in automatico l'utente loggato
+
+Facciamo in modo che ogni nuovo post sia creato legandolo all'utente loggato (current_user).
+
+Per prima cosa mettiamo la protezione di Devise così siamo sicuri che la persona sia loggata, altrimenti current_user risulta null.
+
+{title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+  before_action :authenticate_user!
+~~~~~~~~
+
+Adesso che abbiamo la certezza che current_user non sia un valore null possiamo implementare la relazione uno-a-molti nell'azione "new".
+il codice più elegante è
+
+{title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+    def new
+      @post = current_user.posts.new
+~~~~~~~~
+
+Ma lo stesso risultato lo potevamo ottenere con
+
+{title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+  def new
+    @post = Post.new
+    @post.user = current_user
+  end
+~~~~~~~~
+
+oppure con
+
+{title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+  def new
+    @post = Post.new
+    @post.user_id = current_user.id
+  end
+~~~~~~~~
+
+
+
+
+### Alternativa con forzatura su azione "create"
+
+Se volessimo togliere il campo user_id dal form potremmo impostarlo come ".hidden" oppure potremmo eliminarlo ed usare il current_user nell'azione "create"
+
+{title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+    def create
+      @post = current_user.posts.new(post_params)
+~~~~~~~~
+
+Ma questa forzatura scegliamo di non usarla nel nostro tutorial.
+
+
+
+
+## Aggiungiamo la colonna con l'email dell'autore che si è loggato in posts/index
+
+Una volta loggato visualizzo anche il nome dell'autore nell'elenco
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=15}
+~~~~~~~~
+        <th>Autore</th>
+~~~~~~~~
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=25}
+~~~~~~~~
+          <td><%= post.user.email %></td>
+~~~~~~~~
+
+[tutto il codice](#brandnewcms-posts_seeds-01a-views-authors-posts-index.html.erb)
+
+
+
+
+## Salviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Add scaffold Post"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su Heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku ps:master
+$ heroku run rails db:migrate
+~~~~~~~~
+
+
+
+
+## Popoliamo manualmente
+
+inseriamo due articoli (posts) e mettiamo il contenuto usando https://hipsum.co/ che è simile a Lorem ipsum ma più divertente.
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge ps
+$ git branch -d ps
+~~~~~~~~
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

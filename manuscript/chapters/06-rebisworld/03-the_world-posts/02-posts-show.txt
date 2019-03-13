@@ -1,0 +1,119 @@
+# Rebisworld - Blog - posts
+
+adattiamo i posts a Rebisworld
+
+
+
+## Apriamo il branch "Rebisworld Blog"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b rb
+~~~~~~~~
+
+
+
+
+## Controller posts
+
+l'azione "show" in controllers/posts_controller.rb l'abbiamo già impostata nei capitoli precedenti.
+
+
+
+
+## Instradamenti
+
+l'instradamento in config/routes.rb lo abbiamo già impostato nei capitoli precedenti.
+
+
+
+
+## Layouts/application
+
+Lo abbiamo già adattato nei capitoli precedenti
+
+
+
+
+## La pagina posts/show
+
+Alla nostra pagina posts/show non ci resta che aggiungere le uniche due chiamate prese dal mockups
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=8}
+~~~~~~~~
+<%= render "pofo_page_title_section2", post: @post %>
+
+<%= render "pofo_post_section", post: @post %>
+~~~~~~~~
+
+e copiamoci i due partials (da -> a):
+
+* .../app/views/mockups/_pofo_page_title_section2.html.erb -> .../app/views/posts/_pofo_page_title_section2.html.erb
+* .../app/views/mockups/_pofo_post_section.html.erb -> .../app/views/posts/_pofo_post_section.html.erb
+
+
+
+
+## Rendiamo dinamici i due partials
+
+Per immagine di background se c'è nel record inseriamo immagine dal database altrimenti immagine di default. (tutte le immagini del db sono archiviate su aws).
+Inseriamo poi il titolo ed il sottotitolo con la data (se presente), il nome dell'autore ed i tags.
+
+{title=".../app/views/posts/_pofo_page_title_section2.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=8}
+~~~~~~~~
+<!-- start page title section -->
+<section class="wow fadeIn parallax" data-stellar-background-ratio="0.5" style="background-image:url('<%= post.main_image.attached? ? url_for(post.main_image) : image_path('pofo/parallax-bg55.jpg') %>');">
+  <div class="opacity-medium bg-extra-dark-gray"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12 one-second-screen display-table page-title-large">
+        <div class="display-table-cell vertical-align-middle text-center">
+            <h1 class="text-white alt-font font-weight-600 margin-10px-bottom"><%= post.title %></h1>
+            <!-- start sub title -->
+            <span class="text-white opacity6 alt-font no-margin-bottom text-uppercase text-small"><a href="blog-masonry.html" class="text-white"><%= @post.user.name %></a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+            <% post.tags.each do |tag| %>
+              <%= link_to tag.name, posts_path(tag: tag.name), class: "text-white" %><%= "," unless tag == post.tags.last %> 
+            <% end %>
+            <!--<a href="blog-masonry.html" class="text-white">Design</a>, <a href="blog-masonry.html" class="text-white">Branding</a>-->
+            </span>
+            <!-- end sub title -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- end page title section -->
+~~~~~~~~
+
+Nella sezione del post inseriamo i contenuti di titoli, immagini e testi del paragrafo.
+
+{title=".../app/views/posts/_pofo_post_section.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=8}
+~~~~~~~~
+<!-- start blog content section -->
+<section class="wow fadeIn">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12 xs-text-center">
+        <h5 class="font-weight-600 text-extra-dark-gray alt-font"><%= post.paragraph_title %></h5>
+        <%= sanitize "#{post.paragraph_content}" %>
+      </div>
+      <% if post.paragraph_image.attached? %>
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <%= image_tag "pofo/blog-details-img7.jpg", alt: "", class: "width-100 margin-50px-tb" %>
+          <!--<img src="images/blog-details-img7.jpg" alt="" class="width-100 margin-50px-tb">-->
+        </div>
+      <% end %>
+      <div class="col-md-12 col-sm-12 col-xs-12 last-paragraph-no-margin xs-text-center">
+        <span class="text-extra-dark-gray font-weight-600 alt-font margin-10px-bottom display-block text-medium"><%= post.paragraph2_title %></span>
+        <p class="width-90 xs-width-100"><%= sanitize "#{post.paragraph2_content}" %> </p>
+      </div>
+      <div class="col-md-12 col-sm-12 col-xs-12 last-paragraph-no-margin display-table text-right xs-text-center">
+        <span class="alt-font margin-20px-right">storia e testi di Roberta Cusimano</span>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- end blog content section -->
+~~~~~~~~
+
+Inseriamo inoltre immagine e biografia dell'autore

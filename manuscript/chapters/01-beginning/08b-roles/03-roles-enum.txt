@@ -1,0 +1,683 @@
+# Roles - enum
+
+Questo approccio è semplice e permette di avere più ruoli fissi (es: user, vip, admin) o (es: silver, gold, platinum, diamond).
+Questo livello permette di gestire più del 90% delle esigenze delle applicazioni web. Usato con pundit e devise riesce a coprire quasi tutte le esigenze di autorizzazione.
+Per questo motivo rolify è stato messo su una sezione distinta, proprio perché è una gemma che, quasi sempre, possiamo evitare di installare.
+
+Aggiungiamo i vari ruoli utilizzando un attributo (role attribute) e non un intero modello.
+Questo vuol dire aggiungere una colonna "role" di tipo integer sulla tabella "users" e dichiarare l'uso di "enum" sul model User.
+
+Volendo usare "rolify" possiamo saltare direttamente alla sezione 10-rolification
+
+
+Risorse web:
+
+* [articolo lungo vai al paragrafo Implementing Roles - Enum Roles](http://railsapps.github.io/rails-authorization.html)
+* [esempio roles](https://github.com/RailsApps/rails-devise-roles/blob/master/app/views/users/_user.html.erb)
+* [esempio pundit](https://github.com/RailsApps/rails-devise-pundit/blob/master/app/views/users/_user.html.erb)
+
+* [Ruby on Rails - how to create perfect enum in 5 steps](https://naturaily.com/blog/ruby-on-rails-enum)
+* [Ruby on Rails 5.2.0 - Module - ActiveRecord::Enum](https://api.rubyonrails.org/v5.2.0/classes/ActiveRecord/Enum.html)
+
+* [Ruby on Rails: Customize the devise user (Screencast #1)](https://www.youtube.com/watch?v=5inpxIHKhkE)
+
+
+
+
+## Apriamo il branch "Roles Enum"
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b re
+~~~~~~~~
+
+
+
+
+## Aggiungiamo il campo roles:enum alla tabella users
+
+nel db postgresql si possono implementare dei campi di tipo "enum" ma per attivare la gestione "enum" di Rails usiamo la tipologia "integer" nel db. Implementeremo la gestione del campo con la tipologia "enum" direttamente nel model più avanti in questo capitolo.
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g migration add_role_to_users role:integer
+~~~~~~~~
+
+Modifichiamo il migrate aggiungendo un default e l'indice per velocizzare queries che usano "role"
+
+{id="01-09-03_01", title=".../db/migrate/xxx_add_role_to_users.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+    add_column :users, :role, :integer, default: 0
+    add_index :users, :role, unique: false
+~~~~~~~~
+
+[Codice 01](#01-09-03_01all)
+
+Effettuiamo il migrate del database per creare la tabella sul database
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails db:migrate
+~~~~~~~~
+
+ed otteniamo le seguenti modifiche alla tabella "users"
+
+{id="01-09-03_02", title=".../db/schema.rb", lang=ruby, line-numbers=on, starting-line-number=52}
+~~~~~~~~
+    t.integer "role", default: 0
+~~~~~~~~
+
+{title=".../db/schema.rb", lang=ruby, line-numbers=on, starting-line-number=55}
+~~~~~~~~
+    t.index ["role"], name: "index_users_on_role"
+~~~~~~~~
+
+[Codice 02](#01-09-03_02all)
+
+Avremmo potuto aggiungere l'indice anche in un secondo momemento
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g migration add_index_to_role_to_users
+~~~~~~~~
+
+{title=".../db/migrate/xxx_add_index_to_role_to_users.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class AddIndexToRoleToUsers < ActiveRecord::Migration
+  def change
+    add_index :users, :role, unique: false
+  end
+end
+~~~~~~~~
+
+
+
+
+## Aggiorniamo il Model implementando ENUM
+
+{title=".../models/user.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+  #enum role: [:user, :admin, :moderator, :author]
+  enum role: {user: 0, admin: 1, moderator:2, author:3}
+~~~~~~~~
+
+Le due linee di codice in alto sono equivalenti solo la seconda linea di codice è più flessibile per eventuali aggiunte o eliminazioni all'elenco.
+
+
+Se non avessimo voluto usare il default lato database con "default: 0" avremmo potuto farlo nel model in questo modo:  
+  
+{title=".../models/user.rb", lang=ruby, line-numbers=on, starting-line-number=7}
+~~~~~~~~
+  after_initialize :set_default_role, :if => :new_record?
+
+  def set_default_role
+    self.role ||= :user
+  end
+~~~~~~~~
+
+ma lato database è più pulito e più prestazionale.
+
+
+
+
+
+## Assegnamo un ruolo ai nostri utenti da terminale rails
+
+Apriamo il terminale
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+
+
+c2-user:~/environment/myapp (ra) $ rails c
+Running via Spring preloader in process 5590
+Loading development environment (Rails 5.2.2)
+2.4.1 :001 > 
+~~~~~~~~
+
+verifichiamo tutti i ruoli presenti nella colonna "role" assegnata ad enum.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+-> User.roles
+
+
+2.4.1 :001 > User.roles
+ => {"user"=>0, "admin"=>1, "moderator"=>2, "author"=>3} 
+~~~~~~~~
+
+verifichiamo che tutti gli utenti hanno il campo della colonna role con il valore di default "0", che per enum corrisponde al valore "user".
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+-> User.all
+
+
+2.4.1 :002 > User.all
+  User Load (0.3ms)  SELECT  "users".* FROM "users" LIMIT $1  [["LIMIT", 11]]
+ => #<ActiveRecord::Relation [#<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2019-01-04 11:53:46", updated_at: "2019-01-06 09:32:02", role: "user">, #<User id: 2, name: "Bob", email: "bob@test.abc", created_at: "2019-01-06 09:40:34", updated_at: "2019-01-06 09:40:34", role: "user">, #<User id: 3, name: "Carl", email: "carl@test.abc", created_at: "2019-01-06 09:40:51", updated_at: "2019-01-06 09:40:51", role: "user">, #<User id: 4, name: "David", email: "david@test.abc", created_at: "2019-01-06 09:41:12", updated_at: "2019-01-06 09:41:12", role: "user">, #<User id: 5, name: "Elvis", email: "elvis@test.abc", created_at: "2019-01-06 09:41:30", updated_at: "2019-01-06 23:46:51", role: "user">]> 
+~~~~~~~~
+
+rendiamo il primo utente amministratore
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+-> User.first.admin!
+
+
+2.4.1 :006 > User.first.admin!
+  User Load (0.5ms)  SELECT  "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1  [["LIMIT", 1]]
+   (0.2ms)  BEGIN
+  User Update (1.1ms)  UPDATE "users" SET "role" = $1, "updated_at" = $2 WHERE "users"."id" = $3  [["role", 1], ["updated_at", "2019-01-08 11:40:09.136108"], ["id", 1]]
+   (0.8ms)  COMMIT
+ => true 
+~~~~~~~~
+
+Altro modo
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+-> User.first.update(role: :admin)
+
+
+2.4.1 :009 > User.first.update(role: :admin)
+  User Load (1.0ms)  SELECT  "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1  [["LIMIT", 1]]
+   (0.1ms)  BEGIN
+  User Update (0.3ms)  UPDATE "users" SET "role" = $1, "updated_at" = $2 WHERE "users"."id" = $3  [["role", 1], ["updated_at", "2019-01-08 11:42:22.735193"], ["id", 1]]
+   (0.8ms)  COMMIT
+ => true 
+~~~~~~~~
+
+Altro modo
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+-> u= User.first 
+-> u.role = :admin 
+-> u.save 
+
+
+2.4.1 :011 > u= User.first
+  User Load (0.6ms)  SELECT  "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1  [["LIMIT", 1]]
+ => #<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2019-01-04 11:53:46", updated_at: "2019-01-08 11:43:02", role: "user"> 
+2.4.1 :012 > u.role = :admin
+ => :admin 
+2.4.1 :013 > u.save
+   (0.4ms)  BEGIN
+  User Update (0.5ms)  UPDATE "users" SET "updated_at" = $1, "role" = $2 WHERE "users"."id" = $3  [["updated_at", "2019-01-08 11:43:42.770494"], ["role", 1], ["id", 1]]
+   (1.2ms)  COMMIT
+ => true 
+~~~~~~~~
+
+verifichiamo che ruolo hanno il primo ed il secondo utente
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+-> User.first.admin?
+ => true 
+
+-> User.second.admin? 
+ => false 
+
+-> User.second.user?
+ => true
+
+-> User.first.role
+ => "admin" 
+
+-> User.second.role
+ => "user" 
+~~~~~~~~
+
+prendiamo una lista di tutti gli :admin
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+-> User.admin
+
+
+2.4.1 :024 > User.admin
+  User Load (0.2ms)  SELECT  "users".* FROM "users" WHERE "users"."role" = $1 LIMIT $2  [["role", 1], ["LIMIT", 11]]
+ => #<ActiveRecord::Relation [#<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2019-01-04 11:53:46", updated_at: "2019-01-08 11:43:42", role: "admin">]> 
+~~~~~~~~
+
+prendiamo una lista di tutti gli :user
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+-> User.user
+
+
+2.4.1 :025 > User.user
+  User Load (0.3ms)  SELECT  "users".* FROM "users" WHERE "users"."role" = $1 LIMIT $2  [["role", 0], ["LIMIT", 11]]
+ => #<ActiveRecord::Relation [#<User id: 2, name: "Bob", email: "bob@test.abc", created_at: "2019-01-06 09:40:34", updated_at: "2019-01-06 09:40:34", role: "user">, #<User id: 3, name: "Carl", email: "carl@test.abc", created_at: "2019-01-06 09:40:51", updated_at: "2019-01-06 09:40:51", role: "user">, #<User id: 4, name: "David", email: "david@test.abc", created_at: "2019-01-06 09:41:12", updated_at: "2019-01-06 09:41:12", role: "user">, #<User id: 5, name: "Elvis", email: "elvis@test.abc", created_at: "2019-01-06 09:41:30", updated_at: "2019-01-06 23:46:51", role: "user">]> 
+~~~~~~~~
+
+prendiamo una lista di tutti i :moderator
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+-> User.moderator
+
+
+2.4.1 :026 > User.moderator
+  User Load (0.6ms)  SELECT  "users".* FROM "users" WHERE "users"."role" = $1 LIMIT $2  [["role", 2], ["LIMIT", 11]]
+ => #<ActiveRecord::Relation []> 
+~~~~~~~~
+
+usciamo
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+-> exit
+~~~~~~~~
+
+
+
+
+## Attiviamo la white list sul controller
+
+Invece di cambiare i ruoli da console adesso li cambiamo sulla nostra view.
+Abbiamo un piccolo problema. Devise non è come lo scaffold. Non ci crea già le azioni sul controller e le views.
+
+Per poter passare i parametri attraverso le views, o meglio il sumbit del form, dobbiamo inserirli nella white list del controller. Una procedura detta "Strong_params" o "mass-assignment". Ma questo non è così facile su Devise perché di default ci nasconde tutto.
+
+Abbiamo già visualizzato i controllers e le views di devise-users nei capitoli precedenti.
+Possiamo passare i parametri in due modi:
+
+1. Usando il controller application (metodo raccomandato dalla Plataformatec creatrice di Devise)
+2. Usando i controllers dentro "controllers/users/" ma in questo caso dobbiamo dichiarare ogni controller usato nella routes
+
+
+
+
+### 1. Il metodo raccomandato da plataformatec. Il metodo Lazy way.
+
+Mettiamo nella whitelist la colonna :role. Normalmente andremmo solo su users_controller ma per devise dobbiamo usare anche application_controller.
+
+{id="01-09-03_03", title=".../app/controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+  before_action :configure_permitted_parameters, if: :devise_controller?
+~~~~~~~~
+
+{title=".../app/controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=9}
+~~~~~~~~
+  protected
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_in, keys: [:role])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:role])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:role])
+  end
+end
+~~~~~~~~
+
+[Codice 03](#01-09-03_03all)
+
+I loro nomi e parametri di default permessi sono:
+
+* sign_in (Devise::SessionsController#create) - Permette solo le chiavi di autenticazione come il campo :email
+* sign_up (Devise::RegistrationsController#create) - Permette le chiavi di autenticazione più i campi :password e :password_confirmation
+* account_update (Devise::RegistrationsController#update) - Permette le chiavi di autenticazione più i campi :password, :password_confirmation e :current_password
+
+
+Inoltre mettiamo il campo :role nella whitelist di users_controller
+
+{id="01-09-03_04", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=83}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def user_params
+      params.require(:user).permit(:name, :email, :password, :password_confirmation, :role)
+    end
+~~~~~~~~
+
+[Codice 04](#01-09-03_04all)
+
+
+
+
+### 2. l'alternativa con i controllers in controllers/users/
+
+Non usiamo questa alternativa ma riportiamo comunque un esempio per "users/registration_controller"
+
+{title=".../app/controllers/users/registrations_controller.rb", lang=ruby, line-numbers=on, starting-line-number=11}
+~~~~~~~~
+class RegistrationsController < Devise::RegistrationsController
+
+  ...
+
+  private
+
+  def sign_up_params
+    params.require(:user).permit(:role, :email, :password, :password_confirmation)
+  end
+
+  def account_update_params
+    params.require(:user).permit(:role, :email, :password, :password_confirmation, :current_password)
+  end
+end
+~~~~~~~~
+
+L'aggiunta dell'instradamento di "users/registration_controller"
+
+{title=".../app/config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=8}
+~~~~~~~~
+  devise_for :users, controllers: {sessions: 'users/sessions', registration: 'users/registration'}, path: '', path_names: {sign_in: 'login'}
+~~~~~~~~
+
+
+
+
+## Aggiorniamo la view
+
+Aggiungiamo un selettore per permettere di cambiare ruolo
+
+{id="01-09-03_05", title=".../app/views/users/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+  <div class="field">    
+    <%= form.label :role %>
+    <%#= form.text_field :role %>
+    <%= form.select(:role, User.roles.keys.map {|role| [role.titleize,role]}) %>
+  </div>
+~~~~~~~~
+
+[Codice 05](#01-09-03_05all)
+
+Attenzione: deve essere attivo solo uno dei due campi: "form.text_field :role" o "form.select(:role...". Se attiviamo entrambi i campi verrà passato come params solo il valore dell'ultimo campo perché hanno lo stesso nome.
+
+I> Per approfondimenti vedi sezione rails_references/data_types/select-collection_select
+
+
+Mostriamo i ruoli anche nell'elenco iniziale degli utenti. Li mettiamo al posto della colonna "Remember created at"
+
+{title=".../app/views/users/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=11}
+~~~~~~~~
+      <th>Role</th>
+~~~~~~~~
+
+{title=".../app/views/users/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=22}
+~~~~~~~~
+        <td><%= user.role %></td>
+~~~~~~~~
+
+
+
+
+### Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+* https://mycloud9path.amazonaws.com/users
+
+Andiamo in edit sui vari utenti e ne vediamo i vari ruoli. Volendo possiamo anche cambiarli
+
+
+
+
+## Implementiamo le autorizzazioni
+
+nel prossimo capitolo finalmente attiviamo la sicurezza implementando le autorizzazioni alle varie azioni.
+
+
+
+
+## Salviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Add role:enum to table users"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su Heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku re:master
+$ heroku run rails db:migrate
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge re
+$ git branch -d re
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
+
+
+
+
+## Il codice del capitolo
+
+
+
+
+[Codice 01](#01-09-03_01)
+
+{id="01-09-03_01all", title=".../db/migrate/xxx_add_role_to_users.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class AddRoleToUsers < ActiveRecord::Migration[5.2]
+  def change
+    add_column :users, :role, :integer, default: 0
+    add_index :users, :role, unique: false
+  end
+end
+~~~~~~~~
+
+
+
+
+[Codice 02](#01-09-03_02)
+
+{id="01-09-03_02all", title=".../db/schema.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+# This file is auto-generated from the current state of the database. Instead
+# of editing this file, please use the migrations feature of Active Record to
+# incrementally modify your database, and then regenerate this schema definition.
+#
+# Note that this schema.rb definition is the authoritative source for your
+# database schema. If you need to create the application database on another
+# system, you should be using db:schema:load, not running all the migrations
+# from scratch. The latter is a flawed and unsustainable approach (the more migrations
+# you'll amass, the slower it'll run and the greater likelihood for issues).
+#
+# It's strongly recommended that you check this file into your version control system.
+
+ActiveRecord::Schema.define(version: 2019_01_08_110724) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "example_companies", force: :cascade do |t|
+    t.string "name"
+    t.text "sector"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "example_posts", force: :cascade do |t|
+    t.string "title"
+    t.text "incipit"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_example_posts_on_user_id"
+  end
+
+  create_table "example_users", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.string "encrypted_password"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "name", default: "", null: false
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "role", default: 0
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["role"], name: "index_users_on_role"
+  end
+
+  add_foreign_key "example_posts", "users"
+end
+~~~~~~~~
+
+
+
+
+[Codice 03](#01-09-03_03)
+
+{id="01-09-03_03all", title=".../db/schema.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class ApplicationController < ActionController::Base
+  before_action :configure_permitted_parameters, if: :devise_controller?
+
+  def after_sign_in_path_for(resource_or_scope)
+    users_path
+    #current_user
+  end
+
+  protected
+  
+    def configure_permitted_parameters
+      devise_parameter_sanitizer.permit(:sign_in, keys: [:role])
+      devise_parameter_sanitizer.permit(:sign_up, keys: [:role])
+      devise_parameter_sanitizer.permit(:account_update, keys: [:role])
+    end
+end
+~~~~~~~~
+
+
+
+
+[Codice 04](#01-09-03_04)
+
+{id="01-09-03_04all", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class UsersController < ApplicationController
+  before_action :authenticate_user!
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
+
+  # GET /users
+  # GET /users.json
+  def index
+    @users = User.all
+  end
+
+  # GET /users/1
+  # GET /users/1.json
+  def show
+  end
+
+  # GET /users/new
+  def new
+    @user = User.new
+  end
+  
+  # GET /users/1/edit
+  def edit
+  end
+
+  # POST /users
+  # POST /users.json
+  def create
+    @user = User.new(user_params)
+
+    respond_to do |format|
+      if @user.save
+        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.json { render :show, status: :created, location: @user }
+      else
+        format.html { render :new }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /users/1
+  # PATCH/PUT /users/1.json
+  def update
+    if params[:user][:password].blank?
+      params[:user].delete(:password)
+      params[:user].delete(:password_confirmation)
+    end
+    current_user_temp = current_user
+    respond_to do |format|
+      if @user.update(user_params)
+        format.html do
+          # Logghiamoci di nuovo automaticamente bypassando le validazioni
+          sign_in(@user, bypass: true) if @user == current_user_temp
+          redirect_to @user, notice: 'User was successfully updated.'
+        end
+        format.json { render :show, status: :ok, location: @user }
+      else
+        format.html { render :edit }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /users/1
+  # DELETE /users/1.json
+  def destroy
+    @user.destroy unless @user == current_user
+    respond_to do |format|
+      format.html do 
+        redirect_to users_url, notice: 'User was successfully destroyed.' unless @user == current_user
+        redirect_to users_url, notice: 'Non posso eliminare utente loggato.' if @user == current_user
+      end
+      format.json { head :no_content }
+    end
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_user
+      @user = User.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def user_params
+      params.require(:user).permit(:name, :email, :password, :password_confirmation, :remember_created_at, :role)
+    end
+
+end
+~~~~~~~~

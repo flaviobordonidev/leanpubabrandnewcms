@@ -1,0 +1,141 @@
+# La preparazione iniziale
+
+Vengono fatti gli stessi passaggi fatti nel capitolo precedente per importare la pagina di visualizzazione del singolo articolo.
+
+
+
+
+## Apriamo il branch "Mockup Posts_Show"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b mps
+~~~~~~~~
+
+
+
+## Scelti dal tema Pofo
+
+dalla cartella principale abbiamo scelto il seguente file per l'indice degli articoli
+
+* .../blog-post-layout-05.html
+
+quindi iniziamo importando il codice di questo file nella nostra applicazione Rails.
+Successivamente importeremo i vari files di stylesheets, javascripts ed images mano a mano che si presenteranno.
+
+
+
+
+## Creiamo il nostro mockup posts_show
+
+creiamo il nuovo file posts_show tra le nostre pagine statiche di esempio e copiamo il contenuto del file html scelto dal tema (da -> a):
+
+* .../blog-post-layout-05.html -> .../app/views/example_static_pages/posts_show.html.erb
+
+
+
+
+## Aggiorniamo gli instradamenti
+
+Aggiorniamo il file routes
+
+{title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=23}
+~~~~~~~~
+  get 'example_static_pages/posts_show'
+~~~~~~~~
+
+
+
+
+## Creiamo un layout per il mockup
+
+Poiché inizialmente mettiamo tutto il codice html nella view, usiamo il layout che ha la sola chiamata "yield". Potevamo creare un nuovo layout chiamato "mockup" ma ne abbiamo già creato uno identico nei precedenti capitoli che abbiamo chiamato "yield". Quindi usiamo questo
+
+{title=".../app/views/layouts/yield.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%= yield %>
+~~~~~~~~
+
+
+
+
+## Aggiorniamo il controller
+
+aggiungiamo l'azione "mockup_index" al controller posts e diciamogli di utilizzare il layout mockup.
+
+{title=".../app/controllers/example_static_pages_controller.rb", lang=ruby, line-numbers=on, starting-line-number=16}
+~~~~~~~~
+  def posts_show
+    render layout: 'yield'
+  end
+~~~~~~~~
+
+
+
+
+## Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+apriamolo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/example_static_pages/posts_index
+
+non ci resta che importare stylesheets e javascripts, ma questo lo vediamo nel prossimo capitolo
+
+
+
+
+## archiviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add example_static_pages/posts_show"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku mps:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge mps
+$ git branch -d mps
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
+
+
+
+
+## Il codice del capitolo
+

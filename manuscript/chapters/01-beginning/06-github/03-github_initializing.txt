@@ -17,7 +17,7 @@ non serve perché è rimasto aperto dal capitolo precedente
 
 ## Github sign_up sign_in
 
-Per prima cosa creiamoci un account su Github. Andimao su www.github.com e clicchiamo "Sign up"
+Per prima cosa creiamoci un account su Github. Andiamo su www.github.com e clicchiamo "Sign up"
 
 ![fig. 01](images/01-beginning/06-github/03_01-github_signup.PNG)
 

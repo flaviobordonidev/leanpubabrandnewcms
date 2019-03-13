@@ -1,8 +1,20 @@
--# Iniziamo una nuova app su Rails
+-# VOLUME 1
 
-in questi capitoli: 
+Iniziamo una nuova app su Rails
+
+in questo volume: 
 
 * Creiamo una nuova app Rails con database PostgreSql e ne visualizziamo il preview
-* Attiviamo il sistema di controllo delle versioni "Git"
 * Inseriamo la versione di ruby e gestiamo le credenziali di accesso (i secrets)
-* Creiamo una pagina statica di esempio
+* Attiviamo il sistema di controllo delle versioni "Git"
+* Creiamo una pagina statica di esempio (mockups)
+* Andiamo un produzione su Heroku
+* Implementiamo la gestione di più lingue - Internazionalizzazione (i18n)
+* Attiviamo il backup su GitHub
+* Implementiamo l'autenticazione con "devise"
+* Implementiamo delle pagine di esempio (eg_pages)
+* Implementiamo l'autorizzazione con "pundit"
+* Implementiamo la gestione dei ruoli
+* Attiviamo upload con ActiveStorage
+* Organizziamo i nostri Models
+
