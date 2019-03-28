@@ -1,10 +1,13 @@
 # include vs join
 
-http://asciicasts.com/episodes/181-include-vs-joins
-Railscasts 181-include-vs-joins
+Risorse web:
+
+* [Railscasts 181-include-vs-joins](http://asciicasts.com/episodes/181-include-vs-joins)
 
 
-Abnormalis models/company.rb
+
+
+## Abnormalis models/company.rb
 
 in postgresql ILIKE is case insensitive. LIKE is case sensitive.
 

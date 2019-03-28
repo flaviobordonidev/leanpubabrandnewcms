@@ -40,14 +40,17 @@ creiamo il nuovo file posts_index tra le nostre pagine statiche di esempio e cop
 
 ## Creiamo un layout specifico per il mockups/posts_index
 
-Poiché nella view mockups/posts_index mettiamo tutto il codice html, usiamo un layout che ha la sola chiamata "yield". Visto che qusto layout lo useremo per tutti i files html presi dal tema pofo, lo chiamiamo " mockups_pofo ".
+Poiché nella view mockups/posts_index mettiamo tutto il codice html, usiamo un layout che ha la sola chiamata "yield" che chiamiamo " mockups_yield ".
 
-{id="03-01-01_01", title=".../app/views/layouts/mockups_pofo.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+{id="03-01-01_01", title=".../app/views/layouts/mockups_yield.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
 <%= yield %>
 ~~~~~~~~
 
 [Codice 01](#03-01-01_01all)
+
+I> Poiché ogni tema tende a mantenere le stesse chiamate stylesheets e javascripts per tutte le pagine, il passo successivo sarà quello di creare un layour specifico per il tema tema pofo in cui includeremo queste chiamate e che chiameremo " mockups_pofo ".
+
 
 
 
@@ -58,7 +61,7 @@ aggiungiamo l'azione "mockup_index" al controller posts e diciamogli di utilizza
 {title=".../app/controllers/mockups_controller.rb", lang=ruby, line-numbers=on, starting-line-number=16}
 ~~~~~~~~
   def posts_index
-    render layout: 'mockups_pofo'
+    render layout: 'mockups_yield'
   end
 ~~~~~~~~
 

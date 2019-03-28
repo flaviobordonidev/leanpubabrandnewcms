@@ -1,0 +1,16 @@
+-# VOLUME 1
+
+ELISINFO - Il CRM basato su Rails
+
+
+![Elisinfo](images/07-elisinfo/00-section/01_01-elisinfo_cover.png)
+
+
+Questo volume continua a partire da quanto già fatto nei seguenti volumi:
+
+* 01-beginnning
+
+
+in questo volume: 
+
+* Blabla
