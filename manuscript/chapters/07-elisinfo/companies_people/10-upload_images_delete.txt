@@ -1,0 +1,166 @@
+# Eliminiamo l'immagine
+
+* http://jacopretorius.net/2013/11/allow-users-to-remove-uploaded-images-with-paperclip.html
+
+
+
+
+## Apriamo il branch "Uploaded Images Delete"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b uid
+~~~~~~~~
+
+
+
+
+## Rimuoviamo il logo dall'azienda
+
+Aggiungiamo il check_box **:remove_logo** nella pagina di modifica
+
+{title=".../app/views/companies/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=25}
+~~~~~~~~
+    <div class="field">
+      <%= f.label :logo, class: "control-label" %><br>
+      <%= f.file_field :logo, class: "form-control image_upload_file_field" %>
+      <%= f.check_box :remove_logo, "data-size" => "medium", "data-on-color" => "primary", "data-on-text" => "SI", "data-off-color" => "default", "data-off-text" => "NO" %>
+    </div>
+~~~~~~~~
+
+
+
+
+## Sul model
+
+creiamo l'attributo **remove_logo** in modo da poterlo usare come fosse un campo della tabella companies. (es: @company.remove_logo) 
+
+{title=".../app/models/company.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+  # ATTRIBUTES NOT MAPPED IN DATABASE (getter and setter methods)
+  
+  # paperclip ------------------------------------------------------------------
+  attr_accessor :remove_logo
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+
+
+
+## Sul controller
+
+nell'azione update.
+
+{title=".../app/controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=45}
+~~~~~~~~
+    if params[:company][:remove_logo] == "1"
+      @company.logo = nil
+      @company.save
+    end
+~~~~~~~~
+
+nell'azione create dovrei fare altrettanto ma al momento non lo faccio.
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+
+
+## Qualche ritocco di usabilità
+
+la logica funziona ma è poco intuitiva la pagina di modifica perché non ci presenta l'immagine attualmente caricata. Quando andiamo in modifica sembra che non ci sia nessuna immagine.
+
+
+
+
+
+## Rendiamo cliccabile l'immagine
+
+https://codepen.io/asommer70/post/rails-image-upload-preview
+
+
+
+
+
+
+
+http://stackoverflow.com/questions/36709113/customize-file-field-button-ruby-on-rails
+
+Rendiamo cliccabile l'immagine mettendola sul label. Inoltre nascondiamo il file_field con ** display: none **. Unico limite è che quando selezioni il file sei ancora con lìimmagine vecchia quindi è meglio lasciare il file_field visibile così ti rendi conto che l'upload lo hai previsto.
+HTML
+
+~~~~~~~~
+<div class="image-upload">
+   <label for="file-input">
+     <span class="glyphicon glyphicon-camera"></span>
+   </label>
+
+   <%= f.file_field :image_url, id:"file-input" %>
+</div>
+~~~~~~~~
+
+CSS
+
+~~~~~~~~
+.image-upload > input
+{
+    display: none;
+}
+.image-upload > label{
+  cursor:pointer;
+}
+~~~~~~~~
+
+Non mostriamo il campo di input e facciamo diventare il cursore la "manina" per il click quando è sopra l'immagine.
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add remove image combo_box"
+~~~~~~~~
+
+
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku uid:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge uid
+$ git branch -d uid
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

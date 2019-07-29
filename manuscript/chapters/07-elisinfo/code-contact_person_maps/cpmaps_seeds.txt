@@ -1,0 +1,136 @@
+# cpmaps_seeds
+
+
+
+
+#### 01 {#code-contact_person_maps-cpmaps_seeds-01}
+
+{title=".../app/models/contact.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class Contact < ApplicationRecord
+
+  # polymorphic ----------------------------------------------------------------
+  has_many :favorites, as: :favoritable
+  #-----------------------------------------------------------------------------
+
+  # globalize required
+  translates :medium, :fallbacks_for_empty_translations => true
+  #---
+
+  # many-to-many ---------------------------------------------------------------
+  has_many :company_contact_maps
+  has_many :companies, :through => :company_contact_maps
+  accepts_nested_attributes_for :companies
+
+  has_many :contact_person_maps
+  has_many :people, :through => :contact_person_maps
+  accepts_nested_attributes_for :people
+  #-----------------------------------------------------------------------------
+
+  # scope filters --------------------------------------------------------------
+  scope :search, -> (query) {with_translations(I18n.locale).where("medium ILIKE ? OR identifier ILIKE ?", "%#{query.strip}%", "%#{query.strip}%")}
+  #-----------------------------------------------------------------------------
+end
+~~~~~~~~
+
+
+
+
+#### 02 {#code-contact_person_maps-cpmaps_seeds-02}
+
+{title=".../app/models/person.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class Person < ApplicationRecord
+
+  # paperclip remove image -----------------------------------------------------
+  attr_accessor :remove_image
+  #-----------------------------------------------------------------------------
+
+  # virtual attribute ---------------------------------------------------------
+  attr_writer :favorite_cb_user
+  
+  # getter method (non creo il setter method)
+  def favorite_cb_user
+    if favorite_id_user.blank?
+      false
+    else
+      true
+    end
+  end
+  #-----------------------------------------------------------------------------
+  
+  # polymorphic ----------------------------------------------------------------
+  has_many :favorites, as: :favoritable
+  #-----------------------------------------------------------------------------
+  
+  # many-to-many ---------------------------------------------------------------
+  has_many :company_person_maps
+  has_many :companies, :through => :company_person_maps
+  accepts_nested_attributes_for :companies
+
+  has_many :contact_person_maps
+  has_many :contacts, :through => :contact_person_maps
+  accepts_nested_attributes_for :contacts
+  #-----------------------------------------------------------------------------
+
+  # globalize required ---------------------------------------------------------
+  translates :title, :homonym, :memo, :fallbacks_for_empty_translations => true
+  #-----------------------------------------------------------------------------
+  
+  # paperclip required ---------------------------------------------------------
+  has_attached_file :image, styles: { thumb: ["64x64!", :png] }
+  validates_attachment :image,
+                        content_type: { content_type: ["image/jpeg", "image/gif", "image/png"] }
+  #-----------------------------------------------------------------------------
+  
+  # scope filters --------------------------------------------------------------
+  scope :search, -> (query) {with_translations(I18n.locale).where("title ILIKE ? OR last_name ILIKE ? OR first_name ILIKE ?", "%#{query.strip}%", "%#{query.strip}%", "%#{query.strip}%")}
+  #-----------------------------------------------------------------------------
+
+end
+~~~~~~~~
+
+
+
+
+#### 03 {#code-contact_person_maps-cpmaps_seeds-03}
+
+{title=".../db/seeds.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+# This file should contain all the record creation needed to seed the database with its default values.
+# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
+#
+# Examples:
+#
+#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
+#   Character.create(name: 'Luke', movie: movies.first)
+
+puts "setting the Person data with I18n :en :it"
+Person.new(title: "Mr.", first_name: "Jhon", last_name: "Doe", locale: :en).save
+Person.last.update(title: "Sig.", locale: :it)
+
+
+puts "setting the Company data with I18n :en :it"
+Company.new(name: "ABB", sector: "Chemical", status: "Client", locale: :en).save
+Company.last.update(sector: "Chimico", status: "Cliente", locale: :it)
+
+
+puts "setting the CompanyPersonMap data with I18n :en :it"
+CompanyPersonMap.new(person_id: 1, company_id: 1, summary: "purchase department", locale: :en).save
+CompanyPersonMap.last.update(summary: "ufficio acquisti", locale: :it)
+
+
+puts "setting the Contacts data with I18n :en :it"
+Contact.new(medium: "Telephone", locale: :en).save
+Contact.last.update(medium: "Telefono", locale: :it)
+
+
+puts "setting the CompanyContactMap data with I18n :en :it"
+CompanyContactMap.new(company_id: 1, contact_id: 1, summary: "main telephone", locale: :en).save
+CompanyContactMap.last.update(summary: "centralino", locale: :it)
+
+
+puts "setting the ContactPersonMap data with I18n :en :it"
+ContactPersonMap.new(contact_id: 1, person_id: 1, summary: "work mobile", locale: :en).save
+ContactPersonMap.last.update(summary: "cellulare di lavoro", locale: :it)
+~~~~~~~~

@@ -1,0 +1,230 @@
+# Modifichiamo il componente
+
+
+
+
+## Apriamo il branch "components edit"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b ce
+~~~~~~~~
+
+
+
+
+## Implementiamo la view components/edit
+
+Implementiamo la struttura del mockup nella pagina components/edit
+
+{title=".../app/views/components/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<% provide(:title, "#{@component.part_number}") %>
+
+<div class="container-fluid rear_mode">
+  <div class="row"> <!-- row -->
+    <div class="col-xs-9 col-sm-10 col-lg-11">
+      <ul class="nav nav-pills bottom-pad top-pad left-pad">
+        <li class="<%= 'active' if params[:tab_active] == 'default' or params[:tab_active] == 'edit' %>">
+          <%= link_to "#pane_edit", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_edit" %>
+          <% end %>
+        </li>
+
+        <li class="<%= 'active' if params[:tab_active] == 'delete' %>">
+          <%= link_to "#pane_delete", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_delete" %>
+          <% end %>
+        </li>
+      </ul>
+    </div> <!-- /.col -->
+    <div class="col-xs-3 col-sm-2 col-lg-1">
+      <%= render "button_close" %>
+    </div> <!-- /.col -->
+  </div> <!-- /.row -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="tab-content">
+        <div id="pane_edit" class="tab-pane <%= 'active' if params[:tab_active] == 'default' or params[:tab_active] == 'edit'  %>">
+          <div class="text-center bottom-pad">
+            <h4><%= t(".pane_edit_header") %></h4>
+          </div> <!-- /.text-center -->
+          <%= render 'form', component: @component %>
+        </div> <!-- /.tab-pane -->
+        
+        <div id="pane_delete" class="tab-pane <%= 'active' if params[:tab_active] == 'delete'  %>">
+          <div class="text-center bottom-pad">
+            <h4><%= t(".pane_delete_header") %></h4>
+          </div> <!-- /.text-center -->
+          <%= render 'pane_delete', component: @component %>
+        </div><!-- /.tab-pane -->
+      </div><!-- /.tab-content -->
+    </div> <!-- /.col -->
+  </div> <!-- /.row -->
+</div> <!-- /.rear_mode -->
+~~~~~~~~
+
+creiamo il partial **_pane_delete.html.erb**
+
+{title=".../app/views/components/_pane_delete.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<p>delete</p>
+~~~~~~~~
+
+modifichiamo il partial **_form** inserendo lo stile per la formattazione css ed anche i campi nascosti per simulare il comportamento dell'helper h_rear_params_path. (Discorso analogo a quanto fatto nei capitoli precedenti per il form **search**)
+
+{title=".../app/views/components/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%= form_for(person, html: {class: 'form-horizontal left-pad right-pad bottom-pad'}) do |f| %>
+
+  <!-- # simulo l'helper h_params_path con page=1 perché torno alla prima pagina dopo una ricerca -->
+  <%= hidden_field_tag(:locale, params[:locale]) %>
+  <%= hidden_field_tag(:last_front_controller, params[:last_front_controller]) %>
+  <%= hidden_field_tag(:last_front_action, params[:last_front_action]) %>
+  <%= hidden_field_tag(:last_front_id, params[:last_front_id]) %>  
+  <%= hidden_field_tag(:last_front_related, params[:last_front_related]) %>  
+  <%= hidden_field_tag(:last_front_page, params[:last_front_page]) %>  
+  <%= hidden_field_tag(:last_front_search, params[:last_front_search]) %>  
+  <%= hidden_field_tag(:last_rear_controller, params[:last_rear_controller]) %>
+  <%= hidden_field_tag(:last_rear_action, params[:last_rear_action]) %>
+  <%= hidden_field_tag(:last_rear_id, params[:last_rear_id]) %>
+~~~~~~~~
+
+Messo tutto in un'unica tabella funziona ma non è comodo per l'utente. Per aumentare l'usabilità spezziamo il lungo form in due forms. Nel secondo form mettiamo tutta la parte dedicata ai prezzi e lo chiamiamo form_prices.
+
+{title=".../app/views/components/_form_prices.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%= form_for(person, html: {class: 'form-horizontal left-pad right-pad bottom-pad'}) do |f| %>
+...
+~~~~~~~~
+
+La prima parte del form è identica, così come lo sono i campi nascosti (hidden_fields) solo i campi visibili sono stati divisi nei due partials. Questo fa si che quando mando il submit siano aggiornate **solo** le modifiche del tab da cui sono state mandate. Non posso quindi compilare entrambi i tab e lanciare il submit pensando che si aggiornino entrambi.
+Per visualizzare il secondo partial facciamo le opportune modifiche sulla view components/edit
+
+
+{title=".../app/views/components/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=13}
+~~~~~~~~
+        <li class="<%= 'active' if params[:tab_active] == 'edit_prices' %>">
+          <%= link_to "#pane_edit_prices", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_price" %>
+          <% end %>
+        </li>
+~~~~~~~~
+
+{title=".../app/views/components/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=41}
+~~~~~~~~
+        <div id="pane_edit_prices" class="tab-pane <%= 'active' if params[:tab_active] == 'edit_prices'  %>">
+          <div class="text-center bottom-pad">
+            <h4><%= t(".pane_edit_prices_header") %></h4>
+          </div> <!-- /.text-center -->
+          <%= render 'form_prices', component: @component %>
+        </div> <!-- /.tab-pane -->
+~~~~~~~~
+
+
+
+
+## Aggiorniamo l'azione update sul controller components
+
+L'aggiornamento del componente è ok, ma non vengono ancora passati tutti i parametri sull'URL per far questo aggiorniamo l'azione update nel controller.
+
+{title=".../app/controllers/components_controller.rb", lang=ruby, line-numbers=on, starting-line-number=62}
+~~~~~~~~
+        format.html { redirect_to url_for(view_context.h_params_path(path: "/components/#{@component.id}")), notice: 'Component was successfully updated.' }
+~~~~~~~~
+
+In pratica inseriamo url_for(...) dopo il redirect_to ma non possiamo chiamare direttamente un helper dal controller. Per poterlo chiamare dobbiamo sfruttare il **view_context** quindi abbiamo **url_for(view_context.h_params_path(...))**
+
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add component edit"
+~~~~~~~~
+
+
+
+
+
+
+## Implementiamo il menu a cascata per modificare l'arrotondamento
+
+Non è comodo ricordarsi a che numero appartiene la voce dell'elenco ^_^. Quindi implementiamo un menu a cascata. Invece di usare l'approccio più spartano usato per il campo **status** di companies, utilizziamo l'ActiveRecord **Enums**.
+
+http://www.justinweiss.com/articles/creating-easy-readable-attributes-with-activerecord-enums/
+
+In realtà citano un sacco di rognette e suggeriscono delle gemme:
+* enumerize (https://github.com/brainspec/enumerize)
+* enum_accessor (https://github.com/kenn/enum_accessor)
+
+Quindi invece di installare delle gemme usiamo l'approccio più spartano già utilizzato e lasciamo enum e affini al libro sul refactoring.
+
+
+{title=".../app/views/components/_form_prices.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=45}
+~~~~~~~~
+    <div class="field">
+      <%= f.label :currency_rounding, class: "control-label" %>
+      <%= f.select :currency_rounding, h_options_for_rounding, {}, prompt: 'Select One', class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+~~~~~~~~
+
+{title=".../app/helpers/application_helper.rb", lang=ruby, line-numbers=on, starting-line-number=84}
+~~~~~~~~
+  def h_options_for_rounding
+    [
+      [t("h.hundredths"),2],
+      [t("h.tenths"),1],
+      [t("h.ones"),0],
+      [t("h.tens"),-1],
+      [t("h.hundreds"),-2]
+    ]
+  end
+~~~~~~~~
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add components edit"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku ce:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge ce
+$ git branch -d ce
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

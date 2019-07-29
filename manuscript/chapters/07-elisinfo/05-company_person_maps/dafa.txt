@@ -1,0 +1,24 @@
+
+
+Elisinfo -> addresses_contacts-old 
+  - Questo capitolo non funziona come usabilità si trattava di dare a company_person_maps gli indirizzi tramite una relazione polimorfica.
+  - qui c'è anche la gestione di contacts con "medium" "identifiers" che non usiamo perché preferisco usare più tabelle: telephones, emails, socials, ...
+    questo mi semplifica anche la gestione sulle views permettendomi di mettere dei campi dedicati ai telefoni, alle emails, ecc...
+
+
+Invece gli indirizzi li aggiungiamo sempre con una relazione polimorfica ma alle singole tabelle e non alle tabelle "ponte" molti-a-molti
+
+Nel caso specifico della tabella persone evito di dargli l'indirizzo, lasciandolo alla sola tabella company.
+Uso il polimorfico perché l'indirizzo lo daremo anche alle tabelle dei documenti (offers, delivery_notes, orders, invoices, ...)
+
+Per inserire l'indirizzo facciamo riferimento a Elisinfo -> zz-addresses_javascript
+
+
+Elisinfo -> zz-contacts_side_company -> 01-contacts_seeds.txt
+Elisinfo -> zz-contacts_side_person -> 01-contacts_seeds.txt e 02-contacts_part2.txt
+
+
+Risorse web:
+
+* [Molto interessante!](https://github.com/plataformatec/simple_form/wiki/Nested-Models)
+* [non usa .erb](https://www.pluralsight.com/guides/ruby-on-rails-nested-attributes)

@@ -1,0 +1,252 @@
+# Homepage Internazionalizzazione
+
+Implementiamo la multilingua (i18n) passando sull'url **it** o **en** come parametro **locale**.
+
+
+
+
+## Apriamo il branch "Homepage I18n"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b hi
+~~~~~~~~
+
+
+
+
+## Scelta del "locale" dall'URL
+
+Impostiamo il fatto di poter cambiare il locale direttamente dall'URL. Per far questo creiamo un parametro che chiamiamo params[:locale]. Il nome del parametro è ininfluente. Scegliamo :locale solo per maggior chiarezza. Questo parametro lo utiliziamo sull'azione che chiamiamo "set_locale" e mettiamo su application_controller così viene eseguita per tutta l'applicazione. Per farla eseguire la richiamiamo dal before_action
+
+{title=".../app/controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class ApplicationController < ActionController::Base
+  protect_from_forgery with: :exception
+
+  before_action :set_locale
+
+  # Devise after signout
+  # https://github.com/plataformatec/devise/wiki/How-To:-redirect-to-a-specific-page-on-successful-sign_in,-sign_out,-and-or-sign_up
+  # https://github.com/plataformatec/devise/wiki/How-To:-Redirect-to-a-specific-page-on-successful-sign-in-out
+  def after_sign_out_path_for(resource_or_scope)
+    homepage_show_path
+  end
+
+  #-----------------------------------------------------------------------------
+  private
+  
+  #set language for internationalization
+  def set_locale
+    I18n.locale = params[:locale] if params[:locale].present?
+                # "en"
+                # params[:locale] if params[:locale].present?
+                # current_user.locale
+                # request.subdomain
+                # request.env["HTTP_ACCEPT_LANGUAGE"]
+                # request.remote_ip
+  end
+end
+~~~~~~~~
+
+I> ti ricordo che il default_locale lo abbiamo già impostato nella capitolo beginning/testpages_i18n
+I>
+I> il before_action sostituisce il before_filter che si usava su Rails 3
+
+
+
+
+## Breadcrumbs multilingua
+
+Inseriamo il segnaposto per la traduzione statica
+
+{title="views/homepage/_breadcrumbs.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+      <%= content_tag :span, t("homepage.show.breadcrumbs"), class: "glyphiconmy ico_home" %>
+~~~~~~~~
+
+implementiamo la traduzione in italiano
+
+{title="config/locales/it.yml", lang=yaml, line-numbers=on, starting-line-number=7}
+~~~~~~~~
+    show:
+      breadcrumbs: "Pagina iniziale"
+~~~~~~~~
+
+implementiamo la traduzione in inglese
+
+{title="config/locales/en.yml", lang=yaml, line-numbers=on, starting-line-number=7}
+~~~~~~~~
+    show:
+      breadcrumbs: "Home"
+~~~~~~~~
+
+
+
+
+## Main_media_object multilingua
+
+Inseriamo i segnaposti per la traduzione statica. il primo è temporaneo perché sarà poi un campo dinamico. Il secondo è invece statico.
+
+{title="views/homepage/_main_media_object.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=11}
+~~~~~~~~
+      <%= content_tag :h4,t("homepage.show.administrator"), class: "media-heading" %>
+      <%= content_tag :p,"#{current_user.email} " %>
+      <%= content_tag :p,"#{t("homepage.show.last_login")}: #{current_user.sign_in_count} " %>
+~~~~~~~~
+
+implementiamo la traduzione in italiano
+
+{title="config/locales/it.yml", lang=yaml, line-numbers=on, starting-line-number=9}
+~~~~~~~~
+      administrator: "AMMINISTRATORE"
+      label_last_login: "Ultimo accesso:"
+~~~~~~~~
+
+implementiamo la traduzione in inglese
+
+{title="config/locales/en.yml", lang=yaml, line-numbers=on, starting-line-number=9}
+~~~~~~~~
+      administrator: "ADMIN"
+      label_last_login: "Last login:"
+~~~~~~~~
+
+
+
+
+## Proviamolo
+
+Attiviamo il database postgresql e facciamo partire il nostro webserver puma su cloud9
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+https://elisinfo6-flaviobordonidev.c9users.io/homepage/show
+https://elisinfo6-flaviobordonidev.c9users.io/homepage/show?locale=en
+https://elisinfo6-flaviobordonidev.c9users.io/homepage/show?locale=it
+~~~~~~~~
+
+
+
+
+## Implementiamo il pannello *lingua* sui *settaggi globali*. 
+
+implementiamo su global_settings la possibilità di cambiare lingua. Al momento sono presenti solo due lingue inglese ed italiano. Aggiungiamo al tab/panel logout anche il tab/panel language e lo impostiamo come tab/panel attivo. 
+
+{title=".../app/views/global_settings/index.html.erb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="container-fluid rear_mode">
+
+  <div class="row">
+    <div class="col-xs-9 col-sm-10 col-lg-11">
+      <ul class="nav nav-pills bottom-pad top-pad left-pad">
+        <li class="<%= 'active' if params[:tab_active].nil? or params[:tab_active] == 'language' %>">
+          <%= link_to "#pane_language", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_language" %>
+          <% end %>
+          <!-- <a href="#pane_language" data-toggle="tab"><span class="glyphiconmy ico_language"></span></a> -->
+        </li>
+
+        <li class="<%= 'active' if params[:tab_active] == 'logout' %>">
+          <%= link_to "#pane_logout", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_logout" %>
+          <% end %>
+          <!-- <a href="#pane_logout" data-toggle="tab"><span class="glyphiconmy ico_logout"></span></a> -->
+        </li>
+      </ul>
+    </div>
+    <div class="col-xs-3 col-sm-2 col-lg-1">
+      <%= render "button_close" %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="tab-content">
+        <div id="pane_language" class="tab-pane <%= 'active' if params[:tab_active] == nil or params[:tab_active] == 'language'  %>">
+          <div class="text-center bottom-pad">
+            <h4>Language</h4>
+          </div>
+          <%= render 'pane_language' %>
+        </div>
+        
+        <div id="pane_logout" class="tab-pane <%= 'active' if params[:tab_active] == 'logout'  %>">
+          <div class="text-center bottom-pad">
+            <h4>Logout</h4>
+          </div>
+          <%= render 'pane_logout' %>
+        </div>
+      </div><!-- /.tab-content -->
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+</div> <!-- /rear_mode -->
+~~~~~~~~
+
+
+{title=".../app/views/global_settings/_pane_language.html.erb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+<div class="list-group left-pad right-pad bottom-pad">
+  <%= link_to params.permit(:locale).merge(locale: 'en'), class: "list-group-item #{'active' if params[:locale] == 'en'}" do %>
+    <span class="glyphiconmy ico_language_us right-pad"></span> Inglese
+  <% end %>
+  <%= link_to params.permit(:locale).merge(locale: "it"), class: "list-group-item #{'active' if params[:locale] == 'it'}" do %>
+    <span class="glyphiconmy ico_language_it right-pad"></span> Italiano
+  <% end %>
+</div>
+
+<div class="list-group left-pad right-pad bottom-pad">
+  <%= link_to homepage_show_path, class: "btn btn-primary btn-block" do %>
+   ok
+  <% end %>
+</div>
+~~~~~~~~
+
+
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+
+
+
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "set i18n static end of URL"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku hi:master
+~~~~~~~~
+
+
+$ heroku run rake db:migrate
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge hi
+$ git branch -d hi
+~~~~~~~~

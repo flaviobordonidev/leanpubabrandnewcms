@@ -1,3 +1,3 @@
 # Organizzare i models
 
-Vedi 01-Beginning/12-organize_models/01-the_method.txt
+Vedi 01-Beginning/14-organize_models/01-the_method.txt

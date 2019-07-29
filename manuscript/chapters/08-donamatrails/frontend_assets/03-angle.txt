@@ -1,0 +1,646 @@
+# Template Angle
+
+
+
+
+## Implementiamo il template
+
+Utiliziamo il template Angle che mette a disposizione diverse 'cartelle' ognuna con un il template adattato per i diversi ambienti. Per l'ambiente rails ci sono le due versioni:
+
+* backend-rails-seed : che ha il minimo indispensabile
+* backend-rails : che è la demo completa
+
+Integriamo una delle due cartelle con la cartella su Cloud9 template.
+
+* C9-rails : è il workspace "rails" creato ex novo su Cloud9
+
+Per far questo compariamo i files uno ad uno, così facendo studiamo anche come è strutturato il template Angular e come si integra con Rails.
+
+Iniziamo la comparazione.
+
+
+
+
+## /Bower.json
+
+Copiamo il file su C9-rails perché è solo sul template.
+E' il file di configurazione di Bower (Dependency file).
+
+
+
+
+## /Gemfile
+
+Modifichiamo file di C9-rails:
+
+* aggiungiamo bower-rails perché è la gemma che ci permette di usare Bower.
+* commentiamo gem 'jquery-rails' perché sarà gestito da Bower.
+* commentiamo 'turbolinks' perché il template non lo utilizza.
+
+Verifichiamo l'ultima versione di Bower su [rubygems](https://rubygems.org)
+
+![fig. rubygems -> bower-rails](images/frontend_assets/angle/rubygems-bower-rails.png)
+
+[codice: Gemfile 02](#code-frontend_assets-02-gemfile-02)
+
+{title="Gemfile", lang=ruby, line-numbers=on, starting-line-number=19}
+~~~~~~~~
+# Bower support for Rails projects. Dependency file is bower.json in Rails root dir
+gem 'bower-rails', '~> 0.10.0'
+# Use jquery as the JavaScript library
+#gem 'jquery-rails'
+# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
+#gem 'turbolinks', '~> 5'
+~~~~~~~~
+
+
+
+## Implementiamo Bower
+
+Installiamo Bower e lanciamo il suo install
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ bundle install
+$ rake bower:install
+~~~~~~~~
+
+Per lanciare rake bower:install potremmo dover installare bower
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ npm install bower -g
+~~~~~~~~
+
+durante l'installazione di bower può essere richiesto che versione di jquery installare. la scelta più ovvia è la "10" perché è la versione maggiore "2.2.0" e perché c'è scritto che è quella richiesta da Angle che è il template che stiamo installando ^_^ 
+
+dal bower.json si evince che la libreria jquery.classy.loader viene scaricata in un file .zip che contiene anche il folder.git (cartella nascosta). E' necessario eliminarla altrimenti genera un conflitto con le operazioni di git commit.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+su cloud9 vai su "Share" e clicca sul link di "application" per aprire l'applicazione.
+
+![fig. Share -> application: link](images/frontend_assets/angle/share-application_link.png)
+
+
+
+
+## /config.ru
+
+Lasciomo il file di C9-rails perché questo file è sostanzialmente identico.
+
+
+
+
+
+
+
+
+
+## /Gemfile.lock
+
+Lasciamo il file di C9-rails perché questo file è creato in automatico a partire dal Gemfile quando si fa il bunde install quindi lo saltiamo
+
+
+
+
+## /Rakefile
+
+Lasciomo il file di C9-rails perché questo file non c'è su angle
+
+
+
+
+## /README.md (o .rdoc)
+
+Lasciamo il file di C9-rails perché questo file contiene la descrizione dell'applicazione.
+
+
+
+
+## /app/assets/api/
+
+Copiamo la cartella su C9 perché è solo sul template
+Anche se la api la faremo con Rails ...
+
+
+
+
+## /app/assets/config/
+
+Lasciamo la cartella su C9-rails perché non è presente sul template
+
+
+
+
+## /app/assets/documentation/
+
+Copiamo la cartella su C9 perché è solo sul template
+Anche se la documentazione la faremo con Rails ...
+
+
+
+
+## /app/assets/i18n/
+
+Copiamo la cartella su C9 perché è solo sul template
+Anche se l'internazionalizzazione la faremo con Rails config/locale
+
+
+
+
+## /app/assets/images/angle/
+
+Copiamo la cartella su C9 perché è solo sul template
+
+
+
+
+## /app/assets/javascripts/channels/
+
+Lasciamo la cartella su C9-rails perché non è presente sul template
+
+
+
+
+## /app/assets/javascripts/application.js
+
+Modifichiamo file di C9-rails:
+
+[codice: javascripts 01](#code-frontend_assets-02-javascripts-01)
+
+* cancello //= require jquery perché gestito da Bower
+* cancello //= require jquery_ujs perché gestito da Bower
+* cancello //= require turbolinks perché questo template non lo utilizza
+* cancello //= require_tree .
+* aggiungo //= require_tree ./angle/
+
+I> ATTENZIONE!!!
+I> togliendo //= require jquery_ujs il "link_to ... destroy" non funziona più
+I> si è costretti ad usare il "button_to ... destroy"
+I> questo perché le librerie jquery di rails gestiscono con un workaround la mancanza della chiamata "DELETE" sui browsers.
+
+http://stackoverflow.com/questions/21739122/rails-delete-method-it-doesnt-workaround
+http://stackoverflow.com/questions/7786960/why-delete-link-doesnt-work-in-this-ruby-on-rails-project
+http://stackoverflow.com/questions/18154916/rails-4-link-to-destroy-not-working-in-getting-started-tutorial
+http://stackoverflow.com/questions/30129729/rails-delete-functionality-is-not-working
+
+
+
+così facendo richiamo solo i files dentro la sottocartella "angle"
+
+[codice: javascripts 02](#code-frontend_assets-02-javascripts-02)
+
+Gli altri files sotto javascripts vengono chiamati direttamente da views/layouts/application...
+
+* viene chiamato direttamente il file "base.js"
+* e vengono chiamati dinamicamente gli altri files perché di volta in volta è chiamato quello che ha lo stesso nome del controller.
+
+
+
+
+## /app/assets/javascripts/cable.js
+
+Lasciamo il file su C9-rails perché non è presente sul template
+
+
+
+
+## /app/assets/javascripts/base.js, singleview.js.coffee
+
+Copiamo i files su C9-rails perché sono solo sul template
+
+
+
+
+## /app/assets/javascripts/angle/
+
+Copiamo la cartella su C9 perché è solo sul template
+
+
+
+
+## /app/assets/stylesheets/application.css (.css.scss)
+
+Modifichiamo file di C9-rails:
+
+[codice: stylesheets 01](#code-frontend_assets-02-stylesheets-01)
+
+* rinomino file cambiando l'estensione in .css.scss
+* cancello *= require_tree .
+* cancello *= require_self
+* aggiungo *= require angle/app
+* aggiungo *= require fonts
+* aggiungo *= require vendor.assets
+
+[codice: stylesheets 02](#code-frontend_assets-02-stylesheets-02)
+
+
+
+
+## /app/assets/stylesheets/angle/
+
+Copiamo la cartella su C9 perché è solo sul template
+
+
+
+
+## /app/assets/stylesheets/base.css.scss,...,vendor.assets.css.scss
+
+Copiamo i files su C9-rails perché sono solo sul template
+
+
+
+
+## /app/channels/
+
+Lasciamo la cartella su C9-rails perché non è presente sul template
+
+
+
+
+## /app/controllers/
+
+Copiamo tutto quello che c'è su backend-rails sovrascrivendo il file application_controller.rb
+
+
+
+
+## /app/helpers/
+
+Copiamo tutto quello che c'è su backend-rails sovrascrivendo il file application_helper.rb
+
+
+
+
+## /app/jobs/
+
+Lasciamo la cartella su C9-rails perché non è presente sul template
+
+
+
+
+## /app/mailers/
+
+Lasciamo la cartella su C9-rails perché non è presente sul template
+
+
+
+
+## /app/models/
+
+Lasciamo la cartella su C9-rails perché non è presente sul template
+
+
+
+
+## /app/views/
+
+
+Copiamo tutto quello che c'è su backend-rails sovrascrivendo il file layouts/application.html.erb
+
+Infatti il file layouts/application.html.erb è quello base e viene sostanzialmente ripreso ed ampliato da quello di backend-rails.
+
+[codice: views-layouts 01](#code-frontend_assets-02-views-layouts-01)
+
+Una differenza da far notare è che il "javascript_include_tag" di default rails lo mette sull '<head>' invece il template backend-rails lo mette in fondo al <body>
+Metterlo nell'"<head>" è teoricamnete migliore ma in pratica metterlo in fondo al <body> funziona molto meglio.
+
+[codice: views-layouts 02](#code-frontend_assets-02-views-layouts-02)
+
+
+
+## /bin/
+
+Lasciamo i files di C9-rails
+
+
+
+
+## /config/application.rb
+
+Modifichiamo file di C9-rails:
+
+[codice: config 01](#code-frontend_assets-02-config-01)
+
+* aggiungo commenti su "Time.zone default" e "default locale" che erano presenti su Rails 4 e sono stati tolti su Rails 5
+* aggiungo blocco di codice relativo alla configurazione di Bower.
+
+
+{title="commenti su Rails 4", lang=bash, line-numbers=off}
+~~~~~~~~
+# Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
+# Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
+# config.time_zone = 'Central Time (US & Canada)'
+
+# The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
+# config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
+# config.i18n.default_locale = :de
+~~~~~~~~
+
+{title="configurazione Bower di backend-rails", lang=bash, line-numbers=off}
+~~~~~~~~
+# setup bower components folder for lookup                                      
+config.assets.paths << Rails.root.join('vendor', 'assets', 'bower_components')  
+# fonts                                                                         
+config.assets.precompile << /\.(?:svg|eot|woff|ttf)$/                           
+# images                                                                        
+config.assets.precompile << /\.(?:png|jpg)$/                                    
+# precompile vendor assets                                                      
+config.assets.precompile += %w( base.js )                                       
+config.assets.precompile += %w( base.css )                                      
+# precompile themes                                                             
+config.assets.precompile += ['angle/themes/theme-a.css',                        
+                             'angle/themes/theme-b.css',                        
+                             'angle/themes/theme-c.css',                        
+                             'angle/themes/theme-d.css',                        
+                             'angle/themes/theme-e.css',                        
+                             'angle/themes/theme-f.css',                        
+                             'angle/themes/theme-g.css',                        
+                             'angle/themes/theme-h.css'                         
+                            ]                                                   
+# Controller assets                                                             
+config.assets.precompile += [                                                   
+                             # Scripts                                          
+                             'singleview.js',
+                             # Stylesheets
+                            'singleview.css'
+                            ]                                                   
+~~~~~~~~
+
+
+
+
+## /config/boot.rb
+
+Lasciamo file di C9-rails perché non ci sono modifiche sostanziali
+
+
+
+
+## /config/cable.yml
+
+Lasciamo file di C9-rails perché non presente sul template
+
+
+
+
+## /config/database.yml
+
+Lasciamo file di C9-rails perché i due files sono identici
+
+
+
+
+## /config/environment.rb
+
+Lasciamo file di C9-rails perché i due files sono identici
+
+
+
+
+## /config/environments/development.rb
+
+Lasciamo file di C9-rails perché non ci sono modifiche sostanziali
+
+
+
+
+## /config/environments/production.rb
+
+Lasciamo file di C9-rails perché non ci sono modifiche sostanziali
+
+
+
+
+## /config/environments/test.rb
+
+Lasciamo file di C9-rails perché non ci sono modifiche sostanziali
+
+
+
+
+## /config/initializers/application_controller_renderer.rb
+
+Lasciamo file di C9-rails perché non esiste sul template
+
+
+
+
+## /config/initializers/assets.rb
+
+Lasciamo file di C9-rails perché non ci sono modifiche sostanziali
+
+
+
+
+## /config/initializers/backtrace_silencers.rb
+
+Lasciamo file di C9-rails perché i due files sono identici
+
+
+
+
+## /config/initializers/cookies_serializer.rb
+
+Lasciamo file di C9-rails perché i due files sono identici
+
+
+
+
+## /config/initializers/filter_parameter_logging.rb
+
+Lasciamo file di C9-rails perché i due files sono identici
+
+
+
+
+## /config/initializers/inflections.rb
+
+Lasciamo file di C9-rails perché i due files sono identici
+
+
+
+
+## /config/initializers/mime_types.rb
+
+Lasciamo file di C9-rails perché i due files sono identici
+
+
+
+
+## /config/initializers/new_framework_defaults.rb
+
+Lasciamo file di C9-rails perché non presente nel template
+
+
+
+
+## /config/initializers/session_store.rb
+
+Lasciamo file di C9-rails perché non ci sono modifiche sostanziali
+
+
+
+
+## /config/initializers/wrap_parameters.rb
+
+Lasciamo file di C9-rails perché i due files sono identici
+
+
+
+
+## /config/locales/en.yml
+
+Lasciamo file di C9-rails perché i due files sono identici
+
+
+
+
+## /config/puma.rb
+
+Lasciamo file di C9-rails perché non presente sul template
+
+
+
+
+## /config/routes.rb
+
+Modifichiamo file di C9-rails:
+
+[codice: config 03](#code-frontend_assets-02-config-03)
+
+* aggiungo blocco di codice relativo alle varie pagine del template.
+
+{title="backend-rails-seed", lang=bash, line-numbers=off}
+~~~~~~~~
+  # defaults to dashboard
+  root :to => redirect('/singleview')
+  
+  # view routes
+  get '/singleview' => 'singleview#index'
+  
+  # api routes
+  get '/api/i18n/:locale' => 'api#i18n'
+~~~~~~~~
+
+
+
+
+## /config/secrets.yml
+
+Lasciamo file di C9-rails perché non ci sono modifiche sostanziali
+
+
+
+
+## /config/spring.rb
+
+Lasciamo file di C9-rails perché non presente nel template
+
+
+
+
+
+## /db/seeds.rb
+
+Lasciamo file di C9-rails perché i due files sono identici
+
+
+
+
+## /lib/
+
+Lasciamo cartella di C9-rails perché ci sono solo due cartelle vuote sia su C9-rails che sul template
+
+* assets
+* tasks
+
+
+
+
+## /log/
+
+Lasciamo cartella di C9-rails (anche se è una cartella vuota).
+
+
+
+
+## /public
+
+Lasciamo cartella di C9-rails
+
+
+
+
+## /test/
+
+Lasciamo cartella di C9-rails
+
+
+
+
+## /tmp/
+
+Lasciamo cartella di C9-rails perché non presente nel template.
+
+
+
+
+## /vendor/
+
+Lasciamo cartella di C9-rails perché sarà gestita da Bower.
+su vendor non tocchiamo nulla, poichè le dipendenze scritte nel bower.json sarà gestite in automatico e le cartelle javascripts e stylesheets sono vuote.
+
+
+
+
+## Pubblichiamo su Heroku
+
+ricordarmi che figaro ha un comando da lanciare per passare le variabili d'ambiente su heroku.
+
+Publichiamo su heroku e lanciamo il comando e verifichiamo che è tutto ok.
+
+Possiamo anche spiegare su un paragrafo come caricare le variabili una per una se non avessimo figaro.
+(si può fare una per una sia a linea di comando con la heroku tool-belt oppure dal sito web di heroku)
+
+
+
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge angle
+$ git branch -d angle
+~~~~~~~~
+
+
+
+
+# Backup su github
+
+effettuiamo un backup sul repository remoto github.
+Spostiamo il nostro git locale sul repository remoto Github
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
+
+il comando "git push" sposta sul branch remoto "origin" il branch locale "master".
+Spostiamo in remoto anche la parte dei tag in cui abbiamo messo la versione v.0.1.0
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master --tag
+~~~~~~~~

@@ -1,0 +1,204 @@
+# code: dashboard 01 mockup_dashboard
+
+
+
+
+#### 01 {#code-dashboard-01-mockup_dashboard-01}
+
+{title=".../app/views/mk_dashboard/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+   <!-- START widgets box-->
+   <div class="row">
+      <div class="col-lg-3 col-sm-6">
+         <!-- START widget-->
+         <div class="panel widget bg-primary">
+            <div class="row row-table">
+               <div class="col-xs-4 text-center bg-primary-dark pv-lg">
+                  <em class="fa fa-eur fa-3x"></em>
+            </div>
+            <div class="col-xs-8 pv-lg">
+               <div class="h2 mt0">1700,00</div>
+               <div class="text-uppercase">Totale</div>
+            </div>
+         </div>
+      </div>
+   </div>
+   
+   <div class="col-lg-3 col-sm-6">
+      <!-- START widget-->
+      <div class="panel widget bg-purple">
+         <div class="row row-table">
+            <div class="col-xs-4 text-center bg-purple-dark pv-lg">
+               <em class="icon-credit-card fa-3x"></em>
+            </div>
+            <div class="col-xs-8 pv-lg">
+               <div class="h2 mt0">700,00
+                  <small>GB</small>
+               </div>
+               <div class="text-uppercase">POS</div>
+            </div>
+         </div>
+      </div>
+   </div>
+   
+   <div class="col-lg-3 col-md-6 col-sm-12">
+      <!-- START widget-->
+      <div class="panel widget bg-green">
+         <div class="row row-table">
+            <div class="col-xs-4 text-center bg-green-dark pv-lg">
+               <em class="fa fa-database fa-3x"></em>
+            </div>
+            <div class="col-xs-8 pv-lg">
+               <div class="h2 mt0">500,00</div>
+               <div class="text-uppercase">Cash</div>
+            </div>
+         </div>
+      </div>
+   </div>
+   
+   <div class="col-lg-3 col-md-6 col-sm-12">
+         <div class="panel widget bg-white">
+            <div class="row row-table">
+               <div class="col-xs-4 text-center bg-gray pv-lg">
+               <em class="fa fa-user fa-3x"></em>
+               </div>
+            <div class="col-xs-8 pv-lg">
+               <div class="h2 mt0">117</div>
+               <div class="text-uppercase">Donatori</div>
+            </div>
+         </div>
+      </div>
+   </div>
+   </div>
+   <!-- END widgets box-->
+   
+   <div class="row">
+   <!-- START dashboard main content-->
+   <div class="col-lg-9">
+      
+   <!-- START LINE row-->
+   <div class="row">
+      <div class="col-lg-12">
+         <div id="panelChart4" class="panel panel-default">
+            <div class="panel-heading">
+               <div class="panel-title">Line</div>
+            </div>
+            <div class="panel-body">
+               <div class="chart-line flot-chart"></div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- END LINE row-->
+   
+   <!-- GOOGLE MAP -->
+   <div class="row">
+      <div class="col-md-12">
+         <div class="panel panel-default">
+            <div class="panel-heading">Styled Maps</div>
+            <div class="panel-body">
+               <div data-gmap="" data-address="VIA SPAGNUOLO 34 MONTESILVANO ITALY; VIA LODI MILANO ITALY; VIA ROMA PALERMO ITALY" data-maptype="ROADMAP" data-styled="data-styled" data-zoom="5" class="gmap"></div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- END GOOGLE MAP -->
+   
+   <div class="panel b text-white">
+   <div style="background-image: url(<%= asset_path 'angle/profile-bg.jpg' %>)" class="panel-body bg-cover clearfix">
+      <div class="media mt0">
+         <div class="media-left">
+            <a href="#">
+               <img src="<%= image_path('angle/user/06.jpg') %>" alt="Image" class="media-object img-thumbnail img-circle thumb96" />
+            </a>
+         </div>
+         <div class="media-body media-middle">
+            <div class="clearfix">
+               <div class="pull-left">
+                  <h4 class="media-heading m0">Donachiaro</h4>
+                  <p>Team lead</p>
+                  <button type="button" class="btn btn-info btn-xs">Following</button>
+               </div>
+               <div class="pull-right">
+                  <div class="inline text-center mr">
+                     <div class="h3 m0">
+                        <strong>1.4k</strong>
+                     </div>
+                     <small>followers</small>
+                  </div>
+                  <div class="inline text-center mr">
+                     <div class="h3 m0">
+                        <strong>350</strong>
+                     </div>
+                     <small>pictures</small>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+      
+   </div>
+   <!-- END dashboard main content-->
+   
+   <!-- START dashboard sidebar-->
+   <aside class="col-lg-3">
+      <!-- START loader widget-->
+      <div class="panel panel-default">
+         <div class="panel-body">
+            <a href="#" class="text-muted pull-right">
+               <em class="fa fa-arrow-right"></em>
+            </a>
+            <div class="text-info">Average Monthly Uploads</div>
+            <canvas data-classyloader="" data-percentage="70" data-speed="20" data-font-size="40px" data-diameter="70" data-line-color="#23b7e5" data-remaining-line-color="rgba(200,200,200,0.4)" data-line-width="10" data-rounded-line="true"
+            class="center-block"></canvas>
+            <div data-sparkline="" data-bar-color="#23b7e5" data-height="30" data-bar-width="5" data-bar-spacing="2" data-values="5,4,8,7,8,5,4,6,5,5,9,4,6,3,4,7,5,4,7" class="text-center"></div>
+         </div>
+         <div class="panel-footer">
+            <p class="text-muted">
+               <em class="fa fa-upload fa-fw"></em>
+               <span>This Month</span>
+               <span class="text-dark">1000 Gb</span>
+            </p>
+         </div>
+      </div>
+      <!-- END loader widget-->
+      
+      <div class="panel widget">
+      <!-- <div class="row row-table"> -->
+         <!-- <div class="panel panel-default">
+            <!-- <div class="panel-heading">Donut</div> -->
+            <div class="panel-body">
+               <div id="morris-donut"></div>
+            </div>
+         <!-- </div> -->
+      <!-- </div> -->
+      </div>
+      
+      <!-- START date widget-->
+      <div class="panel widget">
+         <div class="row row-table">
+            <div class="col-xs-4 text-center bg-green pv-lg">
+               <!-- See formats: https://docs.angularjs.org/api/ng/filter/date-->
+               <div data-now="" data-format="MMMM" class="text-sm"></div>
+               <br/>
+               <div data-now="" data-format="D" class="h2 mt0"></div>
+            </div>
+            <div class="col-xs-8 pv-lg">
+               <div data-now="" data-format="dddd" class="text-uppercase"></div>
+               <br/>
+               <div data-now="" data-format="h:mm" class="h2 mt0"></div>
+               <div data-now="" data-format="a" class="text-muted text-sm"></div>
+            </div>
+         </div>
+      </div>
+      <!-- END date widget    -->
+      
+   </aside>
+   <!-- END dashboard sidebar-->
+   
+   <!-- GOOGLE MAPS-->
+   <%= javascript_include_tag "//maps.google.com/maps/api/js?sensor=false" %>
+~~~~~~~~

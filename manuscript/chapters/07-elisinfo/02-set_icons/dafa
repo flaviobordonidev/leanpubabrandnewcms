@@ -1,0 +1,29 @@
+Mettiamo in questa cartella:
+
+* le icone png grandi (64x64)
+* le icone SVG
+* il set di fonts creato con glyphter.com
+
+Mettiamo poi i vari capitoli con il css che importa il solo fonts e la visualizzazione dell'icona mettendo la lettera.
+
+Poi andiamo nel css ed aggiungiamo le classi con un nome migliore invece della lettera.
+
+es:
+
+.ico_back {
+  chiama la lettera a
+}
+
+.ico_back_disable{
+  chiama la lettera b
+}
+
+Forse questo non si può fare con il css ma andrebbe fatto con il javascript.
+
+Se non funziona mettiamo la descrizione nella chiamata
+
+es:
+
+<% link_to root_path do %>
+  <span style: "font=rebisicons">a<span><!-- ico_back -->
+<% end %>

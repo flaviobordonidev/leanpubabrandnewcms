@@ -1,0 +1,224 @@
+# Creiamo le tabelle dei dossiers
+
+in questo capitolo lavoreremo principalmente lato database. Creeremo la tabella dossiers e metteremo i seed iniziali ed alcuni dati di prova. Non avremo nessuna interazione lato views e quindi non apriremo il browser per usare la web gui su http://localhost:3000
+Eseguendo gli scaffolds la web gui è creata in automatico ma in questo capitolo non la utilizzeremo. Utilizzeremo invece la console di rails "$ rails c".
+
+
+
+
+## Apriamo il branch "Dossiers Seeds"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b ds
+~~~~~~~~
+
+
+
+
+## Dossiers - scaffold
+
+La tabella dei dossiers avrà i seguenti campi:
+
+* name :
+* kind : standard, privato, interno
+* identifier : numero del dossier 
+* date : data
+
+
+[...]
+Il coinvolgimento delle persone sarà su dossier_person_maps
+Il coinvolgimento delle aziende sarà su company_dossier_maps
+Il coinvolgimento della storia sarà su dossiers one-to-many histories
+[..]
+Confermo oggi 20.04.18 che la divisione è corretta. Al posto di "histories" si può usare "updates".
+Tolgo histories da companies e da people per evitare dispersione dell'informazione. Tutti gli aggiornamenti delle situazioni con persone e aziende sono scritti all'interno dei dossiers. Possiamo creare anche dei dossiers solo dal punto di vista commerciale es 2018dc001 dove raccolgo qualche informazione di tipo commerciale su certe aziende con certe persone. Questo per lasciare le 2018tt000 solo per le offerte ed eventuali ordini.
+
+
+[...]
+Il coinvolgimento dei prodotti sarà sui documenti 
+  dossier one-to-many cRDO one-to-many products
+  dossier one-to-many nRDO one-to-many components
+  dossier one-to-many fOFF one-to-many components
+  dossier one-to-many nOFF one-to-many products
+  dossier one-to-many cORD one-to-many products
+  dossier one-to-many nORD one-to-many components
+  dossier one-to-many fCOR one-to-many components
+  dossier one-to-many nCOR one-to-many products (Questa attiva controlli importanti di prezzi, quantità e date consegna)
+  dossier one-to-many fDDT one-to-many components
+  dossier one-to-many nDDT one-to-many products
+  dossier one-to-many fFAT one-to-many components
+  dossier one-to-many nFAT one-to-many products
+  dossier one-to-many nPAG one-to-many components
+  dossier one-to-many cPAG one-to-many products
+[...]
+
+I controlli importanti li metterei direttamente in pratica/dossier.
+
+
+Sono sempre più convinto di gestire i products e components tutti direttamente sotto dossier ed "agganciarci i documenti" con relativo file pdf allegato.
+[...]
+  dossier one-to-many products   one-to-many cRDO, nOFF, cORD, nCOR, nDDT, nFAT, cPAG
+  dossier one-to-many components one-to-many nRDO, fOFF, nORD, fCOR, fDDT, fFAT, nPAG
+[...]
+
+I controlli importanti (di prezzi, quantità e date consegna) sono direttamente in pratica/dossier.
+
+Avvertenza! in entrambe le situazioni non posso avere un documento che appartiene a più dossiers ma questo è un limite gestibile e ci risparmia molte complicazioni sia per lo sviluppatore che per l'utente.
+Se un fornitore ci invia una fattura unica per due pratiche la allego in entrambe le pratiche. Magari faccio un appunto e cancello le righe che non sono di competenza della rispettiva pratica. Stesso discorso se noi facciamo un'unica fattura per più pratiche o un pagamento per più pratiche. 
+
+
+
+
+## I campi usati
+
+name : il nostro riferimento 2018tt100
+description : lo scenario. Ossia qual'è l'uso finale del prodotto da parte del cliente e quando si dovrebbe realizzare il progetto
+
+cord_number (string va nel search)
+
+delivery_date : date
+delivery_date_alarm : string - se la data di spedizione è successiva a quella richiesta in ordine
+
+final_total_quantity : integer
+final_quantity_alarm : integer - se ancora non sono stati consegnati tutti 
+
+final_price : decimal
+final_price_alarm : integer - se diverso da offerta o da ordine
+
+payment_date : date
+payment_alarm : integer - quando non hanno ancora pagato tutto
+
+documental_flow_alarm : integer - Semaforo GREY | RED | GREEN a seconda dello stato dei docuemnti (es: arrivato ordine ma manca nCOR e nORD (se presi da magazzino facciamo comunque un nORD come ordine di magazzino)
+
+dossier_alarm : integer - Semaforo GREY | RED | ORANGE | GREEN prima di cORD è GREY. Con cORD e nessun allarme è ORANGE. Con cORD ed allarmi è RED. Quando cPAG è GREEN. (questo allarme è visualizzato nella lista dei dossiers)
+
+
+Usiamo lo Scaffold che mi imposta già l'applicazione in stile restful con le ultime convenzioni Rails.
+Lo scaffold crea su routes la voce resources, crea il modulo, il migration, e tutte le views un controller con le 7 azioni in stile restful:
+
+index, show, new, edit, create, update e destroy. 
+
+I> ATTENZIONE: con "rails generate scaffold ..." -> uso il SINGOLARE
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g scaffold Dossier name:string description:text cord_number:string delivery_date:date delivery_date_alarm:integer final_total_quantity:integer final_quantity_alarm:integer final_price:decimal final_price_alarm:integer payment_date:date payment_alarm:integer documental_flow_alarm:integer dossier_alarm:integer
+~~~~~~~~
+
+questo crea il migrate:
+
+{title=".../db/migrate/xxx_create_people.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+class CreateDossiers < ActiveRecord::Migration[5.0]
+  def change
+    create_table :dossiers do |t|
+      t.string :name
+      t.text :description
+      t.string :cord_number
+      t.date :delivery_date
+      t.integer :delivery_date_alarm
+      t.integer :final_total_quantity
+      t.integer :final_quantity_alarm
+      t.decimal :final_price
+      t.integer :final_price_alarm
+      t.date :payment_date
+      t.integer :payment_alarm
+      t.integer :documental_flow_alarm
+      t.integer :dossier_alarm
+
+      t.timestamps
+    end
+  end
+end
+~~~~~~~~
+
+
+Effettuiamo il migrate del database per creare la tabella "dossiers" sul database
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rake db:migrate
+~~~~~~~~
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add scaffold Person"
+~~~~~~~~
+
+
+
+
+## Usiamo globalize - i18n - dynamic
+
+per le pratiche non lo uso
+
+
+## Popoliamo manualmente la tabella
+
+Usiamo la console di rails per popolare la tabella del database.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+irb> Dossier.new(name: "2017tt100", description: "8029NTS con IRIG-B per centrali eoliche").save
+~~~~~~~~
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add dossiers table"
+~~~~~~~~
+
+I> Questo git commit è solo per lasciare un commento perché le modifiche fatte sul database non sono passate tramite git.
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku ps:master
+$ heroku run rake db:migrate
+~~~~~~~~
+
+I> Lato produzione su heroku c'è un database indipendente da quello di sviluppo quindi risulta vuoto.
+
+per popolare il database di heroku basta aprire la console con il comando:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku run rails c
+~~~~~~~~
+
+E rieseguire i passi già fatti nel paragrafo precedentemente
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge ps
+$ git branch -d ps
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

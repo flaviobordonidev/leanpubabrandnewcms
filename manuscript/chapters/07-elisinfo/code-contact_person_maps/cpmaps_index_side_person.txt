@@ -1,0 +1,218 @@
+# cpmaps_index_side_person
+
+
+
+
+#### 01 {#code-contact_person_maps-cpmaps_index_side_person-01}
+
+{title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=20}
+~~~~~~~~
+Rails.application.routes.draw do
+
+  #scope "(:locale)", locale: /en|it/ do
+  
+    #root 'homepage#show'
+    root 'startpage#show'
+    
+    devise_for :users, controllers: { sessions: 'users/sessions' }
+    resources :users
+    #get 'users/show', as: :user_root # creates user_root_path (default path after sign_in)
+    
+    resources :global_settings, only: [:index]
+    resources :companies
+    resources :people
+    #resources :select_relateds, only: [:index]
+    resources :select_relateds
+    resources :company_person_maps
+    resources :contacts
+    resources :company_contact_maps
+    resources :contact_person_maps
+
+    get "homepage/", to: "homepage#show"
+    get 'startpage/show'
+    get 'users/show'
+
+    get 'mockup_authentication/login'
+    get 'mockup_companies/index'
+    get 'mockup_companies/show'
+    get 'mockup_companies/edit'
+    get 'mockup_companies/new'
+    get 'mockup_company_contact_maps/edit'
+    get 'mockup_company_person_maps/index'
+    get 'mockup_company_person_maps/edit'
+    get 'mockup_contact_person_maps/edit'
+    get 'mockup_contact_person_maps/new'
+    get 'mockup_contacts/index'
+    get 'mockup_contacts/show'
+    get 'mockup_contacts/edit'
+    get 'mockup_contacts/new'
+    get 'mockup_favorites/index'
+    get 'mockup_global_settings/index'
+    get 'mockup_homepage/show'
+    get 'mockup_people/index'
+    get 'mockup_people/show'
+    get 'mockup_people/edit'
+    get 'mockup_people/new'
+    get 'mockup_select_relateds/index'
+    get 'mockups/test'
+    get 'mockup_startpage/show'
+    get 'testpages/page_a'
+    get 'testpages/page_b'
+
+    # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  
+  #end
+end
+~~~~~~~~
+
+
+
+
+#### 02 {#code-contact_person_maps-cpmaps_index_side_person-02}
+
+{title=".../app/controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class PeopleController < ApplicationController
+  before_action :set_person, only: [:show, :edit, :update, :destroy]
+
+  # GET /people
+  # GET /people.json
+  def index
+    #@people = Person.all
+    @people = Person.search(params[:search]).order('created_at DESC').page(params[:page]).per_page(2)
+  end
+
+  # GET /people/1
+  # GET /people/1.json
+  def show
+    # gestiamo l'elenco dei relateds
+    case params[:related]
+    when "favorites"
+      # TODO
+      @relateds = @person.favorites.page(params[:page]).per_page(3).order('created_at DESC')
+      @relateds_path = "favorites"
+    when "people"
+      # TODO
+    when "companies"
+      #@relateds = @person.company_person_maps.all
+      @relateds = @person.company_person_maps.search_companies(params[:search]).page(params[:page]).per_page(3).order('created_at DESC')
+      @relateds_path = "company_person_maps"
+    when "contacts"
+      @relateds = @person.contact_person_maps.all.page(params[:page]).per_page(2)
+      #@relateds = @person.contact_person_maps.search_contacts(params[:search]).page(params[:page]).per_page(2).order('created_at DESC')
+      @relateds_path = "contact_person_maps"
+    else
+      raise "Errore da gestire"
+    end
+  end
+
+  # GET /people/new
+  def new
+    @person = Person.new
+    @person.title =  t "people.new.title"
+    @person.first_name = params[:last_front_search]
+    @person.last_name = params[:last_front_search]
+  end
+
+  # GET /people/1/edit
+  def edit
+  end
+
+  # POST /people
+  # POST /people.json
+  def create
+    @person = Person.new(person_params)
+
+    respond_to do |format|
+      if @person.save
+        #format.html { redirect_to @person, notice: 'Person was successfully created.' }
+        format.html { redirect_to url_for(view_context.h_params_path(path: "/people/#{@person.id}", last_front_controller: "people", last_front_action: "show", last_front_id: "#{@person.id}")), notice: 'Person was successfully created.' }
+        format.json { render :show, status: :created, location: @person }
+      else
+        format.html { render :new }
+        format.json { render json: @person.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /people/1
+  # PATCH/PUT /people/1.json
+  def update
+    #raise "person.remove_image = #{params[:person][:remove_image]}"
+    if params[:person][:remove_image] == "1"
+      @person.image = nil
+      @person.save
+    end
+    respond_to do |format|
+      if @person.update(person_params)
+        #format.html { redirect_to @person, notice: 'Person was successfully updated.' }
+        format.html do
+          redirect_to url_for(view_context.h_params_path(path: "/people/#{@person.id}")), notice: 'Person was successfully updated.'
+          # view_context. permette di accedere agli helpers anche dai controllers
+          #"seleziona utente da associare"
+          manage_favorite_user # private action
+        end
+        format.json { render :show, status: :ok, location: @person }
+      else
+        format.html {render :edit }
+        format.json { render json: @person.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
+  # DELETE /people/1
+  # DELETE /people/1.json
+  def destroy
+    manage_favorite_destroy # private action
+    @person.destroy
+    respond_to do |format|
+      format.html { redirect_to people_url, notice: 'Person was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
+  #-----------------------------------------------------------------------------
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_person
+      @person = Person.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def person_params
+      params.require(:person).permit(:image, :title, :first_name, :last_name, :homonym, :tax_code, :sex, :memo, :nationality_id, :born_date, :born_city_id, :favorite_id_user, :favorite_cb_user)
+    end
+
+    def manage_favorite_user
+      #raise "->#{@person.favorite_cb_user}" # questo prende il valore dal database
+      #raise "->#{params[:person][:favorite_cb_user]}" # questo prende il valore dalla view
+      if params[:person][:favorite_cb_user] == "0"  # if combo-box-favorite is OFF
+        if @person.favorite_id_user.blank?
+          #raise "don't do anything"
+        else
+          #raise "delete favorite"
+          Favorite.find(@person.favorite_id_user).destroy
+          @person.update(favorite_id_user: nil)
+        end
+      else  # if combo-box-favorite is ON
+        if @person.favorite_id_user.blank?
+          #raise "crea nuovo favorite"
+          f = current_user.favorites.new(copy_table: "people", copy_table_id: @person.id, copy_normal: "persona", copy_bold: "#{@person.first_name} -- #{@person.last_name}")
+          f.save
+          @person.update(favorite_id_user: f.id)
+        else
+          #raise "aggiorna favorite esistente"
+          f = Favorite.find(@person.favorite_id_user)
+          f.update(copy_table: "people", copy_table_id: @person.id, copy_normal: "persona", copy_bold: "#{@person.first_name} -- #{@person.last_name}")
+          f.save
+        end
+      end
+    end
+
+    def manage_favorite_destroy
+      # se il record person ha dei favoriti li elimino prima di eliminare il record.
+      Favorite.find(@person.favorite_id_user).destroy unless @person.favorite_id_user.blank?
+    end
+
+end
+~~~~~~~~

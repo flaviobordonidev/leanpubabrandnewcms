@@ -1,0 +1,480 @@
+# Usiamo paperclip per importare file immagini (png o gif)
+
+
+per gestire gli upload ed i download dei files su rails è meglio usare una gemma specifica tipo:
+
+* refile
+* carrierwave
+* paperclip
+* dragonfly
+* shrine
+
+Refile è un moderno "file upload" per applicazioni Ruby. Refile è sviluppato dalla stessa persona che ha fatto carrierwave. E' più semplice e più veloce. Purtroppo su C9 mi da errore la "gem "refile-mini_magick". Al posto di Refile usiamo Paperclip. Anche Paperclip usa imagemagick ma non da errore con le sue gemme. Carrierwave sembra preferito a Paperclip ed anche Mikel Hartman lo utilizza però è un sotto capitolo ed usa "fog" per S3. Invece per Paperclip ho i tutorials con la gemma consigliata direttamente da Amazon (gem 'aws-sdk'). Stanno crescendo anche refile, dragonfly e Shrine (https://twin.github.io/file-uploads-asynchronous-world/). La documentazione di Dragonfly https://github.com/markevans/dragonfly è minimalista. Molto interessante la documentazione di Shrine https://github.com/janko-m/shrine anche se ha meno persone che contribuiscono ed ha meno commits di dragonfly, ma anche molti meno issues. ^_^
+
+* https://www.sitepoint.com/uploading-files-with-paperclip/
+* https://devcenter.heroku.com/articles/paperclip-s3
+* https://github.com/thoughtbot/paperclip/wiki/Paperclip-with-Amazon-S3
+* https://github.com/thoughtbot/paperclip
+* http://stackoverflow.com/questions/36315596/how-do-i-read-files-in-rails-images-text-from-amazon-s3-that-were-uploaded-m
+* https://www.youtube.com/watch?v=0_2VBDoowHs&noredirect=1
+* https://aws.amazon.com/sdk-for-ruby/
+* https://rubygems.org/gems/aws-sdk
+
+* https://richonrails.com/articles/getting-started-with-paperclip
+* http://www.rubydoc.info/gems/paperclip/Paperclip/ClassMethods
+
+
+Se stai upgradando paperclip  
+
+NOTE FOR UPGRADING FROM 4.3.0 OR EARLIER
+
+Paperclip is now compatible with aws-sdk >= 2.0.0.
+
+If you are using S3 storage, aws-sdk >= 2.0.0 requires you to make a few small
+changes:
+
+* You must set the `s3_region`
+* If you are explicitly setting permissions anywhere, such as in an initializer,
+  note that the format of the permissions changed from using an underscore to
+  using a hyphen. For example, `:public_read` needs to be changed to
+  `public-read`.
+
+For a walkthrough of upgrading from 4 to 5 and aws-sdk >= 2.0 you can watch
+http://rubythursday.com/episodes/ruby-snack-27-upgrade-paperclip-and-aws-sdk-in-prep-for-rails-5
+
+
+
+
+## Apriamo il branch "Upload Images Companies People"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b uicp
+~~~~~~~~
+
+
+
+
+## installiamo Paperclip
+
+per installarlo dobbiamo aggiungerlo nel Gem file. Facciamo riferimento al [sito ufficiale di paperclip](https://github.com/norman/friendly_id) e mettiamo nel Gemfile l'[ultima versione disponibile della gemma](https://rubygems.org/gems/friendly_id).
+
+{title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=50}
+~~~~~~~~
+# File Upload
+gem 'paperclip', '~> 5.1'
+gem 'aws-sdk', '~> 2.3'
+~~~~~~~~
+
+La gemma "mini_magick" ci aiuta con l'integrazione di refile su Rails e l'implementazione dell'elaborazione delle immagini. MiniMagick richiede ImageMagic installato. Per installarlo su Ubuntu/Cloud9 basta eseguire:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo apt-get install imagemagick
+~~~~~~~~
+
+Se non funziona eseguire:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo apt-get update
+$ sudo apt-get install imagemagick
+~~~~~~~~
+
+Se neanche questo funziona eseguire:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo add-apt-repository main
+$ sudo apt-get update
+$ sudo apt-get install imagemagick
+~~~~~~~~
+
+Eseguiamo l'installazione della gemma con bundle
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ bundle install
+~~~~~~~~
+
+
+
+
+## Aggiungiamo il campo image alla tabella people
+
+Usiamo lo script di generazione di Paperclip per creare il migration.
+
+A> Il nome della tabella va al SINGOLARE
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails generate paperclip person image
+~~~~~~~~
+
+questo crea il migrate:
+
+{title="db/migrate/xxx_add_attachment_image_to_people.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class AddAttachmentImageToPeople < ActiveRecord::Migration
+  def self.up
+    change_table :people do |t|
+      t.attachment :image
+    end
+  end
+
+  def self.down
+    remove_attachment :people, :image
+  end
+end
+~~~~~~~~
+
+è un migration che non è in stile rails 5 ma va benissimo ugualmente, quindi lo lasciamo così.
+
+Come possiamo notare, Paperclip ha un suo proprio metodo **.attachment** che aggiunge alla tabella le seguenti colonne: 
+
+* {attachment}_file_name
+* {attachment}_file_size
+* {attachment}_content_type
+* {attachment}_updated_at
+
+Il nome del campo attachment è l'argomento fornito al metodo/proprietà ** .attachment ** ("logo" nel nostro caso). Actually, only the {attachment}_file_name field is required, so if you don’t want to store other information, go ahead and create a basic migration instead.
+
+The name of the attachment field is the argument provided to the attachment method (image in our case). Actually, only the {attachment}_file_name field is required, so if you don’t want to store other information, go ahead and create a basic migration instead.
+
+The add_attachment method is a helper that will automatically add the 4 fields that Paperclip uses:
+image_file_name # The original filename of the image.
+image_content_type # The mime type of the image.
+image_file_size # The file size of the image.
+image_updated_at # The last updated date of the image.
+
+
+Aggiungiamo i campi/ le colonne al database
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rake db:migrate
+~~~~~~~~
+
+
+
+
+## Aggiungiamo paperclip image al model
+
+Aggiungiamo l'informazione al modello di Person che il campo "image" è per file uploaded ** has_attached_file :image **
+
+{title=".../app/models/person.rb", lang=ruby, line-numbers=on, starting-line-number=7}
+~~~~~~~~
+  # paperclip required ---------------------------------------------------------
+  has_attached_file :image, styles: { thumb: ["64x64!", :png] }
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+abbiamo dato anche uno stile all'immagine dicendogli di caricarla come png e di scalare l'immagine a 64x64px facendo uno stretch e quindi senza mantenere le proporzioni.
+
+* [Post Processing](https://github.com/thoughtbot/paperclip#post-processing)
+* [ImageMagick's geometry documentation](http://www.imagemagick.org/script/command-line-processing.php#geometry)
+
+
+
+
+## Aggiungiamo paperclip image al controller
+
+Anche nel controller di people aggiungiamo il campo "image" nella white-list del massive assign (strong-parameters). [02:](#code-companies_people-upload_images-02)
+
+{title=".../app/controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=75}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def person_params
+      params.require(:person).permit(:image, :title, :first_name, :last_name, :homonym, :memo)
+    end
+~~~~~~~~
+
+I> Da notare che dobbiamo permettere solo "image" e non image_file_name o gli altri campi derivati (image_file_size, image_content_type, image_updated_at). Questi sono usati internamente da Paperclip.
+
+
+
+
+## Aggiungiamo paperclip image alle views edit e new
+
+{title=".../app/views/people/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=25}
+~~~~~~~~
+    <div class="field">
+      <%= f.label :image, class: "control-label" %><br>
+      <%= f.file_field :image, class: "form-control image_upload_file_field" %>
+    </div>
+~~~~~~~~
+
+Aggiungere il campo **image** al form è semplice, basta usare ** f.file_field :image ** per rendere il campo appropriato.
+Per Rails 3 dovevamo anche passare al metodo **form_for** del form l'informazione ** :html => { :multipart => true } **. Questo non è necessario su Rails 5.
+Sembra che da Rails 5 non è pià necessario  attivare il ** html: { multipart: true } ** però sulle istruzioni di paperclip ancora viene usato ** <%= form_for @user, url: users_path, html: { multipart: true } do |form| %> **. Consiglio di provare prima senza ed aggiungerlo solo se avete problemi.
+
+Comunque, se proviamo a fare l'upload adesso, riceveremo un messaggio di errore "exception will be raised". ** Paperclip::Errors::MissingRequiredValidatorError ** 
+Questo perché Paperclip si preoccupa con la sicurezza della nostra applicazione e quindi a partire dalla versione 4 è richiesto di avere al meno un tipo di validazione nel nostro modello.
+
+
+
+
+## Aggiungiamo validazione paperclip image al model
+
+Aggiungo la validazione altrimenti ho un errore. questo è stato implementato per aumentare la sicurezza.
+
+{title=".../app/models/person.rb", lang=ruby, line-numbers=on, starting-line-number=10}
+~~~~~~~~
+
+  # VALIDATIONS
+  
+  # paperclip required ---------------------------------------------------------
+  validates_attachment :image,
+                        content_type: { content_type: ["image/jpeg", "image/gif", "image/png"] }
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+come scelgo i mime types?
+Ecco di seguito alcuni links ed una lista dei mime types:
+
+* https://www.sitepoint.com/web-foundations/mime-types-complete-list/
+* http://stackoverflow.com/questions/6554951/validate-extension-in-paperclip-ruby-on-rails
+* http://stackoverflow.com/questions/8818251/how-to-validate-file-content-type-to-pdf-word-excel-and-plain-text-for-paperc
+* http://stackoverflow.com/questions/26347844/rails-paperclip-file-type-validation-add-pdf
+
+
+
+
+## Aggiungiamo su views/show
+
+Avendo implementato la validazione possiamo caricare il nostro primo file. Prima però implementiamo la sua visualizzazione sulla pagina show **<%= image_tag @person.image.url %>**.
+
+{title="views/people/_main_media_object.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+    <div class="list-group-item-heading pull-left" >
+      <% if @person.image.present? %>
+        <%= image_tag @person.image.url(:thumb), class: "media-object" %><br>
+      <% elsif %>
+        <%= image_tag "my_style_images/default/person_default.png", alt: "user image", class: "media-object" %>
+      <% end %>
+    </div>
+~~~~~~~
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+![people show](images/companies_people/upload_images/people_show.png)
+
+Come si vede in alto c'è l'immagine che è stata uploadata.
+
+![uploaded image](images/companies_people/upload_images/image_test.png)
+
+l'immagine è sull'url ** https://elisinfo5-flaviobordonidev.c9users.io/system/people/images/000/000/003/original/flatest.png?1481018199 ** che a livello locale risulta su ** .../public/system/people/images/000/000/003/original/flatest.png **
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add people upload images locally with paperclip"
+~~~~~~~~
+
+
+
+
+## Passiamo al lato Aziende
+
+
+
+
+## Aggiungiamo il campo image alla tabella companies
+
+Usiamo lo script di generazione di Paperclip per creare il migration.
+
+A> Il nome della tabella va al SINGOLARE
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails generate paperclip company logo
+~~~~~~~~
+
+questo crea il migrate:
+
+{title="db/migrate/xxx_add_attachment_logo_to_companies.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class AddAttachmentLogoToCompanies < ActiveRecord::Migration
+  def self.up
+    change_table :companies do |t|
+      t.attachment :logo
+    end
+  end
+
+  def self.down
+    remove_attachment :companies, :logo
+  end
+end
+~~~~~~~~
+
+Aggiungiamo i campi al database
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rake db:migrate
+~~~~~~~~
+
+
+
+
+## Aggiungiamo paperclip logo al model
+
+Aggiungiamo l'informazione al modello di Company che il campo "logo" è per file uploaded ** has_attached_file :logo **
+
+{title=".../app/models/company.rb", lang=ruby, line-numbers=on, starting-line-number=7}
+~~~~~~~~
+  # paperclip required ---------------------------------------------------------
+  has_attached_file :logo, styles: { thumb: ["64x64!", :png] }
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+abbiamo dato anche uno stile all'immagine dicendogli di caricarla come png e di scalare l'immagine a 64x64px facendo uno stretch e quindi senza mantenere le proporzioni.
+
+
+
+
+## Aggiungiamo paperclip logo al controller
+
+Anche nel controller di companies aggiungiamo il campo "logo" nella white-list del massive assign (strong-parameters). [02:](#code-companies_people-upload_images-02)
+
+{title=".../app/controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=73}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def company_params
+      params.require(:company).permit(:logo, :name, :status, :taxation_number_first, :taxation_number_second, :memo)
+    end
+~~~~~~~~
+
+I> Da notare che dobbiamo permettere solo "logo" e non logo_file_name o gli altri campi derivati (logo_file_size, logo_content_type, logo_updated_at). Questi sono usati internamente da Paperclip.
+
+
+
+
+## Aggiungiamo paperclip logo alle views edit e new
+
+{title=".../app/views/companies/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=25}
+~~~~~~~~
+    <div class="field">
+      <%= f.label :logo, class: "control-label" %><br>
+      <%= f.file_field :logo, class: "form-control image_upload_file_field" %>
+    </div>
+~~~~~~~~
+
+
+
+
+## Aggiungiamo validazione paperclip logo al model
+
+Aggiungo la validazione altrimenti abbiamo un errore. questo è stato implementato per aumentare la sicurezza.
+
+{title=".../app/models/company.rb", lang=ruby, line-numbers=on, starting-line-number=10}
+~~~~~~~~
+
+  # VALIDATIONS
+  
+  # paperclip required ---------------------------------------------------------
+  validates_attachment :logo,
+                        content_type: { content_type: ["image/jpeg", "image/gif", "image/png"] }
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+come scelgo i mime types?
+Lo abbiamo appena visto nei paragrafi precedenti di questo capitolo. 
+
+
+
+
+## Aggiungiamo su views/show
+
+Avendo implementato la validazione possiamo caricare il nostro primo file. Prima però implementiamo la sua visualizzazione sulla pagina show **<%= image_tag @company.logo.url %>**.
+
+{title="views/companies/_main_media_object.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+    <div class="list-group-item-heading pull-left" >
+      <% if @company.logo.present? %>
+        <%= image_tag @company.logo.url(:thumb), class: "media-object" %><br>
+      <% elsif %>
+        <%= image_tag "my_style_images/default/company_default.png", alt: "user image", class: "media-object" %>
+      <% end %>
+    </div>
+~~~~~~~~
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+![companies show](images/companies_people/upload_images/companies_show.png)
+
+Come si vede in alto c'è l'immagine che è stata uploadata.
+
+![uploaded image](images/companies_people/upload_images_companies/company_logo_uploaded.png)
+
+l'immagine è sull'url ** https://elisinfo5-flaviobordonidev.c9users.io/system/companies/logos/000/000/002/thumb/logo_temi.png?1482406213 ** che a livello locale risulta su ** .../public/system/companies/logos/000/000/002/original/logo_temi.png ** e la sua versione ridotta su ** .../public/system/companies/logos/000/000/002/thumb/logo_temi.png **
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add companies upload logos locally with paperclip"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku uicp:master
+$ heroku run rake db:migrate
+~~~~~~~~
+
+Heroku non accetta che venga fatto upload di files direttamente su heroku. Devo quindi attivare un servizio terzo. Nel prossimo capitolo attiviamo Amazon Web Service S3.
+
+Attenzione. Sembra che le immagini heroku le accetta senza problemi ad esempio ho creato una nuova persona di test uploadando l'immagine flatest.png e paparclip su heroku la ha correttaemtne importata mettendola sull'url ** https://infinite-fortress-17788.herokuapp.com/system/people/images/000/000/003/original/flatest.png?1481020047 **
+Ma in realtà queste vengono cancellate dopo un po' di tempo. E comunque occupano del prezioso spazio su Heroku.
+
+Nel prossimo capitolo attiviamo Amazon Web Service S3 che è dedicato a contenere files. E' meglio lasciare su heroku solo i dati del database.
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge uicp
+$ git branch -d uicp
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

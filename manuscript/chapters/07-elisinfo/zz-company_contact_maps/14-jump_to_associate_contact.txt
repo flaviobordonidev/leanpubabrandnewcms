@@ -1,0 +1,141 @@
+# Saltiamo alla persona associata
+
+agevoliamo gli inserimenti permettendo di saltare direttamente alla pagina di secondo livello di profondità se voglio associare una nuova persona o azienda. Ad esempio se siamo sull'azienda INC e vogliamo verificare/aggiungere la persona Maria Rossi allora faccio una prima ricerca ed invece di aprirsi la maschera di edit, si apre direttamente la pagina di secondo livello con la ricerca già impostata. Se c'è la persona in elenco allora basta selezionarla e torno indietro alla pagina di primo livello (company_person_maps/edit). Se invece non c'è posso cliccare sul pulsante di nuova persona e mi si apre la pagina (people/new) su una nuova istanza del browser (vedi prossimo capitolo). 
+
+
+
+ATTENZIONE: questo salto lo ho già implementato perché abbiamo fatto copia incolla del codice dei capitoli precedenti che già avevano il salto.
+
+
+
+## Apriamo il branch "Jump to Associate Person"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b jap
+~~~~~~~~
+
+
+
+
+## Implementiamo il salto
+
+Per saltare direttamente al secondo livello di rear-page modifichiamo il link_to passando tutti i params del rear-page di primo livello che viene saltato. Oltre a passare tutti i parametri dobbiamo distinguere se andare sulla lista delle persone o delle aziende (compito che nel comportamento di default era dato alla rear di primo livello).
+
+
+{title=".../app/views/companies/_related_button_new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<% if params[:search].present? or (list_to_add.size == 0)%>
+
+  <div class="btn-group pull-right right-pad"> <!-- btn-group -->
+    <%# default behaviour %>
+    <%#= link_to url_for(h_front_params_path(path: "/company_person_maps/new")), :class => "btn btn-default" do %>
+      <!-- <span class="glyphiconmy ico_new"></span> -->
+    <%# end %>
+    
+    <%# jump to list %>
+    <% if params[:controller] == "people" %>
+      <%= link_to url_for(h_front_params_path(path: "/companies",last_rear_controller: "company_person_maps", last_rear_action: "new", last_rear_id: "", last_rear_related: "favorites", last_rear_page: 1, last_rear_search: "", search: params[:search] )), :class => "btn btn-default" do %>
+        <span class="glyphiconmy ico_new"></span>
+      <% end %>
+    <% else %>
+      <%= link_to url_for(h_front_params_path(path: "/people",last_rear_controller: "company_person_maps", last_rear_action: "new", last_rear_id: "", last_rear_related: "favorites", last_rear_page: 1, last_rear_search: "", search: params[:search] )), :class => "btn btn-default" do %>
+        <span class="glyphiconmy ico_new"></span>
+      <% end %>
+    <% end %>
+  </div> <!-- /btn-group -->
+
+<% else %>
+
+  <div class="btn-group pull-right right-pad">  <!-- btn-group -->
+    <a href="#" class="btn btn-primary disabled">
+      <span class="glyphiconmy ico_new"></span>
+    </a>
+  </div> <!-- /btn-group -->
+
+<% end %>
+~~~~~~~~
+
+Sto vedendo che forse ho messo un controllo inutile perché il partial non è condiviso tra companies/show e people/show. Quinid non mi serve la struttura if...else...end 
+
+
+
+
+
+## Salto dall'azienda alla lista delle persone
+
+
+
+{title=".../app/views/companies/_related_button_new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<% if params[:search].present? or (list_to_add.size == 0)%>
+
+  <div class="btn-group pull-right right-pad"> <!-- btn-group -->
+    <%# default behaviour %>
+    <%#= link_to url_for(h_front_params_path(path: "/company_person_maps/new")), :class => "btn btn-default" do %>
+      <!-- <span class="glyphiconmy ico_new"></span> -->
+    <%# end %>
+    
+    <%# jump to list %>
+    <% if params[:controller] == "people" %>
+      <%= link_to url_for(h_front_params_path(path: "/companies",last_rear_controller: "company_person_maps", last_rear_action: "new", last_rear_id: "", last_rear_related: "favorites", last_rear_page: 1, last_rear_search: "", search: params[:search] )), :class => "btn btn-default" do %>
+        <span class="glyphiconmy ico_new"></span>
+      <% end %>
+    <% else %>
+      <%= link_to url_for(h_front_params_path(path: "/people",last_rear_controller: "company_person_maps", last_rear_action: "new", last_rear_id: "", last_rear_related: "favorites", last_rear_page: 1, last_rear_search: "", search: params[:search] )), :class => "btn btn-default" do %>
+        <span class="glyphiconmy ico_new"></span>
+      <% end %>
+    <% end %>
+  </div> <!-- /btn-group -->
+
+<% else %>
+
+  <div class="btn-group pull-right right-pad">  <!-- btn-group -->
+    <a href="#" class="btn btn-primary disabled">
+      <span class="glyphiconmy ico_new"></span>
+    </a>
+  </div> <!-- /btn-group -->
+
+<% end %>
+~~~~~~~~
+
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add jump associate person"
+~~~~~~~~
+
+
+
+
+## Salto dalla persona alla lista delle aziende
+
+da fare...
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku jap:master
+$ heroku run rake db:migrate
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge jap
+$ git branch -d jap
+~~~~~~~~

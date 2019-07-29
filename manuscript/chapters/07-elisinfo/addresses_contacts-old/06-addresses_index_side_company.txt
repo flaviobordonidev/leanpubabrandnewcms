@@ -1,0 +1,160 @@
+# Elenco degli indirizzi di una specifica azienda
+
+in questo capitolo tratteremo l'elenco degli indirizzi (sul partial addresses/_index) che è visualizzato come related della pagina companies/show.
+
+Praticamente abbiamo già implementato tutto. facciamo solo una verifica.
+
+
+
+## Apriamo il branch "Addresses Index Side Company"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b aisc
+~~~~~~~~
+
+
+
+
+## Select_relateds side companies show
+
+Abbiamo già attivato il select_related ed il breadcrumbs di companies show per mostrare gli indirizzi correlati.
+
+* su homepage/show ho select_related : favorites, companies, people
+* su companies/show ho select_related : favorites, companies, people, contacts, **addresses**
+
+Su homepage non metto contacts e addresses perché non le visualizzo come entità indipendenti ma le visualizzo solo sotto companies e people perché hanno una relazione uno-a-molti con entrambe (usando la relazione polimorfica)
+
+
+
+
+## Routes
+
+Nel capitolo precedente abbiamo usato lo scaffold quindi abbiamo già gli instradamenti ** resources :addresses ** nel file routes.
+
+
+
+
+## Come approcciamo
+
+Prepariamo un elenco di indirizzi per quando siamo su people/show con related="addresses". Sul controller di people azione show visualizziamo @person.addresses.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails c
+irb> c = Company.first
+irb> c.addresses
+irb> c.addresses[0].full_address
+irb> c.addresses[0].address_tag
+irb> c.addresses[1].full_address
+irb> c.addresses[1].address_tag
+~~~~~~~~
+
+
+
+
+## La pagina show di People con relateds: addresses
+
+Abbiamo già aggiunto addresses nell'azione "show" del controller companies_controller.
+
+{title=".../app/controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=32}
+~~~~~~~~
+    when "addresses"
+      @relateds = @company.addresses.search(params[:search]).order('updated_at DESC').page(params[:page])
+      @relateds_path = "addresses"
+~~~~~~~~
+
+Sul view companies/show abbiamo già implementato il ** <%= render "#{@relateds_path}/index", related_list: @relateds %> ** 
+Abbiamo già inserito anche **.page(params[:page])** perché abbiamo anche già implementato il pagination ** <%= render 'related_pagination', list_to_paginate: @relateds %> **.
+Abbiamo anche già inserito **.search(params[:search])**
+
+
+
+
+## Il partial _index
+
+Il partial _index visualizza la lista dei contatti. Già fatto nei capitoli precedenti
+ 
+
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+![companies/show - related addresses](images/addresses/addresses_index_side_person/related_addresses.png)
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add companies/show - related addresses _index"
+~~~~~~~~
+
+
+
+
+## Search
+
+Abbiamo già implementato lo **scope :search** sul model address.
+Abbiamo anche già implementato il **.search(params[:search])** sull'azione **show** del controller companies_controller
+Abbiamo già attivato il render ** <%= render 'related_form_search' %> ** sul view. 
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+![https://elisinfo5-flaviobordonidev.c9users.io/company_person_maps](images/company_person_maps/cpmaps_index/cpmaps.png)
+
+
+sta funzionando quindi facciamo un commit
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add people/show addresses search"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku aisc:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge aisc
+$ git branch -d aisc
+~~~~~~~~
+
+
+
+
+## Backup su github
+
+facciamo un backup del ns progetto su github:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

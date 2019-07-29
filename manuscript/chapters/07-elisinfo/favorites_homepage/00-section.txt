@@ -1,0 +1,3 @@
+-# Favoriti sulla homepage
+
+implementiamo il favorito delle aziende e delle persone da mettere sulla homepage.

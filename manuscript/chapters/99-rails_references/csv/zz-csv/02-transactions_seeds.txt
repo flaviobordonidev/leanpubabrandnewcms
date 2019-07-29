@@ -1,0 +1,332 @@
+# Transactions
+
+
+
+
+## Apriamo il branch
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b trans
+~~~~~~~~
+
+
+
+
+## Implementiamo con scaffold
+
+adesso creiamo un'interfaccia con lo scaffold per avere una tabella su cui archiviare i dati letti dai files txt.
+Il file CSV ha nome XXX00_transactions.txt e contiene i seguenti dati:
+
+{title="xxxx_transactions.txt", lang=text, line-numbers=off}
+~~~~~~~~
+timestamp           ;id_check ;onlus ;project ;type ;verify    ;cents   ;people_name ;people_email ;extra ; 
+----------------------------------------------------------------------------------------------------------
+2016-05-06 11:05:33 ;1        ;null ;null ;CASH ;PAYMENT_OK    ;20      ;null        ;null         ;0    ;
+2016-05-06 11:51:32 ;2        ;null ;null ;CASH ;PAYMENT_OK    ;100     ;MARIO ROSI  ;M.ROSI@ME.IT ;0    ;
+2016-05-06 12:11:25 ;3        ;null ;null ;CASH ;PAYMENT_OK    ;100     ;null        ;null         ;0    ;
+2016-05-06 12:12:21 ;4        ;null ;null ;CASH ;PAYMENT_OK    ;50      ;null        ;null         ;0    ;
+2016-05-06 13:25:20 ;5        ;null ;null ;CASH ;PAYMENT_OK    ;5000    ;null        ;null         ;0    ;
+2016-05-06 13:27:03 ;6        ;null ;null ;CASH ;PAYMENT_OK    ;1000    ;null        ;null         ;0    ;
+2016-05-06 13:27:59 ;7        ;null ;null ;CASH ;PAYMENT_OK    ;100     ;null        ;null         ;0    ;
+2016-05-06 13:30:20 ;8        ;null ;null ;CASH ;PAYMENT_OK    ;50      ;null        ;null         ;0    ;
+2016-05-06 13:31:29 ;9        ;null ;null ;CASH ;PAYMENT_OK    ;200     ;null        ;null         ;0    ;
+2016-05-06 13:36:04 ;10       ;null ;null ;CASH ;PAYMENT_OK    ;2000    ;null        ;null         ;0    ;
+2016-05-06 13:36:59 ;11       ;null ;null ;CASH ;PAYMENT_OK    ;50      ;null        ;null         ;0    ;
+2016-05-06 21:02:25 ;12       ;null ;null ;POS  ;PAYMENT_ERROR ;2500000 ;null        ;null         ;0    ;
+2016-05-06 21:02:43 ;13       ;null ;null ;POS  ;PAYMENT_ERROR ;200000  ;null        ;null         ;0    ;
+2016-05-08 14:18:23 ;14       ;null ;null ;POS  ;PAYMENT_ERROR ;5800000 ;null        ;null         ;0    ;
+2016-05-08 17:47:02 ;15       ;null ;null ;CASH ;PAYMENT_OK    ;200     ;null        ;null         ;0    ;
+~~~~~~~~
+
+Il file XXX00_transactionDetails.txt contiene i seguenti dati:
+
+{title="xxxx_transactions.txt", lang=text, line-numbers=off}
+~~~~~~~~
+id_check  ;cents  ; 
+----------------------------------------------------------------------------------------------------------
+1         ;500    ;
+1         ;100    ;
+1         ;100    ;
+1         ;100    ;
+1         ;100    ;
+2         ;50     ;
+2         ;50     ;
+2         ;20     ;
+2         ;20     ;
+2         ;10     ;
+3         ;200    ;
+4         ;500    ;
+5         ;500    ;
+6         ;500    ;  
+7         ;500    ;
+8         ;500    ;
+9         ;500    ;
+10        ;500    ;
+11        ;500    ;
+12        ;500    ;
+13        ;500    ;
+14        ;500    ;
+15        ;500    ;
+~~~~~~~~
+
+
+Sulla tabella del database riporto tutte le colonne del file XXX00_transactions più una colonna per il nome del file (meglio l'id tella tbl kiosks).
+
+I> ATTENZIONE: con "rails generate scaffold ..." -> uso il SINGOLARE
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g scaffold Transaction csvfilename:string timestamp:date id_check:integer onlus:string project:string type:string verify:string cents:integer people_name:string people_email:string extra:string
+~~~~~~~~
+
+questo crea il migrate:
+
+{title=".../db/migrate/xxx_create_transactions.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+class CreateTransactions < ActiveRecord::Migration[5.0]
+  def change
+    create_table :transactions do |t|
+      t.string :csvfilename
+      t.date :timestamp
+      t.integer :id_check
+      t.string :onlus
+      t.string :project
+      t.string :type
+      t.string :verify
+      t.integer :cents
+      t.string :people_name
+      t.string :people_email
+      t.string :extra
+
+      t.timestamps
+    end
+  end
+end
+~~~~~~~~
+
+Effettuiamo il migrate del database per creare la tabella "transactions" sul database
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rake db:migrate
+~~~~~~~~
+
+Adesso che abbiamo l'interfaccia pronta prepariamo il pulsante per lanciare l'import.
+
+
+
+
+## Link per lanciare l'importazione
+
+sulla homepage aggiungiamo un link per effettuare l'importazione dal file .csv
+
+[codice: donachiarocvs views 01](#code-donachiarocvs-views-01)
+
+{title=".../app/views/homepage/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=14}
+~~~~~~~~
+<%= link_to 'Import', import_path %>
+~~~~~~~~
+
+
+sul file routes creiamo il percorso per "import_path" e lo instradiamo sul controller payments_controller e l'action import
+
+[codice: donachiarocvs config 02](#code-donachiarocvs-config-02)
+
+{title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+get 'import', :to => 'transactions#import'
+~~~~~~~~
+
+
+adesso sul controller payments_controller creiamo l'action import
+
+[codice: donachiarocvs controllers 01](#code-donachiarocvs-controllers-01)
+
+{title=".../app/controllers/transactions_controller.rb", lang=ruby, line-numbers=on, starting-line-number=10}
+~~~~~~~~
+def import
+  #Transaction.import da sviluppare
+  redirect_to homepage_index_path, notice: "file imported"
+end
+~~~~~~~~
+
+Possiamo provare questa parte e veder che il link "Import" funziona!
+Adesso passiamo ad importare veramente.
+
+
+
+
+## Model Payment - import
+
+La parte di importazione la mettiamo nel model perché è lui che ha la competenza di interfacciarsi con il database. Creiamo un metodo (def nome_metodo  ...  end) che ha la particolarità del "self." questo gli serve perché va a scrivere nel database. E' un "setter method" ed ha bisogno quindi di richiamare il model su cui è definito con .self per un discorso di visibilità delle variabili (scope). Vedi setter e getter methods per maggiori dettagli.  
+
+{title=".../app/models/transaction.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+class Transaction < ApplicationRecord
+  
+  # setter method (serve self perché va a scrivere nel db)(non creo il getter method)
+  def self.import
+    CSV.foreach("public/transactions.txt", col_sep: ';') do |row|
+      trans = Transaction.new
+      trans.timestamp = row[0]
+      trans.id_check = row[1]
+      trans.var1 = row[2]
+      trans.var2 = row[3]
+      trans.type = row[4]
+      trans.verify = row[5]
+      trans.cents = row[6]
+      trans.people_name = row[7]
+      trans.people_email = row[8]
+      trans.var3 = row[9]
+      trans.save
+    end
+  end
+  
+end
+~~~~~~~~
+
+Questo funziona! se premiamo il link "Import" vediamo popolarsi la tabella con i dati presenti nel file transactions.txt ma c'è un problema. Non controlla gli "id" e quindi se premo di nuovo il link "Import" tutti i records mi vengono duplicati ed accodati in tabella.
+
+
+
+
+## Controllo dei records
+
+aggiorniamo il codice in modo da:
+1. creare un nuovo record se l'"id" non è presente
+2. aggiornare il record esistente se l'"id" è presente.
+
+In questa prima soluzione creiamo un if che verifica id_check perché l'id sarà diverso se ho cancellato dei records visto che cresce sempre. Se non trovo un record che ha l'id_check allora lavoro come fatto nel paragrafo precedente.
+Se invece trovo un record con id_check allora faccio un update. Siccome id_check non ha la proprietà che deve essere un file unico il risultato di Payment.where(...) mi da un array di records, che nel nostro caso ha un solo elemento. Quindi per settare i valori sono costretto a selezionare il primo elemento dell'array (che in realtà è anche l'unico) con p[0].
+
+{title="models/payment.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+class Transaction < ApplicationRecord
+  
+  # setter method (serve self perché va a scrivere nel db)(non creo il getter method)
+  def self.import
+    CSV.foreach("tmp/VFD02-transactions.txt", col_sep: ';') do |row|
+      if Transaction.where(id_check: row[1].to_i).blank?
+        trans = Transaction.new
+        trans.id = row[1]
+        trans.timestamp = row[0]
+        trans.id_check = row[1]
+        trans.onlus = row[2]
+        trans.project = row[3]
+        trans.cash_pos = row[4]
+        trans.payment_check = row[5]
+        trans.cents = row[6]
+        trans.people_name = row[7]
+        trans.people_email = row[8]
+        trans.extra = row[9]
+        trans.save
+      else
+        trans = Transaction.where(id_check: row[1].to_i)
+        trans[0].timestamp = row[0]
+        trans[0].id_check = row[1]
+        trans[0].onlus = row[2]
+        trans[0].project = row[3]
+        trans[0].cash_pos = row[4]
+        trans[0].payment_check = row[5]
+        trans[0].cents = row[6]
+        trans[0].people_name = row[7]
+        trans[0].people_email = row[8]
+        trans[0].extra = row[9]
+        trans[0].save
+      end
+    end
+  end
+  
+end
+~~~~~~~~
+
+Potrei dare il valore di unicità al database ad id_check facendo un migration di modifica ma preferisco una soluzione differente. 
+Chi l'ha detto che id è intoccabile?
+La soluzione è semplice come l'uovo di Colombo. 
+Invece di lasciare assegnare l'id dei records in automatico dal contatore di rails setto il valore dell'id con quello di id_check. 
+L'unico rischio è quello di generare un'errore se il mio file txt ha due id_check identici.
+
+{title="models/payment.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+# setter method (serve self perché va a scrivere nel db)(non creo il getter method)
+def self.import
+  CSV.foreach("lib/tasks/transactions.txt", col_sep: ';') do |row|
+    p = Payment.where(id: row[1].to_i).blank? ? Payment.new : Payment.find(row[1].to_i)
+    p.id = row[1]
+    p.timestamp = row[0]
+    p.id_check = row[1]
+    p.var1 = row[2]
+    p.var2 = row[3]
+    p.kind = row[4]
+    p.verify = row[5]
+    p.cents = row[6]
+    p.people_name = row[7]
+    p.people_email = row[8]
+    p.var3 = row[9]
+    p.save
+  end
+end
+~~~~~~~~
+
+Invece dell'if esplicito uso l'operatore ternario (value = condition ? true : false) perché non ho più necessità di fare due associazioni differenti. Non devo più usare p[0] per l'update perché "id" tratta solo valori univoci e quindi il Payment.where(...) mi da come risultato un solo record e non un'array.
+
+Siccome usiamo l'"id" perché non abbiamo usato Payment.find(...).blank? ?
+Non lo ho usato perché se il .find non trova un record mi genera un'errore invece il .where mi da False e lo posso usare come condizione nell'operatore ternario. Il Payment.find(...) l'ho usato quando ho la certezza che c'è un record perché Payment.where(...).blank = False. 
+
+Adesso implementiamo anche due controlli su eventuali errori nel file txt che viene passato.
+1. Se le righe non hanno un check_id che cresce linearmente alzo un'errore (raise ...) (Nell'applicativo reale andrebbe gestito l'errore) (Questo controllo mi verifica anche l'id_check duplicato)
+2. Se ho più record nel database delle righe nel file txt alzo un'errore
+
+
+{title="models/payment.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+# setter method (serve self perché va a scrivere nel db)(non creo il getter method)
+def self.import
+  i = 0
+  CSV.foreach("lib/tasks/transactions.txt", col_sep: ';') do |row|
+    i = i+1
+
+    if i != row[1].to_i
+      raise "c'è un salto nel file txt"
+    end
+
+    p = Payment.where(id: row[1].to_i).blank? ? Payment.new : Payment.find(row[1].to_i)
+    p.id = row[1]
+    p.timestamp = row[0]
+    p.id_check = row[1]
+    p.var1 = row[2]
+    p.var2 = row[3]
+    p.kind = row[4]
+    p.verify = row[5]
+    p.cents = row[6]
+    p.people_name = row[7]
+    p.people_email = row[8]
+    p.var3 = row[9]
+    p.save
+  end
+
+  if i != Payment.all.size
+    raise "nel database ci sono più record che nel file txt"
+  end
+
+end
+~~~~~~~~
+
+Per il momento è tutto! Alla prossima.
+
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge trans
+$ git branch -d trans
+~~~~~~~~

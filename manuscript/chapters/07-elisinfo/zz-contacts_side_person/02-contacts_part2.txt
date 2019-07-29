@@ -1,0 +1,310 @@
+## Contatti lato persone
+
+mi sono allungato troppo sul capitolo precedente. Dovremo riorganizzare il contenuto. Comunque andiamo avanti così.
+
+
+
+## Refactoring sulla view surveys/new or /edit
+
+facciamo un primo refactoring creando il partial **contact_fields**
+
+{title=".../app/views/people/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=75}
+~~~~~~~~
+    <%= f.fields_for :person_contacts do |builder| %>
+        <%= render "contact_fields", f: builder %>
+    <% end %>
+~~~~~~~~
+
+{title=".../app/views/surveys/_contact_fields.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=20}
+~~~~~~~~
+<fieldset>
+  <%= f.label :medium, "Contatto (tel, cell, email, skype, ...)" %><br/>
+  <%= f.text_field :medium %>
+  <%= f.label :identifier, "-" %>
+  <%= f.text_field :identifier %>
+  <%= f.check_box :_destroy %>
+  <%= f.label :_destroy, "Elimina contatto" %>
+</fieldset>
+~~~~~~~~
+
+
+
+
+## Javascript
+
+introduciamo javascript per rendere più usabile l'editing del questionario. Permettiamo l'eliminazione delle domande e delle risposte tramite un link senza dover dare il submit del form. Inoltre aggiungiamo un link per inserire delle nuove domande e risposte.
+
+
+
+
+## Iniziamo con il link
+
+Iniziamo a trasformare il check_box in un link_to. Abbiamo messo dentro <fieldset> invece di <p> perché è più comodo chiamarlo con javascript. Ci serve comunque un campo nascosto per passare **_destroy** come params.
+
+{title=".../app/views/surveys/_contact_fields.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=20}
+~~~~~~~~
+<fieldset>
+  <%= f.label :medium, "Contatto (tel, cell, email, skype, ...)" %><br/>
+  <%= f.text_field :medium %>
+  <%= f.label :identifier, "-" %>
+  <%= f.text_field :identifier %>
+  <%= f.hidden_field :_destroy %>
+  <%= link_to "Elimina contatto", "#", class: "remove_fields" %>
+</fieldset>
+~~~~~~~~
+
+Adesso scriviamo il codice javascript
+
+{title=".../app/assets/javascripts/people.js.coffe", lang=ruby, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+$(document).on "turbolinks:load", ->
+  $('form').on 'click', '.remove_fields', (event) ->
+    $(this).prev('input[type=hidden]').val('1')
+    $(this).closest('fieldset').hide()
+    event.preventDefault()
+~~~~~~~~
+
+Funziona!!!
+Analizziamo il codice. 
+
+
+
+
+### La prima riga 
+è necessaria per caricare il DOM di jQuery quando è attivo **turbolinks**
+
+sulla [guida di rails al capitolo 5.2](http://guides.rubyonrails.org/working_with_javascript_in_rails.html) è riportato che con turbolinks dobbiamo chiamare in modo diverso il codice jquery.
+
+5.2 Page Change Events
+When writing CoffeeScript, you'll often want to do some sort of processing upon page load. With jQuery, you'd write something like this:
+
+~~~~~~~~
+$(document).ready ->
+  alert "page has loaded!"
+~~~~~~~~
+
+or
+
+~~~~~~~~
+jQuery ->
+  alert "page has loaded!"
+~~~~~~~~
+
+However, because Turbolinks overrides the normal page loading process, the event that this relies on will not be fired. If you have code that looks like this, you must change your code to do this instead:
+
+~~~~~~~~
+$(document).on "turbolinks:load", ->
+  alert "page has loaded!"
+~~~~~~~~
+
+For more details, including other events you can bind to, check out the [Turbolinks README.](https://github.com/turbolinks/turbolinks/blob/master/README.md)
+
+
+
+
+### La seconda riga
+
+si mette in ascolto dentro il <form> per un evento 'click' fatto su un tag con class='remove_fields'. Viene usata questa sintassi invece di chiamare direttamente il click sul link '.remove_fields' perché quando aggiungeremo le risposte più avanti nel capitolo dovremo rifarci al link in maniera dinamica.
+
+
+
+
+### La terza riga
+
+Nella terza riga abbiamo il codice da eseguire a seguito del click. Quindi prendiamo il link che è stato cliccato ed andiamo al precedente campo di input nascosto e ne impostiamo il valore ad 1 che equivale a 'true'. Quindi è come quando mettevamo il segno di spunta al check_box prima di creare il link.
+
+
+
+### La quarta riga
+
+Nella quarta riga continuiamo con il codice a seguito del click. Una volta impostato il campo nascosto ad 1, andiamo a nascondere tutto il fieldset che racchiude campo nascosto, campo di input della risposta e link di remove.
+Non abbiamo ancora eliminato la risposta, quello avviene solo se si da update nel submit del form, ma visivamente la risposta sparisce.
+
+
+
+### La quinta ed ultima riga
+
+L'ultima riga di codice previene il comportamento di default sulla pressione del link che sarebbe quello di ricaricare la pagina essendo il ref="#"
+
+
+
+
+## Link per aggiungere un nuovo contatto
+
+
+{title=".../app/views/surveys/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=75}
+~~~~~~~~
+    <%= f.fields_for :person_contacts do |builder| %>
+        <%= render "person_contact_fields", f: builder %>
+    <% end %>
+    <%= link_to_add_fields "Add Contact", f, :person_contacts %>
+~~~~~~~~
+
+ATTENZIONE!!! il nome del partial DEVE chiamarsi **<<association-singular>>_fields** nel nostro caso **person_contact_fields**. Se lo chiamo in maniera diversa il codice successivo non lavora correttamente e non carica i valori nel database quando si fa il submit del form. Proprio in questo esempio mi ero distratto facendo il render di **contact_fields** e dando al link_to_add_fields l'associazione **:contacts**. Sembrava funzionare tutto ma non salvava i dati nel database perché nel model l'associazione è **person_contact** e la tabella è **person_contacts**. In un futuro refactoring quando creeremo una associazione polimorfica **contacts** allora dovremo rinominare da **person_contact_fields** a **contact_fields**
+
+Siccome il link per aggiungere un nuovo contatto ha molta logica che deve essere scritta, invece del **link_to** usiamo l'helper che chiamiamo **link_to_add_fields**. A quest'helper passiamo due parametri. Il primo parametro è la variabile "f" che è la form builder della "Question". Il secondo parametro è il nome dell'associazione che vogliamo aggiungere; nel nostro caso ":contacts"
+
+Creiamo l'helper sull'application_helper che è richiamabile da tutta l'applicazione.
+
+{title=".../app/helpers/application_helper.rb", lang=ruby, line-numbers=on, starting-line-number=37}
+~~~~~~~~
+  def link_to_add_fields(name, f, association)
+    new_object = f.object.send(association).klass.new
+    id = new_object.object_id
+    fields = f.fields_for(association, new_object, child_index: id) do |builder|
+      render(association.to_s.singularize + "_fields", f: builder)
+    end
+    link_to(name, "#", class: "add_fields", data: {id: id, fields: fields.gsub("\n", "")})
+  end
+~~~~~~~~
+
+Il codice dell'helper crea un link HTML che ha un "data attribute" HTML che rappresenta i campi necessari al modello annidato. Quando il link è cliccato, JavaScript prende quell'html dal "data attribute" e lo mette nel form.
+In altre parole, il codice in alto crea un link che una volta premuto fa un render per un partial generico <<associazione>>_fields; nel nostro caso ** render contact_fields, f: builder **.
+Il codice HTML risultante per ogni clic avrà un tag <fieldset>...</fieldset> con dentro la label, il campo nascosto, il campo di input, il link di "elimina contatto". Tutti questi campi avranno un id univoco iniziale preso da new_object.object_id.
+Vedremo più avanti come mantenere l'univocità dal secondo click in poi perché il new_object.object_id rimarrà sempre lo stesso. Questo lo faremo tramite javascript.
+
+
+risorse esterne:
+
+* https://forum.upcase.com/t/dynamically-creating-fields-in-a-nested-form/968/2
+* http://mendelk.github.io/blog/2013/07/18/patterns-for-saving-associated-model-data-in-rails/
+* http://stackoverflow.com/questions/32179661/how-to-pass-variables-down-to-partial
+
+
+
+
+### Riga 1
+name -> testo da visualizzare sul link
+f -> la form builder 
+association -> nome dell'associazione che vogliamo aggiungere
+
+
+
+
+### Riga 2
+    new_object = f.object.send(association).klass.new
+
+In pratica questa linea di codice crea un nuovo oggetto per l'associazione (nel nostro caso @person.contacts) e lo assegna alla variabile "new_object".
+
+f.object è l'oggetto per cui è creata la form. Nel nostro caso @person. 
+f.object.send(association) passa l'associazione dell'oggetto. Nel nostro caso @person.contacts
+.klass.new è una chiamata che dice: "dammi la classe di questa associazione e chiama l'initializer".
+
+
+
+
+### Riga 3
+    id = new_object.object_id
+
+id -> variabile a cui diamo un identificativo univoco (unique identifier). Potevamo prendere il timestamp now().
+
+
+
+
+### Righe 4,5,6
+    fields = f.fields_for(association, new_object, child_index: id) do |builder|
+      render(association.to_s.singularize + "_fields", f: builder)
+    end
+
+Then the code goes about the call to fields_for. It sets the child_index to new_object.object_id simply because it's a convenient unique identifier. 
+
+Within the fields_for block there's the call to render a partial which will follow the convention of the association singularized appended with _fields. So in your case, it'd be _product_fields.html.erb.
+
+
+
+### Riga 7
+    link_to(name, "#", class: "add_fields", data: {id: id, fields: fields.gsub("\n", "")})
+
+The code ends with the call to link_to to tie all of this together.
+
+
+You can play with the non-form related things in a console without a problem. To use the form stuff (form_for, fields_for, etc), you'll need to include ActionView::Helpers in your console session.
+
+
+
+
+## il javascript
+
+una volta preparato il codice lato view andiamo a scrivere il jquery lato assets. Di seguito a quanto scritto in precedenza aggiungiamo il seguente codice:
+
+{title=".../app/assets/javascripts/survey.js.coffe", lang=CoffeeScript, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+$(document).on "turbolinks:load", ->
+~~~~~~~~
+
+...
+
+{title=".../app/assets/javascripts/survey.js.coffe", lang=CoffeeScript, line-numbers=on, starting-line-number=11}
+~~~~~~~~
+  $('form').on 'click', '.add_fields', (event) ->
+    time = new Date().getTime()
+    regexp = new RegExp($(this).data('id'), 'g')
+    $(this).before($(this).data('fields').replace(regexp, time))
+    event.preventDefault()
+~~~~~~~~
+
+nella prima riga rispondiamo all'evento click sul link con **class=add_fields**.
+nella seconda riga prendiamo data e ora attuali in modo da avere un valore univoco da passare ai vari campi.
+nella terza riga prepariamo un'espressione regex per identificare il campo che ha nel parametro **data** l'id creato nell'helper.
+nella quarta riga inseriamo il nuovo campo prima del link e rimpiazziamo il suo id da regexp con time per rendere unici i successivi campi creati sempre con lo stesso oggetto. Ossia se clicco di creare un nuovo campo più di una volta avrò sempre dei campi con id univoco.
+nella quinta preveniamo il comportamento di default del link.
+
+Siccome sul click viene fatto il rendere del partial xxx_fields con tutto il <fieldset>...</fieldset> con i vari campi all'interno (label, hidden_input, text_field, delete_link) con il codice javascript appendo tutto il partial prima del link "add Answer" che ho cliccato. in pratica basterebbe questo codice javascript:
+
+{title=".../app/assets/javascripts/survey.js.coffe", lang=CoffeeScript, line-numbers=on, starting-line-number=11}
+~~~~~~~~
+  $('form').on 'click', '.add_fields', (event) ->
+    $(this).before($(this).data('fields'))
+    event.preventDefault()
+~~~~~~~~
+
+Attenzione! Questo va bene se aggiungo una sola risposta. Perché quando aggiungo la seconda risposta non ho più campi univoci perché hanno lo stesso **new_object.object_id**
+I campi vengono creati senza problemi ma quando clicco il sumbit del form mi viene salvato nel database solo l'ultimo campo answer creato. Per ovviare a questo mi creo un numero univoco prendendo data ed ora e lo salvo nella variabile "time" poi carico un'espressione regex nella variabile "regexp". Questa espressione regex la uso per ritrovare il valore di **new_object.object_id** dentro i parametri dei campi creati dentro il <fieldset>...</fieldset>. Una volta trovato l'identificativo fatto con l'id dell'oggetto lo sostituisco con il valore univoco della variabile time --> ** .replace(regexp, time) **. In questo modo quando aggiungo la seconda risposta continuo ad avere dei campi univoci e quando faccio il submit del form mi vengono salvate tutte le risposte.
+
+
+Fine.
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add contacts side person (person_contacts)"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku pcs:master
+$ heroku run rake db:migrate
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge pcs
+$ git branch -d pcs
+~~~~~~~~
+
+
+
+
+## Backup su github
+
+facciamo un backup del ns progetto su github:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

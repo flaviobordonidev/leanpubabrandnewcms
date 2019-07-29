@@ -1,0 +1,466 @@
+# Creiamo la tabella preferiti - favorites 
+
+Questa tabella usa il concetto di Polimorfismo - POLYMORPHIC
+in questo capitolo lavoreremo principalmente lato database. Creeremo la tabella favorites e metteremo i seed iniziali ed alcuni dati di prova. Non avremo nessuna interazione lato views e quindi non apriremo il browser per usare la web gui su http://localhost:3000
+Eseguendo gli scaffolds la web gui è creata in automatico ma in questo capitolo non la utilizzeremo. Utilizzeremo invece la console di rails "$ rails c".
+
+
+
+
+## Apriamo il branch "favorites company_person_map seed"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b fcpms
+~~~~~~~~
+
+
+
+
+## Creiamo la tabella generica Favorites 
+
+invece di creare tante tabelle con comportamenti analoghi (people_favorites, companies_favorites, users_favorites, ...) ne creiamo una generica favorites che poi rendiamo polymorphic.
+
+I> Attenzione!
+I>
+I> home_favorites NON ESISTE perché non voglio avere dei favoriti generici per tutta l’applicazione. Quello che voglio sono dei preferiti per l’utente che fa login. Quindi quando si vedono i favoriti presenti nell’home_page si sta guardando:
+I>
+I> users_favorites
+I>
+I> E users_favorites verrà implementata in un capitolo futuro.
+
+* https://richonrails.com/articles/polymorphic-associations-in-rails
+
+Le associazioni polimorfiche in Ruby on Rails permettono di avere un modello associato a più di un altro modello senza l'uso di una tabella di unione (join table). Questo funziona aggiungendo i campi "tipo"("type") ed "id" alla tabella del modello che si desidera fare polimorfico. Ad esempio, ipotizziamo di avere 3 modelli. I primi 2 modelli, Affari (Business) e Persona (Person), possono avere interazioni associate con loro. Queste interazioni condividono la stessa logica di business indipendentemente dal modello associato quindi possiamo facilmente fare le interazioni polimorfiche.
+
+(vedi railcast 154-polymorphic-association-revised)
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g model Favorite favoritable_id:integer favoritable_type:string copy_normal:string copy_bold:string 
+~~~~~~~~
+
+{title=".../db/migrate/xxx_create_favorites.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class CreateFavorites < ActiveRecord::Migration
+  def change
+    create_table :favorites do |t|
+      t.integer :favoritable_id
+      t.string :favoritable_type
+      t.string :copy_normal
+      t.string :copy_bold
+      t.integer :copy_table_id
+      t.string :copy_table
+
+      t.timestamps null: false
+    end
+    add_index :favorites, [:favoritable_id, :favoritable_type]
+  end
+end
+~~~~~~~~
+
+Per far funzionare i favoriti nella nostra applicazione sarebbero sufficienti i campi favoritable_id e favoritable_type. Abbiamo aggiunto i campi copy_normal e copy_table per semplificarci la vita ed evitare troppe queries complesse. Inoltre aggiungiamo i campi copy_table_id e copy_table solo per aiutarci in fase di sviluppo. In pratica sono dei campi che hanno finalità di aiutare nel debug.
+
+rails g migration AddFieldsToFavorites copy_table_id:integer copy_table:string
+
+La frase qui in basso è una cazzata ma è scritta in modo convincente ^_^:
+Non è sufficiente il favoritable_id e favoritable_type della tabella polimorfica nel caso delle tabelle "x_y_maps" che legano una relazione molti-a-molti. Ad esempio nel caso di company_person_maps il favoritable tiene traccia o della company col suo id oppure della person col suo id; ma se ho il favoritable della company non ho indicazione di quale relazione molti a molti sto parlando. Può essere company-people_maps, come in questo caso, ma potrebbe essere anche company_offer_maps, o invoice_company_maps, o company_product_maps, o ... Per questo ho inserito anche i campi copy_table e copy_table_id. (li potevo chiamare "copy_map_id" e "copy_map_type")
+
+Effettuiamo il migrate del database per creare la tabella "favorites" sul database
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rake db:migrate
+~~~~~~~~
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Generate model Favorite"
+~~~~~~~~
+
+
+
+## Internazionalizzazione I18n - dynamic
+
+Anche i campi copy_normal e copy_bold devono essere tradotti!
+Questo è un grattacapo perché il codice mi riempie i favoriti nel momento che li seleziono e lo devo far fare sia con la lingua attiva che con le altre lingue. Ma lo affronteremo e risolveremo più avanti.
+
+Attiviamo l'internazionalizzazione sul database (I18n dynamic) usando la gemma globalize installata precedentemente.
+Indichiamo sul modello i campi della tabella che vogliamo tradurre. Inseriamo il codice nella sezione **== Attributes ===**
+
+{title="models/favorite.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class Favorite < ApplicationRecord
+
+  # == Constants ============================================================
+
+  # == Attributes ===========================================================
+  
+  # globalize required ---------------------------------------------------------
+  translates :copy_normal, :copy_bold, :fallbacks_for_empty_translations => true
+  #-----------------------------------------------------------------------------
+  
+  # == Extensions ===========================================================
+
+  # == Relationships ========================================================
+
+  # == Validations ==========================================================
+
+  # == Scopes ===============================================================
+
+  # == Callbacks ============================================================
+
+  # == Class Methods ========================================================
+
+  # == Instance Methods =====================================================
+  
+end
+~~~~~~~~
+
+I> il "translates ..." dentro il model va messo prima di fare il db:migrate altrimenti ci da errore!
+
+adesso creiamo un migration vuoto perché useremo il metodo di globalize ".create_translation_table"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g migration create_favorites_translations
+~~~~~~~~
+
+
+Lavoriamo sulla migration usando il metodo .create_translation_table sul model "Company" e passando i nomi dei campi che devono avere la traduzione.
+
+{title=".../db/migrate/xxx_create_company_person_maps_transaltions.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class CreateCompanyPersonMapsTranslations < ActiveRecord::Migration[5.0]
+  def change
+    reversible do |dir|
+      
+      dir.up do
+        CompanyPersonMap.create_translation_table!({
+          copy_normal: :string,
+          copy_bold: :string
+        },{
+          migrate_data: true,
+          remove_source_columns: true
+        })
+      end
+
+      dir.down do 
+        CompanyPersonMap.drop_translation_table! migrate_data: true
+      end
+      
+    end
+  end
+end
+~~~~~~~~
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rake db:migrate
+~~~~~~~~
+
+E' fondamentale cancellare dalla tabella principale "companies" i campi con traduzione, ossia "sector, status, memo".
+L'opzione ** remove_source_columns: true ** ci risparmia di farlo manualmente.
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add Favorite I18n"
+~~~~~~~~
+
+
+
+
+
+## Creiamo le associazioni polimorfiche
+
+andiamo sul model ed aggiungiamo il polymorphic. Inseriamo il codice nella sezione **== Relationships ===**
+
+{title=".../app/models/favorite.rb", lang=ruby, line-numbers=on, starting-line-number=13}
+~~~~~~~~
+  # == Relationships ========================================================
+
+  # polymorphic ----------------------------------------------------------------
+  belongs_to :favoritable, polymorphic: true
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+andiamo sugli altri modelli ed aggiungiamo l'altro lato dell'associazione polimorfica.
+
+Lato azienda mettiamo la relazione polimorfica. Inseriamo il codice nella sezione **== Relationships ===**
+
+{title=".../app/models/company.rb", lang=ruby, line-numbers=on, starting-line-number=26}
+~~~~~~~~
+  has_many :favorites, as: :favoritable
+~~~~~~~~
+
+Lato persona mettiamo la relazione polimorfica. Inseriamo il codice nella sezione **== Relationships ===**
+
+{title=".../app/models/person.rb", lang=ruby, line-numbers=on, starting-line-number=21}
+~~~~~~~~
+  has_many :favorites, as: :favoritable
+~~~~~~~~
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "update models Favorite"
+~~~~~~~~
+
+
+
+
+## seed
+
+Di seguito mostriamo come popolare la tabella in automatico ma noi eseguiremo la procedura manuale descritta nel prossimo paragrafo.
+
+- Inseriamo la descrizione "uff Acquisti - Abbot snc" alla prima persona (Person.first -> favoritable_id: 1, favoritable_type: "people").
+
+{title=".../db/seeds.rb", lang=ruby, line-numbers=on, starting-line-number=33}
+~~~~~~~~
+puts "setting the Favorite data with I18n :en :it"
+Favorite.new(favoritable_id: 1, favoritable_type: "people", copy_normal: "purchase department", copy_bold: "Abbot snc - chemical sector", locale: :en).save
+Favorite.last.update(copy_normal: "ufficio acquisti", copy_bold: "Abbot snc - settore chimico", locale: :it)
+~~~~~~~~
+
+I> Non usiamo nè "$ rake db:seed" nè "$ rake db:setup" perché popoliamo la tabella manualmente.
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add seeds favorites"
+~~~~~~~~
+
+
+
+
+## Popoliamo manualmente la tabella
+
+Usiamo la tabella favorites mettendo una descrizione sui campi "copy_..." ed associandola sia alla prima persona (Person.first) che alla prima azienda (Company.first). Inseriamo due nuovi preferiti sulla tabella favorites. Inoltre lo facciamo sia per l'italiano (la lingua impostata di default) che per l'inglese.
+
+- Inseriamo la descrizione "uff Acquisti - Abc srl" alla prima persona (Person.first).
+- Inseriamo la descrizione "uff Acquisti - Sig. Jhom Doe" alla prima azienda (Company.first).
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+irb> I18n.locale
+irb> p = Person.first
+irb> p.favorites.new(copy_normal: "uff Acquisti", copy_bold: "Abc srl - settore chimico" ).save
+irb> p.favorites
+irb> pf = p.favorites.last
+irb> pf.update(copy_normal: "purchase department", copy_bold: "Abc srl - chemical sector", locale: :en)
+
+irb> c = Company.first
+irb> c.favorites.new(copy_normal: "uff Acquisti", copy_bold: "Sig.ra Daniela Raggi" ).save
+irb> c.favorites
+irb> cf1 = c.favorites.last
+irb> cf1.update(copy_normal: "purchase department", copy_bold: "Mrs. Daniela Raggi", locale: :en)
+
+irb> cf2 = c.favorites.new(copy_normal: "uff Acquisti", copy_bold: "Sig. Jhon Doe" )
+irb> c.favorites
+irb> cf2.save
+irb> c.favorites
+irb> cf2.update(copy_normal: "purchase department", copy_bold: "Mr. Jhon Doe", locale: :en)
+
+
+irb> Favorite.all
+irb> p.favorites
+irb> c.favorites
+~~~~~~~~
+
+
+Per vedere l'altro lato dell'associazione non possiamo chiamare "pf.person" o "cf.company" perché sono creati dinamicamente a partire dalla stessa tabella polimorfica "favorites". Invece possiamo chiamare:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+irb> pf.favoritable
+irb> cf1.favoritable
+irb> cf2.favoritable
+~~~~~~~~
+
+Dal punto di vista del polimorfismo abbiamo finito. Adesso sappiamo come lavora l'associazione polimorfica (polymorphic association)! ^_^  
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add seed favorites polymorphic"
+~~~~~~~~
+
+I> Questo git commit è solo per lasciare un commento perché le modifiche fatte sul database non sono passate tramite git.
+
+
+Questo sarebbe sufficiente se favorites fosse un elemento "sganciato" da aggiungere alle varie tabelle (ad esempio un commento). Ma nel nostro caso dobbiamo registrare anche nella tabella company_person_maps quale record è il preferito e se è della persona o dell'azienda.
+
+Per far questo ci manca la relazione uno-a-molti con company_person_maps (una Persona <-> molte company_person_maps preferite) inoltre (una Azienda <-> molte company_person_maps preferite). 
+Dobbiamo informare il corrispondente record di company_person_maps che è un preferito della prima persona "Jhon Doe". Per far questo aggiungiamo la chiave esterna favorite_id alla tabella company_person_maps. 
+Ma dobbiamo anche informare il corrispondente record di company_person_maps che è un preferito della prima azienda "ABC srl". Per far questo se usassimo la stessa chiave esterna favorite_id nella tabella company_person_maps non sapremmo se stiamo indicando il preferito per la persona o per l'azienda. Per risolvere aggiungiamo due chiavi esterne "favorite_ids" su company_person_maps.
+
+
+
+
+## Aggiungiamo le due chiavi esterne "favorite_ids" su company_person_maps
+
+Come abbiamo visto una sola chiave esterna non mi è sufficiente perché lo stesso record "xy" della tabella company_person_maps può essere un preferito per la persona "x" ma non essere un preferito per l'azienda "y". Aggiungiamo quindi 2 chiavi esterne: 
+* favorite_id_company: quando dalla persona selezionata scelgo una delle sue aziende collegate e la setto come preferita
+* favorite_id_person: quando dall'azienda selezionata scelgo una delle sue persone collegate e la setto come preferita
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g migration AddFavoriteFieldsToCompanyPersonMaps favorite_id_company:integer favorite_id_person:integer
+~~~~~~~~
+
+{title="db/migrate/xxx_add_favorite_fields_to_company_person_maps.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class AddFavoriteFieldsToCompanyPersonMaps < ActiveRecord::Migration[5.0]
+  def change
+    add_column :company_person_maps, :favorite_id_company, :integer
+    add_column :company_person_maps, :favorite_id_person, :integer
+  end
+end
+~~~~~~~~
+
+eseguiamo il migrate.
+~~~~~~~~
+rake db:migrate
+~~~~~~~~
+
+Non creo la relazione uno-a-molti sui models perché per mostrare i valori sui view sfrutto i campi copy_normal e copy_bold e non ho necessità di fare query complesse che usano i preferiti. Quindi non creo nessuna relazione e gestisco manualmente (con il codice sul controller) sia la creazione/modifica/eliminazione di un record su favorites sia la relativa assegnazione dei valori su favorite_id_company e favorite_id_person.
+
+
+Nella pagina company_person_maps/edit non mi interessa sapere il valore dei favorite_ids ma solo se è o non è un preferito. Quindi attivo un combo box stile iphone in cui dichiaro se è un preferito o no. Uno per person ed uno per company. Per usare il combo box ho necessità di un campo boolean sulla tabella. Uno per person ed uno per company:
+
+* favorite_cb_company
+* favorite_cb_person
+
+Poiché questi campi sono legati alla presenza o meno di un valore sui favorite_ids posso usare degli attributi virtuali sul model (Virtual Attributes).
+I campi :favorite_cb_company e :favorite_cb_person di tipo boolean possono essere sostituiti da virtual attributes. . Inseriamo il codice nella sezione **== Attributes ===**
+
+
+{title=".../app/models/company_person_map.rb", lang=ruby, line-numbers=on, starting-line-number=11}
+~~~~~~~~
+  # virtual attributes ---------------------------------------------------------
+  # setter methods
+  attr_writer :favorite_cb_company, :favorite_cb_person
+  
+  # getter method
+  def favorite_cb_company
+    #raise "summary: #{summary} - favorite_id_company: #{favorite_id_company} - id: #{id}"
+    if favorite_id_company.blank?
+      false
+    else
+      true
+    end
+  end
+
+  # getter method
+  def favorite_cb_person
+    if favorite_id_person.blank?
+      false
+    else
+      true
+    end
+  end
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+
+
+Vediamo come funziona sulla console:
+
+In pratica faccio due passaggi:
+1. assegno il nuovo preferito alla persona e salvo. (La persona deve avere già almeno una azienda associata)
+    posso vedere sia il **cpm.company_id** della tabella **company_person_maps**
+    sia il **cpm.company.id** saltando dalla tabella **company_person_maps** alla tabella  **companies** e visualizzando l'**id** (da notare che in questo caso non ho "_" ma ho il punto "." tra **company** ed **id**)
+    arrivato sulla tabella **companies** posso accedere anche al nome **company.name**
+2. assegno l'id del nuovo preferito delle persona a company_person_maps favorite_id_person
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+>> p = Person.first
+>> cpm = p.company_person_maps.first
+>> cpm.company_id
+    1
+>> cpm.company.id
+    1
+>> cpm.company.name
+    ABC srl
+>> f = p.favorites.new(copy_normal: cpm.summary, copy_bold: cpm.company.name)
+>> f.save
+>> f.id
+    4
+>> cpm.favorite_id_person = f.id
+>> cpm
+>> cpm.save
+~~~~~~~~
+
+
+Questa procedura richiederebbe un commit/roll back come si fa con i pagamenti nell'e-commerce dove il carrello viene "svuotato" e la merce inviata solo se c'è il pagamento altrimenti si fa un roll-back di tutto il processo. Questo controllo al momento non lo facciamo ma è una miglioria che metteremo in un futuro refactoring.
+
+Abbiamo finito ed ottenuto il nuovo preferito 4 sulla persona 1 (Jhon Doe) che ha i dati "ufficio acquisti ABC srl" presi dal company_person_map 1. Inoltre abbiamo archiviato sul record company_person_map che è il preferito della persona 1.
+
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add favorites company_person_maps seeds"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku fcpms:master
+$ heroku run rake db:migrate
+~~~~~~~~
+
+I> Lato produzione su heroku c'è un database indipendente da quello di sviluppo quindi risulta vuoto.
+
+per popolare il database di heroku basta aprire la console con il comando:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku run rails c
+~~~~~~~~
+
+E rieseguire i passi già fatti nel paragrafo precedentemente
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge fcpms
+$ git branch -d fcpms
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

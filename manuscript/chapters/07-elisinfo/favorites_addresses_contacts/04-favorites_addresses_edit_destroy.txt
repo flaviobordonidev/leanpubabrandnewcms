@@ -1,0 +1,226 @@
+# Favorites Addresses - edit and destroy
+
+Nella pagina addresses/edit aggiungiamo il combo-box per segnarli come preferiti.
+
+- Voglio settare come preferita, per una data persona, un suo indirizzo (per "suo" intendiamo che è già associato)
+- Voglio settare come preferita, per una data azienda, un suo indirizzo (per "suo" intendiamo che è già associato)
+
+
+
+
+## Apriamo il branch "Favorites Addresses Edit Destroy"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b faed
+~~~~~~~~
+
+
+
+
+## Aggiungiamo il campo favorite_id su addresses/edit
+
+Lo aggiungiamo sul tab edit di addresses, nel partial **_form**
+
+{title=".../app/views/addresses/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=65}
+~~~~~~~~
+    <div class="field">
+      <%= f.label :favorite_cb, class: "control-label" %><br>
+      <%= f.check_box :favorite_cb, class: "form-control", "data-size" => "medium", "data-on-color" => "primary", "data-on-text" => "SI", "data-off-color" => "default", "data-off-text" => "NO" %>
+    </div> <!-- /.field -->
+~~~~~~~~
+
+
+e mettiamo il campo di verifica utile allo sviluppo e visibile solo in development.
+
+{title=".../app/views/addresses/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=24}
+~~~~~~~~
+    <% if Rails.env.development? %>
+      ...
+      <div class="field">
+        <%= f.label :favorite_id, class: "control-label" %><br>
+        <%= f.text_field :favorite_id, class: "form-control" %>
+      </div>
+    <% else %>
+      ...
+      <%= f.hidden_field :favorite_id %>
+~~~~~~~~
+
+Si può vedere che cliccando dalla persona (Jhon Doe (id: 1)) su addresses/edit c'è favorite_id con valore "1" ed inoltre il check-box favorite_cb è su ON. Questo perché nel precedente paragrafo abbiamo popolato la tabella tramite rails consolle.
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "update addresses edit for favorites"
+~~~~~~~~
+
+
+
+
+## Aggiungiamo i favorites sul controller di addresses
+
+Dobbiamo adesso lavorare sul controller. Innanzitutto dobbiamo abilitare la white list altrimenti non vengono passate le modifiche.
+
+
+{title=".../app/controllers/addresses_controller.rb", lang=ruby, line-numbers=on, starting-line-number=75}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def address_params
+      params.require(:address).permit(:addressable_id, :addressable_type, :full_address, :latitude, :longitude, :address_tag, :favorite_id, :favorite_cb)
+    end
+~~~~~~~~
+
+
+Ora dedichiamoci al codice per gestire i preferiti.
+
+* Quando modifico un record della tabella addresses (ossia faccio l'inoltro/sumbit del form):
+
+1. se il check_box favorite_cb nel tab option è ON:
+  1a. se favorite_id è blank -> creo il record nella tabella favorite
+  1b. se favorite_id non è blank -> aggiorno il corrispondente record nella tabella favorite
+2. se il check_box favorite_cb nel tab option è OFF:
+  2a. se favorite_id è blank -> non faccio nulla
+  2b. se favorite_id non è blank -> elimino il corrispondente record nella tabella favorites
+
+* Quando elimino un record dalla tabella addresses elimino anche il corrispondente record della tabella favorites se presente.
+
+A> Inoltre quando eliminiamo una persona o una azienda dovremmo cancellare anche l'eventuale relativo record su addresses e quindi a cascata cancellare anche l'eventuale relativo preferito. Ma questo lo implementiamo successivamente.
+
+
+Sull'azione **update** del controller **addresses_controller**, implementiamo il nuovo metodo private **manage_favorite**. Per far questo esplodo su più righe il comando **format.html { ... }** usando
+
+format.html do
+  ...
+end
+  
+{title=".../app/controllers/addresses_controller.rb", lang=ruby, line-numbers=on, starting-line-number=49}
+~~~~~~~~
+        format.html do
+          manage_favorite # private action
+          redirect_to url_for(view_context.h_params_path(path: "/#{params[:last_front_controller]}/#{params[:last_front_id]}", related: params[:last_front_related], page: params[:last_front_page], search: params[:last_front_search])), notice: 'Address was successfully updated..' 
+        end
+~~~~~~~~
+
+nell'area **private**
+
+{title=".../app/controllers/addresses_controller.rb", lang=ruby, line-numbers=on, starting-line-number=61}
+~~~~~~~~
+    def manage_favorite
+      #raise "->#{@address.favorite_cb}" # questo prende il valore dal database
+      #raise "->#{params[:address][:favorite_cb]}" # questo prende il valore dalla view
+      if params[:address][:favorite_cb] == "0"  # if combo-box-favorite is OFF
+        if @address.favorite_id.blank?
+          #raise "don't do anything"
+        else
+          #raise "delete favorite"
+          Favorite.find(@address.favorite_id).destroy
+          @address.update(favorite_id: nil)
+        end
+      else  # if combo-box-favorite is ON
+        if @address.favorite_id.blank?
+          #raise "crea nuovo favorite"
+          # devo capire di quale entità è l'indirizzo e questo me lo dice il polimorfico addressable.
+          f = @address.addressable.favorites.new(copy_normal: "@address.title", copy_bold: "#{@address.full_address}", copy_table: "addresses", copy_table_id: @address.id)
+          f.save
+          @address.update(favorite_id: f.id)
+        else
+          #raise "aggiorna favorite esistente"
+          f = Favorite.find(@address.favorite_id)
+          f.update(copy_normal: "@address.title", copy_bold: "#{@address.full_address}", copy_table: "addresses", copy_table_id: @address.id)
+          f.save
+        end
+      end
+    end
+~~~~~~~~
+
+Adesso ho tutto quello che serve per mettere e togliere i preferiti.
+
+verifichiamo che funziona tutto.
+
+
+
+
+## Implementiamo il delete a cascata
+
+implementiamo il codice per togliere il preferito. Sull'azione **destroy** del controller **addresses_controller**, implementiamo il nuovo metodo private **manage_favorite_destroy**.
+
+{title=".../app/controllers/addresses_controller.rb", lang=ruby, line-numbers=on, starting-line-number=61}
+~~~~~~~~
+  # DELETE /addresses/1
+  # DELETE /addresses/1.json
+  def destroy
+    manage_favorite_destroy # private action
+    @address.destroy
+~~~~~~~~
+
+Adesso scriviamo il codice del nuovo metodo nell'area **private**
+
+{title=".../app/controllers/addresses_controller.rb", lang=ruby, line-numbers=on, starting-line-number=111}
+~~~~~~~~
+    def manage_favorite_destroy
+      # se il record @address ha un favorito lo elimino prima di eliminare il record.
+      Favorite.find(@address.favorite_id).destroy unless @address.favorite_id.blank?
+      #@address.favoritable.destroy unless @address.favorite_id.blank?
+    end
+~~~~~~~~
+
+Adesso se elimino un indirizzo a cascata elimino anche l'eventuale suo favorito.
+
+
+
+
+## Mettiamo l'asterisco ai record della lista che sono preferiti
+
+Su people/show e companies/show la lista delle aziende o delle persone relazionate avranno un asterisco se sono delle preferite.
+
+{title="views/addresses/_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+<% unless address.favorite_id.blank? %>
+  <span class="badge"><span class="glyphicon glyphicon-star"></span></span>
+<% end %>
+~~~~~~~~
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add a star to related addresses if favorites"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku faed:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge faed
+$ git branch -d faed
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

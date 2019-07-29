@@ -1,0 +1,296 @@
+## Contatti lato aziende
+
+Aggiungiamo i contatti (telefono, email, fax, ...) alle aziende. facciamo una relazione uno-a-molti. (potrebbe essere polimorfica come con favorites)
+Non usiamo una relazione polimorfica ed invece creiamo le due tabelle:
+
+- person_contacts
+- company_contacts
+
+<< Nella revisione del libro useremo la sola tabella contacts con una relazione uno-a-molti polimorfica >>
+con la polimorfica avrei la sola tabella contacts che si adatta all'occorrenza (proprio come abbiamo fatto con i favorites)
+
+La particolarità di questa tabella è che verrà gestita all'interno delle pagine delle aziende. Quidni dovrò gestire su un form più models.
+
+Spunti per questo codice sono tratti da:
+
+* https://rubyplus.com/articles/3681-Complex-Forms-in-Rails-5
+* https://rubyplus.com/episodes/81-Complex-Forms-in-Rails-5
+* railscast 196-nested-model-form
+* https://www.amooma.de/screencasts/2015-01-22-nested_forms-rails-4.2/
+
+
+
+
+## Apriamo il branch "company_contacts seeds"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b ccs
+~~~~~~~~
+
+
+
+
+## Creiamo la tabella company_contacts
+
+Non usiamo lo scaffold perché sarà annidata nella struttura di company. Ci serve solo l'interfacciamento con il database e quindi creiamo il model.
+Sul **g model** il nome va messo al singolare e si preoccuperà lui di fare la tabella plurale.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g model CompanyContact company:references medium:string identifier:string
+~~~~~~~~
+
+  medium        | identifier
+  ---------------------------------
+  telephone     | number
+  skype         | address
+  email         | address
+  irc           | channel
+  whatsapp      | telephone number
+  FTP           | IP
+  radioamotore  | channel
+  pager         | telephone number
+  snapchat      | user name
+  
+
+{title=".../db/migrate/xxx_create_company_contacts.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class CreateCompanyContacts < ActiveRecord::Migration[5.0]
+  def change
+    create_table :company_contacts do |t|
+      t.references :company, foreign_key: true
+      t.string :medium
+      t.string :identifier
+
+      t.timestamps
+    end
+  end
+end
+~~~~~~~~
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rake db:migrate
+~~~~~~~~
+
+
+
+
+## Implementiamo relazione uno-a-molti con nested models in form ed eliminiamo dati vuoti
+
+{title=".../app/models/company_contact.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class CompanyContact < ApplicationRecord
+  belongs_to :company, inverse_of: :company_contacts
+end
+~~~~~~~~
+
+
+{title=".../app/models/company.rb", lang=ruby, line-numbers=on, starting-line-number=33}
+~~~~~~~~
+  has_many :company_contacts, inverse_of: :company, dependent: :destroy
+  accepts_nested_attributes_for :company_contacts, reject_if: lambda { |a| a[:identifier].blank? }, allow_destroy: true
+~~~~~~~~
+
+il codice ** accepts_nested_attributes_for: ** ci permette di gestire più modelli dentro lo stesso form.
+Da rails 5 è necessario aggiungere anche il **reverse_of**, for Creating an object and its children via accepts_nested_attributes_for in a :has_many association, altrimenti prendo errore dopo aver abilitato il passaggio dei valori del model annidato su **params...permit...**
+
+Per spiegazioni su **reverse_of** vedi: https://www.viget.com/articles/exploring-the-inverse-of-option-on-rails-model-associations
+
+Con il ** dependent: :destroy ** quando elimino una azienda (company) mi elimina a cascata tutti i suoi contatti (company_contacts). Altrimenti rimarrebbero dei contatti "orfani", senza azienda. 
+
+Con il ** :reject_if ** ottengo che i valori di :identifier vuoti non vengano caricati in tabella.
+
+Con  ** :allow_destroy ** permettiamo l'eliminazione del contatto.
+
+
+
+
+## Implementiamo i contatti sulle views companies/new e companies/edit
+
+Introduciamo subito il partial **company_contact_fields**
+
+{title=".../app/views/companies/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=75}
+~~~~~~~~
+    <%= f.fields_for :company_contacts do |builder| %>
+        <%= render "company_contact_fields", f: builder %>
+    <% end %>
+~~~~~~~~
+
+{title=".../app/views/surveys/_company_contact_fields.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=20}
+~~~~~~~~
+<fieldset>
+  <%= f.label :medium, "Contatto (tel, cell, email, skype, ...)" %><br/>
+  <%= f.text_field :medium %>
+  <%= f.label :identifier, "-" %>
+  <%= f.text_field :identifier %>
+  <%= f.check_box :_destroy %>
+  <%= f.label :_destroy, "Elimina contatto" %>
+</fieldset>
+~~~~~~~~
+
+la parte di codice ** <%= f.fields_for :company_contacts do |builder| %> ... <% end %> ** ci permette di aggiungere il modello company_contact dentro il form di companies.
+
+Ma ancora non funziona perché non è stato istanziato nessun contatto. Risolviamo aggiungendo un contatto nell'azione **new** del controller **company_controller**
+
+{title=".../app/controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=36}
+~~~~~~~~
+  # GET /companies/new
+  def new
+    @company = Company.new
+    @company.name = params[:last_front_search]
+    @company.company_contacts.build
+  end
+~~~~~~~~
+
+Il contatto viene istanziato con ** @company.company_contacts.build **
+
+Se adesso torniamo sul browser e diamo un refresh vediamo che funziona? Si ma a metà. Visualizza i campi nel form ma non prende i valori sul submit. Questo perché dobbiamo abilitare i valori del modello annidato (company_contacts) sul controller del padre (company_controller). Ed inoltre non abbiamo implementato la visualizzazione su companies/show. 
+
+
+{title=".../app/controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=109}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def company_params
+      params.require(:company).permit(:logo, :name, :sector, :status, :corporate, :taxation_number_first, :taxation_number_second, :memo, :favorite_id_user, :favorite_cb_user, company_contacts_attributes: [:id, :medium, :identifier, :_destroy])
+    end
+~~~~~~~~
+
+Adesso funziona. (anche se ancora non le vediamo perché la visualizzazione la implementiamo nel prossimo paragrafo)
+Abbiamo anche permesso il parametro ** :_destroy ** che useremo per l'eliminazione del contatto.
+
+
+
+
+## Visualizziamo i contatti dell'azienda
+
+lavoriamo sulla view companies/show per visualizzare i contatti (company_contacts)
+
+{title=".../app/views/companies/_main_media_object.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=21}
+~~~~~~~~
+      <ul>
+        <% @company.company_contacts.each do |contact| %>
+          <li>
+            <%= "#{contact.medium} #{contact.identifier}" %>
+          </li>
+        <% end %>
+      </ul>
+~~~~~~~~
+
+
+
+
+## Implementiamo il link di eliminazione
+
+Abbiamo già inserito il link "Elimina contatto" ed il campo nascosto per passare **_destroy** come params.
+
+{title=".../app/views/surveys/_company_contact_fields.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=6}
+~~~~~~~~
+  <%= f.check_box :_destroy %>
+  <%= f.label :_destroy, "Elimina contatto" %>
+~~~~~~~~
+
+Inoltre abbiamo già abilitato l'eliminazione sul model e permesso il parametro sulla white-list nel controller.
+Adesso scriviamo il codice javascript
+
+{title=".../app/assets/javascripts/companies.js.coffe", lang=ruby, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+$(document).on "turbolinks:load", ->
+  $('form').on 'click', '.remove_fields', (event) ->
+    $(this).prev('input[type=hidden]').val('1')
+    $(this).closest('fieldset').hide()
+    event.preventDefault()
+~~~~~~~~
+
+Funziona!!!
+Il codice lo abbiamo già analizzato nel capitolo contacts_side_person.
+
+
+
+
+
+## Link per aggiungere un nuovo contatto
+
+
+{title=".../app/views/companies/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=72}
+~~~~~~~~
+    <%= f.fields_for :company_contacts do |builder| %>
+        <%= render "company_contact_fields", f: builder %>
+    <% end %>
+    <%= link_to_add_fields "Add Contact", f, :company_contacts %>
+~~~~~~~~
+
+ATTENZIONE!!! il nome del partial DEVE chiamarsi **<<association-singular>>_fields** nel nostro caso **company_contact_fields**. Se lo chiamo in maniera diversa il codice successivo non lavora correttamente e non carica i valori nel database quando si fa il submit del form.
+
+Abbiamo già creato nei capitoli precedenti l'helper ** link_to_add_fields ** sull'application_helper.
+
+
+
+
+## il javascript
+
+una volta preparato il codice lato view andiamo a scrivere il jquery lato assets. Di seguito a quanto scritto in precedenza aggiungiamo il seguente codice:
+
+{title=".../app/assets/javascripts/companies.js.coffe", lang=CoffeeScript, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+$(document).on "turbolinks:load", ->
+~~~~~~~~
+
+...
+
+{title=".../app/assets/javascripts/companies.js.coffe", lang=CoffeeScript, line-numbers=on, starting-line-number=11}
+~~~~~~~~
+  $('form').on 'click', '.add_fields', (event) ->
+    time = new Date().getTime()
+    regexp = new RegExp($(this).data('id'), 'g')
+    $(this).before($(this).data('fields').replace(regexp, time))
+    event.preventDefault()
+~~~~~~~~
+
+Fine.
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add contacts side company (company_contacts)"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku ccs:master
+$ heroku run rake db:migrate
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge ccs
+$ git branch -d ccs
+~~~~~~~~
+
+
+
+
+## Backup su github
+
+facciamo un backup del ns progetto su github:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

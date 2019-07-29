@@ -1,0 +1,84 @@
+# Aggiungiamo un campo
+
+mi sono dimenticato il campo **dossier_number** anche detto numero di pratica. Lo aggiungiamo
+
+
+
+
+## Aggiungiamo il campo dossier_number
+
+~~~~~~~~
+$ rails g migration AddDossierNumberToDossiers dossier_number:string 
+~~~~~~~~
+
+questo mi crea il migration:
+
+{title=".../db/migrate/xxx_add_dossier_number_to_dossiers.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class AddDossierNumberToDossiers < ActiveRecord::Migration[5.0]
+  def change
+    add_column :dossiers, :dossier_number, :string
+  end
+end
+~~~~~~~~
+
+Effettuiamo il migrate del database per aggiungere il campo nella tabella "dossiers" sul database
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rake db:migrate
+~~~~~~~~
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add column dossier_number to company_person_maps"
+~~~~~~~~
+
+
+
+
+## Aggiungiamolo sul mass assignment del controller
+
+{title=".../app/controllers/dossiers_controller.rb", lang=ruby, line-numbers=on, starting-line-number=70}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def dossier_params
+      params.require(:dossier).permit(:dossier_number, :name, :description, :cord_number, :delivery_date, :delivery_date_alarm, :final_total_quantity, :final_quantity_alarm, :final_price, :final_price_alarm, :payment_date, :payment_alarm, :documental_flow_alarm, :dossier_alarm)
+    end
+~~~~~~~~
+
+
+
+
+## Aggiungiamolo nelle views
+
+{title=".../app/views/dossiers/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+  <div class="field">
+    <%= f.label :dossier_number %>
+    <%= f.text_field :dossier_number %>
+  </div>
+~~~~~~~~
+
+
+{title=".../app/views/dossiers/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=62}
+~~~~~~~~
+  <p>
+    <strong>Dossier_number:</strong>
+    <%= @dossier.dossier_number %>
+  </p>
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku hd:master
+$ heroku run rake db:migrate
+~~~~~~~~

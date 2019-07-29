@@ -5,34 +5,31 @@ Poiché vogliamo creare una nuova applicazione Rails che sfrutta PostgreSQL inve
 Usiamo PostgreSQL perché è lo stesso database che Heroku usa; e noi useremo Heroku per mettere la nostra app in produzione.
 
 
+***
+Questa procedura è per istanze di awsC9 EC2 con OS Ubuntu 
+***
+
+
 Risorse web:
 
-* [Setting up Postgres on Cloud9 IDE](https://medium.com/@floodfx/setting-up-postgres-on-cloud9-ide-720e5b879154)
+* [How to Install PostgreSQL on Ubuntu 18.04](https://linuxize.com/post/how-to-install-postgresql-on-ubuntu-18-04/)
+* [How To Install and Use PostgreSQL on Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-18-04)
 
 
 
 
 ## Installiamo PostgreSQL
 
+Siamo su EC2 instance con OS Ubuntu che usa "apt" come packet manager
+
 Setting up Postgres on Cloud9 IDE
-Install Postgres via Yum
+Install Postgres via apt
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ sudo yum install postgresql postgresql-server postgresql-devel postgresql-contrib postgresql-docs
+$ sudo apt update
+$ sudo apt install postgresql postgresql-contrib libpq-dev
 --> y
-~~~~~~~~
-
-
-
-
-## Run postgres service init
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ sudo service postgresql initdb
-
-Initializing database:                                     [  OK  ]
 ~~~~~~~~
 
 
@@ -40,15 +37,19 @@ Initializing database:                                     [  OK  ]
 
 ## Edit postgres conf to connect via localhost:5432
 
+Impostiamo il collegamento di rails a postgresql con l'indirizzo "localhost" e la porta "5432"
+
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-sudo vim /var/lib/pgsql9/data/postgresql.conf
+$ sudo vim /etc/postgresql/10/main/postgresql.conf
 ~~~~~~~~
 
-Decomentiamo le 2 righe (da --> a)
+Decomentiamo le righe (da --> a)
 
 * #listen_addresses = 'localhost' --> listen_addresses = 'localhost'
 * #port = 5432                    --> port = 5432
+
+(la seconda riga potrebbe già essere decommentata)
 
 I comandi VIM da usare sono:
 
@@ -68,7 +69,7 @@ I comandi VIM da usare sono:
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-sudo vim /var/lib/pgsql9/data/pg_hba.conf
+$ sudo vim /etc/postgresql/10/main/pg_hba.conf
 ~~~~~~~~
 
 Trovare la parte che è
@@ -91,7 +92,7 @@ E modificare in
 # "local" is for Unix domain socket connections only
 local   all             all                                     trust
 # IPv4 local connections:
-host    all             ec2-user        127.0.0.1/0             trust
+host    all             ubuntu          127.0.0.1/0             trust
 # IPv6 local connections:
 host    all             all             ::1/128                 md5
 ~~~~~~~~
@@ -116,7 +117,7 @@ $ sudo service postgresql restart
 
 
 
-## Login as Postgres User and Change Password / Add ec2-user
+## Login as Postgres User and Change Password / Add user: "ubuntu"
 
 * login as postgres user
 * login to postgres db as postgres user
@@ -130,8 +131,8 @@ $ sudo service postgresql restart
 $ sudo su - postgres 
 -> psql -U postgres
 --> ALTER USER postgres WITH PASSWORD 'myPassword123';
---> CREATE USER "ec2-user" SUPERUSER;
---> ALTER USER "ec2-user" WITH PASSWORD 'myPassword123';
+--> CREATE USER "ubuntu" SUPERUSER;
+--> ALTER USER "ubuntu" WITH PASSWORD 'myPassword123';
 --> \q
 -> exit
 
@@ -143,9 +144,9 @@ Type "help" for help.
 
 postgres=# ALTER USER postgres WITH PASSWORD 'myPassword123';
 ALTER ROLE
-postgres=# CREATE USER "ec2-user" SUPERUSER;
+postgres=# CREATE USER "ubuntu" SUPERUSER;
 CREATE ROLE
-postgres=# ALTER USER "ec2-user" WITH PASSWORD 'myPassword123';
+postgres=# ALTER USER "ubuntu" WITH PASSWORD 'myPassword123';
 ALTER ROLE
 postgres=# \q
 -bash-4.2$ exit

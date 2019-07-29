@@ -1,0 +1,267 @@
+# Aggiorniamo lo show e l'edit del componente
+
+
+
+
+## Apriamo il branch "components quality discount show edit"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b cqdse
+~~~~~~~~
+
+
+
+
+## Aggiorniamo la view components/show
+
+Sul partial components/_index abbiamo già il link per components/show. Quindi abbiamo già il link per andare dall'homepage alla visualizzazione del singolo componente. Aggiorniamo la visualizzazione del componente includendo lo sconto per quantità.
+
+Nella pagina components/show aggiorniamo l'elenco dei campi per la sola visualizzazione in fase di sviluppo (development)
+
+{title=".../app/views/components/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=123}
+~~~~~~~~
+  <p>
+    <strong>Discount one min quantity:</strong>
+    <%= @component.discount_one_min_quantity %>
+  </p>
+
+  <p>
+    <strong>Discount one percentage:</strong>
+    <%= @component.discount_one_percentage %>
+  </p>
+
+  <p>
+    <strong>Discount one rounding:</strong>
+    <%= @component.discount_one_rounding %>
+  </p>
+  
+  <p>
+    <strong>Discount two min quantity:</strong>
+    <%= @component.discount_two_min_quantity %>
+  </p>
+
+  <p>
+    <strong>Discount two percentage:</strong>
+    <%= @component.discount_two_percentage %>
+  </p>
+
+  <p>
+    <strong>Discount two rounding:</strong>
+    <%= @component.discount_two_rounding %>
+  </p>
+  
+  <p>
+    <strong>Discount three min quantity:</strong>
+    <%= @component.discount_three_min_quantity %>
+  </p>
+
+  <p>
+    <strong>Discount three percentage:</strong>
+    <%= @component.discount_three_percentage %>
+  </p>
+
+  <p>
+    <strong>Discount three rounding:</strong>
+    <%= @component.discount_three_rounding %>
+  </p>
+  
+  <p>
+    <strong>Discount four min quantity:</strong>
+    <%= @component.discount_four_min_quantity %>
+  </p>
+
+  <p>
+    <strong>Discount four percentage:</strong>
+    <%= @component.discount_four_percentage %>
+  </p>
+
+  <p>
+    <strong>Discount four rounding:</strong>
+    <%= @component.discount_four_rounding %>
+  </p>
+
+  <p>
+    <strong>Discount five min quantity:</strong>
+    <%= @component.discount_five_min_quantity %>
+  </p>
+
+  <p>
+    <strong>Discount five percentage:</strong>
+    <%= @component.discount_five_percentage %>
+  </p>
+
+  <p>
+    <strong>Discount five rounding:</strong>
+    <%= @component.discount_five_rounding %>
+  </p>
+
+  <p>
+    <strong>Discount note:</strong>
+    <%= @component.discount_note %>
+  </p>
+~~~~~~~~
+
+aggiorniamo il partial components/_prices
+
+
+{title=".../app/views/components/_prices.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=25}
+~~~~~~~~
+      <tr class="success">
+        <td><strong>Acquisto</strong><%= " (sconto per qt. min #{component.discount_one_min_quantity} pz = #{component.discount_one_percentage}%)" %></td>
+        <td><%= "#{((component.supplier_price_list) * (100 - component.discount_one_percentage) / 100).round(component.discount_one_rounding)}" %></td>
+        <td><%= "#{((component.supplier_price_list / component.currency_exchange).round(component.currency_rounding) * (100 - component.discount_one_percentage) / 100).round(component.discount_one_rounding)}" %></td>
+      </tr>
+      <% unless component.discount_two_min_quantity.blank? or component.discount_two_min_quantity == 0 %>
+        <tr class="success">
+          <td><strong>Acquisto</strong><%= " (sconto per qt. min #{component.discount_two_min_quantity} pz = #{component.discount_two_percentage}%)" %></td>
+          <td><%= "#{((component.supplier_price_list) * (100 - component.discount_two_percentage) / 100).round(component.discount_two_rounding)}" %></td>
+          <td><%= "#{((component.supplier_price_list / component.currency_exchange).round(component.currency_rounding) * (100 - component.discount_two_percentage) / 100).round(component.discount_two_rounding)}" %></td>
+        </tr>
+      <% end %>
+      <% unless component.discount_three_min_quantity.blank? or component.discount_three_min_quantity == 0 %>
+        <tr class="success">
+          <td><strong>Acquisto</strong><%= " (sconto per qt. min #{component.discount_three_min_quantity} pz = #{component.discount_three_percentage}%)" %></td>
+          <td><%= "#{((component.supplier_price_list) * (100 - component.discount_three_percentage) / 100).round(component.discount_three_rounding)}" %></td>
+          <td><%= "#{((component.supplier_price_list / component.currency_exchange).round(component.currency_rounding) * (100 - component.discount_three_percentage) / 100).round(component.discount_three_rounding)}" %></td>
+        </tr>
+      <% end %>
+      <% unless component.discount_four_min_quantity.blank? or component.discount_four_min_quantity == 0 %>
+        <tr class="success">
+          <td><strong>Acquisto</strong><%= " (sconto per qt. min #{component.discount_four_min_quantity} pz = #{component.discount_four_percentage}%)" %></td>
+          <td><%= "#{((component.supplier_price_list) * (100 - component.discount_four_percentage) / 100).round(component.discount_four_rounding)}" %></td>
+          <td><%= "#{((component.supplier_price_list / component.currency_exchange).round(component.currency_rounding) * (100 - component.discount_four_percentage) / 100).round(component.discount_four_rounding)}" %></td>
+        </tr>
+      <% end %>
+      <% unless component.discount_five_min_quantity.blank? or component.discount_five_min_quantity == 0 %>
+        <tr class="success">
+          <td><strong>Acquisto</strong><%= " (sconto per qt. min #{component.discount_five_min_quantity} pz = #{component.discount_five_percentage}%)" %></td>
+          <td><%= "#{((component.supplier_price_list) * (100 - component.discount_five_percentage) / 100).round(component.discount_five_rounding)}" %></td>
+          <td><%= "#{((component.supplier_price_list / component.currency_exchange).round(component.currency_rounding) * (100 - component.discount_five_percentage) / 100).round(component.discount_five_rounding)}" %></td>
+        </tr>
+      <% end %>
+~~~~~~~~
+
+
+
+
+## Aggiorniamo il controller
+
+Prima di passare alla view dell'edit aggiorniamo subito il mass-assignment del controller in modo da avere effettivamente l'aggiornamento dei nuovi campi con il submit del form.
+aggiorniamo il metodo **component_params** nella sezione **private** di **components_controller**
+
+{title=".../app/controllers/components_controller.rb", lang=ruby, line-numbers=on, starting-line-number=6}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def component_params
+      params.require(:component).permit(:image, :part_number, :name, :company_id, :homonym, :memo, :description, :supplier_price_list, :currency, :currency_exchange, :currency_rounding, :discount_one_min_quantity, :discount_one_percentage, :discount_one_rounding, :discount_two_min_quantity, :discount_two_percentage, :discount_two_rounding, :discount_three_min_quantity, :discount_three_percentage, :discount_three_rounding, :discount_four_min_quantity, :discount_four_percentage, :discount_four_rounding, :discount_five_min_quantity, :discount_five_percentage, :discount_five_rounding, :discount_note)
+    end
+~~~~~~~~
+
+
+
+
+## Aggiorniamo la view edit
+
+Per la pagina components/edit aggiorniamo il partial components/_form_prices per la modifica dei nuovi campi
+
+{title=".../app/views/components/_form_prices.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=49}
+~~~~~~~~
+    <div class="field">
+      <%= f.label :discount_one_min_quantity, class: "control-label" %>
+      <%= f.text_field :discount_one_min_quantity, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+
+    <div class="field">
+      <%= f.label :discount_one_percentage, class: "control-label" %>
+      <%= f.text_field :discount_one_percentage, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+
+    <div class="field">
+      <%= f.label :discount_one_rounding, class: "control-label" %>
+      <%= f.select :discount_one_rounding, h_options_for_rounding, {}, prompt: 'Select One', class: 'form-control' %>
+      <%#= f.text_field :discount_rounding, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+
+    <div class="field">
+      <%= f.label :discount_two_min_quantity, class: "control-label" %>
+      <%= f.text_field :discount_two_min_quantity, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+
+    <div class="field">
+      <%= f.label :discount_two_percentage, class: "control-label" %>
+      <%= f.text_field :discount_two_percentage, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+
+    <div class="field">
+      <%= f.label :discount_two_rounding, class: "control-label" %>
+      <%= f.select :discount_two_rounding, h_options_for_rounding, {}, prompt: 'Select One', class: 'form-control' %>
+      <%#= f.text_field :discount_rounding, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+
+    <div class="field">
+      <%= f.label :discount_three_min_quantity, class: "control-label" %>
+      <%= f.text_field :discount_three_min_quantity, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+
+    <div class="field">
+      <%= f.label :discount_three_percentage, class: "control-label" %>
+      <%= f.text_field :discount_three_percentage, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+
+    <div class="field">
+      <%= f.label :discount_three_rounding, class: "control-label" %>
+      <%= f.select :discount_three_rounding, h_options_for_rounding, {}, prompt: 'Select One', class: 'form-control' %>
+      <%#= f.text_field :discount_rounding, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+
+    <div class="field">
+      <%= f.label :discount_four_min_quantity, class: "control-label" %>
+      <%= f.text_field :discount_four_min_quantity, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+
+    <div class="field">
+      <%= f.label :discount_four_percentage, class: "control-label" %>
+      <%= f.text_field :discount_four_percentage, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+
+    <div class="field">
+      <%= f.label :discount_four_rounding, class: "control-label" %>
+      <%= f.select :discount_four_rounding, h_options_for_rounding, {}, prompt: 'Select One', class: 'form-control' %>
+      <%#= f.text_field :discount_rounding, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+
+    <div class="field">
+      <%= f.label :discount_five_min_quantity, class: "control-label" %>
+      <%= f.text_field :discount_five_min_quantity, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+
+    <div class="field">
+      <%= f.label :discount_five_percentage, class: "control-label" %>
+      <%= f.text_field :discount_five_percentage, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+
+    <div class="field">
+      <%= f.label :discount_five_rounding, class: "control-label" %>
+      <%= f.select :discount_five_rounding, h_options_for_rounding, {}, prompt: 'Select One', class: 'form-control' %>
+      <%#= f.text_field :discount_rounding, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+
+  </div> <!-- /form-group -->
+~~~~~~~~
+

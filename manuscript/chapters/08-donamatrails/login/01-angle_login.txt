@@ -1,0 +1,506 @@
+# Angle Login
+
+Implementiamo la parte di login con la gemma "devise"
+
+
+
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git pull origin master
+$ git checkout -b angle_login
+$ git push origin angle_login
+~~~~~~~~
+
+
+
+
+## Installiamo devise
+
+
+![la gemma devise](images/login/angle_login/rubygems_devise.png)
+
+I> Verifica sempre [l'ultima versione](https://rubygems.org) e gli [ultimi aggiornamenti](https://github.com/plataformatec/devise)
+
+Aggiungiamo la "gem" di ruby:
+
+[codice: gemfile 01](#code-login-01-gemfile-01)
+
+{title="Gemfile", lang=ruby, line-numbers=on, starting-line-number=39}
+~~~~~~~~
+# Flexible authentication solution for Rails with Warden 
+gem 'devise', '~> 4.2'
+~~~~~~~~
+
+Eseguiamo l'installazione della gemma con bundle
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ bundle install
+~~~~~~~~
+
+
+Eseguiamo lo script di installazione di devise su rails (Anche noto con il nome di "generator").
+Il "generator" installerà un inizializzatore che descrive tutte le opzioni di configurazione di Devise. Imperativo dare un'occhiata a questa operazione.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g devise:install
+
+Running via Spring preloader in process 3081
+      create  config/initializers/devise.rb
+      create  config/locales/devise.en.yml
+===============================================================================
+
+Some setup you must do manually if you haven't yet:
+
+  1. Ensure you have defined default url options in your environments files. Here
+     is an example of default_url_options appropriate for a development environment
+     in config/environments/development.rb:
+
+       config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+
+     In production, :host should be set to the actual host of your application.
+
+  2. Ensure you have defined root_url to *something* in your config/routes.rb.
+     For example:
+
+       root to: "home#index"
+
+  3. Ensure you have flash messages in app/views/layouts/application.html.erb.
+     For example:
+
+       <p class="notice"><%= notice %></p>
+       <p class="alert"><%= alert %></p>
+
+  4. You can copy Devise views (for customization) to your app by running:
+
+       rails g devise:views
+
+===============================================================================
+~~~~~~~~
+
+Completiamo i 4 punti riportati sul testo che appare dopo devise:install.
+
+
+
+
+### Punto 1.
+
+relativo alla parte di settaggio sia in sviluppo che in produzione.
+
+[codice: config 01](#code-login-01-config-01)
+
+{title=".../config/environments/development.rb", lang=ruby, line-numbers=on, starting-line-number=34}
+~~~~~~~~
+# Devise config
+config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+~~~~~~~~
+
+Nel prossimo passaggio dobbiamo mettere l'host di produzione. Nel nostro caso quello di heroku. 
+Per trovare il nome host su heroku o ci loggiamo oppure usiamo il comando:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku domains
+~~~~~~~~
+
+Adesso che abbiamo il nome dell'host su heroku lo possiamo usare nel file di configurazione
+
+[codice: config 02](#code-login-01-config-02)
+
+{title=".../config/environments/production.rb", lang=ruby, line-numbers=on, starting-line-number=60}
+~~~~~~~~
+# Devise config
+config.action_mailer.default_url_options = { :host => 'ancient-refuge-85064.herokuapp.com' }
+~~~~~~~~
+
+
+
+(https://devcenter.heroku.com/articles/using-the-cli)
+
+I> Attenzione!
+I>
+I> In produzione facciamo riferimento al sito web di heroku. Dobbiamo ricordarci di cambiare questo settaggio quando ci sposteremo sul sito definitivo.
+
+
+
+
+
+### punto 2.
+
+
+
+definiamo la root sul root file.
+
+[codice: config 03](#code-login-01-config-03)
+
+{title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+root :to => redirect('/singleview')
+~~~~~~~~
+
+I> la dicitura ":to =>" è retaggio di rails 3.2 ed è deprecated la modificheremo in seguito con un refactoring. Per il momento rimaniamo, per compatibilità, sulla sintassi usata nei sorgenti del template Angle.
+I> sarebbe meglio usare "to: ";
+I> inoltre la chiamata stile rails 5 dovrebbe essere " root 'dashboards#singleview' "
+
+
+
+### punto 3.
+
+[codice: views 01](#code-login-01-views-01)
+
+{title="app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=21}
+~~~~~~~~
+<p class="notice"><%= notice %></p>
+<p class="alert"><%= alert %></p>
+~~~~~~~~
+
+
+
+
+### punto 4.
+
+Copiamo le views di devise sulla app per permettere personalizzazione.
+Questa operazione verrà posticipata al momento della creazione della tabella users.
+
+
+
+
+## Attiviamo la tabella users con devise
+
+Implementiamo il MODEL di devise "User" che crea anche la tabella users usando il **rails** **generate** **devise** ***Model***.
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g devise User
+~~~~~~~~
+
+Successivamente, verificare il MODEL per eventuali ulteriori opzioni di configurazione che si potrebbe desiderare di aggiungere, ad esempio "confirmable" o "lockable".
+Se si aggiunge un'opzione, assicurarsi di ispezionare il file di migrazione (creato dal generator) e decommentare la sezione appropriata.
+Ad esempio, se si aggiunge l'opzione "confirmable" nel modello, è necessario togliere il commento alla sezione Confirmable nella migrazione. Quindi eseguire rake db: migrate
+
+Non aggiungiamo nessuna opzione e lasciamo sia il model che il migration come da default
+
+[codice: models 01](#code-login-01-models-01)
+
+{title="app/models/user.rb", lang=ruby, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+devise :database_authenticatable, :registerable,
+       :recoverable, :rememberable, :trackable, :validatable
+~~~~~~~~
+
+[codice: db 01](#code-login-01-db-01)
+
+{title="db/migrate/xxx_devise_create_users.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+create_table :users do |t|
+~~~~~~~~
+
+
+Effettuiamo il migration.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+
+$ rake db:migrate
+~~~~~~~~
+
+Infine creiamo il controller per la tabella users.
+
+I> Nota che “users” è plurale quando si crea il controller.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g controller users show
+~~~~~~~~
+
+
+
+
+## Lavoriamo sulle routes
+
+[codice: config 04](#code-login-01-config-04)
+
+{title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+root 'users#show'
+#root 'homepage#index'
+get 'homepage/index'
+
+devise_for :users
+resources :users
+~~~~~~~~
+
+I> Attenzione!
+I>
+I> La route - devise_for :users - deve essere messa sopra - resources :users -
+
+Per ora lasciamo - root users#show - seguendo l'esempio standard di https://github.com/plataformatec/devise
+e commentiamo - root to: 'homepage#index' - reintroducendo - get 'homepage/index' - ma nei prossimi capitoli lo modifichiamo puntandolo all'homepage.
+
+fare login dalla pagina /users/sign_in
+
+
+## Aggiungiamo logout
+
+su layout/partials/_topnavbar
+
+            <%#= link_to "Sign Out", destroy_user_session_path, method: :delete %>
+            
+            <%= link_to destroy_user_session_path, method: :delete do %>
+               <em class="icon-lock"></em>
+            <% end %>
+
+
+
+
+## Attiviamo il passaggio 5 del template con anche il controller
+
+https://github.com/plataformatec/devise
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails generate devise:views users
+$ rails generate devise:controllers users
+~~~~~~~~
+
+Adesso abbiamo la sottocartella /app/controller/users/ con tutti i controllers gestiti da devise 
+Modifichiamo le routes **devise_for :users** indicando a devise di usare i nuovi controllers (e non quelli di default)
+
+[codice: config 05](#code-login-01-config-05)
+
+{title="/config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=7}
+~~~~~~~~
+devise_for :users, controllers: { sessions: 'users/sessions' }
+~~~~~~~~
+
+I> se avessimo fatto già il ** rails generate devise:views ** avremmo dovuto copiare il views dal devise/sessions alla users/sessions. 
+
+
+
+## Implementiamo la view di login
+
+Adesso possiamo dedicarci alla view. 
+
+La view di login non usa il layout di default ma usa il layout "pages" per indicare di usare questo layout dobbiamo inserlo nel controller. Ed è per questo che abbiamo usato ** rails generate devise:controllers users **
+Infatti adesso abbiamo in chiaro il controller di devise che gestisce il sign_in/login sign_out/logout. E' il /app/controller/users/sessions_controller.rb
+
+Indichiamo di usare il layout "pages" al posto di quello di default:
+
+{title="/app/controllers/users/sessions_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class Users::SessionsController < Devise::SessionsController
+# before_action :configure_sign_in_params, only: [:create]
+
+  layout 'pages'
+
+  # GET /resource/sign_in
+  # def new
+  #   super
+  # end
+
+  # POST /resource/sign_in
+  # def create
+  #   super
+  # end
+
+  # DELETE /resource/sign_out
+  # def destroy
+  #   super
+  # end
+
+  # protected
+
+  # If you have extra params to permit, append them to the sanitizer.
+  # def configure_sign_in_params
+  #   devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
+  # end
+end
+~~~~~~~~
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Lavoriamo sul controller di users
+
+[codice: users controllers 01](#code-devise-users-controllers-01)
+
+{title="app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+before_action :authenticate_user!
+
+  def show
+    #@user = User.find(current_user.id)
+    # current_user is generated by the gem "devise"
+    @user = current_user
+  end
+~~~~~~~~
+
+I> before_action ha sostituito il "deprecated" before_filter
+
+I> Attenzione!
+I>
+I> Per Rails 5, da notare che il protect_from_forgery non è più inserito in cima alla catena delle chiamate before_action, quindi se tu hai impostato authenticate_user prima del protect_from_forgery, ti verrà restituito l'errore: Can't verify CSRF token authenticity.
+  Per risolverlo o cambiate l'ordine delle chiamate oppure nei settings usate protect_from_forgery prepend: true.
+
+
+I> Attenzione!
+I> Strong Parameters
+I> The Parameter Sanitizer API has changed for Devise 4
+
+Al momento non mi preoccupo dei due avvisi in alto ma ne terremo conto nei capitoli successivi.
+
+
+
+
+## Lavoriamo sul view users show
+
+{title="app/views/users/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+<p>User: <%= @user.email %></p>
+~~~~~~~~
+
+verifichiamo che funziona tutto con - $ rails s -
+http://localhost:3000
+http://localhost:3000/homepage/index
+http://localhost:3000/users/1
+http://localhost:3000/users/sign_in
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+git add -A
+git commit -m "add users-show"
+~~~~~~~~
+
+
+
+
+## Devise login to root homepage
+
+Attiviamo il root che reindirizza sulla homepage e ritorniamo in homepage dopo il login.
+
+[codice: homepage config 02](#code-frontend_assets-04-config-02)
+
+{title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+#root 'users#show'
+root 'homepage#index'
+
+devise_for :users
+resources :users
+~~~~~~~~
+
+verifichiamo che funziona tutto con - $ rails s -
+http://localhost:3000
+http://localhost:3000/users/sign_in
+http://localhost:3000/users/1
+http://localhost:3000
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+git add -A
+git commit -m "add login to root homepage"
+~~~~~~~~
+
+
+
+
+## Root homepage - Devise login to user show
+
+Attiviamo il root che reindirizza sulla homepage e ritorniamo in homepage dopo il login.
+
+[codice: homepage config 03](#code-frontend_assets-04-config-03)
+
+{title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+root 'homepage#index'
+
+get 'users/show', as: :user_root # creates user_root_path (default path after sign_in)
+
+devise_for :users
+resources :users
+~~~~~~~~
+
+verifichiamo che funziona tutto con - $ rails s -
+http://localhost:3000
+http://localhost:3000/users/sign_in
+http://localhost:3000
+http://localhost:3000/users/1
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+git add -A
+git commit -m "add homepage free login to users-show"
+~~~~~~~~
+
+
+
+## Proteggiamo anche homepage con devise
+
+[codice: homepage controllers 01](#code-frontend_assets-04-controllers-01)
+
+{title="app/controllers/homepage_controller.rb", lang=ruby, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+before_filter :authenticate_user!
+~~~~~~~~
+
+In questo caso al primo login si entra nella homepage. Se si riprova a fare login - http://localhost:3000/users/sign_in - quando si è già loggati allora si viene reinstradati su users/show.
+
+I> Forse meglio lasciare una homepage stile "biglietto da visita" con il link che ti fa fare login.
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+git add -A
+git commit -m "add homepage locked"
+~~~~~~~~
+
+
+
+
+## Operazione finale
+
+Facciamo un "pull request" su github per fare il merge e chiudere il branch.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git pull origin master
+
+$ git merge login
+$ git push origin master
+
+$ git branch -d login
+$ git push origin :login
+~~~~~~~~
+
+
+P.S.
+Altre impostazioni che configuriamo in seguito sono:
+
+{title="config/inizializer/devise", lang=ruby, line-numbers=on, starting-line-number=37}
+~~~~~~~~
+  mettere email del sender
+  leggere le possibili implementazioni
+~~~~~~~~
+

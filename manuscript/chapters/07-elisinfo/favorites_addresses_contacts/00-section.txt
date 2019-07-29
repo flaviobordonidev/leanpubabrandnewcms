@@ -1,0 +1,4 @@
+-# Favoriti delle associazioni Aziende/Persone
+
+trattiamo la gestione dei preferiti lato company_person_maps quindi sullo show della persona quali sono le aziende preferite tra le tante associate.
+E sullo show dell'azienda quali sono le persone preferite tra le tante persone associate che lavorano in quella azienda.

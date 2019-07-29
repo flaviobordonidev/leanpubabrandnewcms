@@ -1,0 +1,128 @@
+# Mockup per la pagina Settaggi-globali lingue
+
+Questo mockup tratta la parte di scelta della lingua.
+
+
+
+
+## Apriamo il branch
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b mgsl
+~~~~~~~~
+
+
+
+
+## Disegniamo mockup_global_settings language
+
+Implementiamo un tab e relativo pannello per la gestione della lingua. 
+
+{title=".../app/views/mockup_global_settings/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div id="front_mode" class="container-fluid rear_mode">
+
+  <div class="row">
+    <div class="col-xs-9 col-sm-10 col-lg-11">
+      <ul class="nav nav-pills bottom-pad top-pad left-pad">
+        <li class="active">
+          <a href="#pane_language" data-toggle="tab"><span class="glyphiconmy ico_language"></span></a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-xs-3 col-sm-2 col-lg-1">
+      <%= render "button_close" %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="tab-content">
+        <div id="pane_language" class="tab-pane active">
+          <div class="text-center bottom-pad">
+            <h4>Language</h4>
+          </div>
+          <%= render "pane_language" %>
+        </div>
+      </div><!-- /.tab-content -->
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+</div> <!-- /rear_mode -->
+~~~~~~~~
+
+
+{title=".../app/views/mockup_global_settings/_button_close.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<ul class="nav nav-pills bottom-pad top-pad pull-right right-pad">
+  <li>
+    <a class="btn btn-default" href="#">
+      <span class="glyphiconmy ico_close"></span>
+    </a>
+  </li>
+</ul>
+~~~~~~~~
+
+
+{title=".../app/views/mockup_global_settings/_pane_language.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="list-group left-pad right-pad bottom-pad">
+  <a class="list-group-item " href="#">
+    <span class="glyphiconmy ico_language_us right-pad"></span> Inglese
+  </a>  
+
+  <a class="list-group-item active" href="#">
+    <span class="glyphiconmy ico_language_it right-pad"></span> Italiano
+  </a>
+</div>
+
+<div class="list-group left-pad right-pad bottom-pad">
+  <a class="btn btn-primary btn-block" href="#">
+    ok
+  </a>
+</div>
+~~~~~~~~
+
+
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+eseguiamo un git commit
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add mockup_global_settings language"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku mgsl:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge mgsl
+$ git branch -d mgsl
+~~~~~~~~

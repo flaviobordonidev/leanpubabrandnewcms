@@ -1,0 +1,389 @@
+# Modifichiamo la persona e l'azienda
+
+
+
+
+## Apriamo il branch "companies people edit"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b cpe
+~~~~~~~~
+
+
+
+
+## Implementiamo la view people/edit
+
+Implementiamo la struttura del mockup nella pagina people/edit
+
+{title=".../app/views/people/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="container-fluid rear_mode"> <!-- rear_mode -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-9 col-sm-10 col-lg-11">
+      <ul class="nav nav-pills bottom-pad top-pad left-pad">
+        <li class="<%= 'active' if params[:tab_active] == 'default' or params[:tab_active] == 'edit' %>">
+          <%= link_to "#pane_edit", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_edit" %>
+          <% end %>
+        </li>
+
+        <li class="<%= 'active' if params[:tab_active] == 'delete' %>">
+          <%= link_to "#pane_delete", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_delete" %>
+          <% end %>
+        </li>
+      </ul>
+    </div> <!-- /col -->
+    <div class="col-xs-3 col-sm-2 col-lg-1">
+      <%= render "button_close" %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-12">
+      <div class="tab-content">
+        <div id="pane_edit" class="tab-pane <%= 'active' if params[:tab_active] == 'default' or params[:tab_active] == 'edit'  %>">
+          <div class="text-center bottom-pad">
+            <h4><%= t("people.edit.title_pane_edit") %></h4>
+          </div> <!-- /.text-center -->
+          <%= render 'form', person: @person %>
+        </div> <!-- /.tab-pane -->
+        
+        <div id="pane_delete" class="tab-pane <%= 'active' if params[:tab_active] == 'delete'  %>">
+          <div class="text-center bottom-pad">
+            <h4><%= t("people.edit.title_pane_delete") %></h4>
+          </div> <!-- /.text-center -->
+          <%= render 'pane_delete' %>
+        </div><!-- /.tab-pane -->
+      </div><!-- /.tab-content -->
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+</div> <!-- /rear_mode -->
+~~~~~~~~
+
+creiamo il partial **_pane_delete.html.erb**
+
+{title=".../app/views/people/_pane_delete.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<p>delete</p>
+~~~~~~~~
+
+modifichiamo il partial **_form** inserendo lo stile per la formattazione css ed anche i campi nascosti per simulare il comportamento dell'helper h_rear_params_path. (Discorso analogo a quanto fatto nei capitoli precedenti per il form **search**)
+
+{title=".../app/views/people/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%= form_for(person, html: {class: 'form-horizontal left-pad right-pad bottom-pad'}) do |f| %>
+
+  <!-- # simulo l'helper h_params_path con page=1 perché torno alla prima pagina dopo una ricerca -->
+  <%= hidden_field_tag(:locale, params[:locale]) %>
+  <%= hidden_field_tag(:last_front_controller, params[:last_front_controller]) %>
+  <%= hidden_field_tag(:last_front_action, params[:last_front_action]) %>
+  <%= hidden_field_tag(:last_front_id, params[:last_front_id]) %>  
+  <%= hidden_field_tag(:last_front_related, params[:last_front_related]) %>  
+  <%= hidden_field_tag(:last_front_page, params[:last_front_page]) %>  
+  <%= hidden_field_tag(:last_front_search, params[:last_front_search]) %>  
+  <%= hidden_field_tag(:last_rear_controller, params[:last_rear_controller]) %>
+  <%= hidden_field_tag(:last_rear_action, params[:last_rear_action]) %>
+  <%= hidden_field_tag(:last_rear_id, params[:last_rear_id]) %>
+  <%= hidden_field_tag(:last_rear_related, params[:last_rear_related]) %>
+  <%= hidden_field_tag(:last_rear_page, params[:last_rear_page]) %>
+  <%= hidden_field_tag(:last_rear_search, params[:last_rear_search]) %>
+  <%= hidden_field_tag(:related, params[:related]) %>
+  <%= hidden_field_tag(:page, 1) %>
+  <%= hidden_field_tag(:search, params[:search]) %>
+  <%= hidden_field_tag(:tab_active, params[:tab_active]) %>
+
+  <div class="form-group">
+
+    <div class="field">
+      <%= f.label :memo, class: "control-label" %><br>
+      <%= f.text_area :memo, rows: 6, class: "form-control" %>
+      <span class="help-block"></span>
+    </div>
+
+    <div class="field">
+      <%= f.label :title, class: "control-label" %><br>
+      <%= f.text_field :title, class: "form-control" %>
+      <span class="help-block"></span>
+    </div>
+
+    <div class="field">
+      <%= f.label :first_name, class: "control-label" %><br>
+      <%= f.text_field :first_name, class: "form-control" %>
+      <span class="help-block"></span>
+    </div>
+
+    <div class="field">
+      <%= f.label :last_name, class: "control-label" %><br>
+      <%= f.text_field :last_name, class: "form-control" %>
+      <span class="help-block"></span>
+    </div>
+
+    <div class="field">
+      <%= f.label :homonym, class: "control-label" %><br>
+      <%= f.text_field :homonym, class: "form-control" %>
+      <span class="help-block"></span>
+    </div>
+
+  </div> <!-- /form-group -->
+
+  <div class="actions">
+    <%= f.submit "Aggiorna persona", class: "btn btn-primary btn-block" %>
+  </div>
+  
+<% end %>
+~~~~~~~~
+
+
+
+
+## Aggiorniamo l'azione update sul controller person
+
+L'aggiornamento delle persone è ok, ma non vengono ancora passati tutti i parametri sull'URL per far questo aggiorniamo l'azione update nel controller.
+
+{title=".../app/controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=45}
+~~~~~~~~
+        format.html { redirect_to url_for(view_context.h_params_path(path: "/people/#{@person.id}")), notice: 'Person was successfully updated.' }
+~~~~~~~~
+
+In pratica inseriamo url_for(...) dopo il redirect_to ma non possiamo chiamare direttamente un helper dal controller. Per poterlo chiamare dobbiamo sfruttare il **view_context** quindi abbiamo **url_for(view_context.h_params_path(...))**
+
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add people edit"
+~~~~~~~~
+
+
+
+
+## Passiamo al lato Aziende
+
+
+
+
+## Implementiamo la view companies/edit
+
+Implementiamo la struttura del mockup nella pagina companies/edit
+
+{title=".../app/views/companies/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="container-fluid rear_mode"> <!-- rear_mode -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-9 col-sm-10 col-lg-11">
+      <ul class="nav nav-pills bottom-pad top-pad left-pad">
+        <li class="<%= 'active' if params[:tab_active] == 'default' or params[:tab_active] == 'edit' %>">
+          <%= link_to "#pane_edit", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_edit" %>
+          <% end %>
+        </li>
+
+        <li class="<%= 'active' if params[:tab_active] == 'delete' %>">
+          <%= link_to "#pane_delete", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_delete" %>
+          <% end %>
+        </li>
+      </ul>
+    </div> <!-- /col -->
+    <div class="col-xs-3 col-sm-2 col-lg-1">
+      <%= render "button_close" %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-12">
+      <div class="tab-content">
+        <div id="pane_edit" class="tab-pane <%= 'active' if params[:tab_active] == 'default' or params[:tab_active] == 'edit'  %>">
+          <div class="text-center bottom-pad">
+            <h4><%= t("companies.edit.title_pane_edit") %></h4>
+          </div> <!-- /.text-center -->
+          <%= render 'form', company: @company %>
+        </div> <!-- /.tab-pane -->
+        
+        <div id="pane_delete" class="tab-pane <%= 'active' if params[:tab_active] == 'delete'  %>">
+          <div class="text-center bottom-pad">
+            <h4><%= t("companies.edit.title_pane_delete") %></h4>
+          </div> <!-- /.text-center -->
+          <%= render 'pane_delete' %>
+        </div><!-- /.tab-pane -->
+      </div><!-- /.tab-content -->
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+</div> <!-- /rear_mode -->
+~~~~~~~~
+
+creiamo il partial **_pane_delete.html.erb**
+
+{title=".../app/views/companies/_pane_delete.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<p>delete</p>
+~~~~~~~~
+
+modifichiamo il partial **_form** inserendo lo stile per la formattazione css ed anche i campi nascosti per simulare il comportamento dell'helper h_rear_params_path. (Discorso analogo a quanto fatto nei capitoli precedenti per il form **search**)
+
+{title=".../app/views/companies/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%#= form_for(company, html: {class: 'form-horizontal left-pad right-pad bottom-pad', multipart: true }) do |f| %>
+<%= form_for(company, html: {class: 'form-horizontal left-pad right-pad bottom-pad' }) do |f| %>
+
+  <!-- # simulo l'helper h_params_path -->
+  <%= hidden_field_tag(:locale, params[:locale]) %>
+  <%= hidden_field_tag(:last_front_controller, params[:last_front_controller]) %>
+  <%= hidden_field_tag(:last_front_action, params[:last_front_action]) %>
+  <%= hidden_field_tag(:last_front_id, params[:last_front_id]) %>  
+  <%= hidden_field_tag(:last_front_related, params[:last_front_related]) %>  
+  <%= hidden_field_tag(:last_front_page, params[:last_front_page]) %>  
+  <%= hidden_field_tag(:last_front_search, params[:last_front_search]) %>  
+  <%= hidden_field_tag(:last_rear_controller, params[:last_rear_controller]) %>
+  <%= hidden_field_tag(:last_rear_action, params[:last_rear_action]) %>
+  <%= hidden_field_tag(:last_rear_id, params[:last_rear_id]) %>
+  <%= hidden_field_tag(:last_rear_related, params[:last_rear_related]) %>
+  <%= hidden_field_tag(:last_rear_page, params[:last_rear_page]) %>
+  <%= hidden_field_tag(:last_rear_search, params[:last_rear_search]) %>
+  <%= hidden_field_tag(:related, params[:related]) %>
+  <%= hidden_field_tag(:page, params[:page]) %>
+  <%= hidden_field_tag(:search, params[:search]) %>
+  <%= hidden_field_tag(:tab_active, params[:tab_active]) %>
+
+  <div class="form-group">
+    
+    <div class="field">
+      <%= f.label :memo, class: "control-label" %>
+      <%= f.text_area :memo, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div>
+  
+    <div class="field">
+      <%= f.label :name, class: "control-label" %>
+      <%= f.text_field :name, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div>
+  
+    <div class="field">
+      <%= f.label :sector, class: "control-label" %>
+      <%= f.text_field :sector, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div>
+  
+    <div class="field">
+      <%= f.label :status, class: "control-label" %>
+      <%= f.text_field :status, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div>
+  
+    <div class="field">
+      <%= f.label :taxation_number_first, class: "control-label" %>
+      <%= f.text_field :taxation_number_first, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div>
+  
+    <div class="field">
+      <%= f.label :taxation_number_second, class: "control-label" %>
+      <%= f.text_field :taxation_number_second, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div>
+
+  </div> <!-- /form-group -->
+
+  <div class="actions">
+    <%= f.submit "Aggiorna azienda", class: "btn btn-primary btn-block" %>
+  </div>
+<% end %>
+~~~~~~~~
+
+
+
+
+## Aggiorniamo l'azione update sul controller companies
+
+L'aggiornamento dell'azienda è ok, ma non vengono ancora passati tutti i parametri sull'URL per far questo aggiorniamo l'azione update nel controller.
+
+{title=".../app/controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=45}
+~~~~~~~~
+        format.html { redirect_to url_for(view_context.h_params_path(path: "/companies/#{@company.id}")), notice: 'Company was successfully updated.' }
+~~~~~~~~
+
+In pratica inseriamo url_for(...) dopo il redirect_to ma non possiamo chiamare direttamente un helper dal controller. Per poterlo chiamare dobbiamo sfruttare il **view_context** quindi abbiamo **url_for(view_context.h_params_path(...))**
+
+
+
+
+## Implementiamo il menu a cascata per modificare lo status
+
+Non è comodo ricordarsi a che numero appartiene la voce dell'elenco ^_^. Quindi implementiamo un menu a cascata.
+
+{title=".../app/views/companies/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=45}
+~~~~~~~~
+      <%= f.select :status, h_options_for_status, {}, prompt: 'Select One', class: 'form-control' %>
+~~~~~~~~
+
+{title=".../app/helpers/application_helper.rb", lang=ruby, line-numbers=on, starting-line-number=70}
+~~~~~~~~
+  def h_options_for_status
+    [
+      [t("application.company_status.one"),1],
+      [t("application.company_status.two"),2],
+      [t("application.company_status.three"),3],
+      [t("application.company_status.four"),4],
+      [t("application.company_status.five"),5],
+      [t("application.company_status.six"),6],
+      [t("application.company_status.seven"),7],
+      [t("application.company_status.eight"),8]
+    ]
+  end
+~~~~~~~~
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add companies edit"
+~~~~~~~~
+
+
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku cpe:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge cpe
+$ git branch -d cpe
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

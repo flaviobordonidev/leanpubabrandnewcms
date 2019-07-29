@@ -1,0 +1,168 @@
+# Mockup Dashboard
+
+questa parte è 100% web designer Rails. E' il mockup della dashboard.
+
+
+Creiamo il Branch
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b mockupdash
+~~~~~~~~
+
+
+
+
+## Rails generate controller Mockups
+
+Inizializziamo il mockup della dashboard. Poiché il template Angle gestisce dei javascripts e degli stylesheets personalizzati a seconda del controller creiamo un nuovo controller per ogni mockup.
+A tutti i mockups mettiamo il prefisso "mk_"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g controller mk_dashboard index
+~~~~~~~~
+
+I> Lanciando generate controller, in automatico vengono creati anche i file mk.dashboard.scss e mk_dashboard.coffee nell'asset pipeline. In questo caso bisogna porre attenzione alla tipologia di sintassi usata per commentare le linee. Nel file con estensione coffee i caratteri // generano un errore. Al contrario del file con estensione js in cui generano un commento. 
+
+
+
+
+## Asset precompile
+
+il template Angle non gestisce in automatico l'asset pipeline e siamo quindi costretti ad includere manualmente i files stylesheets e javascripts dei relativi controllers.
+Siamo costretti invece ad aggiornare il file application perché il template cita esplicitamente i precompiled file. Esiste un workaround ma per il momento aggiungiamoli manualmente.
+
+{title="config/application.rb", lang=ruby, line-numbers=on, starting-line-number=44}
+~~~~~~~~
+     # Controller assets                                                             
+    config.assets.precompile += [                                                   
+                                 # Scripts                                          
+                                 'singleview.js',
+                                 'mk_dashboard.js',
+                                 # Stylesheets
+                                'singleview.css',
+                                'mk_dashboard.css'
+                                ]
+~~~~~~~~
+
+A> in questo file usiamo l'estensione .js/.css e non .coffee/.css.scss perché questi vengono letti successivamente alla precompilazione dell'asset e quindi usano le estensioni "pure". 
+
+
+
+## Routes
+
+aggiustiamo il file degli instradamenti
+
+[Codice: mocks config 01](#code-frontend_assets-05-config-01)
+
+{title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+get 'mk_dashboard/index'
+~~~~~~~~
+
+
+
+
+## Proviamo heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "create mk_dashboard"
+$ git push heroku mockupdash:master
+~~~~~~~~
+
+Vediamo su heroku che funziona tutto
+$ heroku domains
+e sul browser http://......./mk_dashboard/index
+
+
+
+
+## Modifichiamo la views/index
+
+[codice: dashboard views 01](#code-dashboard-01-views-01)
+
+{title=".../app/views/mk_dashboard/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<p>Prova. 1,2,3 prova. ^_^</p>
+~~~~~~~~
+
+
+
+<%= render 'layouts/workaround_ie' %>
+
+
+
+
+
+
+
+
+per far funzionare l'orologio dobbiamo inserire il codice su mokups.js copiamo quello di dashboard.js e lo incolliamo su mockups.js
+
+{title="assets/javascripts/mockups.js", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+// Place all the behaviors and hooks related to the matching controller here.
+
+
+
+//--- Sparklines
+//= require sparkline/index
+//--- Flot
+//= require Flot/jquery.flot
+//= require flot.tooltip/js/jquery.flot.tooltip.min
+//= require Flot/jquery.flot.resize
+//= require Flot/jquery.flot.pie
+//= require Flot/jquery.flot.time
+//= require Flot/jquery.flot.categories
+//= require flot-spline/js/jquery.flot.spline.min
+//--- Classyloader
+//= require jquery-classyloader/js/jquery.classyloader.min
+//--- Moment
+//= require moment/min/moment-with-locales.min
+//--- jQuery Vector map (only dashboard v3)
+//= require ika.jvectormap/jquery-jvectormap-1.2.2.min
+//= require ika.jvectormap/jquery-jvectormap-world-mill-en
+//= require ika.jvectormap/jquery-jvectormap-us-mill-en
+~~~~~~~~
+
+
+per far funzionare l'icona del tempo (che non usiamo) dobbiamo inserire il codice su mokups.scss copiamo quello di dashboard.css.scss
+
+{title="assets/javascripts/mockups.scss", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+// Place all the styles related to the mocks controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+// --- Weather icons
+//= require weather-icons/css/weather-icons.min
+~~~~~~~~
+
+
+Attiviamo il web server
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+E verifichiamo che funzioni sul browser http://xxx/mocks/dashboard 
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge mockupdash
+$ git branch -d mockupdash
+~~~~~~~~

@@ -1,0 +1,99 @@
+# Risorse su Rails
+
+
+
+
+## gemfile
+
+* [rubygems - sito ufficiale](https://rubygems.org)
+
+
+
+
+## git
+
+* [Gitignore - ignoring files](https://help.github.com/articles/ignoring-files)
+* [Figaro sito ufficiale](https://github.com/laserlemon/figaro)
+* [semantic versioning](http://semver.org)
+
+
+
+
+## devise
+
+* [da mettere più avanti](https://github.com/plataformatec/devise/wiki/How-To:-Add-an-Admin-Role)
+* https://github.com/plataformatec/devise
+* https://github.com/plataformatec/devise/wiki/Example-Applications
+* http://railsapps.github.io/tutorial-rails-devise-rspec-cucumber.html
+* http://railsapps.github.io/tutorial-rails-mongoid-devise.html
+* Railscasts pro 209-devise-revised
+* http://railsapps.github.io/tutorial-rails-mongoid-devise.html
+
+
+
+
+## postpone
+
+* [console shortcuts](https://pragmaticstudio.com/blog/2014/3/11/console-shortcuts-tips-tricks)
+
+
+
+
+## read file CSV:
+
+  * https://gist.github.com/arjunvenkat/1115bc41bf395a162084 
+  * Read CSV file in Ruby
+    https://www.youtube.com/watch?v=7fO-sPMhcOM
+  * Ruby Files - Part 3 - Reading CSV's
+    https://www.youtube.com/watch?v=bpoP2c7mKxY
+  * How to Build a CSV Uploader into a Ruby on Rails Application
+    https://www.youtube.com/watch?v=W8pohTautj8
+  * http://stackoverflow.com/questions/28236683/how-to-upload-the-csv-file-to-ftp-server-in-rails
+  * http://stackoverflow.com/questions/6701896/how-to-write-to-a-csv-file-through-ftp-in-rails-3
+  * https://railsforum.com/topic/1181-reading-showing-csvexcel-file/
+  * http://hiltmon.com/blog/2013/09/14/a-reliable-script-file-layout/
+  * railscast 396-importing-csv-and-excel.mp4
+  * http://docs.ruby-lang.org/en/2.2.0/Net/FTP.html#class-Net::FTP-label-Example+2
+  * https://richonrails.com/articles/downloading-files-via-ftp-using-ruby
+  * http://docs.ruby-lang.org/en/2.2.0/Net/FTP.html#method-i-gettextfile
+  * https://www.youtube.com/watch?v=W8pohTautj8 
+  * http://stackoverflow.com/questions/28236683/how-to-upload-the-csv-file-to-ftp-server-in-rails
+  * http://stackoverflow.com/questions/6701896/how-to-write-to-a-csv-file-through-ftp-in-rails-3
+  * https://railsforum.com/topic/1181-reading-showing-csvexcel-file/
+  * http://www.justinmrao.com/salary_data.csv
+  * https://makandracards.com/makandra/16999-common-mistakes-when-storing-file-uploads-with-rails
+  * https://www.rubyplus.com/articles/4131-Import-Records-from-CSV-and-Excel-in-Rails-5
+
+
+
+
+## transactions AWS S3:
+
+  * https://github.com/refile/refile
+  * https://github.com/elabs/refile
+  * http://www.plugingeek.com/categories/file-uploads-ruby
+  * http://www.akitaonrails.com/2014/12/18/small-bites-direct-upload-para-s3-a-solucao-definitiva#.VKbA1CfrXfY
+
+
+
+
+## gemfile vs bower
+
+* [Bower sito ufficiale](https://bower.io/)
+* [Bower su github](https://github.com/bower/bower)
+* [What is the different between bower and gems for rails?](http://stackoverflow.com/questions/31321154/what-is-the-different-between-bower-and-gems-for-rails)
+* [Go Rails - Manage Assets With Rails Assets](https://gorails.com/episodes/rails-assets)
+* [Taking advantage of Bower in your Rails 4 App](http://dotwell.io/taking-advantage-of-bower-in-your-rails-4-app/)
+* [Rails Assets](https://rails-assets.org/#/)
+* [Utile guida al Gemfile di Rails](http://tosbourn.com/what-is-the-gemfile/)
+
+
+
+
+## angle_admin
+
+* [devise - wiki how to](https://github.com/plataformatec/devise/wiki/How-Tos)
+* [devise - how to Add an Admin role](https://github.com/plataformatec/devise/wiki/How-To:-Add-an-Admin-role)
+
+
+

@@ -1,0 +1,158 @@
+# Mockup Associazione Contatti e Persone pagina di nuovo (contact_person_maps/new)
+
+Vediamo adesso la pagina di New. La pagina ha 1 solo tab: "modifica".
+
+
+
+
+## Apriamo il branch "mockup contact_person_maps new"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b mcpmn
+~~~~~~~~
+
+
+
+
+## La pagina di nuovo
+
+Creiamo la view mockup_contact_person_maps/new
+
+{title=".../app/views/mockup_contact_person_maps/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="container-fluid rear_mode">
+	<div class="row">
+		<div class="col-xs-9 col-sm-10 col-lg-11">
+			<ul class="nav nav-pills bottom-pad top-pad left-pad">
+				<li class="active"><a href="#pane_edit" data-toggle="tab"><span class="glyphiconmy ico_edit"></span></a></li>
+			</ul>
+		</div><!-- /.col -->
+		<div class="col-xs-3 col-sm-2 col-lg-1">
+			<%= render 'mockup_contact_person_maps/new/button_close' %>
+		</div> <!-- /.col -->
+	</div> <!-- /.row -->
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="tab-content">
+				<div id="pane_edit" class="tab-pane active">
+					<div class="text-center bottom-pad">
+						<h4>Nuova</h4>
+					</div><!-- /.text-center -->
+					<%= render 'mockup_contact_person_maps/new/tab_edit' %>
+				</div><!-- /#pane_edit -->
+			</div><!-- /.tab-content -->
+		</div> <!-- /.col -->
+	</div> <!-- /.row -->
+</div> <!-- /.rear_mode -->
+~~~~~~~~
+
+
+{title=".../app/views/mockup_contact_person_maps/new/_button_close.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<ul class="nav nav-pills pull-right top-pad right-pad">
+  <li><a href="#" class="btn btn-default"><span class="glyphiconmy ico_close"></span></a></li>
+</ul>
+~~~~~~~~
+
+
+{title=".../app/views/mockup_contact_person_maps/new/_tab_edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<form class="form-horizontal left-pad right-pad bottom-pad">
+	<div class="form-group">
+
+    <label class="control-label" for="summary">Summary</label>
+		<input type="text" id="summary" class="form-control" placeholder="Casa al mare">
+		<span class="help-block"></span>
+
+		<p> if params[:related]="people" </p>
+
+    <label class="control-label" for="person_id">Persona</label>
+    <a href="#" id="person_id" class="list-group-item">
+      <span class="glyphiconmy ico_person right-pad"></span> 
+      <div><%= "persona da selezionare" %></div>
+    </a>
+		<span class="help-block"></span>
+
+    <label class="control-label" for="person_favorite">Favorite: </label>
+    <input type="checkbox" id="person_favorite" name="person_favorite" data-size = "medium" data-on-color = "primary" data-on-text = "SI" data-off-color = "default" data-off-text = "NO" >
+    <span class="help-block"></span>
+
+		<p> if params[:related]="contacts" </p>
+
+    <label class="control-label" for="contact_id">Contatto</label>
+    <a href="#" id="contact_id" class="list-group-item">
+      <span class="glyphiconmy ico_contact right-pad"></span> 
+      <div><%= "Contatto da selezionare" %></div>
+    </a>
+		<span class="help-block"></span>
+
+    <label class="control-label" for="contact_favorite">Favorite: </label>
+    <input type="checkbox" id="contact_favorite" name="contact_favorite" data-size = "medium" data-on-color = "primary" data-on-text = "SI" data-off-color = "default" data-off-text = "NO" checked >
+    <span class="help-block"></span>
+    
+	</div><!-- /.form-group -->
+	<button type="submit" class="btn btn-primary btn-block">esegui</button>
+</form>
+~~~~~~~~
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+https://elisinfo5-flaviobordonidev.c9users.io/mockup_contact_person_maps/new
+
+![mockup_people new 1](images/contact_person_maps/mockup_contact_person_maps/new1.png)
+
+![mockup_people new 2](images/contact_person_maps/mockup_contact_person_maps/new2.png)
+
+![mockup_people new 3](images/contact_person_maps/mockup_contact_person_maps/new3.png)
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add mockup_contact_person_maps new"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku mcpmn:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge mcpmn
+$ git branch -d mcpmn
+~~~~~~~~
+
+
+
+
+## Backup su github
+
+facciamo un backup del ns progetto su github:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

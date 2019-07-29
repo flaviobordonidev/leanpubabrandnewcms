@@ -1,0 +1,94 @@
+# Favorites Companies new
+
+implementiamo i favoriti della homepage/current_user sulla view new di companies
+
+- Voglio settare come preferita, per una dato utente, un'azienda che sto creando adesso (non esisteva nel database)
+
+Il "lavoro duro" lo abbiamo già fatto implementando il lato edit. In questo capitolo facciamo una semplice implementazione, praticamente un semplice copia/incolla. 
+
+
+
+
+## Apriamo il branch "Favorites Companies New"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b fcn
+~~~~~~~~
+
+
+
+
+## Aggiungiamo il campo favorite_id su companies/new
+
+Li abbiamo già aggiunti perché il partial **_form.html.erb** è lo stesso sia per edit che per new.
+
+
+
+
+## Aggiungiamo il favorite sul controller di companies 
+
+Lavoriamo sul controller. Abbiamo già abilitato la white list per passare le modifiche. Implementiamo il codice per gestire i preferiti come abbiamo già fatto per edit sull'azione **update**. Solo che in questo caso lo facciamo per new quindi sull'azione **create**.
+
+Sull'azione **create** del controller **companies_controller**, implementiamo il nuovo metodo private **manage_favorite**. Per far questo esplodo su più righe il comando **format.html { ... }** usando
+
+format.html do
+  ...
+end
+
+{title=".../app/controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=33}
+~~~~~~~~
+        format.html do
+          manage_favorite # private action
+          redirect_to url_for(view_context.h_params_path(path: "/companies/#{@company.id}")), notice: t(".notice")
+        end
+~~~~~~~~
+
+Abbiamo già scritto il codice dei due nuovi metodi nell'area **private**. Quindi abbiamo finito. ^_^
+
+
+
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add favorites companies new"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku fcn:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge fcn
+$ git branch -d fcn
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

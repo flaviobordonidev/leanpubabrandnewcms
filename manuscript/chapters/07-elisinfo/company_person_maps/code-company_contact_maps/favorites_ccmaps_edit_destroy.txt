@@ -1,0 +1,96 @@
+# favorites_ccmaps_edit_destroy
+
+
+
+
+#### 01 {#code-company_contact_maps-favorites_ccmaps_edit_destroy-01}
+
+{title=".../app/views/company_contact_maps/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%= form_for(company_contact_map, html: {class: 'form-horizontal left-pad right-pad bottom-pad'}) do |f| %>
+
+  <!-- #pass-params: -->
+  <%= hidden_field_tag(:locale, params[:locale]) %>
+  <%= hidden_field_tag(:last_front_controller, params[:last_front_controller]) %>
+  <%= hidden_field_tag(:last_front_action, params[:last_front_action]) %>
+  <%= hidden_field_tag(:last_front_id, params[:last_front_id]) %>  
+  <%= hidden_field_tag(:last_front_related, params[:last_front_related]) %>  
+  <%= hidden_field_tag(:last_front_page, params[:last_front_page]) %>  
+  <%= hidden_field_tag(:last_front_search, params[:last_front_search]) %>  
+  <%= hidden_field_tag(:last_rear_controller, params[:last_rear_controller]) %>
+  <%= hidden_field_tag(:last_rear_action, params[:last_rear_action]) %>
+  <%= hidden_field_tag(:last_rear_id, params[:last_rear_id]) %>
+  <%= hidden_field_tag(:last_rear_related, params[:last_rear_related]) %>
+  <%= hidden_field_tag(:last_rear_page, params[:last_rear_page]) %>
+  <%= hidden_field_tag(:last_rear_search, params[:last_rear_search]) %>
+  <%= hidden_field_tag(:related, params[:related]) %>
+  <%= hidden_field_tag(:page, 1) %>
+  <%= hidden_field_tag(:search, "") %>
+  <!-- /#pass-params: -->
+
+  <div class="form-group">
+    <div class="field">
+      <%= f.label :summary, class: "control-label" %><br>
+      <%= f.text_field :summary, class: "form-control" %>
+      <span class="help-block"></span>
+    </div><!-- /.field -->
+
+    <% if params[:last_front_controller] == "companies" %>
+  
+      <% if @company_contact_map.contact_id.blank? %>
+        <div class="field">
+          <%= f.label :company_id, class: "control-label" %><br>
+          <%= link_to url_for(h_rear_params_path(path: "/contacts")), :class => "list-group-item" do %>
+            <span class="glyphiconmy ico_contact right-pad"></span>
+            <%= "Scegli un contatto da inserire" %>
+          <% end %>
+        </div>      
+      <% else %>
+        <div class="field">
+          <%= f.label :contact_id, class: "control-label" %><br>
+          <%= link_to url_for(h_rear_params_path(path: "/contacts")), :class => "list-group-item" do %>
+            <span class="glyphiconmy ico_contact right-pad"></span>
+            <%= "#{@company_contact_map.contact.medium} #{@company_contact_map.contact.identifier}" %>
+          <% end %><!-- /link_to -->
+        </div><!-- /.field -->
+      <% end %>
+
+      <div class="field">
+        <%= f.label :favorite_cb_contact, class: "control-label" %><br>
+        <%= f.check_box :favorite_cb_contact, class: "form-control", "data-size" => "medium", "data-on-color" => "primary", "data-on-text" => "SI", "data-off-color" => "default", "data-off-text" => "NO" %>
+      </div>
+      
+    <% elsif params[:last_front_controller] == "contacts" %>
+
+      <div class="field">
+        <%= f.label :company_id, class: "control-label" %><br>
+        <%= link_to url_for(h_rear_params_path(path: "/companies")), :class => "list-group-item" do %>
+          <span class="glyphiconmy ico_company right-pad"></span>
+          <%= "#{@company_contact_map.company.name} - #{@company_contact_map.company.status}" %>
+        <% end %><!-- /link_to -->
+      </div><!-- /.field -->
+
+      <div class="field">
+        <%= f.label :favorite_cb_company, class: "control-label" %><br>
+        <%= f.check_box :favorite_cb_company, class: "form-control", "data-size" => "medium", "data-on-color" => "primary", "data-on-text" => "SI", "data-off-color" => "default", "data-off-text" => "NO" %>
+      </div>
+
+    <% end %><!-- /if -->
+
+    <div class="field">
+      <%= f.label :company_id, class: "control-label" %><br>
+      <%= f.text_field :company_id, class: "form-control" %>
+    </div><!-- /.field -->
+
+    <div class="field">
+      <%= f.label :contact_id, class: "control-label" %><br>
+      <%= f.text_field :contact_id, class: "form-control" %>
+    </div><!-- /.field -->
+  </div><!-- /.form-group -->
+
+  <div class="actions">
+    <%= f.submit "#{t "company_contact_maps.edit.submit"}", class: "btn btn-primary btn-block" %>
+  </div><!-- /.actions -->
+
+<% end %><!-- /form_for -->
+~~~~~~~~

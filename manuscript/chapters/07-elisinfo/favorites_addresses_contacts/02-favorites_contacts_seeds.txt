@@ -1,0 +1,275 @@
+# Implementiamo i preferiti (favorites) per i contatti 
+
+Abbiamo già creato la tabella favorites usando il Polimorfismo - POLYMORPHIC
+Adesso lo usiamo per rendere favoriti dei contatti.
+
+
+
+
+## Apriamo il branch "favorites contacts seeds"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b fcs
+~~~~~~~~
+
+
+
+
+
+## Creiamo la tabella generica Favorites 
+
+Abbiamo già creato la tabella polimorfica "favorites"
+
+
+
+
+## Internazionalizzazione I18n - dynamic
+
+Abbiamo già implementato l'internazionalizzazione.
+
+
+
+
+## Creiamo le associazioni polimorfiche
+
+nel model **favorite** abbiamo già inserito l'associazione polimorfica nella sezione **== Relationships ===**
+
+Aggiungiamo l'associazone polimorfica nella sezione **== Relationships ===** del model **contact** 
+
+{title=".../app/models/contact.rb", lang=ruby, line-numbers=on, starting-line-number=17}
+~~~~~~~~
+  has_many :favorites, as: :favoritable
+~~~~~~~~
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "update models contact with polimorphic favorite"
+~~~~~~~~
+
+
+
+
+## Popoliamo manualmente i contatti preferiti
+
+Usiamo la tabella favorites mettendo una descrizione sui campi "copy_..." ed associandola sia alla prima persona (Person.first) che alla prima azienda (Company.first). Inseriamo due nuovi preferiti sulla tabella favorites. Inoltre lo facciamo sia per l'italiano (la lingua impostata di default) che per l'inglese.
+
+- Inseriamo la descrizione "Nome Skype - anotheranonim" alla prima persona (Person.first).
+- Inseriamo la descrizione "Centralino - +39 02063451" alla prima azienda (Company.first).
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+irb> I18n.locale
+irb> p = Person.first
+irb> p.favorites.new(copy_normal: "Nome Skype", copy_bold: "anotheranonim" ).save
+irb> p.favorites
+irb> pf = p.favorites.last
+irb> pf.update(copy_normal: "Skype account", copy_bold: "anotheranonim", locale: :en)
+
+irb> c = Company.first
+irb> c.favorites.new(copy_normal: "Centralino", copy_bold: "+39 02063451" ).save
+irb> c.favorites
+irb> cf1 = c.favorites.last
+irb> cf1.update(copy_normal: "Main office", copy_bold: "+39 02063451", locale: :en)
+
+irb> Favorite.all
+irb> p.favorites
+irb> c.favorites
+~~~~~~~~
+
+
+Per vedere l'altro lato dell'associazione non possiamo chiamare "pf.person" o "cf.company" perché sono creati dinamicamente a partire dalla stessa tabella polimorfica "favorites". Invece possiamo chiamare:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+irb> pf.favoritable
+irb> cf1.favoritable
+~~~~~~~~
+
+Dal punto di vista del polimorfismo abbiamo finito.  
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add records contacts on favorites polymorphic"
+~~~~~~~~
+
+I> Questo git commit è solo per lasciare un commento perché le modifiche fatte sul database non sono passate tramite git.
+
+Questo sarebbe sufficiente se favorites fosse un elemento "sganciato" da aggiungere alle varie tabelle (ad esempio un commento). Ma nel nostro caso dobbiamo registrare anche nella tabella **contacts** quale record è il preferito (ci basta un solo external id perché non dobbiamo distinguere se è della persona o dell'azienda come abbiamo dovuto fare su company_person_maps).
+
+Per far questo ci manca la relazione uno-a-molti con **contacts** (una Persona <-> molte **contacts** preferite) inoltre (una Azienda <-> molte **contacts** preferite). 
+Dobbiamo informare il corrispondente record di **contacts** che è un preferito della prima persona "Jhon Doe". Per far questo aggiungiamo la chiave esterna favorite_id alla tabella **contacts**. Ma dobbiamo anche informare il corrispondente record di **contacts** che è un preferito della prima azienda "ABC srl". Per far questo possiamo usare la stessa chiave esterna favorite_id perché non c'è una relazione molti-a-molti tra persone e contatti o tra aziende e contatti e quindi un contatto può appartenere ad una sola persona o azienda. Se lo stesso contatto appartiene sia alla persona che all'azienda creo due records differenti con lo stesso contatto. Ho un record duplicato ma questo non mi crea problemi.
+
+
+
+
+## Aggiungiamo la chiave esterna "favorite_id" su **contacts**
+
+Come abbiamo visto una sola chiave esterna mi è sufficiente.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g migration AddFavoriteFieldToContacts favorite_id:integer
+~~~~~~~~
+
+{title="db/migrate/xxx_add_favorite_field_to_contacts.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class AddFavoriteFieldToContacts < ActiveRecord::Migration[5.0]
+  def change
+    add_column :contacts, :favorite_id, :integer
+  end
+end
+~~~~~~~~
+
+eseguiamo il migrate.
+~~~~~~~~
+rake db:migrate
+~~~~~~~~
+
+Non creo la relazione uno-a-molti sui models perché per mostrare i valori sui view sfrutto i campi copy_normal e copy_bold e non ho necessità di fare query complesse che usano i preferiti. Quindi non creo nessuna relazione e gestisco manualmente (con il codice sul controller) sia la creazione/modifica/eliminazione di un record su favorites sia la relativa assegnazione dei valori su favorite_id.
+
+
+Nella pagina contacts/edit non mi interessa sapere il valore di favorite_id ma solo se è o non è un preferito. Quindi attivo un combo box stile iphone in cui dichiaro se è un preferito o no. Per usare il combo box ho necessità di un campo boolean sulla tabella: **favorite_cb**
+
+
+Poiché questo campo è legato alla presenza o meno di un valore su favorite_id posso usare degli attributi virtuali sul model (Virtual Attributes).
+Il campo :favorite_cb di tipo boolean può essere sostituito da virtual attributes. Inseriamo il codice nella sezione **== Attributes ===**
+
+
+{title=".../app/models/contact.rb", lang=ruby, line-numbers=on, starting-line-number=11}
+~~~~~~~~
+  # virtual attributes ---------------------------------------------------------
+  # setter method
+  attr_writer :favorite_cb
+  
+  # getter method
+  def favorite_cb
+    #raise "summary: #{summary} - favorite_id: #{favorite_id} - id: #{id}"
+    if favorite_id.blank?
+      false
+    else
+      true
+    end
+  end
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+
+
+
+## Vediamo come funziona sulla console
+
+In pratica faccio due passaggi:
+1. assegno il nuovo preferito alla persona e salvo. (La persona deve avere già almeno un indrizzo associato)
+    posso vedere sia **c.favorite_id** della tabella **contacts** sia **c.contactable.id** 
+2. assegno l'id del nuovo preferito delle persona a contacts favorite_id
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+>> p = Person.first
+>> cn1 = p.contacts.first
+>> cn1.contactable_id
+    1
+>> cn1.contactable_type
+    Person
+>> cn1.contactable.first_name
+    Jhon
+    
+>> c = Company.first
+>> cn2 = c.contacts.first
+>> cn2.contactable_id
+    1
+>> cn2.contactable_type
+    Company
+>> cn2.contactable.name
+    ABC srl
+
+#rendiamo il primo contatto della persona un favorito:
+
+>> f = p.favorites.new(copy_normal: cn1.medium, copy_bold: cn1.identifier)
+>> f.save
+>> f.id
+    19
+>> cn1.favorite_id = f.id
+>> cn1
+>> cn1.save
+
+
+#rendiamo il primo contatto della azienda un favorito:
+
+>> f = c.favorites.new(copy_normal: cn2.medium, copy_bold: cn2.identifier)
+>> f.save
+>> f.id
+    20
+>> cn2.favorite_id = f.id
+>> cn2
+>> cn2.save
+~~~~~~~~
+
+
+Questa procedura richiederebbe un commit/roll back come si fa con i pagamenti nell'e-commerce dove il carrello viene "svuotato" e la merce inviata solo se c'è il pagamento altrimenti si fa un roll-back di tutto il processo. Questo controllo al momento non lo facciamo ma è una miglioria che metteremo in un futuro refactoring.
+
+Abbiamo finito ed ottenuto il nuovo preferito 17 sulla persona 1 (Jhon Doe) che ha i dati "Nome skype - anotheranonim" presi dal contacts 1. Inoltre abbiamo archiviato sul record contacts che è il preferito della persona 1. Cosa analoga è stata fatta per l'aziendo con nuovo preferito 18...
+
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add favorites contacts seeds"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku fcs:master
+$ heroku run rake db:migrate
+~~~~~~~~
+
+I> Lato produzione su heroku c'è un database indipendente da quello di sviluppo quindi risulta vuoto.
+
+per popolare il database di heroku basta aprire la console con il comando:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku run rails c
+~~~~~~~~
+
+E rieseguire i passi già fatti nel paragrafo precedentemente
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge fcs
+$ git branch -d fcs
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

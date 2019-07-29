@@ -1,0 +1,126 @@
+# select_realateds - Contacts
+
+in questo capitolo aggiungiamo "contatti" alla selezione dei relatives. Per relatives si intendono gli elenchi di entità (Favoriti, Persone, Aziende, Contatti). Le varie scelte di selezione sono immagazinate sul database nella cartella select_relateds. Non uso una tabella chiamata entities perché posso avere selezioni differenti ad esempio le posizioni di un'offerta oppure la scelta tra intestazione, posizioni, condizioni generali, condizioni di pagamento, ecc...
+
+
+
+
+## Apriamo il branch "Select Releateds Contacts"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b src
+~~~~~~~~
+
+
+
+
+## Tabella select_relateds
+
+Abbiamo già creato la maschera che ci permette di passare tra relatives.
+Questa maschera si basa su una tabella con tutte le possibili scelte e vari campi boolean: 
+* bln_entities (favorites, people, companies, addresses, communications, users, components, products, folders, offers, ...)
+* bln_documents (headers, footer, positions, condizioni, ...)
+* bln_...
+
+name: è quello che viene tradotto con [Globalize](https://github.com/globalize/globalize)
+  
+meta_data: è il valore che viene usato per chiamare l'icona o il path o la selezione.
+Tutte le variazioni le faccio col codice con .singolarize .pluralize eval() etc...
+
+bln_xxx: è usato per sapere se quel record deve essere presentato nell'elenco a seconda della pagina da dove chiamo il select_relateds.
+
+
+
+
+## Popoliamo manualmente la tabella aggiungendo "contacts"
+
+Usiamo la console di rails per popolare la tabella del database.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails c
+
+irb> SelectRelated.last
+irb> SelectRelated.new(name: "contacts", metadata: "contacts", bln_entities: TRUE, bln_documents: TRUE, locale: :en).save
+irb> SelectRelated.last
+irb> SelectRelated.last.update(name: "contatti", locale: :it)
+irb> SelectRelated.last.name
+irb> locale = "en"
+irb> SelectRelated.last.name
+
+irb> SelectRelated.all
+irb> exit
+~~~~~~~~
+
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add seed select_realateds"
+~~~~~~~~
+
+I> Questo git commit è solo per lasciare un commento perché le modifiche fatte sul database non sono passate tramite git.
+
+
+
+
+## Asset pipeline (Stylesheets e Javascript)
+
+l'icona contacts l'abbiamo già inserita quando abbiamo creato il frontend_assets.
+
+
+verifichiamo che funziona tutto usando la view creata dallo scaffold e modificando il locale sull'url
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+https://elisinfo5-flaviobordonidev.c9users.io/select_relateds
+https://elisinfo5-flaviobordonidev.c9users.io/select_relateds?locale=en
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add contacts record to select_relateds table"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku src:master
+~~~~~~~~
+
+I> Lato produzione su heroku c'è un database indipendente da quello di sviluppo quindi risulta vuoto.
+
+popoliamo il database di heroku:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku run rails c
+irb> SelectRelated.new(name: "contacts", metadata: "contacts", bln_entities: TRUE, bln_documents: TRUE, locale: :en).save
+irb> SelectRelated.last.update(name: "contatti", locale: :it)
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge src
+$ git branch -d src
+~~~~~~~~

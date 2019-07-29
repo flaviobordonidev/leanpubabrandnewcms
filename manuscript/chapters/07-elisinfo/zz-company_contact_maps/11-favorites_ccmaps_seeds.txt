@@ -1,0 +1,220 @@
+# Usiamo la tabella polimorfica preferiti - favorites 
+
+in questo capitolo lavoreremo principalmente lato database. Useremo la tabella favorites e metteremo i seed iniziali ed alcuni dati di prova. Non avremo nessuna interazione lato views e quindi non apriremo il browser per usare la web gui su http://localhost:3000
+Eseguendo gli scaffolds la web gui è creata in automatico ma in questo capitolo non la utilizzeremo. Utilizzeremo invece la console di rails "$ rails c".
+
+
+
+
+## Apriamo il branch "favorites company_contact_map seed"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b fccms
+~~~~~~~~
+
+
+
+
+## Creiamo le associazioni polimorfiche
+
+lato favorite abbiamo già impostato la relazione polimorfica.
+
+{title=".../app/models/favorite.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+class Favorite < ApplicationRecord
+
+  # polymorphic ----------------------------------------------------------------
+  belongs_to :favoritable, polymorphic: true
+  #-----------------------------------------------------------------------------
+
+end
+~~~~~~~~
+
+lato company abbiamo già impostato l'altro lato della relazione polimorfica.
+
+{title=".../app/models/company.rb", lang=ruby, line-numbers=on, starting-line-number=7}
+~~~~~~~~
+  # polymorphic ----------------------------------------------------------------
+  has_many :favorites, as: :favoritable
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+lato contact aggiungiamo l'altro lato dell'associazione polimorfica.
+
+{title=".../app/models/contact.rb", lang=ruby, line-numbers=on, starting-line-number=7}
+~~~~~~~~
+  # polymorphic ----------------------------------------------------------------
+  has_many :favorites, as: :favoritable
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+
+
+
+## Proviamo l'associazione polimorfica
+
+Usiamo la tabella favorites mettendo una descrizione sui campi "copy_..." ed associandola sia alla prima azienda (Company.first) che al primo contatto (Contact.first). Inseriamo due nuovi preferiti sulla tabella favorites. 
+
+- Lato contatti, al primo contatto (Contact.first) aggiungiamo come favorito il dipartimento "uff Acquisti" dell'azienda "Abbello srl"
+- Lato aziende, alla prima azienda (Company.first) aggiungiamo come favorito il telefono "+39 0745239841" del dipartimento "uff Acquisti"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+irb> cn = Contact.first
+irb> cn.favorites.new(copy_normal: "uff Acquisti", copy_bold: "Abbello srl" ).save
+irb> cn.favorites
+irb> cnf = cn.favorites.first
+irb> c = Company.first
+irb> c.favorites.new(copy_normal: "uff Acquisti", copy_bold: "tel: +39 0745239841" ).save
+irb> c.favorites
+     # ci sono anche i favoriti di people che abbiamo implementato nei capitoli precedenti
+     # quindi per prendere l'ultimo che è stato appena creato con "new" uso il comando "last"
+
+irb> cf = c.favorites.last
+~~~~~~~~
+
+Per vedere l'altro lato dell'associazione non possiamo chiamare "cnf.company" o "cf.contact" perché sono creati dinamicamente a partire dalla stessa tabella polimorfica "favorites". Invece possiamo chiamare:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+irb> pf.favoritable
+irb> cf.favoritable
+~~~~~~~~
+
+Dal punto di vista del polimorfismo abbiamo finito. Adesso sappiamo come lavora l'associazione polimorfica (polymorphic association)! ^_^  
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add favorites polymorphic"
+~~~~~~~~
+
+Questo sarebbe sufficiente se favorites fosse un elemento "sganciato" da aggiungere alle varie tabelle (ad esempio un commento). Ma nel nostro caso dobbiamo registrare anche nella tabella company_contact_maps quale record è il preferito e se è dell'azienda o del contatto.
+
+Per far questo ci manca la relazione uno-a-molti con company_contact_maps (un Contatto <-> molte comapny_contact_maps preferite) inoltre (una Azienda <-> molte comapny_contact_maps preferite).
+Come abbiamo già visto nei capitoli precedenti, per far questo ci occorrono due chiavi esterne.
+
+
+
+
+## Aggiungiamo le due chiavi esterne "favorite_ids" su company_person_maps
+
+Come abbiamo visto una sola chiave esterna non mi è sufficiente perché lo stesso record "xy" della tabella company_person_maps può essere un preferito per la persona "x" ma non essere un preferito per l'azienda "y". Aggiungiamo quindi 2 chiavi esterne: 
+* favorite_id_company: quando dal contatto selezionato scelgo una delle sue aziende collegate e la setto come preferita
+* favorite_id_contact: quando dall'azienda selezionata scelgo uno dei suoi contatti collegati e la setto come preferito
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g migration AddFavoriteFieldsToCompanyContactMaps favorite_id_company:integer favorite_id_contact:integer
+~~~~~~~~
+
+{title="db/migrate/xxx_add_favorite_fields_to_company_contact_maps.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class AddFavoriteFieldsToCompanyContactMaps < ActiveRecord::Migration[5.0]
+  def change
+    add_column :company_contact_maps, :favorite_id_company, :integer
+    add_column :company_contact_maps, :favorite_id_contact, :integer
+  end
+end
+~~~~~~~~
+
+eseguiamo il migrate.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rake db:migrate
+~~~~~~~~
+
+Non creo la relazione uno-a-molti sui models perché per mostrare i valori sui view sfrutto i campi copy_normal e copy_bold e non ho necessità di fare query complesse che usano i preferiti. Quindi non creo nessuna relazione e gestisco manualmente (con il codice sul controller) sia la creazione/modifica/eliminazione di un record su favorites sia la relativa assegnazione dei valori su favorite_id_company e favorite_id_contact.
+
+
+Nella pagina comapny_contact_maps/edit non mi interessa sapere il valore dei favorite_ids ma solo se è o non è un preferito. Quindi attivo un combo box stile iphone in cui dichiaro se è un preferito o no. Uno per company ed uno per contact. Per usare il combo box ho necessità di un campo boolean sulla tabella. Uno per company ed uno per contact:
+* favorite_cb_company
+* favorite_cb_contact
+
+Poiché questi campi sono legati alla presenza o meno di un valore sui favorite_ids posso usare degli attributi virtuali sul model (Virtual Attributes).
+I campi :favorite_cb_company e :favorite_cb_contact ti tipo boolean possono essere sostituiti da virtual attributes
+
+{title=".../app/models/company_contact_map.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+  # virtual attributes ---------------------------------------------------------
+  attr_writer :favorite_cb_company, :favorite_cb_person
+  
+  # getter method (non creo il setter method)
+  def favorite_cb_company
+    favorite_id_company.blank? ? false : true
+  end
+
+  # getter method (non creo il setter method)
+  def favorite_cb_person
+    favorite_id_company.blank? ? false : true
+  end
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+
+Vediamo come funziona sulla console:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+>> cn = Contact.first
+>> ccm = cn.company_contact_maps.last
+>> ccm.summary
+    centralino
+>> ccm.company_id
+    1
+>> ccm.company.name
+    ABBello srl
+>> f = cn.favorites.new(copy_normal: ccm.summary, copy_bold: ccm.company.name)
+>> f.save
+>> f.id
+    28
+>> ccm.favorite_id_contact = f.id
+>> ccm
+>> ccm.save
+~~~~~~~~
+
+In pratica faccio due passaggi:
+1. assegno il nuovo preferito al contatto e salvo
+2. assegno l'id del nuovo preferito del contatto a company_contact_maps favorite_id_contact
+
+Abbiamo finito ed ottenuto il nuovo preferito 28 sul contatto 1 (+39 0745239841) che ha i dati "centralino ABBello" presi dal company_contact_map 1. Inoltre abbiamo archiviato sul record company_contact_map che è il preferito del contatto 1.
+
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add favorites company_contact_maps seeds"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku fccms:master
+$ heroku run rake db:migrate
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge fccms
+$ git branch -d fccms
+~~~~~~~~

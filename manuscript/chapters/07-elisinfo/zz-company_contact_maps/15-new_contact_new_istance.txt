@@ -1,0 +1,108 @@
+# Nuovo contatto su nuova istanza
+
+agevoliamo gli inserimenti permettendo di creare un nuovo contatto direttamente su una nuova istanza quando siamo nel secondo livello di profondità di pagina. Ad esempio se siamo sull'azienda INC e vogliamo verificare/aggiungere il contatto ** centralino +39010204.1 ** allora faccio una prima ricerca e mi si apre la maschera di edit. clicco sul link per un nuovo contatto e scopro che non esiste il numero del centralino nel database. Ho sulla destra il pulsante "new" che mi crea un nuovo contatto su un'altra istanza così mi resta aperta la possibilità di scelta.
+
+Questo scenario mi si presenterà spesso all'inizio, quando non ho molti dati nel database. Ma quando avremo una base dati ben consolidata aprire una nuova istanza accadrà molto di rado.
+
+
+
+
+## Apriamo il branch "New Contact New Instance"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b ncni
+~~~~~~~~
+
+
+
+
+## Implementiamo la nuova istanza del browser per un nuovo contatto
+
+Siamo nell'elenco dei contatti sulla pagina di secondo livello [(codice: 01)](#code-company_contact_maps-new_contact_new_istance-01) ed attiviamo il pulsante new  (dopo una ricerca o se non è presente nessuna voce nella lista).
+
+{title=".../app/views/contacts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=32}
+~~~~~~~~
+              <%= render 'related_button_new_instance', list_to_add: @contacts %>
+~~~~~~~~
+
+vediamo il partial che attiva l'apertura di una nuova istanza del browser con la pagina su contacts/new
+
+{title=".../app/views/contacts/_related_button_new_instance.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<% if params[:search].present? or (list_to_add.size == 0)%>
+
+  <div class="list-group pull-right  right-pad">
+    <button onclick="myFunction()">
+      <span class="glyphiconmy ico_new right-pad"></span>
+    </button>
+    
+    <script>
+    function myFunction() {
+        var myWindow = window.open("<%= url_for(h_params_path(path: "/contacts/new")) %>", "_blank", "toolbar=no,scrollbars=yes,resizable=yes,top=50,left=50,width=400,height=600");
+    }
+    </script>
+  </div><!-- /btn-group -->
+
+<% else %>
+
+  <div class="btn-group pull-right right-pad">  <!-- btn-group -->
+    <a href="#" class="btn btn-primary disabled">
+      <span class="glyphiconmy ico_new"></span>
+    </a>
+  </div> <!-- /btn-group -->
+
+<% end %>
+~~~~~~~~
+
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add new contact new istance"
+~~~~~~~~
+
+
+
+
+## Implementiamo la nuova istanza del browser per una nuova azienda
+
+lato azienda abbiamo già abilitato il pulsante di nuovo su nuova istanza nei capitoli precedenti.
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku ncni:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge ncni
+$ git branch -d ncni
+~~~~~~~~
+
+
+
+
+## Backup su github
+
+facciamo un backup del ns progetto su github:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

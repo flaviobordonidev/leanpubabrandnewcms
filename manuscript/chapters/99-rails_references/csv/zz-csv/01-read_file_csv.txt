@@ -1,0 +1,46 @@
+# Donachiaro CSV
+
+Preparo una nuova applicazione che legge dei file di testo con i dati separati dal punto e virgola ";". E' quasi un file CSV (Comma Separated Values) solo che ho ";" invece di ","
+
+
+
+
+# Attivo libreria ruby CSV
+
+Per poter lavorare su file di testo di tipo CSV usiamo la libreria di ruby CSV. Per attivarla la richiediamo sul file  di configurazione a livello di applicazione.
+
+[codice: application config 01](#code-application-config-01)
+
+{title="config/application.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+require 'csv'
+~~~~~~~~
+
+
+Copiamo i due files txt su public. Ho scelto questa cartella perché posso fare una verifica anche su heroku. Attenzione! Su heroku i files dentro public sono visibile publicamente
+Comunque questo è temporaneo perché poi andremo a leggere sul server ftp.
+
+Leggiamo i files direttamente dalla console di rails
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+
+>> CSV.foreach("tmp/transactions.txt") do |row|
+>* puts row
+>> end
+~~~~~~~~
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+
+>> CSV.foreach("tmp/transactionDetails.txt") do |row|
+>* puts row
+>> end
+~~~~~~~~
+
+Funziona! Riesco a leggere i files riga per riga
+
+

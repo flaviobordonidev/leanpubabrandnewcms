@@ -1,0 +1,727 @@
+# Amazon Web Service S3
+
+Purtroppo heroku non ci permette di fare upload di files sulla loro piattaforma (ovviamente a parte il git push).
+Quindi per gestire il file preso dal server FTP sfruttiamo il servizio di amazon web service S3 con il quale possiamo dialogare.
+
+
+
+
+## Che gemma usare per upload su AWS S3
+
+gli upload e download dei files da AWS S3 li gestiamo con Paperclip.
+
+Paperclip usa imagemagick con le sue gemme.
+
+* https://www.sitepoint.com/uploading-files-with-paperclip/
+* https://devcenter.heroku.com/articles/paperclip-s3
+* https://github.com/thoughtbot/paperclip/wiki/Paperclip-with-Amazon-S3
+* https://github.com/thoughtbot/paperclip
+* http://stackoverflow.com/questions/36315596/how-do-i-read-files-in-rails-images-text-from-amazon-s3-that-were-uploaded-m
+* https://www.youtube.com/watch?v=0_2VBDoowHs&noredirect=1
+* https://aws.amazon.com/sdk-for-ruby/
+* https://rubygems.org/gems/aws-sdk
+
+* https://richonrails.com/articles/getting-started-with-paperclip
+* http://www.rubydoc.info/gems/paperclip/Paperclip/ClassMethods
+
+Usiamo AWS S3 come Server FTP
+
+* http://resources.intenseschool.com/amazon-aws-howto-configure-a-ftp-server-using-amazon-s3/
+* http://cloudacademy.com/blog/s3-ftp-server/
+
+
+ATTENZIONE nell'esempio che segue utiliziamo la tabella Transactions ma è sbagliato!
+Dobbiamo creare un nuovo scaffold che contenga i files CSV. perché ogni riga di questa tabella avrà un file CSV.
+Quindi qui possiamo fare la separazione del nome e creare i raggruppamenti per le varie onlus.
+Un nome potrebbe essere $ rails g scaffold Csvfile --> tabella "csvfiles" e model "Csvfile"  
+
+
+
+
+## Apriamo il branch "Csvfile on Aws S3"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b cas
+~~~~~~~~
+
+
+
+
+## Installiamo Paperclip
+
+Se stai upgradando paperclip  
+
+NOTE FOR UPGRADING FROM 4.3.0 OR EARLIER
+
+Paperclip is now compatible with aws-sdk >= 2.0.0.
+
+If you are using S3 storage, aws-sdk >= 2.0.0 requires you to make a few small
+changes:
+
+* You must set the `s3_region`
+* If you are explicitly setting permissions anywhere, such as in an initializer,
+  note that the format of the permissions changed from using an underscore to
+  using a hyphen. For example, `:public_read` needs to be changed to
+  `public-read`.
+
+For a walkthrough of upgrading from 4 to 5 and aws-sdk >= 2.0 you can watch
+http://rubythursday.com/episodes/ruby-snack-27-upgrade-paperclip-and-aws-sdk-in-prep-for-rails-5
+
+
+I> ATTENZIONE!
+I>
+I> Verifica sempre gli ultimi aggiornamenti sul readme.md di https://github.com/thoughtbot/paperclip
+
+Aggiungiamo la "gem" di ruby:
+
+per installarlo dobbiamo aggiungerlo nel Gem file. Facciamo riferimento al [sito ufficiale di paperclip] https://github.com/thoughtbot/paperclip) e mettiamo nel Gemfile l'[ultima versione disponibile della gemma](https://rubygems.org/gems/paperclip).
+
+
+[01:](#code-csv-transaction_aws-01)
+
+{title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=42}
+~~~~~~~~
+# File Upload
+gem 'paperclip', '~> 5.1'
+gem 'aws-sdk', '~> 2.3'
+~~~~~~~~
+
+La gemma "mini_magick" ci aiuta con l'integrazione di refile su Rails e l'implementazione dell'elaborazione delle immagini. MiniMagick richiede ImageMagic installato. Per installarlo su Ubuntu/Cloud9 basta eseguire:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo apt-get install imagemagick
+~~~~~~~~
+
+Se non funziona eseguire:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo apt-get update
+$ sudo apt-get install imagemagick
+~~~~~~~~
+
+Se neanche questo funziona eseguire:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo add-apt-repository main
+$ sudo apt-get update
+$ sudo apt-get install imagemagick
+~~~~~~~~
+
+Eseguiamo l'installazione della gemma con bundle
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ bundle install
+~~~~~~~~
+
+
+
+
+## Aggiungiamo il campo csvfile alla tabella kiosks
+
+
+Usiamo lo script di generazione di Paperclip per creare il migration
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails generate paperclip kiosk csvfile
+~~~~~~~~
+
+questo crea il migrate:
+
+{title=".../db/migrate/xxx_add_attachment_csvfile_to_kiosks.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class AddAttachmentCsvfileToKiosks < ActiveRecord::Migration
+  def self.up
+    change_table :kiosks do |t|
+      t.attachment :csvfile
+    end
+  end
+
+  def self.down
+    remove_attachment :kiosks, :csvfile
+  end
+end
+~~~~~~~~
+
+Come potete vedere, Paperclip presenta un suo metodo per gli allegati e questo è realmente utile.
+
+Cosa fa esattamente questo metodo? Aggiunge le seguenti colonne nella nostra tabella:
+
+Il metodo add_attachment è un helper che aggiungerà automaticamente i 4 campi che Paperclip usa:
+
+
+{attachment}_file_name
+{attachment}_file_size
+{attachment}_content_type
+{attachment}_updated_at
+
+
+Il nome del campo attachment è l'argomento a corredo del metodo attachment (il file CSV nel nostro caso).
+Di fatto, solo il campo {attachment}_file_name è richiesto, così se noi non vogliamo archiviare altre informazioni,
+possiamo andare oltre e creare invece la migrazione base.
+
+
+
+Aggiungiamo il campo al database
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+
+$ rake db:migrate
+~~~~~~~~
+
+
+
+
+## Aggiungiamo paperclip csvfile al model
+
+Aggiungiamo l'informazione al modello di Kiosk che il campo "csvfile" è per file uploaded ** has_attached_file :csvfile **
+
+Aggiungo la validazione altrimenti ho un errore. Questo è stato implementato dalla versione 4 di Paperclip per aumentarne la sicurezza.
+
+
+{title="app/models/kiosk.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class Kiosk < ApplicationRecord
+
+  # one-to-many (many side) ----------------------------------------------------
+  belongs_to :company
+  #-----------------------------------------------------------------------------
+
+  # one-to-many (one side) ----------------------------------------------------
+  has_many :transactions
+  #-----------------------------------------------------------------------------
+
+  # paperclip required ---------------------------------------------------------
+  has_attached_file :csvfile
+  validates_attachment :csvfile,
+                         content_type: { content_type: ["text/plain"] }
+  #-----------------------------------------------------------------------------
+
+end
+~~~~~~~~
+
+come scelgo i mime types?
+
+Ecco di seguito alcuni links ed una lista dei mime types:
+
+* https://www.sitepoint.com/web-foundations/mime-types-complete-list/
+* http://stackoverflow.com/questions/6554951/validate-extension-in-paperclip-ruby-on-rails
+* http://stackoverflow.com/questions/8818251/how-to-validate-file-content-type-to-pdf-word-excel-and-plain-text-for-paperc
+* http://stackoverflow.com/questions/26347844/rails-paperclip-file-type-validation-add-pdf
+
+
+
+
+## Aggiungiamo paperclip csvfile al controller
+
+
+{title="app/controllers/kiosks_controller.rb", lang=ruby, line-numbers=on, starting-line-number=81}
+~~~~~~~~
+# Never trust parameters from the scary internet, only allow the white list through.
+def kiosk_params
+  params.require(:kiosk).permit(:csvfile, :company_id, :name, :sn, :line1, :line2, :line3, :locality, :region, :postcode, :country, :latitude, :longitude, :filecsvname, :vat2, :tot_cash_cents, :tot_pos_cents, :transaction_counter)
+end
+~~~~~~~~
+
+I> Da notare che dobbiamo permettere solo "csvfile" e non csvfile_file_name o gli altri campi derivati (csvfile_file_size, csvfile_content_type, csvfile_updated_at). Questi sono usati internamente da Paperclip.
+
+
+
+## Aggiungiamo paperclip csvfile al views/new e views/edit
+
+basta aggiungerlo sul partial _form che è richiamato da entrambi edit e new
+
+{title=".../app/views/kiosks/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=79}
+~~~~~~~~
+  <div class="field">
+    <%= f.label :csvfile %>
+    <%= f.file_field :csvfile, class: 'form-control'%>
+  </div>
+~~~~~~~~
+
+Usiamo solo ** f.file_field :csvfile ** per 'renderizzare' il campo appropriato. Dalla versione Rail 5 in poi non è più necessario fornire :html => { :multipart => true } al metodo form_for.
+
+
+
+
+## Aggiungiamo sul view/show
+
+
+With validations in place (or after disabling it explicitly) you can upload your first file. Before doing that, however, let’s create the index view:
+
+{title="views/kiosks/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=64}
+~~~~~~~~
+  <div class="field">
+    <%= f.label :csvfile %>
+    <%= f.file_field :csvfile, class: 'form-control'%>
+  </div>
+~~~~~~~
+
+{title="views/kiosks/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=64}
+~~~~~~~~
+<%= image_tag @kiosk.csvfile.url %>
+~~~~~~~
+
+
+
+
+## Implementiamo Amazon S3
+
+Anche se le immagini png e jpg possono essere archiviate su Heroku i files pdf o txt non sono accettati. Inoltre le immagini sono archiviate solo per un tempo limitato; dopo alcuni giorni vengono cancellate.
+
+* https://www.sitepoint.com/uploading-files-with-paperclip/
+* https://devcenter.heroku.com/articles/paperclip-s3
+* http://stackoverflow.com/questions/32919273/access-denied-s3-with-paperclip
+* https://github.com/thoughtbot/paperclip/wiki/Paperclip-with-Amazon-S3
+* http://rexstjohn.com/how-to-solve-access-denied-with-heroku-paperclip-s3-ror/
+* https://console.aws.amazon.com/iam/home#users/botpaperclip
+
+1. installiamo gem 'aws-sdk', '~> 2.3'
+2. Per accesso da development
+    # config/environments/development
+    config.paperclip_defaults = {
+      storage: :s3,
+      s3_credentials: {
+        bucket: 'flapaperclip',
+        access_key_id: 'AKIAJJ55RPPRPGHJTOMA',
+        secret_access_key: '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',
+        s3_region: 'eu-central-1'
+      }
+    }
+3. Crea-account/login su AWS S3. -> click su S3 -> click su create bucket 
+  su proprietà vedi il nome del bucket
+  ed il region nella metà dello Static Website Hosting -> Endpoint
+4. Crea uno IAM user e prendi
+  - access_key_id
+  - secret_access_key
+  Inoltre su User -> Permission -> Attach Policy --> AmazonS3FullAccess
+
+
+We’ll also need to specify the AWS configuration variables for the production Environment.
+# config/environments/production.rb
+config.paperclip_defaults = {
+  storage: :s3,
+  s3_credentials: {
+    bucket: ENV.fetch('S3_BUCKET_NAME'),
+    access_key_id: ENV.fetch('AWS_ACCESS_KEY_ID'),
+    secret_access_key: ENV.fetch('AWS_SECRET_ACCESS_KEY'),
+    s3_region: ENV.fetch('AWS_REGION'),
+  }
+}
+
+
+
+
+## Installiamo aws-sdk
+
+lo abbiamo già installato nel capitolo precedente insieme a Paperclip
+
+{title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=50}
+~~~~~~~~
+# File Upload
+gem 'paperclip', '~> 5.1'
+gem 'aws-sdk', '~> 2.3'
+~~~~~~~~
+
+
+
+
+## Connettiamoci al bucket di amazon web service S3.
+
+Per connetterci al bucket abbiamo bisogno delle seguenti informazioni:
+
+* nome del bucket
+* access_key_id
+* secret_access_key
+* s3_region
+
+
+
+
+
+
+
+
+### Il nome del bucket
+
+Creiamo l'utenza ed il bucket su amazon web service S3
+
+andiamo sul sito di amazon web service https://console.aws.amazon.com e facciamo login (creiamo un nuovo account).
+
+* Siamo sulla ConsoleHome AWS. -> click su S3. -> click su create bucket.
+
+Ritroviamo il nome del bucket
+Una volta fatto login dalla ConsoleHome AWS fare click sul service "S3". Ci si presenterà un elenco con tutti i bucket creati con relativo nome.
+
+bucket: 'donachiaro'
+
+
+
+
+### La Access key e la Secret access key - IAM user
+
+Per la access_key_id e la secret_access_key creiamo uno IAM user
+
+AWS -> Service -> IAM -> Users
+  Access keys
+    - access_key_id
+    - secret_access_key
+  Permission 
+    - Attach Policy --> AmazonS3FullAccess
+
+Una volta fatto login dalla ConsoleHome AWS fare click sul service "IAM". Vado sul link Users e ne creo uno nuovo.
+lo chiamo "botpaperclip" ("bot" convenzionalemente indica che non è un utente fisico ma un accesso per una applicazione)
+clicco sul link "botpaperclip" e sul tab Permission -> Add Permission -> "AmazonS3FullAccess - AWS Managed policy"
+
+Security credentials
+Access keys -> Create access key
+
+Access key ID: AKIAII734URJ5UCAFCJA
+Secret access key: 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
+
+
+
+
+## La s3_region
+
+AWS -> Service -> S3 -> Bucket name -> Properties -> Static website hosting -> Endpoint 
+
+Una volta fatto login dalla ConsoleHome AWS fare click sul service "S3". Ci si presenterà un elenco con tutti i bucket creati con relativo nome.
+Qui c'è un nome di Region ma non è quello che ci serve. Quello che ci serve lo dobbiamo estrapolare dallo Endpoint.
+
+Fare click sul nome nome del bucket che ci interessa. Scegliere il tab "Properties". Scegliere "Static website hosting"
+Endpoint: donachiaro.s3-website.eu-central-1.amazonaws.com
+
+s3_region: 'eu-central-1'
+
+
+
+
+## Connettiamoci su AWS S3 da development
+
+adesso che abbiamo tutte le informazioni da aws implementiamo il file di settings che permettono a Rails di collegarsi ad AWS tramite il plugin che abbiamo installato.
+Sul development.rb dentro config/environments mettiamo il codice in basso dentro ** Rails.application.configure do ... end **
+
+{title=".../config/environments/development.rb", lang=ruby, line-numbers=on, starting-line-number=58}
+~~~~~~~~
+  # config/environments/development
+  config.paperclip_defaults = {
+    storage: :s3,
+    s3_credentials: {
+      bucket: 'donachiaro',
+      access_key_id: 'AKIAII734URJ5UCAFCJA',
+      secret_access_key: '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',
+      s3_region: 'eu-central-1'
+    }
+  }
+~~~~~~~~
+
+Facciamo ripartire il web server e adesso quando carichiamo un immagine questa viene caricata su AWS S3 nel bucket specifico creando una cartella con il nome della tabella che carica l'immagine. Nel nostro caso "companies".
+
+ATTENZIONE! Ci può volere del tempo prima che l'immagine venga uploadata quindi non abbiate fretta e fate un refresh dopo alcuni minuti.
+
+
+
+
+## Impostiamo upload anche per la produzione
+
+Creiamo un bucket dedicato per la produzione che chiamiamo "donachiaroprod" ed usiamo lo stesso utente IAM (bot-paperclip)
+
+Sul production.rb dentro config/environments mettiamo il codice in basso dentro ** Rails.application.configure do ... end **
+
+{title=".../config/environments/production.rb", lang=ruby, line-numbers=on, starting-line-number=58}
+~~~~~~~~
+  # config/environments/production
+  config.paperclip_defaults = {
+    storage: :s3,
+    s3_credentials: {
+      bucket: 'donachiaroprod',
+      access_key_id: 'AKIAII734URJ5UCAFCJA',
+      secret_access_key: '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',
+      s3_region: 'eu-central-1'
+    }
+  }
+~~~~~~~~
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add AWS S3 connection to upload images with paperclip in Production"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+Prima di pubblicare passiamo le variabili d'ambiente a Heroku.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku aws:master
+$ heroku run rake db:migrate
+~~~~~~~~
+
+
+
+
+## Rivediamo l'upload
+
+Non essendo un'immagine non posso chiamare ** <%= image_tag @kiosk.csvfile.url %> ** ma possiamo vedere l'url sulla rails console.
+Consideriamo che l'upload del file csv è stato fatto sul primo chiosco.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+$ k = Kiosk.first 
+$ k.csvfile.url
+=> "//s3.amazonaws.com/donachiaro/kiosks/csvfiles/000/000/002/original/MRDP1-transactions.txt?1486967898" 
+~~~~~~~~
+
+l'url è sbagliato. Dovrebbe essere 
+
+//s3.eu-central-1.amazonaws.com/donachiaro/kiosks/csvfiles/000/000/002/original/MRDP1-transactions.txt?1486967898
+
+
+Basta correggere l'endpoint come suggerito sul manuale di heroku https://devcenter.heroku.com/articles/paperclip-s3.
+Correggiamo l'endpoint del bucket di AWS S3.
+ATTENZIONE! probabilmente il file paperclip.rb non esiste sotto config/initializers ma basta crearlo.
+
+{title=".../config/initializers/paperclip.rb", lang=ruby, line-numbers=on, starting-line-number=58}
+~~~~~~~~
+# correction for the endpoint of the AWS S3 Bucket
+Paperclip::Attachment.default_options[:s3_host_name] = 's3.eu-central-1.amazonaws.com'
+~~~~~~~~
+
+
+Con questa correzione funziona tutto localmente.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+$ k = Kiosk.first 
+$ k.csvfile.url
+ => "//s3.eu-central-1.amazonaws.com/donachiaro/kiosks/csvfiles/000/000/002/original/MRDP1-transactions.txt?1486967898" 
+~~~~~~~~
+
+
+
+
+## Apriamo il file uploadato su AWS S3
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+$ k = Kiosk.first 
+$ k.csvfile.url
+$ file = open("https:#{k.csvfile.url}")
+ => #<Tempfile:/tmp/open-uri20170213-3733-epk9su> 
+~~~~~~~~
+
+Si è aperto il file! URRRAAAAA! FUNZIONA!!! Si Può FAARREEEEEEE!!!
+Navighiamo nel file aperto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ CSV.foreach(file, col_sep: ';') do |row|
+$   puts row[1]
+$ end
+~~~~~~~~
+
+e vengono stampati sul terminale gli ** ids ** (row[1]) di tutte le righe/records
+
+
+
+
+
+
+## Mascheriamo i secrets con Figaro
+
+Adesso dobbiamo nascondere le chiavi segrete con figaro prima di fare il commit ed il push su heroku o github.
+
+prendiamo il file dei secrets di figaro (application.yml) ed aggiungiamo le informazioni per connetterci ad AWS S3.
+
+{title=".../config/application.yml", lang=yaml, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+development:
+  SECRET_KEY_BASE: 82587814edcb80dc3ff463c6f869e734ce7b7ee625f26f59ff55574349b173efd4a7e566c07eb6b6eb3b265b284990d46fc0744e7a847dd4da78afc8e8fcb937
+  # Connessione ad AWS S3 per Paperclip
+  S3_BUCKET_NAME: donachiaro
+  AWS_ACCESS_KEY_ID: AKIAII734URJ5UCAFCJA
+  AWS_SECRET_ACCESS_KEY: 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
+  AWS_REGION: eu-central-1
+
+test:
+  SECRET_KEY_BASE: 5c4344801370241146bea0e09a6f7fcac8871c00f4c3dc968dca38138c1b476e6de9e24d60e7597a966e1df41946886578f959a9d4aac153bcbbf0c36ddc51b1
+
+production:
+  #SECRET_KEY_BASE: already present on heroku. See $ heroku config
+~~~~~~~~
+
+e togliamoli dal development.rb sostituendogli le variabili d'ambiente.
+
+{title=".../config/environments/development.rb", lang=ruby, line-numbers=on, starting-line-number=58}
+~~~~~~~~
+  # config/environments/development
+  config.paperclip_defaults = {
+    storage: :s3,
+    s3_credentials: {
+      bucket: ENV.fetch('S3_BUCKET_NAME'),
+      access_key_id: ENV.fetch('AWS_ACCESS_KEY_ID'),
+      secret_access_key: ENV.fetch('AWS_SECRET_ACCESS_KEY'),
+      s3_region: ENV.fetch('AWS_REGION')
+    }
+  }
+~~~~~~~~
+
+I> le variabili d'ambiente si possono chiamare con ENV.fetch('VARIABLE_NAME') oppure con ENV['VARIABLE_NAME']
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+https://elisinfo5-flaviobordonidev.c9users.io/mockup_companies/index
+
+
+verificato che funziona possiamo fare i git commit senza paura di prendere i "secrets".
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add AWS S3 connection to upload images with paperclip and figaro"
+~~~~~~~~
+
+
+
+
+## Connettiamoci su AWS S3 da production (Heroku)
+
+utilizziamo di nuovo figaro
+
+{title=".../config/application.yml", lang=yaml, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+development:
+  SECRET_KEY_BASE: 82587814edcb80dc3ff463c6f869e734ce7b7ee625f26f59ff55574349b173efd4a7e566c07eb6b6eb3b265b284990d46fc0744e7a847dd4da78afc8e8fcb937
+  # Connessione ad AWS S3 per Paperclip
+  S3_BUCKET_NAME: donachiaro
+  AWS_ACCESS_KEY_ID: AKIAII734URJ5UCAFCJA
+  AWS_SECRET_ACCESS_KEY: 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
+  AWS_REGION: eu-central-1
+
+test:
+  SECRET_KEY_BASE: 5c4344801370241146bea0e09a6f7fcac8871c00f4c3dc968dca38138c1b476e6de9e24d60e7597a966e1df41946886578f959a9d4aac153bcbbf0c36ddc51b1
+
+production:
+  #SECRET_KEY_BASE: already present on heroku. See $ heroku config
+  # Connessione ad AWS S3 per Paperclip
+  S3_BUCKET_NAME: donachiaroprod
+  AWS_ACCESS_KEY_ID: AKIAII734URJ5UCAFCJA
+  AWS_SECRET_ACCESS_KEY: 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
+  AWS_REGION: eu-central-1
+~~~~~~~~
+
+ed aggiungiamo la stringa di configurazione per la gemma aws_s3 sul production.rb con le variabili d'ambiente.
+
+{title=".../config/environments/production.rb", lang=ruby, line-numbers=on, starting-line-number=58}
+~~~~~~~~
+# config/environments/production.rb
+config.paperclip_defaults = {
+  storage: :s3,
+  s3_credentials: {
+    bucket: ENV.fetch('S3_BUCKET_NAME'),
+    access_key_id: ENV.fetch('AWS_ACCESS_KEY_ID'),
+    secret_access_key: ENV.fetch('AWS_SECRET_ACCESS_KEY'),
+    s3_region: ENV.fetch('AWS_REGION'),
+  }
+}
+~~~~~~~~
+
+le configurazioni sono pronte quindi non ci resta che fare git add, git commit e pubblicare su heroku.
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add AWS S3 connection to upload images with paperclip in Production"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su heroku
+
+Prima di pubblicare passiamo le variabili d'ambiente a Heroku.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ figaro heroku:set -e production
+
+$ git push heroku aws:master
+~~~~~~~~
+
+per passare le variabili d'ambiente abbiamo usato il comando di [Figaro](https://github.com/laserlemon/figaro), ma avremmo potuto caricarle anche manualmente da console come descritto di seguito.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku config:set S3_BUCKET_NAME='flapaperclip'
+$ heroku config:set AWS_ACCESS_KEY_ID='AKIAJJ55RPPRPGHJTOMA'
+$ heroku config:set AWS_SECRET_ACCESS_KEY='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'
+$ heroku config:set AWS_REGION='eu-central-1'
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge aws
+$ git branch -d aws
+~~~~~~~~
+
+
+
+## Upload file su AWS S3 via FTP
+
+http://stackoverflow.com/questions/4680265/paperclip-how-to-store-a-picture-in-a-rails-console
+http://stackoverflow.com/questions/7085595/file-opening-mode-in-ruby/7085623#7085623
+
+User.create(:avatar => File.open('/path/to/image.jpg', 'rb'))
+
+    # Download the csv file from the FTP server
+    ftp = Net::FTP.new
+    ftp.connect("romasportface.com",21)
+    ftp.login("rmsport02@romasportface.com","166$}ItcoLr")
+    ftp.passive = true
+    #ftp.getbinaryfile("MRDP1-transactions.txt", "tmp/MRDP1-transactions.txt")
+
+    Kiosk.last.update(:csvfile => ftp.getbinaryfile("MRDP1-transactions.txt"))
+    #Kiosk.last.update(:csvfile => File.open('/path/to/image.jpg', 'rb'))
+
+
+
+    ftp.close
+    
+
+    

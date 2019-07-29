@@ -1,0 +1,133 @@
+# Usiamo paperclip per importare file immagini (png o gif)
+
+
+per gestire gli upload ed i download dei files CSV su rails è meglio usare una gemma specifica tipo:
+
+* refile
+* carrierwave
+* paperclip
+* dragonfly
+* shrine
+
+Refile è un moderno "file upload" per applicazioni Ruby. Refile è sviluppato 
+dalla stessa persona che ha fatto carrierwave. E' più semplice e più veloce.
+Purtroppo su C9 mi da errore la "gem "refile-mini_magick"
+
+Al posto di Refile usiamo Paperclip. Anche Paperclip usa imagemagick ma non da errore con le sue gemme.
+Carrierwave sembra preferito a Paperclip ed anche Mikel Hartman lo utilizza però è un sotto capitolo ed usa "fog" per S3
+invece Paperclip ho i tutorials con la gemma consigliata direttamente da Amazon (gem 'aws-sdk').
+Stanno crescendo anche refile, dragonfly e Shrine (https://twin.github.io/file-uploads-asynchronous-world/)
+quindi Paperclip per il momento va benisssimooo.
+
+* https://www.sitepoint.com/uploading-files-with-paperclip/
+* https://devcenter.heroku.com/articles/paperclip-s3
+* https://github.com/thoughtbot/paperclip/wiki/Paperclip-with-Amazon-S3
+* https://github.com/thoughtbot/paperclip
+* http://stackoverflow.com/questions/36315596/how-do-i-read-files-in-rails-images-text-from-amazon-s3-that-were-uploaded-m
+* https://www.youtube.com/watch?v=0_2VBDoowHs&noredirect=1
+* https://aws.amazon.com/sdk-for-ruby/
+* https://rubygems.org/gems/aws-sdk
+
+* https://richonrails.com/articles/getting-started-with-paperclip
+* http://www.rubydoc.info/gems/paperclip/Paperclip/ClassMethods
+
+
+
+
+VEDI CSV/99-transacions_aws.txt PER INTEGRARE QUESTO CAPITOLO. LA' CI SONO PARTI CHE QUI MANCANO!!!
+
+
+
+
+# installiamo Paperclip
+
+I> ATTENZIONE!
+I>
+I> Verifica sempre gli ultimi aggiornamenti sul readme.md di https://github.com/thoughtbot/paperclip
+
+Aggiungiamo la "gem" di ruby:
+
+[codice: 03-04 gemfile 01](#code-03-04-gemfile-01)
+
+{title="Gemfile", lang=ruby, line-numbers=on, starting-line-number=37}
+~~~~~~~~
+# File Upload
+gem 'paperclip'
+gem 'aws-sdk', '~> 2.3'
+~~~~~~~~
+
+La gemma "mini_magick" ci aiuta con l'integrazione di refile su Rails e 
+l'implementazione dell'elaborazione delle immagini. MiniMagick richiede 
+ImageMagic installato. Per installarlo su Ubuntu basta eseguire:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo apt-get install imagemagick
+~~~~~~~~
+
+Se non funziona eseguire:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo apt-get update
+~~~~~~~~
+
+Se neanche questo funziona eseguire:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo add-apt-repository main
+~~~~~~~~
+
+
+Eseguiamo l'installazione della gemma con bundle
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ bundle install
+~~~~~~~~
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Aggiungiamo logo alla tabella onlus
+
+I> ATTENZIONE: con "rails generate scaffold ..." -> uso il SINGOLARE
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g scaffold Onlu name:string logo:string vat:string vat2:string
+~~~~~~~~
+
+
+A> logo = lo carico con paperclip
+A>
+A> è il logo dell'onlus che viene visualizzato al posto del logo donachiaro/angle quando si logga una persona dell'onlus.
+
+
+
+
+## Aggiungiamo image alla tabella kiosks
+
+I> ATTENZIONE: con "rails generate scaffold ..." -> uso il SINGOLARE
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g scaffold Kiosk name:string image:string filecsvname:string vat2:string tot_cash_cents:decimal tot_pos_cents:decimal
+~~~~~~~~
+
+A> image = la carico con paperglip
+A>
+A> è una foto della macchina installata e accesa.

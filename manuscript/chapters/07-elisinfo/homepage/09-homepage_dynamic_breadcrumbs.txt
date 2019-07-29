@@ -1,0 +1,183 @@
+# homepage breadcrumbs dinamico
+
+Implementiamo la parte dinamica del breadcrumbs su home.
+
+
+
+
+## Apriamo il branch "Homepage Breadcrumbs Dynamic"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b hbd
+~~~~~~~~
+
+
+
+
+## Cambiamo homepage breadcrumbs in funzione di params[:related]
+
+Nella pagina select_related/index implemento i links nell'elenco delle scelte. Cliccando su una delle voci in elenco torno alla homepage con un params[:related] impostato al valore della voce cliccata e questo mi visualizza la corrispondendte icona sul breadcrumbs.
+
+{title=".../app/views/select_relateds/_related_list_group.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="list-group left-pad right-pad">
+  <% @select_relateds.each do |select_related| %>
+    <%= link_to url_for(h_params_path(path: "/homepage/index",related: select_related.metadata)), :class => "list-group-item" do %>
+      <%= content_tag :span,"#{select_related.name}", class: "glyphiconmy #{select_related.ico_name} right-pad" %>
+    <% end %>
+  <% end %>
+</div>
+~~~~~~~~
+
+Visualizziamo  l'icona a secondo del related con ** <span class="glyphiconmy ico_<%= params[:related].singularize %>"></span> **
+
+{title="views/homepage/_breadcrumbs.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<ol class="breadcrumb top-pad left-pad">
+  <li class="active">
+    <%= link_to "#", :class => "btn btn-link disabled" do %>
+      <%= content_tag :span, t("homepage.show.breadcrumbs"), class: "glyphiconmy ico_home" %>
+    <% end %>
+  </li>
+  <li>
+    <%= link_to url_for(h_front_params_path(path: "/select_relateds", tab_active: "default")), :class => "btn btn-default" do %>
+      <%= content_tag :span,"", class: "glyphiconmy ico_#{params[:related].singularize}" %>
+    <% end %>
+  </li>
+</ol>
+~~~~~~~~
+
+Al posto di ** ico_#{params[:related].singularize} ** potrei usare un helper globale che si prende cura di mettere "ico_favorite" in caso mancasse il params[:related]. Tutti i metodi che creo come helpers li inizio con "h_" così mi è più facile riconoscerli.
+
+{title=".../app/helpers/application_helper.rb", lang=ruby, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+def h_ico_name
+ if params[:related].present?
+    ico_name = "ico_#{params[:related].singularize}"
+  else
+    ico_name = "ico_favorite"
+  end 
+  return ico_name   
+end
+~~~~~~~~
+
+
+
+
+## close_button
+
+Il close button lo abbiamo già generalizzato e messo su views/application quindi non dobbiamo fare nient'altro.
+
+
+
+
+## Global_settings language
+
+Riprendiamo la gestione della lingua ed aggiorniamo i links usando gli helpers **h_params_path** ed **h_rear_params_path**
+
+{title="views/global_settings/_pane_language.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="list-group left-pad right-pad bottom-pad">
+  <%= link_to url_for(h_params_path(path: "", locale: "en")), class: "list-group-item #{'active' if params[:locale] == 'en'}" do %>
+    <span class="glyphiconmy ico_language_us right-pad"></span> Inglese
+  <% end %>
+  <%= link_to url_for(h_params_path(path: "", locale: "it")), class: "list-group-item #{'active' if (params[:locale] == 'it' or params[:locale] == '')}" do %>
+    <span class="glyphiconmy ico_language_it right-pad"></span> Italiano
+  <% end %>
+</div>
+
+<div class="list-group left-pad right-pad bottom-pad">
+  <%= link_to url_for(h_rear_params_path(path: "/#{params[:last_front_controller]}/#{params[:last_front_id]}", page: params[:last_front_page], search: params[:last_front_search])), class: "btn btn-primary btn-block" do %>
+   ok
+  <% end %>
+</div>
+~~~~~~~~
+
+
+
+
+## Global_settings language - I18n static
+
+implementiamo anche la traduzione del titolo sul pane_language
+
+{title="views/global_settings/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=29}
+~~~~~~~~
+            <h4><%= t("global_settings.index.title_pane_language") %></h4>
+~~~~~~~~
+
+{title="config/locales/en.yml", lang=yaml, line-numbers=on, starting-line-number=11}
+~~~~~~~~
+  global_settings:
+    index:
+      title_pane_language: "languages"
+~~~~~~~~
+
+{title="config/locales/it.yml", lang=yaml, line-numbers=on, starting-line-number=11}
+~~~~~~~~
+  global_settings:
+    index:
+      title_pane_language: "lingue"
+~~~~~~~~
+
+
+
+
+## Global_settings logout - I18n static
+
+implementiamo anche la traduzione sul pane_logout
+
+{title="views/global_settings/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=36}
+~~~~~~~~
+            <h4><%= t("global_settings.index.title_pane_logout") %></h4>
+~~~~~~~~
+
+{title="views/global_settings/_pane_logout.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+    <%= content_tag :span, t("global_settings.pane_logout.label_exit_button"), class: "glyphiconmy ico_logout" %>
+~~~~~~~~
+
+{title="config/locales/en.yml", lang=yaml, line-numbers=on, starting-line-number=14}
+~~~~~~~~
+      title_pane_logout: "logout"
+    pane_logout:
+      label_exit_button: "Exit from application"
+~~~~~~~~
+
+{title="config/locales/it.yml", lang=yaml, line-numbers=on, starting-line-number=14}
+~~~~~~~~
+      title_pane_logout: "uscita"
+    pane_logout:
+      label_exit_button: "Esci dall'applicazione"
+~~~~~~~~
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add Global_settings logout - I18n static"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku hbd:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge hbd
+$ git branch -d hbd
+~~~~~~~~

@@ -1,0 +1,187 @@
+# Elenco degli indirizzi di una specifica persona
+
+in questo capitolo tratteremo l'elenco degli indirizzi (sul partial addresses/_index) che è visualizzato come related della pagina people/show.
+
+
+
+
+## Apriamo il branch "Addresses Index Side Person"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b aisp
+~~~~~~~~
+
+
+
+
+## Select_relateds side people show
+
+Abbiamo già attivato il select_related ed il breadcrumbs di person show per mostrare gli indirizzi correlati.
+
+* su homepage/show ho select_related : favorites, companies, people
+* su people/show ho select_related : favorites, companies, people, contacts, **addresses**
+
+Su homepage non metto contacts e addresses perché non le visualizzo come entità indipendenti ma le visualizzo solo sotto companies e people perché hanno una relazione uno-a-molti con entrambe (usando la relazione polimorfica)
+
+
+
+
+## Routes
+
+Nel capitolo precedente abbiamo usato lo scaffold quindi abbiamo già i vari instradamenti nel file routes. Semplicemente li sistemiamo meglio. [(codice: 01)](#code-contact_person_maps-cpmaps_index_side_person-01)
+
+{title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=13}
+~~~~~~~~
+    resources :addresses
+~~~~~~~~
+
+
+
+
+## Come approcciamo
+
+Prepariamo un elenco di indirizzi per quando siamo su people/show con related="addresses". Sul controller di people azione show visualizziamo @person.addresses.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails c
+irb> p = Person.find 1
+irb> p.addresses
+irb> p.addresses[0].full_address
+irb> p.addresses[0].address_tag
+irb> p.addresses[1].full_address
+irb> p.addresses[1].address_tag
+~~~~~~~~
+
+
+
+
+## La pagina show di People con relateds: addresses
+
+Aggiungiamo addresses nell'azione "show" del controller people_controller. [(codice: 02)](#code-contact_person_maps-cpmaps_index_side_person-02)
+
+{title=".../app/controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=32}
+~~~~~~~~
+    when "addresses"
+      @relateds = @person.addresses.all.order('updated_at DESC').page(params[:page])
+      @relateds_path = "addresses"
+~~~~~~~~
+
+Sul view people/show abbiamo già implementato il ** <%= render "#{@relateds_path}/index", related_list: @relateds %> ** 
+Ho dovuto inserire anche **.page(params[:page])** perché abbiamo anche già implementato il pagination ** <%= render 'related_pagination', list_to_paginate: @relateds %> **
+
+
+
+
+## Il partial _index
+
+Il partial _index visualizza la lista degli indirizzi.
+ 
+{title=".../app/views/addresses/_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="list-group left-pad right-pad">
+  <% related_list.each do |address| %>
+    <%= link_to url_for(h_front_params_path(path: "/addresses/#{address.id}/edit")), :class => "list-group-item" do %>
+      <p> <%= address.full_address %> </p>
+      <p><strong> <%= address.address_tag %> </strong></p>
+    <% end %> <!-- /link_to -->
+  <% end %> <!-- /related_list.each -->
+</div> <!-- /.list-group -->
+~~~~~~~~
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+![People show - related addresses](images/addresses/addresses_index_side_person/related_addresses.png)
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add People Show - related addresses _index"
+~~~~~~~~
+
+
+
+
+## Search
+
+Implementiamo il search sul model address.
+
+{title=".../app/models/address.rb", lang=ruby, line-numbers=on, starting-line-number=17}
+~~~~~~~~
+  # == Scopes ===============================================================
+
+  scope :search, -> (query) {with_translations(I18n.locale).where("full_address ILIKE ? OR address_tag ILIKE ?", "%#{query.strip}%", "%#{query.strip}%")}
+~~~~~~~~
+
+Attiviamo il search sull'azione **show** del controller people_controller
+
+{title=".../app/controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=33}
+~~~~~~~~
+      @relateds = @person.addresses.search(params[:search]).order('updated_at DESC').page(params[:page])
+~~~~~~~~
+
+abbiamo già attivato il render ** <%= render 'related_form_search' %> ** sul view. 
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+![https://elisinfo5-flaviobordonidev.c9users.io/company_person_maps](images/company_person_maps/cpmaps_index/cpmaps.png)
+
+
+sta funzionando quindi facciamo un commit
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add people/show addresses search"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku aisp:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge aisp
+$ git branch -d aisp
+~~~~~~~~
+
+
+
+
+## Backup su github
+
+facciamo un backup del ns progetto su github:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

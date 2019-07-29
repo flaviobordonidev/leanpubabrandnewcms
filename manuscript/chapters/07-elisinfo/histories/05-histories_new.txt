@@ -1,0 +1,166 @@
+# Nuova storia
+
+La creazione delle storie ha la stessa implementazione sia per una specifica persona, sia per una specifica azienda.
+in questo capitolo tratteremo la creazione delle storie (sul view histories/new) relateds della pagina people/show e della pagina companies/show.
+
+
+
+
+## Apriamo il branch "Histories New"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b hn
+~~~~~~~~
+
+
+
+
+## Lato Person
+
+creiamo un nuovo contatto a partire dai relateds della persona
+
+
+
+## Person/show nuovo contatto
+
+sulla lista di contatti della persona people/show mostriamo disabilitato il pulsante di nuovo. Lo abilitiamo solo se è fatta una ricerca o se sono presenti meno di 7 records perché il pagination lo imposterò con 6 records per pagina, quindi il settimo record potrebbe essere sulla seconda pagina.
+Abbiamo già fatto questi passaggi nei capitoli precedenti e messo il partial **_related_button_new** su **views/application** perché sufficientemente generico.
+
+
+
+
+## Implementiamo la view histories/new
+
+Implementiamo la struttura del mockup nella pagina histories/new ed implementiamo i renders
+
+{title=".../app/views/histories/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<% provide(:title, "New history") %>
+
+<div class="container-fluid rear_mode">
+  <div class="row">
+    <div class="col-xs-9 col-sm-10 col-lg-11">
+      <ul class="nav nav-pills bottom-pad top-pad left-pad">
+        <li class="<%= 'active' if params[:tab_active] == 'default' or params[:tab_active] == 'edit' %>">
+          <%= link_to "#pane_edit", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_edit" %>
+          <% end %>
+        </li>
+      </ul>
+    </div><!-- /.col -->
+    <div class="col-xs-3 col-sm-2 col-lg-1">
+      <%= render 'button_close' %>
+    </div> <!-- /.col -->
+  </div> <!-- /.row -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="tab-content">
+        <div id="pane_edit" class="tab-pane <%= 'active' if params[:tab_active] == 'default' or params[:tab_active] == 'edit'  %>">
+          <div class="text-center bottom-pad">
+            <h4><%= t("histories.new.title_pane_edit") %></h4>
+          </div> <!-- /.text-center -->
+          <%= render 'form', history: @history %>
+        </div> <!-- /.tab-pane -->
+      </div> <!-- /.tab-content -->
+    </div> <!-- /.col -->
+  </div> <!-- /.row -->
+</div> <!-- /.rear_mode -->
+~~~~~~~~
+
+
+
+
+## tab edit (_form)
+
+il partial _form lo abbiamo già fatto per la modifica. 
+
+
+
+
+## Il controller delle storie
+
+Aggiorniamo l'azione **create** del controller **histories_controller** per reinstradare sulla relativa people/show passando tutti i params[]. In pratica cambio una riga di codice: 
+
+{title=".../app/controllers/histories_controller.rb", lang=ruby, line-numbers=on, starting-line-number=34}
+~~~~~~~~
+        format.html { redirect_to url_for(view_context.h_params_path(path: "/#{params[:last_front_controller]}/#{params[:last_front_id]}", related: params[:last_front_related], page: params[:last_front_page], search: params[:last_front_search])), notice: 'History was successfully created..' }
+        #format.html { redirect_to @history, notice: 'History was successfully created.' }
+~~~~~~~~
+
+Questa riga di codice è sufficientemente generica da non aver bisogno di nessun cambio se non la descrizione finale ** notice: '...' **
+
+Ci resta solo da inserire i campi per l'associazione polimorifica. Lo facciamo riempendoli nell'azione **new**
+
+{title=".../app/controllers/histories_controller.rb", lang=ruby, line-numbers=on, starting-line-number=16}
+~~~~~~~~
+  def new
+    @history = History.new
+    @history.historyable_id = params[:last_front_id]
+    @history.historyable_type = params[:last_front_controller].singularize.classify
+    @history.user_id = current_user.id
+  end
+~~~~~~~~
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+![https://elisinfo5-flaviobordonidev.c9users.io/company_person_maps](images/company_person_maps/cpmaps_index/cpmaps.png)
+
+aggiorniamo git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "update histories/new"
+~~~~~~~~
+
+
+
+
+## Lato azienda
+
+abbiamo già implementato tutto nei capitoli precedenti
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku hn:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge hn
+$ git branch -d hn
+~~~~~~~~
+
+
+
+
+## Backup su github
+
+facciamo un backup del ns progetto su github:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
+

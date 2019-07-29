@@ -1,0 +1,129 @@
+# company_person_map delete
+
+in questo capitolo creiamo il tab "delete" dell'edit:
+- delete : per distruggere la relazione tra azienda-persona (non vengono distrutte nè l'azienda nè la persona ma la sola relazione)
+
+
+
+
+## Apriamo il branch "companies-company_person_map delete/destroy"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b cpmd
+~~~~~~~~
+
+
+
+
+## Andiamo sulla parte EDIT tab DELETE
+
+attiviamo 'company_person_maps/edit/tab_delete' il codice sul pulsante del view è del tutto standard.
+
+{title="views/company_person_maps/edit/_tab_delete.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<ul class="left-pad bottom-pad top-pad right-pad">
+  <li>
+    <%= link_to "delete", @company_person_map, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-primary btn-block" %>
+  </li>
+</ul>
+~~~~~~~~
+
+Purtroppo la soluzione standard non mi passa tutte le variabili ed inoltre la maschera di "confirm: " non si legge bene quando ho la pagina aperta con le dimensioni ridotte.
+Invece uso la form_for per eliminare. Posso anche attivare il check_box che mi attiva l'eliminazione solo se è su ON.
+
+{title="views/company_person_maps/edit/_tab_delete.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%= form_for(company_person_map, method: :delete, html: {class: 'form-horizontal left-pad right-pad bottom-pad'}) do |f| %>
+
+  <!-- # simulo l'helper h_params_path -->
+  <%= hidden_field_tag(:locale, params[:locale]) %>
+  <%= hidden_field_tag(:last_front_controller, params[:last_front_controller]) %>
+  <%= hidden_field_tag(:last_front_action, params[:last_front_action]) %>
+  <%= hidden_field_tag(:last_front_id, params[:last_front_id]) %>  
+  <%= hidden_field_tag(:last_front_related, params[:last_front_related]) %>  
+  <%= hidden_field_tag(:last_front_page, params[:last_front_page]) %>  
+  <%= hidden_field_tag(:last_front_search, params[:last_front_search]) %>  
+  <%= hidden_field_tag(:last_rear_controller, params[:last_rear_controller]) %>
+  <%= hidden_field_tag(:last_rear_action, params[:last_rear_action]) %>
+  <%= hidden_field_tag(:last_rear_id, params[:last_rear_id]) %>
+  <%= hidden_field_tag(:last_rear_related, params[:last_rear_related]) %>
+  <%= hidden_field_tag(:last_rear_page, params[:last_rear_page]) %>
+  <%= hidden_field_tag(:last_rear_search, params[:last_rear_search]) %>
+  <%= hidden_field_tag(:related, params[:related]) %>
+  <%= hidden_field_tag(:page, params[:page]) %>
+  <%= hidden_field_tag(:search, params[:search]) %>
+  <%= hidden_field_tag(:tab_active, params[:tab_active]) %>
+
+  <div class="actions">
+    <%= f.submit "#{t "company_person_maps.edit.submit_destroy"}", class: "btn btn-primary btn-block" %>
+  </div>
+<% end %>
+~~~~~~~~
+
+
+Sull'azione **destroy** del controller **company_person_maps_controller** cambiamo il ** redirect_to **. Tutto il resto lo lasciamo di default.
+
+{title=".../app/controllers/company_person_maps_controller.rb", lang=HTML+Mako, line-numbers=on, starting-line-number=81}
+~~~~~~~~
+      format.html { redirect_to url_for(view_context.h_params_path(path: "/#{params[:last_front_controller]}/#{params[:last_front_id]}", related: params[:last_front_related], page: params[:last_front_page], search: params[:last_front_search])), notice: 'Il collegamento è stato distrutto con successo.' }
+~~~~~~~~
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+https://elisinfo5-flaviobordonidev.c9users.io/
+
+![startpage show](images/companies_people/mockup_people_index/mockup_people_index.png)
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add company_person_maps edit tab_delete"
+~~~~~~~~
+
+Funziona tutto solo che è un po' pericoloso perché non ho nessuna richiesta di conferma. Nei capitoli futuri implementeremo o una richiesta di conferma, oppure un combo_box di "sblocco" del pulsante di eliiminazione con label: "Sei sicuro di voler eliminare: SI/NO" e di default è sul NO.
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku cpmd:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge cpmd
+$ git branch -d cpmd
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

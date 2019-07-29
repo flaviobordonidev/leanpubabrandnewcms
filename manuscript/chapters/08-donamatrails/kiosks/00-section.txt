@@ -1,0 +1,3 @@
+-# Approfondimento su kiosks
+
+Abbiamo già implementato kiosks_seeds nella sezione dashboard. In questa sezione lavoriamo di più sulla parte show ed attiviamo la ricerca da data a data

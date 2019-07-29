@@ -1,0 +1,80 @@
+# Pagina iniziale
+
+Implementiamo un inizio di Breadcrumbs e la main_media_object
+
+
+
+
+## Apriamo il branch "homepage show"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b hs
+~~~~~~~~
+
+
+
+
+## Breadcrumbs
+
+Implementiamo il breadcrumbs su homepage show [(codice: 01](#code-homepage-homepage_show-01) 
+
+{title="views/homepage/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+      <%= render 'breadcrumbs' %>
+~~~~~~~~
+
+{title="views/homepage/_breadcrumbs.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<ol class="breadcrumb top-pad left-pad">
+  <li class="active">
+    <%= link_to "#", :class => "btn btn-link disabled" do %>
+      <%= content_tag :span,"      Pagina iniziale", class: "glyphiconmy ico_home" %>
+    <% end %>
+  </li>
+  <li>
+    <%= link_to "#", :class => "btn btn-default" do %>
+      <%= content_tag :span,"", class: "glyphiconmy ico_favorite" %>
+    <% end %>
+  </li>
+</ol>
+~~~~~~~~
+
+
+
+
+## main_media_object
+
+Risorse web:
+
+* http://stackoverflow.com/questions/5091169/display-last-logged-in-details-using-devise-in-rails-3
+* https://launchschool.com/blog/how-to-use-devise-in-rails-for-authentication
+* http://devise.plataformatec.com.br/
+
+Togliamo le due linee di codice che mostravano l'utente loggato ed implementiamo il main_media_object su homepage show [(codice: 02](#code-homepage-homepage_show-02) 
+
+{title="views/homepage/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+      <%= render 'main_media_object' %>
+~~~~~~~~
+
+{title="views/homepage/_main_media_object.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="list-group left-pad right-pad">
+  <%= link_to "#", :class => "list-group-item media" do %>
+
+    <div class="list-group-item-heading pull-left" >
+
+      <%= image_tag "my_style_images/default/user_default.png", alt: "user image", class: "media-object" %>
+
+    </div>
+
+    <div class="list-group-item-text media-body">
+      <%= content_tag :h4,"Amministratore", class: "media-heading" %>
+      <%= content_tag :p,"#{current_user.email} " %>
+      <%= content_tag :p,"Ultimo login: #{current_user.sign_in_count} " %>
+    </div>
+
+  <% end %>
+</div>
+~~~~~~~~

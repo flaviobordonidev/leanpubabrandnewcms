@@ -1,0 +1,640 @@
+# Basic Template
+
+
+
+
+#### 01 {#code-frontend_assets-basic_template-01}
+
+{title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+source 'https://rubygems.org'
+
+# versione di ruby usata
+ruby '2.3.0'
+
+git_source(:github) do |repo_name|
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+  "https://github.com/#{repo_name}.git"
+end
+
+
+# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'rails', '~> 5.0.1'
+# Use postgresql as the database for Active Record
+gem 'pg', '~> 0.18'
+# Use Puma as the app server
+gem 'puma', '~> 3.0'
+# Use SCSS for stylesheets
+gem 'sass-rails', '~> 5.0'
+# Use Uglifier as compressor for JavaScript assets
+gem 'uglifier', '>= 1.3.0'
+# Use CoffeeScript for .coffee assets and views
+gem 'coffee-rails', '~> 4.2'
+# See https://github.com/rails/execjs#readme for more supported runtimes
+# gem 'therubyracer', platforms: :ruby
+
+# Use jquery as the JavaScript library
+gem 'jquery-rails'
+# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
+gem 'turbolinks', '~> 5'
+# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+gem 'jbuilder', '~> 2.5'
+# Use Redis adapter to run Action Cable in production
+# gem 'redis', '~> 3.0'
+# Use ActiveModel has_secure_password
+# gem 'bcrypt', '~> 3.1.7'
+
+# Use Capistrano for deployment
+# gem 'capistrano-rails', group: :development
+
+# figaro - configuration framework - imposta le Environment Variables - ENV["SECRET_PASSWORD"]
+gem 'figaro', '~> 1.1', '>= 1.1.1'
+
+# bootstrap-sass – Twitter Bootstrap for CSS and JavaScript
+gem 'bootstrap-sass', '~> 3.3.7'
+
+group :development, :test do
+  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'byebug', platform: :mri
+end
+
+group :development do
+  # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
+  gem 'web-console', '>= 3.3.0'
+  gem 'listen', '~> 3.0.5'
+  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  gem 'spring'
+  gem 'spring-watcher-listen', '~> 2.0.0'
+end
+
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+~~~~~~~~
+
+
+
+
+#### 02 {#code-frontend_assets-basic_template-02}
+
+{title=".../app/assets/stylesheets/application_global.scss", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+//** Padding between columns. Gets divided in half for the left and right. (default is 30px)
+$grid-gutter-width: 2px;
+
+p{
+  margin-bottom: 0px;
+}
+
+.field_with_errors {
+  padding: 2px;
+  background-color: red;
+  display: table;
+}
+
+.right-pad{
+  padding-right: 10px;
+}
+
+.left-pad{
+  padding-left: 10px;
+}
+
+.top-pad{
+  padding-top: 8px;
+}
+
+.bottom-pad{
+  padding-bottom: 8px;
+}
+
+.pagination{
+  margin-top: 6px;
+  margin-bottom: 1px;
+}
+
+.list-group{
+  margin-top: 0;
+  margin-bottom: 6px;
+}
+
+.breadcrumb{
+  margin-left: -4px;
+  margin-top: 0;
+  margin-bottom: 0px;
+  background-color: white;
+}
+
+.breadcrumb a{
+  margin-right: 2px;
+}
+
+// CUSTOM COLLAPSE start
+@media screen and (min-width: 768px) {
+
+.custom-collapse .collapse{
+            display:block;
+      }  
+}
+// CUSTOM COLLAPSE end
+
+
+// IMAGE UPLOAD start
+.image_upload_label{
+  cursor:pointer;
+}
+
+.image_upload_file_field
+{
+  display: none;
+}
+// IMAGE UPLOAD end
+~~~~~~~~
+
+
+
+
+#### 03 {#code-frontend_assets-basic_template-03}
+
+{title=".../app/assets/stylesheets/application_front.scss", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+/*
+CSS Document
+Filename: application_front.scss
+Title : Primary CSS file for yesnormalis.com
+Author : Flavio Bordoni, flavio.bordoni@yesnormalis.com
+URL : http://www.yesnormalis.com/
+License: Copyright 2016, Flavio Bordoni, All Rights Reserved.
+Feel free to read and learn from this, but please don't steal.
+
+margin: UP RIGHT BOTTOM LEFT;
+padding: UP RIGHT BOTTOM LEFT;
+*/
+
+/* FRONT_MODE start */
+FORM.front_mode, DIV.front_mode
+{
+
+  /*ICONS start (alfabetical order)*/
+  .glyphiconmy
+  {
+    padding-left: 28px; /*sposta il testo permettendo di vedere l'icona e allunga anche il block*/
+    margin-left: -6px;
+    margin-right: -8px;
+    //margin-top: 1px;
+    //margin-bottom: 1px;
+    background-repeat: no-repeat;
+    background-position: 2px -2px;// x y
+  }
+  .glyphiconmy2
+  {
+    padding-left: 34px; /*sposta il testo permettendo di vedere l'icona e allunga anche il block*/
+    //margin-left: -4px;
+    //margin-right: -6px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    background-repeat: no-repeat;
+    background-position: -4px -4px;// x y
+  }
+  .glyphiconmy-half
+  {
+    padding-left: 14px; /*sposta il testo permettendo di vedere l'icona e allunga anche il block*/
+    margin-left: -12px;
+    margin-right: -10px;
+    //margin-top: 1px;
+    //margin-bottom: 1px;
+    background-repeat: no-repeat;
+    background-position: 2px -2px;// x y
+  }
+
+  .ico_abnormalis
+  {
+    background-image: url(image_path("my_style_images/icons/abnormalis.png"));
+  }
+  .ico_address
+  {
+    background-image: url(image_path("my_style_images/icons/address.png"));
+  }
+  .ico_backward
+  {
+    background-image: url(image_path("my_style_images/icons/backward.png"));
+  }
+  .ico_backward_disabled
+  {
+    background-image: url(image_path("my_style_images/icons/backward_disabled.png"));
+  }
+  .ico_close
+  {
+    background-image: url(image_path("my_style_images/icons/close.png"));
+  }
+  .ico_contact
+  {
+    background-image: url(image_path("my_style_images/icons/contact.png"));
+  }
+  .ico_company
+  {
+    background-image: url(image_path("my_style_images/icons/company.png"));
+  }
+  .ico_component
+  {
+    background-image: url(image_path("my_style_images/icons/component.png"));
+  }
+  .ico_delete
+  {
+    background-image: url(image_path("my_style_images/icons/delete.png"));
+  }
+  .ico_edit
+  {
+    background-image: url(image_path("my_style_images/icons/edit.png"));
+  }
+  .ico_favorite
+  {
+    background-image: url(image_path("my_style_images/icons/favorite.png"));
+  }
+  .ico_forward
+  {
+    background-image: url(image_path("my_style_images/icons/forward.png"));
+  }
+  .ico_forward_disabled
+  {
+    background-image: url(image_path("my_style_images/icons/forward_disabled.png"));
+  }
+  .ico_global_settings
+  {
+    background-image: url(image_path("my_style_images/icons/global_settings.png"));
+  }
+  .ico_goto
+  {
+    background-image: url(image_path("my_style_images/icons/goto.png"));
+  }
+  .ico_help
+  {
+    background-image: url(image_path("my_style_images/icons/help.png"));
+  }
+  .ico_home
+  {
+    background-image: url(image_path("my_style_images/icons/home.png"));
+  }
+  .ico_info
+  {
+    background-image: url(image_path("my_style_images/icons/info.png"));
+  }
+  .ico_instance
+  {
+    background-image: url(image_path("my_style_images/icons/instance.png"));
+  }
+  .ico_international
+  {
+    background-image: url(image_path("my_style_images/icons/international.png"));
+  }
+  .ico_language
+  {
+    background-image: url(image_path("my_style_images/icons/language.png"));
+  }
+  .ico_language_br
+  {
+    background-image: url(image_path("my_style_images/icons/language_br.png"));
+  }
+  .ico_language_es
+  {
+    background-image: url(image_path("my_style_images/icons/language_es.png"));
+  }
+  .ico_language_it
+  {
+    background-image: url(image_path("my_style_images/icons/language_it.png"));
+  }
+  .ico_language_us
+  {
+    background-image: url(image_path("my_style_images/icons/language_us.png"));
+  }
+  .ico_list
+  {
+    background-image: url(image_path("my_style_images/icons/list.png"));
+  }
+  .ico_login
+  {
+    background-image: url(image_path("my_style_images/icons/login.png"));
+  }
+  .ico_logout
+  {
+    background-image: url(image_path("my_style_images/icons/logout.png"));
+  }
+  .ico_message
+  {
+    background-image: url(image_path("my_style_images/icons/message.png"));
+  }
+  .ico_new
+  {
+    background-image: url(image_path("my_style_images/icons/new.png"));
+  }
+  .ico_new_disabled
+  {
+    background-image: url(image_path("my_style_images/icons/new_disabled.png"));
+  }
+  .ico_option
+  {
+    background-image: url(image_path("my_style_images/icons/option.png"));
+  }
+  .ico_person
+  {
+    background-image: url(image_path("my_style_images/icons/person.png"));
+  }
+  .ico_product
+  {
+    background-image: url(image_path("my_style_images/icons/product.png"));
+  }
+  .ico_project
+  {
+    background-image: url(image_path("my_style_images/icons/project.png"));
+  }
+  .ico_search
+  {
+    background-image: url(image_path("my_style_images/icons/search.png"));
+  }
+  .ico_tutorial
+  {
+    background-image: url(image_path("my_style_images/icons/tutorial.png"));
+  }
+  .ico_user
+  {
+    background-image: url(image_path("my_style_images/icons/user.png"));
+  }
+  .ico_window_new
+  {
+    background-image: url(image_path("my_style_images/icons/window_new.png"));
+  }
+  .ico_window_same
+  {
+    background-image: url(image_path("my_style_images/icons/window_same.png"));
+  }
+  /*ICONS end */
+
+}
+/* FRONT_MODE end */
+~~~~~~~~
+
+
+
+
+#### 04 {#code-frontend_assets-basic_template-04}
+
+{title=".../app/assets/stylesheets/application_rear.scss", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+/*
+CSS Document
+Filename: yesnormalis_rear.css
+Title : Primary CSS file for yesnormalis.com
+Author : Flavio Bordoni, flavio.bordoni@yesnormalis.com
+URL : http://www.yesnormalis.com/
+License: Copyright 2016, Flavio Bordoni, All Rights Reserved.
+Feel free to read and learn from this, but please don't steal.
+
+margin: UP RIGHT BOTTOM LEFT;
+padding: UP RIGHT BOTTOM LEFT;
+*/
+
+/* REAR_MODE start */
+FORM.rear_mode, DIV.rear_mode
+{
+
+  background-color: #333333;
+  border: 1px solid #666666;
+  box-shadow: 0 0 10px 5px #000000;
+  -moz-box-shadow: 0 0 10px 5px #000000;
+  -webkit-box-shadow: 0 0 10px #000000;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+
+  P,H1,H2,H3,H4,H5,H6,label{
+    color: grey;
+  }
+
+  /*ICONS start (alfabetical order)*/
+  .glyphiconmy
+  {
+    padding-left: 28px; /*sposta il testo permettendo di vedere l'icona e allunga anche il block*/
+    margin-left: -6px;
+    margin-right: -8px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    background-repeat: no-repeat;
+    background-position: 2px 0px;// x y
+  }
+  .glyphiconmy2
+  {
+    padding-left: 34px; /*sposta il testo permettendo di vedere l'icona e allunga anche il block*/
+    //margin-left: -4px;
+    //margin-right: -6px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    background-repeat: no-repeat;
+    background-position: -4px -4px;// x y
+  }
+  .glyphiconmy-half
+  {
+    padding-left: 14px; /*sposta il testo permettendo di vedere l'icona e allunga anche il block*/
+    margin-left: -12px;
+    margin-right: -10px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    background-repeat: no-repeat;
+    background-position: 2px 0px;// x y
+  }
+
+  .ico_abnormalis
+  {
+    background-image: url(image_path("my_style_images/icons/abnormalis.png"));
+  }
+  .ico_address
+  {
+    background-image: url(image_path("my_style_images/icons/address.png"));
+  }
+  .ico_backward
+  {
+    background-image: url(image_path("my_style_images/icons/backward.png"));
+  }
+  .ico_backward_disabled
+  {
+    background-image: url(image_path("my_style_images/icons/backward_disabled.png"));
+  }
+  .ico_close
+  {
+    background-image: url(image_path("my_style_images/icons/close.png"));
+  }
+  .ico_contact
+  {
+    background-image: url(image_path("my_style_images/icons/contact.png"));
+  }
+  .ico_company
+  {
+    background-image: url(image_path("my_style_images/icons/company.png"));
+  }
+  .ico_component
+  {
+    background-image: url(image_path("my_style_images/icons/component.png"));
+  }
+  .ico_delete
+  {
+    background-image: url(image_path("my_style_images/icons/delete.png"));
+  }
+  .ico_edit
+  {
+    background-image: url(image_path("my_style_images/icons/edit.png"));
+  }
+  .ico_favorite
+  {
+    background-image: url(image_path("my_style_images/icons/favorite.png"));
+  }
+  .ico_forward
+  {
+    background-image: url(image_path("my_style_images/icons/forward.png"));
+  }
+  .ico_forward_disabled
+  {
+    background-image: url(image_path("my_style_images/icons/forward_disabled.png"));
+  }
+  .ico_global_settings
+  {
+    background-image: url(image_path("my_style_images/icons/global_settings.png"));
+  }
+  .ico_goto
+  {
+    background-image: url(image_path("my_style_images/icons/goto.png"));
+  }
+  .ico_help
+  {
+    background-image: url(image_path("my_style_images/icons/help.png"));
+  }
+  .ico_home
+  {
+    background-image: url(image_path("my_style_images/icons/home.png"));
+  }
+  .ico_info
+  {
+    background-image: url(image_path("my_style_images/icons/info.png"));
+  }
+  .ico_instance
+  {
+    background-image: url(image_path("my_style_images/icons/instance.png"));
+  }
+  .ico_international
+  {
+    background-image: url(image_path("my_style_images/icons/international.png"));
+  }
+  .ico_language
+  {
+    background-image: url(image_path("my_style_images/icons/language.png"));
+  }
+  .ico_language_br
+  {
+    background-image: url(image_path("my_style_images/icons/language_br.png"));
+  }
+  .ico_language_es
+  {
+    background-image: url(image_path("my_style_images/icons/language_es.png"));
+  }
+  .ico_language_it
+  {
+    background-image: url(image_path("my_style_images/icons/language_it.png"));
+  }
+  .ico_language_us
+  {
+    background-image: url(image_path("my_style_images/icons/language_us.png"));
+  }
+  .ico_list
+  {
+    background-image: url(image_path("my_style_images/icons/list.png"));
+  }
+  .ico_login
+  {
+    background-image: url(image_path("my_style_images/icons/login.png"));
+  }
+  .ico_logout
+  {
+    background-image: url(image_path("my_style_images/icons/logout.png"));
+  }
+  .ico_message
+  {
+    background-image: url(image_path("my_style_images/icons/message.png"));
+  }
+  .ico_new
+  {
+    background-image: url(image_path("my_style_images/icons/new.png"));
+  }
+  .ico_new_disabled
+  {
+    background-image: url(image_path("my_style_images/icons/new_disabled.png"));
+  }
+  .ico_option
+  {
+    background-image: url(image_path("my_style_images/icons/option.png"));
+  }
+  .ico_person
+  {
+    background-image: url(image_path("my_style_images/icons/person.png"));
+  }
+  .ico_product
+  {
+    background-image: url(image_path("my_style_images/icons/product.png"));
+  }
+  .ico_project
+  {
+    background-image: url(image_path("my_style_images/icons/project.png"));
+  }
+  .ico_search
+  {
+    background-image: url(image_path("my_style_images/icons/search.png"));
+  }
+  .ico_tutorial
+  {
+    background-image: url(image_path("my_style_images/icons/tutorial.png"));
+  }
+  .ico_user
+  {
+    background-image: url(image_path("my_style_images/icons/user.png"));
+  }
+  .ico_window_new
+  {
+    background-image: url(image_path("my_style_images/icons/window_new.png"));
+  }
+  .ico_window_same
+  {
+    background-image: url(image_path("my_style_images/icons/window_same.png"));
+  }
+  /*ICONS end */
+
+}
+/* REAR_MODE end */
+~~~~~~~~
+
+
+
+
+#### 05 {#code-frontend_assets-basic_template-05}
+
+{title=".../app/assets/stylesheets/application.scss", lang=ruby, line-numbers=on, starting-line-number=21}
+~~~~~~~~
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+// "bootstrap-sprockets" must be imported before "bootstrap" and "bootstrap/variables"
+@import "bootstrap-sprockets"; //this allow the gliphicon to work
+@import "bootstrap";
+
+@import "application_global";
+@import "application_front";
+@import "application_rear";
+~~~~~~~~

@@ -1,0 +1,300 @@
+# Homepage Internazionalizzazione
+
+QUESTO CODICE VA NEL LIBRO RAILS REFERENCE COOCK BOOK
+
+Implementiamo la multilingua (i18n) con scelta it/en sull'url. Inoltre visualizziamo e risolviamo il problema dei links_to con it/en sull'url
+
+
+
+
+## Apriamo il branch
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b i18n
+~~~~~~~~
+
+
+
+
+## Scelta del "locale" dall'URL
+
+Impostiamo il fatto di poter cambiare il locale direttamente dall'URL. Per far questo creiamo un parametro che chiamiamo params[:locale]. Il nome del parametro è ininfluente. Scegliamo :locale solo per maggior chiarezza. Questo parametro lo utiliziamo sull'azione che chiamiamo "set_locale" e mettiamo su application_controller così viene eseguita per tutta l'applicazione. Per farla eseguire la richiamiamo dal before_action
+
+
+{title=".../app/controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class ApplicationController < ActionController::Base
+  protect_from_forgery with: :exception
+  
+  before_action :set_locale
+
+  #-----------------------------------------------------------------------------
+  private
+  
+  #set language for internationalization
+  def set_locale
+    I18n.locale = params[:locale] if params[:locale].present?
+                # "en"
+                # params[:locale] if params[:locale].present?
+                # current_user.locale
+                # request.subdomain
+                # request.env["HTTP_ACCEPT_LANGUAGE"]
+                # request.remote_ip
+  end
+
+end
+~~~~~~~~
+
+I> ti ricordo che il default_locale lo abbiamo già impostato nella capitolo beginning/testpages_i18n
+I>
+I> il before_action sostituisce il before_filter che si usava su Rails 3
+
+
+
+
+## Proviamolo sui testpages
+
+Attiviamo il database postgresql e facciamo partire il nostro webserver puma su cloud9
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+Adesso andiamo sui seguenti URLS:
+
+https://elisinfo5-flaviobordonidev.c9users.io/testpages/page_a
+https://elisinfo5-flaviobordonidev.c9users.io/testpages/page_a?locale=en
+https://elisinfo5-flaviobordonidev.c9users.io/testpages/page_a?locale=it
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "set i18n static end of URL"
+~~~~~~~~
+
+
+
+
+## Scelta del "locale" all'inizio dell'URL
+
+invece di passare il :locale come parametro in fondo all'URL usiamo gli instradamenti di routes per settarlo con la prima parte dell'URL.
+invece di localhost:3000/mypath?:locale=it possiamu usare localhost:3000/it/mypath
+Per far questo mettiamo tutti i nostri percorsi "routes" dentro un blocco "scope".
+
+{title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+Rails.application.routes.draw do
+
+  scope "(:locale)", locale: /en|it/ do
+  
+    root 'homepage#index'
+    
+    devise_for :users, controllers: { sessions: 'users/sessions' }
+    resources :users
+  
+    get 'homepage/index'
+    get 'mockups/test'
+    get 'mockup_homepage/index'
+    get 'mockup_authentication/login'
+    get 'testpages/page_a'
+    get 'testpages/page_b'
+    get 'users/show'
+  
+    # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  
+  end
+
+end
+~~~~~~~~
+
+potevo lasciare uno scope più ampio ** scope "(:locale)" do ** ma questo mi creava un problema di sicurezza. Molto meglio verificare che sia passato un "locale" valido. Nel nostro caso o "it" o "en" che ho gestito nei miei files yml con la traduzione.
+
+
+
+
+## Proviamolo sul testpages
+
+Attiviamo il database postgresql e facciamo partire il nostro webserver puma su cloud9
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+Adesso andiamo sui seguenti URLS:
+
+https://elisinfo5-flaviobordonidev.c9users.io/testpages/page_a
+https://elisinfo5-flaviobordonidev.c9users.io/testpages/page_a?locale=en
+https://elisinfo5-flaviobordonidev.c9users.io/en/testpages/page_a
+https://elisinfo5-flaviobordonidev.c9users.io/testpages/page_a?locale=it
+https://elisinfo5-flaviobordonidev.c9users.io/it/testpages/page_a
+
+Se provo a settare il parametro :locale sia attraverso lo scope (ad inizio URL) che a fine URL, vince lo scope:
+
+https://elisinfo5-flaviobordonidev.c9users.io/it/testpages/page_a?locale=it
+https://elisinfo5-flaviobordonidev.c9users.io/it/testpages/page_a?locale=en
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "set i18n static begin of URL"
+~~~~~~~~
+
+
+
+
+## Fisso la scelta del :locale
+
+Su Rails 4 se provavo a navigare con lo "scope" su routes mi creava un problema sul comportamento di default di Rails di tutti i links.
+Su Rails 5 non ho un errore ma non rimane la scelta della lingua attraverso la navigazione.
+Per risolverlo sovrascriviamo il comportamento di default_url_options.
+
+{title=".../app/controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class ApplicationController < ActionController::Base
+  protect_from_forgery with: :exception
+  
+  before_action :set_locale
+
+  #-----------------------------------------------------------------------------
+  private
+  
+  #set language for internationalization
+  def set_locale
+    I18n.locale = params[:locale] if params[:locale].present?
+                # "en"
+                # params[:locale] if params[:locale].present?
+                # current_user.locale
+                # request.subdomain
+                # request.env["HTTP_ACCEPT_LANGUAGE"]
+                # request.remote_ip
+  end
+  
+  def default_url_options(options = {})
+    {locale: I18n.locale}
+  end
+
+end
+~~~~~~~~
+
+Possiamo provarlo sul testpages e verifichiamo che cliccando sui link permane la selezione della lingua.
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "set i18n static permanent"
+~~~~~~~~
+
+
+
+
+## Proviamolo su homepage
+
+
+{title=".../app/views/homepage/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=14}
+~~~~~~~~
+<%= t ".first_test" %>: <%= current_user.email if current_user.present? == true %>
+~~~~~~~~
+
+
+{title=".../config/locales/en.yml", lang=yaml, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+en:
+  homepage:
+    index:
+      first_header: "This is the homepage"
+      first_paragraph: "the text will be taken from the database, but some messages are passed by the application and is therefore well that are translated to be ready to support more languages."
+      first_test: "Home page - active user"
+~~~~~~~~
+
+
+{title=".../config/locales/it.yml", lang=yaml, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+it:
+  homepage:
+    index:
+      first_header: "Questa è l'homepage"
+      first_paragraph: "il testo verrà preso dal database ma alcuni messaggi sono passati dall'applicazione ed è quindi bene che vengano tradotti per essere pronti a supportare più lingue."
+      first_test: "Pagina iniziale - utente attivo"
+~~~~~~~~
+
+
+
+
+## Breadcrumbs
+
+Attiviamo la traduzione per il breadcrumbs sulla homepage così abbiamo la stringa "Pagina iniziale" da poter tradurre in inglese.
+Implementiamo il segnaposto. Siccome è un partial sono costretto a mettere tutto il percorso per la traduzione.
+
+
+{title="views/homepage/index/_breadcrumbs.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+<span class="glyphiconmy ico_home">     <%= t "homepage.index.breadcrumbs" %></span>
+~~~~~~~~
+
+Implementiamo il backend Yaml. 
+
+{title=".../config/locales/en.yml", lang=yaml, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+en:
+  homepage:
+    index:
+      breadcrumbs: "Home page"
+~~~~~~~~
+
+{title=".../config/locales/it.yml", lang=yaml, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+it:
+  homepage:
+    index:
+      breadcrumbs: "Pagina iniziale"
+~~~~~~~~
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+eseguiamo un git commit
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add breadcrumbs_i18n"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku i18n:master
+$ heroku run rake db:migrate
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge i18n
+$ git branch -d i18n
+~~~~~~~~

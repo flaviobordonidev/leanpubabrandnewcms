@@ -1,0 +1,119 @@
+# Favorites Company Person
+
+Il titolo di questo capitolo lo abbiamo già usato parlando dei favoriti di company_person_maps, quando abbiamo implementato l'elenco dei preferiti su companies-show e people-show. Quindi questo capitolo più che una nuova implementazione è una verifica che il codice già scritto sia sufficientemente generico per gestire anche gli indirizzi ed i contatti.
+
+Ma se stiamo trattando gli indirizzi ed i contatti perché il capitolo tratta i preferiti di aziende e persone?
+Non facciamoci distrarre, noi stiamo scegliendo di rendere preferite alcune voci dei vari elenchi relateds sia di una specifica persona che di una specifica azienda. Abbiamo iniziato con l'elenco di company_person_maps e adesso ci stiamo spostando sugli elenchi address e contacts. La confusione nasce dal fatto che non abbiamo address_person_maps, adress_company_maps, contact_person_maps e contact_company_maps perché gli indirizzi ed i contatti non hanno una tabella principale ma sono usati solo come elenchi **related** (un po' come le posizioni di un'offerta). In altre parole le entità **people** e **companies** sono di tipo "main" mentre le entità **address** e **contacts** sono di tipo "related" (cosi come lo è **company_person_maps**). In altre parole non esiste una pagina addresses/show con elenchi relateds, non esiste una pagina contacts/show con elenchi relateds, non esiste una pagina company_person_maps/show con elenchi relateds.
+
+
+
+## Apriamo il branch "Favorites Company Person"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b fcp
+~~~~~~~~
+
+
+
+
+## Verifichiamo l'elenco dei preferiti
+
+Iniziamo visualizzando l'elenco dei favoriti relativi alla persona o all'azienda selezionata.
+
+{title=".../app/views/favorites/_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+    <%= link_to url_for(h_front_params_path(path: "/#{favorite.copy_table}/#{favorite.copy_table_id}/edit")), :class => "list-group-item" do %>
+~~~~~~~~
+
+{title=".../app/controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=11}
+~~~~~~~~
+    when "favorites"
+      @relateds = @company.favorites.all.page(params[:page])
+      @relateds_path = "favorites"
+~~~~~~~~
+
+{title=".../app/controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=11}
+~~~~~~~~
+    when "favorites"
+      @relateds = @person.favorites.all.page(params[:page])
+      @relateds_path = "favorites"
+~~~~~~~~
+
+{title=".../app/controllers/homepage_controller.rb", lang=ruby, line-numbers=on, starting-line-number=11}
+~~~~~~~~
+    when "favorites"
+      #TODO
+      @relateds = Favorite.all.page(params[:page]) #lo uso temporaneamente per evitare errore sul button new
+      @relateds_path = "favorites"
+~~~~~~~~
+
+
+
+
+## Un problema di instradamento
+
+in questo capitolo la vera implementazione sono i tests. In questo capitolo non usando i tests facciamo la prova manualmente e ci accorgiamo di un problema. Il reinstradamento del link non ci porta nella pagina addresses/edit o contacts/edit. Correggiamo questo punto.
+
+Il problema nasce dal fatto che abbiamo usato i cmapi "copy_table" e "copy_table_id" della tabella favorites per rendere dinamico l'instradamento ma nei capitoli precedenti non gli abbiamo assegnato un valore. Rimediamo subito:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+
+#riprendiamo il favorito del primo indirizzo della persona
+
+>> p = Person.first
+>> a1 = p.addresses.first
+>> a1.favorite_id
+    15
+>> f = Favorite.find 15
+>> f.update(copy_table: a1.class.to_s.pluralize.downcase, copy_table_id: a1.id)
+    # a1.class.to_s.pluralize.downcase --> "addresses"
+
+
+#riprendiamo il favorito del primo indirizzo della azienda
+
+>> c = Company.first
+>> a2 = c.addresses.first
+>> a2.favorite_id
+    16
+>> f = Favorite.find 16
+>> f.update(copy_table: a2.class.to_s.pluralize.downcase, copy_table_id: a2.id)
+    # a2.class.to_s.pluralize.downcase --> "addresses"
+~~~~~~~~
+
+verifichiamo se adesso funziona.
+
+
+
+
+## Publichiamo su heroku
+
+Questa parte non ha senso pubblicarla su heroku perché abbiamo lavorato solo sul database
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge fcp
+$ git branch -d fcp
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

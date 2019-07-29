@@ -1,0 +1,117 @@
+# new_contact_new_istance
+
+
+
+
+#### 01 {#code-company_contact_maps-new_contact_new_istance-01}
+
+{title=".../app/views/contacts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="container-fluid rear_mode">
+
+  <div class="row">
+    <div class="col-xs-9 col-sm-10 col-lg-11">
+      <ul class="nav nav-pills bottom-pad top-pad left-pad">
+        <li class="<%= 'active' if params[:tab_active].nil? or params[:tab_active] == 'list' %>">
+          <%= link_to "#pane_list", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_list" %>
+          <% end %>
+        </li>
+      </ul>
+    </div><!-- /col -->
+    <div class="col-xs-3 col-sm-2 col-lg-1">
+      <%= render 'button_close_to_rear' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row">
+    <div class="col-xs-12">
+
+      <div class="tab-content">
+        <div id="pane_list" class="tab-pane active">
+          <div class="text-center bottom-pad">
+            <h4>Seleziona</h4>
+          </div>          
+
+          <div class="row">
+            <div class="col-xs-10 col-sm-11 col-lg-11">
+              <%= render 'related_search' %>
+            </div> <!-- /col -->
+            <div class="col-xs-2 col-sm-1 col-lg-1">
+              <%= render 'related_button_new_instance', list_to_add: @contacts %>
+            </div> <!-- /.col -->
+          </div> <!-- /.row -->
+
+          <div class="row">
+            <div class="col-xs-12">
+
+              <% if params[:last_rear_action] == "new" %>
+                <div class="list-group left-pad right-pad">
+                  <% @contacts.each do |contact| %>
+                    <%= link_to url_for(h_params_path(path: "/#{params[:last_rear_controller]}/new", change_id: contact.id)), :class => "list-group-item" do %>
+                      <p> <%= contact.medium %> </p>
+                      <p><strong> <%= "#{contact.identifier}"%> </strong></p>
+                    <% end %>
+                  <% end %>
+                </div>
+              <% elsif params[:last_rear_action] == "edit" %>
+                <div class="list-group left-pad right-pad">
+                  <% @contacts.each do |contact| %>
+                    <%= link_to url_for(h_params_path(path: "/#{params[:last_rear_controller]}/#{params[:last_rear_id]}/edit", change_id: contact.id, tab_active: "edit")), :class => "list-group-item" do %>
+                      <p> <%= contact.medium %> </p>
+                      <p><strong> <%= "#{contact.identifier}"%> </strong></p>
+                    <% end %>
+                  <% end %>
+                </div>
+              <% end %>
+            </div> <!-- /.col -->
+          </div> <!-- /.row -->
+
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="text-center">
+                <%= render 'related_pagination', list_to_paginate: @contacts %>
+              </div><!-- /.text-center -->
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+  
+        </div><!-- /.tab-pane -->
+      </div><!-- /.tab-content -->
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+</div><!-- /.rear_mode -->
+
+
+
+
+
+<p id="notice"><%= notice %></p>
+
+<h1>Contacts</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Medium</th>
+      <th>Identifier</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @contacts.each do |contact| %>
+      <tr>
+        <td><%= contact.medium %></td>
+        <td><%= contact.identifier %></td>
+        <td><%= link_to 'Show', contact %></td>
+        <td><%= link_to 'Edit', edit_contact_path(contact) %></td>
+        <td><%= link_to 'Destroy', contact, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Contact', new_contact_path %>
+~~~~~~~~

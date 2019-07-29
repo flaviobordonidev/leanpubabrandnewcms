@@ -1,0 +1,3 @@
+# Passiamo da rails 5 a rails 6.
+
+Invece di ricomninciare exnovo facciamo l'update dell'applicazione.

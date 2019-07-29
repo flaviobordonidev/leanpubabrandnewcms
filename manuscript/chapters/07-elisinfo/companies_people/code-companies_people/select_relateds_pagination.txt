@@ -1,0 +1,163 @@
+# select_relateds_pagination
+
+
+
+
+#### 01 {#code-companies_people-select_relateds_pagination-01}
+
+{title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+source 'https://rubygems.org'
+
+# versione di ruby usata
+ruby '2.3.0'
+# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
+# Use postgresql as the database for Active Record
+gem 'pg', '~> 0.18'
+# Use Puma as the app server
+gem 'puma', '~> 3.0'
+# Use SCSS for stylesheets
+gem 'sass-rails', '~> 5.0'
+# Use Uglifier as compressor for JavaScript assets
+gem 'uglifier', '>= 1.3.0'
+# Use CoffeeScript for .coffee assets and views
+gem 'coffee-rails', '~> 4.2'
+# See https://github.com/rails/execjs#readme for more supported runtimes
+# gem 'therubyracer', platforms: :ruby
+
+# Use jquery as the JavaScript library
+gem 'jquery-rails'
+# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
+gem 'turbolinks', '~> 5'
+# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+gem 'jbuilder', '~> 2.5'
+# Use Redis adapter to run Action Cable in production
+# gem 'redis', '~> 3.0'
+# Use ActiveModel has_secure_password
+# gem 'bcrypt', '~> 3.1.7'
+
+# Use Capistrano for deployment
+# gem 'capistrano-rails', group: :development
+
+# figaro - configuration framework - imposta le Environment Variables - ENV["SECRET_PASSWORD"]
+gem 'figaro', '~> 1.1', '>= 1.1.1'
+
+# bootstrap-sass – Twitter Bootstrap for CSS and JavaScript
+gem 'bootstrap-sass', '~> 3.3.7'
+
+# bootstrap-switch-rails – Twitter Bootstrap Switch
+gem 'bootstrap-switch-rails', '>= 3.3.3'
+
+# Flexible authentication solution for Rails with Warden 
+gem 'devise', '~> 4.2'
+
+# Internationalization (I18n) for ActiveRecord model/data translation.
+gem 'globalize', github: 'globalize/globalize'
+gem 'activemodel-serializers-xml'
+
+# a simple API for performing paginated queries with Active Record including helpers for rendering pagination links. 
+gem 'will_paginate', '~> 3.1', '>= 3.1.5'
+
+group :development, :test do
+  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'byebug', platform: :mri
+end
+
+group :development do
+  # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
+  gem 'web-console'
+  gem 'listen', '~> 3.0.5'
+  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  gem 'spring'
+  gem 'spring-watcher-listen', '~> 2.0.0'
+end
+
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+~~~~~~~~
+
+
+
+
+#### 02 {#code-companies_people-select_relateds_pagination-02}
+
+{title=".../app/controllers/select_relateds_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class SelectRelatedsController < ApplicationController
+  before_action :set_select_related, only: [:show, :edit, :update, :destroy]
+
+  # GET /select_relateds
+  def index
+    #@select_relateds = SelectRelated.all
+    #@select_relateds = SelectRelated.search(params[:search]).order('created_at ASC')
+    @select_relateds = SelectRelated.search(params[:search]).order('name ASC').page(params[:page]).per_page(2)
+    #@select_relateds = SelectRelated.search(params[:search]).page(params[:page]).per_page(2).order('created_at ASC')
+
+
+    # variable for link_to url_for <urlstring>
+    #@homepage_index_path = "homepage/index?locale=#{params[:locale]}&last_front_controller=#{params[:last_front_controller]}&last_front_action=#{params[:last_front_action]}"
+  end
+
+  # GET /select_relateds/1
+  def show
+  end
+
+  # GET /select_relateds/new
+  def new
+    @select_related = SelectRelated.new
+  end
+
+  # GET /select_relateds/1/edit
+  def edit
+  end
+
+  # POST /select_relateds
+  def create
+    @select_related = SelectRelated.new(select_related_params)
+
+    respond_to do |format|
+      if @select_related.save
+        format.html { redirect_to @select_related, notice: 'Select related was successfully created.' }
+        format.json { render :show, status: :created, location: @select_related }
+      else
+        format.html { render :new }
+        format.json { render json: @select_related.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /select_relateds/1
+  def update
+    respond_to do |format|
+      if @select_related.update(select_related_params)
+        format.html { redirect_to @select_related, notice: 'Select related was successfully updated.' }
+        format.json { render :show, status: :ok, location: @select_related }
+      else
+        format.html { render :edit }
+        format.json { render json: @select_related.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /select_relateds/1
+  def destroy
+    @select_related.destroy
+    respond_to do |format|
+      format.html { redirect_to select_relateds_url, notice: 'Select related was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_select_related
+      @select_related = SelectRelated.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def select_related_params
+      params.require(:select_related).permit(:name, :metadata, :bln_entities, :bln_documents)
+    end
+end
+~~~~~~~~

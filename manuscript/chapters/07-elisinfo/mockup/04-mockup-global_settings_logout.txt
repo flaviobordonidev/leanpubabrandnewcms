@@ -1,0 +1,144 @@
+# Mockup per la pagina Settaggi-globali logout
+
+Questo mockup tratta la parte di logout. Disegnamo una finestra di settaggi globali in cui possiamo fare varie azioni/settaggi per tutta la nostra applicazione. In questo capitolo attiviamo il pannello per uscire dall'applicazione (logout).
+
+
+
+
+## Apriamo il branch
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b mgsout
+~~~~~~~~
+
+
+
+
+## Rails generate controller Mocks
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g controller mockup_global_settings index
+~~~~~~~~
+
+
+
+
+## Instradiamo mockup_global_settings index
+
+Aggiungiamo su routes
+
+[Codice: login_homepage global_settings_logout 01](#code-login_homepage-global_settings_logout-01)
+
+{title=".../app/config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=20}
+~~~~~~~~
+get 'mockup_global_settings/index'
+~~~~~~~~
+
+
+
+
+## Disegniamo mockup_global_settings logout
+
+{title=".../app/views/mockup_global_settings/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="container-fluid rear_mode">
+
+  <div class="row">
+    <div class="col-xs-9 col-sm-10 col-lg-11">
+      <ul class="nav nav-pills bottom-pad top-pad left-pad">
+
+        <li class="active">
+          <a href="#pane_logout" data-toggle="tab"><span class="glyphiconmy ico_logout"></span></a>
+        </li>
+
+      </ul>
+    </div>
+    <div class="col-xs-3 col-sm-2 col-lg-1">
+      <%= render "button_close" %>
+    </div> <!-- end - col -->
+  </div> <!-- end - row -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="tab-content">
+
+        <div id="pane_logout" class="tab-pane active">
+          <div class="text-center bottom-pad">
+            <h4>Language</h4>
+          </div>
+          <%= render "pane_logout" %>
+
+        </div><!-- end - pane_logout -->
+      </div><!-- end - tab-content -->
+    </div> <!-- end - col -->
+  </div> <!-- end - row -->
+
+</div> <!-- end - rear_mode -->
+~~~~~~~~
+
+
+{title=".../app/views/mockup_global_settings/_button_close.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<ul class="nav nav-pills bottom-pad top-pad pull-right right-pad">
+  <li>
+    <a class="btn btn-default" href="#">
+      <span class="glyphiconmy ico_close"></span>
+    </a>
+  </li>
+</ul>
+~~~~~~~~
+
+
+{title=".../app/views/mockup_global_settings/_pane_logout.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="list-group left-pad right-pad bottom-pad">
+  <a class="list-group-item " href="#">
+    <span class="glyphiconmy ico_logout right-pad"></span> Esci dall'applicazione
+  </a>  
+</div>
+~~~~~~~~
+
+
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+eseguiamo un git commit
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add mockup_global_settings language"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku mgsl:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge mgsout
+$ git branch -d mgsout
+~~~~~~~~

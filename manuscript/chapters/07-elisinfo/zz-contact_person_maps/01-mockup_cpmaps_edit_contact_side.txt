@@ -1,0 +1,237 @@
+# Mockup Associazione Contatti e Persone pagina di modifica (contact_person_maps/edit)  
+
+La tabella di associazione tra contatti e persone (contact_person_maps) ha solo le pagine per le azioni Edit e New. Non ha nulla lato index o show. Questo perché lato index usa il partial _index che è visualizzato sulla pagina show dei contatti e delle persone. E non ha necessità di una sua pagina show essendo solo un'associazione tra due tabelle.
+Vediamo adesso la pagina di Edit. La pagina di Edit ha 3 tabs: "vai a", "modifica" ed "elimina".
+
+
+
+
+## Apriamo il branch "mockup contact_person_maps edit"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b mcpme
+~~~~~~~~
+
+
+
+
+## Rails generate controller 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g controller mockup_contact_person_maps edit new
+~~~~~~~~
+
+il comando ci ha generato in automatico il controller con le due azioni "modifica" e "nuovo"
+
+{title=".../app/controllers/mockup_contact_person_maps_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class MockupContactPersonMapsController < ApplicationController
+  def edit
+  end
+
+  def new
+  end
+end
+~~~~~~~~
+
+inoltre ha aggiunto gli instradamenti nel file routes. Noi le spostiamo in modo da mantenere organizzato il file routes. [(codice: 01)](#code-contact_person_maps-mockup_cpmaps_edit_contact_side-01)
+
+{title=".../app/config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=33}
+~~~~~~~~
+    get 'mockup_contact_person_maps/edit'
+    get 'mockup_contact_person_maps/new'
+~~~~~~~~
+
+
+
+
+## La pagina di modifica
+
+Creiamo la view mockup_contact_person_maps/edit
+
+{title=".../app/views/mockup_contact_person_maps/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="container-fluid rear_mode">
+	<div class="row">
+		<div class="col-xs-9 col-sm-10 col-lg-11">
+			<ul class="nav nav-pills bottom-pad top-pad left-pad">
+				<li><a href="#pane_goto" data-toggle="tab"><span class="glyphiconmy ico_goto"></span></a></li>
+				<li class="active"><a href="#pane_edit" data-toggle="tab"><span class="glyphiconmy ico_edit"></span></a></li>
+				<li><a href="#pane_delete" data-toggle="tab"><span class="glyphiconmy ico_delete"></span></a></li>
+			</ul>
+		</div><!-- /.col -->
+		<div class="col-xs-3 col-sm-2 col-lg-1">
+			<%= render 'mockup_contact_person_maps/edit/button_close' %>
+		</div> <!-- /.col -->
+	</div> <!-- /.row -->
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="tab-content">
+				<div id="pane_goto" class="tab-pane">
+					<div class="text-center bottom-pad">
+						<h4>vai a</h4>
+					</div><!-- /.text-center -->
+					<%= render 'mockup_contact_person_maps/edit/tab_goto' %>
+				</div><!-- /#pane_goto -->
+				<div id="pane_edit" class="tab-pane active">
+					<div class="text-center bottom-pad">
+						<h4>Modifica</h4>
+					</div><!-- /.text-center -->
+					<%= render 'mockup_contact_person_maps/edit/tab_edit' %>
+				</div><!-- /#pane_edit -->
+				<div id="pane_delete" class="tab-pane">
+					<div class="text-center bottom-pad">
+						<h4>Elimina</h4>
+					</div><!-- /.text-center -->
+					<%= render 'mockup_contact_person_maps/edit/tab_delete' %>
+				</div><!-- /#pane_delete -->
+			</div><!-- /.tab-content -->
+		</div> <!-- /.col -->
+	</div> <!-- /.row -->
+</div> <!-- /.rear_mode -->
+~~~~~~~~
+
+
+{title=".../app/views/mockup_contact_person_maps/edit/_button_close.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<ul class="nav nav-pills pull-right top-pad right-pad">
+  <li><a href="#" class="btn btn-default"><span class="glyphiconmy ico_close"></span></a></li>
+</ul>
+~~~~~~~~
+
+
+{title=".../app/views/mockup_contact_person_maps/edit/_tab_goto.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<p> if params[:related]="people" </p>
+
+  <a href="#" class="list-group-item">
+    <span class="glyphiconmy ico_company right-pad"></span> Casa al mare
+    <div><%= "Sig. Jhon Doe" %></div>
+  </a>
+
+<p> if params[:related]="contacts" </p>
+
+  <a href="#" class="list-group-item">
+    <span class="glyphiconmy ico_person right-pad"></span> Casa al mare
+    <div><%= "Telefono +39 02 5478 3922" %></div>
+  </a>
+~~~~~~~~
+
+
+{title=".../app/views/mockup_contact_person_maps/edit/_tab_edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<form class="form-horizontal left-pad right-pad bottom-pad">
+	<div class="form-group">
+
+    <label class="control-label" for="summary">Summary</label>
+		<input type="text" id="summary" class="form-control" placeholder="Casa al mare">
+		<span class="help-block"></span>
+
+		<p> if params[:related]="people" </p>
+
+    <label class="control-label" for="person_id">Persona</label>
+    <a href="#" id="person_id" class="list-group-item">
+      <span class="glyphiconmy ico_person right-pad"></span> 
+      <div><%= "Sig. Jhon Doe" %></div>
+    </a>
+		<span class="help-block"></span>
+
+    <label class="control-label" for="person_favorite">Favorite: </label>
+    <input type="checkbox" id="person_favorite" name="person_favorite" data-size = "medium" data-on-color = "primary" data-on-text = "SI" data-off-color = "default" data-off-text = "NO" >
+    <span class="help-block"></span>
+
+		<p> if params[:related]="contacts" </p>
+
+    <label class="control-label" for="contact_id">Contatto</label>
+    <a href="#" id="contact_id" class="list-group-item">
+      <span class="glyphiconmy ico_contact right-pad"></span> 
+      <div><%= "Telefono +39 02 5478 3922" %></div>
+    </a>
+		<span class="help-block"></span>
+
+    <label class="control-label" for="contact_favorite">Favorite: </label>
+    <input type="checkbox" id="contact_favorite" name="contact_favorite" data-size = "medium" data-on-color = "primary" data-on-text = "SI" data-off-color = "default" data-off-text = "NO" checked >
+    <span class="help-block"></span>
+    
+	</div><!-- /.form-group -->
+	<button type="submit" class="btn btn-primary btn-block">esegui</button>
+</form>
+~~~~~~~~
+
+
+{title=".../app/views/mockup_contact_person_maps/edit/_tab_delete.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<form id="login-form" name="login-form" class="form-horizontal left-pad right-pad bottom-pad">
+	<div class="form-group">
+		
+    <label for="destroy">Sei sicuro?</label><br>
+    <input type="checkbox" id="destroy" name="destroy" data-size = "medium" data-on-color = "primary" data-on-text = "SI" data-off-color = "default" data-off-text = "NO" />
+		<span class="help-block"></span>
+		
+	</div><!-- /.form-group -->
+	<button type="submit" class="btn btn-primary btn-block">esegui</button>
+</form>
+~~~~~~~~
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+https://elisinfo5-flaviobordonidev.c9users.io/mockup_contact_person_maps/edit
+
+![mockup_people edit 1](images/contact_person_maps/mockup_contact_person_maps/edit1.png)
+
+![mockup_people edit 2](images/contact_person_maps/mockup_contact_person_maps/edit2.png)
+
+![mockup_people edit 3](images/contact_person_maps/mockup_contact_person_maps/edit3.png)
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add mockup_contact_person_maps edit"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku mcpme:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge mcpme
+$ git branch -d mcpme
+~~~~~~~~
+
+
+
+
+## Backup su github
+
+facciamo un backup del ns progetto su github:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

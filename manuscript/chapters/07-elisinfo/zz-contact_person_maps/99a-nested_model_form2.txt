@@ -1,0 +1,253 @@
+# Gestire su un form più models. - Parte 2
+
+questo è un capitolo a parte perché fa un refactoring di quanto visto precedentemente introducendo anche un ulteriore modello annidato, quello delle risposte (answers).
+
+
+
+## Creiamo le risposte
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g model answer question:references content:string
+~~~~~~~~
+
+{title=".../db/migrate/xxx_create_answers.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class CreateAnswers < ActiveRecord::Migration[5.0]
+  def change
+    create_table :answers do |t|
+      t.references :question, foreign_key: true
+      t.string :content
+
+      t.timestamps
+    end
+  end
+end
+~~~~~~~~
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rake db:migrate
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+
+
+
+## Implementiamo relazione uno-a-molti con nested models in form
+
+{title=".../app/models/answer.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class Answer < ApplicationRecord
+  belongs_to :question, inverse_of: :answers
+end
+~~~~~~~~
+
+
+{title=".../app/models/question.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class Question < ApplicationRecord
+  belongs_to :survey, inverse_of: :questions
+  
+  has_many :answers, inverse_of: :question, dependent: :destroy
+  accepts_nested_attributes_for :answers, reject_if: lambda { |a| a[:content].blank? }, allow_destroy: true
+end
+~~~~~~~~
+
+
+
+
+## Refactoring sulla view surveys/new or /edit
+
+facciamo un primo refactoring creando il partial **question_fields**
+
+{title=".../app/views/surveys/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=20}
+~~~~~~~~
+  <%= f.fields_for :questions do |builder| %>
+    <%= render "question_fields", f: builder %>
+  <% end %>
+~~~~~~~~
+
+
+{title=".../app/views/surveys/_question_fields.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=20}
+~~~~~~~~
+<p>
+  <%= f.label :content, "Question" %><br/>
+  <%= f.text_area :content, :rows => 3 %><br/>
+  <%= f.check_box :_destroy %>
+  <%= f.label :_destroy, "Remove Question" %>
+</p>
+~~~~~~~~
+
+
+
+
+## Annidiamo le risposte
+
+{title=".../app/views/surveys/_question_fields.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=20}
+~~~~~~~~
+<p>
+  <%= f.label :content, "Question" %><br/>
+  <%= f.text_area :content, :rows => 3 %><br/>
+  <%= f.check_box :_destroy %>
+  <%= f.label :_destroy, "Remove Question" %>
+</p>
+<%= f.fields_for :answers do |builder| %>
+  <p>
+    <%= builder.label :content, "Answer" %>
+    <%= builder.text_field :content %>
+    <%= builder.check_box :_destroy %>
+    <%= builder.label :_destroy, "Remove" %>
+  </p>
+<% end %>
+~~~~~~~~
+
+
+
+
+## Facciamo refactoring per le risposte
+
+{title=".../app/views/surveys/_question_fields.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=20}
+~~~~~~~~
+<p>
+  <%= f.label :content, "Question" %><br/>
+  <%= f.text_area :content, :rows => 3 %><br/>
+  <%= f.check_box :_destroy %>
+  <%= f.label :_destroy, "Remove Question" %>
+</p>
+<%= f.fields_for :answers do |builder| %>
+    <%= render "answer_fields", f: builder %>
+<% end %>
+~~~~~~~~
+
+
+{title=".../app/views/surveys/_answer_fields.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=20}
+~~~~~~~~
+<p>
+  <%= f.label :content, "Answer" %>
+  <%= f.text_field :content %>
+  <%= f.check_box :_destroy %>
+  <%= f.label :_destroy, "Remove" %>
+</p>
+~~~~~~~~
+
+
+
+## Lavoriamo sul controller
+
+adesso implementiamo il codice sull'azione **new** del controller **surveys_controller**
+
+{title=".../app/controllers/surveys_controller.rb", lang=ruby, line-numbers=on, starting-line-number=15}
+~~~~~~~~
+  # GET /surveys/new
+  def new
+    @survey = Survey.new
+    3.times do
+      q = @survey.questions.build
+      4.times { q.answers.build }
+    end
+  end
+~~~~~~~~
+
+
+{title=".../app/controllers/surveys_controller.rb", lang=ruby, line-numbers=on, starting-line-number=71}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def survey_params
+      params.require(:survey).permit(:name)
+      params.require(:survey).permit(:name, questions_attributes: [:id, :content, :_destroy, answers_attributes: [:id, :content]])
+    end
+~~~~~~~~
+
+
+
+
+## Visualizziamo le risposte
+
+lavoriamo sulla view surveys/show per visualizzare le risposte
+
+{title=".../app/views/surveys/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=8}
+~~~~~~~~
+<ol>
+<% @survey.questions.each do |question| %>
+  <li>
+    <%= question.content %>
+    <ul>
+      <% question.answers.each do |answer| %>
+        <li><%= answer.content %></li>
+      <% end %>
+    </ul>
+  </li>
+<% end %>
+</ol>
+~~~~~~~~
+
+
+
+
+## Eliminamo dati vuoti
+
+Implementiamo il codice per non inserire in elenco le risposte che non hanno dati.
+
+abbiamo già inserito il ** reject_if: lambda { |a| a[:content].blank? } ** dentro il model di Question. 
+
+{title=".../app/models/question.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class Question < ApplicationRecord
+  belongs_to :survey, inverse_of: :questions
+  
+  has_many :answers, inverse_of: :question, dependent: :destroy
+  accepts_nested_attributes_for :answers, reject_if: lambda { |a| a[:content].blank? }, allow_destroy: true
+end
+~~~~~~~~
+
+Con il ** :reject_if ** ottengo che i valori di :content vuoti non vengano caricati in tabella.
+
+
+
+
+## Eliminiamo le risposte
+
+Le risposte già inserite non possono essere eliminate svuotando il contenuto. Dobbiamo implementare un link per eliminarle. Iniziamo creando un checkbox ed in seguito creeremo il link.
+Abbiamo già inserito il check_box nelle risposte
+
+{title=".../app/views/surveys/_answer_fields.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=20}
+~~~~~~~~
+<p>
+  <%= f.label :content, "Answer" %>
+  <%= f.text_field :content %>
+  <%= f.check_box :_destroy %>
+  <%= f.label :_destroy, "Remove" %>
+</p>
+~~~~~~~~
+
+
+Per abilitare il check_box dobbiamo aggiungere ** :allow_destroy ** sul model question.
+Ed abbiamo già fatto anche questo ^_^
+
+{title=".../app/models/question.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class Question < ApplicationRecord
+  belongs_to :survey, inverse_of: :questions
+  
+  has_many :answers, inverse_of: :question, dependent: :destroy
+  accepts_nested_attributes_for :answers, reject_if: lambda { |a| a[:content].blank? }, allow_destroy: true
+end
+~~~~~~~~
+
+ci manca solo di metterlo nella white list sul controller di survey
+
+questo ancora non lo avevamo fatto. Eccolo quà:
+
+{title=".../app/controllers/surveys_controller.rb", lang=ruby, line-numbers=on, starting-line-number=71}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def survey_params
+      params.require(:survey).permit(:name)
+      params.require(:survey).permit(:name, questions_attributes: [:id, :content, :_destroy, answers_attributes: [:id, :content, :_destroy]])
+    end
+~~~~~~~~
+
+adesso proviamo e verifichiamo che le domande vengono eliminate. Yea!!
+
+

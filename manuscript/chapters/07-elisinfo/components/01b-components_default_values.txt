@@ -1,0 +1,106 @@
+# Impostiamo dei valori di default
+
+
+
+
+## Apriamo il branch "Components Default Values"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b cdv
+~~~~~~~~
+
+
+
+
+## Le due opzioni
+
+Risorse web:
+
+* http://mrkris.com/2015/02/08/setting-default-values-in-active-record/
+* https://solidfoundationwebdev.com/blog/posts/default-model-attributes-in-rails
+
+Sometimes it is helpful to have default values for an attribute. You have two options when it comes to this 
+
+
+
+
+### Option 1: Default value contraint in database:
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g migration ChangePriceFieldsInComponents
+~~~~~~~~
+
+questo crea il migrate:
+
+{title=".../db/migrate/xxx_create_components.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+class ChangePriceFieldsInComponents < ActiveRecord::Migration[5.0]
+  def change
+    change_column :components, :supplier_price_list, :decimal, default: 0
+    change_column :components, :currency, :string, default: "EUR"
+    change_column :components, :currency_exchange, :decimal, default: 1
+    change_column :components, :discount_one_min_quantity, :decimal, default: 1
+    change_column :components, :discount_one_percentage, :decimal, default: 0
+  end
+end
+~~~~~~~~
+
+
+Effettuiamo il migrate del database per aggiornare la tabella "components" sul database
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rake db:migrate
+~~~~~~~~
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "change price fields in components adding default values"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku cs:master
+$ heroku run rake db:migrate
+~~~~~~~~
+
+
+
+
+
+Option 2: after_initialize callback:
+
+class Post < ActiveRecord::Base
+  after_initialize :set_defaults
+
+  def set_defaults
+    self.description = "My Default Value" if self.new_record?
+  end
+end
+I added the if self.new_record? portion because after_initialize runs when building a new record or after fetching a record. I only want the value to be set on newly built records.
+
+I think that Option 2 is more flexible but Option 1 has its perks too
+
+
+
+## Impostiamo la data attuale per la storia
+
+http://api.rubyonrails.org/ -- ActiveRecord::Attributes::ClassMethods --> ActiveRecord --> Attributes --> ClassMethods --> Instance Public methods --> Examples
+
+class Product < ActiveRecord::Base
+  attribute :my_default_proc, :datetime, default: -> { Time.now }
+end
+
+Product.new.my_default_proc # => 2015-05-30 11:04:48 -0600
+sleep 1
+Product.new.my_default_proc # => 2015-05-30 11:04:49 -0600

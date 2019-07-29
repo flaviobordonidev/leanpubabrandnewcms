@@ -50,7 +50,7 @@ class AddUniqueToIdCheckInTransactions < ActiveRecord::Migration[5.0]
 end
 ~~~~~~~~
 
-Questo non mi è utile perché ogni chisco ha una sua numerazione che ricomincia da "1" per le transazioni.
+Questo non mi è utile perché ogni chiosco ha una sua numerazione che ricomincia da "1" per le transazioni.
 Quindi il campo id_check ha duplicati perche ogni chiosco ha la sua numerazione.
 Facciamo un indice multiplo kiosk_id -> id_check
 

@@ -1,0 +1,225 @@
+# Nuovo contatto 
+
+La modifica dei contatti ha la stessa implementazione sia per una specifica persona, sia per una specifica azienda.
+in questo capitolo tratteremo la modifica dei contatti (sul view contacts/edit) relateds della pagina people/show e della pagina companies/show.
+
+
+
+
+## Apriamo il branch "Contacts New"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b cn
+~~~~~~~~
+
+
+
+
+## Lato Person
+
+creiamo un nuovo contatto a partire dai relateds della persona
+
+
+
+## Person/show nuovo contatto
+
+sulla lista di contatti della persona people/show mostriamo disabilitato il pulsante di nuovo. Lo abilitiamo solo se è fatta una ricerca o se sono presenti meno di 7 records perché il pagination lo imposterò con 6 records per pagina, quindi il settimo record potrebbe essere sulla seconda pagina.
+
+{title=".../app/views/people/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=33}
+~~~~~~~~
+      <%= render 'related_button_new', list_to_add: @relateds %>
+~~~~~~~~
+
+
+{title=".../app/views/people/_related_button_new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<% if params[:search].present? or (list_to_add.size < 7)%>
+
+  <div class="btn-group pull-right right-pad"> <!-- btn-group -->
+   <%= link_to url_for(h_front_params_path(path: "/#{params[:related]}/new")), :class => "btn btn-default" do %>
+      <span class="glyphiconmy ico_new"></span>
+    <% end %>
+  </div> <!-- /btn-group -->
+
+<% else %>
+
+  <div class="btn-group pull-right right-pad">  <!-- btn-group -->
+    <a href="#" class="btn btn-primary disabled">
+      <span class="glyphiconmy ico_new"></span>
+    </a>
+  </div> <!-- /btn-group -->
+
+<% end %>
+~~~~~~~~
+
+Il partial **_related_button_new** possiamo metterlo su **views/application** perché è sufficientemente generico.
+
+
+
+
+## Implementiamo la view contacts/new
+
+Implementiamo la struttura del mockup nella pagina contacts/new ed implementiamo i renders
+
+{title=".../app/views/contacts/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="container-fluid rear_mode">
+  <div class="row">
+    <div class="col-xs-9 col-sm-10 col-lg-11">
+      <ul class="nav nav-pills bottom-pad top-pad left-pad">
+        <li class="<%= 'active' if params[:tab_active] == 'default' or params[:tab_active] == 'edit' %>">
+          <%= link_to "#pane_edit", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_edit" %>
+          <% end %>
+        </li>
+      </ul>
+    </div><!-- /.col -->
+    <div class="col-xs-3 col-sm-2 col-lg-1">
+      <%= render 'button_close' %>
+    </div> <!-- /.col -->
+  </div> <!-- /.row -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="tab-content">
+        <div id="pane_edit" class="tab-pane <%= 'active' if params[:tab_active] == 'default' or params[:tab_active] == 'edit'  %>">
+          <div class="text-center bottom-pad">
+            <h4><%= t("contacts.new.title_pane_edit") %></h4>
+          </div> <!-- /.text-center -->
+          <%= render 'form', contact: @contact %>
+        </div> <!-- /.tab-pane -->
+      </div> <!-- /.tab-content -->
+    </div> <!-- /.col -->
+  </div> <!-- /.row -->
+</div> <!-- /.rear_mode -->
+~~~~~~~~
+
+il partial del pulsante di chiusura lo abbiamo già fatto a livello globale su ** .../app/views/application/_button_close **. Il pulsante di chiusura ci fa tornare alla pagina people/show. 
+
+
+
+
+## tab edit (_form)
+
+il partial _form lo abbiamo già fatto per la modifica. 
+
+
+
+
+## Il controller dei contatti
+
+Aggiorniamo l'azione **create** del controller **contacts_controller** per reinstradare sulla relativa people/show passando tutti i params[]. In pratica cambio una riga di codice: 
+
+{title=".../app/controllers/contacts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=45}
+~~~~~~~~
+        format.html { redirect_to url_for(view_context.h_params_path(path: "/#{params[:last_front_controller]}/#{params[:last_front_id]}", related: params[:last_front_related], page: params[:last_front_page], search: params[:last_front_search])), notice: 'Contact was successfully created..' }
+        #format.html { redirect_to @contact, notice: 'Contact was successfully created.' }
+~~~~~~~~
+
+Questa riga di codice è sufficientemente generica da non aver bisogno di nessun cambio se non la descrizione finale ** notice: '...' **
+
+Ci resta solo da inserire i campi per l'associazione polimorifica. Lo facciamo riempendoli nell'azione **new**
+
+{title=".../app/controllers/contacts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=16}
+~~~~~~~~
+  def new
+    @contact = Contact.new
+    @contact.contactable_id = params[:last_front_id]
+    @contact.contactable_type = params[:last_front_controller].singularize.classify
+  end
+~~~~~~~~
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+![https://elisinfo5-flaviobordonidev.c9users.io/company_person_maps](images/company_person_maps/cpmaps_index/cpmaps.png)
+
+aggiorniamo git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "update contacts/new"
+~~~~~~~~
+
+
+
+
+## Lato azienda
+
+creiamo un nuovo contatto a partire dai relateds dell'azienda
+
+
+
+## Company/show nuovo contatto
+
+sulla lista di contatti dell'azienda companies/show mostriamo disabilitato il pulsante di nuovo. Lo abilitiamo solo se è fatta una ricerca o se sono presenti meno di 7 records perché il pagination lo imposterò con 6 records per pagina, quindi il settimo record potrebbe essere sulla seconda pagina.
+
+{title=".../app/views/companies/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=33}
+~~~~~~~~
+      <%= render 'related_button_new', list_to_add: @relateds %>
+~~~~~~~~
+
+Il partial **_related_button_new** è su **views/application** perché è sufficientemente generico.
+
+E questo è tutto. Il resto lo abbiamo già fatto.
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+![https://elisinfo5-flaviobordonidev.c9users.io/company_person_maps](images/company_person_maps/cpmaps_index/cpmaps.png)
+
+aggiorniamo git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "implement company/show button_new for contacts/new"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku cn:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge cn
+$ git branch -d cn
+~~~~~~~~
+
+
+
+
+## Backup su github
+
+facciamo un backup del ns progetto su github:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

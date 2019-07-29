@@ -1,0 +1,146 @@
+# Creiamo nuovo contatto
+
+
+
+
+## Apriamo il branch "contacts new"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b cn
+~~~~~~~~
+
+
+
+
+## Homepage nuovo contatto
+
+sulla lista di contatti dalla homepage mostriamo disabilitato il pulsante di nuovo. Lo abilitiamo solo se è fatta una ricerca (o se non è presente nessun record iniziale)
+
+il codice lo abbiamo già implementato al capitolo "people_new"
+
+
+
+
+## Attiviamo la view contacts/new
+
+Prendiamo mocks/contacts_new e copiamo il codice in cima a contacts/new
+Iniziando a renderlo dinamico ...
+
+{title=".../app/views/contacts/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="container-fluid rear_mode">
+
+	<div class="row">
+		<div class="col-xs-9 col-sm-10 col-lg-11">
+
+			<ul class="nav nav-pills bottom-pad top-pad left-pad">
+				<li class="active"><a href="#pane_edit" data-toggle="tab"><span class="glyphiconmy ico_edit"></span></a></li>
+			</ul>
+
+		</div>
+		<div class="col-xs-3 col-sm-2 col-lg-1">
+			<%= render 'button_close' %>
+		</div> <!-- /col -->
+	</div> <!-- /row -->
+
+	<div class="row">
+		<div class="col-xs-12">
+
+			<div class="tab-content">
+				<div id="pane_edit" class="tab-pane active">
+					<div class="text-center bottom-pad">
+						<h4>Nuovo</h4>
+					</div>
+					<%= render 'form', contact: @contact %>
+				</div>
+
+			</div><!-- /.tab-content -->
+
+		</div> <!-- /col -->
+	</div> <!-- /row -->
+
+</div> <!-- /rear_mode -->
+
+
+
+<h1>New Contact</h1>
+
+<%= link_to 'Back', contacts_path %>
+~~~~~~~~
+
+
+il controller
+
+Mi riempie in automatico il valore (identifier) con quanto scritto nel campo di ricerca ** @contact.identifier = params[:last_front_search] **
+
+{title=".../app/controllers/contacts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=15}
+~~~~~~~~
+  # GET /contacts/new
+  def new
+    @contact = Contact.new
+    @contact.identifier = params[:last_front_search]
+  end
+~~~~~~~~
+
+e modifichiamo il redirect_to dell'azione create per inserire i parametri con l'helper h_params_path e renderlo flessibile/dinamico con url_for
+
+{title=".../app/controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=25}
+~~~~~~~~
+  # POST /contacts
+  # POST /contacts.json
+  def create
+    @contact = Contact.new(contact_params)
+
+    respond_to do |format|
+      if @contact.save
+        #format.html { redirect_to @contact, notice: 'Contact was successfully created.' }
+        format.html { redirect_to url_for(view_context.h_params_path(path: "/contacts/#{@contact.id}", last_front_controller: "contacts", last_front_action: "show", last_front_id: "#{@contact.id}")), notice: 'Contatto was successfully created.' }
+        format.json { render :show, status: :created, location: @contact }
+      else
+        format.html { render :new }
+        format.json { render json: @contact.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+~~~~~~~~
+
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add contacts new"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku cn:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge cn
+$ git branch -d cn
+~~~~~~~~
+
+facciamo un backup su github
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

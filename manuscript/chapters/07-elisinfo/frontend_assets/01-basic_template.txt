@@ -1,0 +1,518 @@
+# Template base
+
+Installiamo il frontend (bootsrap) e configuriamo il layout lo stilesheet comprensivo delle immagini.
+Facciamo una considerazione su Bower come scelta migliore per gestire il frontend.
+
+Risorse web:
+
+* [sito ufficiale BootStrap](http://getbootstrap.com/getting-started/#download)
+* [sito ufficiale BootStrap Sass per Rails](https://github.com/twbs/bootstrap-sass)
+* [sito ufficiale BootStrap Switch](http://www.bootstrap-switch.org/)
+* [tutorial bootstrap switch rails](https://github.com/manuelvanrijn/bootstrap-switch-rails)
+* [gemma bootrap-switch](https://rubygems.org/gems/bootstrap-switch-rails)
+
+
+
+
+## Apriamo il branch
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b bt
+~~~~~~~~
+
+
+ATTENZIONE!
+Bower è superato. Da Rails 5.2 la gestione del frontend preferita è WEBPACK
+
+
+## Gestire l'app asset di Ruby on Rails con Bower
+
+Mentre si lavora sull'applicazione Ruby on Rails, gli sviluppatori tendono ad aggiungere sempre più librerie client: AngularJS, plugin Bootstrap, jQuery. Il framework RoR di default non offre alcun modo efficiente di gestire queste dipendenze. Si possono quindi aggiungere le gemme nel Gemfile o mettere gli asset citati in vendor/asset. 
+Nel primo caso le gemme potrebbero essere aggiornate di rado, e inoltre l'applicazione potrebbe funzionare più lentamente a causa della grande quantità di gemme. Nel secondo caso, l'aggiornamento di un asset è particolarmente impegnativa e inoltre,si devono gestire tutte le dipendenze manualmente.
+
+
+
+
+## Usare Bower per l'asset management
+
+Bower è uno strumento per l'asset management costruito dal team di Twitter. Funziona allo stesso modo di RubyGems e Bundle: descrive l'elenco delle risorse necessarie, e le installa con un solo comando. Inoltre, è possibile specificare la versione di ciascuna asset, branch e indirizzi di repository git. Bower gestisce automaticamente le dipendenze delle attività e visualizza gli errori in fase di installazione.
+
+Bower introduce una caratteristica non presente in NPM ovvero la possibilità di gestire le dipendenze Web di applicazioni esclusivamente front-end. In questo caso non dobbiamo preoccuparci di librerie di basso livello, ma è necessario concentrarci su librerie più specifiche proprio perchè l’applicazione non verrà eseguita in un contesto Node.js ma all’interno di un browser. Tramite Bower possiamo infatti ottenere facilmente librerie come jQuery, Bootstrap, AngularJS, Knockout o Ember.js.
+
+Bower gestisce alberi di dipendenza semplici, con livelli singoli proprio perchè, in ambito web, abbiamo bisogno di librerie complete, che non dipendano da ulteriori pacchetti. A loro volta le librerie potranno avere dipendenze ma la versione che otterremo tramite Bower è una build completa di tutto, pronta ad essere inclusa nelle nostre pagine.
+
+
+
+
+## Differenza tra Bower e le gemme di Rails.
+
+Bower ha reso le cose più facili per gestire i file di frontend quali j-query, bootstrap e molti altri senza scaricare manualmente i sorgenti. Ma anche rails può gestire il frontend attraverso il Gemfile e bundler.
+
+Come lavora Bower e quali sono i vantaggi? Quali sono le differenze tra Bower e Bundler Gemfile? Quali sono i pro / contro di utilizzare l'uno o l'altro per le dipendenze di front-end?
+
+Possiamo prendere Bootstrap come esempio. Lo svantaggio di utilizzare una gemma Rails, come Twitter-bootstrap-rails è che ogni volta che il sottostante (bootstrap) viene aggiornato o modificato, è necessario attendere che gli autori della gemma aggiornino la gemma. Se sono lenti o lo sviluppo/manutenzione della gemma è abbandonato, allora siamo bloccati. Il pro è che gli autori hanno specificamente adattato l'asset a lavorare con Rails e la sua attuazione è di solito ben documentate e semplice. 
+
+Bower ha il solo compito di gestire il frontend. Quindi tutto quello installato con Bower non darà nessun helper rails. E questo ha creato ad esempio un problema sul link destroy che era stato creato in automatico dallo scaffold. Quindi per esempio, in fase di sviluppo abbiamo dovuto ripristinare jquery attraverso il Gemfile altrimenti avremmo potuto usare solo il button e non il link.
+Altro esempio da citare è che font-awesome installato tramite la gemma vi darà fa_icon view helper, che non si avrà quando si installa con Bower.
+
+E' interessante anche sottolineare che, se si utilizza Bower per ottenere BS, solo l'aggiunta di un import SASS (supponendo di utilizzare la versione SASS di BS) non funziona perché il "load path" di SASS non è impostato a guardare nella tua cartella bower_components/bootstrap di default. Ma questo problema è superato con la gemma "bower" che punta il default su /vendor/bower_components/bootstrap.
+
+Un'alternativa alla gemma "bower" è la gemma "rails-assets" che è quella usata anche da Chris Olive, l'autore degli episodi GoRails. è una combinazione di gemme ed assets Bower - rails-assets.org. È una gemma che racchied i componenti Bower in una gemma. Ad esempio, se vuoi installare angular, è possibile (a parte l'installazione con la gemma angular-rails) aggiungere questo URL come sorgente per il vostro Gemfile e quindi installare rails-resource-angular.
+
+
+
+
+## triste conclusione
+
+Questo progetto lo iniziamo con la gemma per Bootstrap perché ho già il materiale. Successivamente introdurremo Bower con tutti i suoi vantaggi ed aggiornerò i seguenti paragrafi.
+Per il momento vediamo i paragrafi con installazione di Bootstrap tramite gemma.
+
+Inoltre bower rischia di essere rimpiazzato da Gulp o Webpack
+https://www.quora.com/What-are-the-differences-between-NPM-Bower-Grunt-Gulp-Webpack-Browserify-Slush-Yeoman-and-Express
+Bootstrap nei suoi templates usa Gulp
+La scelta migliore è usare quello che il template ti mette a disposizione ^_^
+
+
+
+
+## Installiamo Bootstrap
+
+Si mette all'opera e prepara il framework installando bootstrap.
+
+
+Riferimenti sul web:
+* http://getbootstrap.com/getting-started/#download
+* https://github.com/twbs/bootstrap-sass
+
+
+[codice frontend_assets basic_template 01](#code-frontend_assets-basic_template-01)
+
+{title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=44}
+~~~~~~~~
+# bootstrap-sass – Twitter Bootstrap for CSS and JavaScript
+gem 'bootstrap-sass', '~> 3.3.7'
+~~~~~~~~
+
+I> Verifichiamo anche la presenza di gem 'sass-rails' che è aggiunta di default da Rails
+I>
+I> Inoltre in passato si doveva aggiungere anche la gemma autoprefixer ma adesso viene installata in automatico come dipendenza quando si esegue bundle install. (...Installing autoprefixer-rails 6.3.3.1)
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ bundle install
+~~~~~~~~
+
+I> Altra verifica da fare è che sprockets-rails sia maggiore della versione v2.1.4. Per controllare usiamo il comando $ bundle show sprockets-rails
+
+
+
+
+## Application Assets
+
+Per far si che bootstrap funzioni correttamente dobbiamo fare alcune modifiche sul nostro assets sia per quanto riguarda gli stylesheets che per quanto riguarda i javascripts
+
+- Rinominiamo application.css in application.scss
+- Eliminiamo i  *= require_self e *= require_tree
+- aggiungiamo gli @import 
+
+{title=".../app/assets/stylesheets/application.scss", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ */
+
+// "bootstrap-sprockets" must be imported before "bootstrap" and "bootstrap/variables"
+@import "bootstrap-sprockets"; //this allow the gliphicon to work
+@import "bootstrap";
+~~~~~~~~
+
+I> Do not use *= require in Sass or your other stylesheets will not be able to access the Bootstrap mixins or variables.
+
+
+Modifichiamo il file application.js aggingendo la linea ** //= require bootstrap-sprockets **
+
+{title=".../app/assets/javascripts/application.js", lang=ruby, line-numbers=on, starting-line-number=14}
+~~~~~~~~
+// This is a manifest file that'll be compiled into application.js, which will include all the files
+// listed below.
+//
+// Any JavaScript/Coffee file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
+// or any plugin's vendor/assets/javascripts directory can be referenced here using a relative path.
+//
+// It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
+// compiled file. JavaScript code in this file should be added after the last require_* statement.
+//
+// Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
+// about supported directives.
+//
+//= require jquery
+//= require jquery_ujs
+//= require bootstrap-sprockets
+//= require turbolinks
+//= require_tree .
+~~~~~~~~
+
+
+I> Non possiamo mettere entrambi "bootstrap" e "bootstrap-sprockets" ne dobbiamo scegliere uno. La guida di bootstrap suggerisce di usare "bootstrap-sprokets"
+I>
+I> bootstrap-sprockets provides individual Bootstrap Javascript files (alert.js or dropdown.js, for example)
+I>
+I> while bootstrap provides a concatenated file containing all Bootstrap Javascripts.
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "install bootstrap"
+~~~~~~~~
+
+
+
+
+## Layout application
+
+
+Impostiamo il layout di tutta l'applicazione. Prepariamo tutta la parte di CSS e creiamo dei partials per il layout. Modifichiamo il file application che contiene il codice che viene usato in tutte le views.
+
+{title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for?(:title) ? yield(:title) : "Elisinfo" %></title>
+    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Elisinfo" %>">
+    <%= csrf_meta_tags %>
+  
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= render 'layouts/workaround_ie' %>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+  
+    <%= yield %>
+  
+    <%= render 'layouts/flash_messages' %>
+    
+    <% if Rails.env.development? %>
+        <div class='debug_layout'>
+          <%= render 'layouts/debug' %>
+        </div>
+    <% end %>
+  </body>
+  <%#= render 'layouts/bootstrap_switch' %>
+</html>
+~~~~~~~~
+
+Nota: quando si lavora sul codice non fate un drastico copia/incolla ma guardate le piccole differenze di codice perché Ruby on Rails è in continua evoluzione ed i generatori di codice portano spesso piccole novità che è bene considerare.
+Ad esempio su rails 5.0.0.1 il layout aveva:
+
+~~~~~~~~
+    <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+~~~~~~~~
+
+invece su rails 5.0.1 abbiamo
+
+~~~~~~~~
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+~~~~~~~~
+
+Queste piccole modifiche sono importanti perché sono inserite solo dopo ampie discussioni nella comunità e danno dei messaggi su quali sono le best-practise nella produzione di codice. 
+
+
+
+
+### I partials di Layout
+
+Creiamo il partial _flash_messages per la visualizzazione dei messaggi flash tipo l'eliminazione di un record.
+
+{title=".../app/views/layouts/_flash_messages.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<% flash.each do |name,msg| %>
+  <div class='alert alert-<%= name == :notice ? 'success' : 'error' %>'>
+    <a class='close' data-dismiss='alert'>&#215;</a>
+    <%= msg %>
+  </div>
+<% end %>
+~~~~~~~~
+
+Cicliamo l'hash **flash** prendendo il **name** ed il **msg** e li usiamo per formattare e presentare il messaggio. Questa parte usa il [dismissible alerts di bootsrap](http://getbootstrap.com/components/#alerts-dismissible)
+
+~~~~~~~~
+<div class="alert alert-warning alert-dismissible" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <strong>Warning!</strong> Better check yourself, you're not looking too good.
+</div>
+~~~~~~~~
+
+
+
+Creiamo il partial _workaround_ie che è un richiamo ad una patch/workaround per visualizzare html5 su browser internet explorer minori della versione 9
+
+{title=".../app/views/layouts/_workaround_ie.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!--[if lt IE 9]>
+  <script src='http://html5shim.googlecode.com/svn/trunk/html5.js'></script>
+<![endif]-->
+~~~~~~~~
+
+
+Creiamo il partial _debug che è utile per il web developper perché evidenzia in rosso in basso alcuni valori di vari parametri. il params array ha i prev_xxx che riportano i dati della pagina html da cui si arriva. Questo permette di tornare indietro con il pulsante "close". Attenzione a quando si fa la ricerca a non perdersi i dati prev_xxx perché la ricerca effettua un refresh della stessa pagina html. Quando si effettua la ricerca NON vanno aggiornati i prev_xxx. L'unico da aggiornare è prev_search.
+
+
+{title=".../app/views/layouts/_debug.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class='debug'>
+  <code>
+    <br></br>
+    <p><b>params array all values</b></p>
+    <table> 
+      <tr><td>params[:locale]               </td> <td>: <%= params[:locale] %> </td></tr> 
+      <tr><td> --- </td> <td></td></tr>
+      <tr><td>params[:controller]           </td> <td>: <%= params[:controller] %></td></tr>
+      <tr><td>params[:action]               </td> <td>: <%= params[:action] %></td></tr>
+      <tr><td>params[:id]                   </td> <td>: <%= params[:id] %></td></tr>
+      <tr><td>params[:related]              </td><td>: <%= params[:related] %></td></tr>
+      <tr><td>params[:page]                 </td> <td>: <%= params[:page] %></td></tr>
+      <tr><td>params[:search]               </td> <td>: <%= params[:search] %></td></tr>
+      <tr><td> --- </td> <td></td></tr>
+      <tr><td>params[:last_front_controller] </td> <td>: <%= params[:last_front_controller] %> </td></tr> 
+      <tr><td>params[:last_front_action]     </td> <td>: <%= params[:last_front_action] %>     </td></tr> 
+      <tr><td>params[:last_front_id]         </td> <td>: <%= params[:last_front_id] %>         </td></tr> 
+      <tr><td>params[:last_front_related]    </td> <td>: <%= params[:last_front_related] %>    </td></tr>
+      <tr><td>params[:last_front_page]       </td> <td>: <%= params[:last_front_page] %>       </td></tr>
+      <tr><td>params[:last_front_search]     </td> <td>: <%= params[:last_front_search] %>     </td></tr>
+      <tr><td> ---                     </td> <td>                                  </td></tr>
+      <tr><td>params[:last_rear_controller] </td> <td>: <%= params[:last_rear_controller] %> </td></tr> 
+      <tr><td>params[:last_rear_action]     </td> <td>: <%= params[:last_rear_action] %>     </td></tr> 
+      <tr><td>params[:last_rear_id]         </td> <td>: <%= params[:last_rear_id] %>         </td></tr> 
+      <tr><td>params[:last_rear_related]    </td> <td>: <%= params[:last_rear_related] %>    </td></tr>
+      <tr><td>params[:last_rear_page]       </td> <td>: <%= params[:last_rear_page] %>       </td></tr>
+      <tr><td>params[:last_rear_search]     </td> <td>: <%= params[:last_rear_search] %>     </td></tr>
+      <tr><td> ---                     </td> <td>                                  </td></tr>
+    </table>
+    <br></br> 
+    <p><b>debug(params) -- shows the current params array values (<%#= params.length %>) </b></p>
+    <!-- DEPRECATION WARNING: Method length is deprecated and will be removed in Rails 5.1, as `ActionController::Parameters` no longer inherits from hash. Use one of these documented methods which are not deprecated: http://api.rubyonrails.org/v5.0.0.1/classes/ActionController/Parameters.html -->
+    <p><%= debug params %></p>
+    <br></br>
+    <p><b>debug(session) -- shows the current session array values</b></p>
+    <p><%#= debug(session) %></p>
+  </code>
+</div>
+~~~~~~~~
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add layout partials"
+~~~~~~~~
+
+
+
+
+## stylesheet scss 
+
+Stile dell'Applicazione in SASS CSS
+creiamo la nostra formattazione css con il framework Bootstrap.
+Uso solo 3 file principali di formattazione:
+- application_global.css.scss --> per valori globali
+- application_front.css.scss --> per le pagine di tipo "frontview"
+- application_rear.css.scss --> per le pagine di tipo "rearview"
+
+
+[codice frontend_assets basic_template 02](#code-frontend_assets-basic_template-02)
+
+{title=".../app/assets/stylesheets/application_global.scss", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+//** Padding between columns. Gets divided in half for the left and right. (default is 30px)
+$grid-gutter-width: 2px;
+~~~~~~~~
+
+
+[codice frontend_assets basic_template 03](#code-frontend_assets-basic_template-03)
+
+{title=".../app/assets/stylesheets/application_front.scss", lang=ruby, line-numbers=on, starting-line-number=14}
+~~~~~~~~
+/* FRONT_MODE start */
+FORM.front_mode, DIV.front_mode
+{
+
+  /*ICONS start (alfabetical order)*/
+  .glyphiconmy
+  {
+~~~~~~~~
+
+
+[codice frontend_assets basic_template 04](#code-frontend_assets-basic_template-04)
+
+{title=".../app/assets/stylesheets/application_rear.scss", lang=ruby, line-numbers=on, starting-line-number=14}
+~~~~~~~~
+/* REAR_MODE start */
+FORM.rear_mode, DIV.rear_mode
+{
+
+  background-color: #333333;
+  border: 1px solid #666666;
+  box-shadow: 0 0 10px 5px #000000;
+  -moz-box-shadow: 0 0 10px 5px #000000;
+  -webkit-box-shadow: 0 0 10px #000000;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+
+  P,H1,H2,H3,H4,H5,H6,label{
+    color: grey;
+  }
+
+  /*ICONS start (alfabetical order)*/
+  .glyphiconmy
+  {
+~~~~~~~~
+
+
+Attiviamo i css dichiarandoli sul file principale application.scss
+
+[codice frontend_assets basic_template 05](#code-frontend_assets-basic_template-05)
+
+{title=".../app/assets/stylesheets/application.scss", lang=ruby, line-numbers=on, starting-line-number=21}
+~~~~~~~~
+@import "application_global";
+@import "application_front";
+@import "application_rear";
+~~~~~~~~
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add stylesheets scss"
+~~~~~~~~
+
+
+
+
+## images
+
+Icone ed Immagini di Default
+
+per visualizzare le icone copiamo le rispettive immagini sul percorso
+
+A> assets/images/my_style_images/icons
+
+per visualizzare le immagini di default copiamo le rispettive immagini sul percorso:
+
+A> assets/images/my_style_images/default
+
+di seguito le immagini
+
+![address_default](images/frontend_assets/basic_template/my_style_images/default/address_default.png)
+![company_default](images/frontend_assets/basic_template/my_style_images/default/company_default.png)
+![component_default](images/frontend_assets/basic_template/my_style_images/default/component_default.png)
+![contact_default](images/frontend_assets/basic_template/my_style_images/default/contact_default.png)
+![person_default](images/frontend_assets/basic_template/my_style_images/default/person_default.png)
+![product_default](images/frontend_assets/basic_template/my_style_images/default/product_default.png)
+![project_default](images/frontend_assets/basic_template/my_style_images/default/project_default.png)
+![user_default](images/frontend_assets/basic_template/my_style_images/default/user_default.png)
+
+![abnormalis](images/frontend_assets/basic_template/my_style_images/icons/abnormalis.png)
+![address](images/frontend_assets/basic_template/my_style_images/icons/address.png)
+![arrow_left](images/frontend_assets/basic_template/my_style_images/icons/arrow_left.png)
+![arrow_right](images/frontend_assets/basic_template/my_style_images/icons/arrow_right.png)
+![backward](images/frontend_assets/basic_template/my_style_images/icons/backward.png)
+![backward_disabled](images/frontend_assets/basic_template/my_style_images/icons/backward_disabled.png)
+![charts](images/frontend_assets/basic_template/my_style_images/icons/charts.png)
+![close](images/frontend_assets/basic_template/my_style_images/icons/close.png)
+![company](images/frontend_assets/basic_template/my_style_images/icons/company.png)
+![component](images/frontend_assets/basic_template/my_style_images/icons/component.png)
+![connect](images/frontend_assets/basic_template/my_style_images/icons/connect.png)
+![contact](images/frontend_assets/basic_template/my_style_images/icons/contact.png)
+![delete](images/frontend_assets/basic_template/my_style_images/icons/delete.png)
+![edit](images/frontend_assets/basic_template/my_style_images/icons/edit.png)
+![endturn](images/frontend_assets/basic_template/my_style_images/icons/endturn.png)
+![favorite](images/frontend_assets/basic_template/my_style_images/icons/favorite.png)
+![forward](images/frontend_assets/basic_template/my_style_images/icons/forward.png)
+![forward_disabled](images/frontend_assets/basic_template/my_style_images/icons/forward_disabled.png)
+![global_settings](images/frontend_assets/basic_template/my_style_images/icons/global_settings.png)
+![goto](images/frontend_assets/basic_template/my_style_images/icons/goto.png)
+![help](images/frontend_assets/basic_template/my_style_images/icons/help.png)
+![history](images/frontend_assets/basic_template/my_style_images/icons/history.png)
+![home](images/frontend_assets/basic_template/my_style_images/icons/home.png)
+![info](images/frontend_assets/basic_template/my_style_images/icons/info.png)
+![instance](images/frontend_assets/basic_template/my_style_images/icons/instance.png)
+![international](images/frontend_assets/basic_template/my_style_images/icons/international.png)
+![language](images/frontend_assets/basic_template/my_style_images/icons/language.png)
+![language_it](images/frontend_assets/basic_template/my_style_images/icons/language_it.png)
+![language_us](images/frontend_assets/basic_template/my_style_images/icons/language_us.png)
+![list](images/frontend_assets/basic_template/my_style_images/icons/list.png)
+![login](images/frontend_assets/basic_template/my_style_images/icons/login.png)
+![logout](images/frontend_assets/basic_template/my_style_images/icons/logout.png)
+![message](images/frontend_assets/basic_template/my_style_images/icons/message.png)
+![new](images/frontend_assets/basic_template/my_style_images/icons/new.png)
+![new_disabled](images/frontend_assets/basic_template/my_style_images/icons/new_disabled.png)
+![option](images/frontend_assets/basic_template/my_style_images/icons/option.png)
+![person](images/frontend_assets/basic_template/my_style_images/icons/person.png)
+![product](images/frontend_assets/basic_template/my_style_images/icons/product.png)
+![project](images/frontend_assets/basic_template/my_style_images/icons/project.png)
+![select](images/frontend_assets/basic_template/my_style_images/icons/select.png)
+![select_all](images/frontend_assets/basic_template/my_style_images/icons/select_all.png)
+![tutorial](images/frontend_assets/basic_template/my_style_images/icons/tutorial.png)
+![user](images/frontend_assets/basic_template/my_style_images/icons/user.png)
+![window_new](images/frontend_assets/basic_template/my_style_images/icons/window_new.png)
+![window_same](images/frontend_assets/basic_template/my_style_images/icons/window_same.png)
+
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add images"
+~~~~~~~~
+
+
+
+
+## pubblichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku bt:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge bt
+$ git branch -d bt
+~~~~~~~~
+
+
+
+
+## Effettuiamo backup sul repository remoto Github
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

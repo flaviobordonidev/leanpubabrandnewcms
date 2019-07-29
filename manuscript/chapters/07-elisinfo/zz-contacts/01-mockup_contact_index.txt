@@ -1,0 +1,226 @@
+# Mockup per la pagina dei contatti 
+
+per contatti si intende: tel, fax, cell, email, whatsup, skype, FB, snapchat, ...
+
+
+
+
+## Apriamo il branch "Mockup Contact Index"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b mci
+~~~~~~~~
+
+
+
+
+## Rails generate controller 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g controller mockup_contacts index
+~~~~~~~~
+
+
+
+
+## Indice della pagina dei contatti
+
+Aggiungiamo su routes l'instradamento ** get 'mockup_contacts/index' **
+
+{title=".../app/config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+Rails.application.routes.draw do
+
+  #scope "(:locale)", locale: /en|it/ do
+  
+    #root 'homepage#show'
+    root 'startpage#show'
+    
+    devise_for :users, controllers: { sessions: 'users/sessions' }
+    resources :users
+    #get 'users/show', as: :user_root # creates user_root_path (default path after sign_in)
+    
+    resources :global_settings, only: [:index]
+    resources :companies
+    resources :people
+    #resources :select_relateds, only: [:index]
+    resources :select_relateds
+    resources :company_person_maps
+
+    get "homepage/", to: "homepage#show"
+    get 'startpage/show'
+    get 'users/show'
+
+    get 'mockup_authentication/login'
+    get 'mockup_companies/index'
+    get 'mockup_companies/show'
+    get 'mockup_companies/edit'
+    get 'mockup_companies/new'
+    get 'mockup_company_person_maps/index'
+    get 'mockup_company_person_maps/edit'
+    get 'mockup_contacts/index'
+    get 'mockup_favorites/index'
+    get 'mockup_global_settings/index'
+    get 'mockup_homepage/show'
+    get 'mockup_people/index'
+    get 'mockup_people/show'
+    get 'mockup_people/edit'
+    get 'mockup_people/new'
+    get 'mockup_select_relateds/index'
+    get 'mockups/test'
+    get 'mockup_startpage/show'
+    get 'testpages/page_a'
+    get 'testpages/page_b'
+
+    # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  
+  #end
+end
+~~~~~~~~
+
+
+
+
+## Aggiungiamo su views index
+
+{title=".../app/views/mockup_contacts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="container-fluid front_mode">
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="left-pad">
+        <h1>Lista di Contatti</h1>
+        <p>Grazie per visitare la nostra lista di contatti.</p>
+      </div>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row">
+    <div class="col-xs-10 col-sm-11 col-lg-11">
+      <%= render 'mockup_contacts/index/related_form_search' %>
+    </div> <!-- /col -->
+    <div class="col-xs-2 col-sm-1 col-lg-1">
+      <%= render 'mockup_contacts/index/related_button_new' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <%= render 'mockup_contacts/index/related_list_group' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="text-center">
+        <%= render 'mockup_contacts/index/related_pagination' %>
+      </div> <!-- /text-center -->
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+</div> <!-- /front_mode -->
+~~~~~~~~
+
+{title=".../app/views/mockup_contacts/index/_related_button_new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="btn-group pull-right right-pad">
+  <a href="#" class="btn btn-default disabled">
+    <span class="glyphiconmy ico_new"></span>
+  </a>
+</div> <!-- /btn-group -->
+~~~~~~~~
+
+{title=".../app/views/mockup_contacts/index/_related_form_search.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!-- form_search_related -->
+<form role="search" method="get" id="search-form" name="search-form" class="bottom-pad">
+
+  <div class="input-group left-pad">
+    <input type="text" class="form-control" placeholder="cerca..." id="query" name="query" value=""></input>
+    <div class="input-group-btn right-pad">
+      <button type="submit" class="btn btn-default">
+        <span class="glyphicon glyphicon-search"></span>
+      </button>
+    </div><!-- /input-group-btn -->
+  </div><!-- /input-group -->
+</form>
+~~~~~~~~
+
+{title=".../app/views/mockup_contacts/index/_related_list_group.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="list-group left-pad right-pad">
+  <a href="#" class="list-group-item">
+    Telefono di casa <span class="badge"><span class="glyphicon glyphicon-star"></span></span>
+    <p><strong>06 719 834 250</strong></p>
+  </a>
+  <a href="#" class="list-group-item">
+    Cell.<span class="badge"><span class="glyphicon glyphicon-star"></span></span>
+    <p><strong>+39 349 648 827 4</strong></p>
+  </a>
+  <a href="#" class="list-group-item">
+    email
+    <p><strong>jhon.doe@nonso.it</strong></p>
+  </a>
+  <a href="#" class="list-group-item">
+    cell.
+    <p><strong>+39 335 728 91 335 </strong></p>
+  </a>
+</div> 
+~~~~~~~~
+
+{title=".../app/views/mockup_contacts/index/_related_pagination.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<ul class="pagination ">
+  <li class="disabled"><span>&laquo;</span></li>
+  <li class="default"><span>1 di 1 <span class="sr-only">(current)</span></span></li>
+  <li class="disabled"><span>&raquo;</span></li>
+</ul>
+~~~~~~~~
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+https://elisinfo5-flaviobordonidev.c9users.io/mockup_contacts/index
+
+![mockup_contacts index](images/contacts/mockup_contacts_index/mockup_contacts_index.png)
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add mockup_contacts index"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku mci:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge mci
+$ git branch -d mci
+~~~~~~~~

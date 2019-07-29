@@ -1,0 +1,3 @@
+-# Codice della sezione FRONTEND ASSETS
+
+I files di codice con tutte le linee di codice e non solo quelle rilevanti riportate nei capitoli

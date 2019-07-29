@@ -1,0 +1,212 @@
+# Elenco dei contatti di una specifica azienda
+
+in questo capitolo tratteremo l'elenco dei contatti (sul partial contacts/_index) che è visualizzato come related della pagina companies/show.
+
+
+
+
+## Apriamo il branch "Contacts Index Side Company"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b cisc
+~~~~~~~~
+
+
+
+
+## Select_relateds side companies show
+
+Abbiamo già attivato il select_related ed il breadcrumbs di company show per mostrare i contatti correlati.
+
+* su homepage/show ho select_related : favorites, companies, people
+* su companies/show ho select_related : favorites, companies, people, **contacts**, addresses
+
+Su homepage non metto contacts e addresses perché non le visualizzo come entità indipendenti ma le visualizzo solo sotto companies e people perché hanno una relazione uno-a-molti con entrambe (usando la relazione polimorfica)
+
+
+
+
+## Routes
+
+Nel capitolo precedente abbiamo usato lo scaffold quindi abbiamo già gli instradamenti ** resources :contacts ** nel file routes.
+
+
+
+
+## Come approcciamo
+
+Prepariamo un elenco di contatti per quando siamo su companies/show con related="contacts". Sul controller di companies azione show visualizziamo @company.contacts.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails c
+irb> c = Company.first
+irb> c.contacts
+irb> c.contacts[0].summary
+irb> c.contacts[0].identifier
+irb> c.contacts[1].summary
+irb> c.contacts[1].identifier
+~~~~~~~~
+
+
+
+
+## La pagina show di Companies con relateds: contacts
+
+Aggiungiamo contacts nell'azione "show" del controller companies_controller. [(codice: 02)](#code-contact_person_maps-cpmaps_index_side_person-02)
+
+{title=".../app/controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+  def show
+    # gestiamo l'elenco dei relateds
+    params[:related] = "favorites" if params[:related].blank?
+    case params[:related]
+    when "favorites"
+      # TODO
+      #@relateds = current_user.favorites.search(params[:search]).order('created_at DESC').page(params[:page]).per_page(6)
+      @relateds = User.all #lo uso temporaneamente per evitare errore sul button new
+      @relateds_path = "favorites"
+    when "people"
+      @relateds = Person.all
+      #@relateds = Person.search(params[:search]).order('created_at DESC').page(params[:page]).per_page(6)
+      @relateds_path = "people"
+    when "companies"
+      @relateds = Company.all
+      #@relateds = Company.search(params[:search]).order('created_at DESC').page(params[:page]).per_page(6)
+      @relateds_path = "companies"
+    when "contacts"
+      @relateds = @company.contacts.search(params[:search]).order('updated_at DESC').page(params[:page])
+      @relateds_path = "contacts"
+    when "addresses"
+      @relateds = @company.addresses.search(params[:search]).order('updated_at DESC').page(params[:page])
+      @relateds_path = "addresses"
+    else
+      raise "#TODO"
+    end
+  end
+~~~~~~~~
+
+Praticamente è quasi tutto uguale a quanto fatto per le persone solo che su contacts e addresses usiamo @company al posto di @person.
+
+
+Sul view companies/show implementiamo il ** <%= render "#{params[:related]}/index" %> ** 
+
+{title=".../app/views/companies/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=40}
+~~~~~~~~
+      <%= render "#{@relateds_path}/index", related_list: @relateds %>
+~~~~~~~~
+
+Questo è del tutto uguale a quanto fatto per le persone.
+
+
+
+
+## Il partial _index
+
+Il partial _index visualizza la lista dei contatti. Già fatto nei capitoli precedenti
+ 
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+![People show - related contacts](images/contacts/contacts_index_side_person/related_contacts.png)
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add Companies Show - related contacts _index"
+~~~~~~~~
+
+
+
+
+## Pagination
+
+abbiamo già informato il controller di usare il metodo di Kaminari ".page(params[:page])". Quindi attiviamo il render sul view. (il partial è su views/application)
+
+{title="views/companies/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=47}
+~~~~~~~~
+          <%= render 'related_pagination', list_to_paginate: @relateds %>
+~~~~~~~~
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add companies/show contacts pagination"
+~~~~~~~~
+
+
+
+
+## Search
+
+Abbiamo già implementato lo **scope :search** sul model contact.
+Abbiamo anche già implementato il **.search(params[:search])** sull'azione **show** del controller companies_controller
+Attiviamo il render sul view. (il partial è su views/application)
+
+{title="views/companies/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=30}
+~~~~~~~~
+      <%= render 'related_form_search' %>
+~~~~~~~~
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+![https://elisinfo5-flaviobordonidev.c9users.io/company_person_maps](images/company_person_maps/cpmaps_index/cpmaps.png)
+
+
+sta funzionando quindi facciamo un commit
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add companies/show contacts search"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku cisc:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge cisc
+$ git branch -d cisc
+~~~~~~~~
+
+
+
+
+## Backup su github
+
+facciamo un backup del ns progetto su github:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

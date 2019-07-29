@@ -1,0 +1,366 @@
+# Pulsante di chiusura e mantenimento dati dell'ultima pagina utile
+
+ci dedichiamo al pulsante di chiusura sia per select_related sia per global_settings e spostiamo il partial su "views/application" inoltre implementiamo l'helper che tiene traccia sull'url delle scelte fatte.
+
+Iniziamo a tenere traccia dell'ultima pagina utile perché il pulsante di chiusura di global_settings adesso torna semplicemente sulla homepage che lo ha chiamato ma in seguito dovrà puntare alla pagina da dove ho aperto il global_settings e può essere una pagina qualsiasi dell'applicativo. 
+
+Gestione parametri params_last per mantenere traccia dell'ultima pagnia utile. 
+
+
+
+
+## Apriamo il branch "Button Close Parameter Last"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b bcpl
+~~~~~~~~
+
+
+
+## button_close and params_last_front
+
+Per il button_close potremmo fare un "link_to homepages_path" ma il menu dell'applicazione (global_settings) può essere richiamato da qualsiasi punto ed ha quindi necessità di un link "dinamico" per tornare alla pagina precedente (last_page).
+
+Esiste il comando "link_to :back" per tornare indietro alla pagina che ti ha chiamato (back to previous/last page). Ma a noi serve un controllo maggiore. Per far questo usiamo il link_to in combinazione con url_for. Il comando url_for ci permette di usare delle variabili invece di nome_path così non siamo costretti a creare people_path, companies_path, addresses_path, ...
+
+Qui ci prendiamo una licenza editoriale ed implementiamo da subito le variabili principali di cui vogliamo mantenere il valore tramite url:
+
+:locale
+
+:last_front_controller
+:last_front_action
+:last_front_id
+:last_front_related
+:last_front_page
+:last_front_search
+
+:last_rear_controlle
+:last_rear_action
+:last_rear_id
+:last_rear_related
+:last_rear_page
+:last_rear_search
+
+:related
+:page
+:search
+:tab_active
+
+
+Come passiamo queste variabili?
+
+Le passo usando l'array params[] perché mi permette di avere valori diversi per ogni istanza del browser. Usando le variabili di sessione avrei dei valori archiviati nel cooky e quidni condivisi tra le varie istanze del browser. Questo sarebbe un problema perché la ns applicazione apre tante finestrelle e su ognuna dobbiamo muoverci in maniera indipendente dalle altre.
+
+Siccome dobbiamo passare tante variabili creiamo un helper specifico.
+
+
+
+
+## Perché usare params sull'URL e non le variabili di sessione?
+
+Esistono due modi per mantenere traccia delle variabili:
+
+1. Passandole sull'URL come stiamo facendo.
+2. Usando le sessioni.
+
+Le sessioni sono un'ottima scelta che sfrutta i coockies del browser. Non la uso per la mia applicazione perché il coocky è lo stesso per tutto il browser ma io ho bisogno di tener traccia delle variabili per ogni singola finestra del browser aperta. Infatti l'applicazione è pensata per essere gestita da più finestre dello stesso browser aperte contemporaneamente. In questo caso il cooky è lo stesso ed è condiviso tra tutte le fineste. Per l'utente loggato con devise uso infatti questo cooky.
+Invece voglio mantenere traccia diversa per le variabili di ogni finestra aperta e per questo uso i parametri sull'URL.
+
+
+
+
+## Come usare l'URL per passare i parametri.
+
+Ci sono molti percorsi per passare i parametri sull'URL.
+La convenzione rails punta molto su link_to <path>(<id>,<params>) e cercheremo di usare questa struttura il più possibile.
+
+A volte capitano dei problemi di *sanitizzazione* per discorsi di sicurezza (es: SQL injection) e si hanno delle strutture articolate del tipo params.permit(:param1, :param2).merge(param1: "value1", param2: "value2"). Ma verranno "pulite" con dei refactorings.
+
+Esiste il comando polimorphyc link_to in alcuni casi...
+
+Ma in alcuni casi in cui si ha bisogno di passare dinamicamente anche il <path> (controller+action+id) la risorsa che ad oggi è la più flessibile resta il link_for
+
+* http://railsguides.net/rails-url-for-helper-can-be-slow/
+
+Il link_for ha più forme di utilizzo:
+
+~~~~~~~~
+# string
+url_for("/events/#{@event.id}")
+
+# generated helper
+url_for(event_path(@event))
+
+# polymorphic
+url_for(@event)
+
+# hash
+url_for(controller: 'events', action: 'show', id: @event.id) 
+~~~~~~~~
+
+Tutte e quattro le chiamate di **url_for** generano lo steso risultato **/events/:id**. Ad esempio **/events/1**.
+Il più veloce è **string** (0.01sec), poi **helper** (0.48sec), poi **polimorphyc** (0.89sec) ed il più lento è **hash** (1.20sec).
+
+La soluzione #string è la più veloce ed è quella che scegliamo nel caso in cui siamo costretti ad usare url_for.
+Lo svantaggio è che perdiamo in flessibilità ed abbiamo una struttura rigida e poco elegante perché lavoriamo direttamente sulla stringa.
+
+
+
+
+## Implementiamo un nostro helper 
+
+Avendo scelto di usare l'URL per passarci i parametri esiste già l'helper chiamato **params** che ci passa tutti i parametri della pagina attuale sull'URL e li rende disponibili alla nuova pagina dove ci porterà il link.
+
+~~~~~~~~
+link_to xxx_path(@id, params)
+~~~~~~~~
+
+questo mi ripassa TUTTI i parametri alla nuova pagina. Se voglio passare dei parametri modificati:
+
+~~~~~~~~
+link_to xxx_path(@id, params.merge(page: 1, related: "companies"))
+~~~~~~~~
+
+Ma a noi non interessano tutti i parametri. Ci interessa il seguente set ristretto di parametri: 
+
+
+{title=".../app/helpers/application_helper.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+  # per l'uso di "optional arguments" ringrazio http://codeloveandboards.com/blog/2014/02/05/ruby-and-method-arguments/
+  #
+  # :locale
+  # :last_front_controller
+  # :last_front_action
+  # :last_front_id
+  # :last_front_related
+  # :last_front_page
+  # :last_front_search
+  # :last_rear_controller
+  # :last_rear_action
+  # :last_rear_id
+  # :last_rear_related
+  # :last_rear_page
+  # :last_rear_search
+  # :related
+  # :page
+  # :search
+  #
+  def h_params_path(path: "", locale: params[:locale], last_front_controller: params[:last_front_controller], last_front_action: params[:last_front_action], last_front_id: params[:last_front_id], last_front_related: params[:last_front_related], last_front_page: params[:last_front_page], last_front_search: params[:last_front_search], last_rear_controller: params[:last_rear_controller], last_rear_action: params[:last_rear_action], last_rear_id: params[:last_rear_id], last_rear_related: params[:last_rear_related], last_rear_page: params[:last_rear_page], last_rear_search: params[:last_rear_search], related: "favorites", page: 1, search: "", tab_active: "default", change_id: nil)
+    path_url = "#{path}?locale=#{locale}&last_front_controller=#{last_front_controller}&last_front_action=#{last_front_action}&last_front_id=#{last_front_id}&last_front_related=#{last_front_related}&last_front_page=#{last_front_page}&last_front_search=#{last_front_search}&last_rear_controller=#{last_rear_controller}&last_rear_action=#{last_rear_action}&last_rear_id=#{last_rear_id}&last_rear_related=#{last_rear_related}&last_rear_page=#{last_rear_page}&last_rear_search=#{last_rear_search}&related=#{related}&page=#{page}&search=#{search}&tab_active=#{tab_active}&change_id=#{change_id}"
+    return path_url
+  end
+~~~~~~~~
+
+Questo helper prende tutti i parametri e ci crea un url da passare ad url_for. E' una specie di **params.merge()** in cui abbiamo più controllo sui vari parametri.
+Però per alcuni parametri reimposta dei valori di default **related: "favorites", page: 1, search: "", tab_active: "default"** e questo permette di resettare questi valori per quando si va ad una nuova pagina. Ad esempio su una nuova pagina non voglio ritrovarmi la ricerca fatta su una vecchia o l'elenco spostato su un nuovo pagination.
+
+Ad esempio nel pagination posso usare
+~~~~~~~~
+        <%#= link_to "«", params.merge(page: list_to_paginate.prev_page) %>
+~~~~~~~~
+
+oppure
+
+~~~~~~~~
+        <%#= link_to "«", url_for(h_params_path(page: list_to_paginate.prev_page)) %>
+~~~~~~~~
+
+Un helper più vicino a **params.merge** ciclerebbe tutti i parametri. Per ciclare tutti i params e metterli come stringa di url_for potevamo usare il **params.each**. Nel codice seguente passiamo inoltre sempre il valore "1" al parametro "page" mentre a tutti gli altri ripassiamo quelli presenti.
+
+~~~~~~~~
+    params.each do |key, value|
+      value = 1 if key == "page"
+      @last_params = "#{@last_params}&#{key}=#{value}"
+    end
+    @last_front_path = "#{params[:last_front_controller]}/#{params[:last_front_action]}?#{@last_params}"
+~~~~~~~~
+
+ma nella nostra applicazione è meglio indicare quali parametri passare e non passarli tutti indiscriminatamanete.
+
+
+
+
+## Helpers per Rear e Front
+
+Non abbiamo ancora finito con il nostro helper, perché per tener traccia della navigazione noi vogliamo passare i valori della pagina attiva alla nuova pagina. Se la pagina attiva è una pagina di tipo front_end li vogliamo archiviati in last_front_xxx. Se invece la pagina attiva è di tipo rear_end, li vogliamo archiviati in last_rear_xxx. Per far questo estendiamo l'helper **h_params_path** creandone altri due **h_front_params_path** e **h_rear_params_path**. 
+
+Nello specifico **h_front_params_path** che useremo nei links di views/pagine di tipo front_end avrà:
+
+last_front_controller: params[:controller], 
+last_front_action: params[:action], 
+last_front_id: params[:id], 
+last_front_related: params[:related], 
+last_front_page: params[:page], 
+last_front_search: params[:search],
+
+inoltre resetta il search, il pagination ed il tab_active:
+page: 1, 
+search: "", 
+tab_active: "default"
+
+{title=".../app/helpers/application_helper.rb", lang=ruby, line-numbers=on, starting-line-number=27}
+~~~~~~~~
+  def h_front_params_path(path: "", locale: params[:locale], last_front_controller: params[:controller], last_front_action: params[:action], last_front_id: params[:id], last_front_related: params[:related], last_front_page: params[:page], last_front_search: params[:search], last_rear_controller: params[:last_rear_controller], last_rear_action: params[:last_rear_action], last_rear_id: params[:last_rear_id], last_rear_related: params[:last_rear_related], last_rear_page: params[:last_rear_page], last_rear_search: params[:last_rear_search], related: "favorites", page: 1, search: "", tab_active: "default")
+    path_url = "#{path}?locale=#{locale}&last_front_controller=#{last_front_controller}&last_front_action=#{last_front_action}&last_front_id=#{last_front_id}&last_front_related=#{last_front_related}&last_front_page=#{last_front_page}&last_front_search=#{last_front_search}&last_rear_controller=#{last_rear_controller}&last_rear_action=#{last_rear_action}&last_rear_id=#{last_rear_id}&last_rear_related=#{last_rear_related}&last_rear_page=#{last_rear_page}&last_rear_search=#{last_rear_search}&related=#{related}&page=#{page}&search=#{search}&tab_active=#{tab_active}"
+    return path_url
+  end
+~~~~~~~~
+
+
+Invece **h_rear_params_path** che useremo nei links di views/pagine di tipo rear_end avrà:
+
+last_rear_controller: params[:controller], 
+last_rear_action: params[:action], 
+last_rear_id: params[:id], 
+last_rear_related: params[:related], 
+last_rear_page: params[:page], 
+last_rear_search: params[:search],
+
+inoltre resetta il search, il pagination ed il tab_active:
+page: 1, 
+search: "", 
+tab_active: "default"
+
+{title=".../app/helpers/application_helper.rb", lang=ruby, line-numbers=on, starting-line-number=32}
+~~~~~~~~
+  def h_rear_params_path(path: "", locale: params[:locale], last_front_controller: params[:last_front_controller], last_front_action: params[:last_front_action], last_front_id: params[:last_front_id], last_front_related: params[:last_front_related], last_front_page: params[:last_front_page], last_front_search: params[:last_front_search], last_rear_controller: params[:controller], last_rear_action: params[:action], last_rear_id: params[:id], last_rear_related: params[:related], last_rear_page: params[:page], last_rear_search: params[:search],related: "favorites", page: 1, search: "", tab_active: "default")
+    path_url = "#{path}?locale=#{locale}&last_front_controller=#{last_front_controller}&last_front_action=#{last_front_action}&last_front_id=#{last_front_id}&last_front_related=#{last_front_related}&last_front_page=#{last_front_page}&last_front_search=#{last_front_search}&last_rear_controller=#{last_rear_controller}&last_rear_action=#{last_rear_action}&last_rear_id=#{last_rear_id}&last_rear_related=#{last_rear_related}&last_rear_page=#{last_rear_page}&last_rear_search=#{last_rear_search}&related=#{related}&page=#{page}&search=#{search}&tab_active=#{tab_active}"
+    return path_url
+  end
+~~~~~~~~
+
+
+
+
+## Implementiamo il button_close 
+
+siccome stiamo predisponendo un partial generico valido per tutta l'applicazione lo creiamo nella cartella dedicata **views/application**. Se la cartella non è già presente la creiamo. Rails, se non trova un partial nella stessa cartella della views che lo richiede, lo cerca nella cartella **views/application**. Quindi cancelliamo i partial **_button_close.html.erb** dalle cartelle **select_related** e **global_settings**.
+
+{title=".../app/views/application/_button_close.html.erb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<ul class="nav nav-pills bottom-pad top-pad pull-right right-pad">
+  <li>
+    <%= link_to url_for(h_rear_params_path(path: "/#{params[:last_front_controller]}/#{params[:last_front_id]}", related: params[:last_front_related], page: params[:last_front_page], search: params[:last_front_search])), :class => "list-group-item" do %>
+      <%= content_tag :span,"", class: "glyphiconmy ico_close" %>
+    <% end %>
+  </li>
+</ul>
+~~~~~~~~
+
+Siccome il **button_close** è presente solo in views/pagine di tipo rear_end nel **link_to** abbiamo implementato **url_for(h_rear_params_path(...))**. Per quanto riguarda il path a cui deve tornare, siccome è aperto da una view/pagina di tipo front, usiamo **path: "/#{params[:last_front_controller]}/#{params[:last_front_id]}"**. Questa stringa ci permette di tornare tanto ad una pagina "index" (es: people/) quanto ad una pagina "show" (es: people/1). Inoltre settiamo :page e search ai loro valori precedenti perché **h_rear_params_path** di default li resetta.
+
+
+
+
+## Una variazione sulla routes
+
+Prima di testarlo dobbiamo fare una piccola variazione sul file di routes perché il pulsante back punterà a **/homepage** e non a **/homepage/show**.
+
+{title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+  #get 'homepage/show'
+  get "homepage/", to: "homepage#show"
+~~~~~~~~
+
+Adessso possiamo testarlo aggiungendo a mano sull'URL il parametro last_front_controller=homepage
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+https://elisinfo6-flaviobordonidev.c9users.io/select_relateds?search=&last_front_controller=homepage
+~~~~~~~~
+
+I> ricordiamoci di correggere anche views/startpage/show mettendo **homepage** al posto di **homepage/show**
+
+
+
+
+## Passiamo alla pagina iniziale - homepage
+
+Per far funzionare il tutto senza scrivere sull'url dobbiamo implementare i nostri helpers sui links delle varie views/pagine. Iniziamo dalla prima pagina che viene visualizzata a seguito del login: la homepage.
+
+{title=".../app/views/homepage/_button_global_settings.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<ol class="breadcrumb top-pad pull-right right-pad">
+  <li>
+    <%= link_to url_for(h_front_params_path(path: "/global_settings", tab_active: "default")), :class => "btn btn-default" do %>
+      <%= content_tag :span,"", class: "glyphiconmy ico_global_settings" %>
+    <% end %>
+  </li>
+</ol>
+~~~~~~~~
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "home global_settings button_close params_last_front"
+~~~~~~~~
+
+
+
+
+## Implementiamo il pulsante del breadcrumb per andare a select_relateds
+
+{title=".../app/views/homepage/_breadcrumbs.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<ol class="breadcrumb top-pad left-pad">
+  <li class="active">
+    <%= link_to "#", :class => "btn btn-link disabled" do %>
+      <%= content_tag :span, t("homepage.show.breadcrumbs"), class: "glyphiconmy ico_home" %>
+    <% end %>
+  </li>
+  <li>
+    <%= link_to url_for(h_front_params_path(path: "/select_relateds")), :class => "btn btn-default" do %>
+      <%= content_tag :span,"", class: "glyphiconmy ico_favorite" %>
+    <% end %>
+  </li>
+</ol>
+~~~~~~~~
+
+
+
+
+## Consideriamo anche il pagination
+
+siccome stiamo predisponendo un partial generico valido per tutta l'applicazione lo creiamo nella cartella dedicata **views/application**. 
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Generalize pagination on views/application"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku bcpl:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge bcpl
+$ git branch -d bcpl
+~~~~~~~~

@@ -1,0 +1,59 @@
+# FTP
+
+Risorse web:
+
+* [Download files from FTP](http://geekhmer.github.io/blog/2015/02/18/ruby-download-file-via-ftp/)
+* [Faster FTP get in Ruby](https://coderwall.com/p/gjns0a/faster-ftp-get-in-ruby)
+
+
+
+
+##
+
+Download files from FTP server is quite easy using Ruby.
+
+Example:
+
+~~~~~~~~
+require 'net/ftp'
+
+ftp = Net::FTP.new
+ftp.connect("your_host_name.com", 21)
+ftp.login("your_username","your_password")
+ftp.chdir("/your_directory")
+ftp.passive = true
+ftp.getbinaryfile("your_source_file", "your_dest_file")
+~~~~~~~~
+
+So far so good, That’s it! See ya! :)
+
+
+
+
+## Faster FTP get in Ruby
+
+Use:
+
+~~~~~~~~
+BasicSocket.do_not_reverse_lookup = true
+ftp = Net::FTP.new('server', 'user', 'password')
+~~~~~~~~
+
+Full example:
+
+~~~~~~~~
+def download_file(file)
+  BasicSocket.do_not_reverse_lookup = true
+  ftp = Net::FTP.new('server', 'user', 'password')
+  ftp.passive = true
+
+  begin
+    logger.info "info: Downloading #{file}."
+    ftp.getbinaryfile(File.basename(file), file, 1024)
+  rescue Net::FTPPermError => e
+    logger.info "warning: can't download #{File.basename(file)} from the remote server (#{e.message.tr("\n","")})."
+  end
+
+  ftp.close
+end
+~~~~~~~~

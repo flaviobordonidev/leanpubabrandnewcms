@@ -1,0 +1,31 @@
+# Bower
+
+## Gestire l'app asset di Ruby on Rails con Bower
+
+Mentre si lavora sull'applicazione Ruby on Rails, gli sviluppatori tendono ad aggiungere sempre più librerie client: AngularJS, plugin Bootstrap, jQuery. Il framework RoR di default non offre alcun modo efficiente di gestire queste dipendenze. Si possono quindi aggiungere le gemme nel Gemfile o mettere gli asset citati in vendor/asset. 
+Nel primo caso le gemme potrebbe essere aggiornate di rado, e inoltre l'applicazione potrebbe funzionare più lentamente a causa della grande quantità di gemme. Nel secondo caso, l'aggiornamento di un asset è particolarmente impegnativo e inoltre, si devono gestire tutte le dipendenze manualmente.
+
+## Usare Bower per l'asset management
+
+Bower è uno strumento per l'asset management costruito dal team di Twitter. Funziona allo stesso modo di RubyGems e Bundle: descrive l'elenco delle risorse necessarie, e le installa con un solo comando. Inoltre, è possibile specificare la versione di ciascun asset, branches e indirizzi di repository git. Bower gestisce automaticamente le dipendenze delle attività e visualizza gli errori in fase di installazione.
+
+Bower introduce una caratteristica non presente in NPM (altro motivo per aver scelto Bower come package manager) ovvero la possibilità di gestire le dipendenze Web di applicazioni esclusivamente front-end. In questo caso non dobbiamo preoccuparci di librerie di basso livello, ma è necessario concentrarci su librerie più specifiche proprio perchè l’applicazione non verrà eseguita in un contesto Node.js ma all’interno di un browser. Tramite Bower possiamo infatti ottenere facilmente librerie come jQuery, Bootstrap, AngularJS, Knockout o Ember.js.
+
+Bower gestisce alberi di dipendenza semplici, con livelli singoli proprio perchè, in ambito web, abbiamo bisogno di librerie complete, che non dipendano da ulteriori pacchetti. A loro volta le librerie potranno avere dipendenze ma la versione che otterremo tramite Bower è una build completa di tutto, pronta ad essere inclusa nelle nostre pagine.
+
+
+
+
+## Differenza tra Bower e le gemme di Rails.
+
+Bower ha reso le cose più facili per gestire i file di frontend quali jQuery, bootstrap e molti altri senza scaricare manualmente i sorgenti. Ma anche rails può gestire il frontend attraverso il Gemfile e bundler.
+
+Come lavora Bower e quali sono i vantaggi? Quali sono le differenze tra Bower e Bundler Gemfile? Quali sono i pro / contro di utilizzare l'uno o l'altro per le dipendenze di front-end?
+
+Possiamo prendere Bootstrap come esempio. Lo svantaggio di utilizzare una gemma Rails, come Twitter-bootstrap-rails è che ogni volta che il sottostante (bootstrap) viene aggiornato o modificato, è necessario attendere che gli autori della gemma aggiornino la gemma. Se sono lenti o lo sviluppo/manutenzione della gemma è abbandonato, siamo bloccati. Il pro è che gli autori hanno specificamente adattato l'asset a lavorare con Rails e la sua attuazione è di solito ben documentata e semplice. 
+
+Bower ha il solo compito di gestire il frontend. Quindi tutto quello installato con Bower non darà nessun helper rails. E questo ha creato ad esempio un problema sul link destroy che era stato creato in automatico dallo scaffold. Quindi, per esempio, in fase di sviluppo abbiamo dovuto ripristinare jQuery attraverso il Gemfile altrimenti il link per la distruzione del record non funzionava.
+Altro esempio da citare è che font-awesome installato tramite la gemma vi darà fa_icon view helper, che non si avrà quando si installa con Bower.
+
+E' interessante anche sottolineare che, se si utilizza Bower per ottenere BS, solo l'aggiunta di un import SASS (supponendo di utilizzare la versione SASS di BS) non funziona perché il "load path" di SASS non è impostato a guardare nella tua cartella bower_components/bootstrap di default. Ma questo problema è superato con la gemma "bower" che punta il default su /vendor/bower_components/bootstrap.
+

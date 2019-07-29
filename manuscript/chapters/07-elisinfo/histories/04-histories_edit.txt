@@ -1,0 +1,263 @@
+# Modifica delle storie 
+
+La modifica delle storie ha la stessa implementazione sia per una specifica persona, sia per una specifica azienda.
+in questo capitolo tratteremo la modifica delle storie (sul view histories/edit) relateds della pagina people/show e della pagina companies/show.
+
+
+
+
+## Apriamo il branch "Histories Edit"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b he
+~~~~~~~~
+
+
+
+
+## Implementiamo la view histories/edit
+
+Implementiamo la struttura del mockup nella pagina histories/edit ed implementiamo i renders
+
+{title=".../app/views/histories/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<% provide(:title, "#{@history.title}") %>
+
+<div class="container-fluid rear_mode">
+  <div class="row"> <!-- row -->
+    <div class="col-xs-9 col-sm-10 col-lg-11">
+      <ul class="nav nav-pills bottom-pad top-pad left-pad">
+        <li class="<%= 'active' if params[:tab_active] == 'default' or params[:tab_active] == 'edit' %>">
+          <%= link_to "#pane_edit", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_edit" %>
+          <% end %>
+        </li>
+
+        <li class="<%= 'active' if params[:tab_active] == 'delete' %>">
+          <%= link_to "#pane_delete", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_delete" %>
+          <% end %>
+        </li>
+      </ul>
+    </div> <!-- /.col -->
+    <div class="col-xs-3 col-sm-2 col-lg-1">
+      <%= render "button_close" %>
+    </div> <!-- /.col -->
+  </div> <!-- /.row -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="tab-content">
+        <div id="pane_edit" class="tab-pane <%= 'active' if params[:tab_active] == 'default' or params[:tab_active] == 'edit'  %>">
+          <div class="text-center bottom-pad">
+            <h4><%= t("histories.edit.title_pane_edit") %></h4>
+          </div> <!-- /.text-center -->
+          <%= render 'form', history: @history %>
+        </div> <!-- /.tab-pane -->
+        
+        <div id="pane_delete" class="tab-pane <%= 'active' if params[:tab_active] == 'delete'  %>">
+          <div class="text-center bottom-pad">
+            <h4><%= t("histories.edit.title_pane_delete") %></h4>
+          </div> <!-- /.text-center -->
+          <%= render 'pane_delete', history: @history %>
+        </div><!-- /.tab-pane -->
+      </div><!-- /.tab-content -->
+    </div> <!-- /.col -->
+  </div> <!-- /.row -->
+</div> <!-- /.rear_mode -->
+~~~~~~~~
+
+il partial del pulsante di chiusura lo abbiamo già fatto a livello globale su ** .../app/views/application/_button_close **. Il pulsante di chiusura ci fa tornare alla pagina people/show. 
+
+
+
+
+## tab edit (_form)
+
+Sul tab edit ci sono i campi per modificare il contatto. Salvo i parametri che mi servono su dei campi nascosti. 
+
+{title=".../app/views/contacts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%= form_for(history, html: {class: 'form-horizontal left-pad right-pad bottom-pad'}) do |f| %>
+
+  <!-- # simulo l'helper h_params_path -->
+  <%= hidden_field_tag(:locale, params[:locale]) %>
+  <%= hidden_field_tag(:last_front_controller, params[:last_front_controller]) %>
+  <%= hidden_field_tag(:last_front_action, params[:last_front_action]) %>
+  <%= hidden_field_tag(:last_front_id, params[:last_front_id]) %>  
+  <%= hidden_field_tag(:last_front_related, params[:last_front_related]) %>  
+  <%= hidden_field_tag(:last_front_page, params[:last_front_page]) %>  
+  <%= hidden_field_tag(:last_front_search, params[:last_front_search]) %>  
+  <%= hidden_field_tag(:last_rear_controller, params[:last_rear_controller]) %>
+  <%= hidden_field_tag(:last_rear_action, params[:last_rear_action]) %>
+  <%= hidden_field_tag(:last_rear_id, params[:last_rear_id]) %>
+  <%= hidden_field_tag(:last_rear_related, params[:last_rear_related]) %>
+  <%= hidden_field_tag(:last_rear_page, params[:last_rear_page]) %>
+  <%= hidden_field_tag(:last_rear_search, params[:last_rear_search]) %>
+  <%= hidden_field_tag(:related, params[:related]) %>
+  <%= hidden_field_tag(:page, params[:page]) %>
+  <%= hidden_field_tag(:search, params[:search]) %>
+  <%= hidden_field_tag(:tab_active, params[:tab_active]) %>
+
+  <div class="form-group">
+
+    <% if Rails.env.development? %>
+      <div class="field">
+        <%= f.label :historyable_id, class: "control-label" %>
+        <%= f.number_field :historyable_id, class: "form-control" %>
+        <span class="help-block"></span>
+      </div> <!-- /.field -->
+
+      <div class="field">
+        <%= f.label :historyable_type, class: "control-label" %>
+        <%= f.text_field :historyable_type, class: "form-control" %>
+        <span class="help-block"></span>
+      </div> <!-- /.field -->
+
+      <div class="field">
+        <%= f.label :user_id, class: "control-label" %>
+        <%= f.number_field :user_id, class: "form-control" %>
+        <span class="help-block"></span>
+      </div> <!-- /.field -->
+      
+      <div class="field">
+        <%#= f.label :favorite_id, class: "control-label" %><br>
+        <%#= f.text_field :favorite_id, class: "form-control" %>
+      </div> <!-- /.field -->
+
+    <% else %>
+        <%= f.hidden_field :historyable_id %>
+        <%= f.hidden_field :historyable_type %>
+        <%= f.hidden_field :user_id %>
+        <%#= f.hidden_field :favorite_id %>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :title, class: "control-label" %>
+      <%= f.text_field :title, class: "form-control" %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+
+    <div class="field">
+      <%= f.label :manual_date, class: "control-label" %>
+      <%= f.text_field :manual_date, class: "form-control" %>
+      <%#= f.datetime_select :manual_date, class: "form-control" %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+
+    <div class="field">
+      <%= f.label :memo, class: "control-label" %>
+      <%= f.text_area :memo, class: "form-control" %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+  </div> <!-- /.form-group -->
+
+  <div class="actions">
+    <%= f.submit, class: "btn btn-primary btn-block" %>
+  </div> <!-- /.actions -->
+<% end %>
+~~~~~~~~
+
+
+
+
+## tab delete
+
+{title=".../app/views/contacts/_pane_delete.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%= form_for(history, method: :delete, html: {class: 'form-horizontal left-pad right-pad bottom-pad'}) do |f| %>
+
+  <!-- # simulo l'helper h_params_path -->
+  <%= hidden_field_tag(:locale, params[:locale]) %>
+  <%= hidden_field_tag(:last_front_controller, params[:last_front_controller]) %>
+  <%= hidden_field_tag(:last_front_action, params[:last_front_action]) %>
+  <%= hidden_field_tag(:last_front_id, params[:last_front_id]) %>  
+  <%= hidden_field_tag(:last_front_related, params[:last_front_related]) %>  
+  <%= hidden_field_tag(:last_front_page, params[:last_front_page]) %>  
+  <%= hidden_field_tag(:last_front_search, params[:last_front_search]) %>  
+  <%= hidden_field_tag(:last_rear_controller, params[:last_rear_controller]) %>
+  <%= hidden_field_tag(:last_rear_action, params[:last_rear_action]) %>
+  <%= hidden_field_tag(:last_rear_id, params[:last_rear_id]) %>
+  <%= hidden_field_tag(:last_rear_related, params[:last_rear_related]) %>
+  <%= hidden_field_tag(:last_rear_page, params[:last_rear_page]) %>
+  <%= hidden_field_tag(:last_rear_search, params[:last_rear_search]) %>
+  <%= hidden_field_tag(:related, params[:related]) %>
+  <%= hidden_field_tag(:page, params[:page]) %>
+  <%= hidden_field_tag(:search, params[:search]) %>
+  <%= hidden_field_tag(:tab_active, params[:tab_active]) %>
+
+  <div class="actions">
+    <%= f.submit "#{t "histories.edit.submit_destroy"}", class: "btn btn-primary btn-block" %>
+  </div>
+<% end %>
+~~~~~~~~
+
+
+
+
+## Il controller delle storie
+
+Aggiorniamo l'azione **update** del controller **histories_controller** per reinstradare sulla relativa people/show passando tutti i params[]. In pratica cambio una riga di codice: 
+
+{title=".../app/controllers/histories_controller.rb", lang=ruby, line-numbers=on, starting-line-number=45}
+~~~~~~~~
+        format.html { redirect_to url_for(view_context.h_params_path(path: "/#{params[:last_front_controller]}/#{params[:last_front_id]}", related: params[:last_front_related], page: params[:last_front_page], search: params[:last_front_search])), notice: 'History was successfully updated..' }
+        #format.html { redirect_to @history, notice: 'History was successfully updated.' }
+~~~~~~~~
+
+Questa riga di codice è sufficientemente generica da non aver bisogno di nessun cambio se non la descrizione finale ** notice: '...' **
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+![https://elisinfo5-flaviobordonidev.c9users.io/company_person_maps](images/company_person_maps/cpmaps_index/cpmaps.png)
+
+aggiorniamo git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "update histories/edit _form"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku he:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge he
+$ git branch -d he
+~~~~~~~~
+
+
+
+
+## Backup su github
+
+facciamo un backup del ns progetto su github:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

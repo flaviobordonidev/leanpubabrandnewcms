@@ -1,0 +1,18 @@
+# Heroku scheduler
+
+Heroku does not support cron, instead providing Heroku Scheduler. If you deploy to Heroku, you should use that rather than Whenever.
+
+https://devcenter.heroku.com/articles/scheduler
+
+
+
+
+## Installing the add-on
+
+To use the Heroku Scheduler, install the add-on:
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku addons:create scheduler:standard
+~~~~~~~~

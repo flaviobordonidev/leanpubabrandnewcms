@@ -1,0 +1,373 @@
+# Installiamo pundit
+
+Ma prima di entrare a fondo in Pundit, esponiamo la nostra esigenza:
+
+Nella dashboard abbiamo vari ruoli a seconda della onlus in cui lavora la persona può visualizzare solo i dati appartenenti alla sua onlus. La pesona Donachiaro può vedere tutti i dati. L'amministratore oltre a vedere tutti i dati può anche effettuare modifiche ed eliminazioni.
+
+Autorizzazione
+
+Impostiamo che autorizzazioni ha l'utente, una volta autenticato attraverso il login. 
+
+
+## Riferimenti esterni
+
+* [Better Than AirBnB Unit 2 Lesson 5 Authorization with Pundit Part 2[(https://www.youtube.com/watch?v=0ZG1nero5jI)
+* [Brasilian buon inizio manca qualche passaggio.](http://groselhas.maurogeorge.com.br/autorizacao-com-pundit.html#sthash.1ZZn8UwR.dpbs)
+* [Brasilian integra rolify](http://groselhas.maurogeorge.com.br/rolify-com-pundit-para-uma-autorizacao-com-multiplos-papeis.html#sthash.xze8v7su.bSogPMHV.dpbs)
+* [Episode #047 - Authorization with Pundit](https://www.youtube.com/watch?v=PWizyTjCAdg)
+* [Episode #047 - github example app](https://github.com/driftingruby/047-authorization-with-pundit/blob/master/app/views/articles/show.html.erb)
+* [Spunti più avanzati](http://dmitrypol.github.io/2016/09/29/roles-permissions.html)
+
+Questo capitolo è basato principalmente su
+* http://groselhas.maurogeorge.com.br/autorizacao-com-pundit.html#sthash.1ZZn8UwR.2TeQaYYH.dpbs
+* https://github.com/elabs/pundit
+
+
+## Apriamo il branch "pundit install"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b pi
+~~~~~~~~
+
+
+
+
+## Installiamo la gemma
+
+Aggiungiamo la gemma **pundit** alla nostra applicazione [(codice: 01)](#code-login_authorization-pundit_install-01) per implementare la parte di autorizzazione.
+
+{title="Gemfile", lang=ruby, line-numbers=on, starting-line-number=53}
+~~~~~~~~
+# Object oriented authorization for Rails applications
+gem 'pundit', '~> 1.1'
+~~~~~~~~
+
+I> Verifichiamo sempre [l'ultima versione](https://rubygems.org) e gli [ultimi aggiornamenti](https://github.com/elabs/pundit)
+
+![la gemma devise](images/authorization/pundit_install/rubygems_pundit.png)
+
+Eseguiamo l'installazione della gemma con bundle 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ bundle install
+~~~~~~~~
+
+
+
+
+## Aggiungiamo ad application_controller
+
+Includiamo Pundit nel nostro application controller.
+
+{title=".../app/controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class ApplicationController < ActionController::Base
+  include Pundit
+  protect_from_forgery with: :exception
+~~~~~~~~
+
+Questo ci permette di usare Pundit in tutta la nostra applicazione.
+
+
+
+
+## Lo script
+
+Questo passaggio è opzionale ma è interessante farlo per avere una policy di esempio. Quindi eseguiamo lo script di implementazione di pundit su rails (Anche noto con il nome di "generator"). Il "generator" will set up an application policy with some useful defaults.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g pundit:install
+
+Running via Spring preloader in process 1762
+      create  app/policies/application_policy.rb
+~~~~~~~~
+
+After generating your application policy, restart the Rails server so that Rails can pick up any classes in the new app/policies/ directory.
+
+Esta nossa primeira policy ainda não é utilizada ela será utilizada como base para as policies que formos definir. Ela define alguns padrões como por exemplo o destroy? como false, sendo assim se invocarmos um policy de destroy mas não o definirmos por padrão será false desde que herdermos de ApplicationPolicy.
+
+Assim como o CanCan o Pundit utiliza do método current_user para pegar o usuário atual.
+
+
+
+
+## Concentriamoci sui kiosks
+
+Per un modello specifico aggiungiamo delle policies specifiche per un determinato model. 
+Adesso aggiungiamo delle policies per il modello **kiosk** usando il generatore "pundit:policy".
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g pundit:policy kiosk
+~~~~~~~~
+
+Questo ci crea **.../app/policies/kiosk_policy.rb**
+
+Adesso facciamo in modo che solo l'amministratore possa creare, modificare o distruggere i chioschi.
+
+
+
+
+## Verifichiamo il ruolo dell'utente
+
+Come facciamo a sapere se l'utente che ha fatto login è amministratore? Questo ruolo lo abbiamo già definito come campo booleano della tabella users.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+> u = User.where(email: "flavio@example.com")
+> u.admin?
+
+# prende errore perché "where" mi da una relazione ActiveRecord e non l'oggetto User
+#<ActiveRecord::Relation [#<User id: 2, email: "flavio@example.com", created_at: "2016-11-14 09:03:12", updated_at: "2017-07-23 12:08:03", admin: false>]> 
+
+# Devo usare "find"
+#<User id: 2, email: "flavio@example.com", created_at: "2016-11-14 09:03:12", updated_at: "2017-07-23 12:08:03", admin: false> 
+
+> u.find 2
+> u.admin?
+> u.update_attribute :admin, true
+
+# Oppure possiamo crearci il nuovo utente "Pippo" e dargli i diritti di amministratore:
+
+> User.new({email: 'pippo@example.it', password: 'pippopass', password_confirmation: 'pippopass', admin: TRUE}).save
+
+# o
+
+> u = User.new({email: 'pippo@example.it', password: 'pippopass', password_confirmation: 'pippopass'})
+> u.save
+> u.update_attribute :admin, true
+
+# o
+
+> u.admin = true
+> u.save
+~~~~~~~~
+
+Ricapitolando, con Devise autentichiamo la persona che vuole accedere alla ns applicazione attraverso un login che chiede all'utente email e password. Una volta chiarito chi è l'utente verifichiamo che ruolo ha nella ns applicazione. Nel ns caso Flavio non ha il ruolo di amministratore, invece Pippo sì. (per definire dei ruoli più complessi utilizzeremo la gemma **rolify** nei capitoli successivi)
+Adesso che sappiamo che nella ns applicazione è entrato Flavio e che è un amministratore andiamo a definire le sue autorizzazioni con pundit.
+Nel ns caso autorizzeremo solo l'amministratore a creare, modificare e distruggere i chioschi.
+
+
+
+
+## Le policies pundit
+
+Mettiamo subito un controllo che solo l'amministratore può creare un nuovo chiosco. Per far questo definiamo il metodo **create?** nelle policies del kiosk. Per convenzione pundit si usa il nome dell'azione con un punto interrogativo nel finale di parola. Poi utilizziamo il metodo **@user.admin?** di User per verificare se è un amministratore.
+In altre parole prepariamo una autorizzazione per l'azione create di kiosks e questa verrà autorizzata solo se il metodo restituisce TRUE; in questo caso restituisce TRUE se l'utente è amministratore.
+
+{title="*.../app/policies/kiosk_policy.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class KioskPolicy < ApplicationPolicy
+
+  def create?
+    @user.admin?
+  end
+
+  class Scope < Scope
+    def resolve
+      scope
+    end
+  end
+end
+~~~~~~~~
+
+Lasciamo stare per il momento così com'è la **class Scope** che analizzeremo più avanti.
+Chiediamoci invece come mai non abbiamo incluso anche **def new?** visto che vogliamo che solo gli amministratori possano accedere alla pagina/view **kiosks/new**. La risposta è nella classe principale **ApplicationPolicy**.
+Infatti in ApplicationPolicy abbiamo definito questa regola nella seguente maniera: 
+
+~~~~~~~~
+  def new?
+    create?
+  end
+~~~~~~~~
+
+Ossia **new?** esegue il **create?** quindi, dovuto al potere dell'eredità, definiamo solo il **create?** nella nostra classe figlia perché il **new?** è automaticamente compreso.
+Adesso definiamo le altre policies per il ns model kiosk.
+
+{title="*.../app/policies/kiosk_policy.rb", lang=ruby, line-numbers=on, starting-line-number=7}
+~~~~~~~~
+  def update?
+    @user.admin?
+  end
+
+  def destroy?
+    @user.admin?
+  end
+~~~~~~~~
+
+
+
+
+## Usiamo le policies sul controller
+
+Adesso, con le nostre policies create andiamo ad applicarle nel controller **kiosks_controller**. Per far questo utilizziamo semplicemente il metodo di Pundit **authorize** e gli passiamo l'oggetto che stiamo autorizzando, ne nostro caso **authorize @kiosk**.
+
+inseriamo per l'azione **new**
+
+{title="*.../app/controllers/kiosks_controller.rb", lang=ruby, line-numbers=on, starting-line-number=29}
+~~~~~~~~
+  def new
+    @kiosk = Kiosk.new
+    authorize @kiosk
+  end
+~~~~~~~~
+
+inseriamo per l'azione **create**
+
+{title="*.../app/controllers/kiosks_controller.rb", lang=ruby, line-numbers=on, starting-line-number=40}
+~~~~~~~~
+  def create
+    @kiosk = Kiosk.new(kiosk_params)
+    authorize @kiosk
+~~~~~~~~
+
+Adesso per tutte le altre azioni.
+inseriamo per l'azione **index**
+
+{title="*.../app/controllers/kiosks_controller.rb", lang=ruby, line-numbers=on, starting-line-number=8}
+~~~~~~~~
+  def index
+    authorize @kiosk
+    @kiosks = Kiosk.all
+~~~~~~~~
+
+inseriamo per l'azione **show**
+
+{title="*.../app/controllers/kiosks_controller.rb", lang=ruby, line-numbers=on, starting-line-number=16}
+~~~~~~~~
+  def show
+    authorize @kiosk
+~~~~~~~~
+
+inseriamo per l'azione **edit**
+
+{title="*.../app/controllers/kiosks_controller.rb", lang=ruby, line-numbers=on, starting-line-number=37}
+~~~~~~~~
+  def edit
+    authorize @kiosk
+~~~~~~~~
+
+inseriamo per l'azione **update**
+
+{title="*.../app/controllers/kiosks_controller.rb", lang=ruby, line-numbers=on, starting-line-number=60}
+~~~~~~~~
+  def update
+    authorize @kiosk
+~~~~~~~~
+
+inseriamo per l'azione **destroy**
+
+{title="*.../app/controllers/kiosks_controller.rb", lang=ruby, line-numbers=on, starting-line-number=75}
+~~~~~~~~
+  def destroy
+    authorize @kiosk
+~~~~~~~~
+
+Adesso abbiamo le nostre azioni protette, qualsiasi utente che tenta di accedere ad una di queste azioni senza avere la giusta autorizzazione riceverà l'eccezione/errore Pundit::NotAuthorizedError
+
+Verifichiamo...
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add authorization to kiosk"
+~~~~~~~~
+
+
+
+
+## Un piccolo refactoring
+
+Siccome abbiamo già il ** before_action :set_kiosk, only: [:show, :edit, :update, :destroy] ** possiamo togliere la ns linea di codice ** authorize @kiosk ** dalle azioni :show, :edit, :update, :destroy e metterla sul metodo private :set_kiosk
+ 
+{title="*.../app/controllers/kiosks_controller.rb", lang=ruby, line-numbers=on, starting-line-number=100}
+~~~~~~~~
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_kiosk
+      @kiosk = Kiosk.find(params[:id])
+      authorize @kiosk
+    end
+~~~~~~~~
+
+Ricoridiamoci di togliere la linea di codice dalle azioni ^_^
+
+
+
+
+## Intercettiamo e gestiamo l'eccezione
+
+In produzione non vogliamo un messaggio di errore quindi intercettiamo e gestiamo il Pundit::NotAuthorizedError
+...
+...
+Por uma boa mensagem de erro
+Até o momento caso algum usuário acesso alguma das actions em que ele não tem permissão ele recebe apenas uma excessão, o que se torna um erro 500 em produção, e não queremos isso. Então vamos tratar esta excessão para exibirmos uma boa mensagem de erro.
+
+No nosso ApplicationController resgatamos da excessão e redirecionamos o usuário com uma mensagem de erro.
+
+class ApplicationController < ActionController::Base
+
+  # ...
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
+  private
+
+    def user_not_authorized
+      flash[:error] = 'Você não tem permissão para fazer esta ação'
+      redirect_to(request.referrer || root_path)
+    end
+end
+Agora o usuário recebe uma melhor mensagem de erro.
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku fcpms:master
+$ heroku run rake db:migrate
+~~~~~~~~
+
+I> Lato produzione su heroku c'è un database indipendente da quello di sviluppo quindi risulta vuoto.
+
+per popolare il database di heroku basta aprire la console con il comando:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku run rails c
+~~~~~~~~
+
+E rieseguire i passi già fatti nel paragrafo precedentemente
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge fcpms
+$ git branch -d fcpms
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

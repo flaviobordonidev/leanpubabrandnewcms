@@ -1,0 +1,95 @@
+# Favorites Contacts new
+
+implementiamo i favoriti delle persone o delle aziende sulla view new di contacts
+
+- Voglio settare come preferita, per una data persona, un contatto che sto associando adesso (non era già associato)
+- Voglio settare come preferita, per una data azienda, un contatto che sto associando adesso (non era già associato)
+
+Il "lavoro duro" lo abbiamo già fatto implementando il lato edit. In questo capitolo facciamo una semplice implementazione, praticamente un semplice copia/incolla. 
+
+
+
+
+## Apriamo il branch "Favorites Contacts New"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b fcn
+~~~~~~~~
+
+
+
+
+## Aggiungiamo il campo favorite_id su contacts/new
+
+Li abbiamo già aggiunti perché il partial **_form.html.erb** è lo stesso sia per edit che per new.
+
+
+
+
+## Aggiungiamo il favorite sul controller di contacts 
+
+Lavoriamo sul controller. Abbiamo già abilitato la white list per passare le modifiche. Implementiamo il codice per gestire i preferiti come abbiamo già fatto per edit sull'azione **update**. Solo che in questo caso lo facciamo per new quindi sull'azione **create**.
+
+Sull'azione **create** del controller **contacts_controller**, implementiamo il nuovo metodo private **manage_favorite**. Per far questo esplodo su più righe il comando **format.html { ... }** usando
+
+format.html do
+  ...
+end
+
+{title=".../app/controllers/contacts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=33}
+~~~~~~~~
+        format.html do
+          manage_favorite # private action
+          redirect_to url_for(view_context.h_params_path(path: "/#{params[:last_front_controller]}/#{params[:last_front_id]}", related: params[:last_front_related], page: params[:last_front_page], search: params[:last_front_search])), notice: 'Contact was successfully updated..' 
+        end
+~~~~~~~~
+
+Abbiamo già scritto il codice dei due nuovi metodi nell'area **private**. Quindi abbiamo finito. ^_^
+
+
+
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add favorites contacts new"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku fcn:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge fcn
+$ git branch -d fcn
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

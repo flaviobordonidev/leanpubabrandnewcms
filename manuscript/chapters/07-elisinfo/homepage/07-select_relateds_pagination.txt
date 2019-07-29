@@ -1,0 +1,186 @@
+# Paginazione su pagina di selezione entità (pagination)
+
+iniziamo attivando il search ed il pagination con l'elenco completo a prescindere dalla pagina chiamante (non usiamo i bln_entities e bln_documents).
+Due tra le gemme più utilizzate sono will_paginate e kaminari. Scegliamo kaminari perché è più aggiornata. Will_paginate è rimasta ferma nello sviluppo.
+
+
+
+
+## Apriamo il branch "SelectRelated Pagination"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b srp
+~~~~~~~~
+
+
+
+
+## Pagination con Kaminari
+
+Per dividere l'elenco su più pagine usiamo la gemma kaminari.
+
+
+
+
+## Installiamo Kaminari
+
+per installarlo dobbiamo aggiungerlo nel Gem file [(codice: 01)](#code-homepage-select_relateds_pagination-01). Facciamo riferimento al [sito ufficiale di kaminari](https://github.com/kaminari/kaminari) e mettiamo nel Gemfile l'[ultima versione disponibile](https://rubygems.org/gems/kaminari).
+
+{title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=57}
+~~~~~~~~
+# a powerful paginator for Rails. 
+gem 'kaminari', '~> 1.0', '>= 1.0.1'
+~~~~~~~~
+
+Installiamo
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ bundle install
+~~~~~~~~
+
+
+
+
+## Usiamo Kaminari
+
+informiamo il controller di usare il metodo di Kaminari ".page(params[:page])"
+
+{title=".../app/controllers/select_relateds_controller.rb", lang=ruby, line-numbers=on, starting-line-number=8}
+~~~~~~~~
+    @select_relateds = SelectRelated.for_homepage.search(params[:search]).order('name ASC').page(params[:page])
+~~~~~~~~
+
+Di default vengono fatte delle pagine di 25 records. Siccome noi abbiamo solo 3 records cambiamo il settaggio di default.
+Nell'applicazione reale visualizzeremo 6 records per ogni pagina perché uno studio di usabilità ha evidenziato che sei records riescono ad essere interpretati senza spostare lo sguardo e che scorrere la lista spesso distrae. Inoltre sei records riescono ad entrare comodamente sullo schermo di uno smartphone. 
+
+Per ridurre a 2 records implementiamo il file di configurazione. Possiamo creare un nuovo file nella cartella config/inizializer oppure ce lo facciamo creare dal "generator command" via terminale.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g kaminari:config
+~~~~~~~~
+
+Creato il file andiamo a modificarlo
+
+{title=".../config/initializers/kaminari_config.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+# frozen_string_literal: true
+Kaminari.configure do |config|
+  config.default_per_page = 2
+  # config.max_per_page = nil
+  # config.window = 4
+  # config.outer_window = 0
+  # config.left = 0
+  # config.right = 0
+  # config.page_method_name = :page
+  # config.param_name = :page
+  # config.params_on_first_page = false
+end
+~~~~~~~~
+
+verifichiamo che funziona tutto aggiungendo ** page=2 ** sull'url. Ricordiamoci che se il server è già attivo dobbiamo riavviarlo per caricare la nuova config. Poiché noi abbiamo 3 elementi (favorites, people, companies) si visualizzeranno solo i primi due. Per vedere il terzo ci possiamo spostare di pagina mettendo nell'url ** &page=2 **
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+https://elisinfo6-flaviobordonidev.c9users.io/select_relateds?search=
+https://elisinfo6-flaviobordonidev.c9users.io/select_relateds?search=&page=2
+https://elisinfo6-flaviobordonidev.c9users.io/select_relateds?search=&page=1
+~~~~~~~~
+
+
+
+
+##  Attiviamo i links per scorrere la paginazione
+
+una prima paginazione estremamente rapida è 
+
+~~~~~~~~
+<%= link_to_previous_page @select_relateds, '«' %>
+<%= link_to_next_page @select_relateds, '»' %>
+~~~~~~~~
+
+Questa gestisce anche il nascondere il link alla pagina precedente quando sono sulla prima pagina. E nasconde il link della pagina successiva quando siamo sull'ultima pagina. Noi vogliamo però che sia disabilitato e non nascosto. Inoltre implementiamo una gestione maggiore e quindi usiamo il seguente codice.
+
+{title="views/select_relateds/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=37}
+~~~~~~~~
+  <%= render 'related_pagination', list_to_paginate: @select_relateds %>
+~~~~~~~~
+
+{title="views/select_relateds/_related_pagination.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="text-center">
+  <ul class="pagination ">
+    
+    <% if list_to_paginate.prev_page %>
+      <li>
+        <%= link_to_previous_page @select_relateds, '«' %>
+      </li>
+    <% else %>
+      <li class="disabled">
+        <%= content_tag :span,"«"  %>
+      </li>
+    <% end %>
+    
+    <li class="active">
+      <%= content_tag :span,"#{list_to_paginate.current_page} di #{list_to_paginate.total_pages}" %>
+    </li>
+    
+    <% if list_to_paginate.next_page %>
+      <li>
+        <%= link_to_next_page @select_relateds, '»' %>
+      </li>
+    <% else %>
+      <li class="disabled">
+        <%= content_tag :span,"»" %>
+      </li>
+    <% end %>
+
+  </ul>
+</div>
+~~~~~~~~
+
+il partial è reso sufficientemente generico per essere utilizzato da più entità, perché usa la variabile **list_to_paginate** che gli viene passata in fase di render. Questo ci svincola dalla variabile d'istanza che rappresenta l'entià. In questo caso @select_relateds. Altri esempi di variabile d'istanza che rappresenta l'entità che useremo nei prossimi capitoli sono: @people, @companies, @addresses, @contacts, ...
+
+verifichiamo che funziona tutto 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+https://elisinfo6-flaviobordonidev.c9users.io/select_relateds?search=&page=1
+~~~~~~~~
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add pagination"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku srp:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge srp
+$ git branch -d srp
+~~~~~~~~

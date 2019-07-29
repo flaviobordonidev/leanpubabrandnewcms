@@ -1,0 +1,132 @@
+# code: csv 03 transcations ftp uri
+
+
+
+
+#### 01 {#code-csv-03-transcations_ftp_uri-01}
+
+{title="application.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+require_relative 'boot'
+
+require 'net/ftp'
+require 'csv'
+require 'rails/all'
+
+# Require the gems listed in Gemfile, including any gems
+# you've limited to :test, :development, or :production.
+Bundler.require(*Rails.groups)
+
+module Angular
+  class Application < Rails::Application
+    # Settings in config/environments/* take precedence over those specified here.
+    # Application configuration should go into files in config/initializers
+    # -- all .rb files in that directory are automatically loaded.
+
+    # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
+    # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
+    # config.time_zone = 'Central Time (US & Canada)'
+
+    # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
+    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
+    # config.i18n.default_locale = :de
+    
+    # setup bower components folder for lookup
+    config.assets.paths << Rails.root.join('vendor', 'assets', 'bower_components')
+    # fonts
+    config.assets.precompile << /\.(?:svg|eot|woff|ttf)$/
+    # images
+    config.assets.precompile << /\.(?:png|jpg)$/
+    # precompile vendor assets
+    config.assets.precompile += %w( base.js )
+    config.assets.precompile += %w( base.css )
+    # precompile themes
+    config.assets.precompile += ['angle/themes/theme-a.css',
+                                 'angle/themes/theme-b.css',
+                                 'angle/themes/theme-c.css',
+                                 'angle/themes/theme-d.css',
+                                 'angle/themes/theme-e.css',
+                                 'angle/themes/theme-f.css',
+                                 'angle/themes/theme-g.css',
+                                 'angle/themes/theme-h.css'
+                                ]
+    # Controller assets
+    config.assets.precompile += [
+                                 # Scripts
+                                 'charts.js',
+                                 'dashboard.js',
+                                 'documentation.js',
+                                 'elements.js',
+                                 'extras.js',
+                                 'forms.js',
+                                 'maps.js',
+                                 'multilevel.js',
+                                 'pages.js',
+                                 'tables.js',
+                                 'widgets.js',
+                                 'blog.js',
+                                 'ecommerce.js',
+                                 'forum.js',
+                                 'mocks.js',
+                                 'transactions.js',
+                                 # Stylesheets
+                                 'charts.css',
+                                 'dashboard.css',
+                                 'documentation.css',
+                                 'elements.css',
+                                 'extras.css',
+                                 'forms.css',
+                                 'maps.css',
+                                 'multilevel.css',
+                                 'pages.css',
+                                 'tables.css',
+                                 'widgets.css',
+                                 'blog.css',
+                                 'ecommerce.css',
+                                 'forum.css',
+                                 'mocks.css',
+                                 'transactions.css'
+                                ]
+
+  end
+end
+~~~~~~~~
+
+
+
+
+
+#### 01 {#code-csv-03-transcations_ftp_uri-02}
+
+{title="app/models/transaction.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class Transaction < ApplicationRecord
+    
+    # setter method (serve self perché va a scrivere nel db)(non creo il getter method)
+    def self.import
+    
+      ftp = Net::FTP.new
+      ftp.connect("boutiquecampodifiori.com",21)
+      ftp.login("boutiqu1","nSz0Yae46G")
+      ftp.chdir("/tmp")
+      ftp.passive = true
+      ftp.getbinaryfile("transactions.txt", "tmp/transactions.txt")
+
+      CSV.foreach("tmp/transactions.txt", col_sep: ';') do |row|
+        p = Transaction.new
+        p.timestamp = row[0]
+        p.id_check = row[1]
+        p.onlus = row[2]
+        p.project = row[3]
+        p.kind = row[4]
+        p.verify = row[5]
+        p.cents = row[6]
+        p.people_name = row[7]
+        p.people_email = row[8]
+        p.extra = row[9]
+        p.save
+      end
+    end
+
+end
+~~~~~~~~

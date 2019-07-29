@@ -1,0 +1,231 @@
+# Favorites Company Person
+
+implementiamo l'elenco delle aziende e delle persone preferite su homepage/show (e non su users/show).
+
+ATTENZIONE! L'elenco è già presente per come abbiamo sviluppato l'applicazione nei capitoli precedenti ma presenta TUTTE le voci di favorites. In questo capitolo dobbiamo implemntare un filtro che ci faccia vedere solo i preferiti delle "entità principali"; nel ns caso Aziende e Persone.
+
+Questo è fatto semplicemente sul controller homepage_controller mettendo nell'azione show
+
+   when "favorites"
+      # TODO
+      #@relateds = @user.favorites.search(params[:search]).order('created_at DESC').page(params[:page])
+      @relateds = @user.favorites.all.page(params[:page])
+      @relateds_path = "favorites"
+
+
+## Apriamo il branch "Homepage Favorites List"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b hfl
+~~~~~~~~
+
+
+
+
+## parte 1 - l'elenco senza link_to attivo
+
+DA RIVEDERE: mischia con la parte 2 perché abbiamo già i campi: copy_table e copy_table_id
+
+Iniziamo visualizzando l'elenco dei favoriti relativi all'utente loggato.
+Abbiamo già creato su views la cartella "favorites" con dentro il partial "_index". Non è necessario avere il controller perché non stiamo visualizzando una views (es: index, show, edit, ...) ma stiamo visualizzando solo il partial _index.
+Questo resta così com'è
+
+{title=".../app/views/favorites/_list_group.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="list-group left-pad right-pad">
+  <% related_list.each do |favorite| %>
+    <%= link_to "", :class => "list-group-item" do %>
+      <span class="badge"><span class="glyphicon glyphicon-star"></span></span>
+      <p><%= favorite.copy_normal %></p>
+      <p><strong><%= favorite.copy_bold %></strong></p>
+      <p><%= "favoritable_type: #{favorite.favoritable_type} - favoritable_id: #{favorite.favoritable_id}" %></p>
+    <% end %>
+  <% end %>
+</div>
+~~~~~~~~
+
+Su homepage/show togliamo la struttura if...else...end che mostra il partial di mockup per favorites
+
+{title=".../app/views/companies/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=35}
+~~~~~~~~
+        <%= render "#{@relateds_path}/index", related_list: @relateds %>
+~~~~~~~~
+
+ed aggiorniamo il controller attivando ** @relateds = Favorite.all ** e ** @relateds_path = "favorites" **
+
+{title=".../app/controllers/homepage_controller.rb", lang=ruby, line-numbers=on, starting-line-number=16}
+~~~~~~~~
+    # gestiamo l'elenco dei relateds
+    case params[:related]
+    when "favorites"
+      # TODO
+      @relateds = current_user.favorites.search(params[:search]).order('created_at DESC').page(params[:page]).per_page(6)
+      @relateds_path = "favorites"
+    when "people"
+      #@relateds = Person.all
+      @relateds = Person.search(params[:search]).order('created_at DESC').page(params[:page]).per_page(2)
+      @relateds_path = "people"
+    when "companies"
+      #@relateds = Company.all
+      @relateds = Company.search(params[:search]).order('created_at DESC').page(params[:page]).per_page(2)
+      @relateds_path = "companies"
+    else
+      raise "#TODO"
+    end
+~~~~~~~~
+
+implementiamo il search
+
+
+{title=".../app/models/favorite.rb", lang=ruby, line-numbers=on, starting-line-number=7}
+~~~~~~~~
+  # scope filters --------------------------------------------------------------
+  scope :search, -> (query) {where("copy_normal ILIKE ? OR copy_bold ILIKE ?", "%#{query}%", "%#{query}%")}
+  #scope :search, -> (query) {with_translations(I18n.locale).where("copy_normal ILIKE ? OR copy_bold ILIKE ?", "%#{query}%", "%#{query}%")}
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+Accidenti mi sono scordato l'internazionalizzazione *_* Rivedi nei capitoli precedenti ed integrala!!!
+Per adesso la commento e attivo il search senza.
+
+
+
+
+## Parte 2 - attiviamo link_to
+
+Mi si presenta un problema come reinstrado correttamente con il link_to for_url? Mi manca il nome della tabella e l'id a cui il favorito si riferisce. Questo problema lo abbiamo già risolto aggiungendo i due campi:
+- copy_table
+- copy_table_id
+
+
+
+
+## Aggiungiamo inserimento dei valori per copy_table e copy_table_id lato Aziende
+
+Andiamo su companies controller e se il combo-box-favorite è selezionato aggiungiamo sui nuovi campi di favorites che stiamo archiviando un record della tabella companies e qual'è l'id.
+
+{title="controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=101}
+~~~~~~~~
+      else  # if combo-box-favorite is ON
+        if @company.favorite_id_user.blank?
+          #raise "crea nuovo favorite"
+          f = current_user.favorites.new(copy_table: "companies", copy_table_id: @company.id, copy_normal: "azienda", copy_bold: "#{@company.name} -- #{@company.corporate}")
+          f.save
+          @company.update(favorite_id_user: f.id)
+        else
+          #raise "aggiorna favorite esistente"
+          f = Favorite.find(@company.favorite_id_user)
+          f.update(copy_table: "companies", copy_table_id: @company.id, copy_normal: "azienda", copy_bold: "#{@company.name} -- #{@company.corporate}")
+          f.save
+        end
+      end
+~~~~~~~~
+
+
+
+
+## Aggiungiamo inserimento dei valori per copy_table e copy_table_id lato Persone
+
+Andiamo su people controller e se il combo-box-favorite è selezionato aggiungiamo sui nuovi campi di favorites che stiamo archiviando un record della tabella people e qual'è l'id.
+
+{title="controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=101}
+~~~~~~~~
+      else  # if combo-box-favorite is ON
+        if @person.favorite_id_user.blank?
+          #raise "crea nuovo favorite"
+          f = current_user.favorites.new(copy_table: "people", copy_table_id: @person.id, copy_normal: "persona", copy_bold: "#{@person.first_name} -- #{@person.last_name}")
+          f.save
+          @person.update(favorite_id_user: f.id)
+        else
+          #raise "aggiorna favorite esistente"
+          f = Favorite.find(@person.favorite_id_user)
+          f.update(copy_table: "people", copy_table_id: @person.id, copy_normal: "persona", copy_bold: "#{@person.first_name} -- #{@person.last_name}")
+          f.save
+        end
+      end
+~~~~~~~~
+
+
+
+
+## Attiviamo il link_to url_for
+
+Adesso che abbiamo i valori possiamo attivare il link_to url_for per andare nella parte edit della relativa copy_table
+
+
+{title="views/favorites/_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+questa parte la abbiamo già implementata in un precedente capitolo quindi non devo fare altro
+~~~~~~~~
+
+
+ATTENZIONE! 
+Ricordiamoci che copy_table e copy_table_id li abbiamo aggiunti dopo sul controller quindi non sono stati popolati.
+Togliamoli da favorites e rimettiamoli.
+
+
+Yeha! Funziona tuttoooooo ^_^ ... o quasi '_'
+
+La fregatura è che mi va su edit (che è utile quando sono sulle tabelle x_y_maps) ma non mi è utile in questo caso.
+In questo  caso voglio andare su show e non su edit.
+Risolviamo al volo ...
+
+{title="views/favorites/_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="list-group left-pad right-pad">
+  <% related_list.each do |favorite| %>
+    <%#= link_to "", :class => "list-group-item" do %>
+    <%#= link_to url_for(controller: favorite.copy_table, action: "edit", id: favorite.copy_table_id), :class => "list-group-item" do %>
+    <% if favorite.copy_table == "companies" or favorite.copy_table == "people" %>
+      <%= link_to url_for(h_front_params_path(path: "/#{favorite.copy_table}/#{favorite.copy_table_id}")), :class => "list-group-item" do %>
+        <span class="badge"><span class="glyphicon glyphicon-star"></span></span>
+        <p><%= favorite.copy_normal %></p>
+        <p><strong><%= favorite.copy_bold %></strong></p>
+        <p><%= "favoritable_type: #{favorite.favoritable_type} - favoritable_id: #{favorite.favoritable_id}" %></p>
+      <% end %>
+    <% else %>
+      <%= link_to url_for(h_front_params_path(path: "/#{favorite.copy_table}/#{favorite.copy_table_id}/edit")), :class => "list-group-item" do %>
+        <span class="badge"><span class="glyphicon glyphicon-star"></span></span>
+        <p><%= favorite.copy_normal %></p>
+        <p><strong><%= favorite.copy_bold %></strong></p>
+        <p><%= "favoritable_type: #{favorite.favoritable_type} - favoritable_id: #{favorite.favoritable_id}" %></p>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
+~~~~~~~~
+
+Così funziona ma c'è ampio margine per un bel refactoring.
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Implement the link_to url_for on homepage show favorites"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku hfl:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge hfl
+$ git branch -d hfl
+~~~~~~~~

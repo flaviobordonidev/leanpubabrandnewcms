@@ -1,0 +1,167 @@
+# Mockup per la pagina di accesso - login
+
+Questo mockup tratta la parte di autenticazione (Authentication) che implementeremo con Devise. La parte di autenticazione comprende il login, il logout, la richiesta della password dimenticata, la registrazione, l'invio di emails di conferma, la possibilità di loggarsi tramite facebook ecc...
+In questo capitolo facciamo solo la parte di login.
+
+
+
+
+## Apriamo il branch
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b ml
+~~~~~~~~
+
+
+
+
+## Rails generate controller Mocks
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g controller mockup_authentication login
+~~~~~~~~
+
+
+
+
+## Instradiamo mockup_login
+
+Aggiungiamo su routes
+
+{title=".../app/config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+Rails.application.routes.draw do
+
+  root 'testpages#page_a'
+
+  get 'testpages/page_a'
+  get 'testpages/page_b'
+  get 'mockups/test'
+  get 'mockup_homepage/index'
+
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+end
+~~~~~~~~
+
+
+
+
+## Disegniamo mockup_login
+
+{title=".../app/views/mockup_authentication/login.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+
+  <div id="rear_mode" class="container-fluid rear_mode">
+
+  <div class="row">
+    <div class="col-xs-9 col-sm-10 col-lg-11">
+      <ul class="nav nav-pills bottom-pad top-pad left-pad">
+        <li class="active">
+          <a href="#pane_login" data-toggle="tab"><span class="glyphiconmy ico_login"></span></a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-xs-3 col-sm-2 col-lg-1">
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="tab-content">
+        <div id="pane_login" class="tab-pane active">
+          <div class="text-center bottom-pad">
+            <h4>Login</h4>
+          </div>
+
+          <form class="new_user" id="new_user" action="/users/sign_in" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="otGkBpQvv6sgPjEMJiKBhwIMvkGEa3OUg+0HBut2sobpZeLZxUXHgYZOErHi7CAkB41yguLGe1Ik9aMAKrMqYw==" />
+          
+            <div class="form-group">
+              <div class="field">
+                <label class="control-label" for="user_email">Email</label><br />
+                <input autofocus="autofocus" class="form-control" type="email" value="" name="user[email]" id="user_email" />
+                <span class="help-block"></span>
+              </div>
+            
+              <div class="field">
+                <label class="control-label" for="user_password">Password</label><br />
+                <input autocomplete="off" class="form-control" type="password" name="user[password]" id="user_password" />
+                <span class="help-block"></span>
+              </div>
+            </div> <!-- /form-group -->
+            
+              <div class="field">
+                <input name="user[remember_me]" type="hidden" value="0" /><input type="checkbox" value="1" name="user[remember_me]" id="user_remember_me" />
+                <label for="user_remember_me">Remember me</label>
+              </div>
+          
+            <div class="actions">
+              <input type="submit" name="commit" value="Log in" class="btn btn-primary btn-block" data-disable-with="Log in" />
+            </div>
+          </form>          
+          
+          <a href="/users/sign_up">Sign up</a><br />
+          <a href="/users/password/new">Forgot your password?</a><br />
+          
+        </div>
+      </div><!-- /.tab-content -->
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+</div> <!-- /rear_mode -->
+~~~~~~~~
+
+
+Impostiamo sul controller il layout "login"
+
+{title="app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+class MockupAuthenticationController < ApplicationController
+  
+  layout 'login'
+  
+  def login
+  end
+end
+~~~~~~~~
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+eseguiamo un git commit
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add mockup_authentication login"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku ml:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge ml
+$ git branch -d ml
+~~~~~~~~

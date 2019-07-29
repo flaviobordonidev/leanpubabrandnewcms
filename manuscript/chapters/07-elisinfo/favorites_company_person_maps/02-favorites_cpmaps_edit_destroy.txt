@@ -1,0 +1,278 @@
+# Favorites Company Person
+
+implementiamo i favoriti delle persone o delle aziende sulla view edit di company_person_maps
+
+- Voglio settare come preferita, per una data persona, un'azienda in cui lavora (che ho già associato)
+- Voglio settare come preferita, per una data azienda, un dipendente (che ho già associato)
+
+
+
+
+## Apriamo il branch "Favorites Company Person Edit"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b fcpe
+~~~~~~~~
+
+
+
+
+## Aggiungiamo i campi favorites_ids su company_person_maps edit
+
+Li aggiungiamo sul tab edit di company_person_maps dentro la struttura if...elsif...end.
+Se ** <% if params[:last_front_controller] == "people" %> **
+
+{title=".../app/views/company_person_maps/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=48}
+~~~~~~~~
+<div class="field">
+  <%= f.label :favorite_cb_company, class: "control-label" %><br>
+  <%= f.check_box :favorite_cb_company, class: "form-control", "data-size" => "medium", "data-on-color" => "primary", "data-on-text" => "SI", "data-off-color" => "default", "data-off-text" => "NO" %>
+</div>
+~~~~~~~~
+
+Invece se ** <% elsif params[:last_front_controller] == "companies" %> **
+
+{title=".../app/views/company_person_maps/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=75}
+~~~~~~~~
+<div class="field">
+  <%= f.label :favorite_cb_person %><br>
+  <%= f.check_box :favorite_cb_person, class: "form-control", "data-size" => "medium", "data-on-color" => "primary", "data-on-text" => "SI", "data-off-color" => "default", "data-off-text" => "NO" %>
+</div>
+~~~~~~~~
+
+e mettiamo dei campi di verifica utili allo sviluppo. Poi li nascondiamo/togliamo.
+
+{title=".../app/views/company_person_maps/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=92}
+~~~~~~~~
+<div class="field">
+  <%= f.label :favorite_id_company, class: "control-label" %><br>
+  <%= f.text_field :favorite_id_company, class: "form-control" %>
+</div>
+
+<div class="field">
+  <%= f.label :favorite_id_person, class: "control-label" %><br>
+  <%= f.text_field :favorite_id_person, class: "form-control" %>
+</div>
+~~~~~~~~
+
+Si può vedere che sulla persona id 1 (Jhon Doe) c'è il valore su favorite_id_person ed inoltre il combo-box favorite_cb_person risulta su ON. Questo perché nel precedente paragrafo abbiamo popolato la tabella tramite rails consolle.
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "update company_person_maps edit for favorites"
+~~~~~~~~
+
+
+
+
+## Aggiungiamo i favorites sul controller di company_person_maps 
+
+Dobbiamo adesso lavorare sul controller. Innanzitutto dobbiamo abilitare la white list altrimenti non vengono passate le modifiche.
+
+
+{title=".../app/controllers/company_person_maps_controller.rb", lang=ruby, line-numbers=on, starting-line-number=94}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def company_person_map_params
+      params.require(:company_person_map).permit(:company_id, :person_id, :summary, :favorite_id_company, :favorite_cb_company, :favorite_id_person, :favorite_cb_person)
+    end
+~~~~~~~~
+
+
+Ora dedichiamoci al codice per gestire i preferiti.
+
+* Quando modifico un record della company_person_maps:
+
+1. se il check_box favorite_cb nel tab option è ON:
+  1a. se favorite_id è blank -> creo il record nella tabella favorite
+  1b. se favorite_id non è blank -> aggiorno il corrispondente record nella tabella favorite
+2. se il check_box favorite_cb nel tab option è OFF:
+  2a. se favorite_id è blank -> non faccio nulla
+  2b. se favorite_id non è blank -> elimino il corrispondente record nella tabella favorites
+
+* Quando elimino un record dalla company_person_maps elimino anche il corrispondente record della tabella favorites se presente.
+
+A> Inoltre quando eliminiamo una persona o una azienda dovremmo cancellare anche l'eventuale relativo record su company_person_map e quindi a cascata cancellare anche l'eventuale relativo preferito. Ma questo lo implementiamo successivamente.
+
+
+
+
+Sull'azione **update** del controller **company_person_maps_controller**, implementiamo i due nuovi metodi private **manage_favorite_person** e **manage_favorite_company**. Per far questo esplodo su più righe il comando **format.html { ... }** usando
+
+format.html do
+  ...
+end
+  
+{title=".../app/controllers/company_person_maps_controller.rb", lang=ruby, line-numbers=on, starting-line-number=67}
+~~~~~~~~
+        format.html do
+          if params[:last_front_controller] == "companies"
+            #"seleziona la persona da associare come preferita dell'azienda"
+            manage_person_favorite_of_company # private action
+          elsif params[:last_front_controller] == "people"
+            #"seleziona l'azienda da associare come preferita della persona"
+            manage_company_favorite_of_person # private action
+          else
+            raise "ERROR"
+          end
+          redirect_to url_for(view_context.h_params_path(path: "/#{params[:last_front_controller]}/#{params[:last_front_id]}", related: params[:last_front_related], page: params[:last_front_page], search: params[:last_front_search])), notice: 'Collegamento aggiornato con successo.'
+        end
+~~~~~~~~
+
+Adesso scriviamo il codice dei due nuovi metodi nell'area **private**
+
+{title=".../app/controllers/company_person_maps_controller.rb", lang=ruby, line-numbers=on, starting-line-number=61}
+~~~~~~~~
+    def manage_person_favorite_of_company
+      #raise "->#{@company_person_map.favorite_cb_company}" # questo prende il valore dal database
+      #raise "->#{params[:company_person_map][:favorite_cb_company]}" # questo prende il valore dalla view
+      if params[:company_person_map][:favorite_cb_person] == "0"  # if combo-box-favorite is OFF
+        if @company_person_map.favorite_id_person.blank?
+          #raise "don't do anything"
+        else
+          #raise "delete favorite"
+          Favorite.find(@company_person_map.favorite_id_person).destroy
+          @company_person_map.update(favorite_id_person: nil)
+        end
+      else  # if combo-box-favorite is ON
+        if @company_person_map.favorite_id_person.blank?
+          #raise "crea nuovo favorite"
+          #f = Company.find(@company_person_map.company_id).favorites.new(copy_normal: @company_person_map.summary, copy_bold: "#{@company_person_map.person.title} #{@company_person_map.person.first_name} #{@company_person_map.person.last_name}")
+          f = Company.find(@company_person_map.company_id).favorites.new(copy_normal: @company_person_map.summary, copy_bold: "#{@company_person_map.person.title} #{@company_person_map.person.first_name} #{@company_person_map.person.last_name}", copy_table: "company_person_maps", copy_table_id: @company_person_map.id)
+          f.save
+          @company_person_map.update(favorite_id_person: f.id)
+        else
+          #raise "aggiorna favorite esistente"
+          f = Favorite.find(@company_person_map.favorite_id_person)
+          f.update(copy_normal: @company_person_map.summary, copy_bold: "#{@company_person_map.person.title} #{@company_person_map.person.first_name} #{@company_person_map.person.last_name}", copy_table: "company_person_maps", copy_table_id: @company_person_map.id)
+          f.save
+        end
+      end
+    end
+
+    def manage_company_favorite_of_person
+      #raise "->#{@company_person_map.favorite_cb_person}" # questo prende il valore dal database
+      #raise "->#{params[:company_person_map][:favorite_cb_person]}" # questo prende il valore dalla view
+      if params[:company_person_map][:favorite_cb_company] == "0"  # if combo-box-favorite is OFF
+        if @company_person_map.favorite_id_company.blank?
+          #raise "don't do anything"
+        else
+          #raise "delete favorite"
+          Favorite.find(@company_person_map.favorite_id_company).destroy
+          @company_person_map.update(favorite_id_company: nil)
+        end
+      else  # if combo-box-favorite is ON
+        if @company_person_map.favorite_id_company.blank?
+          #raise "crea nuovo favorite"
+          #f = @company_person_map.person.favorites.new(...)
+          f = Person.find(@company_person_map.person_id).favorites.new(copy_normal: @company_person_map.summary, copy_bold: "#{@company_person_map.company.name} - #{@company_person_map.company.status}", copy_table: "company_person_maps", copy_table_id: @company_person_map.id)
+          f.save
+          @company_person_map.update(favorite_id_company: f.id)
+        else
+          #raise "aggiorna favorite esistente"
+          f = Favorite.find(@company_person_map.favorite_id_company)
+          f.update(copy_normal: @company_person_map.summary, copy_bold: "#{@company_person_map.company.name} - #{@company_person_map.company.status}", copy_table: "company_person_maps", copy_table_id: @company_person_map.id)
+          f.save
+        end
+      end
+    end
+~~~~~~~~
+
+verifichiamo che funziona tutto.
+
+
+
+## Implementiamo il delete
+
+implementiamo il codice per togliere il preferito. Sull'azione **destroy** del controller **company_person_maps_controller**, implementiamo il nuovo metodo private **manage_favorite_destroy**.
+
+{title=".../app/controllers/company_person_maps_controller.rb", lang=ruby, line-numbers=on, starting-line-number=87}
+~~~~~~~~
+# DELETE /company_person_maps/1
+# DELETE /company_person_maps/1.json
+def destroy
+  manage_favorite_destroy # private action
+  @company_person_map.destroy
+~~~~~~~~
+
+Adesso scriviamo il codice del nuovo metodo nell'area **private**
+
+{title=".../app/controllers/company_person_maps_controller.rb", lang=ruby, line-numbers=on, starting-line-number=61}
+~~~~~~~~
+    def manage_favorite_destroy
+      # se il record company_person_maps ha dei favoriti li elimino prima di eliminare il record.
+      Favorite.find(@company_person_map.favorite_id_person).destroy unless @company_person_map.favorite_id_person.blank?
+      Favorite.find(@company_person_map.favorite_id_company).destroy unless @company_person_map.favorite_id_company.blank?
+    end
+~~~~~~~~
+
+Adesso ho tutto quello che serve per mettere e togliere i preferiti.
+
+
+
+
+## Mettiamo l'asterisco ai record della lista che sono preferiti
+
+Su People-show e Company-show la lista delle aziende o delle persone relazionate avranno un asterisco se sono delle preferite.
+
+{title="views/company_person_maps/_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=8}
+~~~~~~~~
+<% unless company_person_map.favorite_id_person.blank? %>
+  <span class="badge"><span class="glyphicon glyphicon-star"></span></span>
+<% end %>
+~~~~~~~~
+
+{title="views/company_person_maps/_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=13}
+~~~~~~~~
+<% unless company_person_map.favorite_id_company.blank? %>
+  <span class="badge"><span class="glyphicon glyphicon-star"></span></span>
+<% end %>
+~~~~~~~~
+
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add favorites company_person_maps edit"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku fcpe:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge fcpe
+$ git branch -d fcpe
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

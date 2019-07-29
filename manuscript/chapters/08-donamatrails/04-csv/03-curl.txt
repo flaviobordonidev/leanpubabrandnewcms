@@ -1,0 +1,83 @@
+# CURL
+
+per fare l'upload dei files CSV dai chioschi verso il server FTP utiliziamo cURL
+
+cURL è alquanto flessibile e consente di instaurare comunicazioni con server remoti sfruttando diversi protocolli:
+
+* http
+* https
+* ftp
+* ftps
+* Pop3
+* gopher
+* telnet
+* dict
+* file
+* ldap
+
+
+Attraverso cURL è possibile effettuare svariate operazioni su server remoti, ad esempio potremo:
+
+* recuperare il contenuto di una pagina web (scraping);
+* effettuare il submit di un form;
+* effettuare autenticazioni ad aree protette;
+* connetterci ad un web service;
+e molto altro ancora.
+
+
+
+Il cURL gira praticamente su qualsiasi piattaforma
+In questo caso noi lo utilizzeremo esclusivamente per inviare i dati delle transazioni dai chioschi verso un server FTP.
+
+
+
+Il server FTP scelto è uno spazio web hosting su server GoDaddy in Europa, che unisce prezzi vantaggiosi ad ottime prestazioni.
+Ma soprattutto certifica la geolocalizzazione del dato sul territorio italiano (o europeo) perchè contenente anagrafiche considerate 'dati sensibili' ai fini della legge sulla privacy.
+
+
+
+Il chiosco ha un HD partizionato dove, sul drive C: è residente l'applicativo e sul dive D: i dati relativi alle transazioni.
+Per ogni donazione si creano due record, uno scritto nel file transactionDetails.txt e l'altro nel file transactions.txt.
+Sono proprio questi due file che vengono trasferiti via cURL al ns. server FTP.
+
+
+
+
+Il file batch che eseguirà il cURL assume anche il compito di rinominare il file con il suffisso del chiosco.
+Questo facilita il riconoscimento della stazione donamat che invia i dati, visto che l'area FTP è comune a tutti i chioschi.
+
+
+Prendiamo per esempio il chiosco VFD01 (stazione Donamat residente presso il Museo del Duomo) ed analizziamo le azioni del batch:
+* @echo off per evitare la comparsa della finestra durante l'esecuzione
+* copia il file transactions nel folder temporaneo \FTP e rinomina il file anteponendo al nome del file il suffisso della stazione.
+* copia il file transactionDetails nel folder temporaneo \FTP e rinomina il file anteponendo al nome del file il suffisso della stazione.
+* esegue il cURL per entrambi i files con le seguenti opzioni:
+a) -u per gestire utenti e password
+b) -T per gestire l'upload (il trasferimento)
+c) -k per ignorare la verifica  e i certificati SSL
+
+~~~~~~~~
+@echo off
+copy D:\Transactions\transactions.txt D:\FTP\VDF01-transactions.txt
+copy D:\Transactions\transactionDetails.txt D:\FTP\VDF01-transactionDetails.txt
+
+D:\FTP\curl.exe -u "user@mioserverftp.it:password" -T D:\FTP\VDF01-transactions.txt ftp://ftp.mioserverftp.it -k
+D:\FTP\curl.exe -u "user@mioserverftp.it:password" -T D:\FTP\VDF01-transactionDetails.txt ftp://ftp.mioserverftp.it -k
+~~~~~~~~
+
+
+
+A questo punto non resta altro che schedulare con l'utilità di pianificazione di Windows l'invio che, di norma sarà ogni 5 minuti, dando la sensazione che i dati si rifletteranno sulla dashboard quasi 'real time'.
+
+
+ATTENZIONE alla sintassi del cURL se la password del vostro account FTP contiene caratteri speciali.
+In questo particolare caso è opportuno, come mostrato nell'esempio di sopra, inserire le informazioni che verranno passate in automatico tra doppie apici.
+Di fatto abbiamo notato che l'uso del carattere '@' non lo impone e che potrebbero esserci degli altri caratteri che possono essere passati con un sintassi che non prevede le doppie apici ma, nel nostro caso la password contiene un carattere "|" che invece lo impone di sicuro.
+Ci sembrava giusto sottolinearlo visto che ci abbiamo messo un pò a comprenderlo.
+
+
+
+## Riferimenti web
+
+* http://man.cx/curl
+* http://www.thegeekstuff.com/2012/04/curl-examples/?utm_source=feedburner

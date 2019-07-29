@@ -1,0 +1,253 @@
+# Mockup per la pagina principale - homepage
+
+
+
+
+## Apriamo il branch
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b muhp
+~~~~~~~~
+
+
+
+
+## Rails generate controller Mocks
+
+Oltre all'homepage genero anche il favorites perché i preferiti hanno una tabella dedicata
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g controller mockup_homepage index
+$ rails g controller mockup_favorites index
+~~~~~~~~
+
+
+
+
+## Indice della pagina principale - homepage_index
+
+Aggiungiamo su routes
+
+{title=".../app/config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+Rails.application.routes.draw do
+
+  root 'testpages#page_a'
+
+  get 'testpages/page_a'
+  get 'testpages/page_b'
+  get 'mockups/test'
+  get 'mockup_homepage/index'
+
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+end
+~~~~~~~~
+
+
+
+
+## Aggiungiamo su views index
+
+{title=".../app/views/mockup_homepage/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="container-fluid front_mode">
+
+  <div class="row">
+    <div class="col-xs-10 col-sm-11 col-lg-11">
+      <%= render 'mockup_homepage/index/breadcrumbs' %>
+    </div> <!-- /col -->
+    <div class="col-xs-2 col-sm-1 col-lg-1">
+      <%= render 'mockup_homepage/index/button_global_settings' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <%= render 'mockup_homepage/index/main_media_object' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row">
+    <div class="col-xs-10 col-sm-11 col-lg-11">
+      <%= render 'mockup_homepage/index/related_form_search' %>
+    </div> <!-- /col -->
+    <div class="col-xs-2 col-sm-1 col-lg-1">
+      <%= render 'mockup_homepage/index/button_new' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+
+  <div class="row">
+    <div class="col-xs-12">
+      <%= render 'mockup_homepage/index/related_list_group' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="text-center">
+        <%= render 'mockup_homepage/index/related_pagination' %>
+      </div>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+</div> <!-- /front_mode -->
+~~~~~~~~
+
+Se vogliamo fare una prima verifica di funzionamento dobbiamo commentare tutti i renderes ** <%#= render 'mockup_...' %> **
+
+![homepage_index](images/login_homepage/mockup_homepage/homepage_index.png)
+
+
+
+
+## Aggiungiamo i partials
+
+Creiamo i vari partials ed attiviamo i "renders" decommentando via via
+
+{title=".../app/views/mockup_homepage/index/_breadcrumbs.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<ol class="breadcrumb">
+  <li class="active">
+    <a href="#" class="btn btn-link disabled">
+      <span class="glyphiconmy ico_home">     Pagina iniziale</span>
+    </a>
+    <a href="#" class="btn btn-default">
+      <span class="glyphiconmy ico_favorite"></span>
+    </a>
+  </li>
+</ol>
+~~~~~~~~
+
+{title=".../app/views/mockup_homepage/index/_button_global_settings.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<ol class="breadcrumb top-pad pull-right right-pad">
+  <li>
+    <a href="#" class="btn btn-default">
+      <span class="glyphiconmy ico_language_us"></span>
+    </a>
+  </li>
+</ol>
+~~~~~~~~
+
+{title=".../app/views/mockup_homepage/index/_main_media_object.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="list-group left-pad right-pad">
+  <a href="#" class="list-group-item media">
+    <div class="list-group-item-heading pull-left" >
+      <%= image_tag "my_style_images/default/user_default.png", alt: "user image", class: "media-object" %>
+      <!-- <img class="media-object" src="my_style_images/default/user_default.png" alt="user image"> -->
+    </div>
+    <div class="list-group-item-text media-body">
+      <h4 class="media-heading">utente admin di default</h4>
+      <h4><strong>Usy</strong></h4>
+      <p>Ultimo login: <strong>21/06/10 17:12</strong></p>
+    </div>
+  </a>
+</div>
+~~~~~~~~
+
+
+
+
+## I partials della parte "related"
+
+la parte in basso che sono i dati relazionati alla parte principale in alto sono di competenza delle entità che sono state legate con una relazione, normalmente di tipo uno-a-molti.
+Per la homepage la parte principale è l'utente ed in basso inizialmente i preferiti dell'utente. Successive selezioni portano l'elenco totale delle entità.
+Questa duplice valenza dell'homepage va un po' risolta ma per il momento lasciamola così.
+Quindi nel mockup lasciamo i dati relazionati di default che sono quelli dei preferiti.
+
+{title=".../app/views/mockup_favorites/index/_related_form_search.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!-- form_search_related -->
+<form role="search" method="get" id="search-form" name="search-form" class="bottom-pad">
+
+  <div class="input-group left-pad">
+    <input type="text" class="form-control" placeholder="search..." id="query" name="query" value=""></input>
+    <div class="input-group-btn right-pad">
+      <button type="submit" class="btn btn-default">
+        <span class="glyphicon glyphicon-search"></span>
+      </button>
+    </div><!-- /input-group-btn -->
+  </div><!-- /input-group -->
+</form>
+~~~~~~~~
+
+{title=".../app/views/mockup_favorites/index/_button_new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="btn-group pull-right right-pad">
+  <a href="#" class="btn btn-default disabled">
+    <span class="glyphiconmy ico_new"></span>
+  </a>
+</div> <!-- /btn-group -->
+~~~~~~~~
+
+{title=".../app/views/mockup_favorites/index/_related_list_group.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="list-group left-pad right-pad">
+  <a href="#" class="list-group-item">
+    Azienda rappresentata <span class="badge"><span class="glyphicon glyphicon-star"></span></span>
+    <p><strong>Cavalap S.p.A</strong></p>
+  </a>
+  <a href="#" class="list-group-item">
+    Azienda personale <span class="badge"><span class="glyphicon glyphicon-star"></span></span>
+    <p><strong>PFF di Pierluigi F. Frallesserà S.A.S.</strong></p>
+  </a>
+  <a href="#" class="list-group-item">
+    Azienda rappresentata
+    <p><strong>Rubilsert S.p.A</strong></p>
+  </a>
+  <a href="#" class="list-group-item">
+    Gruppo europeo di interesse economico
+    <p><strong>Palomertus G.E.I.E.</strong></p>
+  </a>
+</div> 
+~~~~~~~~
+
+{title=".../app/views/mockup_homepage/index/_related_pagination.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<ul class="pagination ">
+  <li class="disabled"><span>&laquo;</span></li>
+  <li class="default"><span>1 di 5 <span class="sr-only">(current)</span></span></li>
+  <li class="default"><span>&raquo;</span></li>
+</ul>
+~~~~~~~~
+
+
+Finito con il mockup di homepage
+Verifichiamo che funziona sul browser http://localhost:3000/mocks/homepage_index
+
+![homepage_index](images/login_homepage/mockup_homepage/homepage_index_complete.png)
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add mockup_homepage"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku muhp:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge muhp
+$ git branch -d muhp
+~~~~~~~~

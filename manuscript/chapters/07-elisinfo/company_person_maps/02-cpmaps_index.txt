@@ -1,0 +1,290 @@
+# Indice delle persone che lavorano nell'azienda e delle aziende per cui una persona lavora
+
+in questo capitolo visualizzeremo l'index come elenco "related" sia in company show che in person show.
+Essendo una relazione many-to-many valida in entrambe le direzioni.
+
+
+
+
+## Apriamo il branch "company_person_maps index"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b cpmi
+~~~~~~~~
+
+
+
+
+## Routes
+
+Sistemiamo la voce **resources :company_person_maps** generata dallo scaffold.
+
+{title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=14}
+~~~~~~~~
+    resources :company_person_maps
+~~~~~~~~
+
+
+
+
+## Come approcciamo
+
+Prepariamo un elenco di persone per quando sono su companies/show con related="people". Ed un elenco di aziende per quando sono su people/show con related="companies".
+
+Sul controller di companies azione show visualizzo @company.company_person_maps. E sul controller di people azione show visualizzo @person.company_person_maps
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails c
+irb> c.Company.find 1
+irb> c.company_person_maps
+irb> c.company_person_maps[0].summary
+irb> c.company_person_maps[0].person.first_name
+
+# avendo nel model **has_many :people, :through => :company_person_maps** 
+# posso chiamare direttamente le persone associate. 
+irb> c.people
+irb> c.people[0].first_name
+~~~~~~~~
+
+
+
+
+## Il partial _index
+
+Questo partial presenta l'elenco delle aziende quando sono su people/show. Invece presenta l'elenco delle persone quando sono su companies/show. 
+
+
+
+
+## Lato companies/show
+
+Sul view companies/show abbiamo già implementato il ** <%= render "#{params[:related]}/index" %> ** quindi dobbiamo solo aggiornare i controllers e creare il partial.
+
+Aggiungiamo **@relateds = @company.company_person_maps** nell'azione **show** di **companies_controller**. [(codice: 02)](#code-contact_person_maps-cpmaps_index_side_person-02)
+
+{title=".../app/controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+    when "people"
+      @relateds = @company.company_person_maps.order('created_at DESC').page(params[:page])
+      @relateds_path = "company_person_maps"
+~~~~~~~~
+
+Non usiamo direttamente **@relateds = @company.people** perché visualizziamo anche il **company_person_maps.summary**.
+Non ci resta che preparare il partial _index di company_person_maps
+
+{title=".../app/views/company_person_maps/_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="list-group left-pad right-pad">
+  <% related_list.each do |company_person_map| %>
+    <%= link_to "", :class => "list-group-item" do %>
+      <p> <%= company_person_map.summary %> </p>
+
+      <% if params[:related] == "people" %>
+        <p><strong> <%= "#{company_person_map.person.first_name}  #{company_person_map.person.last_name}"%> </strong></p>
+      <% elsif params[:related] == "companies" %>
+        <p>TODO</p>
+      <% end %>
+      
+    <% end %>
+  <% end %>
+</div>
+~~~~~~~~
+
+Per far questo implementiamo una struttura if...then...else che visualizza la lista delle aziende se la chiamata è fatta da people/show con related="companies". Invece visualizza la lista delle persone se la chiamata è fatta da companies/show con related="people".
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+![https://elisinfo5-flaviobordonidev.c9users.io/company_person_maps](images/company_person_maps/cpmaps_index/cpmaps.png)
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add CompanyPersonMap _index side company"
+~~~~~~~~
+
+
+
+
+## Lato people/show
+
+
+Sul view people/show abbiamo già implementato il ** <%= render "#{params[:related]}/index" %> ** quindi dobbiamo solo aggiornare i controllers e creare il partial.
+
+Aggiungiamo **@relateds = @person.company_person_maps** nell'azione **show** di **people_controller**. [(codice: 02)](#code-contact_person_maps-cpmaps_index_side_person-02)
+
+{title=".../app/controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=25}
+~~~~~~~~
+    when "companies"
+      @relateds = @person.company_person_maps.order('created_at DESC').page(params[:page])
+      @relateds_path = "company_person_maps"
+~~~~~~~~
+
+Non usiamo direttamente **@relateds = @person.companies** perché visualizziamo anche il **company_person_maps.summary**.
+Non ci resta che completare il partial _index di company_person_maps
+
+{title=".../app/views/company_person_maps/_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+      <% elsif params[:related] == "companies" %>
+        <p><strong> <%= "#{company_person_map.company.name}"%> </strong></p>
+      <% end %>
+~~~~~~~~
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+![https://elisinfo5-flaviobordonidev.c9users.io/company_person_maps](images/company_person_maps/cpmaps_index/cpmaps.png)
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add CompanyPersonMap _index side person"
+~~~~~~~~
+
+
+
+
+## Lato companies/show Search related people
+
+Sul model di company_person_maps implementiamo la ricerca delle persone (related-people) che lavorano per l'azienda selezionata (companies/show).
+
+{title="models/company_person_map.rb", lang=ruby, line-numbers=on, starting-line-number=22}
+~~~~~~~~
+  # == Scopes ===============================================================
+  
+  # sfrutto lo scope: search del model person 
+  scope :search_people, -> (query) {joins(:person).merge(Person.search(query))}
+~~~~~~~~
+
+I>il ** -> (query){... ** è un altro modo di scrivere ** scope :search_people, lambda {|query| joins(:person).merge(Person.search(query))} **
+I>
+I>in questo model l'elegante uso di merge che mi permette di usare lo "scope: search" del model person mi evita anche un problemaccio che avrei avuto cercando di scrivere di nuovo tutta la query:
+I>
+I>  #scope :search_people, lambda {|query| joins(:person).with_translations(I18n.locale).where(["person.first_name ILIKE ? OR person.last_name ILIKE ? OR employments.summary ILIKE ?","%#{query}%","%#{query}%","%#{query}%"])}
+I>
+I>Questa mi avrebbe dato ERRORE perché usando with_translations(I18n.locale) sul model AddressCompanyMap il riferimento era alla tabella "company_person_maps_translations" e non "people_translations".
+
+I> per approfondimenti: Riferimenti web - Active records 
+
+
+Attiviamo il search sul controller di companies
+
+{title="controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+    when "people"
+      @relateds = @company.company_person_maps.search_people(params[:search]).order('created_at DESC').page(params[:page])
+      @relateds_path = "company_person_maps"
+~~~~~~~~
+
+su **views/company/show.html.erb** abbiamo già implementato **render 'related_form_search'**
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+![https://elisinfo5-flaviobordonidev.c9users.io/company_person_maps](images/company_person_maps/cpmaps_index/cpmaps.png)
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add CompanyPersonMap _index side company"
+~~~~~~~~
+
+
+
+
+## Lato people/show Search related companies
+
+Sul model di company_person_maps implementiamo la ricerca delle aziende (related-companies) per cui lavora la persona selezionata (people/show).
+
+{title="models/company_person_map.rb", lang=ruby, line-numbers=on, starting-line-number=26}
+~~~~~~~~
+  # sfrutto lo scope: search del model Company 
+  scope :search_companies, -> (query) {joins(:company).merge(Company.search(query))}
+~~~~~~~~
+
+Attiviamo il search sul controller di people
+
+{title="controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=25}
+~~~~~~~~
+    when "companies"
+      @relateds = @person.company_person_maps.search_companies(params[:search]).order('created_at DESC').page(params[:page])
+      @relateds_path = "company_person_maps"
+~~~~~~~~
+
+su **views/company/show.html.erb** abbiamo già implementato **render 'related_form_search'**
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+![https://elisinfo5-flaviobordonidev.c9users.io/company_person_maps](images/company_person_maps/cpmaps_index/cpmaps.png)
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add CompanyPersonMap _index side company"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku cpmi:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge cpmi
+$ git branch -d cpmi
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

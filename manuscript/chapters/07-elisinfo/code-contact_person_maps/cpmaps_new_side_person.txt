@@ -1,0 +1,217 @@
+# cpmaps_new_side_person
+
+
+
+
+#### 01 {#code-contact_person_maps-cpmaps_new_side_person-01}
+
+{title="views/contacts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="container-fluid rear_mode">
+
+  <div class="row">
+    <div class="col-xs-9 col-sm-10 col-lg-11">
+      <ul class="nav nav-pills bottom-pad top-pad left-pad">
+        <li class="<%= 'active' if params[:tab_active].nil? or params[:tab_active] == 'list' %>">
+          <%= link_to "#pane_list", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_list" %>
+          <% end %>
+        </li>
+      </ul>
+    </div><!-- /col -->
+    <div class="col-xs-3 col-sm-2 col-lg-1">
+      <%= render 'button_close_to_rear' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row">
+    <div class="col-xs-12">
+
+      <div class="tab-content">
+        <div id="pane_list" class="tab-pane active">
+          <div class="text-center bottom-pad">
+            <h4>Seleziona</h4>
+          </div>          
+
+          <div class="row">
+            <div class="col-xs-10 col-sm-11 col-lg-11">
+              <%= render 'related_search' %>
+            </div> <!-- /col -->
+            <div class="col-xs-2 col-sm-1 col-lg-1">
+              <%= render 'related_button_new_instance', list_to_add: @contacts %>
+            </div> <!-- /.col -->
+          </div> <!-- /.row -->
+
+          <div class="row">
+            <div class="col-xs-12">
+
+              <% if params[:last_rear_action] == "new" %>
+                <div class="list-group left-pad right-pad">
+                  <% @contacts.each do |contact| %>
+                    <%= link_to url_for(h_params_path(path: "/#{params[:last_rear_controller]}/new", change_id: contact.id)), :class => "list-group-item" do %>
+                      <p> <%= contact.medium %> </p>
+                      <p><strong> <%= "#{contact.identifier}"%> </strong></p>
+                    <% end %>
+                  <% end %>
+                </div>
+              <% elsif params[:last_rear_action] == "edit" %>
+                <div class="list-group left-pad right-pad">
+                  <% @contacts.each do |contact| %>
+                    <%= link_to url_for(h_params_path(path: "/#{params[:last_rear_controller]}/#{params[:last_rear_id]}/edit", change_id: contact.id, tab_active: "edit")), :class => "list-group-item" do %>
+                      <p> <%= contact.medium %> </p>
+                      <p><strong> <%= "#{contact.identifier}"%> </strong></p>
+                    <% end %>
+                  <% end %>
+                </div>
+              <% end %>
+            </div> <!-- /.col -->
+          </div> <!-- /.row -->
+
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="text-center">
+                <%= render 'related_pagination', list_to_paginate: @contacts %>
+              </div><!-- /.text-center -->
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+  
+        </div><!-- /.tab-pane -->
+      </div><!-- /.tab-content -->
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+</div><!-- /.rear_mode -->
+~~~~~~~~
+
+
+
+
+#### 02 {#code-contact_person_maps-cpmaps_new_side_person-02}
+
+{title=".../app/controllers/contact_person_maps_controller.rb", lang=ruby, line-numbers=on, starting-line-number=15}
+~~~~~~~~
+class ContactPersonMapsController < ApplicationController
+  before_action :set_contact_person_map, only: [:show, :edit, :update, :destroy]
+
+  # GET /contact_person_maps
+  # GET /contact_person_maps.json
+  def index
+    @contact_person_maps = ContactPersonMap.all
+  end
+
+  # GET /contact_person_maps/1
+  # GET /contact_person_maps/1.json
+  def show
+  end
+
+  # GET /contact_person_maps/new
+  def new
+    @contact_person_map = ContactPersonMap.new
+    # il new mi apre la maschera di contacts/index o people/index per scegliere l'id mancante
+    if params[:last_front_controller] == "people"
+      @contact_person_map.person_id = params[:last_front_id]
+      @contact_person_map.contact_id = params[:change_id] if params[:change_id].present?
+    elsif params[:last_front_controller] == "contacts"
+      @contact_person_map.contact_id = params[:last_front_id]
+      @contact_person_map.person_id = params[:change_id] if params[:change_id].present?
+    else
+      raise "error"
+    end
+  end
+
+  # GET /contact_person_maps/1/edit
+  def edit
+    if params[:change_id].present?
+      if params[:last_front_controller] == "people"
+        @contact_person_map.contact_id = params[:change_id]
+      elsif params[:last_front_controller] == "contacts"
+        @contact_person_map.people_id = params[:change_id]
+      end
+    end
+  end
+
+  # POST /contact_person_maps
+  # POST /contact_person_maps.json
+  def create
+    @contact_person_map = ContactPersonMap.new(contact_person_map_params)
+
+    respond_to do |format|
+      if @contact_person_map.save
+        #format.html { redirect_to @contact_person_map, notice: 'Contact person map was successfully created.' }
+        format.html { redirect_to url_for(view_context.h_params_path(path: "/#{params[:last_front_controller]}/#{params[:last_front_id]}", related: params[:last_front_related], page: params[:last_front_page], search: params[:last_front_search])), notice: 'Contact Person Map was successfully created.' }
+        format.json { render :show, status: :created, location: @contact_person_map }
+      else
+        format.html { render :new }
+        format.json { render json: @contact_person_map.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /contact_person_maps/1
+  # PATCH/PUT /contact_person_maps/1.json
+  def update
+    respond_to do |format|
+      if @contact_person_map.update(contact_person_map_params)
+        #format.html { redirect_to @contact_person_map, notice: 'Contact person map was successfully updated.' }
+        format.html { redirect_to url_for(view_context.h_params_path(path: "/#{params[:last_front_controller]}/#{params[:last_front_id]}", related: params[:last_front_related], page: params[:last_front_page], search: params[:last_front_search])), notice: 'Contact Person map was successfully updated..' }
+        format.json { render :show, status: :ok, location: @contact_person_map }
+      else
+        format.html { render :edit }
+        format.json { render json: @contact_person_map.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /contact_person_maps/1
+  # DELETE /contact_person_maps/1.json
+  def destroy
+    @contact_person_map.destroy
+    respond_to do |format|
+      format.html { redirect_to contact_person_maps_url, notice: 'Contact person map was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_contact_person_map
+      @contact_person_map = ContactPersonMap.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def contact_person_map_params
+      params.require(:contact_person_map).permit(:contact_id, :person_id, :summary)
+    end
+end
+~~~~~~~~
+
+
+
+
+#### 03 {#code-contact_person_maps-cpmaps_new_side_person-03}
+
+{title=".../app/models/company_contact_map.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class ContactPersonMap < ApplicationRecord
+  
+  # many-to-many ---------------------------------------------------------------
+  belongs_to :contact
+  belongs_to :person
+  #-----------------------------------------------------------------------------
+
+  # globalize required ---------------------------------------------------------
+  translates :summary, :fallbacks_for_empty_translations => true
+  #-----------------------------------------------------------------------------
+
+  # validations ----------------------------------------------------------------
+  validates :contact_id,         :presence   => true
+  validates :person_id,          :presence   => true
+  #-----------------------------------------------------------------------------
+
+  #scope filters ---------------------------------------------------------------
+  # sfrutto lo scope: search del model Contact 
+  scope :search_contacts, -> (query) {joins(:contact).merge(Contact.search(query))}
+  # sfrutto lo scope: search del model Person 
+  scope :search_people, -> (query) {joins(:person).merge(Person.search(query))}
+  #-----------------------------------------------------------------------------
+end
+~~~~~~~~

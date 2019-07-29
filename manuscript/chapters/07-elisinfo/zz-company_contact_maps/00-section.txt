@@ -1,0 +1,3 @@
+-# Aziende e Contatti: relazione molti-a-molti (company_contact_maps) 
+
+trattiamo la relazione molti-a-molti tra aziende e contatti.

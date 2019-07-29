@@ -1,0 +1,6 @@
+-# Contatti (emails, telefoni, skype, whatsup, ...)
+
+Term used to describe reaching out to or being in touch with another person, business or entity.
+
+Nei capitoli all'interno di questa sezione userò COMPANY_CONTACTS invece di CONTACTS perché la tabella contacts la ho già usata e mi diventa difficile pulire tutto.
+Quando pulirò il libro userò contacts.

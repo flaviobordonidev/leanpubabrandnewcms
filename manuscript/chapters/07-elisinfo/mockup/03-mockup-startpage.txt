@@ -1,0 +1,130 @@
+# Mockup per la pagina iniziale (startpage)
+
+
+
+
+## Apriamo il branch "mockup start page"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b msp
+~~~~~~~~
+
+
+
+
+## Rails generate controller 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g controller mockup_startpage show
+~~~~~~~~
+
+
+
+
+## Indice della pagina iniziale
+
+Aggiungiamo su routes l'instradamento ** get 'mockup_startpage/show' **
+
+{title=".../app/config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+Rails.application.routes.draw do
+
+  root 'homepage#show'
+  
+  devise_for :users, controllers: { sessions: 'users/sessions' }
+  resources :users
+  
+  get "homepage/", to: "homepage#show"
+  get 'startpage/show'
+  
+  get 'mockup_authentication/login'
+  get 'mockup_homepage/show'
+  get 'mockups/test'
+  get 'mockup_startpage/show'
+  get 'testpages/page_a'
+  get 'testpages/page_b'
+  get 'users/show'
+  
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+end
+~~~~~~~~
+
+
+
+
+## Aggiungiamo su views index
+
+{title=".../app/views/mockup_people/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="container-fluid front_mode">
+
+  <h1> Elisinfo </h1>
+
+  <div class="row">
+    <div class="col-xs-12">
+      
+      <div class="list-group left-pad right-pad bottom-pad">
+        <a class="list-group-item " href="#">
+          <span class="glyphiconmy ico_instance right-pad"></span> Nuova istanza
+        </a>  
+      </div>
+
+      
+      <div class="list-group left-pad right-pad bottom-pad">
+        <a class="list-group-item " href="#">
+          <span class="glyphiconmy ico_instance right-pad"></span> Nuova istanza Sviluppatore
+        </a>  
+      </div>
+      
+    </div> <!-- end - col -->
+  </div> <!-- end - row -->
+
+</div> <!-- end - front_mode -->
+~~~~~~~~
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+https://elisinfo5-flaviobordonidev.c9users.io/mockup_people/index
+
+![mockup_people index](images/companies_people/mockup_people_index/mockup_people_index.png)
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add mockup_startpage show"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku msp:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge msp
+$ git branch -d msp
+~~~~~~~~

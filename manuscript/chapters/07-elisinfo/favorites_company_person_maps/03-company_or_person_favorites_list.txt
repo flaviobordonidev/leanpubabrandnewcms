@@ -1,0 +1,202 @@
+# Favorites Company Person
+
+implementiamo l'elenco dei preferiti su companies-show e people-show.
+
+
+
+
+## Apriamo il branch "Favorites Company Person"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b fcp
+~~~~~~~~
+
+
+
+
+## parte 1 - l'elenco senza link_to attivo
+
+Iniziamo visualizzando l'elenco dei favoriti relativi alla persona o all'azienda selezionata.
+Per far questo creiamo su views la cartella favorites e dentro mettiamo il partial _index. Non è necessario avere il controller perché non stiamo visualizzando una views (es: index, show, edit, ...) ma stiamo visualizzando solo il partial _index.
+
+{title=".../app/views/favorites/_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="list-group left-pad right-pad">
+  <% related_list.each do |favorite| %>
+    <%= link_to "", :class => "list-group-item" do %>
+      <span class="badge"><span class="glyphicon glyphicon-star"></span></span>
+      <p><%= favorite.copy_normal %></p>
+      <p><strong><%= favorite.copy_bold %></strong></p>
+      <p><%= "favoritable_type: #{favorite.favoritable_type} - favoritable_id: #{favorite.favoritable_id}" %></p>
+    <% end %>
+  <% end %>
+</div>
+~~~~~~~~
+
+Su companies/show e people/show verifichiamo che il related **favorites** sia chiamato. 
+Aggiorniamo l'azione **show** del controller **companies_controller** attivando ** @relateds = Favorite.all ** e ** @relateds_path = "favorites" **
+
+{title=".../app/controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=11}
+~~~~~~~~
+    when "favorites"
+      @relateds = Favorite.all.page(params[:page])
+      @relateds_path = "favorites"
+~~~~~~~~
+
+Aggiorniamo l'azione **show** del controller **people_controller** attivando ** @relateds = Favorite.all ** e ** @relateds_path = "favorites" **
+
+{title=".../app/controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=11}
+~~~~~~~~
+    when "favorites"
+      @relateds = Favorite.all.page(params[:page])
+      @relateds_path = "favorites"
+~~~~~~~~
+
+Al momento entrambe le pagine companies/show e people/show mostrano TUTTI i favorites. Invece noi vogliamo che siano visualizzati solo quelli di loro competenza.
+
+ATTENZIONE! adesso ho un problema sulla homepage che va gestito. Se avete seguito l'implementazione in parallelo dei tests ve ne sarete già accorti perché avremmo dei test in RED relativi alla homepage. Implementiamo un "quick fix"
+
+{title=".../app/controllers/homepage_controller.rb", lang=ruby, line-numbers=on, starting-line-number=11}
+~~~~~~~~
+    when "favorites"
+      #TODO
+      @relateds = Favorite.all.page(params[:page]) #lo uso temporaneamente per evitare errore sul button new
+      @relateds_path = "favorites"
+~~~~~~~~
+
+
+
+
+## Parte 2 - Filtriamo il favorite a seconda della pagina
+
+implementiamo il filtro del favorite sfruttando la relazione polimorfica.
+
+Aggiorniamo l'azione **show** del controller **companies_controller** 
+
+{title=".../app/controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=11}
+~~~~~~~~
+    when "favorites"
+      @relateds = @company.favorites.all.page(params[:page])
+      @relateds_path = "favorites"
+~~~~~~~~
+
+Aggiorniamo l'azione **show** del controller **people_controller** 
+
+{title=".../app/controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=11}
+~~~~~~~~
+    when "favorites"
+      @relateds = @person.favorites.all.page(params[:page])
+      @relateds_path = "favorites"
+~~~~~~~~
+
+
+
+
+## Parte 3 - attiviamo link_to
+
+Mi si presenta un problema come reinstrado correttamente con il link_to for_url? Mi manca il nome della tabella e l'id a cui il favorito si riferisce. Per risolvere aggiungiamo i due nuovi campi:
+- copy_table
+- copy_table_id
+
+
+
+
+
+## Resettiamo la tabella favorites
+
+Nella tabella favorites riempire da rails console i nuovi campi copy_table e copy_table_id nei records già creati può portare errori di distrazione. Allora svuotiamo tutta la tabella favorites così la possiamo ripopolare da capo. 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails c
+irb> Favorite.all
+irb> Favorite.find(1).destroy
+oppure
+irb> Favorite.destroy_all
+~~~~~~~~
+
+Nella tabella company_person_maps azzerare tutti i campi favorite_id_company e favorite_id_person
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails c
+irb> cpm = CompanyPersonMap.find 1
+irb> cpm.favorite_id_company = nil
+irb> cpm.favorite_id_person = nil
+irb> cpm.save
+
+irb> cpm = CompanyPersonMap.find 2
+irb> cpm.favorite_id_company = nil
+irb> cpm.favorite_id_person = nil
+irb> cpm.save
+
+...
+
+irb> cpm = CompanyPersonMap.last
+irb> cpm.favorite_id_company = nil
+irb> cpm.favorite_id_person = nil
+irb> cpm.save
+~~~~~~~~
+
+
+
+
+## Attiviamo il link_to url_for
+
+Adesso che abbiamo i valori possiamo attivare il link_to url_for per andare nella parte edit della relativa copy_table
+
+{title="views/favorites/_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+    <%= link_to url_for(h_front_params_path(path: "/#{favorite.copy_table}/#{favorite.copy_table_id}/edit")), :class => "list-group-item" do %>
+~~~~~~~~
+
+Yeha! Funziona tuttoooooo ^_^ (ho fatto qualche piccola correzione che dovrò riportare anche sul libro ad esempio su tab_goto ho dovuto mettere <% if session[:last_front_controller] == "companies" %> ...)
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add company and person list of favorites"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku fcp:master
+$ heroku run rake db:migrate
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge fcp
+$ git branch -d fcp
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

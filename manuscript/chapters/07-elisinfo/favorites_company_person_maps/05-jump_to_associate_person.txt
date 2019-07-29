@@ -1,0 +1,108 @@
+# Saltiamo alla persona associata
+
+Agevoliamo gli inserimenti permettendo di saltare direttamente alla pagina di secondo livello di profondità se voglio associare una nuova persona o azienda. Ad esempio se siamo sulla pagina aziende di "ABC srl" e vogliamo associare una nuova persona è inutile presentare la pagina di company_person_maps/new e da lì cliccare il link per associare una nuova persona. Andiamo direttamente alla pagina people/index per associare la persona ed una volta scelta la persona reindirizziamo alla pagina company_person_maps/new per completare inserendo il summary. In questo modo mi risparmio un passaggio perché se voglio associare una persona la prima cosa che ho in mente e voglio inserire è il nome della persona e solo successivamente metto il summary.
+
+Lo stesso esempio già visto può avere anche una ricerca intermedia: siamo sull'azienda "ABC srl" e vogliamo verificare/aggiungere la persona Maria Rossi allora facciamo una prima ricerca e ci accorgiamo che non è in elenco. Premiamo il link per associare una nuova persona ed invece di aprirsi la pagina company_person_maps/new, si apre direttamente la pagina di secondo livello (people/index) con la ricerca già impostata così mi evito di rifare la ricerca. Se la persona è in elenco allora la selezioniamo e veniamo reinstradati alla pagina di primo livello (company_person_maps/new). Se invece la persona non è in elenco possiamo cliccare sul pulsante di nuova persona e ci si apre la pagina (people/new) su una nuova istanza del browser (ma questa parte sarà implementata nel prossimo capitolo). 
+
+
+
+
+## Apriamo il branch "Jump to Associate Person"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b jap
+~~~~~~~~
+
+
+
+
+## Implementiamo il salto
+
+Sono su un'azienda specifica (companies/show) nell'elenco delle persone associate (:related="people"), se non ho una persona già associata in elenco e voglio aggiungerla premendo il link per associare una nuova persona salto direttamente all'elenco di tutte le persone per scegliere quella che voglio associare. Per saltare direttamente al secondo livello di rear-page modifichiamo il link_to (related_button_new) passando tutti i params del rear-page di primo livello che viene saltato. Oltre a passare tutti i parametri dobbiamo distinguere se andare sulla lista delle persone o delle aziende (compito che nel comportamento di default era dato alla rear di primo livello (company_person_maps/new)).
+Per far questo commentiamo il comportamento di default solo per lasciarlo dal punto di vista didattico ed implementiamo il codice **jump to list** che fa il salto direttamente all'elenco completo passando tutti i dati per il passaggio intermedio.
+
+{title=".../app/views/application/_related_button_new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<% unless relateds_path == "favorites" %>
+  <% if params[:search].present? or (list_to_add.size < 7)%>
+    <div class="btn-group pull-right right-pad"> <!-- btn-group -->
+
+     <%# default behaviour %>
+     <%#= link_to url_for(h_front_params_path(path: "/#{relateds_path}/new")), :class => "btn btn-default" do %>
+        <!-- <span class="glyphiconmy ico_new"></span> -->
+      <%# end %>
+      
+      <%# jump to list %>
+      <%= link_to url_for(h_front_params_path(path: "/#{params[:related]}",last_rear_controller: "#{@relateds_path}", last_rear_action: "new", last_rear_id: "", last_rear_related: "favorites", last_rear_page: 1, last_rear_search: "", search: params[:search] )), :class => "btn btn-default" do %>
+        <span class="glyphiconmy ico_new"></span>
+      <% end %>
+    </div> <!-- /btn-group -->
+  
+  <% else %>
+    <div class="btn-group pull-right right-pad">  <!-- btn-group -->
+      <a href="#" class="btn btn-primary disabled">
+        <span class="glyphiconmy ico_new"></span>
+      </a>
+    </div> <!-- /btn-group -->
+  <% end %>
+<% end %>
+~~~~~~~~
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add jump to the list of relateds to associate"
+~~~~~~~~
+
+
+
+
+## Salto dall'azienda alla lista delle persone
+
+il salto che abbiamo appena implementato è sufficientemente generico per funzionare anche lato persona che vuole associare un'azienda.
+
+
+
+
+## Salto dalla persona alla lista delle aziende
+
+il salto che abbiamo appena implementato è sufficientemente generico per funzionare anche lato persona che vuole associare un'azienda.
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku jap:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge jap
+$ git branch -d jap
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

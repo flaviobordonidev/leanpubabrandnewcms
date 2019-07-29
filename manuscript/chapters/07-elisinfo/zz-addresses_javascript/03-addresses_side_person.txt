@@ -1,0 +1,256 @@
+# Indirizzi lato persona
+
+
+
+
+## Apriamo il branch "addresses side person"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b asp
+~~~~~~~~
+
+
+
+## Implementiamo gli indirizzi nella view people/new e people/edit
+
+
+Introduciamo subito il partial **address_fields**
+
+{title=".../app/views/people/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=75}
+~~~~~~~~
+    <%= f.fields_for :addresses do |builder| %>
+        <%= render "address_fields", f: builder %>
+    <% end %>
+    <%= link_to_add_fields "Add Address", f, :addresses %>
+~~~~~~~~
+
+{title=".../app/views/people/_address_fields.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=20}
+~~~~~~~~
+<fieldset>
+  <%= f.label :line1, "Indirizzo (linea1 - linea2 - linea3" %><br/>
+  <%= f.text_field :line1 %>
+  <%= f.label :line2, " -" %>
+  <%= f.text_field :line2 %>
+  <%= f.label :line3, " -" %>
+  <%= f.text_field :line3 %>
+  <br/>
+  <%= f.label :locality, " Città - CAP - Provincia - Paese" %><br/>
+  <%= f.text_field :locality %>
+  <%= f.label :postcode, " -" %>
+  <%= f.text_field :postcode %>
+  <%= f.label :region, " -" %>
+  <%= f.text_field :region %>
+  <%= f.label :country, " -" %>
+  <%= f.text_field :country %>
+
+  <%= f.hidden_field :_destroy %>
+  <%= link_to "Elimina indirizzo", "#", class: "remove_fields" %>
+</fieldset>
+~~~~~~~~
+
+la parte di codice ** <%= f.fields_for :addresses do |builder| %> ... <% end %> ** ci permette di aggiungere il modello address dentro il form di companies.
+
+Ma ancora non funziona perché non è stato istanziato nessun indirizzo. Risolviamo aggiungendo un indirizzo nell'azione **new** del controller **people_controller**
+
+
+{title=".../app/controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=35}
+~~~~~~~~
+  # GET /people/new
+  def new
+    @person = Person.new
+    @person.person_contacts.build
+    @person.addresses.build
+
+    @person.title =  t "people.new.title"
+    @person.first_name = params[:last_front_search]
+    @person.last_name = params[:last_front_search]
+  end
+~~~~~~~~
+
+L'indirizzo è istanziato con ** @person.addresses.build **
+
+Se adesso torniamo sul browser e diamo un refresh vediamo che funziona? Si ma a metà. Visualizza i campi nel form ma non prende i valori sul submit. Questo perché dobbiamo abilitare i valori del modello annidato (address) sul controller del padre (people_controller). Ed inoltre non abbiamo implementato la visualizzazione su people/show. 
+
+{title=".../app/controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=110}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def person_params
+      params.require(:person).permit(:image, :title, :first_name, :last_name, :homonym, :tax_code, :sex, :memo, :nationality_id, :born_date, :born_city_id, :favorite_id_user, :favorite_cb_user, person_contacts_attributes: [:id, :medium, :identifier, :_destroy], addresses_attributes: [:id, :line1, :line2, :line3, :locality, :postcode, :region, :country, :_destroy])
+    end
+~~~~~~~~
+
+Adesso funziona. (anche se ancora non le vediamo perché la visualizzazione la implementiamo nel prossimo paragrafo)
+
+
+
+
+## Visualizziamo gli indirizzi
+
+lavoriamo sulla view companies/show per visualizzare gli indirizzi (addresses)
+
+{title=".../app/views/people/_main_media_object.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=21}
+~~~~~~~~
+      <ul>
+        <% @person.addresses.each do |address| %>
+          <li>
+            <%= "#{address.line1} #{address.line2} #{address.line3} - " %>
+            <%= "#{address.locality} - #{address.postcode} - #{address.region} - #{address.country}" %>
+          </li>
+        <% end %>
+      </ul>
+~~~~~~~~
+
+
+
+
+## Eliminamo dati vuoti
+
+Implementiamo il codice per non inserire gli indirizzi in elenco se non hanno dati su line1.
+
+{title=".../app/models/person.rb", lang=ruby, line-numbers=on, starting-line-number=23}
+~~~~~~~~
+  has_many :addresses, as: :addressable, inverse_of: :addressable, dependent: :destroy
+  accepts_nested_attributes_for :addresses, reject_if: lambda { |a| a[:line1].blank? }
+~~~~~~~~
+
+Con il ** :reject_if ** ottengo che i valori di :line1 vuoti non vengano caricati in tabella.
+
+
+
+
+## Implementiamo il link di eliminazione
+
+Abbiamo già inserito il link "Elimina contatto" ed il campo nascosto per passare **_destroy** come params.
+
+{title=".../app/views/people/_address_fields.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=6}
+~~~~~~~~
+  <%= f.hidden_field :_destroy %>
+  <%= link_to "Elimina indirizzo", "#", class: "remove_fields" %>
+~~~~~~~~
+
+abilitiamo l'eliminazione sul model con ** :allow_destroy ** e permetiamo il parametro sulla white-list nel controller con ** addresses_attributes: [..., :_destroy] **.
+
+{title=".../app/models/person.rb", lang=ruby, line-numbers=on, starting-line-number=23}
+~~~~~~~~
+  has_many :addresses, as: :addressable, inverse_of: :addressable, dependent: :destroy
+  accepts_nested_attributes_for :addresses, reject_if: lambda { |a| a[:line1].blank? }, allow_destroy: true
+~~~~~~~~
+
+{title=".../app/controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=109}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def company_params
+      params.require(:company).permit(:logo, :name, :sector, :status, :corporate, :taxation_number_first, :taxation_number_second, :memo, :favorite_id_user, :favorite_cb_user, company_contacts_attributes: [:id, :medium, :identifier, :_destroy], addresses_attributes: [:id, :line1, :line2, :line3, :locality, :postcode, :region, :country, :_destroy])
+    end
+~~~~~~~~
+
+Adesso scriviamo il codice javascript
+
+{title=".../app/assets/javascripts/people.js.coffe", lang=ruby, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+$(document).on "turbolinks:load", ->
+  $('form').on 'click', '.remove_fields', (event) ->
+    $(this).prev('input[type=hidden]').val('1')
+    $(this).closest('fieldset').hide()
+    event.preventDefault()
+~~~~~~~~
+
+Funziona!!!
+Il codice lo abbiamo già analizzato nel capitolo contacts_side_person.
+
+
+
+
+
+## Link per aggiungere un nuovo contatto
+
+Abbiamo già inserito ** <%= link_to_add_fields "Add Address", f, :addresses %> **
+
+{title=".../app/views/people/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=81}
+~~~~~~~~
+    <%= f.fields_for :addresses do |builder| %>
+        <%= render "address_fields", f: builder %>
+    <% end %>
+    <%= link_to_add_fields "Add Address", f, :addresses %>
+~~~~~~~~
+
+ATTENZIONE!!! il nome del partial DEVE chiamarsi **<<association-singular>>_fields** nel nostro caso **address_fields**. Se lo chiamo in maniera diversa il codice successivo non lavora correttamente e non carica i valori nel database quando si fa il submit del form.
+
+Abbiamo già creato nei capitoli precedenti l'helper ** link_to_add_fields ** sull'application_helper.
+
+
+
+
+## il javascript
+
+una volta preparato il codice lato view andiamo a scrivere il jquery lato assets. Di seguito a quanto scritto in precedenza aggiungiamo il seguente codice:
+
+{title=".../app/assets/javascripts/people.js.coffe", lang=CoffeeScript, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+$(document).on "turbolinks:load", ->
+~~~~~~~~
+
+...
+
+{title=".../app/assets/javascripts/people.js.coffe", lang=CoffeeScript, line-numbers=on, starting-line-number=11}
+~~~~~~~~
+  $('form').on 'click', '.add_fields', (event) ->
+   #$(this).on 'click', (event) ->
+    time = new Date().getTime()
+    regexp = new RegExp($(this).data('id'), 'g')
+    $(this).before($(this).data('fields').replace(regexp, time))
+    event.preventDefault()
+~~~~~~~~
+
+Non capisco!!!
+Da rivedere con calma!!!
+Il comportamento delle persone funziona con il codice di railscast e non ho dovuto cambiare.
+
+NON Abbiamo dovuto cambiare la chiamata dell'evento perché ** $('form').on 'click', '.add_fields', (event) -> ** mi creava due volte i nuovi campi perché trovava due links con classe .add_fields (uno per i contatti ed uno per gli indirizzi).
+Specificando invece che il click è per l'oggetto dove clicca il puntatore del mouse evito la duplicazione dei campi.
+
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add addresses side person"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku asp:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge asp
+$ git branch -d asp
+~~~~~~~~
+
+
+
+
+## Backup su github
+
+facciamo un backup del ns progetto su github:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

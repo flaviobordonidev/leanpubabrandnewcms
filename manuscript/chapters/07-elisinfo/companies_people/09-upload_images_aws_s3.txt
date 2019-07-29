@@ -1,0 +1,349 @@
+# Implementiamo Amazon S3
+
+Anche se le immagini png e jpg possono essere archiviate su Heroku i files pdf o txt non sono accettati. Inoltre le immagini sono archiviate solo per un tempo limitato; dopo alcuni giorni vengono cancellate.
+
+* https://www.sitepoint.com/uploading-files-with-paperclip/
+* https://devcenter.heroku.com/articles/paperclip-s3
+* http://stackoverflow.com/questions/32919273/access-denied-s3-with-paperclip
+* https://github.com/thoughtbot/paperclip/wiki/Paperclip-with-Amazon-S3
+* http://rexstjohn.com/how-to-solve-access-denied-with-heroku-paperclip-s3-ror/
+* https://console.aws.amazon.com/iam/home#users/botpaperclip
+
+
+
+
+## Apriamo il branch "amazon web services"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b aws
+~~~~~~~~
+
+
+
+
+## installiamo aws-sdk
+
+lo abbiamo già installato nel capitolo precedente insieme a Paperclip
+
+{title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=50}
+~~~~~~~~
+# File Upload
+gem 'paperclip', '~> 5.1'
+gem 'aws-sdk', '~> 2.3'
+~~~~~~~~
+
+
+
+
+## Connettiamoci al bucket di amazon web service S3.
+
+Per connetterci al bucket abbiamo bisogno delle seguenti informazioni:
+
+* nome del bucket
+* access_key_id
+* secret_access_key
+* s3_region
+
+
+
+
+### Il nome del bucket
+
+Per semplificarci la vita possiamo chiamare il bucket con lo stesso nome del database della nostra app. Quindi avremo un bucket **elisinfo-dev** ed un altro **elisinfo-prod**. Si lo so che abbiamo i due databases **elisinfo_developpment** ed **elisinfo_test** ma l'underscore "_" non è accettato nel nome del bucket, quindi ci prendiamo una "licenza poetica".
+
+Creiamo l'utenza ed il bucket su amazon web service S3
+
+andiamo sul sito di amazon web service https://console.aws.amazon.com e facciamo login (o creiamo un nuovo account). Cerchiamo il service - storage - S3.
+
+* Siamo sulla ConsoleHome AWS. -> click su S3. -> click su create bucket.
+
+Ritroviamo il nome del bucket
+
+Una volta fatto login dalla ConsoleHome AWS fare click sul service "S3". Ci si presenterà un elenco con tutti i bucket creati con relativo nome.
+
+![new bucket name](images/companies_people/upload_images_aws_s3/new_bucket_name.png)
+
+![new bucket permissions](images/companies_people/upload_images_aws_s3/new_bucket_permissions.png)
+
+![new bucket properties](images/companies_people/upload_images_aws_s3/new_bucket_properties.png)
+
+![new bucket review](images/companies_people/upload_images_aws_s3/new_bucket_review.png)
+
+
+
+
+### La Access key e la Secret access key - IAM user
+
+Per la access_key_id e la secret_access_key creiamo uno IAM user
+
+AWS -> Service -> IAM -> Users
+  Access keys
+    - access_key_id
+    - secret_access_key
+  Permission 
+    - Attach Policy --> AmazonS3FullAccess
+
+Una volta fatto login dalla ConsoleHome AWS fare click sul service "IAM". Vado sul link Users e ne creo uno nuovo.
+lo chiamo "botelisinfo" ("bot" convenzionalemente indica che non è un utente fisico ma un accesso per una applicazione)
+clicco sul link "botelisinfo" e sul tab Permission -> Add Permission -> "AmazonS3FullAccess - AWS Managed policy"
+
+Security credentials
+Access keys -> Create access key
+
+Access key ID: AKIAID7SSWM7JPJBY5PQ
+Secret access key: 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
+
+![new IAM user details](images/companies_people/upload_images_aws_s3/new_iam_user_details.png)
+
+![new IAM user permissions](images/companies_people/upload_images_aws_s3/new_iam_user_permissions.png)
+
+![new IAM user review](images/companies_people/upload_images_aws_s3/new_iam_user_review.png)
+
+![new IAM user complete](images/companies_people/upload_images_aws_s3/new_iam_user_complete.png)
+
+
+## La s3_region
+
+AWS -> Service -> S3 -> Bucket name -> Properties -> Static website hosting -> Endpoint 
+
+Una volta fatto login dalla ConsoleHome AWS fare click sul service "S3". Ci si presenterà un elenco con tutti i bucket creati con relativo nome.
+Qui c'è un nome di Region ma non è quello che ci serve. Quello che ci serve lo dobbiamo estrapolare dallo Endpoint.
+
+Fare click sul nome nome del bucket che ci interessa. Scegliere il tab "Properties". Scegliere "Static website hosting"
+
+Endpoint : http://elisinfo-dev.s3-website.eu-central-1.amazonaws.com
+
+La nostra s3_region è **eu-central-1**
+
+![bucket endpoint](images/companies_people/upload_images_aws_s3/bucket_endpoint.png)
+
+
+
+
+## Connettiamoci su AWS S3 da development
+
+adesso che abbiamo tutte le informazioni da aws implementiamo il file di settings che permettono a Rails di collegarsi ad AWS tramite il plugin che abbiamo installato.
+Sul development.rb dentro config/environments mettiamo il codice in basso dentro ** Rails.application.configure do ... end **
+
+{title=".../config/environments/development.rb", lang=ruby, line-numbers=on, starting-line-number=58}
+~~~~~~~~
+  # config/environments/development
+  config.paperclip_defaults = {
+    storage: :s3,
+    s3_credentials: {
+      bucket: 'elisinfo-dev',
+      access_key_id: 'AKIAJJ55RPPRPGHJTOMA',
+      secret_access_key: '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',
+      s3_region: 'eu-central-1'
+    }
+  }
+~~~~~~~~
+
+Facciamo ripartire il web server e adesso quando carichiamo un immagine questa viene caricata su AWS S3 nel bucket specifico creando una cartella con il nome della tabella che carica l'immagine. Nel nostro caso "companies".
+
+ATTENZIONE! Ci può volere del tempo prima che l'immagine venga uploadata quindi non abbiate fretta e fate un refresh dopo alcuni minuti.
+
+Fa upload dell'immagine su aws ma quando la devo rivedere non la trova e mi visualizza il parametro alt="..".
+Facendo l'inspect sul browser mi accorgo che l'url è sbagliato. 
+
+{title="inspector", lang=html, line-numbers=off}
+~~~~~~~~
+<img class="media-object" src="//s3.amazonaws.com/flapaperclip/companies/logos/000/000/005/original/logo-heineken.png?1485869284" alt="Logo heineken">
+~~~~~~~~
+
+infatti è:
+
+//s3.amazonaws.com/flapaperclip/companies/logos/000/000/005/original/logo-heineken.png?1485869284"
+
+Ed invece dovrebbe essere 
+
+https://s3.eu-central-1.amazonaws.com/flapaperclip/companies/logos/000/000/005/original/logo-heineken.png
+
+Mi basta correggere l'endpoint come suggerito sul manuale di heroku https://devcenter.heroku.com/articles/paperclip-s3.
+Correggiamo l'endpoint del bucket di AWS S3
+
+{title=".../config/initializers/paperclip.rb", lang=ruby, line-numbers=on, starting-line-number=58}
+~~~~~~~~
+# correction for the endpoint of the AWS S3 Bucket
+Paperclip::Attachment.default_options[:s3_host_name] = 's3.eu-central-1.amazonaws.com'
+~~~~~~~~
+
+ATTENZIONE! probabilmente il file paperclip.rb non esiste sotto config/initializers ma basta crearlo.
+
+Con questa correzione funziona tutto localmente.
+Adesso dobbiamo nascondere le chiavi segrete con figaro prima di fare il commit ed il push su heroku o github.
+
+
+
+
+## Mascheriamo i secrets con Figaro
+
+prendiamo il file dei secrets di figaro (application.yml) ed aggiungiamo le informazioni per connetterci ad AWS S3.
+
+{title=".../config/application.yml", lang=yaml, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+development:
+  SECRET_KEY_BASE: 2d64e44d814e3fdf518fb7f830e0f656bfcd015c86dfc4c5686d2b671a6e05aeaf67e780beaaa82b5f3be2c58bd28d616ffef2845233ab5dba9fade5067e0c06
+  # Connessione ad AWS S3 per Paperclip
+  S3_BUCKET_NAME: elisinfo-dev
+  AWS_ACCESS_KEY_ID: AKIAJJ55RPPRPGHJTOMA
+  AWS_SECRET_ACCESS_KEY: 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
+  AWS_REGION: eu-central-1
+
+test:
+  SECRET_KEY_BASE: 2de1ca50ad0877af447c1f414419e3eab1e0d09f612a6d24cd846bfcea38e3750d4965323aa35d39f945bb18b5f1592c1c590ffee3dbec39973ca299bbacb1ca
+
+production:
+  #SECRET_KEY_BASE: already present on heroku. See $ heroku config
+~~~~~~~~
+
+e togliamoli dal development.rb sostituendogli le variabili d'ambiente.
+
+{title=".../config/environments/development.rb", lang=ruby, line-numbers=on, starting-line-number=58}
+~~~~~~~~
+  # config/environments/development
+  config.paperclip_defaults = {
+    storage: :s3,
+    s3_credentials: {
+      bucket: ENV.fetch('S3_BUCKET_NAME'),
+      access_key_id: ENV.fetch('AWS_ACCESS_KEY_ID'),
+      secret_access_key: ENV.fetch('AWS_SECRET_ACCESS_KEY'),
+      s3_region: ENV.fetch('AWS_REGION')
+    }
+  }
+~~~~~~~~
+
+I> le variabili d'ambiente si possono chiamare con ENV.fetch('VARIABLE_NAME') oppure con ENV['VARIABLE_NAME']
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+https://elisinfo5-flaviobordonidev.c9users.io/mockup_companies/index
+
+
+verificato che funziona possiamo fare i git commit senza paura di prendere i "secrets".
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add AWS S3 connection to upload images with paperclip"
+~~~~~~~~
+
+
+## Andiamo in produzione (Heroku)
+
+Creiamo prima un nuovo bucket per mantenere distinte le immagini caricate come development da quelle caricate in produzione.
+
+
+
+
+## Connettiamoci su AWS S3 da production (Heroku)
+
+
+utilizziamo di nuovo figaro
+
+{title=".../config/application.yml", lang=yaml, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+development:
+  SECRET_KEY_BASE: 2d64e44d814e3fdf518fb7f830e0f656bfcd015c86dfc4c5686d2b671a6e05aeaf67e780beaaa82b5f3be2c58bd28d616ffef2845233ab5dba9fade5067e0c06
+  # Connessione ad AWS S3 per Paperclip
+  S3_BUCKET_NAME: elisinfo-dev
+  AWS_ACCESS_KEY_ID: AKIAJJ55RPPRPGHJTOMA
+  AWS_SECRET_ACCESS_KEY: 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
+  AWS_REGION: eu-central-1
+
+test:
+  SECRET_KEY_BASE: 2de1ca50ad0877af447c1f414419e3eab1e0d09f612a6d24cd846bfcea38e3750d4965323aa35d39f945bb18b5f1592c1c590ffee3dbec39973ca299bbacb1ca
+
+production:
+  #SECRET_KEY_BASE: already present on heroku. See $ heroku config
+  # Connessione ad AWS S3 per Paperclip
+  S3_BUCKET_NAME: elisinfo-prod
+  AWS_ACCESS_KEY_ID: AKIAJJ55RPPRPGHJTOMA
+  AWS_SECRET_ACCESS_KEY: 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
+  AWS_REGION: eu-central-1
+~~~~~~~~
+
+ed aggiungiamo la stringa di configurazione per la gemma aws_s3 sul production.rb con le variabili d'ambiente.
+
+{title=".../config/environments/production.rb", lang=ruby, line-numbers=on, starting-line-number=58}
+~~~~~~~~
+# config/environments/production.rb
+config.paperclip_defaults = {
+  storage: :s3,
+  s3_credentials: {
+    bucket: ENV.fetch('S3_BUCKET_NAME'),
+    access_key_id: ENV.fetch('AWS_ACCESS_KEY_ID'),
+    secret_access_key: ENV.fetch('AWS_SECRET_ACCESS_KEY'),
+    s3_region: ENV.fetch('AWS_REGION')
+  }
+}
+~~~~~~~~
+
+le configurazioni sono pronte quindi non ci resta che fare git add, git commit e publicare su heroku.
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add AWS S3 connection to upload images with paperclip in Production"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+Prima di pubblicare passiamo le variabili d'ambiente a Heroku.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ figaro heroku:set -e production
+
+$ git push heroku aws:master
+~~~~~~~~
+
+per passare le variabili d'ambiente abbiamo usato il comando di [Figaro](https://github.com/laserlemon/figaro), ma avremmo potuto caricarle anche manualmente da console come descritto di seguito.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku config:set S3_BUCKET_NAME='flapaperclip'
+$ heroku config:set AWS_ACCESS_KEY_ID='AKIAJJ55RPPRPGHJTOMA'
+$ heroku config:set AWS_SECRET_ACCESS_KEY='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'
+$ heroku config:set AWS_REGION='eu-central-1'
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge aws
+$ git branch -d aws
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

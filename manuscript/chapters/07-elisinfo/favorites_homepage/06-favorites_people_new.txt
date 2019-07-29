@@ -1,0 +1,100 @@
+# Favorites People new
+
+implementiamo i favoriti della homepage/current_user sulla view new di people
+
+- Voglio settare come preferita, per una dato utente, una persona che sto creando adesso (non esisteva nel database)
+
+Il "lavoro duro" lo abbiamo già fatto implementando il lato edit. In questo capitolo facciamo una semplice implementazione, praticamente un semplice copia/incolla. 
+
+
+
+
+## Apriamo il branch "Favorites People New"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b fpn
+~~~~~~~~
+
+
+
+
+## Aggiungiamo il campo favorite_id su people/new
+
+Li abbiamo già aggiunti perché il partial **_form.html.erb** è lo stesso sia per edit che per new.
+
+
+
+
+## Aggiungiamo il favorite sul controller di people 
+
+Lavoriamo sul controller. Abbiamo già abilitato la white list per passare le modifiche. Implementiamo il codice per gestire i preferiti come abbiamo già fatto per edit sull'azione **update**. Solo che in questo caso lo facciamo per new quindi sull'azione **create**.
+
+Sull'azione **create** del controller **people_controller**, implementiamo il nuovo metodo private **manage_favorite**. Per far questo esplodo su più righe il comando **format.html { ... }** usando
+
+format.html do
+  ...
+end
+
+{title=".../app/controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=33}
+~~~~~~~~
+        format.html do
+          manage_favorite # private action
+          redirect_to url_for(view_context.h_params_path(path: "/people/#{@person.id}", last_front_controller: "people", last_front_action: "show", last_front_id: "#{@person.id}", related: "favorites")), notice: t(".notice")
+        end
+~~~~~~~~
+
+Abbiamo già scritto il codice dei due nuovi metodi nell'area **private**. Quindi abbiamo finito. ^_^
+
+
+ATTENZIONE! c'è una differenza con companies!! Verificare...
+        format.html do
+          manage_favorite # private action
+          redirect_to url_for(view_context.h_params_path(path: "/companies/#{@company.id}")), notice: t(".notice")
+        end
+
+
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add favorites people new"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku fpn:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge fpn
+$ git branch -d fpn
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

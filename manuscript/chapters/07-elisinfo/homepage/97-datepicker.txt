@@ -1,0 +1,27 @@
+https://dev.mikamai.com/2016/07/13/the-easiest-way-to-add-a-datepicker-in-rails/
+
+
+At the beginning, the implementation of the interactive calendar was a bit problematic and long, until I found a gem that did the whole work for me. The gem, called Bootstrap Datepicker for Rails, runs from the Rails version 3.1 up to the latest. As usual, to install it just add it to Gemfile with gem 'bootstrap-datepicker-rails' and launch the bundle install.
+
+The configuration is as much as simple than before and it consists of adding two lines of code into the application.css and application.js, in order to assign the Bootstrap style and behaviour.
+
+*= require bootstrap-datepicker // for css
+//= require bootstrap-datepicker // for js
+At this point, the datepicker is perfectly configured and installed: you must add it into the form where you need it. However, before doing this, we need to customize our interactive calendar to give us the correct date format as output. I found on Google that there is a great tool that allows you to customize your datepicker a lot, without having to waste too much time. In fact, this tool enables you to change many features such as the “start dates”, “end dates”, the type of the date separator, the disabled days of week, etc..
+
+Once you do that, since it was necessary to add many datepickers in a view, I created a helper to manage it in a cleaner way.
+
+def datepicker_input form, field
+    content_tag :td, :data => {:provide => 'datepicker', 'date-format' => 'yyyy-mm-dd', 'date-autoclose' => 'true'} do
+      form.text_field field, class: 'form-control', placeholder: 'YYYY-MM-DD'
+    end
+  end
+  
+After that, I put in the view the input fields for the dates and their related interactive calendars.
+
+<%= datepicker_input form, :accepted_at_start%>
+<%= datepicker_input form, :accepted_at_end%>
+.
+.
+The result was very gratifying because in a very short time I was able to implement a fantastic feature within my project.
+Again, all this has been possible thanks to one of the many gems of ruby!

@@ -1,0 +1,207 @@
+# Visualizziamo dinamicamente l'elenco dei dossiers sulla homepage
+
+
+
+## Apriamo il branch "Homepage Dossiers"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b hd
+~~~~~~~~
+
+
+
+
+## Homepage show ed i partials related_list_group
+
+Quando il params[:related] == **dossiers** allora visualizziamo in homepage l'elenco dei dossiers (dossiers/_index).  
+Creiamo il partial **_index.html.erb** nella cartella dossiers.
+Nella pagina homepage/show abbiamo già implementiamo un render dinamico che cambia in funzione di params[:related]
+
+Creiamo un partial nella cartella dossiers e lo chamiamo **_index.html.erb**.
+
+{title=".../app/views/dossiers/_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+<div class="list-group left-pad right-pad">
+  <% @relateds.each do |dossier| %>
+    <%= link_to "", :class => "list-group-item" do %>
+      <p> <%= dossier.dossier_number %> </p>
+      <p><strong> <%= "#{dossier.name}" %> </strong></p>
+    <% end %>
+  <% end %>
+</div>
+~~~~~~~~
+
+
+
+
+## Aggiorniamo il controller di homepage ed il model di dossier
+
+Sull'azione **show** del controller **homepage** aggiungiamo al **case** un nuovo **when** per passare i dossiers alla variabile d'istanza  ** @relateds**.
+
+{title=".../app/controllers/homepage_controller.rb", lang=ruby, line-numbers=on, starting-line-number=38}
+~~~~~~~~
+    when "dossiers"
+      @relateds = Dossier.search(params[:search]).order('created_at DESC').page(params[:page])
+      @relateds_path = "dossiers"
+~~~~~~~~
+
+Implementiamo il search nel model di dossier dentro la sezione **# == Scopes ====**
+
+{title=".../app/models/dossier.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class Dossier < ApplicationRecord
+
+  # == Constants ============================================================
+
+  # == Attributes ===========================================================
+
+  # == Extensions ===========================================================
+
+  # == Relationships ========================================================
+
+  # == Validations ==========================================================
+
+  # == Scopes ===============================================================
+
+  scope :search, -> (query) {where("dossier_number ILIKE ? OR name ILIKE ?", "%#{query.strip}%", "%#{query.strip}%")}
+
+  # == Callbacks ============================================================
+
+  # == Class Methods ========================================================
+
+  # == Instance Methods =====================================================
+end
+~~~~~~~~
+
+
+
+
+## Implementiamo Select_relateds dossier
+
+Non abbiamo la voce "dossier" nella tabella select_realateds quindi l'aggiungiamo manualmente.
+Usiamo la console di rails per popolare la tabella del database.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails c
+
+> SelectRelated.new(name: "dossiers", metadata: "dossiers", bln_homepage: TRUE, bln_people: TRUE, bln_companies: TRUE, locale: :en).save
+> SelectRelated.last.update(name: "pratiche", locale: :it)
+
+> SelectRelated.all
+> exit
+~~~~~~~~
+
+I> Attenzione! Manca l'inserimento del bln_dossiers che mi sarà utile più avanti
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add seed dossiers to select_realateds"
+~~~~~~~~
+
+I> Questo git commit è solo per lasciare un commento perché le modifiche fatte sul database non sono passate tramite git.
+
+
+
+
+## Implementiamo l'icona dossier nel select_relateds
+
+Aggiungiamo l'icona ico_dossier allo style sheet
+
+Mettiamo l'immagine **dossier.png** nella cartella .../app/assets/images/my_style_images/icons/
+
+Ed aggiorniamo i css
+
+{title=".../app/assets/stylesheets/application_front.scss", lang=ruby, line-numbers=on, starting-line-number=90}
+~~~~~~~~
+  .ico_dossier
+  {
+    background-image: url(image_path("my_style_images/icons/dossier.png"));
+  }
+~~~~~~~~
+
+
+{title=".../app/assets/stylesheets/application_rear.scss", lang=ruby, line-numbers=on, starting-line-number=103}
+~~~~~~~~
+  .ico_dossier
+  {
+    background-image: url(image_path("my_style_images/icons/dossier.png"));
+  }
+~~~~~~~~
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add seed dossiers icon to select_realateds"
+~~~~~~~~
+
+
+
+
+## Routes
+
+Nel capitolo precedente abbiamo usato lo scaffold quindi abbiamo già i vari instradamenti nel file routes. Semplicemente li sistemiamo meglio. [(codice: 01)](#code-contact_person_maps-cpmaps_index_side_person-01)
+
+{title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=16}
+~~~~~~~~
+    resources :dossiers
+~~~~~~~~
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "update routes"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku hd:master
+~~~~~~~~
+
+I> Lato produzione su heroku c'è un database indipendente da quello di sviluppo quindi non risulta la nuova voce sulla tabella select_realateds.
+
+per popolare il database di heroku basta aprire la console con il comando:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku run rails c
+~~~~~~~~
+
+E rieseguire i passi già fatti nel paragrafo precedentemente per popolare la tabella con il nuovo record/seed "dossiers"
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge hc
+$ git branch -d hc
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

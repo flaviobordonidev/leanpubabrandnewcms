@@ -1,0 +1,360 @@
+# Creiamo la tabella company_person_maps
+
+in questo capitolo lavoreremo principalmente lato database. 
+Creeremo la tabella "ponte" tra persone e aziende ** company_person_maps ** e metteremo i seed iniziali ed alcuni dati di prova. 
+Sapere per la persona x l'elenco delle aziende in cui lavora.
+Sapere per l'azienda y l'elenco delle persone che lavorano per quell'azienda.
+Non avremo nessuna interazione lato views e quindi non apriremo il browser per usare la web gui su http://localhost:3000
+Eseguendo gli scaffolds la web gui è creata in automatico ma in questo capitolo non la utilizzeremo. Utilizzeremo invece la console di rails "$ rails c".
+
+Creiamo la tabella che associa le aziende alle persone e viceversa. Una persona può lavorare in più aziende. Un'azienda può avere più persone che ci lavorano (dipendenti o esterni).
+
+in questo capitolo lavoreremo principalmente lato database. Creeremo la tabella i seed iniziali ed alcuni dati di prova. Non avremo nessuna interazione lato views e quindi non apriremo il browser per usare la web gui su http://localhost:3000
+Eseguendo gli scaffolds la web gui è creata in automatico ma in questo capitolo non la utilizzeremo. Utilizzeremo invece la console di rails "$ rails c".
+
+
+
+
+## Apriamo il branch "company_person_maps seeds"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b cpms
+~~~~~~~~
+
+
+
+## Una azienda molte persone e viceversa
+
+Implementiamo la relazione molti-a-molti tra la tabella companies e people facendo due relazioni uno-a-molti con company_person_maps.
+
+* Una company ha molte company_person_maps. Aggiungiamo la chiave esterna che va nel lato "molti" quindi nella tabella company_person_maps.
+* Una person ha molte company_person_maps. Aggiungiamo la chiave esterna che va nel lato "molti" quindi nella tabella company_person_maps.
+
+Usiamo lo Scaffold che mi imposta già l'applicazione in stile restful con le ultime convenzioni Rails.
+
+I> ATTENZIONE: con "rails generate scaffold ..." -> uso il SINGOLARE
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g scaffold CompanyPersonMap company:references person:references summary:string
+~~~~~~~~
+
+questo crea il migrate:
+
+{title=".../db/migrate/xxx_create_company_person_maps.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class CreateCompanyPersonMaps < ActiveRecord::Migration[5.0]
+  def change
+    create_table :company_person_maps do |t|
+      t.references :company, foreign_key: true
+      t.references :person, foreign_key: true
+      t.string :summary
+
+      t.timestamps
+    end
+  end
+end
+~~~~~~~~
+
+Da Rails 5 il **.references ..., foreign_key: true** aggiunge già le chiavi esterne e l'indice (come si può vedere su .../db/schema.rb dopo il migrate del database)  e mi risparmia di fare:
+
+{title="", lang=ruby, line-numbers=off}
+~~~~~~~~
+def change
+  create_table :company_person_maps do |t|
+    t.integer :company_id
+    t.integer :person_id
+    t.string :summary
+
+    t.timestamps null: false
+  end
+  add_index :company_person_maps, [:company_id, :person_id]
+end
+~~~~~~~~
+
+
+Effettuiamo il migrate del database per creare la tabella "company_person_maps" sul database
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rake db:migrate
+~~~~~~~~
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add scaffold CompanyPersonMap"
+~~~~~~~~
+
+
+
+
+## Models uno-a-molti + uno-a-molti = molti-a-molti 
+
+adesso finalizziamo la relazione molti-a-molti con le due realazioni uno-a-molti lato models.
+
+{title=".../app/models/company_person_map.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class CompanyPersonMap < ApplicationRecord
+
+  # == Constants ============================================================
+
+  # == Attributes ===========================================================
+  
+  # == Extensions ===========================================================
+
+  # == Relationships ========================================================
+
+  # many-to-many ---------------------------------------------------------------
+  belongs_to :company
+  belongs_to :person
+  #-----------------------------------------------------------------------------
+
+  # == Validations ==========================================================
+
+  # == Scopes ===============================================================
+
+  # == Callbacks ============================================================
+
+  # == Class Methods ========================================================
+
+  # == Instance Methods =====================================================
+end
+~~~~~~~~
+
+Lato azienda mettiamo la relazione (== Relationships ===) molti-a-molti
+
+{title=".../app/models/company.rb", lang=ruby, line-numbers=on, starting-line-number=28}
+~~~~~~~~
+  # many-to-many ---------------------------------------------------------------
+  has_many :company_person_maps
+  has_many :people, :through => :company_person_maps
+  accepts_nested_attributes_for :people
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+Lato persona mettiamo la relazione (== Relationships ===) molti-a-molti
+
+{title=".../app/models/person.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+  # many-to-many ---------------------------------------------------------------
+  has_many :company_person_maps
+  has_many :companies, :through => :company_person_maps
+  accepts_nested_attributes_for :companies
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "update models CompanyPersonMap"
+~~~~~~~~
+
+
+
+
+## I18n - dynamic
+
+Attiviamo l'internazionalizzazione sul database (I18n dynamic) usando la gemma globalize installata precedentemente.
+Indichiamo sul modello i campi della tabella che vogliamo tradurre. Inseriamo il codice nella sezione **== Attributes ===**
+
+{title="models/company_person_map.rb", lang=ruby, line-numbers=on, starting-line-number=7}
+~~~~~~~~
+  # globalize required ---------------------------------------------------------
+  translates :summary, :fallbacks_for_empty_translations => true
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+
+I> il "translates ..." dentro il model va messo prima di fare il db:migrate altrimenti ci da errore!
+
+adesso creiamo un migration vuoto perché useremo il metodo di globalize ".create_translation_table!"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g migration create_company_person_maps_translations
+~~~~~~~~
+
+
+Lavoriamo sulla migration usando il metodo .create_translation_table sul model "Company" e passando i nomi dei campi che devono avere la traduzione.
+
+{title=".../db/migrate/xxx_create_company_person_maps_transaltions.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class CreateCompanyPersonMapsTranslations < ActiveRecord::Migration[5.0]
+  def change
+    reversible do |dir|
+      
+      dir.up do
+        CompanyPersonMap.create_translation_table!({
+          summary: :string
+        },{
+          migrate_data: true,
+          remove_source_columns: true
+        })
+      end
+
+      dir.down do 
+        CompanyPersonMap.drop_translation_table! migrate_data: true
+      end
+      
+    end
+  end
+end
+~~~~~~~~
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rake db:migrate
+~~~~~~~~
+
+E' fondamentale cancellare dalla tabella principale "companies" i campi con traduzione, ossia "sector, status, memo".
+L'opzione ** remove_source_columns: true ** ci risparmia di farlo manualmente.
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add CompanyPersonMap I18n"
+~~~~~~~~
+
+
+
+
+## seed
+
+Di seguito mostriamo come popolare la tabella in automatico ma noi eseguiremo la procedura manuale descritta nel prossimo paragrafo.
+
+
+{title=".../db/seeds.rb", lang=ruby, line-numbers=on, starting-line-number=33}
+~~~~~~~~
+puts "setting the CompanyPersonMap data with I18n :en :it"
+CompanyPersonMap.new(person_id: 1, company_id: 1, summary: "purchase department", locale: :en).save
+CompanyPersonMap.last.update(summary: "ufficio acquisti", locale: :it)
+~~~~~~~~
+
+I> Non usiamo nè "$ rake db:seed" nè "$ rake db:setup" perché popoliamo la tabella manualmente.
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add seeds company_person_maps"
+~~~~~~~~
+
+
+
+
+## Popoliamo manualmente la tabella
+
+Usiamo la console di rails per popolare la tabella del database.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+irb> CompanyPersonMap.new(person_id: 1, company_id: 1, summary: "purchase department", locale: :en).save
+irb> CompanyPersonMap.last.update(summary: "ufficio acquisti", locale: :it)
+~~~~~~~~
+
+
+aggiungiamo una seconda ed una terza azienda alla prima persona giocando un po' con la console...
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails c
+irb> CompanyPersonMap.all
+irb> Company.find 1
+irb> Company.find 2
+irb> Company.find 3
+irb> Company.find 4
+irb> Person.find 1
+irb> Person.find 2
+irb> I18n.locale
+irb> CompanyPersonMap.new(company_id: 2, person_id: 1, summary: "consulente").save
+irb> cpm = CompanyPersonMap.last
+irb> cpm.update(summary: "consulent", locale: :en)
+irb> cpm.summary
+irb> I18n.locale
+irb> I18n.locale = :it
+irb> cpm.summary
+irb> p = Person.find(1)
+irb> p.company_person_maps
+irb> p.company_person_maps[0]
+irb> p.company_person_maps.new(company_id: 3, summary: "ufficio tecnico").save
+irb> p.company_person_maps[0]
+irb> p.company_person_maps[0].summary
+irb> p.company_person_maps[0].company
+irb> p.company_person_maps[0].company.name
+irb> p.company_person_maps[1].company
+irb> p.company_person_maps[1].company.fname
+   ATTENZIONE! potrebbe non funzionare perché manca un "refresh" nel database. Si può forzare un refresh ma non mi ricordo come. :( In alternativa esci dalla console e rientra.
+
+irb> p.company_person_maps[0].update(company_id: 4)
+  Cambio l'azienda nel primo collegamento.
+
+irb> c = Company.find(1)
+irb> c.company_person_maps
+irb> c.company_person_maps.new(person_id: 2, summary: "employee").save
+
+irb> exit
+~~~~~~~~
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add seed company_person_maps"
+~~~~~~~~
+
+I> Questo git commit è solo per lasciare un commento perché le modifiche fatte sul database non sono passate tramite git.
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku cpms:master
+$ heroku run rake db:migrate
+~~~~~~~~
+
+I> Lato produzione su heroku c'è un database indipendente da quello di sviluppo quindi risulta vuoto.
+
+per popolare il database di heroku basta aprire la console con il comando:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku run rails c
+~~~~~~~~
+
+E rieseguire i passi già fatti nel paragrafo precedentemente
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge cpms
+$ git branch -d cpms
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

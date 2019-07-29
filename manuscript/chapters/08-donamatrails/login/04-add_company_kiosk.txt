@@ -1,0 +1,17 @@
+L'amministratore deve effettuare il login direttamente sulla dashboard ed accedere alla Home Page.
+
+Digitare sull'URL l'indirizzo della pagina relativa all'inserimento/gestione delle onlus/company:
+https://mydomain.herokuapp.com/companies
+
+Cliccare su "New Company" ed inserire il nome che abbiamo già scelto nel file homepage_controller.rb.
+
+Appena creata la nuova onlus/company si noterà dall'URL che viene espresso in chiaro l'ID, che dovrà essere lo stesso inserito nel file controller sopracitato.
+
+A questo punto possiamo procedere all'inserimento del kiosk di appartenenza, andando sul seguente URL:
+https://mydomain.herokuapp.com/kiosks
+
+La prima informazione che inseriremo sarà l'ID corrispondente alla onlus/company precedentemente creata.
+Dopodichè procederemo ad inserire il nome del kiosk, ricordando, anche qui, che dovrà avere perfetta corrispondenza con il suffisso dei files csv che, lo stesso kiosk, inviaerà attaverso le funzioni di FTP localmente preimpostate.
+
+Se il kiosk ha già inviato il dato al server di riferimento, cliccando sul pulsante "Aggiorna dati" saremo in grado di vedere le donazioni ricevute.
+

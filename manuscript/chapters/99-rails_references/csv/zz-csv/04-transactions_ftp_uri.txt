@@ -1,0 +1,69 @@
+# Leggiamo da un server FTP
+
+Abbiamo già lavorato il file presente localmente.
+Adesso scarichiamo localmente il file del server FTP.
+Poi ne creiamo uno nuovo leggendolo da un url.
+
+(Resta da vedere come lavorare da Heroku perché non credo ci permetta di salvare il file in "locale" nell'area di heroku.)
+Possiamo provare a leggerlo in remoto con FTP
+Oppure a caricarlo su AWS (Amazon Web Service) e vedere se posso usare "CSV.foreach" oppure open-uri ...
+
+
+
+## Scarichiamo il file txt da un server FTP
+
+
+Per scaricare i files da un server FTP usiamo la libreria di ruby net/ftp. Per attivarla la richiediamo sul file di configurazione a livello di applicazione.
+
+[codice:config 01](#code-csv-03-config-01)
+
+{title="config/application.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+require 'net/ftp'
+~~~~~~~~
+
+Apriamo la console di rails e scarichiamo il file
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+
+> ftp = Net::FTP.new
+> ftp.connect("myhostname.com",21)
+> ftp.login("myuser","my password")
+> ftp.chdir("/mydirectory")
+> ftp.passive = true
+> ftp.getbinaryfile("mysourcefile", "mydestfile")
+~~~~~~~~
+
+Abbiamo visto come scaricare un file da un sito ftp adesso implementiamo il codice nel setter "import" del model Transaction.
+
+
+I> Su heroku è permesso scrivere nella directory ./tmp/ ma tutte le volte che un dyno viene riavviato la cartella tmp/ viene cancellata.
+I> questo vuol dire che c'è il rischio che il file venga cancellato mentre lo stiamo leggendo.
+
+* https://github.com/cburnette/boxr/issues/8
+* https://www.quora.com/What-are-the-potential-downsides-of-using-Heroku
+
+I> Ultimamente su heroku non mi è permesso scrivere neanche su ./tmp/
+
+
+
+
+## Open-uri
+
+Se il file txt è pubblicamente visibile su un sito web si può scaricare con open-uri al posto di net/ftp.
+
+
+For reading from the FTP-server, first load the file into a variable and then use CSV.new(file, options) on it:
+
+~~~~~~~~
+require 'open-uri'
+require 'csv'
+
+file = open("http://www.justinmrao.com/salary_data.csv")
+
+CSV.new(file, col_sep: ',').readlines do |row|
+  # ... do stuff on each row
+end
+~~~~~~~~

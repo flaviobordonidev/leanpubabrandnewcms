@@ -1,0 +1,3 @@
+-# Aziende e Persone: relazione molti-a-molti (company_person_maps) 
+
+trattiamo la relazione molti-a-molti tra persone e aziende.

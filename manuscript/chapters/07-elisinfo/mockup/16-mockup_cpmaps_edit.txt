@@ -1,0 +1,245 @@
+# Mockup per l'edit (vai a / modifica / elimina) di company_person_map 
+
+prendiamo edit delle aziende e lo modifichiamo.
+
+
+
+
+## Apriamo il branch "mockup company_person_map edit destroy"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b mcpmed
+~~~~~~~~
+
+
+
+
+## Rails controller 
+
+aggiungiamo l'azione edit al controller company_person_maps
+
+{title=".../app/controllers/mockup_company_person_maps_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class MockupPeopleController < ApplicationController
+
+  def index
+  end
+  
+  def show
+  end
+  
+  def edit
+  end
+  
+end
+~~~~~~~~
+
+
+
+
+## Instradiamo l'azione show sulla views
+
+Aggiungiamo su routes l'instradamento ** get 'mockup_companies/show' **
+
+{title=".../app/config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+
+~~~~~~~~
+
+
+
+
+## Creiamo la view mockup_people/edit
+
+
+{title=".../app/views/mockup_people/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="container-fluid rear_mode">
+
+	<div class="row">
+		<div class="col-xs-9 col-sm-10 col-lg-11">
+
+			<ul class="nav nav-pills bottom-pad top-pad left-pad">
+				<li class="active"><a href="#pane_edit" data-toggle="tab"><span class="glyphiconmy ico_edit"></span></a></li>
+				<li><a href="#pane_option" data-toggle="tab"><span class="glyphiconmy ico_option"></span></a></li>
+				<li><a href="#pane_delete" data-toggle="tab"><span class="glyphiconmy ico_delete"></span></a></li>
+			</ul>
+
+		</div>
+		<div class="col-xs-3 col-sm-2 col-lg-1">
+			<%= render 'mockup_people/edit/button_close' %>
+		</div> <!-- /col -->
+	</div> <!-- /row -->
+
+	<div class="row">
+		<div class="col-xs-12">
+
+			<div class="tab-content">
+				<div id="pane_edit" class="tab-pane active">
+					<div class="text-center bottom-pad">
+						<h4>Modifica</h4>
+					</div>
+					<%= render 'mockup_people/edit/tab_edit' %>
+				</div>
+
+				<div id="pane_option" class="tab-pane">
+					<div class="text-center bottom-pad">
+						<h4>opzioni</h4>
+					</div>
+					<%= render 'mockup_people/edit/tab_option' %>
+				</div>
+
+				<div id="pane_delete" class="tab-pane">
+					<div class="text-center bottom-pad">
+						<h4>Elimina</h4>
+					</div>
+					<%= render 'mockup_people/edit/tab_delete' %>
+				</div>
+			</div><!-- /.tab-content -->
+
+		</div> <!-- /col -->
+	</div> <!-- /row -->
+
+</div> <!-- /rear_mode -->
+~~~~~~~~
+
+
+
+{title=".../app/views/mockup_people/edit/_button_close.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<ul class="nav nav-pills pull-right top-pad right-pad">
+  <li><a href="#" class="btn btn-default"><span class="glyphiconmy ico_close"></span></a></li>
+</ul>
+~~~~~~~~
+
+
+{title=".../app/views/mockup_people/edit/_tab_delete.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<form id="login-form" name="login-form" class="form-horizontal left-pad right-pad bottom-pad">
+
+	<div class="form-group">
+
+		<label class="control-label" for="begin_fiscal_year">Titolo</label>
+		<input type="text" id="begin_fiscal_year" class="form-control" placeholder="Sig.">
+		<span class="help-block"></span>
+
+    <label for="person-favorite">Preferito Persona</label><br>
+    <input type="checkbox" id="person-favorite" name="person-favorite" data-size = "medium" data-on-color = "primary" data-on-text = "SI" data-off-color = "default" data-off-text = "NO" />
+		<span class="help-block"></span>
+
+	</div>
+
+	<button type="submit" class="btn btn-primary btn-block">esegui</button>
+</form>
+~~~~~~~~
+
+
+{title=".../app/views/mockup_people/edit/_tab_edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<form class="form-horizontal left-pad right-pad bottom-pad">
+
+	<div class="form-group">
+
+		<label class="control-label" for="begin_fiscal_year">Titolo</label>
+		<input type="text" id="begin_fiscal_year" class="form-control" placeholder="Sig.">
+		<span class="help-block"></span>
+
+		<label class="control-label" for="begin_fiscal_year">Cognome</label>
+		<input type="text" id="begin_fiscal_year" class="form-control" placeholder="Della Frallesserà">
+		<span class="help-block"></span>
+
+		<label class="control-label" for="begin_fiscal_year">Nome</label>
+		<input type="text" id="begin_fiscal_year" class="form-control" placeholder="Pierluigi Francesco">
+		<span class="help-block"></span>
+
+		<label class="control-label" for="begin_fiscal_year">Omonimia</label>
+		<input type="text" id="begin_fiscal_year" class="form-control" placeholder="omonimia">
+		<span class="help-block"></span>
+
+		<div class="fileupload fileupload-new" data-provides="fileupload">
+			<div>
+				<span class="btn btn-file">
+					<span class="fileupload-new">Select image</span>
+					<span class="fileupload-exists">Change</span>
+					<input type="file" />
+				</span>
+				<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+			</div>
+			<div class="fileupload-preview thumbnail" style="width: 100px; height: 100px;"></div>
+		</div>
+	</div>
+
+	<button type="submit" class="btn btn-primary btn-block">esegui</button>
+</form>
+~~~~~~~~
+
+
+{title=".../app/views/mockup_people/edit/_tab_option.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<form id="login-form" name="login-form" class="form-horizontal left-pad right-pad bottom-pad">
+
+	<div class="form-group">
+
+		<label class="control-label" for="begin_fiscal_year">Titolo</label>
+		<input type="text" id="begin_fiscal_year" class="form-control" placeholder="Sig.">
+		<span class="help-block"></span>
+
+    <label for="person-favorite">Preferito Persona</label><br>
+    <input type="checkbox" id="person-favorite" name="person-favorite" data-size = "medium" data-on-color = "primary" data-on-text = "SI" data-off-color = "default" data-off-text = "NO" />
+		<span class="help-block"></span>
+
+	</div>
+
+	<button type="submit" class="btn btn-primary btn-block">esegui</button>
+</form>
+~~~~~~~~
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+https://elisinfo5-flaviobordonidev.c9users.io/mockup_people/edit
+
+![mockup_people edit 1](images/companies_people/mockup_people_edit/mockup_people_edit1.png)
+
+![mockup_people edit 2](images/companies_people/mockup_people_edit/mockup_people_edit2.png)
+
+![mockup_people edit 3](images/companies_people/mockup_people_edit/mockup_people_edit3.png)
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add mockup_people edit"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku mpe:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge mpe
+$ git branch -d mpe
+~~~~~~~~

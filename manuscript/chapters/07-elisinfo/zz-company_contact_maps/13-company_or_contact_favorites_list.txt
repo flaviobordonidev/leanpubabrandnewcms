@@ -1,0 +1,131 @@
+# Favorites Company Contact
+
+implementiamo l'elenco dei preferiti su companies-show e people-show.
+
+ATTENZIONE: questo capitolo è praticamente inutile perché abbiamo già implementato tutto.
+
+
+
+## Apriamo il branch "Favorites Company Contact"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b fcc
+~~~~~~~~
+
+
+
+
+## parte 1 - l'elenco senza link_to attivo
+
+Iniziamo visualizzando l'elenco dei favoriti relativi all'azienda o al contatto selezionato.
+
+LATO COMPANIES
+
+Il partial views/favorites/_index.html.erb lo abbiamo già creato
+Su companies/show abbiamo già attivato il render per i favorites
+Abbiamo già aggiornato il controller companies_controller per il ** case ... when "favorites" **
+
+
+LATO CONTACTS
+
+Il partial views/favorites/_index.html.erb lo abbiamo già creato
+Su contacts/show attiviamo il render per i favorites
+
+
+{title=".../app/views/contacts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=39}
+~~~~~~~~
+      <% if params[:related] == "contacts" %>
+        <%= render "mockup_#{params[:related]}/show/related_list_group" %>
+      <% else %>
+        <%= render "#{@relateds_path}/index", related_list: @relateds %>
+      <% end %>
+~~~~~~~~
+
+Aggiorniamo il controller contacts_controller per il ** case ... when "favorites" **
+
+{title=".../app/controllers/contacts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=11}
+~~~~~~~~
+  # GET /contacts/1
+  # GET /contacts/1.json
+  def show
+    # gestiamo l'elenco dei relateds
+    case params[:related]
+    when "favorites"
+      #@relateds = @contact.favorites.page(params[:page]).per_page(3).order('created_at DESC')
+      @relateds = Favorite.all.page(params[:page]).per_page(6)
+      @relateds_path = "favorites"
+~~~~~~~~
+
+
+
+
+
+## Parte 2 - attiviamo link_to
+
+Abbiamo già aggiunto **copy_table** e **copy_table_id** alla tabella favorites.
+
+
+
+
+## Aggiungiamo inserimento dei valori per copy_table e copy_table_id
+
+Andiamo su company_person_maps controller e se il combo-box-favorite è selezionato aggiungiamo sui nuovi campi di favorites che stiamo archiviando un record della tabella company_person_maps e qual'è l'id.
+
+{title="controllers/company_person_maps_controller.rb", lang=ruby, line-numbers=on, starting-line-number=101}
+~~~~~~~~
+ else  # if combo-box-favorite is ON
+  if @company_person_map.favorite_id_company.blank?
+    #raise "crea nuovo favorite"
+    f = Company.find(@company_person_map.company_id).favorites.new(copy_table: "company_person_maps", copy_table_id: @company_person_map.id, copy_normal: @company_person_map.summary, copy_bold: "#{@company_person_map.person.title} #{@company_person_map.person.first_name} #{@company_person_map.person.last_name}")
+    f.save
+    @company_person_map.update(favorite_id_company: f.id)
+  else
+    #raise "aggiorna favorite esistente"
+    f = Favorite.find(@company_person_map.favorite_id_company)
+    f.update(copy_table: "company_person_maps", copy_table_id: @company_person_map.id, copy_normal: @company_person_map.summary, copy_bold: "#{@company_person_map.person.title} #{@company_person_map.person.first_name} #{@company_person_map.person.last_name}")
+    f.save
+  end
+end
+~~~~~~~~
+
+
+
+
+## Attiviamo il link_to url_for
+
+L'url for è su views/favorites/_index.html.erb e lo abbiamo già attivato nei capitoli precedenti.
+
+
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add company and contact list of favorites"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku fcc:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge fcc
+$ git branch -d fcc
+~~~~~~~~

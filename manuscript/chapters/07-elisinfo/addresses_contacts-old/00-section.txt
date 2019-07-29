@@ -1,0 +1,17 @@
+-# Indirizzi e Contatti
+
+Indirizzi: come raggiungere fisicamente il posto dove è l'azienda o la persona
+Contatti: come contattare l'azienda o la persona (telefono, mobile, skype, email, facebook, ...)
+
+Facendo delle prove di usabilità ci siamo resi conto che la relazione molti-a-molti è eccessiva per l'inserimento di nuovi indirizzi. Si creano troppi passaggi; troppi clicks. Quindi optiamo per una relazione uno-a-molti (che sarà anche la base per fare le posizioni delle offerte nello sviluppo dell'applicazione).
+
+(In una futura versione più evoluta metterò un elenco che si presenta mano a mano che digiti come fa google nel suo motore di ricerca ed implementeremo del codice più complesso che permetterà di gestire il molti-a-molti in modo semplice e trasparenete per l'utente.)
+
+Usare la relazione uno-a-molti o molti-a-molti è indipendente dall'uso del polimorfismo. Posso continuare ad usare una sola tabella polimorfica con relazione di tipo uno-a-molti.
+
+
+ATTENZIONE!!!
+CAPITOLO DICHIARATO "OLD"
+A SEGUITO DI UN TEST DI USABILITA' TUTTO QUESTO CAPITOLO NON VERRA' USATO IN QUANTO LA GESTIONE DI ADDRESSES E CONTACTS SI E' DECISO DI INSERIRLA ALL'INTERNO DI COMPANY_PERSON_MAPS.
+
+UN'ALTRO APPROCCIO DIDATTICAMENTE INTERESSANTE DI CONTACTS ED ADDRESSES CHE E' STATO DICHIARATO OLD (vedi zz-addresses_javascript) E' QUELLO CHE METTEVA DIRETTAMENTE NELLA MASCHERA MAIN DELLA PERSONA E DELL'AZIENDA. DA UN PUNTO DI VISTA DI USABILITA' NON FUNZIONAVA BENE. DA UN PUNTO DI VISTA DIDADDICO E' INTERESSANTISSIMO E PERMETTEVA DI CREARE CONTATTI MULTIPLI ED INDIRIZZI MULTIPLI. (RIPORTANDO IL TUTTO SU COMPANY_PERSON_MAPS GLI INDIRIZZI MULTIPLI SI POSSONO OTTENERE RICOLLEGANDO LA STESSA AZIENDA E DANDOGLI UN NUOVO INDIRIZZO)

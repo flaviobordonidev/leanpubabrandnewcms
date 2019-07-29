@@ -45,8 +45,8 @@ Click su "Create environment"
 
 Diamo il nome della nostra app rails con un numero progressivo in fondo in modo da tener traccia delle varie versioni che si verranno a creare.
 
-* Name: myapp_1 
-* Description : la mia applicazione fatta con Ruby on Rails
+* Name: s6beginning 
+* Description : la mia applicazione iniziale della serie 6.
 
 ![Fig. 03](images/01-beginning/01-new_app/01_03-create_environment-step1.PNG)
 
@@ -58,9 +58,10 @@ Diamo il nome della nostra app rails con un numero progressivo in fondo in modo 
 Iniziamo con il server virtuale di default che è sufficiente per iniziare. Possiamo potenziarlo in seguito.
 Più potenza diamo più ci costa.
 
-* Create a new instance for environment (EC2)
-* t2.micro (1 GiB RAM + 1 vCPU)
-* Cost-saving setting: After 30 minutes (default)
+* Environment type      : Create a new instance for environment (EC2)
+* Instance type         : t2.micro (1 GiB RAM + 1 vCPU)
+* Platform              : Ubuntu Server 18.04 LTS
+* Cost-saving setting   : After 30 minutes (default)
 
 ![Fig. 04](images/01-beginning/01-new_app/01_04-create_environment-step2.PNG)
 
@@ -89,9 +90,9 @@ Raccomandiamo le seguenti migliori pratiche per l'utilizzo dell'ambiente AWS Clo
 
 ## Configuriamo la nostra sessione di AWS Cloud9
 
-Main theme: AWS Cloud9 Classic Dark Theme
-Editor theme: Cloud9 Night Low-Color
-Keyboard Mode: Default
+* Main theme    : AWS Cloud9 Classic Dark Theme
+* Editor theme  : Cloud9 Night Low-Color
+* Keyboard Mode : Default
 
 ![Fig. 06](images/01-beginning/01-new_app/01_06-dark_theme.PNG)
 

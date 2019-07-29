@@ -1,0 +1,108 @@
+# Nuova azienda su nuova istanza
+
+agevoliamo gli inserimenti permettendo di creare una nuova azienda direttamente su una nuova istanza quando siamo nel secondo livello di profondità di pagina. Ad esempio se siamo sulla persona Jhon Doe e vogliamo verificare/aggiungere l'azienda ABC Inc allora facciamo una prima ricerca e vediamo che non è nell'elenco delle aziende associate/related. Clicchiamo il link nuova azienda da collegare e ci si apre la pagina di secondo livello companies/index (saltando la pagina di primo livello company_person_maps/new). Scopro che non esiste l'azienda ABC Inc nel database. Abbiamo sulla destra il pulsante "new" che ci crea una nuova azienda su un'altra istanza così ci resta aperta la possibilità di scelta.
+
+
+
+
+## Apriamo il branch "New Company New Instance"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b ncni
+~~~~~~~~
+
+
+
+
+## Implementiamo la nuova istanza del browser per una nuova azienda
+
+Siamo su people/show con l'elenco delle aziende associate (related="companies"). Abbiamo premuto il link per associare una nuova azienda e siamo sulla pagina di secondo livello companies/index. Attiviamo il pulsante nuova azienda ** <%= render 'related_button_new', list_to_add: @companies %> ** (dopo una ricerca o se non è presente nessuna voce nella lista).
+
+{title=".../app/views/companies/_related_companies.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+  <div class="col-xs-2 col-sm-1 col-lg-1">
+    <%= render 'related_map_button_new_instance', list_to_add: companies, relateds_path: relateds_path %>
+  </div> <!-- /.col -->
+~~~~~~~~
+
+
+vediamo il partial su cui attiviamo l'apertura di una nuova istanza del browser
+
+{title=".../app/views/companies/_related_button_new_instance.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<% unless relateds_path == "favorites" %>
+  <% if params[:search].present? or (list_to_add.size < 7)%>
+    <div class="btn-group pull-right right-pad">
+      <button onclick="myFunction()">
+        <span class="glyphiconmy ico_new right-pad"></span>
+      </button>
+      <script>
+      function myFunction() {
+        var myWindow = window.open("<%= url_for(h_params_path(path: "/companies/new")) %>", "_blank", "toolbar=no,scrollbars=yes,resizable=yes,top=50,left=50,width=400,height=600");
+      }
+      </script>
+    </div> <!-- /btn-group -->
+
+  <% else %>
+    <div class="btn-group pull-right right-pad">
+      <a href="#" class="btn btn-primary disabled">
+        <span class="glyphiconmy ico_new"></span>
+      </a>
+    </div> <!-- /btn-group -->
+  <% end %>
+<% end %>
+~~~~~~~~
+
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add new company new istance"
+~~~~~~~~
+
+
+
+
+## Refactoring
+
+Potremmo concentrare tutti i partials _related_map_button_new_instance.html nella cartella application e rendere dinamico il passaggio del path.
+Ma questo implica lavorare con javascript per passare dinamicamente il parametro del path e questo lo vedremo nei futuri capitoli.
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku ncni:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge ncni
+$ git branch -d ncni
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

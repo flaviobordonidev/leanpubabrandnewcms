@@ -1,0 +1,491 @@
+# Scegliamo/Selezioniamo una differente related azienda/persona
+
+Cliccando sul pulsante della azienda/persona sul tab_edit di company_person_maps/edit, si apre una nuova pagina con l'elenco di tutte le aziende/persone dando la possibilità di scegliere una differente azienda/persona da associare. Per questa pagina sfrutto la comanies/index o la people/index riadattando lo stile come pagina rear_view questa rear_view siccome è chiamata da un'altra rear_view non modifica minimamente i parametri passati sull'url ( usa l'helper h_params_path ). Le pagine comanies/index e people/index sono pagine di ** terzo livello **. Che vuol dire terzo livello? Le pagine di primo livello sono le front_end (quelle bianche senza il pulsante di chiusura in alto a destra). Le pagine di secondo livello sono le rear_view (quelle nere con in alto a destra il global_settings) perché sono chiamate da quelle di primo livello, infatti è come se fossero finestre modali che possiamo chiudere per tornare alle pagine di primo livello. Le pagine di terzo livello sono aperte a partire dalle pagine di secondo livello. Le pagine di terzo livello hanno lo stesso stile rear_view di quelle di secondo livello (nere con in alto a destra il pulsante di chiusura) ma questa volta il pulsante di chiusura non torna alla pagina di front_end ma torna alla pagina rear_view di secondo livello. E' come se fosse una finestra modale di una finestra modale. ^_^ (vedi immagine con una finestra aperta e poi ancora un'altra sovrapposta)    
+
+Abbiamo preparato per pagine companies/index e people/index con tanto di pulsante di chiusura **button_close_to_rear** adesso è giunto il momento di completare le pagine mettendo l'elenco il search il pagination e l'azione di selezione che su click mi riporta la nuova scelta in company_person_maps/edit tab_edit.
+
+
+
+
+## Apriamo il branch "company_person_maps edit select"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b cpmes
+~~~~~~~~
+
+
+
+
+
+## Scelta di una differente related azienda
+
+Dalla pagina della persona X (people/show) clicchiamo sull'azienda collegata Y che ci apre company_person_map_params/edit. Sul tab_edit avrò il link dell'azienda Y. Se vogliamo associare un'azienda differente clicchiamo sul link e ne scegliamo un'altra dalla pagina companies/index.
+
+Abbiamo già implementato il link per aprire la pagina con l'elenco di tutte le aziende (companies/index).
+
+{title=".../app/views/company_person_maps/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=32}
+~~~~~~~~
+        <%= link_to url_for(h_rear_params_path(path: "/companies")), class: "list-group-item" do %>
+~~~~~~~~
+
+
+Implementiamo la struttura del mockup (di tipo rear_view) nella pagina companies/index, sopra il codice dello scaffold, ed implementiamo i renders.
+
+{title=".../app/views/companies/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="container-fluid rear_mode">
+  <div class="row">
+    <div class="col-xs-9 col-sm-10 col-lg-11">
+      <ul class="nav nav-pills bottom-pad top-pad left-pad">
+        <li class="<%= 'active' if params[:tab_active] == 'default' or params[:tab_active] == 'list' %>">
+          <%= link_to "#pane_list", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_list" %>
+          <% end %>
+        </li>
+      </ul>
+    </div><!-- /.col -->
+    <div class="col-xs-3 col-sm-2 col-lg-1">
+      <%= render 'button_close_to_rear' %>
+    </div> <!-- /.col -->
+  </div> <!-- /.row -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="tab-content">
+        <div id="pane_list" class="tab-pane <%= 'active' if params[:tab_active] == 'default' or params[:tab_active] == 'list'  %>">
+          <div class="text-center bottom-pad">
+            <h4><%= t("companies.index.title_pane_list") %></h4>
+          </div> <!-- /.text-center -->
+          <p>list_group</p>
+        </div> <!-- /.tab-pane -->
+      </div> <!-- /.tab-content -->
+    </div> <!-- /.col -->
+  </div> <!-- /.row -->
+</div> <!-- /.rear_mode -->
+
+<p id="notice"><%= notice %></p>
+
+<h1>Companies</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Status</th>
+      <th>Taxation number first</th>
+      <th>Taxation number second</th>
+      <th>Memo</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @companies.each do |company| %>
+      <tr>
+        <td><%= company.name %></td>
+        <td><%= company.status %></td>
+        <td><%= company.taxation_number_first %></td>
+        <td><%= company.taxation_number_second %></td>
+        <td><%= company.memo %></td>
+        <td><%= link_to 'Show', company %></td>
+        <td><%= link_to 'Edit', edit_company_path(company) %></td>
+        <td><%= link_to 'Destroy', company, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Company', new_company_path %>
+~~~~~~~~
+
+Al momento non attiviamo il partial della lista ma solo il pulsante di chiusura che riporta alla pagina di secondo livello (rear_view). Quindi il pulsante di chiusura lo chiamiamo **button_close_to_rear**.
+
+Il partial **_button_close_to_rear.html.erb** lo creiamo su views/application così è visibile da tutti i views.
+
+{title=".../app/views/application/_button_close_to_rear.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<ul class="nav nav-pills bottom-pad top-pad pull-right right-pad">
+  <li>
+    <%= link_to url_for(h_params_path(path: "/#{params[:last_rear_controller]}/#{params[:last_rear_id]}/edit", tab_active: "edit", page: params[:last_rear_page], search: params[:last_rear_search])), :class => "list-group-item" do %>
+      <%= content_tag :span,"", class: "glyphiconmy ico_close" %>
+    <% end %>
+  </li>
+</ul>
+~~~~~~~~
+
+Possiamo vedere che il link_to url_for riporta alla pagina di secondo livello (rear_view)
+
+Verifichiamo che il pulsante close_to_rear funziona correttamente
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+Dalla persona Jhon Doe clicco su azienda collegata ABC. Sul tab-edit clicco sul link azienda ABC e sulla pagina che si apre clicco il pulsante di chiusura (button_close_to_rear).
+
+
+Aggiorno git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add company_person_maps edit related-company button_close_to_rear"
+~~~~~~~~
+
+
+
+
+### Scelta di una differente related persona
+
+Gran parte del codice è già stata scritta sviluppando lato persona. Abbiamo già il pulsante su company_person_map tab_edit e cliccandolo arrivo a views/companies/index ma è la versione front_end. Devo riadattare lo stile come pagina rear_view questa rear_view siccome è chiamata da un'altra rear_view non tocca minimamente i valori archiviati in session. Quindi sul controller togliamo index dall'after_action.
+
+
+Dalla pagina della azienda Y (companies/show) clicchiamo sulla persona collegata X che ci apre company_person_map_params/edit. Sul tab_edit avrò il link della persona X. Se vogliamo associare una persona differente clicchiamo sul link e ne scegliamo un'altra dalla pagina people/index.
+
+Abbiamo già implementato il link per aprire la pagina con l'elenco di tutte le persone (people/index).
+
+{title=".../app/views/company_person_maps/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=42}
+~~~~~~~~
+        <%= link_to url_for(h_rear_params_path(path: "/people")), :class => "list-group-item" do %>
+~~~~~~~~
+
+
+Implementiamo la struttura del mockup (di tipo rear_view) nella pagina people/index, sopra il codice dello scaffold, ed implementiamo i renders.
+
+{title=".../app/views/people/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="container-fluid rear_mode">
+  <div class="row">
+    <div class="col-xs-9 col-sm-10 col-lg-11">
+      <ul class="nav nav-pills bottom-pad top-pad left-pad">
+        <li class="<%= 'active' if params[:tab_active] == 'default' or params[:tab_active] == 'list' %>">
+          <%= link_to "#pane_list", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_list" %>
+          <% end %>
+        </li>
+      </ul>
+    </div><!-- /.col -->
+    <div class="col-xs-3 col-sm-2 col-lg-1">
+      <%= render 'button_close_to_rear' %>
+    </div> <!-- /.col -->
+  </div> <!-- /.row -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="tab-content">
+        <div id="pane_list" class="tab-pane <%= 'active' if params[:tab_active] == 'default' or params[:tab_active] == 'list'  %>">
+          <div class="text-center bottom-pad">
+            <h4><%= t("people.index.title_pane_list") %></h4>
+          </div> <!-- /.text-center -->
+          <p>list_group</p>
+        </div> <!-- /.tab-pane -->
+      </div> <!-- /.tab-content -->
+    </div> <!-- /.col -->
+  </div> <!-- /.row -->
+</div> <!-- /.rear_mode -->
+
+<p id="notice"><%= notice %></p>
+
+<h1>People</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>First name</th>
+      <th>Last name</th>
+      <th>Homonym</th>
+      <th>Memo</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @people.each do |person| %>
+      <tr>
+        <td><%= person.title %></td>
+        <td><%= person.first_name %></td>
+        <td><%= person.last_name %></td>
+        <td><%= person.homonym %></td>
+        <td><%= person.memo %></td>
+        <td><%= link_to 'Show', person %></td>
+        <td><%= link_to 'Edit', edit_person_path(person) %></td>
+        <td><%= link_to 'Destroy', person, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Person', new_person_path %>
+~~~~~~~~
+
+Verifichiamo che il pulsante close_to_rear funziona correttamente
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+Dalla azienda ABC clicco sulla persona collegata Jhon Doe. Sul tab-edit clicco sul link persona Jhon Doe e sulla pagina che si apre clicco il pulsante di chiusura (button_close_to_rear).
+
+
+Aggiorno git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add company_person_maps edit related-person button_close_to_rear"
+~~~~~~~~
+
+
+
+
+## Presentiamo l'elenco delle related-companies
+
+{title=".../app/views/companies/_related_companies.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="row"> <!-- row -->
+  <div class="col-xs-10 col-sm-11 col-lg-11"> <!-- col -->
+    <%= render 'related_form_search' %>
+  </div> <!-- /col -->
+  <div class="col-xs-2 col-sm-1 col-lg-1"> <!-- col -->
+    <%#= render 'related_button_new_instance', list_to_add: @companies %>
+  </div> <!-- /col -->
+</div> <!-- /row -->
+
+<div class="row"> <!-- row -->
+  <div class="col-xs-12"> <!-- col -->
+    <div class="list-group left-pad right-pad">
+      <% companies.each do |company| %>
+        <%= link_to url_for(h_params_path(path: "/#{params[:last_rear_controller]}/#{params[:last_rear_id]}/edit", change_id: company.id, tab_active: "edit")), :class => "list-group-item" do %>
+          <p> <%= company.taxation_number_first %> </p>
+          <p><strong> <%= "#{company.name}"%> </strong></p>
+        <% end %>
+      <% end %>
+    </div>
+  </div> <!-- /col -->
+</div> <!-- /row -->
+
+<div class="row"> <!-- row -->
+  <div class="col-xs-12"> <!-- col -->
+    <div class="text-center">
+      <%= render 'related_pagination', list_to_paginate: companies %>
+    </div> <!-- /text-center -->
+  </div> <!-- /col -->
+</div> <!-- /row -->
+~~~~~~~~
+
+attiviamo il pagination sull'azione **index** di companies controller
+
+{title=".../app/controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+  def index
+    @companies = Company.all.page(params[:page])
+  end
+~~~~~~~~
+
+attiviamo il search. Abbiamo già lo **scope :search** nel company model
+
+{title=".../app/models/company.rb", lang=ruby, line-numbers=on, starting-line-number=43}
+~~~~~~~~
+  scope :search, -> (query) {with_translations(I18n.locale).where("name ILIKE ?", "%#{query.strip}%")}
+~~~~~~~~
+
+implementiamolo nell'azione **index** di companies controller.
+
+{title=".../app/controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+  def index
+    @companies = Company.search(params[:search]).order('updated_at DESC').page(params[:page])
+  end
+~~~~~~~~
+
+
+
+
+## Presentiamo l'elenco delle related-people
+
+{title=".../app/views/people/_related_companies.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="row"> <!-- row -->
+  <div class="col-xs-10 col-sm-11 col-lg-11"> <!-- col -->
+    <%= render 'related_form_search' %>
+  </div> <!-- /col -->
+  <div class="col-xs-2 col-sm-1 col-lg-1"> <!-- col -->
+    <%#= render 'related_button_new_instance', list_to_add: people %>
+  </div> <!-- /col -->
+</div> <!-- /row -->
+
+<div class="row"> <!-- row -->
+  <div class="col-xs-12"> <!-- col -->
+    <div class="list-group left-pad right-pad">
+      <% people.each do |person| %>
+        <%= link_to url_for(h_params_path(path: "/#{params[:last_rear_controller]}/#{params[:last_rear_id]}/edit", change_id: person.id, tab_active: "edit")), :class => "list-group-item" do %>
+          <p> <%= person.title %> </p>
+          <p><strong> <%= "#{person.first_name} #{person.last_name}"%> </strong></p>
+        <% end %>
+      <% end %>
+    </div>
+  </div> <!-- /col -->
+</div> <!-- /row -->
+
+<div class="row"> <!-- row -->
+  <div class="col-xs-12"> <!-- col -->
+    <div class="text-center">
+      <%= render 'related_pagination', list_to_paginate: people %>
+    </div> <!-- /text-center -->
+  </div> <!-- /col -->
+</div> <!-- /row -->
+~~~~~~~~
+
+attiviamo il pagination sull'azione **index** di people controller
+
+{title=".../app/controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+  def index
+    @people = Person.all.page(params[:page])
+  end
+~~~~~~~~
+
+attiviamo il search. Abbiamo già lo **scope :search** nel person model
+
+{title=".../app/models/person.rb", lang=ruby, line-numbers=on, starting-line-number=38}
+~~~~~~~~
+  scope :search, -> (query) {with_translations(I18n.locale).where("title ILIKE ? OR last_name ILIKE ? OR first_name ILIKE ?", "%#{query.strip}%", "%#{query.strip}%", "%#{query.strip}%")}
+~~~~~~~~
+
+implementiamolo nell'azione **index** di companies controller.
+
+{title=".../app/controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+  def index
+    @people = Person.search(params[:search]).order('updated_at DESC').page(params[:page])
+  end
+~~~~~~~~
+
+
+
+
+## Cambiamo l'id
+
+Se siamo sull'elenco delle persone cambiamo person_id.
+Se siamo sull'elenco delle aziende cambiamo company_id.
+
+Per far questo utilizziamo un nuovo parametro **:change_id** che viene passato cliccando sul link di una delle voci in elenco. Implementiamo prima sull'azione **edit** del controller di company_person_maps.
+
+{title=".../app/controllers/company_person_maps_controller.rb", lang=ruby, line-numbers=on, starting-line-number=20}
+~~~~~~~~
+  # GET /company_person_maps/1/edit
+  def edit
+    if params[:change_id].present?
+      if params[:last_front_controller] == "companies"
+        @company_person_map.person_id = params[:change_id]
+      elsif params[:last_front_controller] == "people"
+        @company_person_map.company_id = params[:change_id]
+      end
+    end
+  end
+~~~~~~~~
+
+
+sull'helper abbiamo già aggiunto **:change_id**
+
+{title=".../app/helpers/application_helper.rb", lang=ruby, line-numbers=on, starting-line-number=22}
+~~~~~~~~
+  def h_params_path(path: "", locale: params[:locale], last_front_controller: params[:last_front_controller], last_front_action: params[:last_front_action], last_front_id: params[:last_front_id], last_front_related: params[:last_front_related], last_front_page: params[:last_front_page], last_front_search: params[:last_front_search], last_rear_controller: params[:last_rear_controller], last_rear_action: params[:last_rear_action], last_rear_id: params[:last_rear_id], last_rear_related: params[:last_rear_related], last_rear_page: params[:last_rear_page], last_rear_search: params[:last_rear_search], related: "favorites", page: 1, search: "", tab_active: "default", change_id: nil)
+    path_url = "#{path}?locale=#{locale}&last_front_controller=#{last_front_controller}&last_front_action=#{last_front_action}&last_front_id=#{last_front_id}&last_front_related=#{last_front_related}&last_front_page=#{last_front_page}&last_front_search=#{last_front_search}&last_rear_controller=#{last_rear_controller}&last_rear_action=#{last_rear_action}&last_rear_id=#{last_rear_id}&last_rear_related=#{last_rear_related}&last_rear_page=#{last_rear_page}&last_rear_search=#{last_rear_search}&related=#{related}&page=#{page}&search=#{search}&tab_active=#{tab_active}&change_id=#{change_id}"
+    return path_url
+  end
+~~~~~~~~
+
+
+sul partial **_related_companies** del view Companies/index
+
+{title=".../app/views/companies/_related_companies.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=27}
+~~~~~~~~
+<div class="list-group left-pad right-pad">
+  <% @companies.each do |company| %>
+    <%= link_to url_for(h_params_path(path: "/#{params[:last_rear_controller]}/#{params[:last_rear_id]}/edit", change_id: company.id, tab_active: "edit")), :class => "list-group-item" do %>
+      <p> <%= company.taxation_number_first %> </p>
+      <p><strong> <%= "#{company.name} #{company.corporate}"%> </strong></p>
+    <% end %>
+  <% end %>
+</div>
+~~~~~~~~
+
+
+sul partial **_related_people** del view People/index
+
+{title=".../app/views/people/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=27}
+~~~~~~~~
+<div class="list-group left-pad right-pad">
+  <% @people.each do |person| %>
+    <%= link_to url_for(h_params_path(path: "/#{params[:last_rear_controller]}/#{params[:last_rear_id]}/edit", change_id: person.id, tab_active: "edit")), :class => "list-group-item" do %>
+      <p> <%= person.title %> </p>
+      <p><strong> <%= "#{person.first_name} #{person.last_name}"%> </strong></p>
+    <% end %>
+  <% end %>
+</div>
+~~~~~~~~
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+![https://elisinfo5-flaviobordonidev.c9users.io/company_person_maps](images/company_person_maps/cpmaps_index/cpmaps.png)
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add CompanyPersonMap edit select complete"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku cpmes:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge cpmes
+$ git branch -d cpmes
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

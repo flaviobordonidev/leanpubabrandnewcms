@@ -1,0 +1,5 @@
+-# Indirizzi
+
+come raggiungere fisicamente il posto dove è l'azienda o la persona
+
+Questo capitolo usa javascript per creare più campi sullo stesso form. E' interessantissimo didatticamente ma non è quello che mi serve per la mia applicazione.

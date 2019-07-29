@@ -1,0 +1,3 @@
+-# Codice della sezione LOGIN - AUTENTICAZIONE
+
+I files di codice con tutte le linee di codice e non solo quelle rilevanti riportate nei capitoli

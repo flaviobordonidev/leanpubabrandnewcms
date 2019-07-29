@@ -1,0 +1,146 @@
+# Filtriamo i chioschi per onlus di appartenenza
+
+Creiamo il Branch fbo (filter by onlus)
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b fbo
+~~~~~~~~
+
+
+
+
+
+
+
+Differenziamo i soldi raccolti per ogni Onlus. 
+Qui si vede il vantaggio di fare le somme usando la variabile d'istanza @kiosks altrimenti avremmo dovuto cambiare il model "Kiosk" in "Company.find(7).kiosks" in tutte le righe.
+
+{title=".../app/controllers/dashboard_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class HomepageController < ApplicationController
+  def index
+    @kiosks = Company.find(7).kiosks
+    @cash = @kiosks.sum(:tot_cash_cents)/100
+    @pos = @kiosks.sum(:tot_pos_cents)/100
+  end
+end
+~~~~~~~~
+
+
+
+
+## Passiamo dinamicamente l'id dell'onlus
+
+{title=".../app/controllers/dashboard_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+if params[:onlus].present?
+  @kiosks = Company.find(params[:onlus]).kiosks
+else
+  @kiosks = Kiosk.all
+end
+~~~~~~~~
+
+Proviamolo passando il params all'URL ** https://mydomain.com/?onlus=7 **
+
+facciamo un piccolo refactoring usando l'operatore ternario (Ternary operator)
+
+{title=".../app/controllers/dashboard_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+params[:onlus].present? ? @kiosks = Company.find(params[:onlus]).kiosks : @kiosks = Kiosk.all
+~~~~~~~~
+
+facciamo un altro piccolo refactoring
+
+{title=".../app/controllers/dashboard_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+@kiosks = params[:onlus].present? ? Company.find(params[:onlus]).kiosks : Kiosk.all
+~~~~~~~~
+
+
+
+
+## Aggiungiamo un link per ogni onlus
+
+Mettiamo il codice che funzionava prima di Rails versione 5. 
+
+{title=".../app/views/homepage/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<% @companies.each do |company| %>
+    <%= link_to "«#{company.name}»", params.merge(onlus: company.id) %>
+<% end %>
+~~~~~~~~
+
+Riceviamo il seguente messaggio d'errore perché c'è un buco di sicurezza:
+
+A> Attempting to generate a URL from non-sanitized request parameters! An attacker can inject malicious data into the generated URL, such as changing the host. Whitelist and sanitize passed parameters to be secure.
+
+Per rimediare concateniamo il ".permit(:myparam)" per sanitizzare. E' lo stesso permit che è usato di default su tutti i controllers creati con "generate scaffold" per il massive assignment.
+
+{title=".../app/views/homepage/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<% @companies.each do |company| %>
+    <%= link_to "«#{company.name}»", params.permit(:onlus).merge(onlus: company.id) %>
+<% end %>
+~~~~~~~~
+
+
+
+
+
+
+## Selettore a cascata
+
+* https://www.youtube.com/watch?v=rf6B9oo1zPY
+* https://agilewarrior.wordpress.com/2011/10/22/rails-drop-downs/
+
+implementiamo un selettore a cascata che ci permette di filtrare i chioschi (kiosks) in funzione dell'onlus di appartenenza.
+
+{title=".../app/views/homepage/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%= collection_select(:onlus, :id, Company.all, :id, :name) %>
+~~~~~~~~
+
+Il selettore da solo non funziona. Dobbiamo collegargli del codice javascript oppure lo mettiamo dentro un form.
+
+{title=".../app/views/homepage/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%= form_tag "#", method: "get" do %>
+    <%= collection_select(:onlus, :id, Company.all, :id, :name, {:include_blank => "Please select"}) %>
+    <%= content_tag :button, type: "submit", class: "btn btn-primary" do %>
+      <span class= "glyphicon glyphicon-search"></span>
+    <% end %>
+<% end %>
+~~~~~~~~
+
+
+Allineamo anche il controller perché il selettore ripassa il valore con un array principale "onlus" ed i relativi parametri in questo caso "id". Questo perché è pensato per la gestione ad oggetti. quindi il parametro sarà params[:onlus][:id]
+
+{title=".../app/controllers/dashboard_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+@kiosks = params[:onlus].present? ? Company.find(params[:onlus][:id]).kiosks : Kiosk.all
+~~~~~~~~
+
+
+## Pubblichiamo in produzione su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add search filter for onlus"
+
+$ git push heroku fbo:master
+~~~~~~~~
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge fbo
+$ git branch -d fbo
+~~~~~~~~

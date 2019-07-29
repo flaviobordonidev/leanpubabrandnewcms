@@ -1,0 +1,21 @@
+-# Contatti (emails, telefoni, skype, whatsup, ...)
+
+Term used to describe reaching out to or being in touch with another person, business or entity.
+
+
+ERRORONEEEEE!?!?!?!?!
+I telefoni ed i contatti vanno annidati nelle persone e nelle aziende!!!!
+
+Rivedi railscast ed iniziamo mettendo i contatti dentro le persone.
+
+Vanno dentro la parte people/edit e people/new
+
+Questo va bene perché avere in homepage/favorite un telefono o un indirizzo ha poco senso se non è legato alla persona o azienda.
+Ma ATTENZIONE alle persone che lavorano per più aziende, nel telefono devo mettere anche dove sto chiamando come azienda. Poco male c'è apposta un campo descrizione...
+
+Non sono convinto che sia un errorone. Proseguo e provo come va.
+
+Ho proseguito e mi sono reso conto sulla pratica che effettivamente era un ERRRORRROONEEEE.
+Di positivo ho che le pagine del libro sono scritte meglio e posso usarle per riscrivere la parte companies e people.
+
+ADESSO HO UN PROBLEMA CON IL NOME CONTACTS CHE E' GIA' STATO USATO PARECCHIO. SONO COSTRETTO A RIPIEGARE SU COMMUNICATIONS MA NEL LIBRO DEFINITIVO USERO' CONTACTS.

@@ -1,0 +1,232 @@
+# Aggiungiamo la chiave esterna factory_id
+
+come anticipato nei capitoli precedenti aggiungiamo anche il campo factory_id per tenere traccia del costruttore del componente.
+
+
+
+## Apriamo il branch "add foreign key factory_id"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b afk
+~~~~~~~~
+
+
+
+
+## Aggiungiamo la chiave esterna 
+
+Aggiungiamo la nostra chiave esterna alla tabella components. Il nome del migration potrebbe essere AddReferencesToComponents ma preferisco AddFactoryIdToComponents. 
+
+* https://robots.thoughtbot.com/referential-integrity-with-foreign-keys
+* [guides.rubyonrails.og - 2.1 Creating a Standalone Migration](http://guides.rubyonrails.org/active_record_migrations.html)
+
+Non posso usare **$ rails generate migration AddCompanyRefToComponents company:references** perché mi ricreerebbe la chiave esterna company_id quindi comincio con un migration vuoto 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g migration AddFactoryIdToComponents
+~~~~~~~~
+
+implementiamo il migration appena creato:
+
+{title=".../db/migrate/xxx_add_factory_id_to_components.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class AddFactoryIdToComponents < ActiveRecord::Migration[5.0]
+  def change
+    add_column :components, :factory_id, :integer, index: true
+    add_foreign_key :components, :companies, column: :factory_id
+  end
+end
+~~~~~~~~
+
+* Domanda: Nell' **add_foreign_key** è importante l'ordine delle tabelle?
+  E' uguale questo   
+    add_foreign_key :components, :companies, column: :factory_id
+  con questo
+    add_foreign_key :companies, :components, column: :factory_id
+  ?
+
+
+Effettuiamo il migrate del database per eseguire i cambiamenti
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rake db:migrate
+~~~~~~~~
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add factory_id in components as foreign_key for companies"
+~~~~~~~~
+
+adesso implementiamo la relazione uno-a-molti nei modelli
+
+
+
+
+## Aggiorniamo la relazione uno-a-molti
+
+
+Nel modello del componente mettiamo la relazione (== Relationships ===) di "appartiene a" (belongs_to) con il riferimento esplicito alla chiave esterna
+
+{title=".../app/models/component.rb", lang=ruby, line-numbers=on, starting-line-number=15}
+~~~~~~~~
+  belongs_to :factory, class_name: 'Company'
+~~~~~~~~
+
+questo mi permette di usare la relazione in questo modo ** @component.factory.name ** (invece di ** @component.company.name **)
+
+Nel modello dell'azienda aggiorniamo la relazione (== Relationships ===) di "ha molti" (has_many) con il riferimento esplicito alla chiave esterna
+
+{title=".../app/models/company.rb", lang=ruby, line-numbers=on, starting-line-number=45}
+~~~~~~~~
+  has_many :components, foreign_key: :factory_id
+~~~~~~~~
+
+Approfondimenti web:
+
+* https://stackoverflow.com/questions/25047920/rails-belongs-to-with-custom-column-name
+* https://stackoverflow.com/questions/27809342/rails-migration-add-reference-to-table-but-different-column-name-for-foreign-ke
+* http://sevenseacat.net/2015/02/24/add_foreign_key_gotchas.html
+* http://guides.rubyonrails.org/active_record_migrations.html#foreign-keys
+
+
+
+
+## Aggiorniamo la pagina components/edit -> _form
+
+Iniziamo dal codice del pulsante per l'azienda nell'edit del componenete, nel partial "_form".
+
+{title=".../app/views/components/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=69}
+~~~~~~~~
+   <div class="field">
+      <%= f.label :factory_id, class: "control-label" %>
+      <%= f.number_field :factory_id, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+
+    <div class="field">
+      <% if component.factory_id.blank? %>
+        <div class="field">
+          <%= f.label :factory_id, class: "control-label" %><br>
+          <%= link_to url_for(h_rear_params_path(path: "/companies", link_name: "factory")), :class => "list-group-item" do %>
+            <span class="glyphiconmy ico_company right-pad"></span>
+            <%= "inserisci il costruttore" %>
+          <% end %>
+        </div> <!-- /.field -->
+      <% else %>
+        <div class="field">
+          <%= f.label :factory_id, class: "control-label" %><br>
+          <%= link_to url_for(h_rear_params_path(path: "/companies", link_name: "factory")), class: "list-group-item" do %>
+          <%#= link_to companies_path(related: "companies", page: 1, search: ""), :class => "list-group-item" do %>
+            <span class="glyphiconmy ico_company right-pad"></span> <%= "#{component.factory.name}" %>
+            <div><%= "#{component.factory.building}" %></div>
+          <% end %>
+        </div> <!-- /.field -->
+      <% end %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+~~~~~~~~
+
+Questo ancora non funziona perché ci manca il lato controller.
+
+
+
+
+## Aggiorniamo components controller mass-assignment
+
+cambiamo **:company_id** in **supplier_id**
+
+{title=".../app/models/components_controller.rb", lang=ruby, line-numbers=on, starting-line-number=95}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def component_params
+      params.require(:component).permit(:image, :part_number, :name, :supplier_id, :factory_id, :homonym, :memo, :description, :supplier_price_list, :currency, :currency_exchange, :currency_rounding, :discount_one_min_quantity, :discount_one_percentage, :discount_one_rounding, :discount_two_min_quantity, :discount_two_percentage, :discount_two_rounding, :discount_three_min_quantity, :discount_three_percentage, :discount_three_rounding, :discount_four_min_quantity, :discount_four_percentage, :discount_four_rounding, :discount_five_min_quantity, :discount_five_percentage, :discount_five_rounding, :discount_note)
+    end
+~~~~~~~~
+
+
+
+
+## Aggiorniamo components controller azione edit
+
+Aggiorniamo quindi l'azione **edit** del controller. Cambiamo **:company_id** in **supplier_id**.
+Mi accorgo che ho un problema perché se aggiungo **@component.factory_id = params[:change_id]** ci viene impostato l'id della stessa azienda sia come fornitore che costruttore.
+
+{title=".../app/models/components_controller.rb", lang=ruby, line-numbers=on, starting-line-number=39}
+~~~~~~~~
+    if params[:change_id].present?
+      @component.supplier_id = params[:change_id]
+      @component.factory_id = params[:change_id]
+    end
+~~~~~~~~
+
+Per risolvere implementiamo nel link di factory il passaggio del parametro ** link_name: "factory" ** e questo parametro ce lo facciamo rimandare indietro da companies/index partial _related_companies
+
+{title=".../app/views/components/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=79}
+~~~~~~~~
+          <%= link_to url_for(h_rear_params_path(path: "/companies"), link_name: "factory"), :class => "list-group-item" do %>
+            <span class="glyphiconmy ico_company right-pad"></span>
+            <%= "inserisci il costruttore" %>
+          <% end %>
+~~~~~~~~
+
+adesso ce lo facciamo ripassare indietro da companies/index partial _related_companies con ** , link_name: params[:link_name] **
+
+{title=".../app/views/companies/_related_companies.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=14}
+~~~~~~~~
+        <% if params[:last_rear_action] == "new" %>
+          <%= link_to url_for(h_params_path(path: "/#{params[:last_rear_controller]}/new", change_id: company.id, tab_active: "edit", link_name: params[:link_name])), :class => "list-group-item" do %>
+            <p><strong> <%= "#{company.name}"%> </strong></p>
+            <p> <%= company.building %> </p>
+          <% end %>
+        <% elsif params[:last_rear_action] == "edit" %>
+          <%= link_to url_for(h_params_path(path: "/#{params[:last_rear_controller]}/#{params[:last_rear_id]}/edit", change_id: company.id, tab_active: "edit", link_name: params[:link_name])), :class => "list-group-item" do %>
+            <p><strong> <%= "#{company.name}"%> </strong></p>
+            <p> <%= company.building %> </p>
+          <% end %>
+        <% end %>
+~~~~~~~~
+
+adesso possiamo aggiornare il controller components
+
+{title=".../app/models/components_controller.rb", lang=ruby, line-numbers=on, starting-line-number=39}
+~~~~~~~~
+    if params[:link_name] == "factory" and params[:change_id].present?
+      @component.factory_id = params[:change_id]
+    end
+~~~~~~~~
+
+
+perfetto adesso abbiamo tutte le modifiche. Ci manca lo show
+
+
+
+
+## Aggiorniamo la pagina components/show
+
+Aggiungiamo il factory_id visibile nell'ambiente di sviluppo.
+
+{title=".../app/views/components/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=84}
+~~~~~~~~
+    <strong>Factory:</strong>
+    <%= @component.factory_id %>
+~~~~~~~~
+
+
+
+## Debug
+
+Apparentemente funziona tutto ma c'è un grosso bug che si annida in questa soluzione. Sigh.
+Purtroppo ogni volta che selezioniamo il fornitore o il costruttore ricarichiamo la view e questo ci resetta tutte le modifiche scritte fino a quel momento.
+Di questo maledetto bug me ne sono accorto solo quando ho implementato il nuovo componete; mettevo nome e seriale e poi inserendo il fornitore mi si resettavano i campi appena scritti. Questo era quasi fattibile spiegando all'utente di mettere prima il fornitore. Ma diventa impossibile quando inserisco il costruttore e mi si resetta anche il fornitore!!!
+
+Una soluzione elegante potrebbe essere una chiamata ajax che non mi fa ricaricare la pagina di edit.
+
+Una soluzione poco elegante ma più facile è passare tutti i valori sull'URL. Diventa un codice veramente ignobile...
+Facciamo una via di mezzo in attesa di un refactoring con risoluzione più elegante; passiamo solo i valori di factory_id e supplier_id e mettiamo questi due campi come primi da riempire.
+

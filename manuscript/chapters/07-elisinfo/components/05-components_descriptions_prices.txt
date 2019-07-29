@@ -1,0 +1,248 @@
+# Mostriamo la descrizione ed i prezzi
+
+La descrizione (o le descrizioni se consideriamo la descrizione breve o le caratteristiche tecniche) ed i prezzi sono mostrati come relateds ma non è la raccolta **_index** di altre entità. Sono invece dei campi della stessa tabella components che vengono visualizzati come relateds per questioni di spazio. Per mostrare questi relateds quindi implementiamo una struttura if...elsif...end su components/show
+
+
+
+## Apriamo il branch "components show"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b cdp
+~~~~~~~~
+
+
+
+
+## Modifichiamo la view components/show
+
+Implementiamo la struttura if...elsif...end nella pagina components/show
+
+{title=".../app/views/components/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=46}
+~~~~~~~~
+      <% if @relateds_path == "descriptions" %>
+        <%= render "components/descriptions", component: @component %>
+      <% elsif @relateds_path == "prices" %>
+        <%= render "components/prices", component: @component %>
+      <% else %>
+        <%= render "#{@relateds_path}/index", related_list: @relateds %>
+      <% end %>
+~~~~~~~~
+
+
+Il partial descriptions
+
+{title=".../app/views/components/_descriptions.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="list-group left-pad right-pad">
+    <p class="preserve-line-breaks"><%= "#{component.description}" %></p>
+</div>
+~~~~~~~~
+
+La classe "preserve-line-breaks" la abbiamo creata per visualizzare il rimando a capo delle linee (il tasto invio usato sul form/text_field). 
+Consiglio preso da https://stackoverflow.com/questions/30593103/preserve-line-breaks-in-textarea .
+Questa classe la abbiamo definita nel ns stylesheets global.
+
+{title=".../app/assets/stylesheets/application_global.scss", lang=HTML+Mako, line-numbers=on, starting-line-number=73}
+~~~~~~~~
+// PRESERVE LINE BREAKS
+.preserve-line-breaks
+{
+  white-space: pre-wrap
+}
+// PRESERVE LINE BREAKS end
+~~~~~~~~
+
+Altro approccio poteva essere definire direttamente il tag "<p>" con  **white-space: pre-wrap** ossia
+
+{title=".../app/assets/stylesheets/application_global.scss", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+p{
+  margin-bottom: 0px;
+  white-space: pre-wrap
+}
+~~~~~~~~
+
+In questo secondo caso non avremmo dovuto specificare la classe per riportare i rimandi a capo. 
+
+
+Il partial prices
+
+{title=".../app/views/components/_prices.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="list-group left-pad right-pad">
+
+  <table class="table">
+    <!--<thead>
+      <tr>
+        <th>Prices labels</th>
+        <th>Values</th>
+      </tr>
+    </thead>-->
+    <tbody>
+      <tr>
+        <td><strong>Listino Fronitore</strong></td>
+        <td><%= "#{component.supplier_price_list}" %></td>
+      </tr>
+      <tr>
+        <td><strong>Valuta</strong></td>
+        <td><%= "#{component.currency}" %></td>
+      </tr>
+      <tr>
+        <td><strong>Cambio EUR <%= "#{component.currency}" %></strong></td>
+        <td><%= "#{component.currency_exchange}" %></td>
+      </tr>
+      <tr>
+        <td><strong>Arrotondamento</strong></td>
+        <td><%= "#{h_options_rounding(component.currency_rounding)}" %></td>
+      </tr>
+      <tr class="success">
+        <td><strong>Listino fornitore EUR</strong></td>
+        <td><%= "#{(component.supplier_price_list / component.currency_exchange).round(component.currency_rounding)}" %></td>
+      </tr>
+      <tr>
+        <td><strong>Sconto a noi %</strong></td>
+        <td><%= "#{component.supplier_discount}" %></td>
+      </tr>
+      <tr>
+        <td><strong>Arrotondamento</strong></td>
+        <td><%= "#{h_options_rounding(component.discount_rounding)}" %></td>
+      </tr>
+      <tr class="success">
+        <td><strong>Nostro Acquisto EUR</strong></td>
+        <td><%= "#{((component.supplier_price_list / component.currency_exchange).round(component.currency_rounding) * (100 - component.supplier_discount) / 100).round(component.discount_rounding)}" %></td>
+      </tr>
+    </tbody>
+  </table>
+~~~~~~~~
+
+A titolo di esempio si poteva utilizzare il css dedicato al form ed avere i campi con le sembianze dei fields usati nel form ma non mi piaceva e non ha la flessibilità della tabella. Comunque questo era il codice:
+
+{title=".../app/views/components/_prices.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="list-group left-pad right-pad">
+
+    <div class="field">
+        <p class= 'form-control'><%= "supplier_price_list: #{component.supplier_price_list}"%></p>
+    </div> <!-- /.field -->
+
+    <div class="field">
+        <p class= 'form-control'><%= "currency: #{component.currency}"%></p>
+    </div> <!-- /.field -->
+
+    <div class="field">
+        <p class= 'form-control'><%= "currency_exchange: #{component.currency_exchange}"%></p>
+    </div> <!-- /.field -->
+
+    <div class="field">
+        <p class= 'form-control'><%= "currency_rounding: #{component.currency_rounding}"%></p>
+    </div> <!-- /.field -->
+
+    <div class="field">
+        <p class= 'form-control'><%= "supplier_discount: #{component.supplier_discount}"%></p>
+    </div> <!-- /.field -->
+
+    <div class="field">
+        <p class= 'form-control'><%= "discount_rounding: #{component.discount_rounding}"%></p>
+    </div> <!-- /.field -->
+
+    <div class="field">
+        <p class= 'form-control'><%= "campo calcolato: #{component.supplier_price_list}"%></p>
+    </div> <!-- /.field -->
+</div>
+~~~~~~~~
+
+
+
+
+## L'elenco degli arrotondamenti
+
+Per visualizzare l'arrotondamento impementiamo l'helper **h_options_rounding**
+
+{title=".../app/helpers/application_helper.rb", lang=ruby, line-numbers=on, starting-line-number=94}
+~~~~~~~~  
+  def h_options_rounding(rounding)
+    rounding = 0 if rounding.blank?
+    case rounding
+    when 2
+      return "centesimi"
+      #return t("h.company_status_one")
+    when 1
+      return "decimali"
+    when 0
+      return "unità"
+    when -1
+      return "decine"
+    when -2
+      return "centinaia"
+    else
+      raise "NON DOVEVI ARRIVARE QUI. Cosa succede?"
+    end
+  end
+~~~~~~~~  
+
+Al momento è solo in italiano. Lo rendiamo subito multilingua:
+
+{title=".../app/helpers/application_helper.rb", lang=ruby, line-numbers=on, starting-line-number=94}
+~~~~~~~~
+  def h_options_rounding(rounding)
+    rounding = 0 if rounding.blank?
+    case rounding
+    when 2
+      return t("h.hundredths")
+    when 1
+      return t("h.tenths")
+    when 0
+      return t("h.ones")
+    when -1
+      return t("h.tens")
+    when -2
+      return t("h.hundreds")
+    else
+      raise "NON DOVEVI ARRIVARE QUI. Cosa succede?"
+    end
+  end
+~~~~~~~~
+
+implementiamo la traduzione in italiano
+
+{title="config/locales/it.yml", lang=yaml, line-numbers=on, starting-line-number=40}
+~~~~~~~~
+  h:
+    company_status_one: "cliente"
+    company_status_two: "fornitore"
+    company_status_three: "cliente e fornitore"
+    company_status_four: "cliente (potenziale)"
+    company_status_five: "fornitore (potenziale)"
+    company_status_six: "cliente (potenziale) e fornitore (potenziale)"
+    company_status_seven: "cliente e fornitore (potenziale)"
+    company_status_eight: "fornitore e cliente (potenziale)"
+    hundredths: "centesimi"
+    tenths: "decimi"
+    ones: "unità"
+    tens: "decine"
+    hundreds: "centinaia"
+~~~~~~~~
+
+implementiamo la traduzione in inglese
+
+{title="config/locales/en.yml", lang=yaml, line-numbers=on, starting-line-number=40}
+~~~~~~~~
+  h:
+    company_status_one: "customer"
+    company_status_two: "supplier"
+    company_status_three: "customer and supplier"
+    company_status_four: "customer (potential)"
+    company_status_five: "supplier (potential)"
+    company_status_six: "customer (potential) and supplier (potential)"
+    company_status_seven: "customer and supplier (potential)"
+    company_status_eight: "supplier and customer (potential)"
+    hundredths: "cents"
+    tenths: "dimes"
+    ones: "units"
+    tens: "deca"
+    hundreds: "hundreds"
+~~~~~~~~
+
+
+da finire... chiudo il branch?...

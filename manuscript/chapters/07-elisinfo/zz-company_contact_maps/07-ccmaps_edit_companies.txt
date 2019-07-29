@@ -1,0 +1,275 @@
+# company_contact_map edit lato companies
+
+in questo capitolo creiamo l'edit con i tabs:
+
+- vai a (goto) : per spostarsi tra contatti e aziende relazionate (e viceversa)
+- edit : per modificare le voci dell'elenco "related" sia in companies#show che in contacts#show. Essendo una relazione many-to-many valida in entrambe le direzioni.
+- delete : per distruggere la relazione tra azienda-contatto (non vengono distrutte nè l'azienda nè il contatto ma la sola relazione)
+
+
+
+
+## Apriamo il branch "company_contact_maps edit and destroy"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b ccmed
+~~~~~~~~
+
+
+
+
+## Andiamo sulla parte EDIT
+
+Copiamo il mock di company_contact_maps_edit ed iniziamo ad implementare i render 
+
+
+
+
+## button_close
+
+il pulsante di chiusura dovrà tornare rispettivamente sulla pagina(view) companies/show o contacts/show a seconda di chi ha aperto company_contact_maps. Sulla pagina contacts/show facciamo il render del partial _button_close.
+
+{title=".../app/views/company_contact_maps/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=31}
+~~~~~~~~
+<%= render 'button_close' %>
+~~~~~~~~
+
+il partial lo abbiamo già a livello globale su ** .../app/views/application/_button_close **.
+
+Aggiorno git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add company_contact_maps#edit button_close"
+~~~~~~~~
+
+
+
+
+## tab GOTO
+
+Sul tab goto c'è il solo pulsante con l'azienda (o il contatto) scelta nell'elenco e se lo clicco mi sposto sull'azienda (o sul contatto) selezionata. Detto in altre parole: Mi sposto sull'altro lato della relazione molti-a-molti companies <-> contacts.
+
+{title=".../app/views/company_contact_maps/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=21}
+~~~~~~~~
+<%= render 'tab_goto' %>
+~~~~~~~~
+
+Creo un nuovo partial con una condizione if...else...end in modo da visualizzare l'azienda o il contatto a seconda se ho chiamato company_contacts_maps da contacts/show o da companies/show. 
+
+{title="views/company_contact_maps/_tab_goto.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="list-group left-pad right-pad bottom-pad">
+  <% if params[:last_front_controller] == "companies" %>
+    <%= link_to url_for(h_params_path(path: "/contacts/#{@company_contact_map.contact.id}", related: "companies")), :class => "list-group-item" do %>
+      <span class="glyphiconmy ico_contact right-pad"></span> <%= @company_contact_map.summary %>
+      <div><%= "#{@company_contact_map.contact.medium} #{@company_contact_map.contact.identifier}" %></div>
+    <% end %><!-- /link_to -->
+  <% elsif params[:last_front_controller] == "contacts" %>
+    <%= link_to url_for(h_params_path(path: "/companies/#{@company_contact_map.company.id}", related: "contacts")), :class => "list-group-item" do %>
+      <span class="glyphiconmy ico_company right-pad"></span> <%= @company_contact_map.summary %>
+      <div><%= "#{@company_contact_map.company.name} - #{@company_contact_map.company.status}" %></div>
+    <% end %><!-- /link_to -->
+  <% end %><!-- /if -->
+</div> <!-- /.list-group -->
+~~~~~~~~
+
+Aggiorno git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add company_contact_maps/edit tab_goto"
+~~~~~~~~
+
+
+
+
+## tab edit (_form)
+
+Sul tab edit ci sono i campi per modificare la descrizione e la possibilità di scegliere una nuova azienda/contatto da associare al contatto selezionato. Invece del partial _tab_edit uso il partial _form che viene creato in automatico con lo scaffold. Questo per lasciare la ns applicazione il più vicino possibile alle convenzioni ed agli standards rails. 
+
+{title=".../app/views/company_contact_maps/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=21}
+~~~~~~~~
+<%= render 'form' %>
+~~~~~~~~
+
+Salvo i parametri che mi servono su dei campi nascosti. creo un condizione if/else per mettere il pulsante che mi permetterà di scegliere una nuova persona/contatto da associare.
+
+{title=".../app/views/company_contact_maps/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%= form_for(company_contact_map, html: {class: 'form-horizontal left-pad right-pad bottom-pad'}) do |f| %>
+
+  <!-- #pass-params: -->
+  <%= hidden_field_tag(:locale, params[:locale]) %>
+  <%= hidden_field_tag(:last_front_controller, params[:last_front_controller]) %>
+  <%= hidden_field_tag(:last_front_action, params[:last_front_action]) %>
+  <%= hidden_field_tag(:last_front_id, params[:last_front_id]) %>  
+  <%= hidden_field_tag(:last_front_related, params[:last_front_related]) %>  
+  <%= hidden_field_tag(:last_front_page, params[:last_front_page]) %>  
+  <%= hidden_field_tag(:last_front_search, params[:last_front_search]) %>  
+  <%= hidden_field_tag(:last_rear_controller, params[:last_rear_controller]) %>
+  <%= hidden_field_tag(:last_rear_action, params[:last_rear_action]) %>
+  <%= hidden_field_tag(:last_rear_id, params[:last_rear_id]) %>
+  <%= hidden_field_tag(:last_rear_related, params[:last_rear_related]) %>
+  <%= hidden_field_tag(:last_rear_page, params[:last_rear_page]) %>
+  <%= hidden_field_tag(:last_rear_search, params[:last_rear_search]) %>
+  <%= hidden_field_tag(:related, params[:related]) %>
+  <%= hidden_field_tag(:page, 1) %>
+  <%= hidden_field_tag(:search, "") %>
+  <!-- /#pass-params: -->
+
+  <div class="form-group">
+    <div class="field">
+      <%= f.label :summary, class: "control-label" %><br>
+      <%= f.text_field :summary, class: "form-control" %>
+      <span class="help-block"></span>
+    </div><!-- /.field -->
+
+    <% if params[:last_front_controller] == "companies" %>
+  
+      <div class="field">
+        <%= f.label :contact_id, class: "control-label" %><br>
+        <%= link_to contacts_path(related: "contacts", page: 1, search: ""), :class => "list-group-item" do %>
+          <span class="glyphiconmy ico_contact right-pad"></span>
+          <%= "#{@company_contact_map.contact.medium} #{@company_contact_map.contact.identifier}" %>
+        <% end %><!-- /link_to -->
+      </div><!-- /.field -->
+  
+    <% elsif params[:last_front_controller] == "contacts" %>
+
+      <div class="field">
+        <%= f.label :company_id, class: "control-label" %><br>
+        <%= link_to companies_path(related: "contacts", page: 1, search: ""), :class => "list-group-item" do %>
+          <span class="glyphiconmy ico_company right-pad"></span>
+          <div><%= "#{@company_contact_map.company.name} - #{@company_contact_map.company.status}" %></div>
+        <% end %><!-- /link_to -->
+      </div><!-- /.field -->
+  
+    <% end %><!-- /if -->
+
+    <div class="field">
+      <%= f.label :company_id, class: "control-label" %><br>
+      <%= f.text_field :company_id, class: "form-control" %>
+    </div><!-- /.field -->
+
+    <div class="field">
+      <%= f.label :contact_id, class: "control-label" %><br>
+      <%= f.text_field :contact_id, class: "form-control" %>
+    </div><!-- /.field -->
+  </div><!-- /.form-group -->
+
+  <div class="actions">
+    <%= f.submit "#{t "company_contact_maps.edit.submit"}", class: "btn btn-primary btn-block" %>
+  </div><!-- /.actions -->
+
+<% end %><!-- /form_for -->
+~~~~~~~~
+
+
+Aggiorno il controller per reinstradare sulla relativa people/show o companies/show passando tutti i params[]. In pratica cambio una riga di codice: 
+
+da ** format.html { redirect_to @company_person_map, notice: 'Company person map was successfully updated.' } **
+a ** format.html { redirect_to url_for(view_context.h_params_path(path: "/#{params[:last_front_controller]}/#{params[:last_front_id]}", related: params[:last_front_related], page: params[:last_front_page], search: params[:last_front_search])), notice: 'Company contact map was successfully updated..' } ** 
+
+Questa riga di codice è sufficientemente generica da non aver bisogno di nessun cambio se non la descrizione finale ** notice: '...' **
+
+{title=".../app/controllers/company_contact_maps_controller.rb", lang=ruby, line-numbers=on, starting-line-number=40}
+~~~~~~~~
+  # PATCH/PUT /company_contact_maps/1
+  # PATCH/PUT /company_contact_maps/1.json
+  def update
+    respond_to do |format|
+      if @company_contact_map.update(company_contact_map_params)
+        #format.html { redirect_to @company_contact_map, notice: 'Company contact map was successfully updated.' }
+        format.html { redirect_to url_for(view_context.h_params_path(path: "/#{params[:last_front_controller]}/#{params[:last_front_id]}", related: params[:last_front_related], page: params[:last_front_page], search: params[:last_front_search])), notice: 'Company contact map was successfully updated..' }
+        format.json { render :show, status: :ok, location: @company_contact_map }
+      else
+        format.html { render :edit }
+        format.json { render json: @company_contact_map.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+~~~~~~~~
+
+Aggiorno git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add company_contact_maps/edit form"
+~~~~~~~~
+
+
+
+
+## Scelta nuova azienda/contatto
+
+Cliccando sul pulsante della azienda/contatto sul tab_edit(form) di company_contact_maps/edit, si apre una nuova pagina con l'elenco di tutte le aziende/contatti dando la possibilità di scegliere una nuova azienda/contatto da associare. Per questa pagina sfrutto la companies/index e la people/index riadattando lo stile come pagina rear_view questa rear_view siccome è chiamata da un'altra rear_view non modifica minimamente i parametri passati sull'url ( usa l'helper h_params_path ). Le pagine companies#index e people#index sono pagine di ** terzo livello **. Che vuol dire terzo livello? Le pagine di primo livello sono le front_end (quelle bianche con in alto a destra il pulsante global_settings e senza il pulsante di chiusura). Le pagine di secondo livello sono le rear_view (quelle nere con in alto a destra il pulsante di chiusura) perché sono chiamate da quelle di primo livello, infatti è come se fossero finestre modali che possiamo chiudere per tornare alle pagine di primo livello. Le pagine di terzo livello sono aperte a partire dalle pagine di secondo livello. Le pagine di terzo livello hanno lo stesso stile rear_view di quelle di secondo livello (nere con in alto a destra il pulsante di chiusura) ma questa volta il pulsante di chiusura non torna alla pagina di front_end ma torna alla pagina rear_view di secondo livello.    
+
+
+
+
+### Scelta di una nuova azienda
+
+Dalla pagina del contatto X (contacts/show) clicchiamo sull'azienda collegata Y che ci apre company_person_map_params/edit. Sul tab_edit(form) avremo il link dell'azienda Y. Se vogliamo associare un'azienda differente clicchiamo sul link e ne scegliamo una nuova dalla pagina companies/index.
+Mettiamo il codice del rear_mode sopra al codice creato dalla scaffold. Al momento non attiviamo il partial della lista ma solo ul pulsante di chiusura che riporta alla pagina di secondo livello (rear_view). Quindi il pulsante di chiusura lo chiamiamo **button_close_to_rear**.
+
+la view ".../app/views/companies/index.html.erb" l'abbiamo già creata quando abbiamo trattato l'associazione companies<->people. 
+
+Il pulsante di chiusura continua a funzionare perché è stato creato il codice generico e flessibile 
+** <%= link_to url_for(h_params_path(path: "/#{params[:last_rear_controller]}/#{params[:last_rear_id]}/edit", tab_active: "edit", page: params[:last_rear_page], search: params[:last_rear_search])), :class => "list-group-item" do %> **
+
+Possiamo vedere che il link_to url_for riporta alla pagina di secondo livello (rear_view)
+
+Anche l'elenco viene visualizzato correttamente. Solo il cambio dell'azienda non avviene perché dobbiamo intervenire sul controller ma questo lo vediamo nel prossimo capitolo.
+In questo capitolo cambiamo i valori dando manualmente direttamente l'id di una nuova azienda.
+
+Aggiorniamo manualmente
+
+Verifichiamo l'id di una azienda esistente. Ad esempio abbiamo trovato che esiste l'azienda "Cioccobat srl" con id 3. Quindi andando dal contatto "Pippo" su company_contacts_maps/edit cambiamo l'id dell'azienda da id 1 "ABBello srl" ad id 3 "Cioccobat srl". Clicchiamo su "submit" e vediamo che funziona.
+
+Aggiorno git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add company_contact_maps/edit form"
+~~~~~~~~
+
+
+
+
+## Selezioniamo azienda/contatto da associare
+
+Abbiamo preparato le pagine companies/index e contacts/index con tanto di pulsante di chiusura **button_close_to_rear** adesso è giunto il momento di completare le pagine mettendo l'elenco il search il pagination e l'azione di selezione che su click mi riporta la nuova scelta in company_contact_maps/edit tab_edit.
+
+
+
+
+## Cambiamo l'id
+
+Prendiamo l'id che ci viene passato dalla selezione fatta sulla pagina di terzo livello (companies/index o contacts/index)
+
+Se siamo sull'elenco delle aziende cambiamo company_id.
+Se siamo sull'elenco dei contatti cambiamo contact_id.
+
+{title=".../app/controllers/company_person_maps_controller.rb", lang=ruby, line-numbers=on, starting-line-number=20}
+~~~~~~~~
+  # GET /company_person_maps/1/edit
+  def edit
+    if params[:change_id].present?
+      if params[:last_front_controller] == "companies"
+        @company_person_map.person_id = params[:change_id]
+      elsif params[:last_front_controller] == "people"
+        @company_person_map.company_id = params[:change_id]
+      end
+    end
+  end
+~~~~~~~~
+
+sull'helper h_xxx_params_path abbiamo già aggiungiamo :change_id.
+Su companies/index abbiamo già aggiunto l'elenco delle aziende con il link_to che passa sul params[:change_id] il valore di company.id
+quindi è tutto pronto. Possiamo fare una prova e vedere che funziona.

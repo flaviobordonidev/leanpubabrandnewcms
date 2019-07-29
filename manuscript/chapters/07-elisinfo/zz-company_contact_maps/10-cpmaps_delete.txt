@@ -1,0 +1,128 @@
+# company_contact_maps delete
+
+in questo capitolo creiamo il tab "delete" dell'edit:
+- delete : per distruggere la relazione tra azienda e contatto (non vengono distrutte nè l'azienda nè il contatto ma solo la relazione)
+
+
+
+
+## Apriamo il branch "company_contact_maps delete/destroy"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b ccmd
+~~~~~~~~
+
+
+
+
+## Andiamo sulla parte EDIT tab DELETE
+
+attiviamo 'company_contact_maps/_tab_delete' il codice sul pulsante del view è del tutto standard.
+Purtroppo la soluzione standard con un ** link_to ... method: :delete ... ** non mi passa tutte le variabili ed inoltre la maschera di "confirm: " non si legge bene quando ho la pagina aperta con le dimensioni ridotte. Al posto del link_to uso la form_for per effettuare l'eliminazione. Posso anche attivare il check_box che mi attiva l'eliminazione solo se è su ON.
+
+{title="views/company_contact_maps/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=33}
+~~~~~~~~
+					<%= render 'tab_delete' %>
+~~~~~~~~
+
+{title="views/company_contact_maps/_tab_delete.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%= form_for @company_contact_map, method: :delete do |f| %>
+
+  <!-- # pass params: -->
+  <%= hidden_field_tag(:locale, params[:locale]) %>
+  <%= hidden_field_tag(:last_front_controller, params[:last_front_controller]) %>
+  <%= hidden_field_tag(:last_front_action, params[:last_front_action]) %>
+  <%= hidden_field_tag(:last_front_id, params[:last_front_id]) %>  
+  <%= hidden_field_tag(:last_front_related, params[:last_front_related]) %>  
+  <%= hidden_field_tag(:last_front_page, params[:last_front_page]) %>  
+  <%= hidden_field_tag(:last_front_search, params[:last_front_search]) %>  
+  <%= hidden_field_tag(:last_rear_controller, params[:last_rear_controller]) %>
+  <%= hidden_field_tag(:last_rear_action, params[:last_rear_action]) %>
+  <%= hidden_field_tag(:last_rear_id, params[:last_rear_id]) %>
+  <%= hidden_field_tag(:last_rear_related, params[:last_rear_related]) %>
+  <%= hidden_field_tag(:last_rear_page, params[:last_rear_page]) %>
+  <%= hidden_field_tag(:last_rear_search, params[:last_rear_search]) %>
+  <%= hidden_field_tag(:related, params[:related]) %>
+  <%= hidden_field_tag(:page, 1) %>
+  <%= hidden_field_tag(:search, "") %>
+
+  <div class="actions">
+    <%= f.submit "#{t "company_contact_maps.edit.submit"}", class: "btn btn-primary btn-block" %>
+  </div>
+<% end %>
+~~~~~~~~
+
+Sul controller cambiamo solo la riga di codice del ** redirect_to **.
+
+{title="controllers/company_person_maps_controller.rb", lang=HTML+Mako, line-numbers=on, starting-line-number=73}
+~~~~~~~~
+  # DELETE /company_contact_maps/1
+  # DELETE /company_contact_maps/1.json
+  def destroy
+    @company_contact_map.destroy
+    respond_to do |format|
+      #format.html { redirect_to company_contact_maps_url, notice: 'Company contact map was successfully destroyed.' }
+      format.html { redirect_to url_for(view_context.h_params_path(path: "/#{params[:last_front_controller]}/#{params[:last_front_id]}", related: params[:last_front_related], page: params[:last_front_page], search: params[:last_front_search])), notice: 'Company contact map was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+~~~~~~~~
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+https://elisinfo5-flaviobordonidev.c9users.io/
+
+![startpage show](images/companies_people/mockup_people_index/mockup_people_index.png)
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add company_contact_maps edit tab_delete"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku ccmd:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge ccmd
+$ git branch -d ccmd
+~~~~~~~~
+
+
+
+
+## Backup su github
+
+facciamo un backup del ns progetto su github:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

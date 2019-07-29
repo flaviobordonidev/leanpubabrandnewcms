@@ -1,0 +1,270 @@
+## Gestire su un form più models.
+
+***************
+https://rubyplus.com/articles/3681-Complex-Forms-in-Rails-5
+https://rubyplus.com/episodes/81-Complex-Forms-in-Rails-5
+***************
+
+Tratto da railscast 196-nested-model-form
+con aiutino di: https://www.amooma.de/screencasts/2015-01-22-nested_forms-rails-4.2/
+
+
+
+
+## Apriamo un branch
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b rcast196
+~~~~~~~~
+
+
+
+
+## Creiamo il questionario
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g scaffold survey name:string
+~~~~~~~~
+
+{title=".../db/migrate/xxx_create_surveys.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class CreateSurveys < ActiveRecord::Migration[5.0]
+  def change
+    create_table :surveys do |t|
+      t.string :name
+
+      t.timestamps
+    end
+  end
+end
+~~~~~~~~
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rake db:migrate
+~~~~~~~~
+
+
+
+
+## Creiamo le domande
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g model question survey:references content:text
+~~~~~~~~
+
+{title=".../db/migrate/xxx_create_questions.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class CreateQuestions < ActiveRecord::Migration[5.0]
+  def change
+    create_table :questions do |t|
+      t.references :survey, foreign_key: true
+      t.text :content
+
+      t.timestamps
+    end
+  end
+end
+~~~~~~~~
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rake db:migrate
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+
+
+
+## Implementiamo relazione uno-a-molti con nested models in form
+
+{title=".../app/models/question.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class Question < ApplicationRecord
+  belongs_to :survey, inverse_of: :questions
+end
+~~~~~~~~
+
+
+{title=".../app/models/survey.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class Survey < ApplicationRecord
+  has_many :questions, inverse_of: :survey, dependent: : destroy
+  accepts_nested_attributes_for :questions
+end
+~~~~~~~~
+
+il codice ** accepts_nested_attributes_for: ** ci permette di gestire più modelli dentro lo stesso form.
+Da rails 5 è necessario aggiungere anche il **reverse_of**, for Creating an object and its children via accepts_nested_attributes_for in a :has_many association, altrimenti prendo errore dopo aver abilitato il passaggio dei valori del model annidato su **params...permit...**
+
+Per spiegazioni su **reverse_of** vedi: https://www.viget.com/articles/exploring-the-inverse-of-option-on-rails-model-associations
+
+Con il ** dependent: :destroy ** quando elimino un questionario (survey) mi elimina a cascata tutte le sue domande (questions). Altrimenti rimarrebbero delle domande "orfane", senza questionario. 
+
+
+
+
+## Implementiamo la view surveys/new
+
+{title=".../app/views/surveys/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%= form_for(survey) do |f| %>
+  <% if survey.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(survey.errors.count, "error") %> prohibited this survey from being saved:</h2>
+
+      <ul>
+      <% survey.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+
+  <%= f.fields_for :questions do |builder| %>
+    <p>
+      <%= builder.label :content, "Question" %><br/>
+      <%= builder.text_area :content, :rows => 3 %>
+    </p>
+  <% end %>
+  
+  
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+~~~~~~~~
+
+la parte di codice ** <%= f.fields_for :questions do |builder| %> ... <% end %> ** ci permette di aggiungere il modello queston dentro il form di survey.
+
+Ma ancora non funziona perché non è stata istanziata nessuna domanda. Risolviamo aggiungendo 3 domande nell'azione **new** del controller **surveys_controller**
+
+{title=".../app/controllers/surveys_controller.rb", lang=ruby, line-numbers=on, starting-line-number=15}
+~~~~~~~~
+  # GET /surveys/new
+  def new
+    @survey = Survey.new
+    @survey.questions.build
+  end
+~~~~~~~~
+
+La domanda viene istanziata con ** @survey.questions.build **
+
+Se adesso torniamo sul browser e diamo un refresh vediamo che funziona? Si ma a metà. Visualizza i campi nel form ma non prende i valori sul submit. Questo perché dobbiamo abilitare i valori del modello annidato (questions) sul controller del padre (surveys_controller). Ed inoltre non abbiamo implementato la visualizzazione su survey/show. 
+
+
+{title=".../app/controllers/surveys_controller.rb", lang=ruby, line-numbers=on, starting-line-number=71}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def survey_params
+      params.require(:survey).permit(:name, questions_attributes: [:id, :content])
+    end
+~~~~~~~~
+
+Adesso funziona. (anche se ancora non le vediamo perché la visualizzazione la implementiamo nel prossimo paragrafo)
+
+
+
+
+## Visualizziamo le domande
+
+lavoriamo sulla view surveys/show per visualizzare le domande (questions)
+
+{title=".../app/views/surveys/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=8}
+~~~~~~~~
+<ol>
+<% @survey.questions.each do |question| %>
+  <li>
+    <%= question.content %>
+  </li>
+<% end %>
+</ol>
+~~~~~~~~
+
+
+
+
+## Eliminamo dati vuoti
+
+Creiamo 3 domande e riempiamone solo 2 per dimostrare che ci creerà una domanda vuota.
+
+{title=".../app/controllers/surveys_controller.rb", lang=ruby, line-numbers=on, starting-line-number=15}
+~~~~~~~~
+  # GET /surveys/new
+  def new
+    @survey = Survey.new
+    3.times { @survey.questions.build }
+  end
+~~~~~~~~
+
+se facciamo la prova vediamo che ne lascia una vuota.
+Implementiamo il codice per non inserire le domande in elenco se non hanno dati.
+
+{title=".../app/models/survey.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class Survey < ApplicationRecord
+  has_many :questions, inverse_of: :survey, dependent: : destroy
+  accepts_nested_attributes_for :questions, reject_if: lambda { |a| a[:content].blank? }
+end
+~~~~~~~~
+
+Con il ** :reject_if ** ottengo che i valori di :content vuoti non vengano caricati in tabella.
+
+Si poteva anche usare ** , reject_if: proc { |attributes| attributes['name'].blank? } ** ma in questa circostanza è meglio il lambda. Il **lambda** è un tipo di **proc** con alcune differenze. Vedi di più su http://awaxman11.github.io/blog/2013/08/05/what-is-the-difference-between-a-block/
+
+
+
+
+## Eliminiamo le domande
+
+Le domande già inserite non possono essere eliminate svuotando il contenuto. Dobbiamo implementare un link per eliminarle. Iniziamo creando un checkbox ed in seguito creeremo il link.
+
+{title=".../app/views/surveys/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=20}
+~~~~~~~~
+  <%= f.fields_for :questions do |builder| %>
+    <p>
+      <%= builder.label :content, "Question" %><br/>
+      <%= builder.text_area :content, :rows => 3 %><br/>
+      <%= builder.check_box :_destroy %>
+      <%= builder.label :_destroy, "Remove Question" %>
+    </p>
+  <% end %>
+~~~~~~~~
+
+Per abilitare il check_box dobbiamo aggiungere ** :allow_destroy ** sul model survey
+
+{title=".../app/models/survey.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class Survey < ApplicationRecord
+  has_many :questions, inverse_of: :survey, dependent: : destroy
+  accepts_nested_attributes_for :questions, reject_if: lambda { |a| a[:content].blank? }, allow_destroy: true
+end
+~~~~~~~~
+
+adesso dobbiamo metterlo nella white list sul controller di survey
+
+
+{title=".../app/controllers/surveys_controller.rb", lang=ruby, line-numbers=on, starting-line-number=71}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def survey_params
+      params.require(:survey).permit(:name, questions_attributes: [:id, :content, :_destroy])
+    end
+~~~~~~~~
+
+adesso proviamo e verifichiamo che le domande vengono eliminate. Yea!!
+
+
+
+

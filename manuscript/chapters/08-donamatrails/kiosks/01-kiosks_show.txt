@@ -1,0 +1,301 @@
+# Mostriamo il chiosco (kiosk)
+
+Abbiamo già implementato kiosks_seeds nella sezione dashboard. In questa sezione lavoriamo di più sulla parte show ed attiviamo la ricerca da data a data
+
+
+
+
+## Apriamo il branch "people show"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b ks
+~~~~~~~~
+
+
+
+
+## Attiviamo la view kiosks/show
+
+
+{title=".../app/views/kiosks/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+  <div class="row"> <!-- START widgets box-->
+    
+    <%= render "widget_bg_donations" %>  <!-- totale Donazioni (.primary) -->
+    <%= render "widget_bg_pos" %>   <!-- totale POS  (.purple)      -->
+    <%= render "widget_bg_cash" %>    <!-- totale Cash (.green)      -->
+    <%= render "widget_bg_donators" %>    <!-- totale Donatori (.white)  --> 
+    
+  </div> <!-- END widgets box-->
+   
+  <div class="row"> <!-- START row main content -->
+    
+   <div class="col-lg-9"> <!-- START dashboard main content -->
+    
+
+    <%#= render "table_kiosk" %>
+    <%#= render "widget_bg_panel" %>     <!-- Flow Chart Widget     -->
+    <%#= render "widget_google_maps" %>  <!-- Google Map Widget     -->
+    <%#= render "widget_twitter" %>      <!-- Bottom Twitter Widget -->
+   
+   </div> <!-- END dashboard main content -->
+   
+  <aside class="col-lg-3"> <!-- START dashboard sidebar-->
+      
+    <%#= link_to 'Import', import_path %>
+    <%#= render "widget_loader" %>
+    <%#= render "widget_morris_donut" %>
+    <%#= render "widget_data" %>
+      
+  </aside> <!-- END dashboard sidebar-->
+  
+  </div> <!-- END row main content -->
+  
+  <!-- GOOGLE MAPS-->
+  <%#= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=AIzaSyAXXdIAawQd0hLNm_GRi91rz2PKH6Xoxfk&callback=initMap" %>
+
+
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Company:</strong>
+  <%= @kiosk.company %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @kiosk.name %>
+</p>
+
+<p>
+  <strong>Sn:</strong>
+  <%= @kiosk.sn %>
+</p>
+
+<p>
+  <strong>line1:</strong>
+  <%= @kiosk.line1 %>
+</p>
+
+<p>
+  <strong>line2:</strong>
+  <%= @kiosk.line2 %>
+</p>
+
+<p>
+  <strong>line3:</strong>
+  <%= @kiosk.line3 %>
+</p>
+
+<p>
+  <strong>locality:</strong>
+  <%= @kiosk.locality %>
+</p>
+
+<p>
+  <strong>region:</strong>
+  <%= @kiosk.region %>
+</p>
+
+<p>
+  <strong>postcode:</strong>
+  <%= @kiosk.postcode %>
+</p>
+
+<p>
+  <strong>country:</strong>
+  <%= @kiosk.country %>
+</p>
+
+<p>
+  <strong>latitude:</strong>
+  <%= @kiosk.latitude %>
+</p>
+
+<p>
+  <strong>longitude:</strong>
+  <%= @kiosk.longitude %>
+</p>
+
+<p>
+  <strong>Filecsvname:</strong>
+  <%= @kiosk.filecsvname %>
+</p>
+
+<p>
+  <strong>Vat2:</strong>
+  <%= @kiosk.vat2 %>
+</p>
+
+<p>
+  <strong>Tot cash cents:</strong>
+  <%= @kiosk.tot_cash_cents %>
+</p>
+
+<p>
+  <strong>Tot pos cents:</strong>
+  <%= @kiosk.tot_pos_cents %>
+</p>
+
+<%= link_to 'Edit', edit_kiosk_path(@kiosk) %> |
+<%= link_to 'Back', kiosks_path %>
+~~~~~~~~
+
+I partials
+
+{title=".../app/views/kiosks/_widget_bg_cash.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!-- START widget-->
+<div class="col-lg-3 col-md-6 col-sm-12">
+      <div class="panel widget bg-green">
+         <div class="row row-table">
+            <div class="col-xs-4 text-center bg-green-dark pv-lg">
+               <em class="fa fa-database fa-3x"></em>
+            </div>
+            <div class="col-xs-8 pv-lg">
+               <div class="h2 mt0"><%= @cash %></div>
+               <div class="text-uppercase">Cash</div>
+            </div>
+         </div>
+      </div>
+</div>
+~~~~~~~~
+
+
+{title=".../app/views/kiosks/_widget_bg_donations.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!-- Widget primary-->
+<div class="col-lg-3 col-sm-6">
+   <div class="panel widget bg-primary">
+      <div class="row row-table">
+         <div class="col-xs-4 text-center bg-primary-dark pv-lg">
+            <em class="fa fa-eur fa-3x"></em>
+         </div>
+         <div class="col-xs-8 pv-lg">
+            <div class="h2 mt0"><%= @cash+@pos %></div>
+            <div class="text-uppercase">Totale</div>
+         </div>
+      </div>  
+   </div>
+</div>
+~~~~~~~~
+
+
+{title=".../app/views/kiosks/_widget_bg_donators.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!-- Widget Donatori -->
+<div class="col-lg-3 col-md-6 col-sm-12">
+  <div class="panel widget bg-white">
+   <div class="row row-table">
+      <div class="col-xs-4 text-center bg-gray pv-lg">
+         <em class="fa fa-user fa-3x"></em>
+      </div>
+      <div class="col-xs-8 pv-lg">
+         <div class="h2 mt0"><%= @donators_num %></div>
+         <div class="text-uppercase">Donatori</div>
+      </div>
+   </div>
+  </div>
+</div>
+~~~~~~~~
+
+
+{title=".../app/views/kiosks/_widget_bg_pos.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!-- Widget POS-->
+<div class="col-lg-3 col-sm-6">
+  <div class="panel widget bg-purple">
+    <div class="row row-table">
+        <div class="col-xs-4 text-center bg-purple-dark pv-lg">
+        <em class="icon-credit-card fa-3x"></em>
+      </div>
+      <div class="col-xs-8 pv-lg">
+        <div class="h2 mt0"><%= @pos %></div>
+        <div class="text-uppercase">POS</div>
+      </div>
+    </div>
+  </div>
+</div
+~~~~~~~~
+
+
+
+
+## Implementiamo il controller kiosk show
+
+implementiamo il controller per visualizzare le variabili di istanza messe sui partials
+
+{title=".../app/controllers/kiosks_controller.rb", lang=ruby, line-numbers=on, starting-line-number=10}
+~~~~~~~~
+  # GET /kiosks/1
+  # GET /kiosks/1.json
+  def show
+    @transactions = @kiosk.transactions
+    @cash = @kiosk.transactions.where(payment_check: "PAYMENT_OK", cash_pos: "CASH").sum(:cents)/100
+    @pos = @kiosk.transactions.where(payment_check: "PAYMENT_OK", cash_pos: "POS").sum(:cents)/100
+    @donators_num = @kiosk.transactions.count
+  end
+~~~~~~~~
+
+
+
+
+## Implementiamo la ricerca per data
+
+
+
+{title=".../app/models/transaction.rb", lang=ruby, line-numbers=on, starting-line-number=6}
+~~~~~~~~
+  # scope filters --------------------------------------------------------------
+    #scope :search, lambda {|query| with_translations(I18n.locale).where(["name ILIKE ? ", "%#{query}%"])}
+    #scope :search_in_date_range, -> (query) {with_translations(I18n.locale).where(["name ILIKE ?", "%#{query}%"])}
+    scope :search_in_date_range, ->(start_date, end_date) {where(timestamp: start_date.to_date.beginning_of_day..end_date.to_date.end_of_day)}
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+
+creiamo il form per visualizzare le date 
+
+
+{title=".../app/views/application/_search_date_range.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%= form_tag "", method: "get", role: "search", class: 'bottom-pad' do %>
+
+  <div class="input-group left-pad">
+    <%= text_field_tag :start_date, params[:start_date], class: "form-control", placeholder: t("select_relateds.index.search") %>
+    <%= text_field_tag :end_date, params[:end_date], class: "form-control", placeholder: t("select_relateds.index.search") %>
+
+    <div class="input-group-btn right-pad">
+      <%= content_tag :button, type: "submit", class: "btn btn-primary" do %>
+        <span class= "fa fa-search"></span>
+      <% end %>
+    </div><!-- /input-group-btn -->
+    
+  </div><!-- /input-group -->
+
+<% end %>
+~~~~~~~~
+
+
+
+attiviamo la ricerca sul controller
+
+{title=".../app/controllers/kiosks_controller.rb", lang=ruby, line-numbers=on, starting-line-number=10}
+~~~~~~~~
+  # GET /kiosks/1
+  # GET /kiosks/1.json
+  def show
+    params[:start_date] = "01.01.2016" if params[:start_date].blank?
+    params[:end_date] = "31.12.2016" if params[:end_date].blank?
+
+    @transactions = @kiosk.transactions.where(payment_check: "PAYMENT_OK").search_in_date_range(params[:start_date],params[:end_date]).order('id_check DESC')
+    @cash = @transactions.where(payment_check: "PAYMENT_OK", cash_pos: "CASH").sum(:cents).to_f/100
+    @pos = @transactions.where(payment_check: "PAYMENT_OK", cash_pos: "POS").sum(:cents).to_f/100
+  
+    #@cash = @kiosk.transactions.where(payment_check: "PAYMENT_OK", cash_pos: "CASH").sum(:cents)
+    #@pos = @kiosk.transactions.where(payment_check: "PAYMENT_OK", cash_pos: "POS").sum(:cents)
+    @donators_num = @kiosk.transactions.search_in_date_range(params[:start_date],params[:end_date]).count
+  end
+~~~~~~~~

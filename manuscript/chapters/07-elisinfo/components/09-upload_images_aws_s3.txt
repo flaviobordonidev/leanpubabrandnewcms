@@ -1,0 +1,4 @@
+# Implementiamo Amazon S3
+
+
+questo capitolo non serve perché è già stato implementato tutto nei capitoli precedenti ed infatti il capitolo precedente già effettua upload delle immagini su aws.

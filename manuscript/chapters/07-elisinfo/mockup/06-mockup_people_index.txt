@@ -1,0 +1,212 @@
+# Mockup per la pagina delle persone
+
+
+
+
+## Apriamo il branch
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b mp
+~~~~~~~~
+
+
+
+
+## Rails generate controller 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g controller mockup_people index
+~~~~~~~~
+
+
+
+
+## Indice della pagina delle persone
+
+Aggiungiamo su routes l'instradamento ** get 'mockup_people/index' **
+
+{title=".../app/config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+Rails.application.routes.draw do
+  #scope "(:locale)", locale: /en|it/ do
+  
+    root 'homepage#index'
+    
+    devise_for :users, controllers: { sessions: 'users/sessions' }
+    resources :users
+
+    resources :global_settings, only: [:index]
+
+    get 'homepage/index'
+    get 'mockup_authentication/login'
+    get 'mockup_global_settings/index'
+    get 'mockup_homepage/index'
+    get 'mockup_people/index'
+    get 'mockups/test'
+    get 'testpages/page_a'
+    get 'testpages/page_b'
+    get 'users/show'
+
+    # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  
+  #end
+end
+~~~~~~~~
+
+
+
+
+## Aggiungiamo su views index
+
+{title=".../app/views/mockup_people/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="container-fluid front_mode">
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="left-pad">
+        <h1>Lista di Persone</h1>
+        <p>Grazie per visitare la nostra lista di persone. :)</p>
+      </div>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row">
+    <div class="col-xs-10 col-sm-11 col-lg-11">
+      <%= render 'mockup_people/index/related_form_search' %>
+    </div> <!-- /col -->
+    <div class="col-xs-2 col-sm-1 col-lg-1">
+      <%= render 'mockup_people/index/related_button_new' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <%= render 'mockup_people/index/related_list_group' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="text-center">
+        <%= render 'mockup_people/index/related_pagination' %>
+      </div> <!-- /text-center -->
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+</div> <!-- /front_mode -->
+~~~~~~~~
+
+{title=".../app/views/mockup_people/index/_related_button_new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="btn-group pull-right right-pad">
+  <a href="#" class="btn btn-default disabled">
+    <span class="glyphiconmy ico_new"></span>
+  </a>
+</div> <!-- /btn-group -->
+~~~~~~~~
+
+{title=".../app/views/mockup_people/index/_related_form_search.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!-- form_search_related -->
+<form role="search" method="get" id="search-form" name="search-form" class="bottom-pad">
+
+  <div class="input-group left-pad">
+    <input type="text" class="form-control" placeholder="cerca..." id="query" name="query" value=""></input>
+    <div class="input-group-btn right-pad">
+      <button type="submit" class="btn btn-default">
+        <span class="glyphicon glyphicon-search"></span>
+      </button>
+    </div><!-- /input-group-btn -->
+  </div><!-- /input-group -->
+</form>
+~~~~~~~~
+
+{title=".../app/views/mockup_people/index/_related_list_group.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="list-group left-pad right-pad">
+  <a href="#" class="list-group-item">
+    Quello col pizzetto <span class="badge"><span class="glyphicon glyphicon-star"></span></span>
+    <p><strong>Sig. Pierluigi Francesco Della Frallesserà</strong></p>
+  </a>
+  <a href="#" class="list-group-item">
+     
+    <p><strong>Sig. Giovanni Manicini</strong></p>
+  </a>
+  <a href="#" class="list-group-item">
+    <span class="badge"><span class="glyphicon glyphicon-star"></span></span>
+    <p><strong>Sig.ra Maria Del Carmina</strong></p>
+  </a>
+  <a href="#" class="list-group-item">
+    Quella di Roma
+    <p><strong>Ing.ra Valeria Marziali</strong></p>
+  </a>
+  <a href="#" class="list-group-item">
+
+    <p><strong>Sig. Mirco Valenti</strong></p>
+  </a>
+  <a href="#" class="list-group-item">
+
+    <p><strong>Sig. Giovannali</strong></p>
+  </a>
+</div> 
+~~~~~~~~
+
+{title=".../app/views/mockup_people/index/_related_pagination.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<ul class="pagination ">
+  <li class="disabled"><span>&laquo;</span></li>
+  <li class="default"><span>1 di 1 <span class="sr-only">(current)</span></span></li>
+  <li class="disabled"><span>&raquo;</span></li>
+</ul>
+~~~~~~~~
+
+
+
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+https://elisinfo5-flaviobordonidev.c9users.io/mockup_people/index
+
+![mockup_people index](images/companies_people/mockup_people_index/mockup_people_index.png)
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add mockup_people index"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku mp:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge mp
+$ git branch -d mp
+~~~~~~~~

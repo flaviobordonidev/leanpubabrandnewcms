@@ -1,0 +1,33 @@
+-# Contatti e Persone: relazione molti-a-molti (contact_person_maps) 
+
+trattiamo la relazione molti-a-molti tra contatti e persone.
+
+ATTENZIONE !!!
+Dividiamo il LATO Contatto dal LATO Persona
+
+01-mockup_cpmaps_index_contact_side
+02-mockup_cpmaps_edit_contact_side
+
+10-cpmaps_seeds
+
+11-cpmaps_index_side_person
+12-cpmaps_edit_side_person
+13-cpmaps_new_side_person
+14-cpmaps_delete_side_person
+15-jump_to_associate_person
+16-new_contact_new_istance_side_person
+
+21-cpmaps_index_side_contact
+22-cpmaps_edit_side_contact
+23-cpmaps_new_side_contact
+24-cpmaps_delete_side_contact
+25-jump_to_associate_contact
+26-new_person_new_istance_side_contact
+
+30-favorites_ccmaps_seeds
+
+31-favorites_ccmaps_edit_side_person
+32-person_favorites_list
+
+41-favorites_ccmaps_edit_side_contact
+42-contact_favorites_list

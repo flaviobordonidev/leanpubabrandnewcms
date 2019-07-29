@@ -1,0 +1,28 @@
+# Come sarebbe favorite senza il polimorfismo
+
+Apro un branch che poi eliminerò senza merge perché è solo a scopo didattico per far capire il vantaggio della relazione polimorfica.
+
+Senza polimorfismo avrei:
+
+- company_favorites (tabella e relativi models)
+- person_favorites (tabella e relativi models)
+- user_favorites (tabella e relativi models)
+...
+
+invece con il polimorfismo ho la sola 
+
+- favorites (tabella e relativi models polimorfici)
+
+
+Quindi il "favoritable" è relativo alle tebelle che hanno il record collegato ai favoriti
+es:
+  person Pippo (id: 1)    ha 5 favorii (favoritable_type: "people", favoritable_id: 1)
+  company ABBello (id: 1) ha 6 favoriti (favoritable_type: "companies", favoritable_id: 1)
+  user Flavio (id: 18)    ha 17 favoriti (favoritable_type: "user", favoritable_id: 18)
+  
+
+Il copy_table e copy_table_id invece si riferiscono al "tipo di favoriti"
+es:
+  person Pippo ha i 5 favoriti:
+    - azienda Buitani (id 134) in cui lavora (copy_table: "companies", copy_id: 134)
+    - indirizzo Via Caravaggio, 12 - 00100 - RM (id: 781) dove hanno casa i genitori (copy_table: "addresses", copy_id: 781)

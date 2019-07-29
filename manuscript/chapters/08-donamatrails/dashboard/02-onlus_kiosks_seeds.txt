@@ -1,0 +1,253 @@
+# Onlus e Chioschi
+
+I dati sono passati alla dashboard attravero la tabella kiosks e filtrati in funzione della onlus a cui appartiene l'utente che ha fatto login.
+Nel caso abbia fatto login l'amministratore verranno presentati tutti i records della tabella kiosks.
+
+In questo capitolo prepariamo l'infrastruttura per la base dati (database) relativa ai chioschi (kiosks) installati ed alle onlus che ne stanno facendo uso. La relazione uno-a-molti tra onlus-e-kiosks è utilizzata anche per filtrare e visualizzare solo i kiosks appartenenti alla relativa onlus a seguito di login di un utente della onlus.
+Nella tabella kiosks sono inoltre riportati i campi calcolati con i totali sia cash che POS (donazioni in moneta elettronica) raccolti dai relativi chioschi.
+
+Creiamo il Branch
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b onluskiosks
+~~~~~~~~
+
+
+
+
+## Creiamo la tabella onlus
+
+Questa tabella contiene i dati sulle varie onlus che installano i chioschi (kiosks)
+Come nome di tabella usiamo la parola "companies" perché rails gestisce correttamente la conversione plurale-singolare.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+
+> "company".pluralize
+ => "companies"
+
+> "companies".singularize
+ => "company"
+~~~~~~~~
+
+Invece per la parola "onlus" rails non gestisce correttamente la conversione plurale-singolare.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+
+> "onlus".pluralize
+ => "onlus"
+
+> "onlus".singularize
+ => "onlu"
+
+> "onlu".pluralize
+ => "onlus"
+~~~~~~~~
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g scaffold Company name:string vat:string vat2:string
+~~~~~~~~
+
+A> vat = Partita IVA
+A>
+A> vat2 = Codice Fiscale
+
+questo crea il migrate:
+
+{title=".../db/migrate/xxx_create_companies.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+class CreateCompanies < ActiveRecord::Migration[5.0]
+  def change
+    create_table :companies do |t|
+      t.string :name
+      t.string :vat
+      t.string :vat2
+
+      t.timestamps
+    end
+  end
+end
+~~~~~~~~
+
+
+L'utente deve appartenere ad una onlus e a seconda dell'onlus di appartenenza vengono visualizzati solo i rispettivi kiosks.
+Se invece è amministratore visualizza tutti i dati ed ha possibilità di modifica.
+
+
+
+## Creiamo la tabella kiosks
+
+I> ATTENZIONE: con "rails generate scaffold ..." -> uso il termine kiosk al SINGOLARE
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g scaffold Kiosk company:references name:string sn:string filecsvname:string vat2:string tot_cash_cents:decimal tot_pos_cents:decimal
+~~~~~~~~
+
+A> company:references -> definisce una foreign key per relazione uno a molti con tabella companies
+A>
+A> automaticamente nomina la corrispondente colonna company_id e la indicizza.
+A>
+A> name : XXX00, BNL01, VFD02, STC05, ...
+A>
+A> nome del chiosco. 3 lettere 2 cifre. Serve ad identificarlo in maniera univoca con riferimento all'onlus che lo usa
+A>
+A> sn : ...
+A>
+A> serial number. Serve ad identificare in maniera univoca l'hardware del kiosk.
+A>
+A> filecsvname : XXX00_transactions.txt, XXX02-transactions.txt, VFDD01_transacion.txt, ...
+A>
+A> lo uso perché nella vita reale alcuni nomi di files CSV sono stati inseriti con degli errori.
+A>
+A> address : "via bla bla italy"
+A>
+A> è l'indirizzo in cui è installato il kiosk ed è la stringa che viene passata al Google-Maps per mettere il segnalino
+A> 
+A> tot_cash_cents: 234520000
+A>
+A> è un campo che viene updatato dal file *transactions importato. E' decimal e non integer perché decimal è il formato migliore per gestire i campi valuta
+A> 
+A> tot_pos_cents: 234520000
+A>
+A> è un campo che viene updatato dal file *transactions importato. E' decimal e non integer perché decimal è il formato migliore per gestire i campi valuta
+
+questo crea il migrate:
+
+{title="/db/migrate/xxx_create_kiosks.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+class CreateKiosks < ActiveRecord::Migration[5.0]
+  def change
+    create_table :kiosks do |t|
+      t.references :company, foreign_key: true
+      t.string :name
+      t.string :sn
+      t.string :filecsvname
+      t.string :vat2
+      t.decimal :tot_cash_cents
+      t.decimal :tot_pos_cents
+
+      t.timestamps
+    end
+  end
+end
+~~~~~~~~
+
+I> Con rails 5 ed il t.references non serve aggiungere l'indice.
+I>
+I> ** t.references :company, foreign_key: true ** crea in automatico sia ** t.integer :company_id ** che l'indice quindi non serve ** add_index("kiosks", "company_id") **
+
+
+eseguiamo i due migrations
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rake db:migrate
+~~~~~~~~
+
+
+
+
+## Finalizziamo la relazione uno a molti
+
+Con la creazione della tabella kiosks abbiamo già iniziato ad implementare la relazione uno-a-molti aggiungendo il campo company_id con il ** t.references :company, foreign_key: true **
+
+I> Se non lo avessimo fatto avremmo potuto aggiungerlo con ** $ rails generate migration AddCompanyRefToKiosks company:references **
+I>
+I> add_column :kiosks, :company_id, :integer
+I>
+I> add_index :kiosks, :company_id
+
+adesso finalizziamo la relazione uno-a-molti lato models. Il model Company deve avere molti chioschi ** has_many :kiosks **.
+E dall'altro lato il model Kiosk deve appartenere ad una company ** belongs_to :company ** ( questo lato è riempito in automatico dal ** t.references ** sullo scaffold)
+
+{title=".../app/models/company.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+class Company < ApplicationRecord
+  has_many :kiosks
+end
+~~~~~~~~
+
+{title=".../app/models/kiosk.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+class Company < ApplicationRecord
+  belongs_to :company
+end
+~~~~~~~~
+
+
+
+
+## Popoliamo manualmente la tabella
+
+Usiamo la console rails da terminale per popolare le tabelle companies e kiosks.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+
+irb> c = Company.new(name: "UNHCR", vat: "123abc")
+irb> c.save
+irb> c.kiosks.new(name: "UNH01").save
+irb> c.kiosks.new(name: "UNH02").save
+
+oppure
+
+irb> c = Company.new(name: "UNHCR", vat: "123abc")
+irb> c.save
+irb> k = Kiosk.new(name: "UNH01")
+irb> c.kiosks << k
+irb> k = Kiosk.new(name: "UNH02")
+irb> c.kiosks << k
+
+irb> c.kiosks[0].name
+irb> c.kiosks[1].name
+
+irb> exit
+~~~~~~~~
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git status
+# non dovrebbe esserci nulla da stage e commit perchè abbiamo modificato solo il databae.
+$ git add -A
+$ git commit -m "populate database. No code modification"
+~~~~~~~~
+
+
+
+
+## Andiamo in produzione
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku onluskiosks:master
+~~~~~~~~
+
+Se andiamo sull'URL vediamo che per companies 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku run rake db:migrate
+~~~~~~~~
+
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge onluskiosks
+$ git branch -d onluskiosks
+~~~~~~~~

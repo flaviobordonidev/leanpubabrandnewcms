@@ -1,0 +1,5 @@
+-# homepage 
+
+Pagina iniziale che si presenta una volta effettuato il login.
+
+La creazione dell'entità homepage è già stata fatta nella sezione del libro che parla del **login** 

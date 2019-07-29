@@ -1,0 +1,233 @@
+# Kiosks sum
+
+sum sta sia per 'somme' (sum) che per 'riassumendo' (summarize) infatti prendiamo i totali dei vari chioschi e li riportiamo nella tabella kiosks. Inseriamo anche l'ultimo check_id di ogni chiosco.
+Per far questo espandiamo la tabella transactions con una relazione uno-a-molti con kiosks (un chiosco molte transazioni).
+
+
+
+
+## Apriamo il branch
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b ks
+~~~~~~~~
+
+
+
+
+## Un chiosco molte transazioni
+
+Implementiamo la relazione uno-a-molti tra la tabella kiosks e transactions. Un chiosco ha molte transazioni.
+Aggiungiamo quindi la chiave esterna che va nel lato "molti" nella tabella transactions.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails generate migration AddKioskRefToTransactions kiosk:references
+~~~~~~~~
+
+questo crea il migrate:
+
+{title=".../db/migrate/xxx_add_kiosk_ref_to_transactions.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+class AddKioskRefToTransactions < ActiveRecord::Migration[5.0]
+  def change
+    add_reference :transactions, :kiosk, foreign_key: true
+  end
+end
+~~~~~~~~
+
+Da Rails 5 il **add_reference ... foreign_key: true** ci risparmia di fare:
+
+~~~~~~~~
+add_column :transactions, :kiosk_id, :integer
+add_index :transactions, :kiosk_id
+~~~~~~~~
+
+Effettuiamo il migrate del database per aggiungere la chiave esterna alla tabella "transactions" sul database
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rake db:migrate
+~~~~~~~~
+
+
+
+
+## Model uno-a-molti 
+
+(riprendiamo dashboard/02-onlus_kiosks_seeds.txt)
+
+adesso finalizziamo la relazione uno-a-molti lato models. Il model Kiosk deve avere molte transazioni ** has_many :transactions **.
+E dall'altro lato il model Transaction deve appartenere ad un chiosco ** belongs_to :kiosk ** 
+
+{title=".../app/models/kiosk.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class Kiosk < ApplicationRecord
+  has_many :transactions
+end
+~~~~~~~~
+
+{title=".../app/models/transaction.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class Transaction < ApplicationRecord
+  belongs_to :kiosk
+end
+~~~~~~~~
+
+
+
+
+## Import per chiosco
+
+Svuotiamo la tabella delle transazioni
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+> Transaction.all
+> Transaction.destroy_all
+~~~~~~~~
+
+Adesso reimportiamo i dati associandoli al chiosco di competenza. Implementiamo una funzione che, cliccando su import i nomi dei files, li prende dalla tabella kiosk. Premendo il link import parte l'azione che richiama ad uno ad uno i files csv dal server ftp, li legge e sposta i dati sulla tabella Transactions.
+
+
+
+## Aggiungiamo il campo transaction_counter
+
+Sulla tabella kiosks aggiungiamo il campo transaction_counter per tener traccia dell'ultimo record importato dal file csv. Questo perché vogliamo importare solo nuovi records e non vogliamo nè duplicare records vecchi, nè sovrascrivere i dati già importati. Infatti l'amministratore può operare degli aggiustamenti sui record già importati o addirittura eliminare dei records e non vogliamo che queste vengano ricaricate.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails generate migration AddTransactionCounterToKiosks transaction_counter:integer
+~~~~~~~~
+
+questo crea il migrate:
+
+{title=".../db/migrate/xxx_add_transaction_counter_to_kiosks.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class AddTransactionCounterToKiosks < ActiveRecord::Migration[5.0]
+  def change
+    add_column :kiosks, :transaction_counter, :integer
+  end
+end
+~~~~~~~~
+
+Effettuiamo il migrate del database per aggiungere la chiave esterna alla tabella "transactions" sul database
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rake db:migrate
+~~~~~~~~
+
+Aggiungiamo allo strong-parameters del controller
+
+{title=".../app/controllers/kiosks_controller.rb", lang=ruby, line-numbers=on, starting-line-number=81}
+~~~~~~~~
+# Never trust parameters from the scary internet, only allow the white list through.
+def kiosk_params
+  params.require(:kiosk).permit(:company_id, :name, :sn, :filecsvname, :vat2, :tot_cash_cents, :tot_pos_cents, :transaction_counter)
+end
+~~~~~~~~
+
+I> forse questa aggiunta non serve per il valore incrementato da codice ma ci serve per permettere all'amministratore di modificare il contatore. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Facciamo le somme sulla console
+
+Inizialmente li vediamo sulla console di rails
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+~~~~~~~~
+
+Facciamo il totale di tutta la colonna cents
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+Payment.sum(:cents)
+~~~~~~~~
+
+Prendiamo solo i records che hanno la colonna verify con il valore "PAYMENT_OK"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+Payment.where(verify: "PAYMENT_OK")
+~~~~~~~~
+
+Facciamo il totale dei pagamenti andati a buon fine
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+Payment.where(verify: "PAYMENT_OK").sum(:cents)
+~~~~~~~~
+
+Prendiamo solo la parte pagata con pos
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+Payment.where(verify: "PAYMENT_OK", kind: "POS").sum(:cents)
+~~~~~~~~
+
+Prendiamo solo la parte pagata in cash
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+Payment.where(verify: "PAYMENT_OK", kind: "CASH").sum(:cents)
+~~~~~~~~
+
+Facciamo la percentuale del POS rispetto al CASH
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+p = Payment.where(verify: "PAYMENT_OK", kind: "POS").sum(:cents)
+c = Payment.where(verify: "PAYMENT_OK", kind: "CASH").sum(:cents)
+p100 = p/(p+c)*100
+c100 = c/(p+c)*100
+~~~~~~~~
+
+
+
+## Mettiamo i totali nella tabella kiosks
+
+
+
+
+
+
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge ks
+$ git branch -d ks
+~~~~~~~~

@@ -1,0 +1,41 @@
+# Nascondiamo le google secrets key con figaro
+
+
+
+## Apriamo il Branch
+
+
+
+
+## Usiamo Figaro
+
+
+
+## Pubblichiamo su Heroku
+
+Attenzione: dobbiamo passare la key con il comando heroku figaro...
+
+Google maps:
+http://stackoverflow.com/questions/38186827/google-maps-autocomplete-js-is-working-on-localhost-but-not-on-heroku
+just goto google console, enable the "Google Places API Web Service"
+
+
+In order to deploy all this on heroku, I already did the following :
+
+"heroku run db:migrate" in the terminal (because I had some pending migrations);
+"figaro heroku:set -e production" in the terminal, in order to push all my API keys to heroku (I also checked that these keys are indeed in heroku's config vars).
+in Google's developer console, within my project and within Google map javascript API, I ensured that my browser key is allowed for both my locahost and my domain name. In order to be very precise, I am using the same key for my locahost and my domain name. Until now, the only thing I have not managed to do yet, in Google's console, is to prove that I own my domain name.
+I checked I have not reached any of my API quotas yet.
+Within my autocomplete.js file, I used some console.log in order to find out, in my browser's inspector, what parts of the code are working. It seems that everything works except the console.logs that are in the 'OnPlaceChange' callback, since Gmap's autocomplete suggestions are not shown... ;
+I know that not seeing the autocomplete suggestions is not a problem of z-index associated to the .pac-container css element, since I already had to fix this and since Gmaps suggestions cannot be reached thanks to my keyboard arrows.
+I read this post about geocomplete (geocomplete for rails 4 not working in Heroku) and tried to precompile my assets. That did not lead to any change.
+In my browser inspector (in the 'network' section), when I write something in my form input, every new letter pressed on the keyboard triggers a new request. These requests names are 'AutocompletionService.GetPredictions.....'. In the "headers" section, I can see they are https requests to googleapis, with get methods and 200 status code. In the "response" section, I can see there seems to be a error with my API keys since the message is :
+/**/_xdc_._ty4oqn && _xdc_._ty4oqn( [3,null,null,"This API project is not authorized to use this API. Please ensure that this API is activated in the APIs Console: https://console.developers.google.com/apis/library?project=_ Please ensure this API is activated in the Google Developers Console: https://console.developers.google.com/apis/api/places_backend?project=_ For more information on authentication and Google Maps Javascript API services please see: https://developers.google.com/maps/documentation/javascript/get-api-key"] )
+ Run code snippetExpand snippet
+I followed the link in the error message, leading me to Google's console, and I get back to my project and API keys, which are settled both server-side and browser-side. Once again, the only thing i did not managed to do in Google's console was to prove I own my domain name.
+Is this last point the origin of the issue (and in this case I guess I need some help from my hosting services) or do you guys see another mistake?
+
+
+I has same issue too. just goto google console, enable the "Google Places API Web Service", then it will solved the problem.
+
+you are completely right! Thanks a lot! So, how to explain it? I guess that, because I'm looking for both geocoded (addresses) and establishments, Google Places API Web Service" is implicitly called, in addition to Google Javascript API. Am I right? – Quentin Jul 5 at 8:31

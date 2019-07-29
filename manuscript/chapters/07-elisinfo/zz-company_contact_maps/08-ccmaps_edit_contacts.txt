@@ -1,0 +1,79 @@
+# company_contact_map edit lato contacts
+
+
+
+
+
+ATTENZIONE: ANCORA NON SO SE UNIRE I CAPITOLI 7 ED 8 O SE LASCIARLI SEPARATI!!!
+FORSE SEPARANDOLI LE SPIEGAZIONI RISULTANO MENO CONTORTE. LATO CODICE LASCIO UN #TODO NELLA PARTE ELSIF... DEL CAPITOLO PRECEDENTE CHE COMPLETO IN QUESTO CAPITOLO
+FORSE DIVIDO PIU' CAPITOLI CREANDO DUE LATI.
+
+IL LATO DA CONTATTO X (che lascia il codice del lato company con un #TODO o Byebug): 
+  0..-mockup_ccmaps_index_contact_side
+  0..-ccmaps_index_contact_side
+  0..-contacts_show_ccmaps
+  0..-mockup_ccmaps_edit_contact_side
+  0..-ccmaps_edit_contact_side
+
+ED IL LATO DA AZIENDA Y (che completa il codice):
+  0..-mockup_ccmaps_index_company_side
+  0..-ccmaps_index_company_side
+  0..-companies_show_ccmaps
+  0..-mockup_ccmaps_edit_company_side
+  0..-ccmaps_edit_company_side
+
+
+
+
+
+
+Lato contacts/index invece devo rifare tutto. 
+
+su contacts/index
+
+{title=".../app/views/contacts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=27}
+~~~~~~~~
+<div class="list-group left-pad right-pad">
+  <% @contacts.each do |contact| %>
+    <%= link_to url_for(h_params_path(path: "/#{params[:last_rear_controller]}/#{params[:last_rear_id]}/edit", change_id: contact.id, tab_active: "edit")), :class => "list-group-item" do %>
+      <p> <%= contact.medium %> </p>
+      <p><strong> <%= "#{contact.identifier}"%> </strong></p>
+    <% end %>
+  <% end %>
+</div>
+~~~~~~~~
+
+sul controller dei contatti implementiamo il search ed il pagination
+
+{title=".../app/controllers/contacts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=40}
+~~~~~~~~
+  # GET /contacts
+  # GET /contacts.json
+  def index
+    #@contacts = Contact.all
+    @contacts = Contact.search(params[:search]).order('created_at DESC').page(params[:page]).per_page(2)
+  end
+~~~~~~~~
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku ccmed:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge ccmed
+$ git branch -d ccmed
+~~~~~~~~

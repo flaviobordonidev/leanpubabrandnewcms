@@ -1,0 +1,95 @@
+# Aggiungiamo Trix
+
+Questa è un'aggiunta fatta a seguito del capitolo 13 di components (13-trix_editor). Quindi, prima di eseguire questo capitolo aggiuntivo, fai riferimento al capitolo 13 per installare la gemma trix ed implementarla.
+
+
+
+
+## Apriamo il branch "Histories Trix-editor"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b ht
+~~~~~~~~
+
+
+
+
+## Aggiungiamo Trix sul view edit di memo histories
+
+Aggiungiamolo nella pagina **histories/edit** nel partial **_form**
+
+{title=".../app/views/histories/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=59}
+~~~~~~~~
+    <div class="field">
+      <%= f.label :memo, class: "control-label" %>
+      <% if Rails.env.development? %>
+        <%= f.text_area :memo, id: "memo", class: 'form-control', rows: '3' %>
+      <% else %>
+        <%= f.hidden_field :memo, id: "memo" %>
+      <% end %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+    <trix-editor input="memo", class="trix-white"></trix-editor>
+~~~~~~~~
+
+Se siamo in sviluppo lascio visibile il campo text_area invece in produzione lo nascondo (hidden_field) e lascio attivo solo trix-editor.
+Ricordo che è importante che il campo abbia l'attributo **id** e che il valore sia uguale a quello dell'attributo **input** di trix-editor; nel nostro caso **id: "memo"** e **input="memo"**.
+
+
+
+
+
+## Aggiungiamo Trix sul view show di descrizione componenti
+
+Con trix questo viene passato direttamente codice HTML ed è importante per la sicurezza fare il **sanitize** del testo.
+
+{title=".../app/views/histories/_descriptions.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=6}
+~~~~~~~~
+      <%= sanitize "#{history.memo}" %>
+~~~~~~~~
+
+e questo è tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add trix to histories memo"
+~~~~~~~~
+
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku ht:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge ht
+$ git branch -d ht
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

@@ -1,0 +1,53 @@
+# Authorization
+
+Authentication è fare accesso/login. -- Devise
+Authorization è dare livelli di accesso differente -- CanCanCan o Pundit
+
+
+La scelta che sembra un poco migliore è Pundit.
+CanCan era eccellente ma è stato abbandonato e ripreso da una comunità con CanCanCan.
+Comunque entrambe mi sembrano ottime alternative.
+
+
+https://github.com/CanCanCommunity/cancancan/wiki
+https://github.com/RolifyCommunity/rolify/wiki/Devise---CanCanCan---rolify-Tutorial
+
+*[ruby-toolbox rails_authorization](https://www.ruby-toolbox.com/categories/rails_authorization)
+
+
+* [sitepoint - Straightforward Rails Authorization with Pundit](https://www.sitepoint.com/straightforward-rails-authorization-with-pundit/)
+* [Pundit](https://github.com/elabs/pundit)
+
+*[CanCanCan: The Rails Authorization Dance](https://www.sitepoint.com/cancancan-rails-authorization-dance/)
+
+Episode #188 – Nov 16, 2009 - Declarative Authorization
+Episode #192 – Dec 14, 2009 - Authorization with CanCan
+Episode #385 – Oct 07, 2012 - Authorization from Scratch Part 1
+Episode #386 – Oct 11, 2012 - Authorization from Scratch Part 2
+
+
+youtube:
+
+* [Rails Authorization With Pundit](https://www.youtube.com/watch?v=qruGD_8ry7k)
+* [Codeplace | User Authorization in Ruby on Rails using CanCan](https://www.youtube.com/watch?v=0ZCvLDZQ5HM)
+
+
+
+---
+current_user.company_id
+
+current_user.company.kiosks.all
+
+User 1<-->1 Company
+User has_one :company
+Company belogns_to :user
+
+faccio una relazione one-to-one perché semplifica ed accellera la gestione delle autorizzazioni.
+Ho problema con utente donachiaro che vuole vedere tutti i records. No problem perché lui è ADMIN e dico che ADMIN vede tutto..
+
+if current_user.admin?
+  @kiosks = Kiosk.all
+else
+  @kiosks = current_user.company.kiosks.all
+end
+

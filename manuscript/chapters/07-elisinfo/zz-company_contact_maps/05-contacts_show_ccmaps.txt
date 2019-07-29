@@ -1,0 +1,353 @@
+# Contact show related companies via company_contact_maps
+
+
+
+
+## Apriamo il branch "contacts-show via company_contact_maps"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b cs_ccm
+~~~~~~~~
+
+
+
+
+## Dal contatto mostriamo le aziende collegate
+
+Dalla pagina **contacts#show** visualizziamo l'elenco delle relative **companies**.
+
+
+
+
+### Il controller **contacts**
+
+Per la visualizzazione delle aziende collegate la parte di codice che ci serve è
+
+{title=".../app/controllers/contacts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+    when "companies"
+      @relateds = @contact.company_contact_maps.all.page(params[:page]).per_page(2)
+      @relateds_path = "company_contact_maps"
+~~~~~~~~
+
+Comunque prepariamo anche la parte di codice che ci servirà in futuro.
+
+[01:](#code-company_contact_maps-contacts_show_ccmaps-01)
+
+{title=".../app/controllers/contacts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+  # GET /contacts/1
+  # GET /contacts/1.json
+  def show
+    # gestiamo l'elenco dei relateds
+    case params[:related]
+    when "favorites"
+      @relateds = @contact.favorites.page(params[:page]).per_page(3).order('created_at DESC')
+      #@relateds = Favorite.all.page(params[:page]).per_page(6)
+      @relateds_path = "favorites"
+    when "people"
+      raise #TODO
+      #@relateds = @contacts.company_person_maps.all
+      #@relateds = @contact.contact_person_maps.search_people(params[:search]).page(params[:page]).per_page(2).order('created_at DESC')
+      #@relateds_path = "contact_person_maps"
+    when "companies"
+      @relateds = @contact.company_contact_maps.all.page(params[:page]).per_page(2)
+      #@relateds = @contact.company_contact_maps.search_companies(params[:search]).page(params[:page]).per_page(2).order('created_at DESC')
+      @relateds_path = "company_contact_maps"
+    when "contacts"
+      # TODO
+      @relateds = Contact.all
+    else
+      raise "Errore da gestire"
+    end
+  end
+~~~~~~~~
+
+I> DIDATTICAMENTE è migliore non mettere il codice che ci servirà in futuro perché confonde. Molto meglio implementare la ** byebug gem ** come spiegato nel capitolo [Debugging Rails Applications](http://guides.rubyonrails.org/debugging_rails_applications.html) della guida ufficiale di rails.
+
+~~~~~~~~
+  # GET /contacts/1
+  # GET /contacts/1.json
+  def show
+    # gestiamo l'elenco dei relateds
+    case params[:related]
+    when "companies"
+      @relateds = @contact.company_contact_maps.all.page(params[:page]).per_page(2)
+      #@relateds = @contact.company_contact_maps.search_companies(params[:search]).page(params[:page]).per_page(2).order('created_at DESC')
+      @relateds_path = "company_contact_maps"
+    else
+      byebug
+    end
+~~~~~~~~
+
+
+
+
+### Il view **contact#show**
+
+implementiamo ** <%= render "#{@relateds_path}/index", related_list: @relateds %> ** sul view show
+
+{title=".../app/views/people/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="container-fluid front_mode"> <!-- front_mode -->
+
+  <!-- menu_bar -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-10 col-sm-11 col-lg-11"> <!-- col -->
+      <%= render 'breadcrumbs' %>
+    </div> <!-- /col -->
+    <div class="col-xs-2 col-sm-1 col-lg-1"> <!-- col -->
+      <%= render 'button_global_settings' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <!-- /menu_bar -->
+
+  <!-- main -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-12"> <!-- col -->
+      <%= render 'main_media_object' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <!-- /main -->
+
+  <!-- related -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-10 col-sm-11 col-lg-11"> <!-- col -->
+      <%= render 'mockup_people/show/related_form_search' %>
+    </div> <!-- /col -->
+    <div class="col-xs-2 col-sm-1 col-lg-1"> <!-- col -->
+      <%= render 'mockup_people/show/related_button_new' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-12"> <!-- col -->
+      <%#= render 'mockup_people/show/related_list_group' %>
+      <% if params[:related] == "favorites" or params[:related] == "people" %>
+        <%= render "mockup_#{params[:related]}/show/related_list_group" %>
+      <% else %>
+        <%= render "#{@relateds_path}/index", related_list: @relateds %>
+      <% end %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-12"> <!-- col -->
+      <div class="text-center">
+        <%= render 'mockup_people/show/related_pagination' %>
+      </div> <!-- /text-center -->
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <!-- /related -->
+
+</div> <!-- /front_mode -->
+~~~~~~~~
+
+il partial breadcrumbs/select_related lo abbiamo già implementato nei capitoli precedenti
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+https://elisinfo5-flaviobordonidev.c9users.io/company_person_maps
+
+![https://elisinfo5-flaviobordonidev.c9users.io/company_person_maps](images/company_person_maps/cpmaps_index/cpmaps.png)
+
+
+
+
+## Lista dei relateds
+
+Sulla pagina **contacts#show** facciamo il rendere del partial related_list eccetto nel caso di **contacts** che visualizzerebbe un elenco "mirror".
+
+{title=".../app/views/contacts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=31}
+~~~~~~~~
+      <% if params[:related] == "contacts" %>
+        <p>#TODO</p>
+        <%#= render "mockup_#{params[:related]}/show/related_list_group" %>
+      <% else %>
+        <%= render "#{@relateds_path}/index", related_list: @relateds %>
+      <% end %>
+~~~~~~~~
+
+
+
+
+
+## Search
+
+Implemento il search sul model di company_contact_maps.
+
+{title=".../app/models/company_contact_map.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class CompanyContactMap < ApplicationRecord
+
+  # many-to-many ---------------------------------------------------------------
+  belongs_to :company
+  belongs_to :contact
+  #-----------------------------------------------------------------------------
+  
+  # globalize required ---------------------------------------------------------
+  translates :summary, :fallbacks_for_empty_translations => true
+  #-----------------------------------------------------------------------------
+
+  #scope filters ---------------------------------------------------------------
+  # sfrutto lo scope: search del model contact 
+  scope :search_contacts, -> (query) {joins(:contact).merge(Contact.search(query))}
+  # sfrutto lo scope: search del model Company 
+  scope :search_companies, -> (query) {joins(:company).merge(Company.search(query))}
+  #-----------------------------------------------------------------------------
+end
+~~~~~~~~
+
+
+Attiviamo il search sul controller di contact
+
+{title=".../app/controllers/contacts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+    when "companies"
+      @relateds = @contact.company_contact_maps.search_companies(params[:search]).page(params[:page]).per_page(2).order('created_at DESC')
+      @relateds_path = "company_contact_maps"
+~~~~~~~~
+
+{title=".../app/controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+  # GET /contacts/1
+  # GET /contacts/1.json
+  def show
+    # gestiamo l'elenco dei relateds
+    case params[:related]
+    when "favorites"
+      @relateds = @contact.favorites.page(params[:page]).per_page(3).order('created_at DESC')
+      #@relateds = Favorite.all.page(params[:page]).per_page(6)
+      @relateds_path = "favorites"
+    when "people"
+      raise #TODO
+      #@relateds = @contacts.company_person_maps.all
+      #@relateds = @contact.contact_person_maps.search_people(params[:search]).page(params[:page]).per_page(2).order('created_at DESC')
+      #@relateds_path = "contact_person_maps"
+    when "companies"
+      #@relateds = @contact.company_contact_maps.all.page(params[:page]).per_page(2)
+      @relateds = @contact.company_contact_maps.search_companies(params[:search]).page(params[:page]).per_page(2).order('created_at DESC')
+      @relateds_path = "company_contact_maps"
+    when "contacts"
+      # TODO
+      @relateds = Contact.all
+    else
+      raise "Errore da gestire"
+    end
+  end
+~~~~~~~~
+
+testiamo che funziona la ricerca passando il parametro search=vi direttamente sull'URL
+http://localhost:3000/it/companies/2?page=1&related=people&search=vi
+
+
+
+
+## people show search_form 
+
+Sulla pagina **contacts#show** facciamo il rendere del partial related_search
+
+{title=".../app/views/contacts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=31}
+~~~~~~~~
+<%= render 'related_search' %>
+~~~~~~~~
+
+il partial lo abbiamo già a livello globale su ** .../app/views/application/_related_search **.
+
+
+
+
+## Pagination
+
+Sulla pagina **contacts#show** facciamo il rendere del partial related_pagination eccetto nel caso di **contacts** che visualizzerebbe un elenco "mirror".
+
+{title=".../app/views/contacts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=31}
+~~~~~~~~
+        <% if params[:related] == "contacts" %>
+          <%= render 'mockup_contacts/show/related_pagination' %>
+        <% else %>
+          <%= render 'related_pagination', list_to_paginate: @relateds %>
+        <% end %>
+~~~~~~~~
+
+il partial lo abbiamo già a livello globale su ** .../app/views/application/_related_pagination **.
+
+implementiamo il pagination anche sul controller mettendo ** .page(params[:page]) ** all'elenco delle aziende collegate
+
+{title=".../app/controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=14}
+~~~~~~~~
+def show
+  # gestiamo l'elenco dei relateds
+  case params[:related]
+  when "favorites"
+    # TODO
+  when "people"
+    # TODO
+  when "companies"
+    @relateds = @person.company_person_maps.search_companies(params[:search]).page(params[:page]).per_page(3).order('created_at DESC')
+    @relateds_path = "company_person_maps"
+  else
+    raise "Errore da gestire"
+  end
+end
+~~~~~~~~
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+https://elisinfo5-flaviobordonidev.c9users.io/company_contact_maps
+
+![https://elisinfo5-flaviobordonidev.c9users.io/company_contact_maps](images/company_contact_maps/cpmaps_index/cpmaps.png)
+
+
+sta funzionando quindi facciamo un commit
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add contacts#show company_contact_maps search and pagination"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku cs_ccm:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge cs_ccm
+$ git branch -d cs_ccm
+~~~~~~~~

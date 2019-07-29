@@ -1,0 +1,294 @@
+# Mockup per la pagina show delle persone
+
+
+
+
+## Apriamo il branch "mockup people show"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b mps
+~~~~~~~~
+
+
+
+
+## Rails controller 
+
+aggiungiamo l'azione show al controller mockup_companies
+
+{title=".../app/controllers/mockup_people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class MockupPeopleController < ApplicationController
+
+  def index
+  end
+  
+  def show
+  end
+
+end
+~~~~~~~~
+
+
+
+
+## Instradiamo l'azione show sulla views
+
+Aggiungiamo su routes l'instradamento ** get 'mockup_companies/show' **
+
+{title=".../app/config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+Rails.application.routes.draw do
+
+
+  #scope "(:locale)", locale: /en|it/ do
+  
+    root 'homepage#index'
+    
+    devise_for :users, controllers: { sessions: 'users/sessions' }
+    resources :users
+
+    resources :global_settings, only: [:index]
+    resources :companies
+    resources :people
+    #resources :select_relateds, only: [:index]
+    resources :select_relateds
+
+    get 'homepage/index'
+    get 'mockup_authentication/login'
+    get 'mockup_companies/index'
+    get 'mockup_favorites/index'
+    get 'mockup_global_settings/index'
+    get 'mockup_homepage/index'
+    get 'mockup_people/index'
+    get 'mockup_people/show'
+    get 'mockup_select_relateds/index'
+    get 'mockups/test'
+    get 'testpages/page_a'
+    get 'testpages/page_b'
+    get 'users/show'
+
+    # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  
+  #end
+end
+~~~~~~~~
+
+
+
+
+## Creiamo la view mockup_people/show
+
+
+{title=".../app/views/mockup_people/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="container-fluid front_mode"> <!-- front_mode -->
+
+  <!-- menu_bar -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-10 col-sm-11 col-lg-11"> <!-- col -->
+      <%= render 'mockup_people/show/breadcrumbs' %>
+    </div> <!-- /col -->
+    <div class="col-xs-2 col-sm-1 col-lg-1"> <!-- col -->
+      <%= render 'mockup_people/show/button_global_settings' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <!-- /menu_bar -->
+
+  <!-- main -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-12"> <!-- col -->
+      <%= render 'mockup_people/show/main_media_object' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <!-- /main -->
+
+  <!-- related -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-10 col-sm-11 col-lg-11"> <!-- col -->
+      <%= render 'mockup_people/show/related_form_search' %>
+    </div> <!-- /col -->
+    <div class="col-xs-2 col-sm-1 col-lg-1"> <!-- col -->
+      <%= render 'mockup_people/show/related_button_new' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-12"> <!-- col -->
+      <%= render 'mockup_people/show/related_list_group' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-12"> <!-- col -->
+      <div class="text-center">
+        <%= render 'mockup_people/show/related_pagination' %>
+      </div> <!-- /text-center -->
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <!-- /related -->
+
+</div> <!-- /front_mode -->
+~~~~~~~~
+
+
+
+{title=".../app/views/mockup_people/show/_breadcrumbs.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<ol class="breadcrumb">
+  <li>
+    <a href="#" class="btn btn-default">
+      <span class="glyphiconmy ico_home"></span>
+    </a>    
+  </li>
+  <li class="active">
+    <a href="#" class="btn btn-link disabled">
+      <span class="glyphiconmy ico_person">     Persona</span>
+    </a>
+    <a href="#" class="btn btn-default">
+      <span class="glyphiconmy ico_favorite"></span>
+    </a>
+  </li>
+</ol>
+~~~~~~~~
+
+
+{title=".../app/views/mockup_people/show/_button_global_settings.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<ol class="breadcrumb top-pad pull-right right-pad">
+  <li>
+    <a href="#" class="btn btn-default">
+      <span class="glyphiconmy ico_global_settings"></span>
+    </a>
+  </li>
+</ol>
+~~~~~~~~
+
+
+{title=".../app/views/mockup_people/show/_main_media_object.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="list-group left-pad right-pad">
+  <a href="#" class="list-group-item media">
+    <div class="list-group-item-heading pull-left" >
+      <%= image_tag "my_style_images/default/person_default.png", alt: "user image", class: "media-object" %>
+      <!-- <img class="media-object" src="my_style_images/default/person_default.png" alt="user image"> -->
+    </div>
+    <div class="list-group-item-text media-body">
+      <h4 class="media-heading">nulla</h4>
+      <h4><strong>Sig. Pierluigi Francesco Della Frallessera</strong></h4>
+      <p>quello con il pizzetto</p>
+    </div>
+  </a>
+</div>
+~~~~~~~~
+
+
+{title=".../app/views/mockup_people/show/_related_form_search.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!-- form_search_related -->
+<form role="search" method="get" id="search-form" name="search-form" class="bottom-pad">
+
+  <div class="input-group left-pad">
+    <input type="text" class="form-control" placeholder="cerca..." id="query" name="query" value=""></input>
+    <div class="input-group-btn right-pad">
+      <button type="submit" class="btn btn-default">
+        <span class="glyphicon glyphicon-search"></span>
+      </button>
+    </div><!-- /input-group-btn -->
+  </div><!-- /input-group -->
+</form>
+~~~~~~~~
+
+
+{title=".../app/views/mockup_people/show/_related_button_new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="btn-group pull-right right-pad">
+  <a href="#" class="btn btn-default disabled">
+    <span class="glyphiconmy ico_new"></span>
+  </a>
+</div> <!-- /btn-group -->
+~~~~~~~~
+
+
+{title=".../app/views/mockup_people/show/_related_list_group.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="list-group left-pad right-pad">
+  <a href="#" class="list-group-item">
+    Cellulare <span class="badge"><span class="glyphicon glyphicon-star"></span></span>
+    <p><strong>+39 345 1203154</strong></p>
+  </a>
+  <a href="#" class="list-group-item">
+    Uff acquisti <span class="badge"><span class="glyphicon glyphicon-star"></span></span>
+    <p><strong>PFdS snc</strong></p>
+  </a>
+  <a href="#" class="list-group-item">
+    Rappresentante
+    <p><strong>Amway SpA</strong></p>
+  </a>
+  <a href="#" class="list-group-item">
+    email
+    <p><strong>pf.dfrallessera@prova.com</strong></p>
+  </a>
+</div> 
+~~~~~~~~
+
+{title=".../app/views/mockup_people/show/_related_pagination.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<ul class="pagination ">
+  <li class="disabled"><span>&laquo;</span></li>
+  <li class="default"><span>1 di 1 <span class="sr-only">(current)</span></span></li>
+  <li class="disabled"><span>&raquo;</span></li>
+</ul>
+~~~~~~~~
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+https://elisinfo5-flaviobordonidev.c9users.io/mockup_people/index
+
+![mockup_people show](images/companies_people/mockup_people_show/mockup_people_show.png)
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add mockup_people show"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku mps:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge mps
+$ git branch -d mps
+~~~~~~~~

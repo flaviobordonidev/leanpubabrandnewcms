@@ -1,0 +1,6 @@
+-# Predisponiamo la dashboard
+
+prepariamo sia la GUI che le tabelle per la dashboard. 
+Al momento inseriamo i dati manualmente, mentre nel prossimo capitolo li importeremo dai files CSV.
+
+Flavio prova di verifica comunicazione con github. oggi 11-May-19 ho migrato da c9 ad awsC9.

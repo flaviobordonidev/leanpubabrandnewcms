@@ -1,0 +1,227 @@
+## Storie
+
+in questo capitolo lavoreremo principalmente lato database. Creeremo la tabella dossiers e metteremo i seed iniziali ed alcuni dati di prova. Non avremo nessuna interazione lato views e quindi non apriremo il browser per usare la web gui su http://localhost:3000
+Eseguendo gli scaffolds la web gui è creata in automatico ma in questo capitolo non la utilizzeremo. Utilizzeremo invece la console di rails "$ rails c".
+
+Creiamo una sola tabella polimorfica (histories) per tenere traccia cronologica delle informazioni di ogni entità (persona, azienda, componente, prodotto, ...)
+
+
+
+
+## Apriamo il branch "Polimorphic Histories Seeds"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b phs
+~~~~~~~~
+
+
+
+
+## Creiamo la tabella histories
+
+La tabella delle storie avrà i seguenti campi:
+
+* title (string) : Il titolo della storia. Also Known As "description".
+* manual_date (datetime - sort Desc) : data del commento. Anche se c'è già creazione e modifica mi è utile per riordinarmi l'elenco. 
+                
+                https://stackoverflow.com/questions/27873117/rails-create-record-with-column-of-type-date
+                
+* memo (text) : La storia. Also Known As "detail".
+* user_id (integer) : User proprietario della storia (owner). Chi l'ha scritta (written_by). (l'edit e il delete può essere protetto con authorization (pundit+rolify))
+
+Inoltre avrà i due campi per il polimorfismo:
+
+* historyable_id per la chiave esterna (lato molti della relazione uno-a-molti)
+* historyable_type per identificare la tabella esterna 
+
+Usiamo lo Scaffold che mi imposta già l'applicazione in stile restful con le ultime convenzioni Rails.
+
+I> ATTENZIONE: con "rails generate scaffold ..." -> uso il SINGOLARE
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g scaffold History historyable_id:integer historyable_type:string title:string manual_date:datetime memo:text user_id:integer 
+~~~~~~~~
+
+questo mi crea il migration:
+
+{title=".../db/migrate/xxx_create_histories.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class CreateHistories < ActiveRecord::Migration[5.0]
+  def change
+    create_table :histories do |t|
+      t.integer :historyable_id, foreign_key: true
+      t.string :historyable_type
+      t.string :title
+      t.datetime :manual_date
+      t.text :memo
+      t.integer :user_id, foreign_key: true
+
+      t.timestamps
+    end
+  end
+end
+~~~~~~~~
+
+Abbiamo aggiunto **, foreign_key: true** per historyable_id e user_id così ci crea già gli indici sul database
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rake db:migrate
+~~~~~~~~
+
+
+
+
+## Internazionalizzazione I18n !!!
+
+per le storie non faccio la versione multilingua perché non credo che verranno fatte delle traduzioni delle storie. Verranno scritte o in italiano o in inglese (e questo è possibile anche senza I18n) ma non tradotte tra le varie lingue.
+
+
+
+
+## Creiamo le associazioni polimorfiche ed aggiungiamo il nested models per i forms annidati
+
+andiamo sul model ed aggiungiamo il polymorphic
+
+{title=".../app/models/history.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class History < ApplicationRecord
+
+  # == Constants ============================================================
+
+  # == Attributes ===========================================================
+  
+  # == Extensions ===========================================================
+
+  # == Relationships ========================================================
+
+  # ==== polymorphic
+  belongs_to :historyable, polymorphic: true
+
+  # == Validations ==========================================================
+
+  # == Scopes ===============================================================
+
+  # == Callbacks ============================================================
+
+  # == Class Methods ========================================================
+
+  # == Instance Methods =====================================================
+end
+~~~~~~~~
+
+andiamo sugli altri modelli ed aggiungiamo l'altro lato dell'associazione polimorfica dentro ** # == Relationships ==== ** nel sottomenu ** # == polymorphic **
+
+{title=".../app/models/company.rb", lang=ruby, line-numbers=on, starting-line-number=21}
+~~~~~~~~
+  has_many :histories, as: :historyable
+~~~~~~~~
+
+{title=".../app/models/person.rb", lang=ruby, line-numbers=on, starting-line-number=16}
+~~~~~~~~
+  has_many :histories, as: :historyable
+~~~~~~~~
+
+
+
+
+## Proviamo l'associazione polimorfica
+
+Usiamo la tabella histories per dare una storia sia alla prima persona (Person.first) che alla prima azienda (Company.first). 
+
+- Inseriamo la storia "Cena informale a New York - nuovi contatti per progetto X" alla prima persona (Person.first).
+- Inseriamo la storia "ABC inc acquistata da DEF inc" alla prima azienda (Company.first).
+- Inseriamo la seconda storia "Nuovi accordi quadro - incontrato Michal della DEF e Bianchi della ex ABC" alla prima azienda (Company.first).
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+irb> u = User.first
+irb> p = Person.first
+irb> p.histories.new(title: "Cena informale a New York - nuovi contatti per progetto X", when: Date.today, user_id: u.id).save
+irb> p.histories
+irb> ph = p.histories.last
+irb> c = Company.first
+irb> c.histories.new(title: "ABC inc acquistata da DEF inc", when: Date.today, user_id: u.id).save
+irb> c.histories
+irb> ch1 = c.histories.last
+irb> c.histories.new(title: "Nuovi accordi quadro - incontrato Michal della DEF e Bianchi della ex ABC", when: Date.today, user_id: u.id).save
+irb> c.histories
+irb> ch2 = c.histories.last
+irb> c.histories
+
+irb> History.all
+irb> p.histories
+irb> c.histories
+~~~~~~~~
+
+Per vedere l'altro lato dell'associazione non possiamo chiamare "ph.person" o "ch1.company" perché sono creati dinamicamente a partire dalla stessa tabella polimorfica "histories". Invece possiamo chiamare:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+irb> ph.historyable
+irb> ch1.historyable
+irb> ch2.historyable
+~~~~~~~~
+
+Dal punto di vista del polimorfismo abbiamo finito.
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add popolate histories"
+~~~~~~~~
+
+I> Questo git commit è solo per lasciare un commento perché le modifiche fatte sul database non sono passate tramite git.
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku phs:master
+$ heroku run rake db:migrate
+~~~~~~~~
+
+I> Lato produzione su heroku c'è un database indipendente da quello di sviluppo quindi risulta vuoto.
+
+per popolare il database di heroku basta aprire la console con il comando:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku run rails c
+~~~~~~~~
+
+E rieseguire i passi già fatti nel paragrafo precedentemente
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge phs
+$ git branch -d phs
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

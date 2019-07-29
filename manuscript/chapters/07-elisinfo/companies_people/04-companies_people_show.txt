@@ -1,0 +1,535 @@
+# Mostriamo la persona e l'azienda
+
+
+
+
+## Apriamo il branch "companies people show"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b cps
+~~~~~~~~
+
+
+
+
+## Sul partial people/_index inseriamo il link per people/show
+
+Mettiamo nell'elenco delle persone mostrato in homepage il link per andare sulla visualizzazione della singola persona.
+
+{title=".../app/views/people/_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+    <%= link_to url_for(h_front_params_path(path: "/people/#{person.id}")), :class => "list-group-item" do %>
+~~~~~~~~
+
+
+
+## Implementiamo la view people/show
+
+Implementiamo la struttura del mockup nella pagina people/show
+
+{title=".../app/views/people/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<% provide(:title, "#{@person.first_name} #{@person.last_name}") %>
+
+<div class="container-fluid front_mode"> <!-- front_mode -->
+
+  <!-- menu_bar -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-10 col-sm-11 col-lg-11"> <!-- col -->
+      <%= render 'breadcrumbs' %>
+    </div> <!-- /col -->
+    <div class="col-xs-2 col-sm-1 col-lg-1"> <!-- col -->
+      <%= render 'button_global_settings' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <!-- /menu_bar -->
+
+  <!-- main -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-12"> <!-- col -->
+      <%= render 'main_media_object' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <!-- /main -->
+
+  <!-- related -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-10 col-sm-11 col-lg-11"> <!-- col -->
+      <%= render 'related_form_search' %>
+    </div> <!-- /col -->
+    <div class="col-xs-2 col-sm-1 col-lg-1"> <!-- col -->
+      <% if @relateds_path == "company_person_maps" %>
+        <%= render 'related_map_button_new', list_to_add: @relateds, relateds_path: @relateds_path %>
+      <% else %>
+        <%= render 'related_button_new', list_to_add: @relateds, relateds_path: @relateds_path %>
+      <% end %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-12"> <!-- col -->
+      <!-- <p>related_list_group</p> -->
+      <%= render "#{@relateds_path}/index", related_list: @relateds %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-12"> <!-- col -->
+      <div class="text-center">
+          <%= render 'related_pagination', list_to_paginate: @relateds %>
+      </div> <!-- /text-center -->
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <!-- /related -->
+
+</div> <!-- /front_mode -->
+
+
+<% if Rails.env.development? %>
+  <p id="notice"><%= notice %></p>
+  
+  <p>
+    <strong>Title:</strong>
+    <%= @person.title %>
+  </p>
+  
+  <p>
+    <strong>First name:</strong>
+    <%= @person.first_name %>
+  </p>
+  
+  <p>
+    <strong>Last name:</strong>
+    <%= @person.last_name %>
+  </p>
+  
+  <p>
+    <strong>Homonym:</strong>
+    <%= @person.homonym %>
+  </p>
+  
+  <p>
+    <strong>Memo:</strong>
+    <%= @person.memo %>
+  </p>
+  
+  <%= link_to 'Edit', edit_person_path(@person) %> |
+  <%= link_to 'Back', people_path %>
+<% end %>
+~~~~~~~~
+
+Il partial breadcrumbs
+
+{title=".../app/views/people/_breadcrumbs.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<ol class="breadcrumb top-pad left-pad">
+  <li>
+    <%= link_to url_for(h_front_params_path(path: "/homepage", related: "people", page: 1)), :class => "btn btn-default" do %>
+      <%= content_tag :span,"", class: "glyphiconmy ico_home" %>
+    <% end %>
+  </li>
+  <li class="active">
+    <%= link_to "#", :class => "btn btn-link disabled" do %>
+      <%= content_tag :span, t("people.show.breadcrumbs"), class: "glyphiconmy ico_person" %>
+    <% end %>
+    <%= link_to url_for(h_front_params_path(path: "/select_relateds")), :class => "btn btn-default" do %>
+      <%= content_tag :span,"", class: "glyphiconmy #{h_ico_name}" %>
+    <% end %>
+  </li>
+</ol>
+~~~~~~~~
+
+implementiamo la traduzione in italiano
+
+{title="config/locales/it.yml", lang=yaml, line-numbers=on, starting-line-number=27}
+~~~~~~~~
+  people:
+    show:
+      breadcrumbs: "Persona"
+~~~~~~~~
+
+implementiamo la traduzione in inglese
+
+{title="config/locales/en.yml", lang=yaml, line-numbers=on, starting-line-number=27}
+~~~~~~~~
+  people:
+    show:
+      breadcrumbs: "Person"
+~~~~~~~~
+
+Il partial button_global_settings è già su views/application.
+Il partial main_media_object
+
+{title=".../app/views/people/_main_media_object.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="list-group left-pad right-pad">
+  <%= link_to "", :class => "list-group-item media" do %>
+
+    <div class="list-group-item-heading pull-left" >
+      <%= image_tag "my_style_images/default/person_default.png", alt: "user image", class: "media-object" %>
+    </div>
+
+    <div class="list-group-item-text media-body">
+      <%= content_tag :h4,"#{@person.title} #{@person.first_name} #{@person.last_name}", class: "media-heading" %>
+      <%= content_tag :p,"#{@person.homonym} " %>
+      <%= content_tag :p,"#{@person.memo} " %>
+    </div>
+
+  <% end %>
+</div>
+~~~~~~~~
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add people show"
+~~~~~~~~
+
+
+
+
+## Generalizziamo i link del select_relateds
+
+Se proviamo a cambiare il breadcrumbs ci rendiamo conto che le voci del select_relateds tornano sull'homepage perché abbiamo impostato il valore fisso del path. E' arrivato il momento di generalizzarne il comportamento.
+
+{title=".../app/views/select_relateds/_related_list_group.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+    <%= link_to url_for(h_params_path(path: "/#{params[:last_front_controller]}/#{params[:last_front_id]}",related: select_related.metadata)), :class => "list-group-item" do %>
+~~~~~~~~
+
+
+
+
+## Implementiamo il filtro bln_people per le voci da visualizzare sul select_relateds
+
+rispetto all'homepage sulla people/show non mostriamo la persona ma mostriamo i contatti e gli indirizzi.
+
+{title=".../app/controllers/select_relateds_controller.rb", lang=ruby, line-numbers=on, starting-line-number=6}
+~~~~~~~~
+  def index
+    # gestiamo l'elenco in funzione di chi ha chiamato
+    case params[:last_front_controller]
+    when "people"
+      @select_relateds = SelectRelated.for_people.search(params[:search]).order('name ASC').page(params[:page])
+    when "companies"
+      raise "#TODO companies da fare"
+    else
+      @select_relateds = SelectRelated.for_homepage.search(params[:search]).order('name ASC').page(params[:page])
+    end
+  end
+~~~~~~~~
+
+{title=".../app/models/select_related.rb", lang=ruby, line-numbers=on, starting-line-number=26}
+~~~~~~~~
+  scope :for_people, -> {where(bln_people: true)}
+~~~~~~~~
+
+impostiamo i valori sul database. Li verifichiamo perché sono già stati impostati nel capitolo dei seeds.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+> SelectRelated.find 1
+#<SelectRelated id: 1, metadata: "favorites", bln_people: true
+
+> SelectRelated.find 2
+#<SelectRelated id: 2, metadata: "people", bln_people: false
+
+> SelectRelated.find 3
+#<SelectRelated id: 3, metadata: "companies", bln_people: true
+
+> SelectRelated.find 4
+#<SelectRelated id: 4, metadata: "contacts", bln_people: true
+
+> SelectRelated.find 5
+#<SelectRelated id: 5, metadata: "addresses", bln_people: true
+
+#volendolo cambiare:
+> SelectRelated.find(5).update(bln_people: false)
+~~~~~~~~
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add select_relateds bln_people"
+~~~~~~~~
+
+
+
+
+## Passiamo al lato Aziende
+
+
+
+
+## Sul partial companies/_index inseriamo il link per companies/show
+
+Mettiamo nell'elenco delle persone mostrato in homepage il link per andare sulla visualizzazione della singola persona.
+
+{title=".../app/views/companies/_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+    <%= link_to url_for(h_front_params_path(path: "/companies/#{company.id}")), :class => "list-group-item" do %>
+~~~~~~~~
+
+
+## Implementiamo la view companies/show
+
+Implementiamo la struttura del mockup nella pagina companies/show
+
+{title=".../app/views/companies/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="container-fluid front_mode"> <!-- front_mode -->
+
+  <!-- menu_bar -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-10 col-sm-11 col-lg-11"> <!-- col -->
+      <%= render 'breadcrumbs' %>
+    </div> <!-- /col -->
+    <div class="col-xs-2 col-sm-1 col-lg-1"> <!-- col -->
+      <%= render 'button_global_settings' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <!-- /menu_bar -->
+
+  <!-- main -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-12"> <!-- col -->
+      <%= render 'main_media_object' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <!-- /main -->
+
+  <!-- related -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-10 col-sm-11 col-lg-11"> <!-- col -->
+      <p>related_form_search</p>
+      <%#= render 'related_search' %>
+    </div> <!-- /col -->
+    <div class="col-xs-2 col-sm-1 col-lg-1"> <!-- col -->
+      <p>related_button_new</p>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-12"> <!-- col -->
+      <p>related_list_group</p>
+      <%#= render "#{@relateds_path}/index", related_list: @relateds %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-12"> <!-- col -->
+      <div class="text-center">
+          <%#= render 'related_pagination', list_to_paginate: @relateds %>
+          <p>related_pagination</p>
+      </div> <!-- /text-center -->
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <!-- /related -->
+
+</div> <!-- /front_mode -->
+~~~~~~~~
+
+Il partial breadcrumbs
+
+{title=".../app/views/companies/_breadcrumbs.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<ol class="breadcrumb top-pad left-pad">
+  <li>
+    <%= link_to url_for(h_front_params_path(path: "/homepage", related: "companies")), :class => "btn btn-default" do %>
+      <%= content_tag :span,"", class: "glyphiconmy ico_home" %>
+    <% end %>
+  </li>
+  <li class="active">
+    <%= link_to "#", :class => "btn btn-link disabled" do %>
+      <%= content_tag :span, t("companies.show.breadcrumbs"), class: "glyphiconmy ico_company" %>
+    <% end %>
+    <%= link_to url_for(h_front_params_path(path: "/select_relateds", tab_active: "default")), :class => "btn btn-default" do %>
+      <%= content_tag :span,"", class: "glyphiconmy #{h_ico_name}" %>
+    <% end %>
+  </li>
+</ol>
+~~~~~~~~
+
+implementiamo la traduzione in italiano
+
+{title="config/locales/it.yml", lang=yaml, line-numbers=on, starting-line-number=30}
+~~~~~~~~
+  companies:
+    show:
+      breadcrumbs: "Azienda"
+~~~~~~~~
+
+implementiamo la traduzione in inglese
+
+{title="config/locales/en.yml", lang=yaml, line-numbers=on, starting-line-number=30}
+~~~~~~~~
+  companies:
+    show:
+      breadcrumbs: "Company"
+~~~~~~~~
+
+Il partial button_global_settings è già su views/application.
+Il partial main_media_object
+
+{title=".../app/views/companies/_main_media_object.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="list-group left-pad right-pad">
+  <%= link_to "", :class => "list-group-item media" do %>
+
+    <div class="list-group-item-heading pull-left" >
+        <%= image_tag "my_style_images/default/company_default.png", alt: "user image", class: "media-object" %>
+    </div>
+
+    <div class="list-group-item-text media-body">
+      <%= content_tag :h4,"#{@company.taxation_number_first}", class: "media-heading" %>
+      <h4><%= content_tag :strong,"#{@company.name}" %></h4>
+      <%= content_tag :p,"#{h_company_status(@company.status)} del settore #{@company.sector}" %>
+      <%= content_tag :p,"#{@company.memo}" %>
+    </div>
+
+  <% end %>
+</div>
+~~~~~~~~
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add companies show"
+~~~~~~~~
+
+
+
+
+## Implementiamo il filtro bln_companies per le voci da visualizzare sul select_relateds
+
+rispetto all'homepage sulla companies/show non mostriamo l'azienda ma mostriamo i contatti e gli indirizzi.
+
+{title=".../app/controllers/select_relateds_controller.rb", lang=ruby, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+      @select_relateds = SelectRelated.for_companies.search(params[:search]).order('name ASC').page(params[:page])
+~~~~~~~~
+
+{title=".../app/models/select_related.rb", lang=ruby, line-numbers=on, starting-line-number=27}
+~~~~~~~~
+  scope :for_companies, -> {where(bln_companies: true)}
+~~~~~~~~
+
+impostiamo i valori sul database. Li verifichiamo perché sono già stati impostati nel capitolo dei seeds.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+> SelectRelated.find 1
+#<SelectRelated id: 1, metadata: "favorites", bln_companies: true
+
+> SelectRelated.find 2
+#<SelectRelated id: 2, metadata: "people", bln_companies: true
+
+> SelectRelated.find 3
+#<SelectRelated id: 3, metadata: "companies", bln_companies: false
+
+> SelectRelated.find 4
+#<SelectRelated id: 4, metadata: "contacts", bln_companies: true
+
+> SelectRelated.find 5
+#<SelectRelated id: 5, metadata: "addresses", bln_companies: true
+
+#volendolo cambiare:
+> SelectRelated.find(5).update(bln_companies: false)
+~~~~~~~~
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add select_relateds bln_companies"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku cps:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge cps
+$ git branch -d cps
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

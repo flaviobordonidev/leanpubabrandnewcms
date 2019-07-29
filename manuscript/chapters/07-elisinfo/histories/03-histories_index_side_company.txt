@@ -1,0 +1,172 @@
+# Elenco delle storie di una specifica azienda
+
+in questo capitolo tratteremo l'elenco delle storie (sul partial histories/_index) che è visualizzato come related della pagina companies/show.
+
+
+
+
+## Apriamo il branch "Histories Index Side Company"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b hisc
+~~~~~~~~
+
+
+
+
+## Select_relateds histoy side people show
+
+Abbiamo implementato la voce "histoy" nella tabella select_realateds nel capitolo precedente.
+
+
+
+
+## Select_relateds histoy icon
+
+Abbiamo aggiunto l'icona icon_history allo style sheet nel capitolo precedente
+
+
+
+
+## Routes
+
+Abbiamo già sistemato il ".../config/routes.rb"
+
+
+
+
+## Come approcciamo
+
+Prepariamo un elenco di storie per quando siamo su companies/show con related="histories". Sul controller di companies azione show visualizziamo @company.histories.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails c
+irb> c = Company.find 1
+irb> u = User.first
+irb> c.histories
+irb> c.histories[0].title
+irb> c.histories[0].when
+irb> c.histories[1].title
+irb> c.histories[1].when
+~~~~~~~~
+
+
+
+
+## La pagina show di Companies con relateds: histories
+
+Aggiungiamo **histories** nell'azione **show** del controller **copmanies_controller**. [(codice: 02)](#code-contact_person_maps-cpmaps_index_side_person-02)
+
+{title=".../app/controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=34}
+~~~~~~~~
+    when "histories"
+      @relateds = @company.histories.order('updated_at DESC').page(params[:page])
+      @relateds_path = "histories"
+~~~~~~~~
+
+Sul view copmanies/show abbiamo già implementato il ** <%= render "#{params[:related]}/index", related_list: @relateds %> ** 
+
+
+
+
+## Il partial _index
+
+Il partial _index visualizza la lista delle storie. Lo abbiamo già implementato nel capitolo precedente.
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+![Companies show - related histories](images/histories/histories_index_side_person/related_histories.png)
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add Companies Show - related histories _index"
+~~~~~~~~
+
+
+
+
+## Pagination
+
+Già abbiamo implementato nel controller il metodo di Kaminari ".page(params[:page])"
+
+e già abbiamo attivato il render sul views/companies/show.html.erb. (il partial è su views/application)
+
+
+
+
+## Search
+
+Già abbiamo implementiamo il search sul model history.
+
+Attiviamo il search sull'azione **show** del controller **companies_controller**
+
+{title=".../app/controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=34}
+~~~~~~~~
+      @relateds = @company.histories.search(params[:search]).order('updated_at DESC').page(params[:page])
+~~~~~~~~
+
+abbiamo già attivato il render su views/companies/show.html.erb. (il partial è su views/application)
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+![https://elisinfo5-flaviobordonidev.c9users.io/company_person_maps](images/company_person_maps/cpmaps_index/cpmaps.png)
+
+
+sta funzionando quindi facciamo un commit
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add companies/show histories search"
+~~~~~~~~
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku hisc:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge hisc
+$ git branch -d hisc
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

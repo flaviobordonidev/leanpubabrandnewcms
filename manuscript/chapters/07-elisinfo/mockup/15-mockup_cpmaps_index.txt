@@ -1,0 +1,24 @@
+# Mockup per la lista delle persone o aziende
+
+non c'è nulla di nuovo è solo prendere la lista delle persone o quella delle aziende già viste nei capitoli precedenti.
+
+
+
+
+## Apriamo il branch "mockup companies index"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b mci
+~~~~~~~~
+
+
+
+
+## Rails generate controller 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g controller mockup_company_person_maps index
+~~~~~~~~
+

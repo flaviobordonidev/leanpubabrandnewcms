@@ -1,0 +1,5 @@
+-# Componenti
+
+il **componente** è un bene o servizio che noi richiediamo/acquistiamo da un nostro **Fornitore**.
+
+(da non confondere con il **prodotto** che è un bene o servizio che noi offriamo/vendiamo ad un nostro **Cliente**.)

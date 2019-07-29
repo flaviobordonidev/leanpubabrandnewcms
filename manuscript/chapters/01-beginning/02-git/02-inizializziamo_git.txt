@@ -77,12 +77,12 @@ $ git config --global user.email "my@email.com"
 $ git config -l
 
 
-ec2-user:~/environment/myapp (master) $ git config --global user.name "Flavio Bordoni"
-ec2-user:~/environment/myapp (master) $ git config --global user.email "flavio.bordoni.dev@gmail.com"
+ec2-user:~/environment/myapp (master) $ git config --global user.name "My Name"
+ec2-user:~/environment/myapp (master) $ git config --global user.email "my@email.com"
 ec2-user:~/environment/myapp (master) $ git config -l
 core.editor=/usr/bin/nano
-user.name=Flavio Bordoni
-user.email=flavio.bordoni.dev@gmail.com
+user.name=My Name
+user.email=my@email.com
 core.repositoryformatversion=0
 core.filemode=true
 core.bare=false

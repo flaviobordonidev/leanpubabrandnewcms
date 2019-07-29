@@ -1,0 +1,109 @@
+# Mockup Test
+
+Il mockup di un sito web normalmente viene fatto su carta con una matita, oppure su powerpoint, o su photoshop, o su coreldraw, o su programmi dedicati ai mockup. Noi facciamo dei mockups con delle pagine html statiche su rails su cui già programma l'output del suo web app usando il framework bootstrap. 
+
+Questo scheletro che creiamo con il mockup non è uno stampo che poi gettiamo via. Ma lo lasciamo nell'applicazione perché è utilissimo per successive modifiche o manutenzioni. E' una parte che continueremo ad aggiornare e ad utilizzare e ci permetterà di passare agevolmente ad esempio a bootstrap 4 oppure di implementare nuove funzionalità in maniera più "scalabile". Implementiamo il mockup e verifichiamo che tutto funziona. Poi spostiamo il mock sulle pagine dinamiche e vediamo che tutto funziona.
+
+Il mockup è un ottimo punto di partenza ed è anche un elemento che permette di fare da ponte tra il team di web developpers e quello dei web designers.
+
+
+
+
+## Apriamo il branch
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b mt
+~~~~~~~~
+
+
+
+
+## Rails generate controller Mocks
+
+Inizializziamo subito i mocks per fare una prima verifica che bootstrap è stato installato correttamente. 
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g controller mockup_tests
+~~~~~~~~
+
+Aggiungiamo l'azione **bootstrap_grid** al controller vuota perché useremo una view statica
+
+{title=".../app/controllers/mockup_tests_controller.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+class MockupTestsController < ApplicationController
+  def bootstrap_grid
+  end
+end
+~~~~~~~~
+
+
+
+
+## Creiamo la view di test bootstrap_grid
+
+Andiamo sull'esempio della grid su http://getbootstrap.com/examples/grid/ e visualiziamo il sorgente. Facciamo copia incolla del codice html che è dentro il <body>...</body> perché l'header lo abbiamo già dichiarato su .../app/views/layouts/application.html.erb
+
+[01](#code-frontend_assets-mockup_tests-01)
+
+{title=".../app/views/mockup_tests/bootstrap_grid.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!-- example from http://getbootstrap.com/examples/grid/ -->
+<div class="container">
+~~~~~~~~
+
+
+
+
+## Aggiungiamo su routes
+
+{title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+Rails.application.routes.draw do
+  
+  root 'testpages#page_a'
+
+  get 'testpages/page_a'
+  get 'testpages/page_b'
+  get 'mockup_tests/bootstrap_grid'
+
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+end
+~~~~~~~~
+
+Attiviamo il web server
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+E verifichiamo che funzioni sul browser 
+https://elisinfo6-flaviobordonidev.c9users.io/mockup_tests/bootstrap_grid
+
+Funziona a parte la colorazione delle colonne che è data da un css a parte che noi non stiamo usando.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "verify bootstrap with mocks test"
+~~~~~~~~
+
+
+
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge mt
+$ git branch -d mt
+~~~~~~~~

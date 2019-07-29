@@ -1,0 +1,40 @@
+-# Dossiers
+
+A differenza delle storie che riguardano ogni singola entità i dossiers sono anch'essi delle entità con relazioni molti-a-molti.
+Sono delle raccolte di informazioni riguardo un determinato evento che coinvolge più entità (persone, aziende, componenti, prodotti)
+L'esempio classico sono le pratiche commerciali.
+
+Esistono 3 tipi di dossiers;
+- standard: sono le pratiche commerciali di compra vendita (cRDO, ..., cORD, nFAT, cPAG)
+- privati: sono le storie legate alle persone o alle aziende (es: Il 18.07.17 Incontrato Pippo all'evento Y e mi ha raccontato che... -- Il giorno x l'azienda ABC è stata comprata da DEF e quinidi le fatture mandarle al nuovo indirizzo.)
+- interni: sono le storie della ns azienda (es: Restauri ufficio, Avvocato, Commercialista, Cancelleria, Assicurazioni, Parco auto, ...)
+
+I dossier interni sono visibili solo ai gruppi amministrazione/contabilità/CEO. Necessitano implementazione Authorization (Pundit+Rolify) 
+
+
+
+al dossier metto dei tasks (azioni da compiere)?
+  Task for <<person/company/dossier>>
+  Description (255)
+  Detail
+  Due: data e ora
+  Repeat: bln
+  Repeat_number
+  repeat_type: giorni, settimane, mesi, anni
+                ripeti ogni # mesi
+  Category: None, Call, Email, Follow-up, Meeting, Milestone, offerta, ordine, Send, Verifica tecnica
+  Assigned_to : User
+
+  
+* title (string) : Il titolo della storia. Also Known As "description".
+* date (datetime - sort Desc) : data del commento. Anche se c'è già creazione e modifica mi è utile per riordinarmi l'elenco. 
+* memo (text) : La storia. Also Known As "detail".
+
+* due (datetime) : se c'è una scadenza
+* repeat (boolean) : se da ripetere ogni x giorni/settimane/mesi/anni
+* repeat_number (integer) : il numero di giorni/settimane/mesi/anni
+* repeat_type (string) : giorni, settimane, mesi, anni
+* repeat_day (integer) : lun,mar,mer,gio,ven,sab,dom
+
+* category: None, Call, Email, Follow-up, Meeting, Milestone, offerta, ordine, Send, Verifica tecnica
+* assigned_to : User

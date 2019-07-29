@@ -1,0 +1,240 @@
+# Elenco dei contatti di una specifica persona
+
+in questo capitolo tratteremo l'elenco dei contatti (sul partial contacts/_index) che è visualizzato come related della pagina people/show.
+
+
+
+
+## Apriamo il branch "Contacts Index Side Person"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b cisp
+~~~~~~~~
+
+
+
+
+## Select_relateds side people show
+
+Abbiamo già attivato il select_related ed il breadcrumbs di person show per mostrare i contatti correlati.
+
+* su homepage/show ho select_related : favorites, companies, people
+* su people/show ho select_related : favorites, companies, people, **contacts**, addresses
+
+Su homepage non metto contacts e addresses perché non le visualizzo come entità indipendenti ma le visualizzo solo sotto companies e people perché hanno una relazione uno-a-molti con entrambe (usando la relazione polimorfica)
+
+
+
+
+## Routes
+
+Nel capitolo precedente abbiamo usato lo scaffold quindi abbiamo già i vari instradamenti nel file routes. Semplicemente li sistemiamo meglio. [(codice: 01)](#code-contact_person_maps-cpmaps_index_side_person-01)
+
+{title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+    resources :contacts
+~~~~~~~~
+
+
+
+
+## Come approcciamo
+
+Prepariamo un elenco di contatti per quando siamo su people/show con related="contacts". Sul controller di people azione show visualizziamo @person.contacts.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails c
+irb> p = Person.find 1
+irb> p.contacts
+irb> p.contacts[0].summary
+irb> p.contacts[0].identifier
+irb> p.contacts[1].summary
+irb> p.contacts[1].identifier
+~~~~~~~~
+
+
+
+
+## La pagina show di People con relateds: contacts
+
+Aggiungiamo contacts nell'azione "show" del controller people_controller. [(codice: 02)](#code-contact_person_maps-cpmaps_index_side_person-02)
+
+{title=".../app/controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+  def show
+    # gestiamo l'elenco dei relateds
+    params[:related] = "favorites" if params[:related].blank?
+    case params[:related]
+    when "favorites"
+      # TODO
+      @relateds = User.all #lo uso temporaneamente per evitare errore sul button new
+      @relateds_path = "favorites"
+    when "people"
+      # TODO
+      @relateds = Person.all #lo uso temporaneamente per evitare errore
+      @relateds_path = "people"
+    when "companies"
+      # TODO
+      @relateds = Company.all  #lo uso temporaneamente per evitare errore
+      @relateds_path = "companies"
+    when "contacts"
+      @relateds = @person.contacts.all.order('updated_at DESC')
+      @relateds_path = "contacts"
+    else
+      raise "#TODO"
+    end
+  end
+~~~~~~~~
+
+Sul view people/show implementiamo il ** <%= render "#{params[:related]}/index" %> ** 
+
+{title=".../app/views/people/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=40}
+~~~~~~~~
+      <%= render "#{@relateds_path}/index", related_list: @relateds %>
+~~~~~~~~
+
+
+
+## Il partial _index
+
+Il partial _index visualizza la lista dei contatti.
+ 
+{title=".../app/views/contacts/_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="list-group left-pad right-pad">
+  <% related_list.each do |contact| %>
+    <%= link_to url_for(h_front_params_path(path: "/contacts/#{contact.id}/edit")), :class => "list-group-item" do %>
+      <p> <%= contact.medium %> </p>
+      <p><strong> <%= contact.identifier %> </strong></p>
+    <% end %> <!-- /link_to -->
+  <% end %> <!-- /related_list.each -->
+</div> <!-- /.list-group -->
+~~~~~~~~
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+![People show - related contacts](images/contacts/contacts_index_side_person/related_contacts.png)
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add People Show - related contacts _index"
+~~~~~~~~
+
+
+
+
+## Pagination
+
+informiamo il controller di usare il metodo di Kaminari ".page(params[:page])"
+
+{title=".../app/controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=30}
+~~~~~~~~
+      @relateds = @person.contacts.all.order('updated_at DESC').page(params[:page])
+~~~~~~~~
+
+ed attiviamo il render sul view. (il partial è su views/application)
+
+{title="views/people/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=48}
+~~~~~~~~
+          <%= render 'related_pagination', list_to_paginate: @relateds %>
+~~~~~~~~
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add people/show contacts pagination"
+~~~~~~~~
+
+
+
+## Search
+
+Implementiamo il search sul model contact.
+
+{title=".../app/models/contact.rb", lang=ruby, line-numbers=on, starting-line-number=21}
+~~~~~~~~
+  # == Scopes ===============================================================
+
+  scope :search, -> (query) {with_translations(I18n.locale).where("medium ILIKE ? OR identifier ILIKE ?", "%#{query.strip}%", "%#{query.strip}%")}
+~~~~~~~~
+
+Attiviamo il search sull'azione **show** del controller people_controller
+
+{title=".../app/controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=30}
+~~~~~~~~
+      @relateds = @person.contacts.search(params[:search]).order('updated_at DESC').page(params[:page])
+~~~~~~~~
+
+
+ed attiviamo il render sul view. (il partial è su views/application)
+
+{title="views/people/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=30}
+~~~~~~~~
+      <%= render 'related_form_search' %>
+~~~~~~~~
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+![https://elisinfo5-flaviobordonidev.c9users.io/company_person_maps](images/company_person_maps/cpmaps_index/cpmaps.png)
+
+
+sta funzionando quindi facciamo un commit
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add people/show contacts search"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku cisp:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge cisp
+$ git branch -d cisp
+~~~~~~~~
+
+
+
+
+## Backup su github
+
+facciamo un backup del ns progetto su github:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

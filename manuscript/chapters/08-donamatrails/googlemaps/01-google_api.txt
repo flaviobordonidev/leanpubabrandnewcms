@@ -1,0 +1,45 @@
+# Google API
+
+In questo capitolo vedremo come ottenere una API key per poter utilizzare le API Javascript di Google Maps, la quale serve anche per poter utilizzare le API di accesso per tutti i servizi resi disponibili dal colosso di Mountain View (ad esempio Google Analytics).
+
+Le API sono disponibili nella versione 3.x che si differenzia dalla precedente versione 2 per aver adottato una nuova architettura di tipo MVC (Model-View-Controller) e per l’abbandono delle variabili globali in favore di un nuovo namespace denominato google.maps.
+
+Le API sono state ridotte di dimensioni (circa 35 KB), ciò comporta una maggiore velocità nel caricamento delle mappe sul proprio sito. Inoltre le nuove API sono compatibili con tutti i dispositivi mobile, inclusi i Sistemi Operativi iOS e Android.
+
+Per poter inglobare una mappa nel proprio sito abbiamo bisogno di ottenere una chiave attraverso quella che viene definita da Google la API Console. Per poter accedere alla API Console dobbiamo disporre di un Google Account: se utilizziamo uno dei tanti servizi di Google come Gmail o Google Calendar dovremmo già averne a disposizione uno (tipicamente la username è l’indirizzo email terminante con il suffisso @gmail.com), altrimenti dovremo crearne uno ad hoc.
+
+Le Google Maps sono integrabili nel nostro sito senza pagare alcunchè a Google se non superiamo un determinato limite di utilizzo impostato dalla stessa Google. Il limite è fissato a 25.000 query (richieste di accesso) al giorno. Questo limite però può essere anche superato a patto che non lo si faccia per più di 90 giorni consecutivi, a questo punto bisogna chiedere una licenza commerciale, il cui costo è stabilito direttamente contattando Google.
+
+La API Console raggiungibile a questo indirizzo:
+
+http://code.google.com/apis/console
+
+ci verranno richieste per entrare le credenziali del nostro Google Account.
+
+Nel menù hamburger a sinistra cerchiamo la voce API Gestore API:
+
+Cliccando su questa voce otteniamo la lista di tutte le API Google disponibili per il nostro Google Account con l’indicazione se sia attiva (ON) o meno (OFF), cerchiamo la voce Google Maps API v3.x e clicchiamo su ON:
+
+ora per ottenere la API key, clicchiamo nel menu a tendina sulla voce crea credenziali e quindi API Key:
+
+Recuperiamo la API key generata
+la chiave generata automaticamente è utilizzabile su qualsiasi sito, poichè è visibile in chiaro, quindi anche altre persone che individuano la nostra chiave sul nostro sito potrebbero utilizzarla per i loro scopi, compromettendo sia le statistiche dei report generati sia il limite di utilizzo a noi assegnato. Per evitare questo “pericolo” possiamo restringere il campo di utilizzo della nostra chiave per determinati siti o domini, lo possiamo fare cliccando sul link della chiave e accedendo alla pagina credenziali inserire gli URL http che ci interessano.
+
+![google apis console](images/googlemaps/google_api/credenziali.png)
+
+Restringiamo l'utilizzo della chiave per un solo dominio ed i suoi sottodomini
+abbiamo ristretto l’utilizzo della chiave per il solo dominio e per tutti i sottodomini di https://donamat5-bobdesa64.c9users.io/ riferito alla piattaforma di sviluppo e https://limitless-chamber-62677.herokuapp.com/ per quanto attiene la piattaforma di produzione. Dobbiamo considerare che è necessario attivarlo in ogni tipologia di URL: 
+  * http://www.miodominio.com
+  * http://miodominio.com
+  * https://www.miodominio.com 
+  * https://miodominio.com
+
+A> Attenzione ad utilizzare due differenti browser connessi al medesimo profilo Google APIs (nel ns. caso Safari e Chrome) e nello stesso tempo, poichè può verificarsi un disalllineamento che non garantisce, con chiarezza, di percepire quale delle pagine siano aggiornate alle ultime modifiche rischiando di uscire senza salvarle. 
+A>
+A> Consigliamo in tal caso di usare esclusivamente Google Chrome con il quale, ovviamente, non abbiamo riscontrato problemi. 
+
+Con lo stesso metodo sopra descritto abbiamo creato una chiave  per gestire la Google Maps Geocoding API, la Google Maps Javascript API e la Google Places API Web Service, tutte monitorabili dalla dashboard della pagina Gestore API.
+Da questa stessa pagina si possono abilitare altre API accedendo alla libreria che elenca tutte le API popolari.
+Oltre tutto dalla dashboard è possibile disabilitare e abilitare ogni singola API e monitorare con dei grafici a linea l'utilizzo in modalità real time.
+
+![google apis console](images/googlemaps/google_api/grafici_api.png)

@@ -1,0 +1,244 @@
+# Azienda favorita per l'utente loggato
+
+Sulla pagina iniziale visualizzo l'azienda che ha nella pagina companies/edit il check_box favorite_cb = true.
+Nella pagina companies/edit aggiungiamo il check_box favorite_cb.
+- Voglio settare come preferito, per l'utente loggato, un'azienda
+
+
+
+
+## Apriamo il branch "Favorites Companies for User"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b fcu
+~~~~~~~~
+
+
+
+
+## Aggiungiamo il campo favorite_id su companies/edit
+
+Lo aggiungiamo sul tab edit di companies, nel partial **_form**
+
+{title=".../app/views/companies/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=68}
+~~~~~~~~
+    <div class="field">
+      <%= f.label :favorite_cb, class: "control-label" %><br>
+      <%= f.check_box :favorite_cb, class: "form-control", "data-size" => "medium", "data-on-color" => "primary", "data-on-text" => "SI", "data-off-color" => "default", "data-off-text" => "NO" %>
+    </div> <!-- /.field -->
+~~~~~~~~
+
+
+e mettiamo il campo di verifica utile allo sviluppo e visibile solo in development.
+
+{title=".../app/views/companies/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=24}
+~~~~~~~~
+    <% if Rails.env.development? %>
+      <div class="field">
+        <%= f.label :favorite_id, class: "control-label" %><br>
+        <%= f.text_field :favorite_id, class: "form-control" %>
+      </div> <!-- /.field -->
+    <% else %>
+        <%= f.hidden_field :favorite_id %>
+    <% end %>
+~~~~~~~~
+
+Si può vedere che cliccando dall'azienda (ABC Inc. (id: 1)) su companies/edit c'è favorite_id con valore "26" ed inoltre il check-box favorite_cb è su ON. Questo perché nel precedente paragrafo abbiamo popolato la tabella tramite rails consolle.
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "update companies edit for favorites"
+~~~~~~~~
+
+
+
+
+## Aggiungiamo i favorites sul controller di companies 
+
+Dobbiamo adesso lavorare sul controller. Innanzitutto dobbiamo abilitare la white list altrimenti non vengono passate le modifiche.
+
+
+{title=".../app/controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=106}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def company_params
+      params.require(:company).permit(:logo, :name, :status, :sector, :taxation_number_first, :taxation_number_second, :memo, :favorite_id, :favorite_cb)
+    end
+~~~~~~~~
+
+
+Ora dedichiamoci al codice per gestire i preferiti.
+
+* Quando modifico un record della tabella companies (ossia faccio l'inoltro/sumbit del form):
+
+1. se il check_box favorite_cb nel tab option è ON:
+  1a. se favorite_id è blank -> creo il record nella tabella favorite
+  1b. se favorite_id non è blank -> aggiorno il corrispondente record nella tabella favorite
+2. se il check_box favorite_cb nel tab option è OFF:
+  2a. se favorite_id è blank -> non faccio nulla
+  2b. se favorite_id non è blank -> elimino il corrispondente record nella tabella favorites
+
+* Quando elimino un record dalla tabella companies elimino anche il corrispondente record della tabella favorites se presente.
+
+
+Sull'azione **update** del controller **companies_controller**, implementiamo il nuovo metodo private **manage_favorite**. Per far questo esplodo su più righe il comando **format.html { ... }** usando
+
+format.html do
+  ...
+end
+  
+{title=".../app/controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=75}
+~~~~~~~~
+        format.html do
+          manage_favorite # private action
+          redirect_to url_for(view_context.h_params_path(path: "/companies/#{@company.id}")), notice: t(".notice")
+        end
+~~~~~~~~
+
+nell'area **private**
+
+{title=".../app/controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=110}
+~~~~~~~~
+    def manage_favorite
+      #raise "->#{@company.favorite_cb}" # questo prende il valore dal database
+      #raise "->#{params[:company][:favorite_cb]}" # questo prende il valore dalla view
+      if params[:company][:favorite_cb] == "0"  # if combo-box-favorite is OFF
+        if @company.favorite_id.blank?
+          #raise "don't do anything"
+        else
+          #raise "delete favorite"
+          Favorite.find(@company.favorite_id).destroy
+          @company.update(favorite_id: nil)
+        end
+      else  # if check-box-favorite is ON
+        if @company.favorite_id.blank?
+          #raise "crea nuovo favorite"
+          f = current_user.favorites.new(copy_normal: "azienda", copy_bold: "#{@company.name}", copy_table: "companies", copy_table_id: @company.id)
+          f.save
+          @company.update(favorite_id: f.id)
+        else
+          #raise "aggiorna favorite esistente"
+          f = Favorite.find(@company.favorite_id)
+          f.update(copy_normal: "azienda", copy_bold: "#{@company.name}", copy_table: "companies", copy_table_id: @company.id)
+          f.save
+        end
+      end
+    end
+~~~~~~~~
+
+Adesso ho tutto quello che serve per mettere e togliere i preferiti.
+
+verifichiamo che funziona tutto.
+
+
+
+
+## Implementiamo il delete a cascata
+
+Cancelliamo il favorito se viene eliminata l'azienda
+implementiamo il codice per togliere il preferito. Sull'azione **destroy** del controller **companies_controller**, implementiamo il nuovo metodo private **manage_favorite_destroy**.
+
+{title=".../app/controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=88}
+~~~~~~~~
+  # DELETE /companies/1
+  # DELETE /companies/1.json
+  def destroy
+    manage_favorite_destroy # private action
+    @company.destroy
+~~~~~~~~
+
+Adesso scriviamo il codice del nuovo metodo nell'area **private**
+
+{title=".../app/controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=137}
+~~~~~~~~
+    def manage_favorite_destroy
+      # se il record @company ha un favorito lo elimino prima di eliminare il record.
+      Favorite.find(@company.favorite_id).destroy unless @company.favorite_id.blank?
+      #@company.favoritable.destroy unless @company.favorite_id.blank?
+    end
+~~~~~~~~
+
+Adesso se elimino un'azienda a cascata elimino anche l'eventuale suo favorito.
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add favorites companies edit destroy"
+~~~~~~~~
+
+
+
+
+## Mettiamo l'asterisco alla aziende preferite dall'utente
+
+Mettiamo l'asterisco al main_media_object di companies/show per le aziende preferite dall'utente
+
+{title="views/companies/_main_media_object.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+    <% unless @company.favorite_id.blank? %>
+      <span class="badge"><span class="glyphicon glyphicon-star"></span></span>
+    <% end %>
+~~~~~~~~
+
+
+
+
+## Mettiamo l'asterisco alle aziende preferite dall'utente sulla pagina iniziale
+
+Su homepage/show (non è users/show) nella lista delle aziende i record che sono preferiti avranno un asterisco.
+
+{title="views/companies/_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=5}
+~~~~~~~~
+      <% unless company.favorite_id.blank? %>
+        <span class="badge"><span class="glyphicon glyphicon-star"></span></span>
+      <% end %>
+~~~~~~~~
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add favorites companies star-badge"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku fcu:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge fcu
+$ git branch -d fcu
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

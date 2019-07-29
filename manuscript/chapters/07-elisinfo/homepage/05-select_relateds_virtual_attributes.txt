@@ -1,0 +1,218 @@
+# Attiviamo select_related
+
+Qui implementiamo se Select-Related i Virtual Attributes
+
+
+
+
+## Apriamo il branch "SelectRelated Virtual Attributes"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b srva
+~~~~~~~~
+
+
+
+
+## index
+
+Copiamo il mock select_relateds_index all'inizio del nostro codice ed implementiamo i partials.
+
+{title=".../app/views/select_relateds/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+<div class="container-fluid rear_mode">
+
+  <div class="row">
+    <div class="col-xs-9 col-sm-10 col-lg-11">
+
+      <ul class="nav nav-pills top-pad left-pad">
+        <li class="<%= 'active' if params[:tab_active].nil? or params[:tab_active] == 'list' %>">
+          <%= link_to "#pane_list", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_list" %>
+          <% end %>
+        </li>
+      </ul>
+
+    </div>
+    <div class="col-xs-3 col-sm-2 col-lg-1">
+      <%= render 'mockup_select_relateds/index/button_close' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row">
+    <div class="col-xs-12">
+
+      <div class="tab-content">
+        <div id="pane_list" class="tab-pane <%= 'active' if params[:tab_active] == nil or params[:tab_active] == 'list'  %>">
+          <div class="text-center bottom-pad">
+            <h4>Lista entità</h4>
+          </div>
+
+          <div class="row">
+            <div class="col-xs-12">
+              <%= render 'form_search' %>
+            </div> <!-- /col -->
+          </div> <!-- /row -->
+
+          <%= render 'list_group' %>
+
+          <div class="row">
+            <div class="col-xs-12">
+              <%= render 'related_pagination' %>
+            </div> <!-- /col -->
+          </div> <!-- /row -->
+
+        </div>
+      </div><!-- /.tab-content -->
+
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+</div> <!-- /rear_mode -->
+~~~~~~~~
+
+{title=".../app/views/select_relateds/_button_close.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<ul class="nav nav-pills bottom-pad top-pad pull-right right-pad">
+  <li>
+    <a class="btn btn-default" href="#">
+      <span class="glyphiconmy ico_close"></span>
+    </a>
+  </li>
+</ul>
+~~~~~~~~
+
+{title=".../app/views/select_relateds/_related_form_search.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<p>related_form_search</p>
+~~~~~~~~
+
+{title=".../app/views/select_relateds/_related_list_group.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<p>related_list_group</p>
+~~~~~~~~
+
+{title=".../app/views/select_relateds/_related_pagination.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<p>related_pagination</p>
+~~~~~~~~
+
+
+
+
+## L'elenco delle voci select_relateds
+
+nell'elenco delle voci vogliamo visualizzare le icone come nel seguente codice
+
+{title=".../app/views/select_relateds/_related_list_group.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<% @select_relateds.each do |select_related| %>
+  <%= link_to "#", class: "list-group-item" do %>
+    <%= content_tag :span,"#{select_related.name}", class: "glyphiconmy #{select_related.ico_name} right-pad" %>
+  <% end %>
+<% end %>
+
+<% @select_relateds.each do |select_related| %>
+  <a href="#" class="list-group-item">
+    <%= content_tag :span,"#{select_related.name}", class: "glyphiconmy #{select_related.ico_name} right-pad" %>
+  </a>
+<% end %>
+~~~~~~~~
+
+Ma abbiamo un errore perché in tabella non esiste il campo ico_name. Lo creiamo sul model come attributo virtuale (virtual attribute)
+
+
+
+
+## Attributi virtuali (virtual attributes)
+
+Creiamo i tre attributi virtuali ** ico_name, path_name, selected_name  ** sul model select_related
+
+{title=".../app/models/select_related.rb", lang=ruby, line-numbers=on, starting-line-number=7}
+~~~~~~~~
+  # virtual attributes ---------------------------------------------------------
+  # getter method (non creo il setter method)
+  def ico_name
+    "ico_#{metadata.singularize}"
+  end
+  
+  # getter method (non creo il setter method)
+  def path_name
+    "#{metadata}_path"
+  end 
+  
+  # getter method (non creo il setter method)
+  def selected_name
+    "#{metadata}"
+  end
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+ico_name : lo uso per visualizzare l'icona presa dallo style-sheet css
+ico_path : lo uso per degli spostamenti con link_to (forse non lo uso...)
+selected_name : lo uso per evidenziare l'icona selezionata
+
+Adesso funziona. Al momento si visualizzano tutte le voci anche "indirizzi e contatti" che in homepage non devono essere visualizzate. 
+
+
+
+
+## Query per homepage
+
+Sul model select_related [(codice: 01)](#code-homepage-select_relateds_virtual_attributes-01)  attiviamo una query per filtrare le sole voci che hanno bln_home = true
+
+{title=".../app/models/select_related.rb", lang=ruby, line-numbers=on, starting-line-number=24}
+~~~~~~~~
+  # scope filters --------------------------------------------------------------
+  scope :for_homepage, -> {where(bln_homepage: true)}
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+Per approfondimenti vedi la [guida di rails](http://guides.rubyonrails.org/active_record_querying.html#scopes) nella sezione scopes.
+
+~~~~~~~~
+ scope :published,               -> { where(published: true) }
+ scope :published_and_commented, -> { published.where("comments_count > 0") }
+~~~~~~~~
+
+Per utilizzare la query appena impostata andiamo sul controller ed inseriamola
+
+{title=".../app/controllers/select_relateds_controller.rb", lang=ruby, line-numbers=on, starting-line-number=6}
+~~~~~~~~
+  def index
+    #@select_relateds = SelectRelated.all
+    @select_relateds = SelectRelated.for_homepage
+  end-------------------------------------------------------------
+~~~~~~~~
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add SelectRelated Virtual Attributes"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku srva:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge srva
+$ git branch -d srva
+~~~~~~~~

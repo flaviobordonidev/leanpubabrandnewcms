@@ -1,0 +1,147 @@
+# Link per selezionare il fornitore
+
+
+
+
+## Apriamo il branch "components edit select supplier"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b cess
+~~~~~~~~
+
+
+
+
+## implementiamo il pulsante per l'azienda
+
+Nell'edit del componenete ho il pulsante che mi permette di scegliere il fornitore.
+Come già fatto per company_person_maps implementiamo il codice in basso:
+
+{title=".../app/views/components/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=25}
+~~~~~~~~
+    <div class="field">
+      <% if component.company_id.blank? %>
+        <div class="field">
+          <%= f.label :company_id, class: "control-label" %><br>
+          <%= link_to url_for(h_rear_params_path(path: "/companies")), :class => "list-group-item" do %>
+            <span class="glyphiconmy ico_company right-pad"></span>
+            <%= "Scegli un'azienda da inserire" %>
+          <% end %>
+        </div> <!-- /.field -->
+      <% else %>
+        <div class="field">
+          <%= f.label :company_id, class: "control-label" %><br>
+          <%= link_to url_for(h_rear_params_path(path: "/companies")), class: "list-group-item" do %>
+          <%#= link_to companies_path(related: "companies", page: 1, search: ""), :class => "list-group-item" do %>
+            <span class="glyphiconmy ico_company right-pad"></span> <%= "#{component.company.name}" %>
+            <div><%= "#{component.company.building}" %></div>
+          <% end %>
+        </div> <!-- /.field -->
+      <% end %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+~~~~~~~~
+
+Questo ancora non funziona perché ci manca la relazione uno-a-molti con l'azienda.
+
+
+
+
+## Implementiamo relazione uno-a-molti
+
+nel capitolo components_seeds abbiamo inserito la chiave esterna **company_id** ma in realtà avremmo dovuto inserire **supplier_id** e **factory_id**, entrambe chiavi esterne relazionate con companies. Per il momento continuiamo con company_id; lo cambieremo successivamente.
+
+Implementiamo la relazione uno-a-molti tra la tabella companies e components
+
+* Una company ha molte components. Aggiungiamo la chiave esterna che va nel lato "molti" quindi nella tabella components.
+
+Nel modello del componente mettiamo la relazione (== Relationships ===) di "appartiene a" (belongs_to)
+
+{title=".../app/models/component.rb", lang=ruby, line-numbers=on, starting-line-number=15}
+~~~~~~~~
+  # == Relationships ========================================================
+
+  # ==== one-to-many
+  belongs_to :company
+~~~~~~~~
+
+Nel modello dell'azienda mettiamo la relazione (== Relationships ===) di "ha molti" (has_many)
+
+{title=".../app/models/company.rb", lang=ruby, line-numbers=on, starting-line-number=45}
+~~~~~~~~
+  # == Relationships ========================================================
+
+  # ==== one-to-many
+  has_many :components
+~~~~~~~~
+
+la relazione è in piedi ed adesso non ho più errore. Solo che ancora non funziona il link di un'azienda su companies/index -> _related_companies. Torna correttamente sulla pagina components edit ma non aggiorna il campo dell'azienda. Il link manda correttamente il parametro ** change_id: company.id ** ma questo non è intercettato dal controller di components.
+
+
+
+## Components controller azione edit
+
+Aggiorniamo quindi l'azione **edit** del controller 
+
+{title=".../app/models/components_controller.rb", lang=ruby, line-numbers=on, starting-line-number=39}
+~~~~~~~~
+    if params[:change_id].present?
+      @component.company_id = params[:change_id]
+    end
+~~~~~~~~
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+![https://elisinfo5-flaviobordonidev.c9users.io/company_person_maps](images/company_person_maps/cpmaps_index/cpmaps.png)
+
+Aggiorno git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add components link to set company_id"
+~~~~~~~~
+
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku cess:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge cess
+$ git branch -d cess
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

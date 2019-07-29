@@ -1,0 +1,279 @@
+# Mockup per l'edit (vai a / modifica / elimina) di company_contact_maps 
+
+
+
+
+## Apriamo il branch "mockup company_contact_maps edit destroy"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b mccmed
+~~~~~~~~
+
+
+
+
+## Rails generate controller 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g controller mockup_company_contact_maps edit
+~~~~~~~~
+
+
+
+
+## Rails controller 
+
+aggiungiamo l'azione edit al controller mockup_company_contact_maps
+
+{title=".../app/controllers/mockup_company_contact_maps_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class MockupCompanyContactMapsController < ApplicationController
+
+  def edit
+  end
+end
+~~~~~~~~
+
+
+
+
+## Instradiamo l'azione edit sulla views
+
+Sistemiamo su routes l'instradamento ** get 'mockup_company_contact_maps/edit' ** mettendolo in ordine alfabetico con la parte ** get 'mockup-...' **
+
+{title=".../app/config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+Rails.application.routes.draw do
+
+  #scope "(:locale)", locale: /en|it/ do
+  
+    #root 'homepage#show'
+    root 'startpage#show'
+    
+    devise_for :users, controllers: { sessions: 'users/sessions' }
+    resources :users
+    #get 'users/show', as: :user_root # creates user_root_path (default path after sign_in)
+    
+    resources :global_settings, only: [:index]
+    resources :companies
+    resources :people
+    #resources :select_relateds, only: [:index]
+    resources :select_relateds
+    resources :company_person_maps
+    resources :contacts
+    resources :company_contact_maps
+
+    get "homepage/", to: "homepage#show"
+    get 'startpage/show'
+    get 'users/show'
+
+    get 'mockup_authentication/login'
+    get 'mockup_companies/index'
+    get 'mockup_companies/show'
+    get 'mockup_companies/edit'
+    get 'mockup_companies/new'
+    get 'mockup_company_contact_maps/edit'
+    get 'mockup_company_person_maps/index'
+    get 'mockup_company_person_maps/edit'
+    get 'mockup_contacts/index'
+    get 'mockup_contacts/show'
+    get 'mockup_contacts/edit'
+    get 'mockup_contacts/new'
+    get 'mockup_favorites/index'
+    get 'mockup_global_settings/index'
+    get 'mockup_homepage/show'
+    get 'mockup_people/index'
+    get 'mockup_people/show'
+    get 'mockup_people/edit'
+    get 'mockup_people/new'
+    get 'mockup_select_relateds/index'
+    get 'mockups/test'
+    get 'mockup_startpage/show'
+    get 'testpages/page_a'
+    get 'testpages/page_b'
+
+    # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  
+  #end
+end
+~~~~~~~~
+
+
+
+
+## Creiamo la view mockup_company_contact_maps#edit
+
+{title=".../app/views/mockup_company_contact_maps/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="container-fluid rear_mode">
+	<div class="row">
+		<div class="col-xs-9 col-sm-10 col-lg-11">
+			<ul class="nav nav-pills bottom-pad top-pad left-pad">
+				<li><a href="#pane_goto" data-toggle="tab"><span class="glyphiconmy ico_goto"></span></a></li>
+				<li class="active"><a href="#pane_edit" data-toggle="tab"><span class="glyphiconmy ico_edit"></span></a></li>
+				<li><a href="#pane_delete" data-toggle="tab"><span class="glyphiconmy ico_delete"></span></a></li>
+			</ul>
+		</div><!-- /.col -->
+		<div class="col-xs-3 col-sm-2 col-lg-1">
+			<%= render 'mockup_company_contact_maps/edit/button_close' %>
+		</div> <!-- /.col -->
+	</div> <!-- /.row -->
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="tab-content">
+				<div id="pane_goto" class="tab-pane">
+					<div class="text-center bottom-pad">
+						<h4>vai a</h4>
+					</div><!-- /.text-center -->
+					<%= render 'mockup_company_contact_maps/edit/tab_goto' %>
+				</div><!-- /#pane_goto -->
+				<div id="pane_edit" class="tab-pane active">
+					<div class="text-center bottom-pad">
+						<h4>Modifica</h4>
+					</div><!-- /.text-center -->
+					<%= render 'mockup_company_contact_maps/edit/tab_edit' %>
+				</div><!-- /#pane_edit -->
+				<div id="pane_delete" class="tab-pane">
+					<div class="text-center bottom-pad">
+						<h4>Elimina</h4>
+					</div><!-- /.text-center -->
+					<%= render 'mockup_company_contact_maps/edit/tab_delete' %>
+				</div><!-- /#pane_delete -->
+			</div><!-- /.tab-content -->
+		</div> <!-- /.col -->
+	</div> <!-- /.row -->
+</div> <!-- /.rear_mode -->
+~~~~~~~~
+
+
+{title=".../app/views/mockup_company_contact_maps/edit/_button_close.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<ul class="nav nav-pills pull-right top-pad right-pad">
+  <li><a href="#" class="btn btn-default"><span class="glyphiconmy ico_close"></span></a></li>
+</ul>
+~~~~~~~~
+
+
+{title=".../app/views/mockup_company_contact_maps/edit/_tab_goto.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<p> if params[:related]="companies" </p>
+
+  <a href="#" class="list-group-item">
+    <span class="glyphiconmy ico_company right-pad"></span> Ufficio tecnico
+    <div><%= "Stark - fornitore e cliente" %></div>
+  </a>
+
+<p> if params[:related]="people" </p>
+
+  <a href="#" class="list-group-item">
+    <span class="glyphiconmy ico_person right-pad"></span> Ufficio tecnico
+    <div><%= "Telefono +39 02 5478 3922" %></div>
+  </a>
+~~~~~~~~
+
+
+{title=".../app/views/mockup_company_contact_maps/edit/_tab_edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<form class="form-horizontal left-pad right-pad bottom-pad">
+	<div class="form-group">
+
+    <label class="control-label" for="summary">Summary</label>
+		<input type="text" id="summary" class="form-control" placeholder="Ufficio tecnico">
+		<span class="help-block"></span>
+
+		<p> if params[:related]="companies" </p>
+
+    <label class="control-label" for="company_id">Azienda</label>
+    <a href="#" id="company_id" class="list-group-item">
+      <span class="glyphiconmy ico_company right-pad"></span> 
+      <div><%= "Stark - fornitore e cliente" %></div>
+    </a>
+		<span class="help-block"></span>
+
+    <label class="control-label" for="company_favorite">Favorite: </label>
+    <input type="checkbox" id="company_favorite" name="company_favorite" data-size = "medium" data-on-color = "primary" data-on-text = "SI" data-off-color = "default" data-off-text = "NO" >
+    <span class="help-block"></span>
+
+		<p> if params[:related]="contacts" </p>
+
+    <label class="control-label" for="contact_id">Contatto</label>
+    <a href="#" id="contact_id" class="list-group-item">
+      <span class="glyphiconmy ico_contact right-pad"></span> 
+      <div><%= "Telefono +39 02 5478 3922" %></div>
+    </a>
+		<span class="help-block"></span>
+
+    <label class="control-label" for="contact_favorite">Favorite: </label>
+    <input type="checkbox" id="contact_favorite" name="contact_favorite" data-size = "medium" data-on-color = "primary" data-on-text = "SI" data-off-color = "default" data-off-text = "NO" checked >
+    <span class="help-block"></span>
+    
+	</div><!-- /.form-group -->
+	<button type="submit" class="btn btn-primary btn-block">esegui</button>
+</form>
+~~~~~~~~
+
+
+{title=".../app/views/mockup_company_contact_maps/edit/_tab_delete.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<form id="login-form" name="login-form" class="form-horizontal left-pad right-pad bottom-pad">
+	<div class="form-group">
+		
+    <label for="destroy">Sei sicuro?</label><br>
+    <input type="checkbox" id="destroy" name="destroy" data-size = "medium" data-on-color = "primary" data-on-text = "SI" data-off-color = "default" data-off-text = "NO" />
+		<span class="help-block"></span>
+		
+	</div><!-- /.form-group -->
+	<button type="submit" class="btn btn-primary btn-block">esegui</button>
+</form>
+~~~~~~~~
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+https://elisinfo5-flaviobordonidev.c9users.io/mockup_people/edit
+
+![mockup_people edit 1](images/companies_people/mockup_company_contact_maps/mockup_people_edit1.png)
+
+![mockup_people edit 2](images/companies_people/mockup_company_contact_maps/mockup_people_edit2.png)
+
+![mockup_people edit 3](images/companies_people/mockup_company_contact_maps/mockup_people_edit3.png)
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add mockup_company_contact_maps edit"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku mccmed:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge mccmed
+$ git branch -d mccmed
+~~~~~~~~

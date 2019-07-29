@@ -1,0 +1,3 @@
+-# Creiamo lo stile 
+
+qui il web designer prepara la parte grafica del ns applicativo.

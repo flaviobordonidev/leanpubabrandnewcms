@@ -1,0 +1,395 @@
+# company_person_map new
+
+in questo capitolo creiamo il new per inserire voci nell'elenco "related" sia in company show che in person show. Essendo una relazione many-to-many è valida in entrambe le direzioni.
+
+* Dalla vista di un'azienda (companies/show) creiamo una nuova associazione per una persona (nuovo related person).
+* Dalla vista di una persona (people/show) creiamo una nuova associazione per un'azienda (nuovo related company).
+
+
+
+
+## Apriamo il branch "companies-company_person_map new"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b cpmn
+~~~~~~~~
+
+
+
+
+## Implementiamo il pulsante new su companies/show e people/show
+
+Il pulsante related_button_new lo abbiao già implementato nei capitoli precedenti e reso generico in modo da poter essere usato per tutta l'applicazione.
+
+{title="views/application/_related_button_new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<% unless relateds_path == "favorites" %>
+  <% if params[:search].present? or (list_to_add.size < 7)%>
+    <div class="btn-group pull-right right-pad"> <!-- btn-group -->
+     <%#= link_to url_for(h_front_params_path(path: "/#{params[:related]}/new")), :class => "btn btn-default" do %>
+     <%= link_to url_for(h_front_params_path(path: "/#{relateds_path}/new")), :class => "btn btn-default" do %>
+        <span class="glyphiconmy ico_new"></span>
+      <% end %>
+    </div> <!-- /btn-group -->
+  
+  <% else %>
+    <div class="btn-group pull-right right-pad">  <!-- btn-group -->
+      <a href="#" class="btn btn-primary disabled">
+        <span class="glyphiconmy ico_new"></span>
+      </a>
+    </div> <!-- /btn-group -->
+  <% end %>
+<% end %>
+~~~~~~~~
+
+DA VERIFICARE NEI CAPITOLI PRECEDENTI COME E' STATO IMPLEMENTATO PERCHE' OGGI ABBIAMO FATTO DIVERSE MODIFICHE
+MESSO **RELATEDS_PATH** AL POSTO DI **PARAMS[:RELATED]** IMPOSTATO IL RENDER PER PASSARE DUE PARAMETRI E MESSO **UNLESS ... == "FAVORITES"**
+
+
+
+
+## Attiviamo views NEW per related person
+
+Se proviamo ad usare il pulsante per una nuova persona da associare riceviamo un errore perché nel partial **_form** abbiamo aggiunto il codice per il pulsante che visualizza la persona collegata. Questo è utile per la fase di edit ma volendo creare una nuova persona abbiamo errore sulla linea di codice
+
+{title="views/company_person_maps/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=45}
+~~~~~~~~
+            <%= "#{@company_person_map.person.title} #{@company_person_map.person.first_name} #{@company_person_map.person.last_name}" %>
+~~~~~~~~
+
+perché non c'è nessuna persona associata al nuovo record company_person_map. Quindi aggiungiamo una condizione if...then...else gestendo **company_person_map.person_id.blank?** che visualizza il pulsante con la scritta "aggiungi una persona" quando siamo sulla view **new**
+
+{title="views/company_person_maps/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=39}
+~~~~~~~~
+    <% elsif params[:last_front_controller] == "companies" %>
+      <% if company_person_map.person_id.blank? %>
+        <div class="field">
+          <%= f.label :person_id, class: "control-label" %><br>
+          <%#= link_to people_path(related: "people", page: 1, search: ""), :class => "list-group-item" do %>
+          <%= link_to url_for(h_rear_params_path(path: "/people")), :class => "list-group-item" do %>
+            <span class="glyphiconmy ico_person right-pad"></span>
+            <%= "Scegli una persona da inserire" %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="field">
+          <%= f.label :person_id, class: "control-label" %><br>
+          <%= link_to url_for(h_rear_params_path(path: "/people")), class: "list-group-item" do %>
+          <%#= link_to people_path(related: "people", page: 1, search: ""), :class => "list-group-item" do %>
+            <span class="glyphiconmy ico_person right-pad"></span>
+            <%= "#{company_person_map.person.title} #{company_person_map.person.first_name} #{company_person_map.person.last_name}" %>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+~~~~~~~~
+
+
+
+
+## Attiviamo views NEW per related company
+
+Discorso analogo per una nuova azienda associata. In questo caso la linea di codice che prende errore è la
+
+{title="views/company_person_maps/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=35}
+~~~~~~~~
+          <div><%= "#{company_person_map.company.name} - #{company_person_map.company.status}" %></div>
+~~~~~~~~
+
+perché non c'è nessuna azienda associata al nuovo record company_person_map. Quindi aggiungiamo una condizione if...then...else gestendo **company_person_map.company_id.blank?** che visualizza il pulsante con la scritta "aggiungi un'azienda" quando siamo sulla view **new**
+
+{title="views/company_person_maps/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=29}
+~~~~~~~~
+    <% if params[:last_front_controller] == "people" %>
+      <% if company_person_map.company_id.blank? %>
+        <div class="field">
+          <%= f.label :company_id, class: "control-label" %><br>
+          <%= link_to url_for(h_rear_params_path(path: "/companies")), :class => "list-group-item" do %>
+            <span class="glyphiconmy ico_company right-pad"></span>
+            <%= "Scegli un'azienda da inserire" %>
+          <% end %>
+        </div>      
+      <% else %>
+        <div class="field">
+          <%= f.label :company_id, class: "control-label" %><br>
+          <%= link_to url_for(h_rear_params_path(path: "/companies")), class: "list-group-item" do %>
+          <%#= link_to companies_path(related: "companies", page: 1, search: ""), :class => "list-group-item" do %>
+            <span class="glyphiconmy ico_company right-pad"></span> <%= company_person_map.summary %>
+            <div><%= "#{company_person_map.company.name} - #{company_person_map.company.status}" %></div>
+          <% end %>
+        </div>
+      <% end %>
+~~~~~~~~
+
+
+
+
+
+
+
+
+## Torniamo alla nuova persona e selezioniamo dal company_person_maps/new la persona da associare
+
+Torniamo sulla pagina della azienda (company/show) con l'elenco dei dipendenti (params[:related] = "people") e clicchiamo il pulsante per associare una nuova persona (company_person_maps/new). Ci troviamo un solo tab; quello con il partial _form. Tra i campi c'è il pulsante per associare una persona. Cliccando su quel pulsante veniamo portati su people/index con l'elenco di tutte le persone così possiamo scegliere quella che vogliamo associare. Selezionata la persona torniamo alla company_person_maps/new con il person_id impostato alla persona scelta.
+
+Implementiamo un passo alla volta. Il primo passo:
+Implementiamo la struttura del mockup (di tipo rear_view) nella pagina company_person_maps/new, sopra il codice dello scaffold, ed implementiamo i renders.
+
+{title=".../app/views/company_person_maps/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+<div class="container-fluid rear_mode">
+  <div class="row">
+    <div class="col-xs-9 col-sm-10 col-lg-11">
+      <ul class="nav nav-pills bottom-pad top-pad left-pad">
+        <li class="<%= 'active' if params[:tab_active] == 'default' or params[:tab_active] == 'edit' %>">
+          <%= link_to "#pane_edit", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_edit" %>
+          <% end %>
+        </li>
+      </ul>
+    </div><!-- /.col -->
+    <div class="col-xs-3 col-sm-2 col-lg-1">
+      <%= render 'button_close' %>
+    </div> <!-- /.col -->
+  </div> <!-- /.row -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="tab-content">
+        <div id="pane_edit" class="tab-pane <%= 'active' if params[:tab_active] == 'default' or params[:tab_active] == 'edit'  %>">
+          <div class="text-center bottom-pad">
+            <h4><%= t("companies.new.title_pane_edit") %></h4>
+          </div> <!-- /.text-center -->
+          <%= render 'form', company_person_map: @company_person_map %>
+        </div> <!-- /.tab-pane -->
+      </div> <!-- /.tab-content -->
+    </div> <!-- /.col -->
+  </div> <!-- /.row -->
+</div> <!-- /.rear_mode -->
+~~~~~~~~
+
+
+Il secondo passo:
+Su people/index implementiamo che il click sul link della persona ci riporta a company_person_maps/new con il person_id impostato. Questo codice è nel partial **related_people**.
+
+{title=".../app/views/people/_related_people.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+      <% people.each do |person| %>
+        <% if params[:last_rear_action] == "new" %>
+          <%= link_to url_for(h_params_path(path: "/#{params[:last_rear_controller]}/new", change_id: person.id, tab_active: "edit")), :class => "list-group-item" do %>
+            <p> <%= person.title %> </p>
+            <p><strong> <%= "#{person.first_name} #{person.last_name}"%> </strong></p>
+          <% end %>
+        <% elsif params[:last_rear_action] == "edit" %>
+          <%= link_to url_for(h_params_path(path: "/#{params[:last_rear_controller]}/#{params[:last_rear_id]}/edit", change_id: person.id, tab_active: "edit")), :class => "list-group-item" do %>
+            <p> <%= person.title %> </p>
+            <p><strong> <%= "#{person.first_name} #{person.last_name}"%> </strong></p>
+          <% end %>
+        <% end %>
+      <% end %>
+~~~~~~~~
+
+da evidenziare la struttura <% if params[:last_rear_action] == "new" %> il link ci rimanda a company_person_maps/new. Altrimenti ci rimanda a company_person_map_params/edit della azienda specifica.
+
+
+Il terzo passo:
+adesso torniamo correttamente indietro ma ci manca ancora l'impostazione di person_id. Inoltre non vediamo neanche l'impostazione di company_id. Questo lo risolviamo sul controller.
+
+{title=".../app/controllers/company_person_maps_controller.rb", lang=HTML+Mako, line-numbers=on, starting-line-number=16}
+~~~~~~~~
+  def new
+    @company_person_map = CompanyPersonMap.new
+    # il new mi apre la maschera di company/person index per scegliere l'id mancante
+    # una volta scelto salva il record con summary = "employee" e mi apre la maschera di edit
+    if params[:last_front_controller] == "companies"
+      @company_person_map.company_id = params[:last_front_id]
+      @company_person_map.person_id = params[:change_id] if params[:change_id].present?
+      #@relateds = Person.search(params[:search]).order('created_at DESC').page(params[:page]).per_page(2)
+    elsif params[:last_front_controller] == "people"
+      @company_person_map.person_id = params[:last_front_id]
+      @company_person_map.company_id = params[:change_id] if params[:change_id].present?
+      #@relateds = Company.search(params[:search]).order('created_at DESC').page(params[:page]).per_page(2)
+    else
+      raise "error"
+    end
+  end
+~~~~~~~~
+
+Il quarto passo:
+adesso funziona quasi tutto. resta solo da implementare il corretto reinstradamento una volta creata la nuova persona. Quando clicco sul pulsante submit della nuova persona devo ritornare da dove avevamo iniziato ossia su companies/show. E' sufficiente cambiare una linea di codice sull'azione **create** del controller **company_person_maps_controller**
+
+{title=".../app/controllers/company_person_maps_controller.rb", lang=HTML+Mako, line-numbers=on, starting-line-number=51}
+~~~~~~~~
+        format.html { redirect_to url_for(view_context.h_params_path(path: "/#{params[:last_front_controller]}/#{params[:last_front_id]}", related: params[:last_front_related], page: params[:last_front_page], search: params[:last_front_search])), notice: 'Creato nuovo collegamento.' }
+~~~~~~~~
+
+Abbiamo finito la parte principale. Nei prossimi paragrafi aggiungiamo dei miglioramenti di funzionalità.
+
+Aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Company_person_maps new related"
+~~~~~~~~
+
+
+
+
+## Adesso passiamo all'altro lato
+
+
+
+## Torniamo alla nuova azienda da associare e selezioniamo dal company_person_maps/new l'azienda da associare
+
+... il primo passo l'ho saltato ...
+
+Il secondo passo:
+Su companies/index implementiamo che il click sul link della azienda ci riporta a company_person_maps/new con il company_id impostato. Questo codice è nel partial **related_companies**.
+
+{title=".../app/views/companies/_related_companies.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=13}
+~~~~~~~~
+      <% companies.each do |company| %>
+        <% if params[:last_rear_action] == "new" %>
+          <%= link_to url_for(h_params_path(path: "/#{params[:last_rear_controller]}/new", change_id: company.id, tab_active: "edit")), :class => "list-group-item" do %>
+            <p> <%= company.taxation_number_first %> </p>
+            <p><strong> <%= "#{company.name}"%> </strong></p>
+          <% end %>
+        <% elsif params[:last_rear_action] == "edit" %>
+          <%= link_to url_for(h_params_path(path: "/#{params[:last_rear_controller]}/#{params[:last_rear_id]}/edit", change_id: company.id, tab_active: "edit")), :class => "list-group-item" do %>
+            <p> <%= company.taxation_number_first %> </p>
+            <p><strong> <%= "#{company.name}"%> </strong></p>
+          <% end %>
+        <% end %>
+      <% end %>
+~~~~~~~~
+
+da evidenziare la struttura <% if params[:last_rear_action] == "new" %> il link ci rimanda a company_person_maps/new. Altrimenti ci rimanda a company_person_map_params/edit della azienda specifica.
+
+... ed anche gli altri passi li ho saltati ...
+
+
+
+
+## Workaround bug
+
+Su rails 4.0 avevo un bug e dovevo usare questo workaround:
+sul controller ho dovuto mettere un redirect_to invece del renderd di default perché non mi ripopolava la variabile @relateds e me la lasciava nil. Invece con il redirect_to viene popolata correttamente      
+
+{title=".../app/controllers/company_person_maps_controller.rb", lang=ruby, line-numbers=on, starting-line-number=46}
+~~~~~~~~
+# POST /company_person_maps
+def create
+  @company_person_map = CompanyPersonMap.new(company_person_map_params)
+
+  if @company_person_map.save
+    #redirect_to @company_person_map, notice: 'Company person map was successfully created.'
+    redirect_to edit_company_person_map_path(@company_person_map.id)
+  else
+    #raise "YEAP! Manca o company_id o person_id"
+    #render :new
+    redirect_to new_company_person_map_path()
+  end
+end
+~~~~~~~~
+
+Su rails 5.0 non ho più bisogno di questo workaround
+
+
+
+
+## Validiamo il model
+
+Siccome è fondamentale che ci siano entrambi company_id e person_id mettiamo una validazione sul model
+
+{title="models/company_person_map.rb", lang=ruby, line-numbers=on, starting-line-number=20}
+~~~~~~~~
+  # == Validations ==========================================================
+
+  validates :company_id,        :presence   => true
+  validates :person_id,         :presence   => true
+~~~~~~~~
+
+Aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Company_person_maps validates model"
+~~~~~~~~
+
+
+
+
+## Attiviamo la ricerca sull'elenco della persona da associare  (people/index)
+
+Abbiamo già implementato la funzione di ricerca nei capitoli precedenti 
+
+
+
+## Correggiamo errore su pulsante di close_to_rear
+
+Il pulsante di close_to_rear funziona bene se si arriva dalla pagina di edit. Se invece arriviamo dalla pagina di nuovo collegamento, otteniamo il seguente messaggio di errore:
+**Couldn't find CompanyPersonMap with 'id'=edit**
+
+Per risolverlo inseriamo nel partial generico **bottom_close_to_rear** la condizione se la pagina precedente era **edit** oppure **new**
+
+{title=".../app/views/application/_bottom_close_to_rear.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+<ul class="nav nav-pills bottom-pad top-pad pull-right right-pad">
+  <li>
+    <% if params[:last_rear_action] == "new" %>
+      <%= link_to url_for(h_params_path(path: "/#{params[:last_rear_controller]}/new", tab_active: "edit", page: params[:last_rear_page], search: params[:last_rear_search])), :class => "list-group-item" do %>
+        <%= content_tag :span,"", class: "glyphiconmy ico_close" %>
+      <% end %>
+    <% elsif params[:last_rear_action] == "edit" %>
+      <%= link_to url_for(h_params_path(path: "/#{params[:last_rear_controller]}/#{params[:last_rear_id]}/edit", tab_active: "edit", page: params[:last_rear_page], search: params[:last_rear_search])), :class => "list-group-item" do %>
+        <%= content_tag :span,"", class: "glyphiconmy ico_close" %>
+      <% end %>
+    <% end %>
+  </li>
+</ul>
+~~~~~~~~
+
+
+
+
+## Manca la parte delle traduzioni statiche...
+
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku cpmn:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge cpmn
+$ git branch -d cpmn
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

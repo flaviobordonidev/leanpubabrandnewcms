@@ -1,0 +1,171 @@
+## Indirizzi
+
+Al momento non normalizziamo gli indirizzi con sottotabelle (countries 1-∞ states 1-∞ addresses) ma creiamo una sola tabella (addresses).
+Quindi la situazione di gestire su un form più models è analoga a quanto abbiamo visto per i contatti. La differenza sostanziale sta nel fatto che questa volta creeremo una tabella polimorfica. Quindi non dobbiamo creare person_addresses e company_addresses.
+
+
+
+
+## Apriamo il branch "addresses seeds"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b as
+~~~~~~~~
+
+
+
+
+## Creiamo la tabella addresses
+
+La tabella degli indirizzi avrà i seguenti campi:
+
+* line1, line2, line3 sono le tre linee dell'indirizzo. (In italia la maggior parte delle volte si usa solo line1)
+  Address lines 1-3 can hold components such as: Building, Sub-Building, Premise number (house number), Premise Range, Thoroughfare, Sub-Thoroughfare, Double-Dependent Locality, Sub-Locality, sector, quadra, block, floor
+* locality è la località (paese/città -- town/city)
+* region è la provincia (negli USA o in Brasile è lo stato)
+* region_abbreviation non lo uso ma sarebbe l'abbreviazione della provincia (es: Roma->RM, New-York->NY)
+* postcode è il CAP (negli usa lo ZIP)
+* country è il paese (es: Italia, USA, Brasile, ...)
+* country_abbreviation non lo uso ma sarebbe l'abbreviazione del paese (es: Italia->IT, Stati uniti->US, Germania->DE)
+* latitude, longitude sono le coordinate GPS per quei posti che non hanno indirizzo.
+
+Riferimenti esterni:
+
+* http://stackoverflow.com/questions/929684/is-there-common-street-addresses-database-design-for-all-addresses-of-the-world
+* http://www.upu.int/en/activities/addressing/postal-addressing-systems-in-member-countries.html
+
+Inoltre avrà i due campi per il polimorfismo:
+
+* addressable_id per la chiave esterna (lato molti della relazione uno-a-molti)
+* addressable_type per identificare la tabella esterna 
+
+Non usiamo lo scaffold perché sarà annidata nella struttura di people (o di companies). Ci serve solo l'interfacciamento con il database e quindi creiamo il model.
+Anche sul **g model** il nome va messo al singolare e si preoccuperà lui di fare la tabella plurale.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g model Address addressable_id:integer addressable_type:string line1:string  line2:string  line3:string locality:string region:string postcode:string country:string latitude:string longitude:string
+~~~~~~~~
+
+{title=".../db/migrate/xxx_create_addresses.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class CreateAddresses < ActiveRecord::Migration[5.0]
+  def change
+    create_table :addresses do |t|
+      t.integer :addressable_id, foreign_key: true
+      t.string :addressable_type
+      t.string :line1
+      t.string :line2
+      t.string :line3
+      t.string :locality
+      t.string :region
+      t.string :postcode
+      t.string :country
+      t.string :latitude
+      t.string :longitude
+
+      t.timestamps
+    end
+  end
+end
+~~~~~~~~
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rake db:migrate
+~~~~~~~~
+
+
+
+
+## Internazionalizzazione I18n !!!
+
+Al momento non metto la traduzione della città o del paese. La implementerò in futuro quando normalizzeremo l'indirizzo facendo tabelle separate per regions e countries.
+
+
+
+
+## Creiamo le associazioni polimorfiche ed aggiungiamo il nested models per i forms annidati
+
+andiamo sul model ed aggiungiamo il polymorphic e l'inverse_of
+
+{title=".../app/models/address.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+class Address < ApplicationRecord
+
+  # polymorphic ----------------------------------------------------------------
+  belongs_to :addressable, polymorphic: true, inverse_of: :addresses
+  #-----------------------------------------------------------------------------
+end
+~~~~~~~~
+
+andiamo sugli altri modelli ed aggiungiamo l'altro lato dell'associazione polimorfica e l'inverse_of ed accepts_nested_attributes_for
+
+{title=".../app/models/company.rb", lang=ruby, line-numbers=on, starting-line-number=23}
+~~~~~~~~
+  has_many :addresses, as: :addressable, inverse_of: :addressable, dependent: :destroy
+  accepts_nested_attributes_for :addresses
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+
+{title=".../app/models/person.rb", lang=ruby, line-numbers=on, starting-line-number=7}
+~~~~~~~~
+  has_many :addresses, as: :addressable, inverse_of: :addressable, dependent: :destroy
+  accepts_nested_attributes_for :addresses
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+
+il codice ** accepts_nested_attributes_for: ** ci permette di gestire più modelli dentro lo stesso form.
+Da rails 5 è necessario aggiungere anche il **reverse_of**, for Creating an object and its children via accepts_nested_attributes_for in a :has_many association, altrimenti prendo errore dopo aver abilitato il passaggio dei valori del model annidato su **params...permit...**
+
+Per spiegazioni su **reverse_of** vedi: https://www.viget.com/articles/exploring-the-inverse-of-option-on-rails-model-associations
+
+Con il ** dependent: :destroy ** quando elimino una persona o azienda (person or company) mi elimina a cascata tutte i suoi indirizzi (addresses). Altrimenti rimarrebbero degli indirizzi "orfani". 
+
+
+
+
+## Proviamo l'associazione polimorfica
+
+Usiamo la tabella addresses per dare un indirizzo sia alla prima persona (Person.first) che alla prima azienda (Company.first). 
+
+- Inseriamo l'indirizzo "Via Roma, 12  Roccantica RI 02040 Italia" alla prima persona (Person.first).
+- Inseriamo l'indirizzo "Piazza del Gesù, 14B Roma RM 00100 Italia" alla prima azienda (Company.first).
+- Inseriamo secondo indirizzo "Via Maria, 3 Roma RM 00100 Italia" alla prima azienda (Company.first).
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+irb> p = Person.first
+irb> p.addresses.new(line1: "Via Roma, 12", locality: "Roccantica", region: "RI", postcode: "02040", country: "Italia").save
+irb> p.addresses
+irb> pa = p.addresses.first
+irb> c = Company.first
+irb> c.addresses.new(line1: "Piazza del Gesù, 14B", locality: "Roma", region: "RM", postcode: "00100", country: "Italia").save
+irb> c.addresses
+irb> ca1 = c.addresses.first
+irb> ca2 = c.addresses.new(line1: "Via Maria, 3", locality: "Roma", region: "RM", postcode: "00100", country: "Italia")
+irb> c.addresses
+irb> ca2.save
+irb> c.addresses
+
+irb> Address.all
+irb> p.addresses
+irb> c.addresses
+~~~~~~~~
+
+Per vedere l'altro lato dell'associazione non possiamo chiamare "pf.person" o "cf.company" perché sono creati dinamicamente a partire dalla stessa tabella polimorfica "favorites". Invece possiamo chiamare:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+irb> pa.addressable
+irb> ca1.addressable
+irb> ca2.addressable
+~~~~~~~~
+
+Dal punto di vista del polimorfismo abbiamo finito. Adesso concentriamoci nei nested forms lato aziende e lato persone.
+

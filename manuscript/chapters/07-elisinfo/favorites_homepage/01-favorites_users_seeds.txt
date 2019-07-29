@@ -1,0 +1,328 @@
+# Preferiti (favorites) per la pagina iniziale (homepage) 
+
+home_favorites NON ESISTE perché non voglio avere dei favoriti generici per tutta l’applicazione. Quello che voglio sono dei preferiti per l’utente che fa login. Quindi quando si vedono i favoriti presenti nell’home_page si sta guardando:
+
+ users_favorites
+
+
+
+
+## Apriamo il branch "favorites users seed"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b fus
+~~~~~~~~
+
+
+
+
+## Creiamo la tabella generica Favorites 
+
+Abbiamo già creato la tabella polimorfica favorites nei capitoli precedenti.
+
+
+
+
+## Creiamo le associazioni polimorfiche
+
+sul model favorite abbiamo già ** belongs_to :favoritable, polymorphic: true ** andiamo sul model degli users ed aggiungiamo l'altro lato dell'associazione polimorfica.
+
+{title=".../app/models/user.rb", lang=ruby, line-numbers=on, starting-line-number=8}
+~~~~~~~~
+  # polymorphic ----------------------------------------------------------------
+  has_many :favorites, as: :favoritable
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "update model user with polimorphic favorite"
+~~~~~~~~
+
+
+
+
+## Popoliamo manualmente i favoriti dell'utente
+
+Implementiamo i seguenti preferiti per il primo utente (User.first):
+
+- La "società - ABC Inc" 
+- La "persona - Sig. Jhon Doe"
+
+Inseriamo due nuovi preferiti sulla tabella favorites. Uno per la società ed uno per la persona; entrambi associati al primo utente (User.first). 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+irb> u = User.first
+irb> u.favorites.new(copy_normal: "società", copy_bold: "ABC Inc" ).save
+irb> u.favorites
+irb> u.favorites.first
+irb> u.favorites.first.copy_bold
+irb> u.favorites.last
+irb> u.favorites[0]
+
+irb> u.favorites.new(copy_normal: "persona", copy_bold: "Sig. Jhon Doe" ).save
+irb> u.favorites
+irb> u.favorites.first
+irb> u.favorites.last
+irb> u.favorites[0]
+irb> u.favorites[0].copy_bold
+irb> u.favorites[1]
+irb> u.favorites[1].copy_bold
+
+irb> Favorite.all
+irb> u.favorites[0].favoritable
+irb> u.favorites[1].favoritable
+irb> Favorite.last.favoritable
+irb> Favorite.find(26).favoritable
+irb> Favorite.find(25).favoritable
+~~~~~~~~
+
+Dal punto di vista del polimorfismo abbiamo finito.  
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add favorites polymorphic to users"
+~~~~~~~~
+
+Questo sarebbe sufficiente se favorites fosse un elemento "sganciato" da aggiungere alle varie tabelle (ad esempio un commento). Ma nel nostro caso dobbiamo registrare anche nella tabella companies e nella tabella people quale record è il preferito dell'utente.
+
+Informiamo il corrispondente record di companies che è un preferito del primo utente. Per far questo aggiungiamo la chiave esterna favorite_id alla tabella companies.
+Inoltre informiamo il corrispondente record di people che è un preferito del primo utente. Per far questo aggiungiamo la chiave esterna favorite_id alla tabella people.
+
+
+
+
+## Aggiungiamo la chiave esterna "favorite_id" alla tabella companies
+
+Come abbiamo visto una sola chiave esterna mi è sufficiente. Aggiungiamola per tenere traccia se l'azienda è un favorito dell'utente loggato.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g migration AddFavoriteFieldToCompanies favorite_id:integer
+~~~~~~~~
+
+{title="db/migrate/xxx_add_favorite_field_to_companies.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class AddFavoriteFieldToCompanies < ActiveRecord::Migration[5.0]
+  def change
+    add_column :companies, :favorite_id, :integer
+  end
+end
+~~~~~~~~
+
+eseguiamo il migrate.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+rake db:migrate
+~~~~~~~~
+
+Non creo la relazione uno-a-molti sui models perché per mostrare i valori sui view sfrutto i campi copy_normal e copy_bold e non ho necessità di fare query complesse che usano i preferiti. Quindi non creo nessuna relazione e gestisco manualmente (con il codice sul controller) sia la creazione/modifica/eliminazione di un record su favorites sia la relativa assegnazione dei valori su favorite_id.
+
+
+
+
+## Aggiungiamo la chiave esterna "favorite_id" alla tabella people
+
+Come abbiamo visto una sola chiave esterna mi è sufficiente. Aggiungiamola per tenere traccia se la persona è un favorito dell'utente loggato.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g migration AddFavoriteFieldToPeople favorite_id:integer
+~~~~~~~~
+
+{title="db/migrate/xxx_add_favorite_field_to_people.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class AddFavoriteFieldToPeople < ActiveRecord::Migration[5.0]
+  def change
+    add_column :people, :favorite_id, :integer
+  end
+end
+~~~~~~~~
+
+eseguiamo il migrate.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+rake db:migrate
+~~~~~~~~
+
+Non creo la relazione uno-a-molti sui models perché per mostrare i valori sui view sfrutto i campi copy_normal e copy_bold e non ho necessità di fare query complesse che usano i preferiti. Quindi non creo nessuna relazione e gestisco manualmente (con il codice sul controller) sia la creazione/modifica/eliminazione di un record su favorites sia la relativa assegnazione dei valori su favorite_id.
+
+
+
+
+## Aggiungiamo combo_box per favorite su view companies/edit
+
+Nella pagina companies/edit non mi interessa sapere il valore di favorite_id ma solo se è o non è un preferito. Quindi attivo un combo box stile iphone in cui dichiaro se è un preferito o no. Per usare il combo box ho necessità di un campo boolean sulla tabella: **favorite_cb**
+
+Poiché questo campo è legato alla presenza o meno di un valore su favorite_id un attributo virtuale sul model.
+Il campo :favorite_cb di tipo boolean può essere sostituito da virtual attributes. Inseriamo il codice nella sezione **== Attributes ===**
+
+{title=".../app/models/company.rb", lang=ruby, line-numbers=on, starting-line-number=15}
+~~~~~~~~
+  # virtual attributes ---------------------------------------------------------
+  # setter method
+  attr_writer :favorite_cb
+  
+  # getter method
+  def favorite_cb
+    #raise "summary: #{summary} - favorite_id: #{favorite_id} - id: #{id}"
+    if favorite_id.blank?
+      false
+    else
+      true
+    end
+  end
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+
+
+
+## Aggiungiamo combo_box per favorite su view people/edit
+
+Nella pagina people/edit non mi interessa sapere il valore dei favorite_id ma solo se è o non è un preferito. Quindi attivo un combo box stile iphone in cui dichiaro se è un preferito o no. Per usare il combo box ho necessità di un campo boolean sulla tabella: **favorite_cb**
+
+Poiché questo campo è legato alla presenza o meno di un valore su favorite_id posso usare un attributo virtuale sul model.
+Il campo :favorite_cb di tipo boolean può essere sostituito da virtual attributes. Inseriamo il codice nella sezione **== Attributes ===**
+
+{title=".../app/models/person.rb", lang=ruby, line-numbers=on, starting-line-number=14}
+~~~~~~~~
+  # virtual attributes ---------------------------------------------------------
+  # setter method
+  attr_writer :favorite_cb
+  
+  # getter method
+  def favorite_cb
+    #raise "summary: #{summary} - favorite_id: #{favorite_id} - id: #{id}"
+    if favorite_id.blank?
+      false
+    else
+      true
+    end
+  end
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+Praticamente il codice è identico a quello usato nel model company.
+
+
+
+
+## Vediamo come funziona sulla console
+
+Riprendiamo i due favoriti creati in precedenza per l'utente flavio@example.com ed associamo il loro id ai rispettivi favorite_id delle tabelle companies e people.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+> u = User.first
+    flavio@example.com
+> u.favorites
+    Favorite id: 27, favoritable_id: 1, favoritable_type: "User"
+    Favorite id: 26, favoritable_id: 1, favoritable_type: "User"
+
+> Favorite.find(26).copy_normal
+    "Società"
+> u.favorites[1].copy_normal
+    "Società"
+> u.favorites.where(id: 26).copy_normal
+    "Società"
+
+
+> Favorite.find(27).copy_normal
+    "Persona"
+> u.favorites[0].copy_normal
+    "Persona"
+> u.favorites.where(id: 27).copy_normal
+    "Persona"
+
+
+# Per company 
+
+> Favorite.find(26).copy_bold
+    "ABC Inc"
+> c = Company.where(name: "ABC Inc")   # c=Company.first
+> c.id
+    1
+> c.name
+    "ABC Inc"
+> c.favorite_id = 26
+> c
+> c.save
+
+# Per person
+
+> Favorite.find(27).copy_bold
+    "Sig. Jhon Doe"
+> p = Person.where(last_name: "Doe")   # p=Person.first
+> p.id
+    1
+> p.first_name
+    "Jhon"
+> p
+> p.favorite_id = 27
+> p
+> p.save
+~~~~~~~~
+
+In pratica faccio due passaggi:
+1. assegno il nuovo preferito all'utente e salvo (nel nostro caso lo abbiamo solo cercato perché lo abbiamo creato in precedenza)
+2. assegno l'id del nuovo preferito dell'utente a @company.favorite_id o @person.favorite_id
+
+Questa procedura richiederebbe un commit/roll back come si fa con i pagamenti nell'e-commerce dove il carrello viene "svuotato" e la merce inviata solo se c'è il pagamento altrimenti si fa un roll-back di tutto il processo. Questo controllo al momento non lo facciamo ma è una miglioria che metteremo in un futuro refactoring.
+
+Abbiamo finito ed ottenuto il nuovo preferito 21 sull'utente 1 (flavio@example.com) che ha i dati "azienda ABBello" presi da companies 1. Inoltre abbiamo archiviato sul record companies.favorite_id_user che è il preferito dell'utente 1.
+Abbiamo finito ed ottenuto il nuovo preferito 22 sull'utente 1 (flavio@example.com) che ha i dati "persona Sig. Giuseppe De Benevolenzi" presi da people 7. Inoltre abbiamo archiviato sul record people.favorite_id_user che è il preferito dell'utente 1.
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add favorite company and person to user seeds"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku fus:master
+$ heroku run rake db:migrate
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge fus
+$ git branch -d fus
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

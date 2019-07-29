@@ -1,0 +1,31 @@
+# Codice - login_homepage - mockup_global_settings logout
+
+
+
+
+#### 01 {#code-login_homepage-mockup_global_settings_logout-01}
+
+{title=".../app/config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+Rails.application.routes.draw do
+  scope "(:locale)", locale: /en|it/ do
+  
+    root 'homepage#index'
+    
+    devise_for :users, controllers: { sessions: 'users/sessions' }
+    resources :users
+
+    get 'homepage/index'
+    get 'mockup_authentication/login'
+    get 'mockup_global_settings/index'
+    get 'mockup_homepage/index'
+    get 'mockups/test'
+    get 'testpages/page_a'
+    get 'testpages/page_b'
+    get 'users/show'
+
+    # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  
+  end
+end
+~~~~~~~~

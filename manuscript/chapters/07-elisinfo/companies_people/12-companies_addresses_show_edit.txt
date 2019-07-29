@@ -1,0 +1,230 @@
+# Aggiorniamo lo show e l'edit di companies
+
+
+
+
+## Apriamo il branch "companies address contacts show edit"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b cacse
+~~~~~~~~
+
+
+
+
+## Aggiorniamo la view companies/show
+
+Nella pagina companies/show aggiorniamo il partial **_main_media_object**
+
+{title=".../app/views/companies/_main_media_object.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=19}
+~~~~~~~~
+      <%= content_tag :p,"#{h_company_status(@company.status)} - #{@company.sector}" %>
+      <%= content_tag :p,"#{@company.building} - #{@company.address_tag} " %>
+      <%= content_tag :p,"tel.: #{@company.telephone} - email: #{@company.email}" %>
+      <%= content_tag :p,"#{@company.memo}" %>
+~~~~~~~~
+
+
+
+
+## Aggiorniamo il controller
+
+Prima di passare alla view dell'edit aggiorniamo subito il mass-assignment del controller in modo da avere effettivamente l'aggiornamento dei nuovi campi con il submit del form.
+aggiorniamo il metodo **component_params** nella sezione **private** di **companies_controller**
+
+{title=".../app/controllers/companies_controller.rb", lang=ruby, line-numbers=on, starting-line-number=6}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def company_params
+      params.require(:company).permit(:logo, :name, :status, :sector, :taxation_number_first, :taxation_number_second, :memo, :favorite_id, :favorite_cb, :building, :full_address, :address_tag, :telephone, :fax, :email, :web_site, :note_contacts)
+    end
+~~~~~~~~
+
+
+
+
+## Aggiorniamo la view edit
+
+Per la pagina companies/edit aggiorniamo il partial companies/_form per la modifica dei nuovi campi. Riporto tutto il codice perché oltre le aggiunte sono state riviste le posizioni dei campi.
+
+{title=".../app/views/companies/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=49}
+~~~~~~~~
+<%= form_for(company, html: {class: 'form-horizontal left-pad right-pad bottom-pad' }) do |f| %>
+
+  <!-- # simulo l'helper h_params_path -->
+  <%= hidden_field_tag(:locale, params[:locale]) %>
+  <%= hidden_field_tag(:last_front_controller, params[:last_front_controller]) %>
+  <%= hidden_field_tag(:last_front_action, params[:last_front_action]) %>
+  <%= hidden_field_tag(:last_front_id, params[:last_front_id]) %>  
+  <%= hidden_field_tag(:last_front_related, params[:last_front_related]) %>  
+  <%= hidden_field_tag(:last_front_page, params[:last_front_page]) %>  
+  <%= hidden_field_tag(:last_front_search, params[:last_front_search]) %>  
+  <%= hidden_field_tag(:last_rear_controller, params[:last_rear_controller]) %>
+  <%= hidden_field_tag(:last_rear_action, params[:last_rear_action]) %>
+  <%= hidden_field_tag(:last_rear_id, params[:last_rear_id]) %>
+  <%= hidden_field_tag(:last_rear_related, params[:last_rear_related]) %>
+  <%= hidden_field_tag(:last_rear_page, params[:last_rear_page]) %>
+  <%= hidden_field_tag(:last_rear_search, params[:last_rear_search]) %>
+  <%= hidden_field_tag(:related, params[:related]) %>
+  <%= hidden_field_tag(:page, params[:page]) %>
+  <%= hidden_field_tag(:search, params[:search]) %>
+  <%= hidden_field_tag(:tab_active, params[:tab_active]) %>
+
+  <div class="form-group">
+  
+    <div class="field">
+      <%= f.label :name, class: "control-label" %>
+      <%= f.text_field :name, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+
+    <div class="field">
+      <%= f.label :building, class: "control-label" %>
+      <%= f.text_field :building, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+  
+    <div class="field">
+      <%= f.label :full_address, class: "control-label" %>
+      <%= f.text_area :full_address, rows: '3', class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+  
+    <div class="field">
+      <%= f.label :address_tag, class: "control-label" %>
+      <%= f.text_field :address_tag, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+  
+    <div class="field">
+      <%= f.label :telephone, class: "control-label" %>
+      <%= f.text_field :telephone, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+  
+    <div class="field">
+      <%= f.label :fax, class: "control-label" %>
+      <%= f.text_field :fax, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+  
+    <div class="field">
+      <%= f.label :email, class: "control-label" %>
+      <%= f.text_field :email, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+  
+    <div class="field">
+      <%= f.label :web_site, class: "control-label" %>
+      <%= f.text_field :web_site, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+
+    <div class="field">
+      <%= f.label :note_contacts, class: "control-label" %>
+      <%= f.text_area :note_contacts, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+    
+    <div class="field">
+      <%= f.label :logo, class: "control-label" %><br>
+      <%= f.file_field :logo, class: "form-control image_upload_file_field" %>
+      <%= f.check_box :remove_logo, "data-size" => "medium", "data-on-color" => "primary", "data-on-text" => "SI", "data-off-color" => "default", "data-off-text" => "NO" %>
+    </div> <!-- /.field -->
+  
+    <div class="field">
+      <%= f.label :sector, class: "control-label" %>
+      <%= f.text_field :sector, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+  
+    <div class="field">
+      <%= f.label :status, class: "control-label" %>
+      <%= f.select :status, h_options_for_status, {}, prompt: 'Select One', class: 'form-control' %>
+      <%#= f.text_field :status, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+  
+    <div class="field">
+      <%= f.label :taxation_number_first, class: "control-label" %>
+      <%= f.text_field :taxation_number_first, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+  
+    <div class="field">
+      <%= f.label :taxation_number_second, class: "control-label" %>
+      <%= f.text_field :taxation_number_second, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+
+    <div class="field">
+      <%= f.label :favorite_cb, class: "control-label" %><br>
+      <%= f.check_box :favorite_cb, class: "form-control", "data-size" => "medium", "data-on-color" => "primary", "data-on-text" => "SI", "data-off-color" => "default", "data-off-text" => "NO" %>
+    </div> <!-- /.field -->
+
+    <% if Rails.env.development? %>
+      <div class="field">
+        <%= f.label :favorite_id, class: "control-label" %><br>
+        <%= f.text_field :favorite_id, class: "form-control" %>
+      </div> <!-- /.field -->
+    <% else %>
+        <%= f.hidden_field :favorite_id %>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :memo, class: "control-label" %>
+      <%= f.text_area :memo, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+  </div> <!-- /form-group -->
+
+  <div class="actions">
+    <%= f.submit class: "btn btn-primary btn-block" %>
+  </div> <!-- /.actions -->
+<% end %> <!-- /form_for -->
+~~~~~~~~
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add fields address and contacts to companies"
+~~~~~~~~
+
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku cacse:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge cacse
+$ git branch -d cacse
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

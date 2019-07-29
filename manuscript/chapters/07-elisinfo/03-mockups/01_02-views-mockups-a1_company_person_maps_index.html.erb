@@ -1,0 +1,99 @@
+<!-- start form style 01 section -->
+<section class="wow fadeIn" id="start-your-project">
+  <div class="container">
+
+    <div class="row">
+        <div class="col-md-4 col-sm-4 text-left btn-dual margin-50px-bottom xs-margin-20px-bottom">
+            <!-- start buttons -->
+            <a class="btn btn-large btn-transparent-black md-margin-15px-bottom sm-display-table sm-margin-lr-auto" href="#"><i class="icon-upload icon-medium"></i></a>
+            <!-- end buttons -->
+        </div>
+        <div class="col-md-8 col-sm-8 text-right btn-dual margin-50px-bottom xs-margin-20px-bottom">
+            <!-- start buttons -->
+            <a class="btn btn-extra-large btn-transparent-black md-margin-15px-bottom sm-display-table sm-margin-lr-auto" href="#"><i class="icon-global icon-medium"></i></a>
+            <a class="btn btn-extra-large btn-transparent-black md-margin-15px-bottom sm-display-table sm-margin-lr-auto" href="#"><i class="icon-tools icon-medium"></i></a>
+            <!-- end buttons -->
+        </div>
+    </div>    
+
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12 center-col text-center margin-50px-bottom xs-margin-20px-bottom">
+
+    <form id="project-contact-form" action="javascript:void(0)" method="post">
+      <div class="row">
+         <div class="col-md-12">
+           <div id="success-project-contact-form" class="no-margin-lr"></div>
+        </div>
+        <div class="col-md-6">
+            <div class="select-style big-select">
+                <select name="select1" id="select1" class="bg-transparent no-margin-bottom">
+                    <option value="1">Azienda</option>
+                    <option value="2">Persona</option>
+                    <option value="3">Storia</option>
+                    <option value="4">Prodotti</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="select-style big-select">
+                <select name="select2" id="select2" class="bg-transparent no-margin-bottom">
+                    <option value="2">Persona</option>
+                    <option value="1">Azienda</option>
+                    <option value="3">Storia</option>
+                    <option value="4">Prodotti</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+             <input type="text" name="find" id="find" placeholder="Cerca azienda..." class="big-input">
+        </div>
+        <div class="col-md-6">
+             <input type="text" name="find" id="find" placeholder="Cerca persona..." class="big-input">
+        </div>
+
+        <div class="col-md-12">
+            <a class="btn btn-large btn-transparent-black md-margin-15px-bottom sm-display-table sm-margin-lr-auto" href="#">cerca</a>
+        </div>
+
+      </div>
+    </form>
+
+
+      </div>
+    </div>
+<!--  </div>-->
+<!--</section>-->
+<!-- end form style 01 section -->
+
+<!-- start comments section -->
+<!--<section class="wow fadeIn">-->
+<!--  <div class="container">-->
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12 center-col">
+        <ul class="blog-comment">
+          <li>
+            <div class="display-table width-100">
+              <div class="display-table-cell width-100px xs-width-50px text-center vertical-align-top xs-display-block xs-margin-10px-bottom">
+                <a data-toggle="collapse" data-parent="#accordion-design" href="#design1" class="collapsed" aria-expanded="false">
+                  <%= image_tag "pofo/avtar-new-company.png", class: "img-circle width-85 xs-width-100", style: "border:2px solid black", alt: "" %>
+                </a>
+              </div>
+              <div class="padding-40px-left display-table-cell vertical-align-bottom last-paragraph-no-margin xs-no-padding-left xs-display-block">
+                <span class="text-extra-dark-gray text-uppercase alt-font font-weight-600 text-small">Nuova Azienda...</span>
+              </div>
+            </div>
+          </li>
+        </ul> 
+      </div>
+    </div>
+  </div>
+</section>
+<!-- end comments section -->
+
+<!-- start scroll to top -->
+<a class="scroll-top-arrow" href="javascript:void(0);"><i class="ti-arrow-up"></i></a>
+<!-- end scroll to top  -->
+
+<%= link_to "next - click su nuova azienda", mockups_a2_company_new_path %>

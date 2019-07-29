@@ -1,0 +1,14 @@
+# Mockups
+
+
+
+
+## Prepariamo uno sketch della nostra applicazione
+
+Nella schermata iniziale, subito dopo il login, abbiamo una visione generale di tutte le donazioni raccolte, dei chioschi installati e la loro posizione su una mappa.
+
+![dashboard](images/frontend_assets/mockups/mockup_dashboard.png)
+
+In questa parte dell'applicazione abbiamo l'esploso di ogni singolo chiosco
+
+![kiosk](images/frontend_assets/mockups/mockup_kiosk.png)

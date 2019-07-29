@@ -1,0 +1,289 @@
+# company_contact_map new person
+
+Dalla vista di un'azienda (companies/show) creiamo una nuova associazione ed associamo un contatto.
+
+in questo capitolo creiamo il new per inserire voci nell'elenco "related" sia in company show che in contact show. Essendo una relazione many-to-many è valida in entrambe le direzioni.
+
+
+
+
+## Apriamo il branch "companies-company_person_map new contact"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b ccmnc
+~~~~~~~~
+
+
+
+
+## Attiviamo il pulsante new su companies/show
+
+Abbiamo già attivato il pulsante new a seguito di una ricerca sulla pagina views/companies/show. La parte principale del codice è ** <%= render 'related_button_new', list_to_add: @relateds %> **
+Dobbiamo generalizzare il partial button_new in modo che non punti esclusivamente a company_person_maps/new ma anche a company_contact_maps/new
+
+{title="views/companies/_related_button_new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<% if params[:search].present? or (list_to_add.size == 0)%>
+
+  <div class="btn-group pull-right right-pad">
+    <%# jump to list %>
+    <%= link_to url_for(h_front_params_path(path: "/#{params[:related]}",last_rear_controller: "#{@relateds_path}", last_rear_action: "new", last_rear_id: "", last_rear_related: "favorites", last_rear_page: 1, last_rear_search: "", search: params[:search] )), :class => "btn btn-default" do %>
+      <span class="glyphiconmy ico_new"></span>
+    <% end %>
+  </div> <!-- /btn-group -->
+
+<% else %>
+
+  <div class="btn-group pull-right right-pad">
+    <a href="#" class="btn btn-primary disabled">
+      <span class="glyphiconmy ico_new"></span>
+    </a>
+  </div> <!-- /btn-group -->
+
+<% end %>
+~~~~~~~~
+
+
+
+
+## Attiviamo views NEW
+
+Il new apre la pagina company_contact_maps/new [(codice: 01)](#code-company_contact_maps-ccmaps_new_contact-01) di cui evidenziamo il render del partial form perché questa chiamata ci da un errore.
+
+{title="views/company_contact_maps/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=26}
+~~~~~~~~
+<%= render 'form', company_contact_map: @company_contact_map %>
+~~~~~~~~
+
+L'errore si presenta perché il nostro _form al momento non gestisce un oggetto @company_contact_map nul. Aggiungiamo la gestione di un oggetto nul al partial company_contact_maps/_form [(codice: 02)](#code-company_contact_maps-ccmaps_new_contact-02). 
+
+{title="views/company_contact_maps/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=31}
+~~~~~~~~
+    <% if params[:last_front_controller] == "companies" %>
+  
+      <% if @company_contact_map.contact_id.blank? %>
+        <div class="field">
+          <%= f.label :company_id, class: "control-label" %><br>
+          <%= link_to url_for(h_rear_params_path(path: "/contacts")), :class => "list-group-item" do %>
+            <span class="glyphiconmy ico_contact right-pad"></span>
+            <%= "Scegli un contatto da inserire" %>
+          <% end %>
+        </div>      
+      <% else %>
+        <div class="field">
+          <%= f.label :contact_id, class: "control-label" %><br>
+          <%= link_to url_for(h_rear_params_path(path: "/contacts")), :class => "list-group-item" do %>
+            <span class="glyphiconmy ico_contact right-pad"></span>
+            <%= "#{@company_contact_map.contact.medium} #{@company_contact_map.contact.identifier}" %>
+          <% end %><!-- /link_to -->
+        </div><!-- /.field -->
+      <% end %>
+~~~~~~~~
+
+Appena creato l'oggetto ha un id vuoto quindi lo abbiamo intercettiamo con ** company_contact_map.contact_id.blank? **. Adesso abbiamo 
+
+
+
+
+## Selezioniamo il contatto da associare
+
+Come abbiamo già visto nel partial _form c'è il pulsante azienda/contatto che attiva l'elenco corrispondente da cui sceglier l'id. In questo caso la scelta è per un contatto. Selezionato il contatto torniamo alla company_contact_maps/new con il nuovo contact_id impostato. 
+
+Da company/show cliccando su button_new saltiamo la company_contact_maps/new ed apriamo direttamente contacts/index [(codice: 03)](#code-company_contact_maps-ccmaps_new_contact-03). Mettiamo in evidenza il seguente codice: 
+
+{title="views/contacts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=39}
+~~~~~~~~
+              <% if params[:last_rear_action] == "new" %>
+                <div class="list-group left-pad right-pad">
+                  <% @contacts.each do |contact| %>
+                    <%= link_to url_for(h_params_path(path: "/#{params[:last_rear_controller]}/new", change_id: contact.id)), :class => "list-group-item" do %>
+                      <p> <%= contact.medium %> </p>
+                      <p><strong> <%= "#{contact.identifier}"%> </strong></p>
+                    <% end %>
+                  <% end %>
+                </div>
+~~~~~~~~
+
+Questo permette di tornare alla company_contact_maps/new, che era stata saltata, e di impostare il contact_id. 
+
+Non ci resta che implementare il controller [(codice: 04)](#code-company_contact_maps-ccmaps_new_contact-04) per accettare l'id passato tramite change_id, sull'azione new
+
+{title=".../app/controllers/company_contact_maps_controller.rb", lang=ruby, line-numbers=on, starting-line-number=15}
+~~~~~~~~
+  # GET /company_contact_maps/new
+  def new
+    @company_contact_map = CompanyContactMap.new
+    # il new mi apre la maschera di companies/index o contacts/index per scegliere l'id mancante
+    if params[:last_front_controller] == "companies"
+      @company_contact_map.company_id = params[:last_front_id]
+      @company_contact_map.contact_id = params[:change_id] if params[:change_id].present?
+    elsif params[:last_front_controller] == "contacts"
+      @company_contact_map.contact_id = params[:last_front_id]
+      @company_contact_map.company_id = params[:change_id] if params[:change_id].present?
+    else
+      raise "error"
+    end
+  end
+~~~~~~~~
+
+Ed infine reinstradare su companies/show o su contacts/show invece del comportamento di default company_contact_maps/show, sull'azione create
+
+{title=".../app/controllers/company_contact_maps_controller.rb", lang=ruby, line-numbers=on, starting-line-number=49}
+~~~~~~~~
+        format.html { redirect_to url_for(view_context.h_params_path(path: "/#{params[:last_front_controller]}/#{params[:last_front_id]}", related: params[:last_front_related], page: params[:last_front_page], search: params[:last_front_search])), notice: 'Company_Contact_Map was successfully created.' }
+~~~~~~~~
+
+
+
+
+## Implementiamo la ricerca sull'elenco dei contatti da associare
+
+La ritrovo già attiva ma non so se la abbiamo attivata nei capitoli precedenti o se me la ritrovo per un copia incolla.
+
+Implementiamo la ricerca su contacts/index: Basta fare un render del partial application/_related_search.html.erb, 
+
+{title=".../app/views/contacts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=29}
+~~~~~~~~
+              <%= render 'related_search' %>
+~~~~~~~~
+
+implementare il search nel model contact.rb
+
+{title=".../app/models/contact.rb", lang=ruby, line-numbers=on, starting-line-number=13}
+~~~~~~~~
+  # scope filters --------------------------------------------------------------
+  scope :search, -> (query) {with_translations(I18n.locale).where("medium ILIKE ? OR identifier ILIKE ?", "%#{query.strip}%", "%#{query.strip}%")}
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+ ed implementare il search nel controller contacts_controller.rb
+
+{title=".../app/controllers/contacts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+  # GET /contacts
+  # GET /contacts.json
+  def index
+    @contacts = Contact.search(params[:search]).order('created_at DESC')
+  end
+~~~~~~~~
+
+
+
+
+## Implementiamo la paginazione sull'elenco dei contatti da associare
+
+Implementiamo la ricerca su contacts/index: Basta fare un render del partial application/_related_pagination.html.erb, 
+
+{title=".../app/views/contacts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=29}
+~~~~~~~~
+                <%= render 'related_pagination', list_to_paginate: @contacts %>
+~~~~~~~~
+
+ ed implementare il pagination nel controller contacts_controller.rb
+
+{title=".../app/controllers/contacts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+  # GET /contacts
+  # GET /contacts.json
+  def index
+    @contacts = Contact.search(params[:search]).order('created_at DESC').page(params[:page]).per_page(2)
+  end
+~~~~~~~~
+
+
+
+
+## Validiamo il model
+
+Siccome è fondamentale che ci siano entrambi company_id e contact_id mettiamo una validazione sul model company_contact_map.rb [(codice: 05)](#code-company_contact_maps-ccmaps_new_contact-05)
+
+{title=".../app/models/company_contact_map.rb", lang=ruby, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+  # validations ----------------------------------------------------------------
+  validates :company_id,        :presence   => true
+  validates :contact_id,         :presence   => true
+  #-----------------------------------------------------------------------------
+~~~~~~~~
+
+
+
+
+## Salviamo i dati
+
+Adesso che è tutto predisposto implementiamo sul controller company_person_maps_controller.rb il redirect della pagina.
+
+Mi sembra di averlo già fatto... Devo rivedere questa parte del libro
+
+{title="controllers/company_person_maps_controller.rb", lang=ruby, line-numbers=on, starting-line-number=38}
+~~~~~~~~
+  # POST /contacts
+  # POST /contacts.json
+  def create
+    @contact = Contact.new(contact_params)
+
+    respond_to do |format|
+      if @contact.save
+        #format.html { redirect_to @contact, notice: 'Contact was successfully created.' }
+        format.html { redirect_to url_for(view_context.h_params_path(path: "/contacts/#{@contact.id}", last_front_controller: "contacts", last_front_action: "show", last_front_id: "#{@contact.id}", related: "favorites")), notice: 'Contatto was successfully created.' }
+        format.json { render :show, status: :created, location: @contact }
+      else
+        format.html { render :new }
+        format.json { render json: @contact.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+~~~~~~~~
+
+Workaround bug: sul controller ho dovuto mettere un redirect_to invece del renderd di default perché non mi ripopolava la variabile @relateds e me la lasciava nil. Invece con il redirect_to viene popolata correttamente      
+
+
+Aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add company_contact_maps new"
+~~~~~~~~
+
+
+
+
+## Manca la parte delle traduzioni statiche...
+
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku ccmnc:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge ccmnc
+$ git branch -d ccmnc
+~~~~~~~~
+
+
+
+
+## Backup su github
+
+facciamo un backup del ns progetto su github:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

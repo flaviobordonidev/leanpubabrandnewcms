@@ -1,0 +1,187 @@
+# Modifichiamo i contatti
+
+
+
+
+## Apriamo il branch "contacts edit"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b ce
+~~~~~~~~
+
+
+
+
+## Attiviamo la view contacts/edit
+
+Prendiamo mocks/contacts_edit e copiamo il codice in cima a contacts/edit
+Iniziando a renderlo dinamico ...
+
+
+{title=".../app/views/contacts/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="container-fluid rear_mode">
+
+	<div class="row">
+		<div class="col-xs-9 col-sm-10 col-lg-11">
+
+			<ul class="nav nav-pills bottom-pad top-pad left-pad">
+				<li class="active"><a href="#pane_edit" data-toggle="tab"><span class="glyphiconmy ico_edit"></span></a></li>
+				<li><a href="#pane_option" data-toggle="tab"><span class="glyphiconmy ico_option"></span></a></li>
+				<li><a href="#pane_delete" data-toggle="tab"><span class="glyphiconmy ico_delete"></span></a></li>
+			</ul>
+
+		</div>
+		<div class="col-xs-3 col-sm-2 col-lg-1">
+			<%= render 'mockup_contacts/edit/button_close' %>
+		</div> <!-- /col -->
+	</div> <!-- /row -->
+
+	<div class="row">
+		<div class="col-xs-12">
+
+			<div class="tab-content">
+				<div id="pane_edit" class="tab-pane active">
+					<div class="text-center bottom-pad">
+						<h4>Modifica</h4>
+					</div>
+					<%= render 'mockup_contacts/edit/tab_edit' %>
+				</div>
+
+				<div id="pane_option" class="tab-pane">
+					<div class="text-center bottom-pad">
+						<h4>opzioni</h4>
+					</div>
+					<%= render 'mockup_contacts/edit/tab_option' %>
+				</div>
+
+				<div id="pane_delete" class="tab-pane">
+					<div class="text-center bottom-pad">
+						<h4>Elimina</h4>
+					</div>
+					<%= render 'mockup_contacts/edit/tab_delete' %>
+				</div>
+			</div><!-- /.tab-content -->
+
+		</div> <!-- /col -->
+	</div> <!-- /row -->
+
+</div> <!-- /rear_mode -->
+
+<h1>Editing Contact</h1>
+
+<%= render 'form', contact: @contact %>
+
+<%= link_to 'Show', @contact %> |
+<%= link_to 'Back', contacts_path %>
+~~~~~~~~
+
+
+prendiamo il partial _form ... e gli applichiamo lo stile css
+(in verità ci sono anche altre aggiunte messe tutte insieme. Per il passo-passo devo riscrivere questa parte)
+
+
+{title=".../app/views/contacts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%= form_for(Contact, html: {class: 'form-horizontal left-pad right-pad bottom-pad', multipart: true }) do |f| %>
+
+  <!-- # pass params: -->
+  <%= hidden_field_tag(:locale, params[:locale]) %>
+  <%= hidden_field_tag(:last_front_controller, params[:last_front_controller]) %>
+  <%= hidden_field_tag(:last_front_action, params[:last_front_action]) %>
+  <%= hidden_field_tag(:last_front_id, params[:last_front_id]) %>  
+  <%= hidden_field_tag(:last_front_related, params[:last_front_related]) %>  
+  <%= hidden_field_tag(:last_front_page, params[:last_front_page]) %>  
+  <%= hidden_field_tag(:last_front_search, params[:last_front_search]) %>  
+  <%= hidden_field_tag(:last_rear_controller, params[:last_rear_controller]) %>
+  <%= hidden_field_tag(:last_rear_action, params[:last_rear_action]) %>
+  <%= hidden_field_tag(:last_rear_id, params[:last_rear_id]) %>
+  <%= hidden_field_tag(:last_rear_related, params[:last_rear_related]) %>
+  <%= hidden_field_tag(:last_rear_page, params[:last_rear_page]) %>
+  <%= hidden_field_tag(:last_rear_search, params[:last_rear_search]) %>
+  <%= hidden_field_tag(:related, params[:related]) %>
+  <%= hidden_field_tag(:page, 1) %>
+  <%= hidden_field_tag(:search, "") %>
+
+  <div class="form-group">
+    
+    <div class="field">
+      <%= f.label :medium, class: "control-label" %>
+      <%= f.text_field :medium, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div>
+  
+    <div class="field">
+      <%= f.label :identifier, class: "control-label" %>
+      <%= f.text_field :identifier, class: 'form-control' %>
+      <span class="help-block"></span>
+    </div>
+  
+  </div> <!-- /form-group -->
+
+  <div class="actions">
+    <%= f.submit "Aggiorna azienda", class: "btn btn-primary btn-block" %>
+  </div>
+<% end %>
+~~~~~~~~
+
+
+
+
+## Aggiorniamo azione update del controller
+
+Modifichiamo il redirect_to per permettere di passare tutti i parametri usando l'helper h_params_path ed il comando url_for per avere più flessibilità nel path.
+** redirect_to @contact, notice: 'Contact was successfully updated.' **
+
+{title=".../app/controllers/contacts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=40}
+~~~~~~~~
+  # PATCH/PUT /contacts/1
+  # PATCH/PUT /contacts/1.json
+  def update
+    respond_to do |format|
+      if @contact.update(contact_params)
+        #format.html { redirect_to @contact, notice: 'Contact was successfully updated.' }
+        format.html { redirect_to url_for(view_context.h_params_path(path: "/contacts/#{@contact.id}")), notice: 'Contatto was successfully updated.' }
+        format.json { render :show, status: :ok, location: @contact }
+      else
+        format.html { render :edit }
+        format.json { render json: @contact.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+~~~~~~~~
+
+
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add contacts edit"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku ce:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge ce
+$ git branch -d ce
+~~~~~~~~

@@ -18,3 +18,5 @@ in questo volume:
 * Attiviamo upload con ActiveStorage
 * Organizziamo i nostri Models
 
+---
+*  Definiamo l'ambiente di sviluppo.

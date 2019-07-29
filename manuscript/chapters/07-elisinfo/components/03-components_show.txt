@@ -1,0 +1,429 @@
+# Mostriamo il componente
+
+
+
+
+## Apriamo il branch "components show"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b cs
+~~~~~~~~
+
+
+
+
+## Sul partial components/_index inseriamo il link per components/show
+
+Mettiamo nell'elenco dei componenti mostrato in homepage il link per andare sulla visualizzazione del singolo componente.
+
+{title=".../app/views/components/_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+    <%= link_to url_for(h_front_params_path(path: "/components/#{component.id}", related: "favorites")), :class => "list-group-item" do %>
+~~~~~~~~
+
+
+
+## Implementiamo la view components/show
+
+Implementiamo la struttura del mockup nella pagina components/show
+
+{title=".../app/views/components/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="container-fluid front_mode"> <!-- front_mode -->
+
+  <!-- menu_bar -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-10 col-sm-11 col-lg-11"> <!-- col -->
+      <%= render 'breadcrumbs' %>
+    </div> <!-- /col -->
+    <div class="col-xs-2 col-sm-1 col-lg-1"> <!-- col -->
+      <%= render 'button_global_settings' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <!-- /menu_bar -->
+
+  <!-- main -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-12"> <!-- col -->
+      <%= render 'main_media_object' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <!-- /main -->
+
+  <!-- related -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-10 col-sm-11 col-lg-11"> <!-- col -->
+      <p>related_form_search</p>
+      <%#= render 'related_search' %>
+    </div> <!-- /col -->
+    <div class="col-xs-2 col-sm-1 col-lg-1"> <!-- col -->
+      <p>related_button_new</p>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-12"> <!-- col -->
+      <p>related_list_group</p>
+      <%#= render "#{@relateds_path}/index", related_list: @relateds %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-12"> <!-- col -->
+      <div class="text-center">
+          <%#= render 'related_pagination', list_to_paginate: @relateds %>
+          <p>related_pagination</p>
+      </div> <!-- /text-center -->
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <!-- /related -->
+
+</div> <!-- /front_mode -->
+~~~~~~~~
+
+Il partial breadcrumbs
+
+{title=".../app/views/components/_breadcrumbs.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<ol class="breadcrumb top-pad left-pad">
+  <li>
+    <%= link_to url_for(h_front_params_path(path: "/homepage", related: "components", page: 1)), :class => "btn btn-default" do %>
+      <%= content_tag :span,"", class: "glyphiconmy ico_home" %>
+    <% end %>
+  </li>
+  <li class="active">
+    <%= link_to "#", :class => "btn btn-link disabled" do %>
+      <%= content_tag :span, t("components.show.breadcrumbs"), class: "glyphiconmy ico_component" %>
+    <% end %>
+    <%= link_to url_for(h_front_params_path(path: "/select_relateds")), :class => "btn btn-default" do %>
+      <%= content_tag :span,"", class: "glyphiconmy #{h_ico_name}" %>
+    <% end %>
+  </li>
+</ol>
+~~~~~~~~
+
+implementiamo la traduzione in italiano
+
+{title="config/locales/it.yml", lang=yaml, line-numbers=on, starting-line-number=27}
+~~~~~~~~
+  components:
+    show:
+      breadcrumbs: "Componente"
+~~~~~~~~
+
+implementiamo la traduzione in inglese
+
+{title="config/locales/en.yml", lang=yaml, line-numbers=on, starting-line-number=27}
+~~~~~~~~
+  components:
+    show:
+      breadcrumbs: "Component"
+~~~~~~~~
+
+Il partial button_global_settings è già su views/application.
+Il partial main_media_object
+
+{title=".../app/views/components/_main_media_object.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="list-group left-pad right-pad">
+  <%= link_to url_for(h_front_params_path(path: "/components/#{@component.id}/edit")), :class => "list-group-item media" do %>
+
+    <%# unless @component.favorite_id.blank? %>
+      <!-- <span class="badge"><span class="glyphicon glyphicon-star"></span></span> -->
+    <%# end %>
+    
+    <div class="list-group-item-heading pull-left" >
+      <%# if @component.image.present? %>
+        <%#= image_tag @component.image.url(:thumb), class: "media-object" %><br>
+      <%# elsif %>
+        <%= image_tag "my_style_images/default/component_default.png", alt: "user image", class: "media-object" %>
+      <%# end %>
+    </div>
+
+    <div class="list-group-item-text media-body">
+      <%= content_tag :h4,"#{@component.part_number}", class: "media-heading" %>
+      <%= content_tag :p,"#{@component.name} " %>
+    </div>
+
+  <% end %>
+</div>
+~~~~~~~~
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add components show"
+~~~~~~~~
+
+
+
+
+## Implementiamo il filtro bln_components per le voci da visualizzare sul select_relateds
+
+rispetto all'homepage sulla components/show **non** mostriamo:
+- preferiti
+- persone 
+- contatti 
+- indirizzi
+
+Invece mostriamo le nuove voci:
+- descrizioni
+- prezzi
+
+
+
+
+### Aggiungiamo la colonna bln_components alla tabella select_relateds
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g migration AddBlnComponentsToSelectRelateds bln_components:boolean 
+~~~~~~~~
+
+questo crea il migrate:
+
+{title="db/migrate/xxx_add_bln_components_to_select_relateds.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class AddBlnComponentsToSelectRelateds < ActiveRecord::Migration[5.0]
+  def change
+    add_column :select_relateds, :bln_components, :boolean
+  end
+end
+~~~~~~~~
+
+Aggiungiamo il campo/colonna al database
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rake db:migrate
+~~~~~~~~
+
+
+
+
+### Aggiungiamo la voce components nel controller
+
+Aggiungiamo il caso "components" nel case dell'azione **index** di **select_relateds_controller**
+
+{title=".../app/controllers/select_relateds_controller.rb", lang=ruby, line-numbers=on, starting-line-number=6}
+~~~~~~~~
+  def index
+    # gestiamo l'elenco in funzione di chi ha chiamato
+    case params[:last_front_controller]
+    when "companies"
+      @select_relateds = SelectRelated.for_companies.search(params[:search]).order('name ASC').page(params[:page])
+    when "components"
+      @select_relateds = SelectRelated.for_components.search(params[:search]).order('name ASC').page(params[:page])
+    when "people"
+      @select_relateds = SelectRelated.for_people.search(params[:search]).order('name ASC').page(params[:page])
+    else
+      @select_relateds = SelectRelated.for_homepage.search(params[:search]).order('name ASC').page(params[:page])
+    end
+  end
+~~~~~~~~
+
+
+
+
+### Aggiungiamo lo scope nel model
+
+Aggiungiamo lo scope nella sezione **# == Scopes ====** sottosezione **# ==== scope filters**
+
+{title=".../app/models/select_related.rb", lang=ruby, line-numbers=on, starting-line-number=26}
+~~~~~~~~
+  scope :for_components, -> {where(bln_components: true)}
+~~~~~~~~
+
+
+
+
+### impostiamo i valori sul database.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+> SelectRelated.find(1).metadata
+  # "favorites"
+> SelectRelated.find(1).update(bln_components: FALSE)
+
+> SelectRelated.find(2).metadata
+  # "people"
+> SelectRelated.find(2).update(bln_components: FALSE)
+
+> SelectRelated.find(3).metadata
+  # "companies"
+> SelectRelated.find(3).update(bln_components: FALSE)
+
+> SelectRelated.find(4).metadata
+  # "contacts"
+> SelectRelated.find(4).update(bln_components: FALSE)
+
+> SelectRelated.find(5).metadata
+  # "addresses"
+> SelectRelated.find(5).update(bln_components: FALSE)
+
+> SelectRelated.find(6).metadata
+  # "histories"
+> SelectRelated.find(6).update(bln_components: FALSE)
+
+> SelectRelated.find(7).metadata
+  # "components"
+> SelectRelated.find(7).update(bln_components: FALSE)
+
+# Aggiungiamo i nuovi records
+
+> SelectRelated.new(name: "descriptions", metadata: "descriptions", bln_homepage: FALSE, bln_people: FALSE, bln_companies: FALSE, bln_components: TRUE, locale: :en).save
+> SelectRelated.last.update(name: "descrizioni", locale: :it)
+
+> SelectRelated.new(name: "prices", metadata: "prices", bln_homepage: FALSE, bln_people: FALSE, bln_companies: FALSE, bln_components: TRUE, locale: :en).save
+> SelectRelated.last.update(name: "prezzi", locale: :it)
+~~~~~~~~
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add select_relateds bln_components"
+~~~~~~~~
+
+
+
+
+### Aggiungiamo le icone
+
+Aggiungiamo le immagini/icone alle voci descriptions e prices
+
+Mettiamo le immagini **description.png** e  **price.png** nella cartella .../app/assets/images/my_style_images/icons/
+
+Ed aggiorniamo i css
+
+{title=".../app/assets/stylesheets/application_front.scss", lang=ruby, line-numbers=on, starting-line-number=86}
+~~~~~~~~
+  .ico_description
+  {
+    background-image: url(image_path("my_style_images/icons/description.png"));
+  }
+~~~~~~~~
+
+{title="...", lang=ruby, line-numbers=on, starting-line-number=190}
+~~~~~~~~
+  .ico_price
+  {
+    background-image: url(image_path("my_style_images/icons/price.png"));
+  }
+~~~~~~~~
+
+
+{title=".../app/assets/stylesheets/application_rear.scss", lang=ruby, line-numbers=on, starting-line-number=99}
+~~~~~~~~
+  .ico_description
+  {
+    background-image: url(image_path("my_style_images/icons/description.png"));
+  }
+~~~~~~~~
+
+{title=".../app/assets/stylesheets/application_rear.scss", lang=ruby, line-numbers=on, starting-line-number=203}
+~~~~~~~~
+  .ico_price
+  {
+    background-image: url(image_path("my_style_images/icons/price.png"));
+  }
+~~~~~~~~
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add seed description and price icon to select_realateds"
+~~~~~~~~
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+aggiorniamo git 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add select_relateds bln_components"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku cs:master
+$ heroku run rake db:migrate
+~~~~~~~~
+
+I> Lato produzione su heroku c'è un database indipendente da quello di sviluppo quindi risulta vuoto.
+
+per popolare il database di heroku basta aprire la console con il comando:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku run rails c
+~~~~~~~~
+
+E rieseguire i passi già fatti nel paragrafo precedentemente per impostare i valori sul database.
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge cs
+$ git branch -d cs
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
