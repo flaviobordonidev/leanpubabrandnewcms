@@ -77,7 +77,7 @@ $ git commit -m "set i18n default_locale = :it"
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ git push heroku espi:master
+$ git push heroku mi:master
 ~~~~~~~~
 
 

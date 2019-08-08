@@ -111,6 +111,8 @@ Avremmo potuto anche usare ** User.first.admin! **
 
 [Codice 01](#01-09-05_01all)
 
+Questo codice indica a pundit di vedere se siamo nell'azione create del controller e la autorizza solo se l'utente è "admin". 
+Infatti @user.admin? è TRUE se l'utente ha il ruolo di amministratore. Altrimenti @user.admin? è FALSE e pundit non autorizza l'esecuzione.
 
 Non dobbiamo implementare anche la poilcy **new?** perché su **application_policy** viene impostato di default che **new?** prende le stesse autorizzazioni di **create?**.
 Come possiamo vedere nella seguente chiamata:
@@ -156,7 +158,7 @@ $ rails s
 
 * https://mycloud9path.amazonaws.com/login
 
-se ci logghiamo con il secondo utente (Bob) che non ha i diritti di amministratore, quando proviamo a creare un nuovo utente riceviamo un errore nell'applicazione.
+Se ci logghiamo con il secondo utente (Bob) che non ha i diritti di amministratore, quando proviamo a creare un nuovo utente riceviamo l'errore: "Pundit::NotAuthorizedError in UsersController#new".
 Se ci logghiamo con il primo utente (Ann) che ha i diritti di amministratore, possiamo creare un nuovo utente senza nessun errore.
 
 

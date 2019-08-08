@@ -45,11 +45,10 @@ I> facciamo riferimento al [tutorial github della gemma](https://github.com/varv
 {id="01-09-04_01", title="Gemfile", lang=ruby, line-numbers=on, starting-line-number=42}
 ~~~~~~~~
 # Object oriented authorization for Rails applications
-gem 'pundit', '~> 2.0'
+gem 'pundit', '~> 2.0', '>= 2.0.1'
 ~~~~~~~~
 
 [Codice 01](#01-09-04_01all)
-
 
 Eseguiamo l'installazione della gemma con bundle
 
@@ -74,7 +73,6 @@ Includiamo Pundit nel nostro application controller.
 
 Questo ci permette di usare Pundit in tutta la nostra applicazione.
 
-In alcuni esempi sul web c'è anche la riga **  protect_from_forgery with: :exception ** ma non la ho inserita perché non è di Pundit
 
 
 

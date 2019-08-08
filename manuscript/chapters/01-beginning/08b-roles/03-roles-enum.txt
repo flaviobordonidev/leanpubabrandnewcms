@@ -96,11 +96,13 @@ end
 
 ## Aggiorniamo il Model implementando ENUM
 
-{title=".../models/user.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+{id="01-09-03_03", title=".../models/user.rb", lang=ruby, line-numbers=on, starting-line-number=3}
 ~~~~~~~~
   #enum role: [:user, :admin, :moderator, :author]
   enum role: {user: 0, admin: 1, moderator:2, author:3}
 ~~~~~~~~
+
+[Codice 03](#01-09-03_03all)
 
 Le due linee di codice in alto sono equivalenti solo la seconda linea di codice è più flessibile per eventuali aggiunte o eliminazioni all'elenco.
 
@@ -297,7 +299,7 @@ Possiamo passare i parametri in due modi:
 
 Mettiamo nella whitelist la colonna :role. Normalmente andremmo solo su users_controller ma per devise dobbiamo usare anche application_controller.
 
-{id="01-09-03_03", title=".../app/controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=2}
+{id="01-09-03_04", title=".../app/controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=2}
 ~~~~~~~~
   before_action :configure_permitted_parameters, if: :devise_controller?
 ~~~~~~~~
@@ -314,7 +316,7 @@ Mettiamo nella whitelist la colonna :role. Normalmente andremmo solo su users_co
 end
 ~~~~~~~~
 
-[Codice 03](#01-09-03_03all)
+[Codice 04](#01-09-03_04all)
 
 I loro nomi e parametri di default permessi sono:
 
@@ -325,15 +327,15 @@ I loro nomi e parametri di default permessi sono:
 
 Inoltre mettiamo il campo :role nella whitelist di users_controller
 
-{id="01-09-03_04", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=83}
+{id="01-09-03_05", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=83}
 ~~~~~~~~
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation, :role)
+      params.require(:user).permit(:name, :email, :password, :password_confirmation, :remember_created_at, :role)
     end
 ~~~~~~~~
 
-[Codice 04](#01-09-03_04all)
+[Codice 05](#01-09-03_05all)
 
 
 
@@ -374,7 +376,7 @@ L'aggiunta dell'instradamento di "users/registration_controller"
 
 Aggiungiamo un selettore per permettere di cambiare ruolo
 
-{id="01-09-03_05", title=".../app/views/users/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+{id="01-09-03_06", title=".../app/views/users/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
 ~~~~~~~~
   <div class="field">    
     <%= form.label :role %>
@@ -383,7 +385,7 @@ Aggiungiamo un selettore per permettere di cambiare ruolo
   </div>
 ~~~~~~~~
 
-[Codice 05](#01-09-03_05all)
+[Codice 06](#01-09-03_06all)
 
 Attenzione: deve essere attivo solo uno dei due campi: "form.text_field :role" o "form.select(:role...". Se attiviamo entrambi i campi verrà passato come params solo il valore dell'ultimo campo perché hanno lo stesso nome.
 
@@ -565,7 +567,27 @@ end
 
 [Codice 03](#01-09-03_03)
 
-{id="01-09-03_03all", title=".../db/schema.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+{id="01-09-03_03all", title=".../models/user.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class User < ApplicationRecord
+  #enum role: [:user, :admin, :moderator, :author]
+  enum role: {user: 0, admin: 1, moderator:2, author:3}
+
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :registerable, :timeoutable, :trackable and :omniauthable
+  devise :database_authenticatable,
+         :recoverable, :rememberable, :validatable
+
+  has_many :eg_posts
+end
+~~~~~~~~
+
+
+
+
+[Codice 04](#01-09-03_04)
+
+{id="01-09-03_04all", title=".../db/schema.rb", lang=ruby, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
@@ -588,9 +610,9 @@ end
 
 
 
-[Codice 04](#01-09-03_04)
+[Codice 05](#01-09-03_05)
 
-{id="01-09-03_04all", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+{id="01-09-03_05all", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
 class UsersController < ApplicationController
   before_action :authenticate_user!
@@ -680,4 +702,14 @@ class UsersController < ApplicationController
     end
 
 end
+~~~~~~~~
+
+
+
+
+[Codice 06](#01-09-03_06)
+
+{id="01-09-03_06all", title=".../app/views/users/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+
 ~~~~~~~~

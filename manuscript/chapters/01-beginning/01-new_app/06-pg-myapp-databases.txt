@@ -56,8 +56,8 @@ Creiamo i databases per development e test usando il comando "createdb" di postg
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ sudo service postgresql start
-$ createdb myapp_development
-$ createdb myapp_test
+$ createdb s5beginning_development
+$ createdb s5beginning_test
 
 
 ec2-user:~/environment/myapp (master) $ sudo service postgresql start

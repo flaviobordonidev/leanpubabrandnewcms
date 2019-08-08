@@ -43,10 +43,10 @@ I> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/pagy)
 I>
 I> facciamo riferimento al [tutorial github della gemma](https://github.com/ddnexus/pagy)
 
-{id="02-09-01_01", title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=59}
+{id="02-09-01_01", title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=45}
 ~~~~~~~~
 # Agnostic pagination in plain ruby
-gem 'pagy', '~> 1.3', '>= 1.3.2'
+gem 'pagy', '~> 3.4', '>= 3.4.1'
 ~~~~~~~~
 
 [Codice 01](#02-09-01_01all)
@@ -80,14 +80,13 @@ include Pagy::Backend
 
 
 
-### Implementiamo la paginazione per authors/posts_controller
+### Implementiamo la paginazione per eg_posts_controller
 
-Adesso che abbiamo incluso pagy possiamo chiamare la funzione "pagy()" nelle azioni dei nostri controllers. Implementiamo la paginazione nell'azione index di authors/posts_controller
+Adesso che abbiamo incluso pagy possiamo chiamare la funzione "pagy()" nelle azioni dei nostri controllers. Implementiamo la paginazione nell'azione index di eg_posts_controller
 
-{id="02-09-01_03", title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+{id="02-09-01_03", title=".../app/controllers/eg_posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
-    @pagy, @posts = pagy(current_user.posts.order(created_at: "DESC")) unless current_user.admin?
-    @pagy, @posts = pagy(Post.all.order(created_at: "DESC")) if current_user.admin?
+    @pagy, @posts = pagy(Post.all)
 ~~~~~~~~
 
 [Codice 03](#02-09-01_03all)
@@ -109,41 +108,40 @@ includiamo la paginazione anche in application_helper in modo da rendere disponi
 
 
 
-### Implementiamo la pagina authors/posts/index
+### Implementiamo la pagina eg_posts/index
 
 Possiamo usare l'helper "pagy_nav()" messo a disposizione da pagy.
 
-{title="views/authors/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=36}
+{title="views/eg_posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=36}
 ~~~~~~~~
 <%= raw pagy_nav(@pagy) %>
 ~~~~~~~~
 
 un modo più compatto di scrivere lo stesso codice è usando il "doppio uguale" 
 
-{title="views/authors/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=36}
+{title="views/eg_posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=36}
 ~~~~~~~~
 <%== pagy_nav(@pagy) %>
 ~~~~~~~~
 
-
 se invece usiamo la sintassi classica senza "raw" ci viene passato il codice HTML.
 
-{title="views/authors/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=36}
+{title="views/eg_posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=36}
 ~~~~~~~~
-<%= raw pagy_nav(@pagy) %>
+<%= pagy_nav(@pagy) %>
 ~~~~~~~~
 
-Possiamo usare "raw" perché sappiamo che pagy usa il sanitizer ed evita query-injections.
-Se fossimo esageratamente prudenti potremmo usare "html_safe" invece di "raw" ma non serve. (e "html_safe" ha anche alcuni difetti)
+Possiamo usare "raw" perché sappiamo che pagy già evita query-injections.
+Ma se vogliamo essere espressamente prudenti possiamo usare "html_safe" invece di "raw" ma è sconsigliato perché "html_safe" ha alcuni difetti.
 
-{title="views/authors/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=36}
+{title="views/eg_posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=36}
 ~~~~~~~~
 <%= pagy_nav(@pagy).html_safe %>
 ~~~~~~~~
 
-Oppure possiamo usare " sanitize " 
+Se vogliamo essere esplicitamente prudenti è bene usare "sanitize" 
 
-{title="views/authors/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=36}
+{title="views/eg_posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=36}
 ~~~~~~~~
 <%= sanitize pagy_nav(@pagy) %>
 ~~~~~~~~
@@ -167,6 +165,7 @@ E vediamo la paginazione. Al momento i link sono disattivati perché abbiamo poc
 
 
 
+
 ## Scegliamo quanti records per pagina
 
 Di default sono impostati 20 records ogni pagina. Riduciamoli a 2 così avremo attivi i links per la paginazione.
@@ -174,97 +173,9 @@ Di default sono impostati 20 records ogni pagina. Riduciamoli a 2 così avremo a
 
 {title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
-    @pagy, @posts = pagy(current_user.posts.order(created_at: "DESC"), items: 2) unless current_user.admin?
-    @pagy, @posts = pagy(Post.all.order(created_at: "DESC"), items: 2) if current_user.admin?
+    @pagy, @posts = pagy(Post.all, items: 2)
 ~~~~~~~~
 
-
-
-## Inseriamo alcuni articoli da terminale
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ rails c
--> u = User.where(email: "ann@test.abc").first
--> 7.times do |i|
--> u.posts.create title: "articolo di test #{i}"
--> end
-
-
-2.4.1 :001 > u = User.where(email: "ann@test.abc")
-  User Load (0.3ms)  SELECT  "users".* FROM "users" WHERE "users"."email" = $1 LIMIT $2  [["email", "ann@test.abc"], ["LIMIT", 11]]
- => #<ActiveRecord::Relation [#<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2019-01-04 11:53:46", updated_at: "2019-01-08 11:43:42", role: "admin">]> 
-2.4.1 :002 > u = u.first
-  User Load (0.3ms)  SELECT  "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2  [["email", "ann@test.abc"], ["LIMIT", 1]]
- => #<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2019-01-04 11:53:46", updated_at: "2019-01-08 11:43:42", role: "admin"> 
-2.4.1 :003 > 50.times do
-2.4.1 :004 >     u.posts.create title: "articolo di test"
-2.4.1 :005?>   end
-   (0.1ms)  BEGIN
-  Post Exists (0.5ms)  SELECT  1 AS one FROM "posts" WHERE "posts"."id" IS NOT NULL AND "posts"."slug" = $1 LIMIT $2  [["slug", "articolo-di-test"], ["LIMIT", 1]]
-  Post Create (9.6ms)  INSERT INTO "posts" ("title", "user_id", "created_at", "updated_at", "slug") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["title", "articolo di test"], ["user_id", 1], ["created_at", "2019-01-31 13:41:12.110627"], ["updated_at", "2019-01-31 13:41:12.110627"], ["slug", "articolo-di-test"]]
-   (1.1ms)  COMMIT
-
-  ...
-
-   (0.1ms)  BEGIN
-  Post Exists (0.2ms)  SELECT  1 AS one FROM "posts" WHERE "posts"."id" IS NOT NULL AND "posts"."slug" = $1 LIMIT $2  [["slug", "articolo-di-test"], ["LIMIT", 1]]
-  Post Create (0.3ms)  INSERT INTO "posts" ("title", "user_id", "created_at", "updated_at", "slug") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["title", "articolo di test"], ["user_id", 1], ["created_at", "2019-01-31 13:41:12.319967"], ["updated_at", "2019-01-31 13:41:12.319967"], ["slug", "articolo-di-test-8fded178-c7b3-4773-b903-fff189c98eba"]]
-   (0.7ms)  COMMIT
- => 50
-~~~~~~~~
-
-il metodo ".create" è equivalente a ".new" seguito da ".save". E' solo un modo più succinto. Ad esempio le seguenti due linee di codice sono equivalenti:
-
-* Post.create title: "articolo di test"
-* Post.new(title: "articolo di test").save
-
-
-I> Didattica:
-
-~~~~~~~~
-5.times { puts "i" }
-
-i
-i
-i
-i
-i
-~~~~~~~~
-
-~~~~~~~~
-5.times do 
-  puts "i"
-end
-
-i
-i
-i
-i
-i
-~~~~~~~~
-
-~~~~~~~~
-5.times { |i| puts i }
-
-0
-1
-2
-3
-4
-~~~~~~~~
-
-~~~~~~~~
-5.times do |i| 
-  puts i
-end
-
-0
-1
-2
-3
-4
-~~~~~~~~
 
 
 
@@ -282,35 +193,6 @@ apriamo il browser sull'URL:
 * https://mycloud9path.amazonaws.com/authors/posts
 
 E vediamo la paginazione. Questa volta appaiono i links di navigazione tra le pagine
-
-
-
-
-## Aggiungiamo estensione per bootstrap
-
-Per inserire delle estensioni in pagy dobbiamo creare il file config/initializers/pagy.rb
-
-{id="02-09-01_05", title=".../config/initializers/pagy.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
-require 'pagy/extras/bootstrap'
-~~~~~~~~
-
-I> per un pagy.rb con tutte le possibili opzioni: https://github.com/ddnexus/pagy/blob/master/lib/config/pagy.rb
-
-
-questo ci permette di usare degli altri helpers nella nostra view 
-
-{title="views/authors/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=36}
-~~~~~~~~
-<%= raw pagy_nav_bootstrap(@pagy) %>
-~~~~~~~~
-
-oppure
-
-{title="views/authors/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=36}
-~~~~~~~~
-<%= raw pagy_nav_compact_bootstrap(@pagy) %>
-~~~~~~~~
 
 
 

@@ -46,27 +46,12 @@ class UsersController < ApplicationController
       params[:user].delete(:password_confirmation)
     end
     respond_to do |format|
-      if current_user.present? and current_user == @user
-        if @user.update(user_params)
-          #format.html { redirect_to @user, notice: 'User was successfully updated.' }
-          format.html do
-            # Logghiamoci di nuovo automaticamente bypassando le validazioni
-            sign_in(@user, bypass: true)
-            redirect_to @user, notice: 'User was successfully updated.'
-          end
-          format.json { render :show, status: :ok, location: @user }
-        else
-          format.html { render :edit }
-          format.json { render json: @user.errors, status: :unprocessable_entity }
-        end
+      if @user.update(user_params)
+        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.json { render :show, status: :ok, location: @user }
       else
-        if @user.update(user_params)
-          format.html { redirect_to @user, notice: 'User was successfully updated.' }
-          format.json { render :show, status: :ok, location: @user }
-        else
-          format.html { render :edit }
-          format.json { render json: @user.errors, status: :unprocessable_entity }
-        end
+        format.html { render :edit }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
   end

@@ -1,13 +1,14 @@
 # Installiamo PostgreSQL
 
-Il database postgreSQL non è installato di default su AWS Cloud9
-Poiché vogliamo creare una nuova applicazione Rails che sfrutta PostgreSQL invece di sqlite3 è bene installarlo.
-Usiamo PostgreSQL perché è lo stesso database che Heroku usa; e noi useremo Heroku per mettere la nostra app in produzione.
-
-
 ***
 Questa procedura è per istanze di awsC9 EC2 con OS Ubuntu 
 ***
+
+Il database postgreSQL non è installato di default su AWS Cloud9
+Di default Rails ha attivo il database sqlite3 ma noi sin da subito nella nostra nuova applicazione useremo PostgreSQL, quindi è bene installarlo.
+Usiamo PostgreSQL perché è lo stesso database che usa Heroku; e noi useremo Heroku per mettere la nostra app in produzione.
+
+
 
 
 Risorse web:
@@ -30,6 +31,14 @@ Install Postgres via apt
 $ sudo apt update
 $ sudo apt install postgresql postgresql-contrib libpq-dev
 --> y
+
+oppure
+
+$ sudo su - 
+-> sudo apt update
+-> sudo apt install postgresql postgresql-contrib libpq-dev
+--> y
+-> exit
 ~~~~~~~~
 
 

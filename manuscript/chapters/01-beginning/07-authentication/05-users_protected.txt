@@ -26,10 +26,12 @@ $ git checkout -b pwl
 ## Proteggiamo le views users
 Permettiamo l'accesso alle views users solo a chi ha fatto login, ossia a chi si è autenticato.
 
-{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=2}
+{id="01-07-05_01", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=2}
 ~~~~~~~~
   before_action :authenticate_user!
 ~~~~~~~~
+
+[Codice 01](#01-01-05_01all)
 
 I> before_action ha sostituito il "deprecated" before_filter
 
@@ -51,7 +53,7 @@ Al momento non mi preoccupo dei due avvisi in alto ma ne terremo conto nei capit
 
 Al momento una volta effettuato il login veniamo instradati sulla pagina principale (root_path). Inseriamo un metodo per tutti i controllers che reinstradi su users/show dell'utente che ha fatto login.
 
-{title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+{id="01-07-05_02", title="controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
 class ApplicationController < ActionController::Base
 
@@ -62,6 +64,8 @@ class ApplicationController < ActionController::Base
 
 end
 ~~~~~~~~
+
+[Codice 02](#01-01-05_02all)
 
 Questo metodo ci permette di instradare su qualsiasi pagina in funzione del ruolo dell'utente loggato.
 Ad esempio se è un amministratore lo potrei instradare su users_path così ha la lista di tutti gli utenti su cui può lavorare. Se invece è un autore lo possiamo reinstradare sulla dashboard del blog. Se è un lettore sulla pagina del blog. ecc...
@@ -90,7 +94,7 @@ facciamo login e vediamo che siamo reinstradati sulla pagina dell'utente loggato
 
 Una volta attivata la protezione **before_action :authenticate_user!** si attiva anche la validazione per la presenza della password. Questo vuol dire che se si lascia vuoto il campo password si riceve un errore di validazione. In questo caso è utile rimuovere nel controller la chiave "password" dall'hash "params" nel caso in cui il campo password del form è lasciato vuoto. Per farlo aggiungiamo il seguente codice nell'azione di update:
 
-{id="01-07-05_01", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=44}
+{id="01-07-05_03", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=44}
 ~~~~~~~~
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
@@ -101,7 +105,7 @@ Una volta attivata la protezione **before_action :authenticate_user!** si attiva
     end
 ~~~~~~~~
 
-[Codice 01](#01-01-05_01all)
+[Codice 03](#01-01-05_03all)
 
 
 
@@ -110,7 +114,7 @@ Una volta attivata la protezione **before_action :authenticate_user!** si attiva
 
 Evitiamo di fare come nei film comici e "tagliarci il ramo su cui stiamo seduti": **@user.destroy unless @user == current_user** e diamo un messaggio differente se eliminato o non eliminato.
 
-{id="01-07-05_02", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=60}
+{id="01-07-05_04", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=60}
 ~~~~~~~~
   # DELETE /users/1
   # DELETE /users/1.json
@@ -126,7 +130,7 @@ Evitiamo di fare come nei film comici e "tagliarci il ramo su cui stiamo seduti"
   end
 ~~~~~~~~
 
-[Codice 02](#01-01-05_02all)
+[Codice 04](#01-01-05_04all)
 
 Al momento tutti gli utenti hanno autorizzazione a fare tutto; nei futuri capitoli implementeremo le autorizzazioni restringendo la possibilità di eliminazione degli utenti ai soli utenti con ruolo di amministratore.
 
@@ -157,12 +161,12 @@ Possiamo creare un nuovo utente ed eliminarlo. L'utente verrà eliminato e ricev
 
 Sulla view mostriamo il link di eliminazione solo se non è l'utente loggato **unless user == current_user**
 
-{id="01-07-05_03", title=".../app/views/users/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=25}
+{id="01-07-05_05", title=".../app/views/users/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=25}
 ~~~~~~~~
         <td><%= link_to 'Destroy', user,  method: :delete, data: { confirm: 'Are you sure?' } unless user == current_user %></td>
 ~~~~~~~~
 
-[Codice 03](#01-01-05_03all)
+[Codice 05](#01-01-05_05all)
 
 
 
@@ -209,7 +213,7 @@ Adesso che abbiamo la logica impostata possiamo associarci il codice:
 * se modifichiamo un'altro utente, lasciamo il codice così com'è che già va bene.
 * se modifichiamo l'utente loggato, allora mettiamo del codice che rieffettua un login automatico.
 
-{id="01-07-05_04", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=15}
+{id="01-07-05_06", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=15}
 ~~~~~~~~
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
@@ -245,7 +249,7 @@ Adesso che abbiamo la logica impostata possiamo associarci il codice:
   end
 ~~~~~~~~
 
-[Codice 04](#01-01-05_04all)
+[Codice 06](#01-01-05_06all)
 
 
 Questo codice funziona ma è veramente brutto perché duplichiamo due grandi pezzi di codice. Facciamo un refactoring.
@@ -254,7 +258,7 @@ Quando l'update è fatto sull'utente loggato (ossia il current_user) questo è i
 Questo mi impedisce di fare un più elegante ** sign_in(@user, bypass: true) if @user == current_user **
 Possiamo farlo usando una variabile di appoggio che chiamiamo **current_user_temp** e che ci manterrà attivo l'utente che era loggato giusto il tempo di loggarlo di nuovo in automatico.
 
-{id="01-07-05_05", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=15}
+{id="01-07-05_07", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=15}
 ~~~~~~~~
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
@@ -280,7 +284,7 @@ Possiamo farlo usando una variabile di appoggio che chiamiamo **current_user_tem
   end
 ~~~~~~~~
 
-[Codice 05](#01-01-05_05all)
+[Codice 07](#01-01-05_07all)
 
 Adesso è molto meglio ^_^
 
@@ -404,6 +408,107 @@ class UsersController < ApplicationController
       end
     end
   end
+  
+  # PATCH/PUT /users/1
+  # PATCH/PUT /users/1.json
+  def update
+    respond_to do |format|
+      if @user.update(user_params)
+        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.json { render :show, status: :ok, location: @user }
+      else
+        format.html { render :edit }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /users/1
+  # DELETE /users/1.json
+  def destroy
+    @user.destroy
+    respond_to do |format|
+      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+  
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_user
+      @user = User.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def user_params
+      params.require(:user).permit(:name, :email, :password, :password_confirmation, :remember_created_at)
+    end
+end
+~~~~~~~~
+
+
+
+
+[Codice 02](#01-01-05_02)
+
+{id="01-07-05_02all", title="controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class ApplicationController < ActionController::Base
+
+  def after_sign_in_path_for(resource_or_scope)
+    current_user
+    #users_path #goes to users/index
+  end
+
+end
+~~~~~~~~
+
+
+
+
+[Codice 03](#01-01-05_03)
+
+{id="01-07-05_03all", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class UsersController < ApplicationController
+  before_action :authenticate_user!
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
+
+  # GET /users
+  # GET /users.json
+  def index
+    @users = User.all
+  end
+
+  # GET /users/1
+  # GET /users/1.json
+  def show
+  end
+
+  # GET /users/new
+  def new
+    @user = User.new
+  end
+  
+  # GET /users/1/edit
+  def edit
+  end
+
+  # POST /users
+  # POST /users.json
+  def create
+    @user = User.new(user_params)
+
+    respond_to do |format|
+      if @user.save
+        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.json { render :show, status: :created, location: @user }
+      else
+        format.html { render :new }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
+  end
 
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
@@ -450,9 +555,9 @@ end
 
 
 
-[Codice 02](#01-01-05_02)
+[Codice 04](#01-01-05_04)
 
-{id="01-07-05_02all", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+{id="01-07-05_04all", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
 class UsersController < ApplicationController
   before_action :authenticate_user!
@@ -542,9 +647,9 @@ end
 
 
 
-[Codice 03](#01-01-05_03all)
+[Codice 05](#01-01-05_05all)
 
-{id="01-07-05_03", title=".../app/views/users/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=25}
+{id="01-07-05_05", title=".../app/views/users/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=25}
 ~~~~~~~~
 <p id="notice"><%= notice %></p>
 
@@ -586,9 +691,9 @@ end
 
 
 
-[Codice 04](#01-01-05_04)
+[Codice 06](#01-01-05_06)
 
-{id="01-07-05_04all", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+{id="01-07-05_06all", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
 class UsersController < ApplicationController
   before_action :authenticate_user!
@@ -693,9 +798,9 @@ end
 
 
 
-[Codice 05](#01-01-05_05)
+[Codice 07](#01-01-05_07)
 
-{id="01-07-05_05all", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+{id="01-07-05_07all", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
 class UsersController < ApplicationController
   before_action :authenticate_user!

@@ -1,4 +1,4 @@
-class ExamplePostPolicy < ApplicationPolicy
+class EgPostPolicy < ApplicationPolicy
 
   def index?
     true

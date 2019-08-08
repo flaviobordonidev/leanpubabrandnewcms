@@ -64,9 +64,9 @@ AWS -> Service -> IAM -> Users
 
 #### Step1
 
-Come nome dell'utente usiamo bot+nome_app_rails; nel nostro caso "botmyapp".
+Come nome dell'utente usiamo bot+nome_app_rails; nel nostro caso "bots5beginning".
 
-User name   : botmyapp
+User name   : bots5beginning
 Access type : Programmatic access
 
 ![Fig. 01](images/01-beginning/11-activestorage-filesupload/03_01-new-iam_user-step1.png)
@@ -90,7 +90,7 @@ Una volta che tutto sta funzionando possiamo restringere gli accessi ed aumentar
 
 #### Step3
 
-Non aggiungiamo nessun taglio
+Non aggiungiamo nessun tag
 
 ![Fig. 03](images/01-beginning/11-activestorage-filesupload/03_03-new-iam_user-step3.png)
 
@@ -108,7 +108,6 @@ Una volta creato facciamo il download delle "user security credentials". E' un f
 
 * access_key_id : UL...WGERY
 * secret_access_key : zx3I...ela+hg
-
 
 Se torniamo sullo IAM user possiamo solo rivisualizzare la access_key_id. Per la secret_access_key dobbiamo eliminarlo e crearne uno nuovo.
 
@@ -146,20 +145,23 @@ Facciamo click su create bucket.
 Che nome gli diamo?
 Per i nomi dei buckets possiamo rifarci ai nomi dei databases della nostra app: 
 
-* myapp_development  
-* myapp_production
+* s5beginning_development  
+* s5beginning_production
 
 Quindi avremo i seguenti due buckets:
 
-  * myapp-dev
-  * myapp-prod
+  * s5beginning-dev
+  * s5beginning-prod
 
 (l'underscore "_" non è accettato nel nome del bucket.)
 
 Iniziamo con 
 
-Bucket name : myapp-dev
-Region      : EU (Ireland)
+Bucket name : s5beginning-dev
+Region      : US East (N. Virginia)
+
+Nota:
+la "Region: EU (Ireland)" sarebbe la scelta più saggia dal punto di vista delle prestazioni perché è più vicina all'Italia ma costa di più quindi, per risparmiare, preferisco usare US East.
 
 
 
@@ -192,14 +194,22 @@ AWS -> Service -> S3 -> Bucket name -> Properties -> Static website hosting -> E
 
 Una volta fatto login dalla ConsoleHome AWS fare click sul service "S3". Ci si presenterà un elenco con tutti i bucket creati con relativo nome. Facciamo click sul bucket, andiamo sul tab "properties" e facciamo click sul "quadrato" Static web hosting. Lì troveremo un Endpoint simile al seguente:
 
-Endpoint : http://myapp-dev.s3-website-eu-west-1.amazonaws.com
+Endpoint :  http://s5beginning-dev.s3-website-us-east-1.amazonaws.com
 
-La region in questo caso è "eu-west-1" e corrisponde alla region di UE (Irlanda)
-
-Se avessimo scelto la region di Frankfurt avremmo avuto La nostra s3_region è "eu-central-1" ed un endpoint:
-
-Endpoint : http://myapp-dev.s3-website-eu-central-1.amazonaws.com
+La region in questo caso è "us-east-1" e corrisponde alla region US East (N. Virginia)
 
 ![Fig. 05](images/01-beginning/11-activestorage-filesupload/03_05-bucket_endpoint.png)
+
+(
+se avessimo usato "Region: EU (Ireland)" sarebbe stato "http://s5beginning-dev.s3-website-eu-west-1.amazonaws.com
+La region in questo caso sarebbe stata "eu-west-1" e corrisponde alla region di UE (Irlanda)
+)
+
+(
+Se avessimo scelto la region di Frankfurt avremmo avuto La nostra s3_region è "eu-central-1" e l'endpoint sarebbe stato:
+Endpoint : http://s5beginning-dev.s3-website-eu-central-1.amazonaws.com
+)
+
+
 
 E con questo abbiamo tutti i dati che ci servono per collegarci. Nel prossimo capitolo ci collegheremo tramite Rails.

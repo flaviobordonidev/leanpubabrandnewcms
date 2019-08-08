@@ -106,7 +106,7 @@ Vediamo che lo schema del database si è aggiornato
 
 [Codice 02](#01-07-04_02all)
 
-Potevamo evitare di fare il migrate ed eliminarlo perché questa tabella non la useremo. Lo abbiamo fatto solo a scopo didattico.
+Potevamo evitare di fare il migrate ed eliminare il file di migrate (.../db/migrate/xxx_create_eg_users.rb) perché questa tabella non la useremo. Lo abbiamo fatto solo a scopo didattico.
 
 
 
@@ -130,8 +130,10 @@ Però per la didattica di questo libro creiamo il controller User da zero aiutan
 
 Aggiorniamo il controller implementando l'azione index per visualizzare l'elenco di tutti gli utenti
 
-{id="01-07-04_03", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+{id="01-07-04_03", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=3}
 ~~~~~~~~
+  # GET /users
+  # GET /users.json    
   def index
     @users = User.all
   end
@@ -144,7 +146,7 @@ Aggiorniamo il controller implementando l'azione index per visualizzare l'elenco
 
 ## Creiamo la view index
 
-Creiamo il nuovo file "index.html.erb" dentro la cartella "views/users". Ci copiamo il contenuto di "views/example_users/index.html.erb" e lo riadattiamo
+Apriamo il nuovo file "index.html.erb" dentro la cartella "views/users". Ci copiamo il contenuto di "views/eg_users/index.html.erb" e lo riadattiamo
 
 {id="01-07-04_04", title=".../app/views/users/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
@@ -268,7 +270,6 @@ Copiamo ed implementiamo la parte di codice per le azioni edit ed update.
   # GET /users/1/edit
   def edit
   end
-
 
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json

@@ -28,14 +28,14 @@ la variabile **current_user** è generata tramite la gemma "devise" e contiene l
 
 Se nessun utente è loggato/autenticato riceviamo un errore nel codice. Per evitarlo mettiamo il controllo "if current_user.present?"
 
-{title=".../app/views/example_static_pages/page_a.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=10}
+{title=".../app/views/mockups/page_a.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=10}
 ~~~~~~~~
 <p> utente attivo: <%= current_user.email if current_user.present? == true %> </p>
 ~~~~~~~~
 
 Usiamo l'operatore ternario "condizione ? azione_true : azione_false" per visualizzare la stringa "nessun utente loggato" invece di lasciare un vuoto.
 
-{id="01-07-03_01", title=".../app/views/example_static_pages/page_a.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=10}
+{id="01-07-03_01", title=".../app/views/mockups/page_a.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=10}
 ~~~~~~~~
 <p> utente attivo: <%= current_user.present? == true ? current_user.email : "nessun utente loggato" %>
 ~~~~~~~~
@@ -48,7 +48,7 @@ Usiamo l'operatore ternario "condizione ? azione_true : azione_false" per visual
 
 ## Aggiungiamo logout
 
-{id="01-07-03_02", title=".../app/views/example_static_pages/page_a.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=10}
+{id="01-07-03_02", title=".../app/views/mockups/page_a.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=10}
 ~~~~~~~~
 <%= link_to "Sign Out", destroy_user_session_path, method: :delete %>
 ~~~~~~~~
@@ -65,7 +65,7 @@ Se lo proviamo verrà ricaricata la stessa pagina homepage/show perché è la pa
 
 invece di usare l'url mettiamo un pulsante di login su page_a
 
-{id="01-07-03_03", title=".../app/views/example_static_pages/page_a.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=10}
+{id="01-07-03_03", title=".../app/views/mockups/page_a.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=10}
 ~~~~~~~~
 <p>  <%= link_to "login", new_user_session_path %> </p>
 ~~~~~~~~
@@ -90,7 +90,6 @@ $ rails s
 andiamo alla pagina principale (root_path) quindi all'URL:
 
 * https://mycloud9path.amazonaws.com/
-* https://mycloud9path.amazonaws.com/users/1
 * https://mycloud9path.amazonaws.com/users/sign_in
 
 
@@ -255,27 +254,15 @@ la views di login ha generalmente uno stile diverso dalle altre pagine quindi di
 
 Nella cartella views/layouts creiamo una nuova view che chiamiamo "entrance" ed all'interno copiamo tutto il codice che al momento è nella vew "application" (la view del layout di default)
 
-{title=".../app/views/layout/entrance.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+{id="01-07-03_04", title=".../app/views/layout/entrance.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
 <!DOCTYPE html>
 <html>
   <head>
     <title>Benvenuto</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
-
-  <body>
-    <% if notice %><p class="alert alert-info"><%= notice %></p><% end %>
-    <% if alert %><p class="alert alert-warning"><%= alert %></p><% end %>
-    
-    <%= yield %>
-  </body>
-</html>
 ~~~~~~~~
+
+[Codice 04](#01-07-03_04all)
 
 Al momento l'unica differenza è nel titolo dove abbiamo scritto "Benvenuto". Ma andando avanti con il tutorial le due view si differenzieranno sensibilmente.
 
@@ -358,12 +345,12 @@ I> Se avessimo già effettuato il passaggio numero 5, il "rails generate devise:
 
 Aggiungiamo il parametro "controllers: { sessions: 'users/sessions' }" a "devise_for :users", questo indica a devise di usare i nuovi controllers (e non quelli di default).
 
-{id="01-07-03_04", title="/config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+{id="01-07-03_05", title="/config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=5}
 ~~~~~~~~
   devise_for :users, path_names: {sign_in: 'login'}, path: '', controllers: { sessions: 'users/sessions' }
 ~~~~~~~~
 
-[Codice 04](#01-07-03_04all)
+[Codice 05](#01-07-03_05all)
 
 
 Se avessimo attivo il :registerable avremmo dovuto inserire l'instradamento anche per 'users/registrations'. In quel caso avremmo indicato entrambi i nuovi controllers a cui si deve riferire devise:
@@ -387,12 +374,12 @@ quidi il parametro sarebbe stato
 
 Per indicare di usare il nostro nuovo layout dobbiamo aggiornare il controller. Ed è per questo che abbiamo usato ** rails generate devise:controllers users **. Infatti adesso abbiamo in chiaro il controller di devise che gestisce il sign_in/login sign_out/logout. 
 
-{id="01-07-03_05", title="/app/controllers/users/sessions_controller.rb", lang=ruby, line-numbers=on, starting-line-number=6}
+{id="01-07-03_06", title="/app/controllers/users/sessions_controller.rb", lang=ruby, line-numbers=on, starting-line-number=6}
 ~~~~~~~~
   layout 'entrance'
 ~~~~~~~~
 
-[Codice 05](#01-07-03_05all)
+[Codice 06](#01-07-03_06all)
 
 Aggiungendo "layout 'entrance'" indichiamo a tutte le azioni di sessions_controller di usare il nuovo layout. Se lo avessimo voluto usare solo per il sign_in lo avremmo decommentato l'azione "new" inserendo al suo interno "render layout: 'entrance'".
 
@@ -420,7 +407,7 @@ Nella pagina di login il tab del browser ha il nome "Benvenuto"
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ git add -A
-$ git commit -m "New layout entrance for sign_in"
+$ git commit -m "New layout entrance for login"
 ~~~~~~~~
 
 
@@ -528,7 +515,34 @@ $ git push origin master
 
 [Codice 04](#01-07-03_04)
 
-{id="01-07-03_04all", title="/config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+{id="01-07-03_04all", title=".../app/views/layout/entrance.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Benvenuto</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <% if notice %><p class="alert alert-info"><%= notice %></p><% end %>
+    <% if alert %><p class="alert alert-warning"><%= alert %></p><% end %>
+    
+    <%= yield %>
+  </body>
+</html>
+~~~~~~~~
+
+
+
+
+[Codice 05](#01-07-03_05)
+
+{id="01-07-03_05all", title="/config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
 Rails.application.routes.draw do
 
@@ -546,9 +560,9 @@ end
 
 
 
-[Codice 05](#01-07-03_05)
+[Codice 06](#01-07-03_06)
 
-{id="01-07-03_05all", title="/app/controllers/users/sessions_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+{id="01-07-03_06all", title="/app/controllers/users/sessions_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
 # frozen_string_literal: true
 

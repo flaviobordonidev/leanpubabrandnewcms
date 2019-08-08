@@ -1,13 +1,11 @@
 # Installiamo PostgreSQL
 
-Il database postgreSQL non è installato di default su AWS Cloud9
-Poiché vogliamo creare una nuova applicazione Rails che sfrutta PostgreSQL invece di sqlite3 è bene installarlo.
-Usiamo PostgreSQL perché è lo stesso database che Heroku usa; e noi useremo Heroku per mettere la nostra app in produzione.
-
-
 ***
 Questa procedura è per istanze di awsC9 EC2 con OS Amazon Linux 
 ***
+
+Se avessimo utilizzato l'istanza con OS Amazon Linux avremmo dovuto installare PostgreSQL come descritto in questo capitolo.
+Questa parte non fa parte della nostra applicazione quindi la saltiamo.
 
 
 Risorse web:

@@ -1,10 +1,10 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.4.1'
+ruby '2.6.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2.1', '>= 5.2.1.1'
+gem 'rails', '~> 5.2.3'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 # Use Puma as the app server
@@ -28,10 +28,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use ActiveStorage variant
-gem 'mini_magick', '~> 4.8'
-
-# API clients for AWS S3 services. Comunicazione con Amazon Web Service S3 per ActiveStorage
-gem "aws-sdk-s3", require: false
+# gem 'mini_magick', '~> 4.8'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -40,24 +37,13 @@ gem "aws-sdk-s3", require: false
 gem 'bootsnap', '>= 1.1.0', require: false
 
 # Flexible authentication solution for Rails with Warden 
-gem 'devise', '~> 4.5'
+gem 'devise', '~> 4.6', '>= 4.6.2'
 
 # Object oriented authorization for Rails applications
-gem 'pundit', '~> 2.0'
-
-# The most popular HTML, CSS, and JavaScript framework. http://getbootstrap.com
-gem 'bootstrap', '~> 4.2', '>= 4.2.1'
-# Use jquery as the JavaScript library
-gem 'jquery-rails'
-
-# slugging and permalink for Active Record. For creating human-friendly strings URLs and use as if they were numeric ids.
-gem 'friendly_id', '~> 5.2', '>= 5.2.5'
-
-# A rich text editor for everyday writing 
-gem 'trix-rails', '~> 2.0', require: 'trix'
+gem 'pundit', '~> 2.0', '>= 2.0.1'
 
 # Agnostic pagination in plain ruby
-gem 'pagy', '~> 1.3', '>= 1.3.2'
+gem 'pagy', '~> 3.4', '>= 3.4.1'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

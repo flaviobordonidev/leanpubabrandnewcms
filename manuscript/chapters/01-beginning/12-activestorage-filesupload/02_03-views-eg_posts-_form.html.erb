@@ -1,10 +1,10 @@
-<%= form_with(model: example_post, local: true) do |form| %>
-  <% if example_post.errors.any? %>
+<%= form_with(model: eg_post, local: true) do |form| %>
+  <% if eg_post.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(example_post.errors.count, "error") %> prohibited this example_post from being saved:</h2>
+      <h2><%= pluralize(eg_post.errors.count, "error") %> prohibited this eg_post from being saved:</h2>
 
       <ul>
-      <% example_post.errors.full_messages.each do |message| %>
+      <% eg_post.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
       </ul>
@@ -30,7 +30,7 @@
     <%= form.label :header_image %>
     <%= form.file_field :header_image %>
   </div>
-  
+
   <div class="actions">
     <%= form.submit %>
   </div>

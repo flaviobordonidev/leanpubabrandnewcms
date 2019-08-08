@@ -92,7 +92,7 @@ Attiviamo active record per development e facciamo upload dei files in locale. Q
 Il settaggio per il production (su Heroku) lo facciamo nel prossimo capitolo.
 In realtà per l'upload in locale è già preconfigurato di default
 
-{title=".../app/config/environments/development.rb", lang=ruby, line-numbers=on, starting-line-number=30}
+{title=".../config/environments/development.rb", lang=ruby, line-numbers=on, starting-line-number=30}
 ~~~~~~~~
   # Store uploaded files on the local file system (see config/storage.yml for options)
   config.active_storage.service = :local
@@ -100,7 +100,7 @@ In realtà per l'upload in locale è già preconfigurato di default
 
 Verifichiamo la variabile ":local" nello storage.yml
 
-{title=".../app/config/storage.yml", lang=yaml, line-numbers=on, starting-line-number=5}
+{title=".../config/storage.yml", lang=yaml, line-numbers=on, starting-line-number=5}
 ~~~~~~~~
 local:
   service: Disk
@@ -186,7 +186,7 @@ $ rails s
 
 andiamo alla pagina con l'elenco degli articoli ossia sull'URL:
 
-* https://mycloud9path.amazonaws.com/example_posts
+* https://mycloud9path.amazonaws.com/eg_posts
 
 Creaiamo un nuovo articolo ed aggiungiamo un'immagine. Verremo portati su show e vedremo l'immagine nella pagina.
 Possiamo inoltre vedere nella log (sul terminale) l'attività di upload nel database:
@@ -244,12 +244,13 @@ I> facciamo riferimento al [tutorial github della gemma](https://github.com/mini
 {id="01-11-02_05", title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=30}
 ~~~~~~~~
 # Use ActiveStorage variant
-gem 'mini_magick', '~> 4.8'
+#gem 'mini_magick', '~> 4.8'
+gem 'mini_magick', '~> 4.9', '>= 4.9.5'
 ~~~~~~~~
 
 [Codice 05](#01-11-02_05all)
 
-I> In realtà la gemma è già presente nel Gemfile basta solo decommentarla
+I> In realtà la gemma è già presente nel Gemfile basterebbe solo decommentarla però non è detto che sia la versione più aggiornata. Quindi lascio la linea commentata ed aggiungo la più aggiornata, così in caso di problemi attivo quella commentata che sappiamo essere stata testata con Rails.
 
 
 Eseguiamo l'installazione della gemma con bundle
@@ -297,11 +298,7 @@ $ sudo apt-get install imagemagick
 ~~~~~~~~
 
 
-
-
-#### Usiamo "yum" 
-
-Ma su aws Cloud9 usiamo "yum" (On Amazon Linux use yum instead of apt-get)
+Attenzione! Se su cloud9 abbiamo scelto Amazon Linux invece di Ubuntu dobbiamo usare yum invece di apt-get.
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~

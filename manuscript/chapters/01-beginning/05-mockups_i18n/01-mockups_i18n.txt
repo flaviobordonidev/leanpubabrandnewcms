@@ -10,11 +10,11 @@ Il nome dei "segnaposto" li mettiamo in inglese per dare un'impronta world-wide 
 
 
 
-## Apriamo il branch "Example Static Pages Internazionalizazione"
+## Apriamo il branch "Mockups Internazionalizazione"
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ git checkout -b espi
+$ git checkout -b mi
 ~~~~~~~~
 
 
@@ -149,7 +149,7 @@ $ git commit -m "set i18n static"
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ git push heroku espi:master
+$ git push heroku mi:master
 ~~~~~~~~
 
 

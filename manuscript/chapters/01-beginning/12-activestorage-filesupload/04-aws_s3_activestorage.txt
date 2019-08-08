@@ -37,10 +37,17 @@ I> facciamo riferimento al [tutorial github della gemma](http://github.com/aws/a
 {id="01-11-04_01", title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=48}
 ~~~~~~~~
 # API clients for AWS S3 services. Comunicazione con Amazon Web Service S3 per ActiveStorage
-gem "aws-sdk-s3", require: false
+gem 'aws-sdk-s3', '~> 1.46'
 ~~~~~~~~
 
 [Codice 01](#01-11-04_01all)
+
+Attenzione:
+In passato si doveva aggiungere l'opzione "require: false", ma oggi non serve più 
+~~~~~~~~
+# API clients for AWS S3 services. Comunicazione con Amazon Web Service S3 per ActiveStorage
+gem "aws-sdk-s3", require: false
+~~~~~~~~
 
 Eseguiamo l'installazione della gemma con bundle
 
@@ -54,36 +61,46 @@ $ bundle install
 
 ## Verifichiamo connessione da rails console
 
-Questo paragrafo è da migliorare. Lo possiamo saltare.
-
-Installando la gemma **aws-sdk-s3** non possiamo fare le verifiche da console perché ci mancano delle funzioni. Le possiamo fare con la gemma completa **aws-sdk**.
-
+Entrando in console da awsC9 siamo già collegati ad Amazon e possiamo vedere tutti i buckets
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ rails c
+-> s3 = Aws::S3::Client.new
+-> resp = s3.list_buckets
+-> resp.buckets.map(&:name)
 
-# Se non diamo le credenziali, ossia i secrets, abbiamo un errore
 
-> s3 = Aws::S3::Resource.new(region: 'eu-central-1')
-Aws::Sigv4::Errors::MissingCredentialsError: missing credentials, provide credentials with one of the following options:
-  - :access_key_id and :secret_access_key
-  - :credentials
-  - :credentials_provider
-        from (irb):2:in `new'
-        from (irb):2
-
-# Se le passiamo sbagliate lui non ci da immediatamente un errore
-
-> s3 = Aws::S3::Resource.new(region: 'eu-central-1', access_key_id: 'BULLABALLA', secret_access_key: 'NonSonoQuellaGiusta')
-
-# l'errore ci viene dato quando proviamo ad accedere ai buckets
-> bk = s3.bucket('rebisworldbr-dev')
-> obj = s3.bucket('rebisworldbr-dev').object('miofile')
-> obj.upload_file(filepath)
-
-> cs3 = Aws::S3::Client.new(region: 'eu-central-1', access_key_id: 'AKIxxxBYA', secret_access_key: 'sx1xxxKdela')
+2.6.3 :002 > s3 = Aws::S3::Client.new
+ => #<Aws::S3::Client> 
+2.6.3 :003 > resp = s3.list_buckets
+ => #<struct Aws::S3::Types::ListBucketsOutput buckets=[#<struct Aws::S3::Types::Bucket name="brandnewcms-dev", creation_date=2018-04-07 12:04:24 UTC>, #<struct Aws::S3::Types::Bucket name="elisinfo", creation_date=2017-05-24 10:57:59 UTC>, #<struct Aws::S3::Types::Bucket name="elisinfo-dev", creation_date=2017-05-24 17:25:22 UTC>, #<struct Aws::S3::Types::Bucket name="flatest", creation_date=2016-01-29 12:49:33 UTC>, #<struct Aws::S3::Types::Bucket name="myapp-dev", creation_date=2019-01-12 22:15:18 UTC>, #<struct Aws::S3::Types::Bucket name="myapp-prod", creation_date=2019-01-13 09:07:40 UTC>, #<struct Aws::S3::Types::Bucket name="rebisworldbr-dev", creation_date=2018-06-26 10:15:37 UTC>, #<struct Aws::S3::Types::Bucket name="rebisworldbr-prod", creation_date=2018-06-26 10:58:54 UTC>, #<struct Aws::S3::Types::Bucket name="rigenerabatterie-dev", creation_date=2019-03-10 17:05:43 UTC>, #<struct Aws::S3::Types::Bucket name="rigenerabatterie-prod", creation_date=2019-03-10 17:06:05 UTC>, #<struct Aws::S3::Types::Bucket name="s5beginning-dev", creation_date=2019-08-08 14:05:40 UTC>, #<struct Aws::S3::Types::Bucket name="temi-it", creation_date=2016-01-19 11:12:15 UTC>], owner=#<struct Aws::S3::Types::Owner display_name="flavio.bordoni.dev", id="be65e7f9d1b2710ccc04c3490064a385fe5d41592f1e0d0c69a28b3a6f61f723">> 
+2.6.3 :004 > resp.buckets.map(&:name)
+ => ["brandnewcms-dev", "elisinfo", "elisinfo-dev", "flatest", "myapp-dev", "myapp-prod", "rebisworldbr-dev", "rebisworldbr-prod", "rigenerabatterie-dev", "rigenerabatterie-prod", "s5beginning-dev", "temi-it"] 
+2.6.3 :005 > 
 ~~~~~~~~
+
+Proviamo a leggere il contenuto del bucket "s5beginning-dev"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+-> resp = s3.list_objects(bucket: 's5beginning-dev', max_keys: 2)
+-> resp.contents.each do |object|
+-->  puts "#{object.key} => #{object.etag}"
+--> end
+
+2.6.3 :005 > resp = s3.list_objects(bucket: 's5beginning-dev', max_keys: 2)                  
+ => #<struct Aws::S3::Types::ListObjectsOutput is_truncated=false, marker="", next_marker=nil, contents=[], name="s5beginning-dev", prefix="", delimiter=nil, max_keys=2, common_prefixes=[], encoding_type="url"> 
+2.6.3 :006 > resp.contents.each do |object|
+2.6.3 :007 >     puts "#{object.key} => #{object.etag}"
+2.6.3 :008?>   end
+ => [] 
+2.6.3 :009 > 
+~~~~~~~~
+
+Effettivamente è vuoto perché ancora non abbiamo messo nessun file al suo interno.
+
+Se vi state chiedendo come fa la console ad avere autorizzazione a leggere nel bucket... me lo sto chiedendo anche io !??
 
 
 
@@ -114,13 +131,13 @@ amazondev:
   service: S3
   access_key_id: <%= Rails.application.credentials.dig(:aws, :access_key_id) %>
   secret_access_key: <%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
-  region: eu-west-1
-  bucket: myapp-dev
+  region: us-east-1
+  bucket: s5beginning-dev
 ~~~~~~~~
 
 [Codice 03](#01-11-04_03all)
 
-Le variabili access_key_id e secret_access_key le impostiamo nel prossimo paragrafo
+Non resta che impostare in modo sicuro, le variabili access_key_id e secret_access_key, anche dette "secrets".
 
 
 
@@ -152,6 +169,8 @@ aws:
 ~~~~~~~~
 
 ![Fig. 01](images/01-beginning/11-activestorage-filesupload/04_01-rails-encrypted-credentials.png)
+
+Il nostro "aws" lo avremmo potuto più correttamente chiamare "aws_iam_bots5beginning" 
 
 
 
@@ -213,13 +232,13 @@ amazonprod:
   service: S3
   access_key_id: <%= Rails.application.credentials.dig(:aws, :access_key_id) %>
   secret_access_key: <%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
-  region: eu-west-1
-  bucket: myapp-prod
+  region: eu-east-1
+  bucket: s5beginning-prod
 ~~~~~~~~
 
 [Codice 05](#01-11-04_05all)
 
-Nel frattempo avremmo già creato il nuovo bucket "myapp-prod" su AWS S3 per mantenere distinte le immagini caricate come development da quelle caricate in produzione. (I passaggi sono gli stessi fatti per myapp-dev)
+Nel frattempo avremmo già creato il nuovo bucket "s5beginning-prod" su AWS S3 per mantenere distinte le immagini caricate come development da quelle caricate in produzione. (I passaggi sono gli stessi fatti per s5beginning-dev)
 
 
 
@@ -244,7 +263,7 @@ $ git push heroku asar:master
 
 Se provassimo adesso ad andare sull'URL di produzione
 
-* https://myapp-1-blabla.herokuapp.com/
+* https://s5beginning.herokuapp.com/
 
 riceveremmo un errore
 
@@ -264,8 +283,8 @@ Passiamo le variabile d'ambiente ad heroku via terminale
 ~~~~~~~~
 $ heroku config:set AWS_ACCESS_KEY_ID='AKIA....JTOMA'
 $ heroku config:set AWS_SECRET_ACCESS_KEY='LwdJ........45KHZ'
-$ heroku config:set AWS_REGION='eu-west-1'
-$ heroku config:set S3_BUCKET_NAME='myapp-prod'
+$ heroku config:set AWS_REGION='us-east-1'
+$ heroku config:set S3_BUCKET_NAME='s5beginning-prod'
 ~~~~~~~~
 
 Le avremmo potute passare anche tramite web GUI di heroku.
@@ -292,10 +311,41 @@ Se sul browser facciamo click con tasto destro del mouse sull'immagine e scelgia
 
 {title="inspector", lang=html, line-numbers=off}
 ~~~~~~~~
-<img src="https://myapp-1-blabla.herokuapp.com/rails/active_storage/representations/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCdz09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--8a64acf62bd23522d13f983ab83ca26c6cdc72cd/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCam9MY21WemFYcGxTU0lNTkRBd2VEUXdNQVk2QmtWVSIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--a645c12ff9721ed60214122b6cd9df735ff736ae/samuel-zeller-34775-unsplash.jpg">
+<img src="https://s5beginning.herokuapp.com/rails/active_storage/representations/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCdz09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--8a64acf62bd23522d13f983ab83ca26c6cdc72cd/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCam9MY21WemFYcGxTU0lNTkRBd2VEUXdNQVk2QmtWVSIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--a645c12ff9721ed60214122b6cd9df735ff736ae/samuel-zeller-34775-unsplash.jpg">
 ~~~~~~~~
 
 Possiamo vedere che l'immagine sembra sul nostro server heroku ma in realtà è solo il puntamento sul database. La vera immagine è su Amazon Web Service S3.
+
+
+
+
+
+## Verifichiamo connessione ad aws S3 da heroku console
+
+  #DAFA
+
+~~~~~~~~
+> s3 = Aws::S3::Resource.new(region: 'us-east-1')
+Aws::Sigv4::Errors::MissingCredentialsError: missing credentials, provide credentials with one of the following options:
+  - :access_key_id and :secret_access_key
+  - :credentials
+  - :credentials_provider
+        from (irb):2:in `new'
+        from (irb):2
+
+# Se le passiamo sbagliate lui non ci da immediatamente un errore
+
+> s3 = Aws::S3::Resource.new(region: 'us-east-1', access_key_id: 'BULLABALLA', secret_access_key: 'NonSonoQuellaGiusta')
+
+# l'errore ci viene dato quando proviamo ad accedere ai buckets
+> bk = s3.bucket('s5beginning-dev')
+> obj = s3.bucket('s5beginning-dev').object('miofile')
+> obj.upload_file(filepath)
+
+> cs3 = Aws::S3::Client.new(region: 'eu-central-1', access_key_id: 'AKIxxxBYA', secret_access_key: 'sx1xxxKdela')
+~~~~~~~~
+
+
 
 
 

@@ -47,7 +47,7 @@ I> facciamo riferimento al [tutorial github della gemma](https://github.com/plat
 {id="01-07-02_01", title="Gemfile", lang=ruby, line-numbers=on, starting-line-number=40}
 ~~~~~~~~
 # Flexible authentication solution for Rails with Warden 
-gem 'devise', '~> 4.5'
+gem 'devise', '~> 4.6', '>= 4.6.2'
 ~~~~~~~~
 
 [Codice 01](#01-07-02_01all)
@@ -130,10 +130,9 @@ Per trovare il nome host su heroku o ci loggiamo oppure usiamo il comando:
 ~~~~~~~~
 $ heroku domains
 
-
-ec2-user:~/environment/myapp (ldi) $ heroku domains
-=== myapp-1-blabla Heroku Domain
-myapp-1-blabla.herokuapp.com
+ubuntu:~/environment/s5beginning (ldi) $ heroku domains
+=== s5beginning Heroku Domain
+s5beginning.herokuapp.com
 ~~~~~~~~
 
 Adesso che abbiamo il nome dell'host su heroku lo possiamo usare nel file di configurazione.
@@ -141,7 +140,7 @@ Adesso che abbiamo il nome dell'host su heroku lo possiamo usare nel file di con
 {id="01-07-02_03", title=".../config/environments/production.rb", lang=ruby, line-numbers=on, starting-line-number=72}
 ~~~~~~~~
   # Devise config
-  config.action_mailer.default_url_options = { host: 'myapp-1-blabla.herokuapp.com', port: 3000 }
+  config.action_mailer.default_url_options = { host: 's5beginning.herokuapp.com', port: 3000 }
 ~~~~~~~~
 
 [Codice 03](#01-07-02_03all)
@@ -632,7 +631,7 @@ verifichiamo la nostra applicazione in produzione.
 I servers sono quelli di Heroku e quindi non li dobbiamo attvare.
 andiamo direttametne all'URL:
 
-* https://myapp-1-blabla.herokuapp.com//users/sign_in
+* https://s5beginning.herokuapp.com//users/sign_in
 
 Usiamo le credenziali di login appena create su heroku.
 

@@ -1,6 +1,7 @@
 # Implementiamo le autorizzazioni per example_posts
 
-In questo capitolo inseriamo meno passaggi e meno spiegazioni rispetto al capitolo precedente.
+Siccome molti passaggi sono simili a quelli del capitolo precedente, in questo capitolo inseriamo meno passaggi e meno spiegazioni.
+
 
 
 
@@ -131,7 +132,13 @@ destroy
   end
 ~~~~~~~~
 
-Facciamo dei piccoli refactoring
+
+
+
+## Facciamo dei piccoli refactoring
+
+Poiché con la chiamata "@user.present?" ottengo già TRUE o FALSE, non ho bisogno del ciclo if...else...end.
+Quindi possiamo riscrivere la policy per show
 
 {title=".../app/policies/example_post_policy.rb", lang=ruby, line-numbers=on, starting-line-number=7}
 ~~~~~~~~
@@ -140,7 +147,7 @@ Facciamo dei piccoli refactoring
   end
 ~~~~~~~~
 
-ottengo già true o false e quindi non mi serve un ciclo if...else...end
+Invece per la policy di update togliamo la verifica "if @user.user?". Questo permette all'utente di modificare i suoi propri record ma non potendoli creare non ha record da modificare.
 
 {id="01-09-06_01", title=".../app/policies/example_post_policy.rb", lang=ruby, line-numbers=on, starting-line-number=7}
 ~~~~~~~~
@@ -154,8 +161,6 @@ ottengo già true o false e quindi non mi serve un ciclo if...else...end
 ~~~~~~~~
 
 [Codice 01](#01-09-06_01all)
-
-Questo autorizzerebbe l'user a modificare i suoi propri record ma non potendoli creare non ha record da modificare.
 
 
 
@@ -205,7 +210,7 @@ $ sudo service postgresql start
 $ rails s
 ~~~~~~~~
 
-* https://mycloud9path.amazonaws.com/example_posts
+* https://mycloud9path.amazonaws.com/eg_posts
 
 
 
@@ -223,7 +228,7 @@ $ git commit -m "add pundit authorization on all actions of example_post"
 
 ## Un refactoring sulla logica della policy
 
-riportiamo la gestione della logica della policy ad una situazione simile schema della logica delle autorizzazioni: 
+riportiamo la gestione della logica della policy ad una situazione simile allo schema della logica delle autorizzazioni: 
 
 index
  * Utente non loggato           : autorizzato su tutti i records
@@ -375,7 +380,7 @@ $ sudo service postgresql start
 $ rails s
 ~~~~~~~~
 
-* https://mycloud9path.amazonaws.com/example_posts
+* https://mycloud9path.amazonaws.com/eg_posts
 
 
 
