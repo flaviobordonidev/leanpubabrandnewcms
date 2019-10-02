@@ -1,0 +1,293 @@
+# Style authors/posts
+
+Implementiamo l'ambiente di Dashboard per "authors/posts" mentre lasciamo "default posts" nel layout di default (layouts/application).
+
+
+Risorse web:
+
+* [I vari campi imput del form in HTML](https://www.w3schools.com/html/html_form_elements.asp)
+* [I tipi di campi imput del form in HTML](https://www.w3schools.com/html/html_form_input_types.asp)
+
+
+
+
+## Apriamo il branch "Style Authors Posts"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b sap
+~~~~~~~~
+
+
+
+
+## Assegnamo il layout dashboard alle pagine degli autori
+
+{id="02-06-01_01", title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+  layout 'dashboard'
+~~~~~~~~
+
+[Codice 01](#02-06-01_01all)
+
+
+
+
+## Aggiorniamo la barra di navigazione (navbar)
+
+aggiungiamo una voce alla nostra navbar per i posts degli autori (index, edit e new)
+
+{id="02-06-01_02", title=".../app/views/layouts/_dashboard_navbar.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+      <li class="nav-item">
+        <%= link_to 'Miei Articoli', authors_posts_path, class: "nav-link #{yield(:menu_nav_link_authors_posts)}" %>
+      </li>
+~~~~~~~~
+
+[Codice 02](#02-06-01_02all)
+
+
+ed i relativi "provide", per lo "yield" nei rispettivi views
+
+{title=".../app/views/authors/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+<% provide(:menu_nav_link_authors_posts, "active") %>
+~~~~~~~~
+
+{title=".../app/views/authors/posts/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+<% provide(:menu_nav_link_authors_posts, "active") %>
+~~~~~~~~
+
+{title=".../app/views/authors/posts/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=2}
+~~~~~~~~
+<% provide(:menu_nav_link_authors_posts, "active") %>
+~~~~~~~~
+
+
+
+
+## Iniziamo a personalizzare la dashboard
+
+rendiamo auhtors/posts/index più simile ad un ambiente di "lavoro" per i posts dell'autore
+
+
+
+
+## Formattiamo authors/posts/index
+
+Usiamo le classi html di Bootsrap per rendere la tabella "a strisce" in modo da evidenziare le varie righe.
+
+{title=".../app/views/authors/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+<table class="table table-striped">
+~~~~~~~~
+
+per formattare il link edit facendolo sembrare un pulsante
+
+{title=".../app/views/authors/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=43}
+~~~~~~~~
+        <td><%= link_to 'Edit', edit_authors_post_path(post), class: 'btn btn-sm btn-warning' %></td>
+~~~~~~~~
+
+per formattare il link destroy facendolo sembrare un pulsante
+
+{title=".../app/views/authors/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=44}
+~~~~~~~~
+        <td><%= link_to 'Destroy', authors_post_path(post), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %></td>
+~~~~~~~~
+
+lasciamo "show" come link aggiungendo che apra un nuovo tab del browser, per visualizzare come l'utente finale vedrà l'articolo
+
+{title=".../app/views/authors/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=42}
+~~~~~~~~
+        <td><%= link_to 'Show', post, target: "_blank"%></td>
+~~~~~~~~
+
+andiamo su una nuova pagina perché nelle pagine "default posts/index e posts/show" toglieremo il menu di navigazione in alto.
+
+
+
+
+## Formattiamo authors/posts/_form
+
+Dedichiamoci adesso alla formattazione del form di aggiunta/modifica utente. Implementiamo la griglia di bootstrap ed il componente cards.
+Prepariamo un blocco di codice "mockup" da inserire dento il form; lo inseriamo subito dopo il "form_with".
+
+
+{id="02-06-01_03", title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%= form_with(model: post, local: true, url: authors_url) do |form| %>
+  <div class="row">
+    <div class="col-md-4">
+      <!--<div class="card" style="width: 18rem;">-->
+      <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Nuovo Articolo o Modifica Articolo: Pincopallo della felice scelta che si ripropone con costanza</h5>
+~~~~~~~~
+
+[Codice 03](#02-06-01_03all)
+
+I> Facebook raccomanda 1200 x 630 pixels (h x w) per le dimensini della og:image che è un aspect ratio di circa 1.91:1.
+I> Altre fonti raccomandano 476 x 249 px, che è sempre un aspect ratio di circa 1.91:1 (476/249=1.91).
+
+Verificato l'effetto iniziamo ad inserirci i campi legati al database.
+
+
+
+
+## Il titolo
+
+Nel card-body inseriamo il campo :title e visualizziamo nel titoletto il contenuto della "scatola vuota" yield(:page_title) che è impostato nella view "edit" o nella view "new".
+
+{title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=6}
+~~~~~~~~
+        <div class="card-body">
+            <h5 class="card-title"><%= yield(:page_title) %></h5>
+          <div class="field">
+            <%= form.label :title %>
+            <%= form.text_field :title, class: "form-control" %>
+          </div>
+        </div>
+~~~~~~~~
+
+aggiorniamo le views "edit" e "new"
+
+{title=".../app/views/authors/posts/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+<% provide(:card_title, "Modifica Articolo: #{@post.title}") %>
+~~~~~~~~
+
+{title=".../app/views/authors/posts/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+<% provide(:card_title, "Nuovo Articolo") %>
+~~~~~~~~
+
+
+questo ci evita di dover usare una chiamata if..else..end del tipo:
+
+{title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+        <div class="card-body">
+          <% if post.new_record? %>
+            <h5 class="card-title">Nuovo articolo</h5>
+          <% else %>
+            <h5 class="card-title">Edit: <%= post.title %></h5>
+          <% end %>
+~~~~~~~~
+
+
+
+
+### Il menu a cascata
+
+Portiamo nella nostra grid il menu a cascata che permettere di selezionare il tipo di articolo
+
+{title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+          <li class="list-group-item">
+            <div class="form-group">
+              <%= form.label :content_type %>
+              <%#= form.select(:content_type, Post.content_types.keys.map {|content_type| [Post.human_attribute_name("content_type.#{content_type}"), content_type]}, {}, {class: "form-control"}) %>
+              <%= form.select(:content_type, Post.content_types.keys.map {|key| [Post.human_attribute_name("content_type.#{key}"), key]}, {}, {class: "form-control"}) %>
+            </div>
+          </li>
+~~~~~~~~
+
+
+
+
+### Il resto dei campi
+
+Portiamo il resto dei campi nel grid. 
+
+{title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=72}
+~~~~~~~~
+            <div class="field">
+              <%= form.label :video_youtube, class: "control-label" %>
+              <%= form.text_field :video_youtube, class: "form-control" %><!-- parte di URL youtube che identifica il video -->
+            </div>
+~~~~~~~~
+
+{title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=72}
+~~~~~~~~
+            <div class="field">
+              <%= form.label :video_vimeo, class: "control-label" %>
+              <%= form.text_field :video_vimeo, class: "form-control" %><!-- parte di URL vimeo che identifica il video -->
+            </div>
+~~~~~~~~
+
+{title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=72}
+~~~~~~~~
+            <div class="field">
+              <%= form.label :seocontent, class: "control-label" %>
+              <%= form.text_area :seocontent, row: "3", class: "form-control" %><!-- max 160 caratteri -->
+            </div>
+~~~~~~~~
+
+{id="02-04-03_04", title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=72}
+~~~~~~~~
+            <div class="actions">
+              <%= form.submit "Salva l'articolo", class: "btn btn-success btn-lg btn-block" %>
+            </div>
+~~~~~~~~
+
+[Codice 04](#02-04-03_04all)
+
+
+
+
+## salviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Style author/posts/_form"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su Heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku sap:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge sap
+$ git branch -d sap
+~~~~~~~~
+
+
+aggiorniamo github
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
+
+
+
+
+## Il codice del capitolo
+
+
+
+
+[Codice 01](#02-04-03_01)
+
+{id="02-04-03_01all", title=".../app/views/layouts/dashboard.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+
+~~~~~~~~

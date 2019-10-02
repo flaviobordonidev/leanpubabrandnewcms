@@ -1,0 +1,159 @@
+# PostgreSQL Databases per la mia app
+
+Creiamo i databases su postgreSQL in modo da attivare la connessione con la nostra applicazione myapp
+Questa installazione l'abbiamo già vista in dettaglio nel capitolo 01-beginning/01-new_app/06-pg_app_databases
+
+
+## Verifichiamo connessione
+
+Anche se già visto nel preview, verifichiamo da terminale che non c'è comunicazione con il database.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails db:migrate
+
+
+ubuntu:~/environment/s5beginning (master) $ rails db:migrate
+rails aborted!
+ActiveRecord::NoDatabaseError: FATAL:  database "s5beginning_development" does not exist
+~~~~~~~~
+
+Prende errore perché non esistono ancora i databases.
+
+
+
+
+## Rinominiamo i databases sull'applicazione
+
+rinominiamo da " cmspofo_development " a " rebisworld_development ".
+
+{id="01-01-05_01", title=".../config/database.yml", lang=yaml, line-numbers=on, starting-line-number=24}
+~~~~~~~~
+development:
+  <<: *default
+  database: rebisworld_development
+~~~~~~~~
+
+{title=".../config/database.yml", lang=yaml, line-numbers=on, starting-line-number=58}
+~~~~~~~~
+test:
+  <<: *default
+  database: rebisworld_test
+~~~~~~~~
+
+{title=".../config/database.yml", lang=yaml, line-numbers=on, starting-line-number=81}
+~~~~~~~~
+production:
+  <<: *default
+  database: rebisworld_production
+  username: rebisworld
+  password: <%= ENV['PRODUCTION_DATABASE_PASSWORD'] %>
+~~~~~~~~
+
+[Codice 01](#01-01-05_01all)
+
+
+
+
+## Verifichiamo connessione
+
+vediamo che adesso l'errore è per la mancanza dei databases con il nuovo nome
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails db:migrate
+
+
+ubuntu:~/environment/rebisworld (rp) $ rails db:migrate
+rails aborted!
+ActiveRecord::NoDatabaseError: FATAL:  database "rebisworld_development" does not exist
+~~~~~~~~
+
+
+
+
+## Creiamo i databases
+
+Creiamo i databases sul postgreSQL del workspace di cloud9.
+Creiamo i databases per development e test usando il comando "createdb" di postgreSQL.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ createdb rebisworld_development
+$ createdb rebisworld_test
+
+
+ec2-user:~/environment/myapp (master) $ sudo service postgresql start
+Starting postgresql service:                               [  OK  ]
+ec2-user:~/environment/myapp (master) $ createdb myapp_development
+ec2-user:~/environment/myapp (master) $ createdb myapp_test
+ec2-user:~/environment/myapp (master) $ 
+~~~~~~~~
+
+Nella creazione dei databases non ho messaggi di creazione effettuata sul terminale. 
+
+verifichiamo che adesso c'è comunicazione eseguendo
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails db:migrate
+
+ubuntu:~/environment/s5beginning (master) $ rails db:migrate
+== 20190802082421 DeviseCreateUsers: migrating ================================
+-- create_table(:users)
+   -> 0.0195s
+-- add_index(:users, :email, {:unique=>true})
+   -> 0.0091s
+-- add_index(:users, :reset_password_token, {:unique=>true})
+   -> 0.0090s
+== 20190802082421 DeviseCreateUsers: migrated (0.0400s) =======================
+
+== 20190802115452 CreateEgUsers: migrating ====================================
+-- create_table(:eg_users)
+   -> 0.0189s
+== 20190802115452 CreateEgUsers: migrated (0.0197s) ===========================
+
+== 20190802143640 CreateEgPosts: migrating ====================================
+-- create_table(:eg_posts)
+   -> 0.0288s
+== 20190802143640 CreateEgPosts: migrated (0.0297s) ===========================
+
+== 20190802153551 CreateEgCompanies: migrating ================================
+-- create_table(:eg_companies)
+   -> 0.0189s
+== 20190802153551 CreateEgCompanies: migrated (0.0197s) =======================
+
+== 20190802154936 AddRoleToUsers: migrating ===================================
+-- add_column(:users, :role, :integer, {:default=>0})
+   -> 0.0393s
+-- add_index(:users, :role, {:unique=>false})
+   -> 0.0084s
+== 20190802154936 AddRoleToUsers: migrated (0.0492s) ==========================
+
+== 20190808132113 CreateActiveStorageTables: migrating ========================
+-- create_table(:active_storage_blobs)
+   -> 0.0296s
+-- create_table(:active_storage_attachments)
+   -> 0.0392s
+== 20190808132113 CreateActiveStorageTables: migrated (0.0693s) ===============
+
+ubuntu:~/environment/s5beginning (master) $ 
+~~~~~~~~
+
+Oltre a verificare che c'è comunicazione vengono anche eseguiti tutti i migration! :)
+
+
+
+
+### Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+* https://mycloud9path.amazonaws.com/
+
+Sta funzionando! Dobbiamo solo aggiungere gli utenti per poter effettuare il login.

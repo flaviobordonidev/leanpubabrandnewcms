@@ -1,0 +1,81 @@
+# Aggiungiamo e rimuoviamo chiamate sul layout mockups_pofo
+
+Nel layout abbiamo messo tutte le chiamate che sono normalmente utilizzate dalla maggior parte delle pagine nella nostra applicazione.
+Ma ci possono essere alcune pagine che hanno delle eccezioni. In questo capitolo vediamo come gestire queste eccezioni.
+
+Creiamo dei "contenitori yield" ( yield(:container_name) ) per:
+
+* aggiungere al layout delle chiamate di stile specifiche per alcune pagine.
+* togliere dal layout delle chiamate di stile non necessarie per alcune pagine.
+
+
+
+
+## Apriamo il branch "Add Remove Layout Calls"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b arlc
+~~~~~~~~
+
+
+
+
+
+
+
+
+
+## Aggiungiamo chiamata specifica al layout
+
+{id="02-06-01_01", title=".../app/views/layouts/mockups_pofo.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=41}
+~~~~~~~~
+    <% if yield(:stylesheet_fontflavio).present? %>
+      <%= stylesheet_link_tag "#{yield(:stylesheet_fontflavio)}", media: 'all', 'data-turbolinks-track': 'reload' %>
+    <% end %>
+~~~~~~~~
+
+[Codice 01](#02-06-01_01all)
+
+
+
+{id="02-06-01_01", title=".../app/views/mockups/blog_clean_full_width.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%# == Meta_data ============================================================ %>
+
+<% provide(:stylesheet_fontflavio, "pofo/css/themify-icons") %>
+
+<%# == Meta_data - end ====================================================== %>
+~~~~~~~~
+
+[Codice 02](#02-06-01_01all)
+
+
+
+
+
+## Togliamo chiamata specifica al layout
+
+
+{id="02-06-01_01", title=".../app/views/layouts/mockups_pofo.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=35}
+~~~~~~~~
+    <% unless yield(:remove_fontawesome).present? %>
+      <%= stylesheet_link_tag 'pofo/css/font-awesome-via_gem', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <% end %>
+~~~~~~~~
+
+[Codice 03](#02-06-01_01all)
+
+
+
+{id="02-06-01_01", title=".../app/views/mockups/blog_clean_full_width.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%# == Meta_data ============================================================ %>
+
+<% provide(:stylesheet_fontflavio, "pofo/css/themify-icons") %>
+<%# provide(:remove_fontawesome, "true") %>
+
+<%# == Meta_data - end ====================================================== %>
+~~~~~~~~
+
+[Codice 04](#02-06-01_01all)

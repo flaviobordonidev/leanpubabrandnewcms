@@ -1,0 +1,63 @@
+# Rinominiamo la nostra applicazione
+
+Dalla versione rails 4.1.x, se vogliamo rinominare la nosta applicazione, è sufficiente rinominare la cartella ed aggiornare il files "config/application.rb".
+Per rails 4.0.x era invece consigliabile usare la gemma " rename gem ".
+
+
+Risorse web:
+
+* [stackoverflow: how-to-rename-rails-4-app](https://stackoverflow.com/questions/20988813/how-to-rename-rails-4-app)
+
+
+
+
+## Rinominiamo la cartella della nostra app
+
+o rinominiamo la cartella tramite la GUI awsC9 oppure da console con il comando:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ cd ..
+$ mv cmspofo rebisworld
+~~~~~~~~
+
+una volta rinominata la cartella ci basta aggiornare il file config/application.
+
+
+
+
+## Aggiorniamo config/application
+
+Apriamo il file config/application.rb, lì vediamo un modulo con lo stesso nome della nostra app. Tutto quello che dobbiamo fare è cambiare il nome del modulo con il nome della nuova app. 
+Quindi rinominiamo da " module Cmspofo " a "module Rebisworld ".
+
+{id="02-03-01_01", title="config/application.rb", lang=ruby, line-numbers=on, starting-line-number=9}
+~~~~~~~~
+module Rebisworld
+  class Application < Rails::Application
+    # Initialize configuration defaults for originally generated Rails version.
+~~~~~~~~
+
+[Codice 01](#02-03-01_01all)
+
+
+
+
+## Salviamo su Git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "rename Rails app from cmspofo to rebisworld"
+~~~~~~~~
+
+
+## Heroku e Backup
+Non possiamo salviamo sui repository remoti (Heroku e GitHub) perché dobbiamo implementarli di nuovo
+
+
+
+
+## Il codice del capitolo
+
+

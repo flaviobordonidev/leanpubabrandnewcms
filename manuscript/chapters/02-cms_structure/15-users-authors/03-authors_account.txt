@@ -1,3 +1,0 @@
-# Account per l'autore
-
-Creiamo una pagina per permettere all'utente loggato di cambiare i suoi dati.

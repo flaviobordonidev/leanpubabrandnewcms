@@ -1,0 +1,4 @@
+
+Se seguiamo il tutorial principale, possiamo saltare tutti i capitoli di questa sezione perché manteniamo il nome della nostra app " bl5_2 ".
+
+Se invece vogliamo rinominarla allora possiamo seguire quanto spiegato in questa sezione.

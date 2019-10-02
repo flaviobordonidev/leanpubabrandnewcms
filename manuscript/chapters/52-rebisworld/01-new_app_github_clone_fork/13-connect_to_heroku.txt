@@ -1,0 +1,405 @@
+# Andiamo in produzione - connettiamoci a Heroku
+
+In realtà creiamo una nuova sessione su heroku ma stiamo attenti a non sovrascrivere la nostra già esistente!
+I passaggi sono praticamente identici a quanto fatto nel capitolo 01-beginning/04-heroku/02-inizializiamo_heroku
+
+
+Risorse web
+
+* [stackoverflow heroku-deployment-error-h10](https://stackoverflow.com/questions/13496827/heroku-deployment-error-h10-app-crashed)
+
+
+
+
+## Apriamo il branch "Aggiorniamo Collegamenti Git"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b acg
+~~~~~~~~
+
+
+
+
+## Verifichiamo se abbiamo Heroku installato su aws Cloud9  
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku --version
+
+
+ubuntu:~/environment/s5cmsbeginning (acg) $ heroku --version
+
+Command 'heroku' not found, but can be installed with:
+
+sudo snap install heroku
+~~~~~~~~
+
+Nel nostro caso non è installato ed ubuntu ci consiglia di installarlo usando "snap"
+
+Se provassimo usando il suggerimento di ubuntu avremmo il seguente avviso:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo snap install heroku
+
+
+ubuntu:~/environment/s5cmsbeginning (acg) $ sudo snap install heroku
+error: This revision of snap "heroku" was published using classic confinement and thus may perform
+       arbitrary system changes outside of the security sandbox that snaps are usually confined to,
+       which may put your system at risk.
+
+       If you understand and want to proceed repeat the command including --classic.
+~~~~~~~~
+
+Non ci piace molto l'avviso e quindi non aggiungiamo "--classic" ma usiamo le indicazioni di Heroku, come già fatto in precedenza.
+
+
+
+
+## Installiamo Heroku CLI
+
+Come abbiamo già fatto per PostgreSQL, anche Heroku lo installiamo sulla cartella principale di aws Cloud9: "/environment".
+Assicuriamoci di essere sulla cartella principale
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ cd ~/environment
+~~~~~~~~
+
+Per installare Heroku dobbiamo scaricare ed installare la "heroku CLI" (ex heroku-toolbelt).
+
+
+Seguendo le indicazioni di [Heroku](https://devcenter.heroku.com/articles/heroku-cli) il comando che dobbiamo usare da aws cloud9, che è un "docker container" è questo:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo su - 
+-> curl https://cli-assets.heroku.com/install.sh | sh
+-> exit
+
+
+ubuntu:~/environment/s5cmsbeginning (acg) $ sudo su -
+root@ip-172-31-43-161:~# curl https://cli-assets.heroku.com/install.sh | sh
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  1892  100  1892    0     0  20791      0 --:--:-- --:--:-- --:--:-- 21022
+Installing CLI from https://cli-assets.heroku.com/heroku-linux-x64.tar.xz
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 17.6M  100 17.6M    0     0  5915k      0  0:00:03  0:00:03 --:--:-- 5915k
+v11.14.0
+heroku installed to /usr/local/bin/heroku
+heroku/7.27.1 linux-x64 node-v11.14.0
+root@ip-172-31-43-161:~# exit
+logout
+ubuntu:~/environment/s5cmsbeginning (acg) $ 
+~~~~~~~~
+
+
+Verifichiamo che l'installazione è andata a buon fine.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku --version
+
+
+ubuntu:~/environment/s5cmsbeginning (acg) $ heroku --version
+heroku/7.27.1 linux-x64 node-v11.14.0
+~~~~~~~~
+
+
+
+
+## Creiamo l'app su heroku
+
+Torniamo nella cartella della nostra applicazione Rails
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ cd rebisworld
+~~~~~~~~
+
+
+Loghiamoci con le credenziali del nostro account heroku.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku login
+
+
+ubuntu:~/environment/s5cmsbeginning (acg) $ heroku login
+heroku: Press any key to open up the browser to login or q to exit: 
+ ›   Warning: Cannot open browser. Go to https://cli-auth.heroku.com/auth/browser/05cbd1ba-41b2-45c6-8258-8977aadca96c to finish login or run heroku 
+ ›   login --interactive
+ ›
+Logging in... done
+~~~~~~~~
+
+Questa procedura ti fa fare il login sulla pagina web. Basta cliccare sul link, scegliere "open" ed eseguire il login.
+
+
+Aggiungiamo la nostra chiave di criptatura in modo da stabilire un canale sicuro tra aws Cloud9 ed Heroku.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku keys:add
+-> y
+
+
+ubuntu:~/environment/s5cmsbeginning (acg) $ heroku keys:add
+Found an SSH public key at /home/ubuntu/.ssh/id_rsa.pub
+? Would you like to upload it to Heroku? Yes
+Uploading /home/ubuntu/.ssh/id_rsa.pub SSH key... done
+~~~~~~~~
+
+
+Creiamo una nuova app su heroku.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku create
+
+
+cloud9:~/environment/rigenerabatterie (pubprod) $ heroku create
+Creating app... done, ⬢ pacific-sea-70617
+https://pacific-sea-70617.herokuapp.com/ | https://git.heroku.com/pacific-sea-70617.git
+~~~~~~~~
+
+l'app viene creata dinamnicamente. In questo caso è stato creato "pacific-sea-70617" ma può essere qualsiasi nome.
+
+
+Per verficarlo si può usare il comando
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku domains
+
+cloud9:~/environment/rigenerabatterie (pubprod) $ heroku domains
+=== pacific-sea-70617 Heroku Domain
+pacific-sea-70617.herokuapp.com
+~~~~~~~~
+
+o
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku apps:info
+
+cloud9:~/environment/rigenerabatterie (pubprod) $ heroku apps:info
+=== pacific-sea-70617
+Auto Cert Mgmt: false
+Dynos:          
+Git URL:        https://git.heroku.com/pacific-sea-70617.git
+Owner:          flavio.bordoni.dev@gmail.com
+Region:         us
+Repo Size:      0 B
+Slug Size:      0 B
+Stack:          heroku-18
+Web URL:        https://pacific-sea-70617.herokuapp.com/
+~~~~~~~~
+
+
+Possiamo verificare che abbiamo la configurazione git corretta con
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git config --list | grep heroku
+
+cloud9:~/environment/rigenerabatterie (pubprod) $ git config --list | grep heroku
+remote.heroku.url=https://git.heroku.com/pacific-sea-70617.git
+remote.heroku.fetch=+refs/heads/*:refs/remotes/heroku/*
+~~~~~~~~
+
+Se vedi "fatal: not in a git directory" allora probabilmente non sei nella directory corretta. Altrimenti puoi mandare in produzione il tuo codice.
+
+
+
+
+## Rinominiamo l'app
+
+Diamo all'app di heroku un nome simile a quello della nostra istanza di aws cloud9 (s5cmsbeginning) così è più facile associarli.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku rename rebisworld
+
+
+ubuntu:~/environment/s5cmsbeginning (acg) $ heroku rename s5cmsbeginning
+Renaming mysterious-basin-77133 to s5cmsbeginning... done
+https://s5cmsbeginning.herokuapp.com/ | https://git.heroku.com/s5cmsbeginning.git
+Git remote heroku updated
+ ▸    Don't forget to update git remotes for all other local checkouts of the app.
+~~~~~~~~
+
+verifichiamo di nuovo le informazione della nostra app
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku apps:info
+
+
+ubuntu:~/environment/s5cmsbeginning (acg) $ heroku apps:info
+=== s5cmsbeginning
+Auto Cert Mgmt: false
+Dynos:          
+Git URL:        https://git.heroku.com/s5cmsbeginning.git
+Owner:          flavio.bordoni@gmail.com
+Region:         us
+Repo Size:      0 B
+Slug Size:      0 B
+Stack:          heroku-18
+Web URL:        https://s5cmsbeginning.herokuapp.com/
+~~~~~~~~
+
+e la configurazione di git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git config --list | grep heroku
+
+
+ubuntu:~/environment/s5cmsbeginning (acg) $ git config --list | grep heroku
+remote.heroku.url=https://git.heroku.com/s5cmsbeginning.git
+remote.heroku.fetch=+refs/heads/*:refs/remotes/heroku/*
+~~~~~~~~
+
+Adesso è tutto pronto. Posso fare il commit finale in locale e uploadare tutto in remoto.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "ready to public in production on heroku"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su heroku
+
+Attenzione! per pubblicare su heroku da un branch si usa un comando specifico ( git push heroku yourbranch:master )
+(vedi https://devcenter.heroku.com/articles/git)
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku acg:master
+$ heroku run rake db:migrate
+~~~~~~~~
+
+di seguito lo schema delle sei aree della vita con la doppia polarità della natura delle anime
+
+
+### Verifichiamo production
+
+La nostra applicazione è ora in produzione su heroku. La possiamo vedere sul broser all'URL
+
+https://rebisworld.herokuapp.com/
+
+Abbiamo un errore generico
+
+    " Application error
+    An error occurred in the application and your page could not be served. If you are the application owner, check your logs for details. You can do this from the Heroku CLI with the command
+    heroku logs --tail "
+
+
+
+
+### Verifichiamo la log
+
+il messaggio è molto generico e non ci aiuta molto.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku logs --tail
+
+
+ubuntu:~/environment/s5beginning (acg) $ heroku logs --tail
+[...]
+2019-08-16T10:57:37.042348+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/" host=cmsbase.herokuapp.com request_id=2ceb9153-20aa-4632-bf63-b27d65ad4a73 fwd="92.223.151.11" dyno= connect= service= status=503 bytes= protocol=https
+2019-08-16T10:57:37.406230+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/favicon.ico" host=cmsbase.herokuapp.com request_id=002847e3-d281-43cf-ba3b-43ab161b311d fwd="92.223.151.11" dyno= connect= service= status=503 bytes= proto
+~~~~~~~~
+
+
+
+### Verifichiamo da Heroku console
+
+questo messaggio è molto più chiaro
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku run rails console
+
+
+ubuntu:~/environment/s5beginning (acg) $ heroku run rails console
+Running rails console on ⬢ cmsbase... up, run.4255 (Free)
+Traceback (most recent call last):
+        109: from /app/bin/rails:9:in `<main>'
+[...]
+`extract_credentials_provider': Cannot load `Rails.config.active_storage.service`: (Aws::Sigv4::Errors::MissingCredentialsError)
+missing credentials, provide credentials with one of the following options:
+  - :access_key_id and :secret_access_key
+  - :credentials
+  - :credentials_provider
+~~~~~~~~
+
+Ci siamo dimenticati di passare le credenziali per active_storage !?!
+
+P.S.
+un altro posto che ti può dare indicazioni è " heroku restart ". 
+heroku restart helped me identify my issue. My bin folder was missing.
+
+
+
+
+### Passiamo ad Heroku variabili per collegamento ad aws S3
+
+Heroku non ha le variabili per accedere al bucket "myapp-prod" che abbiamo creato su aws S3.
+Passiamo le variabile d'ambiente ad heroku via terminale
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku config:set AWS_ACCESS_KEY_ID='AKIA....JTOMA'
+$ heroku config:set AWS_SECRET_ACCESS_KEY='LwdJ........45KHZ'
+$ heroku config:set AWS_REGION='us-east-1'
+$ heroku config:set S3_BUCKET_NAME='rebisworld-prod'
+~~~~~~~~
+
+
+
+
+### Verifichiamo production
+
+La nostra applicazione è ora in produzione su heroku. La possiamo vedere sul broser all'URL
+
+https://cmspofo.herokuapp.com/
+
+Adesso funziona tutto :)
+
+
+
+
+## Aggiungiamo un utente da console
+
+Creiamo l'utente "Ann" e lo rendiamo amministratore
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku run rails c
+-> User.create(name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda')
+-> User.last.admin!
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge acg
+$ git branch -d acg
+~~~~~~~~
+

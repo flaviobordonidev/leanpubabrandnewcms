@@ -1,0 +1,85 @@
+## Demo button
+
+I pulsanti a scomparsa sul lato destro del tema.
+
+
+
+
+## Inserimento da codice javascripy
+
+Il seguente codice inserito nel file javascript " main.js " inserisce in automatico i due pulsanti a scomparsa prima della chiusura del tag </body>
+
+{title=".../app/assets/javascripts/pofo/js/main.js", lang=JavaScript, line-numbers=on, starting-line-number=2663}
+~~~~~~~~
+    /*==============================================================*/
+    //demo button  - START CODE
+    /*==============================================================*/
+
+    var $buythemediv = '<div class="buy-theme alt-font sm-display-none"><a href="https://themeforest.net/item/pofo-creative-agency-corporate-and-portfolio-multipurpose-template/20645944?ref=themezaa" target="_blank"><i class="ti-shopping-cart"></i><span>Buy Theme</span></a></div><div class="all-demo alt-font sm-display-none"><a href="mailto:info@themezaa.com?subject=POFO – Creative Agency, Corporate and Portfolio Multi-purpose Template - Quick Question"><i class="ti-email"></i><span>Quick Question?</span></a></div>';
+    $('body').append($buythemediv);
+
+    /*==============================================================*/
+    //demo button  - END CODE
+    /*==============================================================*/
+~~~~~~~~
+
+Noi lo commentiamo perché preferiamo gestire i due pulsanti direttamente sulle views
+
+
+
+
+## Inseriamo i pulsanti sul layer mockups_pofo
+
+Inseriamo i pulsanti togliendo il link_address e mettendo una nuova icona sul "buy-theme" 
+
+{id="03-03-01_03", title=".../app/views/layouts/mockups_pofo.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+    <div class="buy-theme alt-font sm-display-none"><a href="#" target="_blank"><i class="ti-hand-point-right"></i><span>Edit</span></a></div>
+    <div class="all-demo alt-font sm-display-none"><a href="#"><i class="ti-email"></i><span>Menu - più scrivo più l'etichetta sporge</span></a></div>
+  </body>
+~~~~~~~~
+
+
+
+## Spostiamolo all'interno dei singoli mockups
+
+Non è necessario che i pulsanti siano alla fine del </body>. Possono essere collocati in qualsiasi punto tanto è lo stylesheet che li posiziona al lato destro dello schermo.
+Quindi possiamo toglierli dal layout e posizionarli all'interno della nostra pagina view. Questo ci è utile per definire nei prossimi paragrafi il link di edit dell'articolo.
+Per praticità lo mettiamo subito dopo i " meta data ", prima del menu.
+
+{id="03-03-01_03", title=".../app/views/layouts/mockups_pofo.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+    <div class="buy-theme alt-font sm-display-none"><a href="#" target="_blank"><i class="ti-hand-point-right"></i><span>Edit</span></a></div>
+    <div class="all-demo alt-font sm-display-none"><a href="#"><i class="ti-email"></i><span>Menu - più scrivo più l'etichetta sporge</span></a></div>
+~~~~~~~~
+
+
+
+
+
+
+
+## Personalizziamo per authors/posts/edit
+
+Usiamo solo il pulsante " buy-theme " su cui mettiamo una nuova icona, la scritta " Edit " ed il puntamento a authors/posts/edit. Inoltre lo visualizziamo solo se l'utente è loggato.
+
+{id="03-03-01_03", title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%# == Meta_data - end ====================================================== %>
+
+<!-- Edit button -->
+  <% if current_user.present? == true %>
+    <div class="buy-theme alt-font sm-display-none">
+      <%= link_to edit_authors_post_path(@post) do %>
+        <i class="ti-hand-point-right"></i><span>Edit</span>
+      <% end %>
+    </div>
+  <% end %>
+<!-- end Edit button -->
+
+<!-- start header -->
+~~~~~~~~
+
+
+
+

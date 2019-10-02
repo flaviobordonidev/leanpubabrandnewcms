@@ -1,0 +1,195 @@
+# Rinominiamo la nostra applicazione
+
+Se seguiamo il tutorial principale, possiamo saltare tutti i capitoli di questa sezione perché manteniamo il nome della nostra app " bl5_2 ".
+Se invece vogliamo rinominarla allora possiamo seguire quanto spiegato in questa sezione.
+
+---
+
+Dalla versione rails 4.1.x, se vogliamo rinominare la nosta applicazione, è sufficiente rinominare la cartella ed aggiornare il files "config/application.rb".
+Per rails 4.0.x era invece consigliabile usare la gemma " rename gem ".
+
+
+Risorse web:
+
+* [stackoverflow: how-to-rename-rails-4-app](https://stackoverflow.com/questions/20988813/how-to-rename-rails-4-app)
+
+
+
+
+## Rinominiamo la cartella della nostra app
+
+o rinominiamo la cartella tramite la GUI awsC9 oppure da console con il comando:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ cd ..
+$ mv s5beginning s5cmsbeginning
+~~~~~~~~
+
+una volta rinominata la cartella ci basta aggiornare il file config/application.
+
+
+
+
+## Aggiorniamo config/application
+
+Apriamo il file config/application.rb, lì vediamo un modulo con lo stesso nome della nostra app. Tutto quello che dobbiamo fare è cambiare il nome del modulo con il nome della nuova app. 
+Quindi rinominiamo da " module s5beginning " a "module s5cmsbeginning ".
+
+{id="02-03-01_01", title="config/application.rb", lang=ruby, line-numbers=on, starting-line-number=9}
+~~~~~~~~
+module S5cmsbeginning
+  class Application < Rails::Application
+    # Initialize configuration defaults for originally generated Rails version.
+~~~~~~~~
+
+[Codice 01](#02-03-01_01all)
+
+
+
+
+## verifichiamo preview
+
+Attiviamo il webserver
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ cd s5cmsbeginning
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+e vediamo il preview:
+
+* https://mycloud9path.amazonaws.com
+* https://mycloud9path.amazonaws.com/mockups/page_a
+* https://mycloud9path.amazonaws.com/mockups/page_b
+
+
+
+
+## Salviamo su Git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "rename Rails app from s5beginning to s5cmsbeginning"
+~~~~~~~~
+
+ATTENZIONE!
+Non salviamo sui repository remoti (Heroku e GitHub) perché abbiamo ancora i puntamenti a s5beginning
+Nei capitoli successivi cambieremo i puntamenti alla nuova s5cmsbeginning ed andremo in produzione su Heroku e faremo un backup su GitHub.
+
+
+
+
+## Pulizia approfondita
+
+Adesso funziona tutto con un nuovo nome ma sono rimasti altri riferimenti al vecchio nome dell'app. Non è necessario modificarli, ma, volendo sostituire tutti i riferimenti al vecchio nome dell'app possiamo utilizzare la funzione di ricerca globale del nostro IDE awsC9. Clicchiamo sulla cartella della nostra app ed eseguiamo Find -> Find in Files...
+Cerchiamo per il vecchio nome "s5beginning" ed otteniamo:
+
+{title="Find in files...", lang=bash, line-numbers=off}
+~~~~~~~~
+Searching for s5beginning in/s5cmsbeginning (Found 33 matches in 10 files)
+
+/s5cmsbeginning/package.json:
+	2:   "name": "s5beginning",
+
+/s5cmsbeginning/README.md:
+	1: # s5beginning
+
+/s5cmsbeginning/app/views/layouts/application.html.erb:
+	4:     <title>S5beginning</title>
+
+/s5cmsbeginning/config/cable.yml:
+	10:   channel_prefix: s5beginning_production
+
+/s5cmsbeginning/config/database.yml:
+	26:   database: s5beginning_development
+	32:   #username: s5beginning
+	60:   database: s5beginning_test
+	83:   database: s5beginning_production
+	84:   username: s5beginning
+	85:   password: <%= ENV['S5BEGINNING_DATABASE_PASSWORD'] %>
+
+/s5cmsbeginning/config/storage.yml:
+	14:   bucket: s5beginning-dev
+	21:   bucket: s5beginning-prod
+
+/s5cmsbeginning/config/environments/production.rb:
+	64:   # config.active_job.queue_name_prefix = "s5beginning_#{Rails.env}"
+	73:   config.action_mailer.default_url_options = { host: 's5beginning.herokuapp.com', port: 3000 }
+
+/s5cmsbeginning/log/development.log:
+	4: ActiveRecord::NoDatabaseError (FATAL:  database "s5beginning_development" does not exist
+
+/s5cmsbeginning/tmp/cache/assets/sprockets/v3.0/-U/-UJGnXtAgjavl1JVmH-hsUArcLddH03UaffSVrXWDgw.cache:
+	1: {:uriI"�file://app/assets/stylesheets/scaffolds.scss?type=text/css&pipeline=self&id=4d3777284fc17c8b3b9ef72a885dae890e911087fdc87c0e8e97f856389c20d7:ET:load_pathI"app/assets/stylesheets;T:
+filenameI"*app/assets/stylesheets/scaffolds.scss;T:	nameI"scaffolds;T:logical_pathI"scaffolds.self.css;T:content_typeI"
+text/css;T:sourceI"�	/* line 1, /home/ubuntu/environment/s5beginning/app/assets/stylesheets/scaffolds.scss */
+	11: /* line 10, /home/ubuntu/environment/s5beginning/app/assets/stylesheets/scaffolds.scss */
+	18: /* line 16, /home/ubuntu/environment/s5beginning/app/assets/stylesheets/scaffolds.scss */
+	25: /* line 22, /home/ubuntu/environment/s5beginning/app/assets/stylesheets/scaffolds.scss */
+	29: /* line 25, /home/ubuntu/environment/s5beginning/app/assets/stylesheets/scaffolds.scss */
+	33: /* line 29, /home/ubuntu/environment/s5beginning/app/assets/stylesheets/scaffolds.scss */
+	39: /* line 35, /home/ubuntu/environment/s5beginning/app/assets/stylesheets/scaffolds.scss */
+	44: /* line 39, /home/ubuntu/environment/s5beginning/app/assets/stylesheets/scaffolds.scss */
+	49: /* line 44, /home/ubuntu/environment/s5beginning/app/assets/stylesheets/scaffolds.scss */
+	54: /* line 49, /home/ubuntu/environment/s5beginning/app/assets/stylesheets/scaffolds.scss */
+	59: /* line 53, /home/ubuntu/environment/s5beginning/app/assets/stylesheets/scaffolds.scss */
+	66: /* line 59, /home/ubuntu/environment/s5beginning/app/assets/stylesheets/scaffolds.scss */
+	74: /* line 66, /home/ubuntu/environment/s5beginning/app/assets/stylesheets/scaffolds.scss */
+	84: /* line 76, /home/ubuntu/environment/s5beginning/app/assets/stylesheets/scaffolds.scss */
+	90: /* line 82, /home/ubuntu/environment/s5beginning/app/assets/stylesheets/scaffolds.scss */
+
+/s5cmsbeginning/tmp/cache/assets/sprockets/v3.0/5B/5BCEFk1l87lQW1Vh2gWaK69TRHI2uSvaIiUTQqJoqCY.cache:
+	19: @fileI"Q/home/ubuntu/environment/s5beginning/app/assets/stylesheets/application.scss;	T:@importero:Sass::Rails::SassImporter:
+	20: @rootI"Q/home/ubuntu/environment/s5beginning/app/assets/stylesheets/application.scss;	F:@real_rootI"Q/home/ubuntu/environment/s5beginning/app/assets/stylesheets/application.scss;	F:@same_name_warningso:Set:
+
+Found 33 matches in 10 files 
+~~~~~~~~
+
+Quindi, escludendo la log ed i files temporanei di cache, i files in cui c'è ancora il nome vecchio sono:
+
+* /s5cmsbeginning/package.json
+* /s5cmsbeginning/README.md:
+* /s5cmsbeginning/app/views/layouts/application.html.erb:
+* /s5cmsbeginning/config/cable.yml:
+* /s5cmsbeginning/config/database.yml:
+* /s5cmsbeginning/config/storage.yml:
+* /s5cmsbeginning/config/environments/production.rb:
+
+Questi files li trattiamo nei prossimi capitoli opzionali.
+
+
+
+
+## Il codice del capitolo
+
+
+
+
+[Codice 01](#02-03-01_01)
+
+{id="02-03-01_01all", title="config/application.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+require_relative 'boot'
+
+require 'rails/all'
+
+# Require the gems listed in Gemfile, including any gems
+# you've limited to :test, :development, or :production.
+Bundler.require(*Rails.groups)
+
+module S5cmsbeginning
+  class Application < Rails::Application
+    # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 5.2
+
+    # Settings in config/environments/* take precedence over those specified here.
+    # Application configuration can go into files in config/initializers
+    # -- all .rb files in that directory are automatically loaded after loading
+    # the framework and any gems in your application.
+  end
+end
+~~~~~~~~

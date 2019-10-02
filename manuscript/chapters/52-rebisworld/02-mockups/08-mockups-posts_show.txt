@@ -1,0 +1,67 @@
+# Creiamo un mockups con il singolo articolo
+
+Ci ispiriamo al mockup " blog-simple-full-width " già visto nei capitoli precedenti.
+Lo modifichiamo in modo da avere nella sezione iniziale del titolo visualiziamo un isola con le freccie per cambiare in avanti o indietro, come fosse un carousel, e sotto gli articoli appartenente all'isola selezionata.
+
+
+
+
+
+## Il mockup posts_show
+
+
+La sezione "menu"
+visualiziamo il menù come già fatto per le altre pagine.
+
+{id="03-03-01_03", title=".../app/views/mockups/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+        <!-- start header -->
+        <header>
+            <!-- start navigation -->
+~~~~~~~~
+
+
+La sezione "page title"
+visualiziamo un'immagine di sfondo ed il titolo dell'articolo.
+
+{title=".../app/views/mockups/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+        <!-- start page title section -->
+        <section class="wow fadeIn parallax" data-stellar-background-ratio="0.1" style="background-image:url('<%= image_path('pofo/world-gutija-pos.png') %>');">
+~~~~~~~~
+
+
+La sezione "blog content"
+visualiziamo il contenuto dell'articolo.
+
+{title=".../app/views/mockups/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+        <!-- start blog content section -->
+        <section id="about" class="wow fadeIn">
+          <div class="container">
+~~~~~~~~
+
+
+La sezione "biography"
+visualiziamo informazioni sull'autore.
+
+{title=".../app/views/mockups/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+        <!-- start section -->
+        <section class="wow fadeIn no-padding-top">
+          <div class="container">
+~~~~~~~~
+
+
+La sezione "footer"
+visualiziamo il piè di pagina come già fatto nelle altre pagine
+
+{title=".../app/views/mockups/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+        <!-- start footer --> 
+        <!--<footer class="footer-classic-dark bg-extra-dark-gray padding-five-bottom xs-padding-30px-bottom">-->
+        <footer class="footer-classic-dark bg-dark-footer padding-50px-tb xs-padding-30px-tb">
+~~~~~~~~
+
+[Codice 01](#06-01-01_01all)
+

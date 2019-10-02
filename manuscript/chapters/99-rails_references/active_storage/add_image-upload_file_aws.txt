@@ -1,0 +1,17 @@
+# Aggiungere immagine - caricare file su aws
+
+
+
+Risorse web:
+
+* [Articolo interessante con anche la gestione di uploads multipli "Multiple attachments"](https://evilmartians.com/chronicles/rails-5-2-active-storage-and-beyond)
+*
+
+
+Risorse interne:
+
+* vedi 01-base/15-activestorage-filesupload/02-activestorage-install
+* vedi 01-base/15-activestorage-filesupload/04-aws_s3_activestorage
+* vedi 01-base/15-activestorage-filesupload/05-remove_uploaded_file
+* vedi 01-base/c07-active_storage-upload-eg_post_image/01-upload-image-aws
+* vedi 52-rebisworld/04-post_paragraphs-nested_forms/07-add_image

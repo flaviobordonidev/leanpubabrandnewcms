@@ -1,0 +1,155 @@
+        <!-- start header -->
+        <header>
+            <!-- start navigation -->
+            <nav class="navbar navbar-default bootsnav navbar-top header-light bg-transparent nav-box-width white-link"><!-- start navigation --> 
+              <div class="container-fluid nav-header-container">
+                <div class="row">
+                  <div class="col-md-2 col-xs-5"><!-- start logo -->
+                      <!--<a href="index.html" title="Pofo" class="logo"><%#= image_tag "pofo/logo.png", 'data-rjs': image_path('pofo/logo@2x.png'), class: "logo-dark", alt: "Pofo" %><%= image_tag "pofo/logo-white.png", 'data-rjs': image_path('pofo/logo-white@2x.png'), alt: "Pofo", class: "logo-light default" %></a>-->
+                      <%= link_to root_path, class: "logo" do %>
+                        <%= image_tag "pofo/logo.png", 'data-rjs': image_path('pofo/logo@2x.png'), class: "logo-dark", alt: "Pofo" %><%= image_tag "pofo/logo-white.png", 'data-rjs': image_path('pofo/logo-white@2x.png'), alt: "Pofo", class: "logo-light default" %>
+                      <% end %>
+                  </div><!-- end logo -->
+                  <div class="col-md-7 col-xs-2 width-auto pull-right accordion-menu xs-no-padding-right">
+                    <button type="button" class="navbar-toggle collapsed pull-right" data-toggle="collapse" data-target="#navbar-collapse-toggle-1">
+                        <span class="sr-only">toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <div class="navbar-collapse collapse pull-right" id="navbar-collapse-toggle-1">
+                      <ul id="accordion" class="nav navbar-nav navbar-left no-margin alt-font text-normal" data-in="fadeIn" data-out="fadeOut">
+                        <li><a href="#" style="font-family:better-glory; font-size: 18px; display:inline-block;">HOME</a></li>
+                        <li><a href="#" style="font-family:better-glory; font-size: 18px; display:inline-block;">LA FORMULA</a></li>
+                        <li><a href="#" style="font-family:better-glory; font-size: 18px; display:inline-block;">LE ISOLE</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-md-2 col-xs-5 width-auto">
+                  </div>
+                </div>
+              </div>
+            </nav><!-- end navigation --> 
+        </header>
+        <!-- end header -->
+
+
+
+
+        <!-- start page title section -->
+        <section class="wow fadeIn parallax" data-stellar-background-ratio="0.5" style="background-image:url('<%= image_path('pofo/default-post-bg.png') %>');">
+          <div class="opacity-medium bg-extra-dark-gray"></div>
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12 one-second-screen display-table page-title-large">
+                <div class="display-table-cell vertical-align-middle text-center">
+                  <a href="#about" class="inner-link"><h5 class="text-white alt-font font-weight-600 margin-10px-bottom" style="font-family:caligo; letter-spacing: 2px;">Penultimo Articolo</h5></a>
+                  <a href="#about" class="inner-link"><span class="text-white opacity6 alt-font no-margin-bottom text-large" style="font-family:caligo; letter-spacing: 2px; font-size: 24px">Leggi il racconto</span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- end page title section -->
+
+
+
+
+        <!-- start blog content section -->
+        <section id="about" class="wow fadeIn">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12 xs-text-center">
+                <h5 class="font-weight-600 text-extra-dark-gray alt-font">Nulla è statico. Tutto si trasforma.</h5>
+                Caldi raggi di luce dorata illuminavano l’isola sospesa di Gutija, conosciuta anche come l’isola dell’Energia. I suoi abitanti erano anime energiche e pulsanti di vita, come se fosse l’energia del sole stesso a riempirle ed animarle. Nessuno si fermava mai, il tempo era un bene prezioso, nessun minuto, nemmeno un secondo ne veniva sprecato. Gli scoiattoli schizzavano da un albero all’altro nelle più pericolose acrobazie, gli uomini e le donne sembravano instancabili, giocavano con i propri figli, sperimentavano gli sport più estremi, sprezzanti del pericolo, lavoravano, costruivano. Sembrava non ne avessero mai abbastanza. 
+Ma tutto ciò che viene illuminato dalla luce genera un’ombra. L’isola di Gutija aveva un piano inferiore, di cui gli abitanti dell’isola superiore quasi ignoravano l’esistenza. Nei piani più bassi la luce giungeva debole e fioca, i colori erano stati come derubati della loro brillantezza. Le anime che vivevano in quest’eterna penombra erano apatiche e fiacche, come se tutta l’energia disponibile fosse stata assorbita dalle anime abitanti il luminoso piano superiore. Tutto era lento o inattivo, dal battito dei loro cuori al passaggio delle stagioni, perfino il tempo non si curava del suo ruolo nella vita. Le foreste erano silenziose e immobili, le case sembravano abbandonate, i mulini erano fermi, l’acqua dei fiumi scorreva senza fare rumore... I gatti lasciavano passare impuniti davanti ai loro occhi i topolini con la loro refurtiva, le persone vivevano la loro vita solitaria, senza preoccuparsi di interagire fra loro, limitandosi ad andare avanti. Tutto procedeva al ritmo di un lento respiro, che ci tiene in vita ma al tempo stesso è talmente regolare da farci dimenticare della sua esistenza. Ma non si deve pensare che queste anime fossero infelici. Erano, semplicemente, prive di interesse e di partecipazione perfino nei confronti della loro stessa esistenza. Non provando sentimento alcuno dunque non potevano certo sentirsi infelici.
+              </div>
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <%= image_tag "pofo/blog-details-img7.jpg", alt: "", class: "width-100 margin-50px-tb" %>
+              </div>
+              <div class="col-md-12 col-sm-12 col-xs-12 last-paragraph-no-margin xs-text-center">
+                <span class="text-extra-dark-gray font-weight-600 alt-font margin-10px-bottom display-block text-medium">Titolo del secondo PARAGRAFO</span>
+                <p class="width-90 xs-width-100">Questo testo deve ESSSSEEEEEEREEEE LUNGOOOOOOOOOO </p>
+              </div>
+              <div class="col-md-12 col-sm-12 col-xs-12 last-paragraph-no-margin display-table text-right xs-text-center">
+                <span class="alt-font margin-20px-right">storia e testi di Anna</span>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- end blog content section -->
+
+
+
+
+        <!-- start section -->
+        <section class="wow fadeIn no-padding-top">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-10 col-sm-12 col-xs-12 center-col margin-50px-top sm-margin-30px-top wow fadeInUp">
+                <div class="display-table width-100 border-all border-color-extra-light-gray padding-50px-all sm-padding-30px-all xs-padding-20px-all">
+                  <div class="display-table-cell width-130px text-center vertical-align-top xs-margin-15px-bottom xs-width-100 xs-display-block xs-text-center">
+                    <!--<img src="images/avtar-01.jpg" class="img-circle width-100px" alt="" />-->
+                    <%= image_tag "pofo/avtar-01.jpg", class: "img-circle width-100px", alt: "" %>
+                    <%#= image_tag post.user.account_image.variant(combine_options: {resize: '100>', gravity: 'Center', crop: '100x100+0+0' }), style: "border-radius: 50%" %>
+                  </div>
+                  <div class="padding-40px-left display-table-cell vertical-align-top last-paragraph-no-margin xs-no-padding-left xs-display-block xs-text-center">
+                    <a href="#" class="text-extra-dark-gray text-uppercase alt-font font-weight-600 margin-10px-bottom display-inline-block text-small">Anna</a>
+                    <p>
+                      Anima Apatia nasce nella parte spenta dell’isola dell’energia e della salute. Non è un’anima fannullona, anzi ha mille idee e buona volontà nel fare le cose. Purtroppo ha sempre le pile scariche. Batterie a zero. Serbatoio vuoto. Qualche secolo fa era al lavoro come ricercatrice di testi antichi e rimaneva anche molte ore oltre l’orario di lavoro. Quando un suo collega le chiese perché facesse così tanti straordinari. La risposta fu disarmante: “Perché preferisco continuare e stare qui seduta a leggere e studiare piuttosto che alzarmi e mettere a posto i libri.” Alcuni decenni più tardi è una zelante lavoratrice in una fabbrica di materassi nel settore della qualità per il collaudo finale e la valutazione dell’esperienza di riposo. Al di là del lavoro si diletta in hobby creativi e meditativi quale il conteggio del numero di immaginarie pecorelle che saltano una staccionata nel bel mezzo di un prato verde. Non è brava in cucina ma ha il fedele ragazzo delle pizze e l’instancabile robottino per le pulizie della casa. E’ attrezzato e creativo; ad esempio sul tavolino di fronte al divano ha sempre al solito posto il suo mega-bicchiere con tripla cannuccia infilata
+                    </p>
+                    <a class="btn btn-very-small btn-black margin-20px-top">All author posts</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- end section -->
+
+
+
+
+        <!-- start footer --> 
+        <!--<footer class="footer-classic-dark bg-extra-dark-gray padding-five-bottom xs-padding-30px-bottom">-->
+        <footer class="footer-classic-dark bg-dark-footer padding-50px-tb xs-padding-30px-tb">
+        
+            <!--<div class="bg-dark-footer padding-50px-tb xs-padding-30px-tb">-->
+                <div class="container">
+                    <div class="row equalize xs-equalize-auto">
+                        <!-- start social media -->
+                        <div class="col-md-4 col-sm-5 col-xs-12 col-xs-12 text-center display-table xs-text-center">
+                            <div class="display-table-cell vertical-align-middle">
+                                <div class="social-icon-style-8 display-inline-block vertical-align-middle">
+                                    <a href="javascript:void(0);" class="text-dark-gray">Term and Condition</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:void(0);" class="text-dark-gray">Privacy Policy</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end social media -->
+        
+                        <!-- start logo -->
+                        <div class="col-md-4 col-sm-2 col-xs-12 text-center display-table xs-margin-10px-bottom">
+                            <div class="display-table-cell vertical-align-middle">
+                                <%= link_to root_path do %>
+                                  <%= image_tag "pofo/logo-white.png", class: "footer-logo", 'data-rjs': image_path('pofo/logo-white@2x.png'), alt: "Pofo" %>
+                                <% end %>
+                                <br/>copyright&COPY; 2019
+                            </div>
+                        </div>
+                        <!-- end logo -->
+                        <!-- start social media -->
+                        <div class="col-md-4 col-sm-5 col-xs-12 col-xs-12 text-center display-table xs-text-center">
+                                <span class="alt-font margin-20px-right">On social networks</span>
+                                <div class="social-icon-style-8 display-inline-block vertical-align-middle">
+                                    <ul class="small-icon no-margin-bottom">
+                                        <li><a class="facebook text-white" href="https://www.facebook.com/rebisworld/" target="_blank"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
+                                        <li><a class="instagram text-white" href="https://instagram.com/rebisworld_the_original/" target="_blank"><i class="fab fa-instagram no-margin-right" aria-hidden="true"></i></a></li>
+                                    </ul>
+                                </div>
+                        </div>
+                        <!-- end social media -->
+                    </div>
+                </div>
+            <!--</div>-->
+        </footer>
+        <!-- end footer -->

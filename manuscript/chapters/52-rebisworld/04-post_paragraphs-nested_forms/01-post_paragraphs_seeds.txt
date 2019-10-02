@@ -1,0 +1,247 @@
+# Paragrafi annidati
+
+Facciamo in modo di inserire più paragrafi all'interno dell'articolo
+
+
+Risorse web
+
+* [esempio di railscast su formulario domande multiple]()
+
+* https://rubyplus.com/articles/3681-Complex-Forms-in-Rails-5
+* https://rubyplus.com/episodes/81-Complex-Forms-in-Rails-5
+* railscast 196-nested-model-form
+* https://www.amooma.de/screencasts/2015-01-22-nested_forms-rails-4.2/
+
+
+
+
+## Creiamo la tabella post_paragraphs
+
+Non usiamo lo scaffold perché sarà annidata nella struttura di people. Ci serve solo l'interfacciamento con il database e quindi creiamo il model.
+Anche sul **g model** il nome va messo al singolare e si preoccuperà lui di fare la tabella plurale.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g model PostParagraph post:references title:string content:text imagecaption:string youtube:string youtubecaption:string vimeo:string vimeocaption:string
+~~~~~~~~
+
+
+
+
+
+
+
+{title=".../db/migrate/xxx_create_post_paragraphs.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class CreatePostParagraphs < ActiveRecord::Migration[5.2]
+  def change
+    create_table :post_paragraphs do |t|
+      t.references :post, foreign_key: true
+      t.string :title
+      t.text :content
+      t.string :imagecaption
+      t.string :youtube
+      t.string :youtubecaption
+      t.string :vimeo
+      t.string :vimeocaption
+
+      t.timestamps
+    end
+  end
+end
+~~~~~~~~
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails db:migrate
+~~~~~~~~
+
+
+
+
+## Implementiamo relazione uno-a-molti con nested models in form
+
+Nel model PostParagraph nella sezione " # == Relationships "
+
+{title=".../app/models/post_paragraph.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+  belongs_to :post, inverse_of: :post_paragraphs
+~~~~~~~~
+
+
+Nel model Post nella sezione " # == Relationships "
+
+{title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=31}
+~~~~~~~~
+  has_many :post_paragraphs, inverse_of: :post, dependent: :destroy
+  accepts_nested_attributes_for :post_paragraphs
+~~~~~~~~
+
+il codice " accepts_nested_attributes_for: " ci permette di gestire più modelli dentro lo stesso form.
+Da rails 5 è necessario aggiungere anche il " inverse_of ", for Creating an object and its children via accepts_nested_attributes_for in a :has_many association, altrimenti prendo errore dopo aver abilitato il passaggio dei valori del model annidato su " params...permit... "
+Per spiegazioni su " inverse_of " vedi: https://www.viget.com/articles/exploring-the-inverse-of-option-on-rails-model-associations
+
+Con il " dependent: :destroy " quando elimino un articolo (post) mi elimina a cascata tutti i suoi paragrafi (post_paragraphs). Altrimenti rimarrebbero dei paragrafi "orfani", senza articolo. 
+
+
+
+
+## Implementiamo i paragrafi per nuovo/mofica articolo
+
+Creiamo una form annidata dentro la form principale utilizzando il codice " .fields_for "
+
+{title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=75}
+~~~~~~~~
+    <%= form.fields_for :post_paragraphs do |builder| %>
+      <p>
+        <%= builder.label :title %><br/>
+        <%= builder.text_field :title %>
+      </p>
+      <p>
+        <%= builder.label :content %><br/>
+        <%= builder.text_field :content %>
+      </p>
+    <% end %>
+~~~~~~~~
+
+la parte di codice " <%= form.fields_for :person_contacts do |builder| %> ... <% end %> " ci permette di aggiungere il modello post_paragraphs dentro il form di post.
+
+Ma ancora non funziona perché non è stato istanziato nessun paragrafo. Risolviamo aggiungendo un paragrafo nell'azione " new " del controller " post_controller "
+
+{title=".../app/controllers/post_controller.rb", lang=ruby, line-numbers=on, starting-line-number=35}
+~~~~~~~~
+  # GET /posts/new
+  def new
+    @post = current_user.posts.new
+    @post.post_paragraphs.build
+~~~~~~~~
+
+{title=".../app/controllers/post_controller.rb", lang=ruby, line-numbers=on, starting-line-number=35}
+~~~~~~~~
+  # GET /posts/1/edit
+  def edit
+    @post.post_paragraphs.build
+~~~~~~~~
+
+Il contatto viene istanziato con " @post.post_paragraphs.build "
+
+Se adesso torniamo sul browser e diamo un refresh vediamo che funziona? Si ma a metà. Visualizza i campi nel form ma non prende i valori sul submit. Questo perché dobbiamo abilitare i valori del modello annidato (post_paragraphs) sul controller del padre (post_controller). Ed inoltre non abbiamo implementato la visualizzazione su post/show. 
+
+
+{title=".../app/controllers/post_controller.rb", lang=ruby, line-numbers=on, starting-line-number=109}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def person_params
+      params.require(:post).permit(:title, :incipit, :content, :content_type, :video_youtube, :video_vimeo, :seocontent, :user_id, :main_image, :published, :published_at, :tag_list, :paraghraph_title1, :paragraph_content1, :paragraph_image1, :paragraph_title2, :paragraph_content2, :paragraph_title3, :paragraph_content3, :paragraph_title4, :paragraph_content4, :paragraph_image4, :paragraph_title5, :paragraph_content5, :paragraph_image5, :paragraph_image_label5, :paragraph_title6, :paragraph_content6, :paragraph_image6, :paragraph_image_label6, post_paragraphs_attributes: [:id, :title, :content])
+    end
+~~~~~~~~
+
+Adesso funziona! Anche se ancora non le vediamo su post/show perché la implementiamo nel prossimo paragrafo.
+Vediamo che funziona perché se andiamo in edit i valori ci sono.
+
+
+
+
+## Visualizziamo i paragrafi
+
+lavoriamo sulla view post/show per visualizzare i paragrafi (post_paragraphs)
+
+{title=".../app/views/post/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=20}
+~~~~~~~~
+<ul>
+  <% @post.post_paragraphs.each do |paragraph| %>
+    <li>
+      <%= "#{paragraph.title} - #{paragraph.content}" %>
+    </li>
+  <% end %>
+</ul>
+~~~~~~~~
+
+
+
+
+## Eliminamo dati vuoti
+
+Creiamo 3 contatti e riempiamone solo 2 per dimostrare che si creerà un contatto vuoto.
+
+{title=".../app/controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=35}
+~~~~~~~~
+  # GET /posts/new
+  def new
+    @post = Post.new
+    3.times { @post.post_paragraphs.build }
+~~~~~~~~
+
+se facciamo la prova vediamo che resterà un pallino vuoto nell'unordered list.
+Implementiamo il codice per non inserire i paragrafi in elenco se non hanno dati.
+
+{title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=33}
+~~~~~~~~
+  has_many :post_paragraphs, inverse_of: :post, dependent: :destroy
+  accepts_nested_attributes_for :post_paragraphs, reject_if: lambda { |pp| pp[:title].blank? or pp[:content].blank? }
+~~~~~~~~
+
+Con il ** :reject_if ** ottengo che i valori di :content vuoti non vengano caricati in tabella.
+
+Si poteva anche usare " , reject_if: proc { |attributes| attributes['name'].blank? } " ma in questa circostanza è meglio il lambda. Il "lambda" è un tipo di "proc" con alcune differenze. Vedi di più su http://awaxman11.github.io/blog/2013/08/05/what-is-the-difference-between-a-block/
+
+La condizione scelta in alto non mi registra nulla sia se è vuoto identifier sia se è vuoto medium. Ma questo è eccessivo. Potrei mettere il contenuto del paragrafo senza voler mettere il titolo. Allora rendiamo meno rigida la condizione e non registriamo solo nel caso in cui :content sia vuoto.
+
+{title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=33}
+~~~~~~~~
+  has_many :post_paragraphs, inverse_of: :post, dependent: :destroy
+  accepts_nested_attributes_for :post_paragraphs, reject_if: lambda { |pp| pp[:content].blank? }
+~~~~~~~~
+
+Se invece avessimo voluto che bastasse anche solo un campo riempito per registrare la voce in elenco, avremmo potuto usare "and"
+
+{title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=33}
+~~~~~~~~
+  has_many :post_paragraphs, inverse_of: :post, dependent: :destroy
+  accepts_nested_attributes_for :post_paragraphs, reject_if: lambda { |pp| pp[:title].blank? and pp[:content].blank? }
+~~~~~~~~
+
+
+
+
+## Eliminiamo i paragrafi
+
+I paragrafi già inseriti non possono essere eliminati svuotando il contenuto. Dobbiamo implementare un link per eliminarli. Iniziamo creando un checkbox ed in seguito creeremo il link.
+
+{title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=75}
+~~~~~~~~
+      <%= form.fields_for :post_paragraphs do |builder| %>
+        <p>
+          <%= builder.label :title %><br/>
+          <%= builder.text_field :title %>
+        </p>
+        <p>
+          <%= builder.label :content %><br/>
+          <%= builder.text_field :content %>
+        </p>
+        <p>
+          <%= builder.check_box :_destroy %>
+          <%= builder.label :_destroy, "Elimina paragrafo" %>
+        </p>
+      <% end %>
+~~~~~~~~
+
+Per abilitare il check_box dobbiamo aggiungere " :allow_destroy " sul model post
+
+{title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=33}
+~~~~~~~~
+  has_many :post_paragraphs, inverse_of: :post, dependent: :destroy
+  accepts_nested_attributes_for :post_paragraphs, reject_if: lambda { |pp| pp[:title].blank? and pp[:content].blank? }, allow_destroy: true
+~~~~~~~~
+
+adesso dobbiamo metterlo nella white list sul controller di post
+
+{title=".../app/controllers/post_controller.rb", lang=ruby, line-numbers=on, starting-line-number=71}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def person_params
+      params.require(:post).permit(:title, :incipit, :content, :content_type, :video_youtube, :video_vimeo, :seocontent, :user_id, :main_image, :published, :published_at, :tag_list, :paraghraph_title1, :paragraph_content1, :paragraph_image1, :paragraph_title2, :paragraph_content2, :paragraph_title3, :paragraph_content3, :paragraph_title4, :paragraph_content4, :paragraph_image4, :paragraph_title5, :paragraph_content5, :paragraph_image5, :paragraph_image_label5, :paragraph_title6, :paragraph_content6, :paragraph_image6, :paragraph_image_label6, post_paragraphs_attributes: [:id, :title, :content, :_destroy])
+    end
+~~~~~~~~
+
+adesso proviamo e verifichiamo che i contatti vengono eliminati. Yea!!

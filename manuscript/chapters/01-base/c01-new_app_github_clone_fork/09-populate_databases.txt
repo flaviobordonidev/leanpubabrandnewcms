@@ -1,0 +1,71 @@
+# Popoliamo i databases
+
+Inseriamo gli utenti ed i dati a posts. (se avevamo preparato i files "seeds" adesso bastava un comando.)
+
+
+
+
+## Aggiungiamo un utente da console
+
+Creiamo l'utente "Ann" e lo rendiamo amministratore
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+-> User.create(name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda')
+-> User.last.admin?
+-> User.last.admin!
+-> User.last.admin?
+-> exit
+
+
+ubuntu:~/environment/s5beginning (master) $ rails c
+Running via Spring preloader in process 20206
+Loading development environment (Rails 5.2.3)
+2.6.3 :001 > User.create(name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda')
+   (0.2ms)  BEGIN
+  User Exists (0.9ms)  SELECT  1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2  [["email", "ann@test.abc"], ["LIMIT", 1]]
+  User Create (0.5ms)  INSERT INTO "users" ("name", "email", "encrypted_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["name", "Ann"], ["email", "ann@test.abc"], ["encrypted_password", "$2a$11$6y.CYwp3NEGSrkwDNRB1xexbJgmzJDdqyRtwJIx4uMU3gefigEbs6"], ["created_at", "2019-08-16 09:48:52.787320"], ["updated_at", "2019-08-16 09:48:52.787320"]]
+   (3.6ms)  COMMIT
+ => #<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2019-08-16 09:48:52", updated_at: "2019-08-16 09:48:52", role: "user"> 
+2.6.3 :002 > User.last.admin?
+  User Load (0.5ms)  SELECT  "users".* FROM "users" ORDER BY "users"."id" DESC LIMIT $1  [["LIMIT", 1]]
+ => false 
+2.6.3 :003 > User.last.admin!
+  User Load (0.4ms)  SELECT  "users".* FROM "users" ORDER BY "users"."id" DESC LIMIT $1  [["LIMIT", 1]]
+   (0.1ms)  BEGIN
+  User Update (0.4ms)  UPDATE "users" SET "role" = $1, "updated_at" = $2 WHERE "users"."id" = $3  [["role", 1], ["updated_at", "2019-08-16 09:50:38.774296"], ["id", 1]]
+   (0.8ms)  COMMIT
+ => true 
+2.6.3 :004 > User.last.admin?
+  User Load (0.7ms)  SELECT  "users".* FROM "users" ORDER BY "users"."id" DESC LIMIT $1  [["LIMIT", 1]]
+ => true 
+2.6.3 :005 > exit
+ubuntu:~/environment/s5beginning (master) $ 
+~~~~~~~~
+
+
+
+
+## Aggiungiamo su Heroku un utente da console
+
+Anche su Heroku creiamo l'utente "Ann" e lo rendiamo amministratore
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku run rails c
+-> User.create(name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda')
+-> User.last.admin!
+-> exit
+~~~~~~~~
+
+
+
+
+## Popoliamo eg_posts
+
+...
+...
+..
+.
+

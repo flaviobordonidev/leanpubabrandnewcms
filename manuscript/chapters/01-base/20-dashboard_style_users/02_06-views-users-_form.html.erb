@@ -1,0 +1,91 @@
+<%= form_with(model: user, local: true) do |form| %>
+  <% if user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(user.errors.count, "error") %> prohibited this example_user from being saved:</h2>
+
+      <ul>
+      <% user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <br/>
+
+  <div class="row">
+    <!-- Basic info section -->
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><%= yield(:page_title) %></h5>
+        </div>
+  
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :email %>
+              <%= form.text_field :email, class: "form-control" %>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :password %>
+              <%= form.text_field :password, class: "form-control" %>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :password_confirmation %>
+              <%= form.text_field :password_confirmation, class: "form-control" %>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <% if current_user.present? and current_user.admin? and @user != current_user %>
+              <div class="form-group">    
+                <%= form.label :role %>
+                <%= form.select(:role, User.roles.keys.map {|role| [role.titleize,role]}, {}, {class: "form-control"}) %>
+                <%#= form.number_field :role %>
+              </div>
+            <% end %>
+          </li>
+          <li class="list-group-item">
+            <div class="actions">
+              <%= form.submit "Crea/Modifica", class: "btn btn-success btn-lg btn-block" %>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- Optional info section -->
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Dati opzionali</h5>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :name %>
+              <%= form.text_field :name, class: "form-control" %>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <label class="control-label">Immagine</label>
+              <br><img src="https://images.pexels.com/photos/634843/pexels-photo-634843.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=100&w=100" alt="Immagine demo presa da pexels.com" width="100" height="100"><br>
+              <input type="file" name="myFile">
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <label class="control-label">Bio</label>
+              <textarea name="incipit" rows="5" class='form-control'>Biografia dell'utente</textarea>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+<% end %>

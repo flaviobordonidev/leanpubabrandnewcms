@@ -1,0 +1,17 @@
+it:
+  activerecord:
+    models:
+      post: "articolo"
+    attributes:
+      post:
+        content_type: "tipologia"
+      post/content_type:
+        image: "immagine" 
+        video_youtube: "filmato YouTube" 
+        video_vimeo: "filmato Vimeo"
+        audio: "audio"
+  mockups:
+    page_a:
+      first_header: "Questa è l'homepage"
+      first_paragraph: "il testo verrà preso dal database ma alcuni messaggi sono passati dall'applicazione ed è quindi bene che vengano tradotti per essere pronti a supportare più lingue."
+      link_goto_page_B: "Andiamo alla pagina B"

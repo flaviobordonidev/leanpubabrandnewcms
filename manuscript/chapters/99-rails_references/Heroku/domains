@@ -8,6 +8,17 @@ Risorse web:
 
 
 
+
+## I Domini da aggiungere al provider (godaddy)
+
+Dobbiamo aggiungere principalmente 2 domini:
+
+* www.example.com
+* example.com (questo si chiama "root domain" e non tutti i providers lo gestiscono)
+ 
+
+
+
 ## Rinomina app su heroku
 
 Verifichiamo il dominio 
@@ -232,3 +243,102 @@ www.rebisworld.com  CNAME            clear-tern-xfcwl4lrsa4uvgzhdqpojkgt.herokud
 
 
 TODO: aggiorniamo il CNAME e verifichiamo con "host"
+
+
+
+
+----
+----
+
+## Aggiungiamo il ROOT DOMAIN
+
+~~~~~~~~
+$ heroku domains:add rigenerabatterie.it
+
+
+$ heroku domains:add example.com
+Adding example.com to ⬢ example-app... done
+ ▸    Configure your app's DNS provider to point to the DNS Target
+ ▸    whispering-willow-5678.herokudns.com.
+ ▸    For help, see https://devcenter.heroku.com/articles/custom-domains
+
+The domain example.com has been enqueued for addition
+ ▸    Run heroku domains:wait 'example.com' to wait for completion
+~~~~~~~~
+
+
+
+
+
+
+## Esempio di log di rebisworld smanettando con roberto il 26/09/2019
+
+~~~~~~~~
+ubuntu:~/environment $ cd rebisworld/
+ubuntu:~/environment/rebisworld (pi) $ heroku domains:add www.rebisworld.com
+Adding www.rebisworld.com to ⬢ rebisworld4... !
+ ▸    www.rebisworld.com is currently in use by another app.
+
+
+ubuntu:~/environment/rebisworld (pi) $ heroku domains:remove www.rebisworld.com
+Removing www.rebisworld.com from ⬢ rebisworld4... !
+ ▸    Couldn't find that domain name.
+ubuntu:~/environment/rebisworld (pi) $ heroku domains
+=== rebisworld4 Heroku Domain
+rebisworld4.herokuapp.com
+
+ubuntu:~/environment/rebisworld (pi) $ heroku domains:add www.rebisworld.com
+Adding www.rebisworld.com to ⬢ rebisworld4... done
+ ▸    Configure your app's DNS provider to point to the DNS Target vertical-stegosaurus-j19z850ap8w4p58ulfw4837w.herokudns.com.
+ ▸    For help, see https://devcenter.heroku.com/articles/custom-domains
+
+The domain www.rebisworld.com has been enqueued for addition
+ ▸    Run heroku domains:wait 'www.rebisworld.com' to wait for completion
+ubuntu:~/environment/rebisworld (pi) $ heroku domains
+=== rebisworld4 Heroku Domain
+rebisworld4.herokuapp.com
+
+=== rebisworld4 Custom Domains
+Domain Name         DNS Record Type  DNS Target
+──────────────────  ───────────────  ───────────────────────────────────────────────────────────
+www.rebisworld.com  CNAME            vertical-stegosaurus-j19z850ap8w4p58ulfw4837w.herokudns.com
+ubuntu:~/environment/rebisworld (pi) $ host www.rebisworld.com
+www.rebisworld.com is an alias for rebisworld4.herokuapp.com.
+rebisworld4.herokuapp.com has address 52.202.243.29
+rebisworld4.herokuapp.com has address 52.200.81.157
+rebisworld4.herokuapp.com has address 52.54.183.101
+rebisworld4.herokuapp.com has address 52.6.103.192
+rebisworld4.herokuapp.com has address 52.4.142.55
+rebisworld4.herokuapp.com has address 34.230.212.94
+rebisworld4.herokuapp.com has address 34.199.61.234
+rebisworld4.herokuapp.com has address 3.227.155.128
+ubuntu:~/environment/rebisworld (pi) $ heroku domains:add rebisworld.com
+Adding rebisworld.com to ⬢ rebisworld4... done
+ ▸    Configure your app's DNS provider to point to the DNS Target boiling-mouse-9ptn596ypefb3hcxi065lt1a.herokudns.com.
+ ▸    For help, see https://devcenter.heroku.com/articles/custom-domains
+
+The domain rebisworld.com has been enqueued for addition
+ ▸    Run heroku domains:wait 'rebisworld.com' to wait for completion
+ubuntu:~/environment/rebisworld (pi) $ heroku domains:remove rebisworld.com
+Removing rebisworld.com from ⬢ rebisworld4... done
+ubuntu:~/environment/rebisworld (pi) $ heroku domains:add rebisworld.com
+Adding rebisworld.com to ⬢ rebisworld4... done
+ ▸    Configure your app's DNS provider to point to the DNS Target shrouded-ape-urhn2k78aylej26qrppgkukq.herokudns.com.
+ ▸    For help, see https://devcenter.heroku.com/articles/custom-domains
+
+The domain rebisworld.com has been enqueued for addition
+ ▸    Run heroku domains:wait 'rebisworld.com' to wait for completion
+ubuntu:~/environment/rebisworld (pi) $ host www.rebisworld.com                                                               
+www.rebisworld.com is an alias for rebisworld4.herokuapp.com.
+rebisworld4.herokuapp.com has address 52.4.220.207
+rebisworld4.herokuapp.com has address 34.237.174.28
+rebisworld4.herokuapp.com has address 34.202.37.53
+rebisworld4.herokuapp.com has address 54.208.229.218
+rebisworld4.herokuapp.com has address 52.202.243.29
+rebisworld4.herokuapp.com has address 52.45.74.184
+rebisworld4.herokuapp.com has address 52.22.242.39
+rebisworld4.herokuapp.com has address 52.20.167.39
+ubuntu:~/environment/rebisworld (pi) $ host rebisworld.com
+rebisworld.com has address 184.168.131.241
+ubuntu:~/environment/rebisworld (pi) $ 
+~~~~~~~~

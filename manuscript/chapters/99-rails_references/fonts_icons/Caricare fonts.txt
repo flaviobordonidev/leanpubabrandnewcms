@@ -3,5 +3,4 @@
 vedi i seguenti capitoli:
 
 *
-* 06-rebisworld/01-homepage/03-new-font-for-menu
-* 06-rebisworld/01-homepage/05-new-font-for-title
+* 06-rebisworld/01-homepage/02-new_font_better-glory

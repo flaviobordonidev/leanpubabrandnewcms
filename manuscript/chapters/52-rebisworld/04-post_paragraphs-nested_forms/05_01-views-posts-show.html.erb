@@ -1,0 +1,84 @@
+<%# == Meta_data ============================================================ %>
+
+<%# provide(:page_title, @post.title) %>
+<%# content_for(:page_title, @post.title) %>
+<% provide :page_title do %>
+  Post: <%= @post.title %>
+<% end %>
+
+<% provide(:menu_blog_nav_link, "active") %>
+
+<%# == Meta_data - end ====================================================== %>
+
+<!-- Edit button -->
+  <% if current_user.present? == true %>
+    <div class="buy-theme alt-font sm-display-none">
+      <%= link_to edit_authors_post_path(@post) do %>
+        <i class="ti-hand-point-right"></i><span>Edit</span>
+      <% end %>
+    </div>
+  <% end %>
+<!-- end Edit button -->
+
+<!-- start header -->
+<header>
+    <%= render "layouts/pofo_navigation_menu" %>
+</header>
+<!-- end header -->
+<%= render "pofo_page_title_section2", post: @post %>
+
+<%#= render "pofo_blog_content_section", post: @post %>
+<%#= render "pofo_parallax_section", post: @post %>
+
+
+<%#= render "pofo_post_section", post: @post %>
+
+<ul>
+  <% @post.post_paragraphs.each do |paragraph| %>
+    <% case paragraph.pstyle %>
+    <% when "central" %>
+        <%= "CENTRAL: #{paragraph.title} - #{paragraph.content}" %>
+    <% when "left" %>
+      <li>
+        <%= "LEFT: #{paragraph.title} - #{paragraph.content}" %>
+      </li>
+    <% when "right" %>
+      <li>
+        <%= "RIGHT: #{paragraph.title} - #{paragraph.content}" %>
+      </li>
+    <% end %>
+  <% end %>
+</ul>
+
+<!-- start blog content section -->
+<section id="about" class="wow fadeIn">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12 xs-text-center">
+        <h5 class="font-weight-600 text-extra-dark-gray alt-font"><%= @post.paraghraph_title1 %></h5>
+        <%= sanitize "#{@post.paragraph_content1}" %>
+      </div>
+      <% if @post.paragraph_image1.attached? %>
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <%= image_tag "pofo/default-post-bg.png", alt: "", class: "width-100 margin-50px-tb" %>
+          <!--<img src="images/blog-details-img7.jpg" alt="" class="width-100 margin-50px-tb">-->
+        </div>
+      <% end %>
+      <div class="col-md-12 col-sm-12 col-xs-12 last-paragraph-no-margin xs-text-center">
+        <span class="text-extra-dark-gray font-weight-600 alt-font margin-10px-bottom display-block text-medium"><%= @post.paragraph_title2 %></span>
+        <p class="width-90 xs-width-100"><%= sanitize "#{@post.content}" %> </p>
+      </div>
+      <!--<div class="col-md-12 col-sm-12 col-xs-12 last-paragraph-no-margin display-table text-right xs-text-center">-->
+      <!--  <span class="alt-font margin-20px-right">storia e testi di Roberta Cusimano</span>-->
+      <!--</div>-->
+    </div>
+  </div>
+</section>
+<!-- end blog content section -->
+
+<%= render "pofo_about_the_author", post: @post %>
+<%#= render "pofo_post_author_section", post: @post %>
+<%#= render "pofo_related_posts_section" %>
+<%#= render "pofo_post_comments_section" %>
+<%#= render "pofo_post_comments_form" %>
+<%= render "layouts/pofo_footer" %>

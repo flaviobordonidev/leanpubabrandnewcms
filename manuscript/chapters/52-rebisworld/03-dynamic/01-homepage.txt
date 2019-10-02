@@ -1,0 +1,118 @@
+# Rebisworld - homepage
+
+iniziamo ad adattare l'homepage a Rebisworld
+
+
+
+## Apriamo il branch "Rebisworld Homepage"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b rh
+~~~~~~~~
+
+
+
+
+
+
+## Generiamo la pagina Homepage
+
+Non usiamo lo scaffold perché non ci serve una tabella homepages. Generiamo il controller Homepage con la sola azione show. 
+
+Perché "show" e non "index" che è più comunemente usato in html?
+Perché in rails normalmente usiamo index per un elenco di oggetti (es: un elenco di articoli) invece usiamo show per il singolo oggetto (es: un articolo).
+
+I> ATTENZIONE: con "rails generate controller ..." -> uso il SINGOLARE (ed ottengo un controller al singolare)
+I>
+I> Poiché è un'unica pagina statica metto il controller al singolare.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g controller Homepage show
+~~~~~~~~
+
+
+
+
+## Aggiorniamo gli instradamenti
+
+Aggiorno il file routes per mettere l'homepage come pagina principale (root)
+
+{id="06-01-01_01", title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+  root 'homepage#show'
+~~~~~~~~
+
+[Codice 01](#06-01-01_01all)
+
+
+
+
+## Implementiamo la pagina show
+
+Mettiamo il menu di navigazione ed il footer su partials lasciando il resto del codice nella pagina. lasciamo quattro righe per distanziare le parti di codice che potrebbero essere trattate come partials.
+
+{id="03-03-01_03", title=".../app/views/homepage/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<header>
+  <%= render "pofo_navigation_menu" %>
+</header>
+~~~~~~~~
+
+{title=".../app/views/homepage/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!-- start video style section -->
+<section class="wow fadeIn parallax" data-stellar-background-ratio="0.1" style="background-image:url('<%= image_path('pofo/homepage.jpg') %>');">
+~~~~~~~~
+
+{title=".../app/views/homepage/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!-- start about title_section section -->
+<section class="wow fadeIn">
+~~~~~~~~
+
+{title=".../app/views/homepage/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<%= render "pofo_footer" %>
+~~~~~~~~
+
+[Codice 02](#06-01-01_01all)
+
+
+
+
+### Il partial menu di navigazione
+
+{id="03-03-01_03", title=".../app/views/layouts/_pofo_navigation_menu.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!-- start navigation -->
+<nav class="navbar navbar-default bootsnav navbar-top header-light bg-transparent nav-box-width white-link"><!-- start navigation --> 
+~~~~~~~~
+
+[Codice 03](#06-01-01_01all)
+
+
+
+
+### Il partial footer
+
+{id="03-03-01_03", title=".../app/views/layouts/_footer.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!-- start footer --> 
+<footer class="footer-classic-dark bg-dark-footer padding-50px-tb xs-padding-30px-tb">
+~~~~~~~~
+
+[Codice 04](#06-01-01_01all)
+
+
+
+
+
+
+
+
+## Il codice del capitolo
+
+
+

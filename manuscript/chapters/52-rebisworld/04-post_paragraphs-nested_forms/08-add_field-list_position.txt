@@ -1,0 +1,239 @@
+# Paragraph - posizione nella lista
+
+Inseriamo un campo per scegliere come ordinare la lista dei nostri paragrafi nell'articolo
+
+
+
+
+## Apriamo il branch "List Position"
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b lp
+~~~~~~~~
+
+
+
+
+## Aggiungiamo il campo list_position:integer alla tabella post_paragraphs
+
+Il campo lo chiamiamo "list_position" invece di "pos" per avere più chiarezza.
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g migration add_list_position_to_post_paragraphs list_position:integer
+~~~~~~~~
+
+Modifichiamo il migrate aggiungendo un default e l'indice per velocizzare queries che usano "list_position". In questo caso ci sara sempre un ordinamento basato su questo campo quindi l'indice è utile.
+
+{id="01-09-03_01", title=".../db/migrate/xxx_add_list_position_to_post_paragraphs.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+    add_column :post_paragraphs, :list_position, :integer, default: 1
+    add_index :post_paragraphs, :list_position, unique: false
+~~~~~~~~
+
+[Codice 01](#01-09-03_01all)
+
+Effettuiamo il migrate del database per creare la tabella sul database
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails db:migrate
+~~~~~~~~
+
+
+
+
+## Attiviamo la white list sul controller
+
+Prima di aggiungere il campo per new/edit, lo inseriamo nella white list del controller.
+Il controller di riferimento è authors/posts_controller. Mettiamo nella whitelist la colonna :list_position. 
+
+{id="01-09-03_02", title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=83}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def post_params
+      params.require(:post).permit(:title, :incipit, :content, :content_type, :video_youtube, :video_vimeo, :seocontent, :user_id, :main_image, :published, :published_at, :tag_list, :paraghraph_title1, :paragraph_content1, :paragraph_image1, :paragraph_title2, :paragraph_content2, :paragraph_title3, :paragraph_content3, :paragraph_title4, :paragraph_content4, :paragraph_image4, :paragraph_title5, :paragraph_content5, :paragraph_image5, :paragraph_image_label5, :paragraph_title6, :paragraph_content6, :paragraph_image6, :paragraph_image_label6, post_paragraphs_attributes: [:id, :title, :content, :_destroy, :pstyle, :list_position])
+    end
+~~~~~~~~
+
+[Codice 02](#01-09-03_02all)
+
+
+
+
+## Aggiorniamo la view
+
+Aggiungiamo il selettore per decidere la posizione
+
+{id="01-09-03_03", title=".../app/views/authors/posts/_paragraph_fields.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+    <div class="field">
+      <%= form.label :list_position %>
+      <%= form.text_field :list_position, class: "form-control" %>
+    </div>
+~~~~~~~~
+
+[Codice 03](#01-09-03_03all)
+
+
+
+
+## Mettiamo in ordine per list_position
+
+Cercare di mettere in ordine le form annidate è un po' rognoso.
+La soluzione più semplice è quella di dichiararlo come scope di default nel model post_paragraph
+
+
+{id="01-09-03_04", title=".../app/models/post_paragraph.rb", lang=ruby, line-numbers=on, starting-line-number=83}
+~~~~~~~~
+  # == Relationships ========================================================
+
+  #belongs_to :post
+  belongs_to :post, inverse_of: :post_paragraphs
+  default_scope { order(list_position: "ASC") }
+~~~~~~~~
+
+[Codice 04](#01-09-03_04all)
+
+
+La soluzione di metterlo sulla form funziona ma elimina la possibilità di aggiungere un nuovo form annidato e non va bene :(
+
+{id="01-09-03_06", title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+  <div class="row">
+    <div class="col-md-12">
+      <%= form.fields_for :post_paragraphs do |builder| %>
+      <%#= form.fields_for :post_paragraphs, form.object.post_paragraphs.order(list_position: "ASC") do |builder| %>
+        <%= render "paragraph_fields", form: builder %>
+        <br/>
+      <% end %>
+      <%= link_to "#", class: "btn btn-warning btn-lg" do %>
+        "icons +" Aggiungi paragrafo
+      <% end %>
+    </div><!--.col-md-12 -->
+  </div><!--.row -->
+~~~~~~~~
+
+Se attiviamo " <%#= form.fields_for :post_paragraphs, form.object.post_paragraphs.order(list_position: "ASC") do |builder| %> " l'ordinamento avviene correttamente solo che non ci mette un nuovo "menu annidato".
+
+
+
+
+## Aggiorniamo ordinamento paragrafi nei due controllers
+
+Non serve perché è automaticamente gestito con il "default_scope" nel model PostParagraph.
+Altrimenti avremmo dovuto inserirlo su:
+
+* controllers/authors/posts_controller nell'azione " edit "
+* controllers/posts_controller nell'azione " show "
+
+
+
+
+### Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+* https://mycloud9path.amazonaws.com/authors/posts
+
+Andiamo in edit sui vari articoli e ne vediamo i vari paragrafi. Volendo possiamo anche cambiarli
+
+
+
+
+## Attiviamo la gestione dell'ultimo paragrafo sul controller
+
+Facciamo in modo che il nuovo paragrafo che è presente quando andiamo in edit abbia nel valore di list_position il primo numero disponibile.
+Ad esempio se ho tre paragrafi già inseriti nell'articolo ci si presenterà il nuovo paragrafo con il valore 4.
+
+Nel controller authors/posts_controller sull'azione edit abbiamo:
+
+{id="01-09-03_05", title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=83}
+~~~~~~~~
+  # GET /posts/1/edit
+  def edit
+    @post.post_paragraphs.build
+    @post.post_paragraphs.last.list_position = @post.post_paragraphs.size
+~~~~~~~~
+
+[Codice 05](#01-09-03_05all)
+
+Non dobbiamo fare "size + 1" perché conteggiamo anche il nuovo paragrafo che è creato con " @post.post_paragraphs.build "
+
+
+
+
+
+### Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+* https://mycloud9path.amazonaws.com/authors/posts
+
+Andiamo in edit sui vari articoli e vediamo che sull'ultimo paragrafo c'è il primo numero utile.
+
+
+
+
+## Salviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Add list_position to table post_paragraphs"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su Heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku lp:master
+$ heroku run rails db:migrate
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge lp
+$ git branch -d lp
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
+
+
+
+
+## Il codice del capitolo
+
+
+

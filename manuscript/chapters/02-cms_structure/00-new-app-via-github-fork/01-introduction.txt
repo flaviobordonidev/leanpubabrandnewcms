@@ -1,3 +1,0 @@
-# Creiamo una nuova app importandola da github
-
-In questa serie di capitoli gestiamo un fork della nostra app in modo da crearne in pochi passaggi una copia che possiamo utilizzare in una nuova applicazione.

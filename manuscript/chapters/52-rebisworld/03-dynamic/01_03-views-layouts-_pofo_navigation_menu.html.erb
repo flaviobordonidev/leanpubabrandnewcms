@@ -1,0 +1,30 @@
+<!-- start navigation -->
+<nav class="navbar navbar-default bootsnav navbar-top header-light bg-transparent nav-box-width white-link"><!-- start navigation --> 
+  <div class="container-fluid nav-header-container">
+    <div class="row">
+      <div class="col-md-2 col-xs-5"><!-- start logo -->
+          <!--<a href="index.html" title="Pofo" class="logo"><%#= image_tag "pofo/logo.png", 'data-rjs': image_path('pofo/logo@2x.png'), class: "logo-dark", alt: "Pofo" %><%= image_tag "pofo/logo-white.png", 'data-rjs': image_path('pofo/logo-white@2x.png'), alt: "Pofo", class: "logo-light default" %></a>-->
+          <%= link_to root_path, class: "logo" do %>
+            <%= image_tag "pofo/logo.png", 'data-rjs': image_path('pofo/logo@2x.png'), class: "logo-dark", alt: "Pofo" %><%= image_tag "pofo/logo-white.png", 'data-rjs': image_path('pofo/logo-white@2x.png'), alt: "Pofo", class: "logo-light default" %>
+          <% end %>
+      </div><!-- end logo -->
+      <div class="col-md-7 col-xs-2 width-auto pull-right accordion-menu xs-no-padding-right">
+        <button type="button" class="navbar-toggle collapsed pull-right" data-toggle="collapse" data-target="#navbar-collapse-toggle-1">
+            <span class="sr-only">toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <div class="navbar-collapse collapse pull-right" id="navbar-collapse-toggle-1">
+          <ul id="accordion" class="nav navbar-nav navbar-left no-margin alt-font text-normal" data-in="fadeIn" data-out="fadeOut">
+            <li><%= link_to "HOME", root_path, style: "font-family:better-glory; font-size: 18px; display:inline-block;" %></li>
+            <li><%= link_to "LA FORMULA", root_path, style: "font-family:better-glory; font-size: 18px; display:inline-block;" %></li>
+            <li><%= link_to "LE ISOLE", posts_path, style: "font-family:better-glory; font-size: 18px; display:inline-block;" %></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-2 col-xs-5 width-auto">
+      </div>
+    </div>
+  </div>
+</nav><!-- end navigation --> 

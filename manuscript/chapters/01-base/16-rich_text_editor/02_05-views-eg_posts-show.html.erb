@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @eg_post.title %>
+</p>
+
+<p>
+  <strong>Incipit:</strong>
+  <%#= @eg_post.incipit %>
+  <%= sanitize "#{@eg_post.incipit}" %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @eg_post.user %>
+</p>
+
+<% if @eg_post.header_image.attached? %>
+  <p><%= image_tag @eg_post.header_image %></p>
+  <p><%= image_tag @eg_post.header_image.variant(resize: "400x400") %></p>
+<% else %>
+  <p>Nessuna immagine presente</p>
+<% end %>
+
+<%= link_to 'Edit', edit_eg_post_path(@eg_post) %> |
+<%= link_to 'Back', eg_posts_path %>

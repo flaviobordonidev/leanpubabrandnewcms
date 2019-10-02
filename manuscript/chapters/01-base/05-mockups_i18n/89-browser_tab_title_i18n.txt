@@ -1,0 +1,105 @@
+# Titolo dinamico nel tab del browser
+
+Vogliamo rendere dinamico il titolo che appare nel tab del browser. In questo capitolo introduciamo il "contenitore vuoto" yield(:my_variable).
+
+
+
+
+## Apriamo il branch "Dynamic Title on Browser Tabs"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b dtbt
+~~~~~~~~
+
+
+
+
+## Implementiamo internazionalizzazione (i18n)
+
+
+{id="02-03-01_01", title=".../config/locales/en.yml", lang=yaml, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+  posts:
+    index:
+      page_title: "All pages"
+    edit:
+      page_title: "Edit"
+    new:
+      page_title: "New post"
+~~~~~~~~
+
+[Codice 01](#02-03-01_01all)
+
+
+{id="02-03-01_02", title=".../config/locales/it.yml", lang=yaml, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+  posts:
+    index:
+      page_title: "Tutte le pagine"
+    edit:
+      page_title: "Modifica"
+    new:
+      page_title: "Nuovo articolo"
+~~~~~~~~
+
+[Codice 02](#02-03-01_02all)
+
+
+
+
+### Aggiungiamo le chiamate alle views
+
+{title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+<% provide(:page_title, "#{t 'posts.index.page_title'}") %>
+~~~~~~~~
+
+{title=".../app/views/posts/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+<% provide(:page_title, "#{t 'posts.new.page_title'}") %>
+~~~~~~~~
+
+
+
+
+## salviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Dynamic title on browser tabs"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su Heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku dtbt:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge dtbt
+$ git branch -d dtbt
+~~~~~~~~
+
+
+aggiorniamo github
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
+

@@ -1,0 +1,17 @@
+<!-- start parallax section -->
+<section class="wow fadeIn parallax big-section" data-stellar-background-ratio="0.4" style="background-image: url('<%= post.paragraph_image4.attached? ? url_for(@post.paragraph_image4) : image_path('pofo/parallax-bg55.jpg') %>')">
+    <div class="opacity-medium bg-extra-dark-gray"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-sm-10 col-xs-12 center-col">
+                <div class="bg-white padding-nine-all text-center">
+                    <div class="alt-font text-medium-gray margin-15px-bottom text-uppercase text-small">About restaurants Photography</div>
+                    <h5 class="font-weight-600 alt-font text-extra-dark-gray"><%= post.paragraph_title4 %></h5>
+                    <p><%= sanitize post.paragraph_content4 %></p>
+                    <a href="portfolio-full-width-image-gallery.html" class="btn btn-small btn-dark-gray margin-10px-top xs-no-margin-top">Explore Photography</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end parallax section -->

@@ -1,0 +1,275 @@
+# Mostriamo lo stile del paragrafo
+
+sulla view posts/show visualizziamo il tipo di paragrafo in funzioned di enum:pstyle
+
+
+
+## Posts show
+
+Prima del codice del mockup implementiamo dinamicamente un elenco con i vari paragrafi dell'articolo.
+Cicliamo i vari paragrafi con " @post.post_paragraphs.each " e scegliamo che tipo di partial del paragrafo visualizzare in funzione di enum:pstyle usando " case paragraph.pstyle "
+
+{title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+<ul>
+  <% @post.post_paragraphs.each do |paragraph| %>
+    <% case paragraph.pstyle %>
+    <% when "central" %>
+        <%= "CENTRAL: #{paragraph.title} - #{paragraph.content}" %>
+    <% when "left" %>
+      <li>
+        <%= "LEFT: #{paragraph.title} - #{paragraph.content}" %>
+      </li>
+    <% when "right" %>
+      <li>
+        <%= "RIGHT: #{paragraph.title} - #{paragraph.content}" %>
+      </li>
+    <% end %>
+  <% end %>
+</ul>
+
+<!-- start blog content section -->
+~~~~~~~~
+
+[Codice 01](#01-09-03_06all)
+
+
+
+
+# Implementiamo i partials
+
+{id="01-09-03_06", title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+    <% when "central" %>
+      <%= render "pofo_post_paragraph_central", paragraph: paragraph %>
+    <% when "left" %>
+      <li>
+        <%= render "pofo_post_paragraph_left", paragraph: paragraph %>
+      </li>
+    <% when "right" %>
+      <li>
+        <%= render "pofo_post_paragraph_right", paragraph: paragraph %>
+      </li>
+    <% end %>
+~~~~~~~~
+
+
+{id="01-09-03_06", title=".../app/views/posts/_pofo_post_paragraph_central.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+  <%= "CENTRAL: #{paragraph.title} - #{paragraph.content}" %>
+~~~~~~~~
+
+
+{id="01-09-03_06", title=".../app/views/posts/_pofo_post_paragraph_left.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+  <%= "LEFT: #{paragraph.title} - #{paragraph.content}" %>
+~~~~~~~~
+
+
+{title=".../app/views/posts/_pofo_post_paragraph_right.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+  <%= "RIGHT: #{paragraph.title} - #{paragraph.content}" %>
+~~~~~~~~
+
+
+
+
+## Il partial _pofo_post_paragraph_central
+
+implementiamo lo stile pofo preso dalla pagina " blog-post-layout-05 ". Inizialmente mettiamo la parte di codice presa dal mockup.
+
+{id="01-09-03_06", title=".../app/views/posts/_pofo_post_paragraph_central.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+        <!-- start blog content section -->
+        <section class="wow fadeIn">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12 last-paragraph-no-margin xs-text-center">
+                        <h5 class="font-weight-600 text-extra-dark-gray alt-font">The best and most beautiful things in the world cannot be seen or even touched - they must be felt with the heart.</h5>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <%= image_tag "pofo/blog-details-img7.jpg", alt: "", class: "width-100 margin-50px-tb" %>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12 xs-text-center">
+                        <div class="col-md-6 col-sm-12 col-xs-12 no-padding-left last-paragraph-no-margin sm-margin-30px-bottom xs-no-padding-lr">
+                            <span class="text-extra-dark-gray font-weight-600 alt-font margin-10px-bottom display-block text-medium">I get way too much happiness from good food</span>
+                            <p class="width-90 xs-width-100">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. </p>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12 no-padding-left last-paragraph-no-margin xs-no-padding-lr">
+                            <span class="text-extra-dark-gray font-weight-600 alt-font margin-10px-bottom display-block text-medium">You don't need a silver fork to eat good food</span>
+                            <p class="width-90 xs-width-100">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- end blog content section -->
+~~~~~~~~
+
+[Codice 02](#01-09-03_06all)
+
+
+
+
+## Il partial _pofo_post_paragraph_left
+
+implementiamo lo stile pofo preso dalla pagina " blog-post-layout-05 ". Inizialmente mettiamo la parte di codice presa dal mockup.
+
+{id="01-09-03_06", title=".../app/views/posts/_pofo_post_paragraph_left.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+        <!-- start section -->
+        <section class="wow fadeIn">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12 xs-text-center">
+                       
+                        <figure class="wp-caption alignright"><%= image_tag "pofo/blog-details-img10.jpg", alt: "" %><figcaption class="wp-caption-text">There is no sincerer love than the love of food.</figcaption></figure>
+                        <span class="text-medium alt-font font-weight-600 margin-20px-bottom display-block text-extra-dark-gray">You don't need a silver fork to eat good food</span>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour.</p>
+                        
+                        <figure class="wp-caption alignleft"><%= image_tag "pofo/blog-details-img11.jpg", alt: "" %><figcaption class="wp-caption-text">There is no sincerer love than the love of food.</figcaption></figure>
+                        <span class="text-medium alt-font font-weight-600 margin-20px-bottom display-block text-extra-dark-gray">You don't need a silver fork to eat good food</span>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour.</p>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+                    
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- end section -->
+~~~~~~~~
+
+[Codice 03](#01-09-03_06all)
+
+ATTENZIONE!
+Qui ci rendiamo conto che sinistra e destra sono all'interno di alcuni tags che dobbiamo portare fuori dal partial. Per far questo dovremo rivedere anche il partial _pofo_post_paragraph_central
+
+
+
+
+## Aggiorniamo show
+
+Inseriamo i partials all'interno del codice del mockups e li riadattiamo per estrarre la gestione di "destra" e "sinistra" su partials separati
+
+{id="01-09-03_06", title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+<!-- start section -->
+<section class="wow fadeIn">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 xs-text-center">
+
+              <% @post.post_paragraphs.each do |paragraph| %>
+                <% case paragraph.pstyle %>
+                <% when "central" %>
+                  <%= render "pofo_post_paragraph_central", paragraph: paragraph %>
+                <% when "left" %>
+                  <%= render "pofo_post_paragraph_left", paragraph: paragraph %>
+                <% when "right" %>
+                  <%= render "pofo_post_paragraph_right", paragraph: paragraph %>
+                <% end %>
+              <% end %>
+
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end section -->
+~~~~~~~~
+
+[Codice 04](#01-09-03_06all)
+
+
+
+
+## Aggiorniamo il partial _pofo_post_paragraph_central
+
+{id="01-09-03_06", title=".../app/views/posts/_pofo_post_paragraph_central.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+<%= "CENTRAL: #{paragraph.title} - #{paragraph.content}" %>
+
+<!--<h5 class="font-weight-600 text-extra-dark-gray alt-font">The best and most beautiful things in the world cannot be seen or even touched - they must be felt with the heart.</h5>-->
+<span class="text-medium alt-font font-weight-600 margin-20px-bottom display-block text-extra-dark-gray">The best and most beautiful things in the world cannot be seen or even touched - they must be felt with the heart.</span>
+<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+<%#= image_tag "pofo/blog-details-img7.jpg", alt: "", class: "width-100 margin-50px-tb" %>
+<%= image_tag "pofo/blog-details-img7.jpg", alt: "", class: "width-100" %>
+<!--<figure class="wp-caption aligncenter"><%#= image_tag "pofo/blog-details-img7.jpg", alt: "", class: "width-100" %></figure>-->
+<br/>
+<br/>
+~~~~~~~~
+
+[Codice 05](#01-09-03_06all)
+
+
+
+
+## Aggiorniamo il partial _pofo_post_paragraph_left
+
+{id="01-09-03_06", title=".../app/views/posts/_pofo_post_paragraph_left.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+<%= "LEFT: #{paragraph.title} - #{paragraph.content}" %>
+
+<figure class="wp-caption alignleft"><%= image_tag "pofo/blog-details-img11.jpg", alt: "" %><figcaption class="wp-caption-text">There is no sincerer love than the love of food.</figcaption></figure>
+<span class="text-medium alt-font font-weight-600 margin-20px-bottom display-block text-extra-dark-gray">You don't need a silver fork to eat good food</span>
+<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+<p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour.</p>
+<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+~~~~~~~~
+
+[Codice 06](#01-09-03_06all)
+
+
+
+
+## Creiamo il partial _pofo_post_paragraph_right
+
+{id="01-09-03_06", title=".../app/views/posts/_pofo_post_paragraph_right.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+<%= "RIGHT: #{paragraph.title} - #{paragraph.content}" %>
+
+<figure class="wp-caption alignright"><%= image_tag "pofo/blog-details-img10.jpg", alt: "" %><figcaption class="wp-caption-text">There is no sincerer love than the love of food.</figcaption></figure>
+<span class="text-medium alt-font font-weight-600 margin-20px-bottom display-block text-extra-dark-gray">You don't need a silver fork to eat good food</span>
+<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+<p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour.</p>
+~~~~~~~~
+
+[Codice 07](#01-09-03_06all)
+
+
+
+## Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+apriamolo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/posts/my-post-title
+
+
+
+
+## Rendiamoli dinamici
+
+sostituiamo i vari campi e l'immagine in modo da renderli dinamici.
+Per la gestione delle immagini facciamo un primo passaggio su posts/show e successivamente lo spostiamo sui partials.
+
+
+{id="01-09-03_06", title=".../app/views/posts/_pofo_post_paragraph_right.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+      <li>
+        <%= "RIGHT: #{paragraph.title} - #{paragraph.content}" %>
+      </li>
+
+<figure class="wp-caption alignright"><%= image_tag "pofo/blog-details-img10.jpg", alt: "" %><figcaption class="wp-caption-text">There is no sincerer love than the love of food.</figcaption></figure>
+<span class="text-medium alt-font font-weight-600 margin-20px-bottom display-block text-extra-dark-gray">You don't need a silver fork to eat good food</span>
+<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+<p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour.</p>
+~~~~~~~~
+

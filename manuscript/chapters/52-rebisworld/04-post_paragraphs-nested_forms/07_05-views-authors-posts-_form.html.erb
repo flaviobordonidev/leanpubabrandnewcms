@@ -1,0 +1,165 @@
+<%= form_with(model: post, local: true, url: authors_url) do |form| %>
+  
+  <!-- Hidden fields -->
+  <%= form.text_field :user_id, style: 'display:none' %><!-- :user_id è fondamentale per l'azione new -->
+  <!-- Hidden fields end -->
+
+  <% if current_user.present? == true %><!-- se loggato -->
+    <div class="form-group">
+      <%= form.label :user_id %>
+      <%= form.collection_select :user_id, User.where(role: [:admin, :author]).order(:name), :id, :name, include_blank: true %>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-6">
+      <!--<div class="card" style="width: 18rem;">-->
+      <div class="card">
+        <div class="card-header">
+          <%= yield(:card_title) %>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <%= form.label :title %>
+            <%= form.text_field :title, class: "form-control" %>
+          </div>
+          <div class="field">
+            <%= form.label :incipit %>
+            <%= form.text_area :incipit, rows: "3", class: "form-control" %>
+          </div>
+        </div><!--.card-body -->
+      </div><!--.card -->
+
+      <div class="card">
+        <div class="card-header">
+          <%= "Foto o video dell'articolo" %>
+        </div>
+        <div class="card-body">
+
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <div class="form-group">
+                <%= form.label :content_type, "scelta" %>
+                <%#= form.select(:content_type, Post.content_types.keys.map {|content_type| [Post.human_attribute_name("content_type.#{content_type}"), content_type]}, {}, {class: "form-control"}) %>
+                <%= form.select(:content_type, Post.content_types.keys.map {|key| [Post.human_attribute_name("content_type.#{key}"), key]}, {}, {class: "form-control"}) %>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="field">
+                <%= form.label :main_image, "foto" %>
+                <% if post.main_image.attached? %>
+                  <p><%= image_tag post.main_image.variant(resize: "200x200") %></p>
+                  <p><%= link_to 'Remove', delete_image_attachment_authors_post_path(post.main_image.id), method: :delete, data: { confirm: 'Are you sure?' } %></p>
+                <% else %>
+                  <p>Nessuna immagine presente</p>
+                <% end %>
+                <%= form.file_field :main_image, class: "form-control-file" %>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="field">
+                <%= form.label :video_youtube %>
+                <%= form.text_field :video_youtube, class: "form-control" %><!-- parte di URL youtube che identifica il video -->
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="field">
+                <%= form.label :video_vimeo %>
+                <%= form.text_field :video_vimeo, class: "form-control" %><!-- parte di URL vimeo che identifica il video -->
+              </div>
+            </li>
+          </ul>
+        </div><!--.card-body -->
+      </div><!--.card -->
+    </div><!--.col-md-6 -->
+    
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <%= "Dati pubblicazione" %>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :tag_list %><!-- separati da virgola -->
+              <%= form.text_area :tag_list, id: :tag_list, class: "form-control" %>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :published %>
+              <%= form.check_box :published, class: "form-control" %>
+              <%#= f.check_box :remove_logo, "data-size" => "medium", "data-on-color" => "primary", "data-on-text" => "SI", "data-off-color" => "default", "data-off-text" => "NO" %>
+            </div>
+            <div class="field">
+              <%= form.label :published_at %>
+              <%= form.text_field :published_at, class: "form-control" %>
+            </div>
+          </li>
+        </ul>
+      </div><!--.card -->
+      
+      <div class="card">
+        <div class="card-header">
+          <%= "SEO - Social" %>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <div class="field">
+              <label class="control-label">Immagine per i social. (476x249px)</label>
+              <br><img src="https://images.pexels.com/photos/634843/pexels-photo-634843.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=476&w=249" alt="Immagine demo presa da pexels.com" width="200" height="200"><br>
+              <input type="file" name="myFile"><!-- image 476x249 px -->
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :seocontent %><!-- Descrizione per i social -->
+              <%= form.text_area :seocontent, rows: "3", class: "form-control" %><!-- max 160 caratteri -->
+            </div>
+          </li>
+        </ul>
+      </div><!--.card -->
+    </div><!--.col-md-6 -->
+  </div><!--.row -->
+  
+  <br/>
+
+  <div class="row">
+    <div class="col-md-12">
+      <%# list_position_counter = 0 %>
+      <%= form.fields_for :post_paragraphs do |builder| %>
+      <%#= form.fields_for :post_paragraphs, form.object.post_paragraphs.order(list_position: "ASC") do |builder| %>
+        <%# list_position_counter += 1 %>
+
+<%# if builder.object.image.attached? %>
+  <%#= image_tag builder.object.image %>
+<%# else %>
+  <!--<p>Nessuna immagine presente</p>-->
+<%# end %>
+
+        <%= render "paragraph_fields", form: builder %>
+        <br/>
+      <% end %>
+      <%#= link_to "#", class: "btn btn-warning btn-lg" do %>
+        <!--"icons +" Aggiungi paragrafo-->
+      <%# end %>
+    </div><!--.col-md-12 -->
+  </div><!--.row -->
+
+  <div class="actions">
+    <%= form.submit "Crea/Modifica articolo", class: "btn btn-success btn-lg btn-block" %>
+  </div>
+
+  <% if post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul>
+      <% post.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<% end %><!--form_with -->

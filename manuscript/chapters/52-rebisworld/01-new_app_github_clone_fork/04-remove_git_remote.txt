@@ -1,0 +1,89 @@
+# Cambiamo i collegamenti ai repository remoti di Git
+
+questa versione clonata ha ovviamente il riferimento di Git alla stessa repository esterna su GitHub di " cmsbase ".
+Siccome noi vogliamo creare un'applicazione differente è fondamentale rimuovere i collegamenti alla repository su GitHub. Ne creeremo in seguito una nuova.
+
+
+Risorse web
+
+* [Removing a remote](https://help.github.com/en/articles/removing-a-remote)
+* [Changing a remote's URL](https://help.github.com/en/articles/changing-a-remotes-url)
+
+
+
+
+## Rimuoviamo repository remoto
+
+Verifichiamo i repositories remoti presenti sul nostro Git
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git config -l
+
+
+ubuntu:~/environment/cmspofo (master) $ git config -l
+core.editor=/usr/bin/nano
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+remote.origin.url=git@github.com:flaviobordonidev/cmspofo.git
+remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+branch.master.remote=origin
+branch.master.merge=refs/heads/master
+~~~~~~~~
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git remote -v
+
+
+ubuntu:~/environment/cmspofo (master) $ git remote -v
+origin  git@github.com:flaviobordonidev/cmspofo.git (fetch)
+origin  git@github.com:flaviobordonidev/cmspofo.git (push)
+~~~~~~~~
+
+L'unico che si presenta è "origin", che è quello su GitHub, perché non abbiamo ancora installato il toolkit di Heroku.
+
+
+
+Rimuoviamo/scolleghiamo il repository remoto "origin"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git remote rm origin
+
+
+ubuntu:~/environment/s5cmsbeginning (master) $ git remote rm origin
+ubuntu:~/environment/s5cmsbeginning (master) $ 
+~~~~~~~~
+
+
+Verifichiamo che il repository remoto "origin" è stato scollegato
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git config -l
+
+
+ubuntu:~/environment/cmspofo (master) $ git config -l
+core.editor=/usr/bin/nano
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+~~~~~~~~
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git remote -v
+
+
+ubuntu:~/environment/cmspofo (master) $ git remote -v
+ubuntu:~/environment/cmspofo (master) $ 
+~~~~~~~~
+
+
+
+Adesso nei prossimi capitoli possiamo tranquillamente creare dei branches ed usare Git localmente senza temere di attrapagliare l'applicazione che abbiamo clonato ( cmsbase ).

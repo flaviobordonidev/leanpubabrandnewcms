@@ -1,0 +1,124 @@
+# Facciamo il backup - Cambiamo repository remota su GitHub
+
+Ci spostiamo dalla repository che abbiamo clonato ad una nuova repository perché stiamo creando una nuova app.
+
+
+Risorse web
+
+* https://help.github.com/articles/connecting-to-github-with-ssh/
+
+
+
+
+## Il puntamento attuale
+
+abbiamo già eliminato il puntamento a Github nel capitolo precedente quindi non risultano repositories remote di GitHub
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git remote -v
+
+
+ubuntu:~/environment/cmsbase (master) $ git remote -v
+heroku  https://git.heroku.com/cmspofo.git (fetch)
+heroku  https://git.heroku.com/cmspofo.git (push)
+ubuntu:~/environment/s5cmsbeginning (master) $ 
+~~~~~~~~
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git config -l
+
+
+ubuntu:~/environment/cmsbase (master) $ git config -l
+core.editor=/usr/bin/nano
+user.name=Flavio Bordoni
+user.email=flavio.bordoni.dev@gmail.com
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+remote.heroku.url=https://git.heroku.com/cmspofo.git
+remote.heroku.fetch=+refs/heads/*:refs/remotes/heroku/*
+~~~~~~~~
+
+
+
+
+## Il nuovo puntamento
+
+
+
+
+### Github sign_in
+
+Logghiamoci su GitHub
+
+
+
+
+### Github connessione con nuova istanza di aws Cloud9
+
+Abbiamo già condiviso la chiave pubblica.
+
+
+
+
+## Github nuovo repository
+
+Creiamo un nuovo repository:
+
+* nome        : cmspofo
+* descrizione : cms con tema pofo
+
+Appena creato il nuovo repository ci viene presentato un "Quick setup"
+
+Aggiungiamo sul nostro git il repository remoto "cmspofo.git" creato sul nostro account github "flaviobordonidev" usando SSH.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git remote add origin git@github.com:flaviobordonidev/cmspofo.git
+~~~~~~~~
+
+Se avessimo voluto usare HTTPS avremmo usato "git remote add origin https://github.com/flaviobordonidev/cmspofo.git"
+
+Il comando "git remote" è per attivare il repository remoto su un server esterno (nel nostro caso github.com).
+con "add origin" si dichiara che il nome di riferimento del repositroy remoto è "origin" (potevamo chiamarlo github ma per convenzione storica la stessa Github ha scelto di chiamarlo "origin").  
+
+
+verifichiamo il nuovo repository remoto "origin", che è quello di GitHub:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git remote -v
+
+
+ubuntu:~/environment/cmsbase (master) $ git remote -v
+heroku  https://git.heroku.com/cmspofo.git (fetch)
+heroku  https://git.heroku.com/cmspofo.git (push)
+origin  git@github.com:flaviobordonidev/cmspofo.git (fetch)
+origin  git@github.com:flaviobordonidev/cmspofo.git (push)
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
+
+il comando "git push" sposta sul branch remoto "origin" il branch locale "master".
+
+Spostiamo in remoto anche la parte dei tag in cui abbiamo messo la versione v.0.1.0
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master --tag
+~~~~~~~~
+
+Se adesso facciamo un refresh alla pagina di Github vedremo il nostro nuovo repository con la nostra "cmspofo"

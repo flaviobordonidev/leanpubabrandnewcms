@@ -1,0 +1,33 @@
+-# VOLUME 11
+
+Importiamo nella nostra applicazione un tema terze parti, HTML puro.
+Implementiamo il template Pofo
+Lavoriamo sulle tabelle di esempio " eg_xxx "
+IN QUESTO MODO LASCIAMO AMPIO SPAZIO DI MANOVRA PER IL PROGETTO FINALE SENZA ESSERE COSTRETTI AD ELIMINARE O MODIFICARE COLONNE NEL DB
+
+
+
+
+Questo volume continua a partire da quanto già fatto nei seguenti volumi:
+
+* 01-beginnning
+
+
+
+
+in questo volume: 
+
+* Importiamo il tema POFO a livello statico
+* Lo rendiamo DRY
+* Creiamo solo mockups
+
+
+
+
+Risorse web:
+
+* http://www.themezaa.com/html/pofo/documentation/
+* http://www.themezaa.com/html/pofo/blog-only-text-full-width.html
+
+IL FILE " themeforest-xYrQiFEw-pofo-creative-agency-corporate-and-portfolio-multipurpose-template.zip " CONTIENE TUTTO IL TEMA
+LO ABBIAMO SCARICATO DA THEMEFOREST TRAMITE INTEGRAMSYSTEMS

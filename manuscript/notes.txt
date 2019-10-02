@@ -12,6 +12,7 @@ http://pygments.org/demo/   ->  vedi il codice nel menu a cascata
       .yml  -> lang=yaml
       .coffe -> lang=CoffeeScript
       .scss  -> lang=ruby
+      .js   -> lang=JavaScript
 
 ---
 $ sudo service postgresql start

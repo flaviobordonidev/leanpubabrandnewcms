@@ -1,0 +1,33 @@
+# Restore Rails
+
+Ripristiniamo l'ambiente rails lanciando bundle install
+
+
+
+## Bundle install
+
+Adesso che abbiamo PostgreeSQL installato, possiamo lanciare "bundle install".
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ bundle install
+~~~~~~~~
+
+Questo ripristina tutto l'ambiente Rails e siamo quindi pronti ad eseguire il web server e verificare il preview
+
+
+
+
+## Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+apriamo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/
+
+E vediamo il seguente errore " FATAL: database "s5beginning_development" does not exist ". Questo perché non abbiamo creato i databases su postgreSQL.

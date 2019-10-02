@@ -1,5 +1,0 @@
-# Creiamo un mockups di homepage
-
-Nel volume 3 "cms pofo" abbiamo già creato un mockups posts_index.
-
-In questo volume utiliziamo quel mockups per realizzarne una versione dinamica.

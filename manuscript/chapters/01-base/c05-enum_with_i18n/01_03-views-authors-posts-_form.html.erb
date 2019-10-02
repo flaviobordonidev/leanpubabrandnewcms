@@ -1,0 +1,58 @@
+<%= form_with(model: post, local: true, url: authors_url) do |form| %>
+  <% if post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul>
+      <% post.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :title %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div class="field">
+    <%= form.label :incipit %>
+    <%= form.text_area :incipit %>
+  </div>
+
+  <div class="field">
+    <%= form.label :content %>
+    <%= form.text_area :content %>
+  </div>
+
+  <div class="field">
+    <%= form.label :content_type %>
+    <%#= form.number_field :content_type %>
+    <%= form.select(:content_type, Post.content_types.keys.map {|content_type| [content_type.titleize,content_type]}) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :video_youtube %>
+    <%= form.text_field :video_youtube %>
+  </div>
+
+  <div class="field">
+    <%= form.label :video_vimeo %>
+    <%= form.text_field :video_vimeo %>
+  </div>
+
+  <div class="field">
+    <%= form.label :seocontent %>
+    <%= form.text_area :seocontent %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,220 @@
+# Implementiamo dei link per ogni tag che filtrano il contenuto della pagina
+
+Ad esempio se ho articoli sullo sport con tags: sci, nuoto, tennis, calcio, ...
+Se premo il link "tennis" si visualizzano in elenco solo gli articoli con tag "tennis"
+
+ATTENZIONE, il codice qui sotto è stato implementato con tema pofo già inserito. Va riadattato.
+
+
+
+
+## Visualiziamo i tags per ogni articolo
+
+Nell'elenco degli articoli visualizziamo per ogni articolo i suoi tags visualizzati come link. Andiamo nel partial "pofo_posts_content_section" richiamato dalla pagina posts/index
+
+{title=".../app/views/posts/_pofo_posts_content_section.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=14}
+~~~~~~~~
+<span class="text-extra-small text-uppercase display-block margin-four-bottom sm-margin-two-bottom">Bici, Tram, Latte</span>
+~~~~~~~~
+
+
+{title=".../app/views/posts/_pofo_posts_content_section.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=14}
+~~~~~~~~
+<span class="text-extra-small text-uppercase display-block margin-four-bottom sm-margin-two-bottom">Bici, Tram, Latte</span>
+~~~~~~~~
+
+
+dentro views/posts/index ...
+
+<%= post.tags %>
+
+post.tags è l'associazione all'active record. Per lavorare sui singoli elementi usiamo "each" come abbiamo fatto per "posts"
+
+~~~~~~~~
+<% post.tags.each do |tag| %>
+  <%= "#{tag.name}," %> 
+<% end %>
+~~~~~~~~
+
+Non possiamo mettere tutto in una linea in questo modo:
+
+~~~~~~~~
+<%= post.tags.each { |tag| "#{tag.name}," } %>
+~~~~~~~~
+
+questo non funziona perché passa sulla view "n" volte tutta l'associazione "post.tags.each" e non i soli valori di "tag.name". Infatti nel codice precedente il ciclo "post.tags.each" è dentro "<% %>" e non "<%= %>".
+
+
+togliamo la virgola dall'ultimo tag
+
+~~~~~~~~
+<% post.tags.each do |tag| %>
+  <%= tag == post.tags.last ? "#{tag.name}" : "#{tag.name}," %>
+<% end %>
+~~~~~~~~
+
+
+
+
+### Alternativa con "map"
+
+Un'alternativa interessante è usare il potente metodo "map" che è un'estensione di "each" e ci passa un array con i vari valori elaborati nel "block". Il "block" è la parte dentro le parentesi graffe "{ }"
+
+~~~~~~~~
+<%= post.tags.map { |tag| tag.name } %>
+~~~~~~~~
+
+oppure la versione "compatta" usando "&:"
+
+~~~~~~~~
+<%= post.tags.map(&:name) %>
+~~~~~~~~
+
+Invece di avere tutto l'array stampato ["tag1","tag2",...] usiamo la funzione ".join" che ci unisce i vari valori dell'array in un'unica stringa.
+
+~~~~~~~~
+<%= post.tags.map { |tag| tag.name }.join(', ') %>
+~~~~~~~~
+
+In questa stringa è già senza la virgola "," duplicata nell'ultimo tag.
+
+
+
+
+## Trasformiamo i tags visualizzati in links
+
+~~~~~~~~
+<%= post.tags.map { |tag| link_to tag.name, '#').join(', ') %>
+~~~~~~~~
+
+poichè il metodo map crea un array e la funzione "join" lo compatta tutto in una stringa, il risultato finale è un codice html passato come stringa
+
+Per far si che funzioni dobbiamo usare "raw". 
+~~~~~~~~
+<%= raw post.tags.map { |tag| link_to tag.name, '#').join(', ') %>
+~~~~~~~~
+
+Attenzione! tutte le volte che si usa "raw" si ha un possibile problema di sicurezza. Se un hacker inserisce un tag con del codice potrebbe trovare un exploit.
+Un'alternativa è il metodo ".html_safe" ma è bene evitare anche questo perché ha altre problematiche. Si dovrebbe fare un "sanitize" che diminuisce leggermente le performances.
+Usiamo sanitize
+~~~~~~~~
+<%= sanitize post.tags.map { |tag| link_to tag.name, '#').join(', ') %>
+~~~~~~~~
+
+
+...
+
+
+Passiamo nell'url anche il parametro "tag:" con il valore dell'id del "tag"  
+
+~~~~~~~~
+<%= raw post.tags.map { |tag| link_to tag.name, posts_path(tag: tag).join(', ') %>
+~~~~~~~~
+
+esplicitiamo che gli stiamo passando l'id
+
+~~~~~~~~
+<%= raw post.tags.map { |tag| link_to tag.name, posts_path(tag: tag.id).join(', ') %>
+~~~~~~~~
+
+adesso passiamo il nome del tag
+
+~~~~~~~~
+<%= raw post.tags.map { |tag| link_to tag.name, posts_path(tag: tag.name).join(', ') %>
+~~~~~~~~
+
+Siamo pronti per preparare un filtro lato controller.
+
+
+
+### alternativa con "each"
+
+inseriamo i links nella soluzione con il metodo each. Ci sono più linee di codice ma evitiamo di usare "raw" e possiamo sempre fare un helper per spostare tutte le linee di codice negli "helpers".
+Gestiamo l'inserimento della virgola "," in una nuova linea di codice ed inseriamo il link_to
+
+~~~~~~~~
+<% post.tags.each do |tag| %>
+  <%= link_to tag.name, "#" %>
+  <%= tag == post.tags.last ? "" : ", " %> 
+<% end %>
+~~~~~~~~
+
+Passiamo nell'url anche il parametro "tag:" con il valore del "tag"
+
+~~~~~~~~
+<% post.tags.each do |tag| %>
+  <%= link_to tag.name, posts_path(tag: tag.name) %>
+  <%= tag == post.tags.last ? "" : ", " %> 
+<% end %>
+~~~~~~~~
+
+
+
+
+## Attiviamo il filtro per tags sul controller
+
+dentro posts_controller aggiungiamo il metodo "tagged_with(params[:tag])" di taggable_on 
+
+~~~~~~~~
+def index
+  if params[:tag].present?
+    @pagy, @posts = pagy(Post.published.tagged_with(params[:tag]).order(created_at: 'DESC'), items: 8)
+  else
+    @pagy, @posts = pagy(Post.published.order(created_at: 'DESC'), items: 8)
+  end
+end
+~~~~~~~~
+
+Questo codice mi da errore!!! 
+
+semplifichiamo forzando direttamente il tag "gomme da masticare"
+
+~~~~~~~~
+def index
+  if params[:tag].present?
+    @pagy, @posts = pagy(Post.published.tagged_with("gomme da masticare").order(created_at: 'DESC'), items: 8)
+  else
+    @pagy, @posts = pagy(Post.published.order(created_at: 'DESC'), items: 8)
+  end
+end
+~~~~~~~~
+
+Continua a non funzionare!!!
+
+
+La soluzione è passare per uno scope
+
+model post
+~~~~~~~~
+  scope :tagged, -> { tagged_with("gomme da masticare") }
+~~~~~~~~
+
+controller post
+~~~~~~~~
+    if params[:tag].present?
+      @pagy, @posts = pagy(Post.published.tagged.order(created_at: 'DESC'), items: 8)
+    else
+      @pagy, @posts = pagy(Post.all.published.order(created_at: 'DESC'), items: 8)
+    end
+~~~~~~~~
+
+Funziona ^_^ !
+
+
+Adesso implementiamo di nuovo params[:tag]
+
+model post
+~~~~~~~~
+  scope :tagged, -> { tagged_with("gomme da masticare") }
+~~~~~~~~
+
+ed aggiorniamo il controller
+
+controller post
+~~~~~~~~
+    if params[:tag].present?
+      @pagy, @posts = pagy(Post.published.tagged(params[:tag]).order(created_at: 'DESC'), items: 8)
+    else
+      @pagy, @posts = pagy(Post.all.published.order(created_at: 'DESC'), items: 8)
+    end
+~~~~~~~~

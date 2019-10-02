@@ -1,0 +1,263 @@
+## Contatti lato persone
+
+Contatti (emails, telefoni, skype, whatsup, ...)
+
+Term used to describe reaching out to or being in touch with another person, business or entity.
+
+Nei capitoli all'interno di questa sezione userò PERSON_CONTACTS invece di CONTACTS perché la tabella contacts la ho già usata e mi diventa difficile pulire tutto.
+Quando pulirò il libro userò contacts.
+
+
+Aggiungiamo i telefoni alle persone. facciamo una relazione uno-a-molti. (potrebbe essere polimorfica come con favorites)
+Non usiamo una relazione polimorfica ed invece creiamo le due tabelle:
+
+- person_contacts
+- company_contacts
+
+<< Nella revisione del libro useremo la sola tabella contacts con una relazione uno-a-molti polimorfica >>
+con la polimorfica avrei la sola tabella contacts che si adatta all'occorrenza (proprio come abbiamo fatto con i favorites)
+
+La particolarità di questa tabella è che verrà gestita all'interno delle pagine delle persone. Quidni dovrò gestire su un form più models.
+
+Spunti per questo codice sono tratti da:
+
+* https://rubyplus.com/articles/3681-Complex-Forms-in-Rails-5
+* https://rubyplus.com/episodes/81-Complex-Forms-in-Rails-5
+* railscast 196-nested-model-form
+* https://www.amooma.de/screencasts/2015-01-22-nested_forms-rails-4.2/
+
+
+
+
+## Apriamo il branch "person_contacts seeds"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b pcs
+~~~~~~~~
+
+
+
+
+## Creiamo la tabella person_contacts
+
+Non usiamo lo scaffold perché sarà annidata nella struttura di people. Ci serve solo l'interfacciamento con il database e quindi creiamo il model.
+Anche sul **g model** il nome va messo al singolare e si preoccuperà lui di fare la tabella plurale.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g model PersonContact person:references medium:string identifier:string
+~~~~~~~~
+
+  medium        | identifier
+  ---------------------------------
+  telephone     | number
+  skype         | address
+  email         | address
+  irc           | channel
+  whatsapp      | telephone number
+  FTP           | IP
+  radioamotore  | channel
+  pager         | telephone number
+  snapchat      | user name
+  
+
+{title=".../db/migrate/xxx_create_person_contacts.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class CreatePersonContacts < ActiveRecord::Migration[5.0]
+  def change
+    create_table :person_contacts do |t|
+      t.references :person, foreign_key: true
+      t.string :medium
+      t.string :identifier
+
+      t.timestamps
+    end
+  end
+end
+~~~~~~~~
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rake db:migrate
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+
+
+
+## Implementiamo relazione uno-a-molti con nested models in form
+
+{title=".../app/models/person_contact.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+class PersonContact < ApplicationRecord
+  belongs_to :person, inverse_of: :person_contacts
+end
+~~~~~~~~
+
+
+{title=".../app/models/person.rb", lang=ruby, line-numbers=on, starting-line-number=33}
+~~~~~~~~
+  has_many :person_contacts, inverse_of: :person, dependent: :destroy
+  accepts_nested_attributes_for :person_contacts
+~~~~~~~~
+
+il codice ** accepts_nested_attributes_for: ** ci permette di gestire più modelli dentro lo stesso form.
+Da rails 5 è necessario aggiungere anche il **reverse_of**, for Creating an object and its children via accepts_nested_attributes_for in a :has_many association, altrimenti prendo errore dopo aver abilitato il passaggio dei valori del model annidato su **params...permit...**
+
+Per spiegazioni su **reverse_of** vedi: https://www.viget.com/articles/exploring-the-inverse-of-option-on-rails-model-associations
+
+Con il ** dependent: :destroy ** quando elimino una persona (person) mi elimina a cascata tutte i suoi contatti (person_contacts). Altrimenti rimarrebbero dei contatti "orfani", senza persona. 
+
+
+
+
+## Implementiamo la view people/new e people/edit con contatti
+
+{title=".../app/views/people/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=75}
+~~~~~~~~
+    <%= f.fields_for :person_contacts do |builder| %>
+      <p>
+        <%= builder.label :medium, "Contatto (tel, cell, email, skype, ...)" %><br/>
+        <%= builder.text_field :medium %>
+      </p>
+      <p>
+        <%= builder.label :identifier, "valore" %><br/>
+        <%= builder.text_field :identifier %>
+      </p>
+    <% end %>
+~~~~~~~~
+
+la parte di codice ** <%= f.fields_for :person_contacts do |builder| %> ... <% end %> ** ci permette di aggiungere il modello person_contact dentro il form di people.
+
+Ma ancora non funziona perché non è stato istanziato nessun contatto. Risolviamo aggiungendo un contatto nell'azione **new** del controller **people_controller**
+
+{title=".../app/controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=35}
+~~~~~~~~
+  # GET /people/new
+  def new
+    @person = Person.new
+    @person.person_contacts.build
+~~~~~~~~
+
+Il contatto viene istanziato con ** @person.person_contacts.build **
+
+Se adesso torniamo sul browser e diamo un refresh vediamo che funziona? Si ma a metà. Visualizza i campi nel form ma non prende i valori sul submit. Questo perché dobbiamo abilitare i valori del modello annidato (person_contacts) sul controller del padre (people_controller). Ed inoltre non abbiamo implementato la visualizzazione su survey/show. 
+
+
+{title=".../app/controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=109}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def person_params
+      params.require(:person).permit(:image, :title, :first_name, :last_name, :homonym, :tax_code, :sex, :memo, :nationality_id, :born_date, :born_city_id, :favorite_id_user, :favorite_cb_user, person_contacts_attributes: [:id, :medium, :identifier])
+    end
+~~~~~~~~
+
+Adesso funziona. (anche se ancora non le vediamo perché la visualizzazione la implementiamo nel prossimo paragrafo)
+
+
+
+
+## Visualizziamo i contatti
+
+lavoriamo sulla view people/show per visualizzare i contatti (person_contacts)
+
+{title=".../app/views/people/_main_media_object.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=20}
+~~~~~~~~
+<ul>
+  <% @person.person_contacts.each do |contact| %>
+    <li>
+      <%= "#{contact.medium} #{contact.identifier}" %>
+    </li>
+  <% end %>
+</ul>
+~~~~~~~~
+
+
+
+
+## Eliminamo dati vuoti
+
+Creiamo 3 contatti e riempiamone solo 2 per dimostrare che si creerà un contatto vuoto.
+
+{title=".../app/controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=35}
+~~~~~~~~
+  # GET /people/new
+  def new
+    @person = Person.new
+    3.times { @person.person_contacts.build }
+~~~~~~~~
+
+se facciamo la prova vediamo che resterà un pallino vuoto nell'unordered list.
+Implementiamo il codice per non inserire i contatti in elenco se non hanno dati.
+
+{title=".../app/models/person.rb", lang=ruby, line-numbers=on, starting-line-number=33}
+~~~~~~~~
+  has_many :person_contacts, inverse_of: :person, dependent: :destroy
+  accepts_nested_attributes_for :person_contacts, reject_if: lambda { |a| a[:medium].blank? or a[:identifier].blank? }
+~~~~~~~~
+
+Con il ** :reject_if ** ottengo che i valori di :content vuoti non vengano caricati in tabella.
+
+Si poteva anche usare ** , reject_if: proc { |attributes| attributes['name'].blank? } ** ma in questa circostanza è meglio il lambda. Il **lambda** è un tipo di **proc** con alcune differenze. Vedi di più su http://awaxman11.github.io/blog/2013/08/05/what-is-the-difference-between-a-block/
+
+La condizione scelta in alto non mi registra nulla sia se è vuoto identifier sia se è vuoto medium. Ma questo è eccessivo. Potrei mettere il numero di telefono e scordarmi di mettere che è un telefono ma non voglio che non mi venga registrato nulla. Allora rendiamo meno rigida la condizione e non registriamo solo nel caso in cui :identifier sia vuoto.
+
+{title=".../app/models/person.rb", lang=ruby, line-numbers=on, starting-line-number=33}
+~~~~~~~~
+  has_many :person_contacts, inverse_of: :person, dependent: :destroy
+  accepts_nested_attributes_for :person_contacts, reject_if: lambda { |a| a[:identifier].blank? }
+~~~~~~~~
+
+Se invece avessimo voluto che bastasse anche solo un campo riempito per registrare la voce in elenco, avremmo potuto usare **and**
+
+{title=".../app/models/person.rb", lang=ruby, line-numbers=on, starting-line-number=33}
+~~~~~~~~
+  has_many :person_contacts, inverse_of: :person, dependent: :destroy
+  accepts_nested_attributes_for :person_contacts, reject_if: lambda { |a| a[:medium].blank? and a[:identifier].blank? }
+~~~~~~~~
+
+
+
+
+## Eliminiamo i contatti
+
+I contatti già inseriti non possono essere eliminati svuotando il contenuto. Dobbiamo implementare un link per eliminarli. Iniziamo creando un checkbox ed in seguito creeremo il link.
+
+{title=".../app/views/people/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=75}
+~~~~~~~~
+    <%= f.fields_for :person_contacts do |builder| %>
+      <p>
+        <%= builder.label :medium, "Contatto (tel, cell, email, skype, ...)" %><br/>
+        <%= builder.text_field :medium %>
+      </p>
+      <p>
+        <%= builder.label :identifier, "valore" %><br/>
+        <%= builder.text_field :identifier %>
+      </p>
+      <p>
+        <%= builder.check_box :_destroy %>
+        <%= builder.label :_destroy, "Elimina contatto" %>
+      </p>
+    <% end %>
+~~~~~~~~
+
+Per abilitare il check_box dobbiamo aggiungere ** :allow_destroy ** sul model person
+
+{title=".../app/models/person.rb", lang=ruby, line-numbers=on, starting-line-number=33}
+~~~~~~~~
+  has_many :person_contacts, inverse_of: :person, dependent: :destroy
+  accepts_nested_attributes_for :person_contacts, reject_if: lambda { |a| a[:identifier].blank? }, allow_destroy: true
+~~~~~~~~
+
+adesso dobbiamo metterlo nella white list sul controller di people
+
+{title=".../app/controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=71}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def person_params
+      params.require(:person).permit(:image, :title, :first_name, :last_name, :homonym, :tax_code, :sex, :memo, :nationality_id, :born_date, :born_city_id, :favorite_id_user, :favorite_cb_user, person_contacts_attributes: [:id, :medium, :identifier, :_destroy])
+    end
+~~~~~~~~
+
+adesso proviamo e verifichiamo che i contatti vengono eliminati. Yea!!

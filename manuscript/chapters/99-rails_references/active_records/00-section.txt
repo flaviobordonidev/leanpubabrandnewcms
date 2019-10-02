@@ -15,3 +15,5 @@ gestiamo i valori sul database
   * http://www.postgresql.org/docs/7.3/static/functions-matching.html
   * http://stackoverflow.com/questions/403671/the-differences-between-build-create-and-create-and-when-should-they-be-us
   * http://stackoverflow.com/questions/4954313/build-vs-new-in-rails-3
+  
+  * [QUERIES ON RAILS - SHOWCASING ACTIVE RECORD AND AREL](https://www.imaginarycloud.com/blog/queries-on-rails/)

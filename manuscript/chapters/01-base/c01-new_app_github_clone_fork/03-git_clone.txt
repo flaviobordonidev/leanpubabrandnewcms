@@ -1,0 +1,158 @@
+# Git clone
+
+importiamo il repository " s5beginning " che abbiamo sul nostro GitHub. (Se è sul GitHub di un altro utente basta fare prima il fork per averne una copia sul nostro GitHub)
+
+
+Web references:
+
+* [GitHub checking-for-existing-ssh-keys](https://help.github.com/en/articles/checking-for-existing-ssh-keys)
+* [GitHub generating-a-new-ssh-key](https://help.github.com/en/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
+
+
+
+
+## Colleghiamoci a GitHub
+
+Per lanciare git clone dobbiamo prima collegarci a gitHub. Per prima cosa logghiamoci su Github (www.github.com).
+
+
+
+
+### Verifichiamo la chiave pubblica
+
+Per far comunicare Github con aws Cloud9 dobbiamo fargli condividere la chiave pubblica.
+Andiamo sul terminale di aws Cloud9 e visualizziamo e copiamoci la chiave pubblica (public key) di aws Cloud9.
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ cat ~/.ssh/id_rsa.pub
+
+
+ubuntu:~/environment $ cat ~/.ssh/id_rsa.pub
+cat: /home/ubuntu/.ssh/id_rsa.pub: No such file or directory
+ubuntu:~/environment $ 
+~~~~~~~~
+
+Non abbiamo chiave pubblica
+
+
+
+
+### Generiamo la chiave pubblica
+
+Se non è già presente possiamo crearla con il seguente comando
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ ssh-keygen -t rsa -b 4096 -C "flavio.bordoni.dev@gmail.com"
+-> [ENTER]
+-> [ENTER]
+-> [ENTER]
+
+
+ubuntu:~/environment/s5cmsbeginning $ ssh-keygen -t rsa -b 4096 -C "flavio.bordoni.dev@gmail.com"
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/ubuntu/.ssh/id_rsa): 
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /home/ubuntu/.ssh/id_rsa.
+Your public key has been saved in /home/ubuntu/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:k6vKvlCb/+NHuIEgWIWhdGs6giIl6NrNy7bjLD+Nx4M flavio.bordoni.dev@gmail.com
+The key's randomart image is:
++---[RSA 4096]----+
+| ..=.            |
+|o.+ .            |
+|+o.o             |
+|+o+ .    .       |
+|=+ ... .S.       |
+|=..+ o. oo.      |
+|. o ==  .+       |
+|  .=Eo=.o .      |
+|   *%Bo+oo       |
++----[SHA256]-----+
+ubuntu:~/environment/s5cmsbeginning $ 
+~~~~~~~~
+
+Quando richiesto premiamo [ENTER] senza inserire nessun valore; questo prende i valori di default. 
+
+
+
+
+### Passiamo la chiave pubblica da environment awsC9 a gitHub
+
+Per far comunicare Github con aws Cloud9 dobbiamo fargli condividere la chiave pubblica.
+Andiamo sul terminale di aws Cloud9 e visualizziamo e copiamoci la chiave pubblica (public key) di aws Cloud9.
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ cat ~/.ssh/id_rsa.pub
+
+
+ubuntu:~/environment $ cat ~/.ssh/id_rsa.pub
+ssh-rsa AAAAB3...[...]...xhUwU/K0waOEnEE9YRSEQ== flavio.bordoni.dev@gmail.com
+~~~~~~~~
+
+Copiamo tutta la chiave pubblica, compreso 'ssh-rsa', e passiamola su Github -> Settings -> SSH and GPG keys.
+
+Title   : awsC9-cmsbase
+Key     : ssh-rsa AAAAB3...[...]...xhUwU/K0waOEnEE9YRSEQ== flavio.bordoni.dev@gmail.com
+
+
+
+
+## Cloniamo il repository
+
+Adesso che siamo collegati con GitHub possiamo clonare uno dei nostri repository.
+
+Prendiamo il riferimento del nostro repository s5beginning cliccando sul bottone "Clone or Download"
+
+~~~~~~~~
+git@github.com:flaviobordonidev/s5beginning.git
+~~~~~~~~
+
+e lo usiamo sul nostro terminale di awsC9
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git clone git@github.com:flaviobordonidev/s5beginning.git
+
+
+ubuntu:~/environment/s5cmsbeginning $ git clone git@github.com:flaviobordonidev/s5beginning.git
+Cloning into 's5beginning'...
+The authenticity of host 'github.com (140.82.113.3)' can't be established.
+RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'github.com,140.82.113.3' (RSA) to the list of known hosts.
+remote: Enumerating objects: 467, done.
+remote: Counting objects: 100% (467/467), done.
+remote: Compressing objects: 100% (305/305), done.
+remote: Total 467 (delta 225), reused 377 (delta 135), pack-reused 0
+Receiving objects: 100% (467/467), 73.52 KiB | 3.34 MiB/s, done.
+Resolving deltas: 100% (225/225), done.
+~~~~~~~~
+
+Non è necessario usare "ssh://" perché di default GitHub usa ssh. Se volevamo usarlo il comando sarebbe stato "$ git clone ssh://git@github.com:flaviobordonidev/s5beginning.git"
+
+
+
+
+## Entriamo nel repository clonato
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ cd s5beginning
+~~~~~~~~
+
+Abbiamo tutto il codice dell'applicazione ma non abbiamo tutto l'ambiente pronto. Verifichiamo provando a lanciare il web server:
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails s
+
+ubuntu:~/environment/s5beginning (master) $ rails s
+Could not find proper version of railties (5.2.3) in any of the sources
+Run `bundle install` to install missing gems.
+~~~~~~~~
+
+Nei prossimi capitoli ripristiniamo l'ambiente (come ad esempio postgreSQL, minimagic, i dati nel database,...).

@@ -1,0 +1,3 @@
+# Nuovi fonts
+
+Nei prossimi capitoli vediamo come inserire nuovi sets di fonts al tema pofo; inclusa la creazione di un set personalizzato.

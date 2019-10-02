@@ -1,0 +1,200 @@
+# Layout mockups
+
+adesso che abbiamo importato due pagine dal nostro template Pofo alla nostra applicazione rails possiamo snellire la parte di <HEAD> e quella delle chiamate javascripts in fondo al codice </HTML>
+
+
+
+
+## Apriamo il branch "Layout Mockup_Pofo"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b lmp
+~~~~~~~~
+
+
+
+
+## Creiamo un layout specifico per il mockups/blog_clean_full_width e mockups/blog_post_layout_05
+
+Creiamo un layour specifico per il tema tema pofo (mockups_pofo) perché ogni tema tende a mantenere le stesse chiamate stylesheets e javascripts per tutte le pagine.
+
+Creiamo il nuovo layout con lo stesso codice del layout di default (layouts/application.html.erb).
+
+{title=".../app/views/layouts/mockups_pofo.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= yield(:html_head_title) %> | Baseline5_2</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <%= render 'layouts/dashboard_navbar' if current_user.present? %>
+    <% if notice %><p class="alert alert-info"><%= notice %></p><% end %>
+    <% if alert %><p class="alert alert-warning"><%= alert %></p><% end %>
+    <%= yield %>
+  </body>
+</html>
+~~~~~~~~
+
+
+
+
+## Aggiorniamo il controller
+
+Passiamo il nuovo layout alle azioni "blog_clean_full_width" e "blog_post_layout_05"
+
+{title=".../app/controllers/mockups_controller.rb", lang=ruby, line-numbers=on, starting-line-number=16}
+~~~~~~~~
+  def blog_clean_full_width
+    render layout: 'mockups_pofo'
+  end
+
+  def blog_post_layout_05
+    render layout: 'mockups_pofo'
+  end
+~~~~~~~~
+
+
+
+
+## Passiamo head e chiamate javascripts al layout
+
+Supponiamo che le librerie di stylesheets e di javascripts richiamate dalla maggior parte delle pagine della nostra applicazione siano sempre le stesse.
+Così come supponiamo siano gli stessi i meta tags, il favicon, ed il menu di navigazione.
+Possiamo sempre gestire le eccezioni con dei layouts personalizzati.
+
+Avere le chiamate ai partials nel layouts ci evita di doverle rifare su ogni singola pagina. E' un modo per essere DRY.
+
+
+Iniziamo con blog_clean_full_width. Passiamo la sua parte di <HEAD> e chiamate javascripts al nostro layout.
+
+Spostiamo la struttura <html> da blog_clean_full_width a layouts/mockups_pofo.
+Manteniamo <html> senza parametri.
+
+Commentiamo le chiamate all'asset-pipeline di default:
+
+*    <%#= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+*    <%#= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+Spostiamo tutta la parte di <head> da blog_clean_full_width a layouts/mockups_pofo
+
+Spostiamo tutta la parte finale di chiamate javascripts da blog_clean_full_width a layouts/mockups_pofo
+
+{id="03-04-01_01", title=".../app/views/layouts/mockups_pofo.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- title -->
+    <title><%= yield(:page_title) %> | cmspofo</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%#= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%#= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+~~~~~~~~
+
+[Codice 01](#03-04-01_01all)
+
+
+quindi la pagina di mockups/blog_clean_full_width risulta essere:
+
+{id="03-04-01_02", title=".../app/views/mockups/blog_clean_full_width.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+        <!-- start header -->
+        <header>
+            <!-- start navigation -->
+            <nav class="navbar navbar-default bootsnav navbar-top header-light bg-transparent nav-box-width white-link">
+~~~~~~~~
+
+[Codice 02](#03-04-01_02all)
+
+
+e la pagina di mockups/blog_post_layout_05 risulta essere:
+
+{id="03-04-01_03", title=".../app/views/mockups/blog_post_layout_05.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+        <!-- start header -->
+        <header>
+            <!-- start navigation -->
+            <nav class="navbar navbar-default bootsnav navbar-top header-light bg-transparent nav-box-width white-link">
+~~~~~~~~
+
+[Codice 03](#03-04-01_03all)
+
+
+
+
+## Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+apriamolo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/mockups/blog_clean_full_width
+* https://mycloud9path.amazonaws.com/mockups/blog_post_layout_05
+
+non ci resta che importare stylesheets e javascripts, ma questo lo vediamo nel prossimo capitolo
+
+
+
+
+## archiviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "dascrive"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku lmp:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge lmp
+$ git branch -d lmp
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
+
+
+
+
+## Il codice del capitolo
+

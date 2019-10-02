@@ -1,0 +1,62 @@
+# Ripristiniamo le impostazioni globali di Git
+
+Ripristiniamo l'ambiente (Restore environment). Partiamo dalle variabili globali di gitHub
+Adesso che ci siamo sganciati da gitHub possiamo riprendere ad utilizzare a pieno Git e quindi ripartiamo a creare i nostri branches.
+
+
+
+
+## Crea Branch "Ripristiniamo Configurazione Git"
+
+possiamo vedere con " git status " che non ci sono modifiche nel codice. Creiamo il branch "git checkout rcg -b
+
+
+
+
+
+## Ripristiniamo le impostazioni globali di Git
+
+per approfondimenti possiamo rifarci al capitolo 01-beginning/02-git/02-inizializziamo_git
+
+Verifichiamo la configurazione di git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git config -l
+
+
+ubuntu:~/environment/s5beginning (master) $ git config -l
+core.editor=/usr/bin/nano
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+~~~~~~~~
+
+Dobbiamo impostare di nuovo le variabili gloabali " user.name " e " user.email "
+These are system setups, meaning you only have to do them once per computer:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git config --global user.name "My Name"
+$ git config --global user.email "my@email.com"
+$ git config -l
+
+
+ubuntu:~/environment/s5beginning (master) $ git config --global user.name "Flavio Bordoni"
+ubuntu:~/environment/s5beginning (master) $ git config --global user.email "flavio.bordoni@gmail.com"
+ubuntu:~/environment/s5beginning (master) $ git config -l
+core.editor=/usr/bin/nano
+user.name=Flavio Bordoni
+user.email=flavio.bordoni@gmail.com
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+~~~~~~~~
+
+
+
+Più avanti quando attiveremo GitHub useremo la stessa email usata qui.
+Tieni presente che il nome e l'indirizzo email che utilizzi nella configurazione di Git saranno disponibili in tutti i repository che rendi pubblici.
+

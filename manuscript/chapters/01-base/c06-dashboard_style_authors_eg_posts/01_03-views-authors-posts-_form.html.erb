@@ -1,0 +1,146 @@
+<%= form_with(model: post, local: true, url: authors_url) do |form| %>
+  <div class="row">
+    <div class="col-md-4">
+      <!--<div class="card" style="width: 18rem;">-->
+      <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Nuovo/Modifica Articolo: Pincopallo della felice scelta che si ripropone con costanza</h5>
+          <div class="field">
+            <label>Title</label> 
+            <input type="text" class="form-control">
+          </div>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <div class="form-group">
+              <label>select_media</label>
+              <select class="form-control"><!-- menu a cascata (drop-down list) -->
+                <option value="a">Immagine</option>
+                <option value="b">Video youtube</option>
+                <option value="c">Video vimeo</option>
+                <option value="d">Audio</option>
+              </select>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <label class="control-label">Immagine</label>
+              <br><img src="https://images.pexels.com/photos/634843/pexels-photo-634843.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=200" alt="Immagine demo presa da pexels.com" width="200" height="200"><br>
+              <input type="file" name="myFile">
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <label class="control-label">Video YouTube</label>
+              <input type="text" name="video_youtube" class="form-control" value="https://youtu.be/Ma_i0JvdNN0"><!-- parte di URL youtube che identifica il video -->
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <label class="control-label">Video Vimeo</label>
+              <input type="text" name="video_vimeo" class="form-control" value="https://vimeo.com/user94273470/review/313142032/1326689190"><!-- parte di URL vimeo che identifica il video -->
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <label class="control-label">Immagine per i social. (476x249px)</label>
+              <br><img src="https://images.pexels.com/photos/634843/pexels-photo-634843.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=476&w=249" alt="Immagine demo presa da pexels.com" width="200" height="200"><br>
+              <input type="file" name="seoimage"><!-- image 476x249 px -->
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <label class="control-label">Descrizione per i social.</label>
+              <textarea name="seocontent" rows="3" class='form-control'>Cari amici, guardate questo. E' una ficata!</textarea><!-- max 160 caratteri -->
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <label class="control-label">Tags (separati da virgola)</label>
+              <textarea name="tags" rows="2" class='form-control'>salute, sport, cucina mediterranea, mantenersi in forma</textarea>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="actions">
+              <input type="submit" value="Salva l'articolo" class="btn btn-success btn-lg btn-block">
+            </div>
+          </li>
+        </ul>
+      </div><!--.card -->
+    </div><!--.col-md-4 -->
+    
+    <div class="col-md-8">
+      <div class="field">
+        <label class="control-label">Incipit</label>
+        <textarea name="incipit" rows="3" class='form-control'>Descrizione che viene vista nell'elenco degli articoli. E' una parte introduttiva che termina nel [leggi tutto].</textarea>
+      </div>
+
+      <div class="field"><h6>---Read More---</h6></div>
+
+      <div class="field">
+        <label class="control-label">Corpo</label>
+        <textarea name="content" rows="8" class='form-control'>Descrizione Dettagliata.</textarea>
+      </div>
+    </div><!--.col-md-8 -->
+
+  </div><!--.row -->
+
+
+
+  <% if post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul>
+      <% post.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :title %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div class="field">
+    <%= form.label :incipit %>
+    <%= form.text_area :incipit %>
+  </div>
+
+  <div class="field">
+    <%= form.label :content %>
+    <%= form.text_area :content %>
+  </div>
+
+  <div class="field">
+    <%= form.label :content_type %>
+    <%#= form.number_field :content_type %>
+    <%= form.select(:content_type, Post.content_types.keys.map {|content_type| [Post.human_attribute_name("content_type.#{content_type}"), content_type]}) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :video_youtube %>
+    <%= form.text_field :video_youtube %>
+  </div>
+
+  <div class="field">
+    <%= form.label :video_vimeo %>
+    <%= form.text_field :video_vimeo %>
+  </div>
+
+  <div class="field">
+    <%= form.label :seocontent %>
+    <%= form.text_area :seocontent %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

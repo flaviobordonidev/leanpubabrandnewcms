@@ -1,0 +1,143 @@
+# La preparazione iniziale
+
+in questa sotto-sezione sceglieremo i files HTML dal tema ed importeremo tutti gli stylesheets ed i javascripts necessari.
+
+Questa prima parte è sganciata da tutto quello fatto in precedenza.
+
+
+Acquistiamo il tema Pofo dal sito "themeforest" e scarichiamo il file zip:
+
+* themeforest-xYrQiFEw-pofo-creative-agency-corporate-and-portfolio-multipurpose-template
+
+Lo scompattiamo ottenendo la cartella della documentazione (documentation) e la cartella principale (html).
+
+
+
+
+## Apriamo il branch "Mockup Posts_Index"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b mpi
+~~~~~~~~
+
+
+
+
+## Scelti dal tema Pofo
+
+dalla cartella principale abbiamo scelto il seguente file per l'indice degli articoli
+
+* .../html/blog-clean-full-width.html
+
+quindi iniziamo importando il codice di questo file nella nostra applicazione Rails.
+Successivamente importeremo i vari files di stylesheets, javascripts ed images mano a mano che si presenteranno.
+
+
+
+
+## Creiamo il nostro mockup blog_clean_full_width
+
+creiamo il nuovo file blog_clean_full_width tra le nostre "pagine statiche di esempio" (mockups) e copiamo il contenuto del file html scelto dal tema (da -> a):
+
+* .../html/blog-clean-full-width.html -> .../app/views/mockups/blog_clean_full_width.html.erb
+
+
+
+
+## Impostiamo il layout mockups_yield
+
+Inizialmente usiamo il layout "mockups_yield" che abbiamo creato nei capitoli precedenti.
+Successivamente creeremo un layour specifico per il tema tema pofo (mockups_pofo) perché ogni tema tende a mantenere le stesse chiamate stylesheets e javascripts per tutte le pagine.
+
+aggiungiamo l'azione "blog_clean_full_width" al controller mockup e diciamogli di utilizzare il layout mockups_yield.
+
+{title=".../app/controllers/mockups_controller.rb", lang=ruby, line-numbers=on, starting-line-number=16}
+~~~~~~~~
+  def blog_clean_full_width
+    render layout: 'mockups_yield'
+  end
+~~~~~~~~
+
+
+
+
+## Aggiorniamo gli instradamenti
+
+Aggiorniamo il file routes
+
+{title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=23}
+~~~~~~~~
+  get 'mockups/blog_clean_full_width'
+~~~~~~~~
+
+
+
+
+
+## Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+apriamolo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/mockups/blog_clean_full_width
+
+non ci resta che importare stylesheets e javascripts, ma questo lo vediamo nel prossimo capitolo
+
+
+
+
+## archiviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add mockups/blog_clean_full_width"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku mpi:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge mpi
+$ git branch -d mpi
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
+
+
+
+
+## Il codice del capitolo
+

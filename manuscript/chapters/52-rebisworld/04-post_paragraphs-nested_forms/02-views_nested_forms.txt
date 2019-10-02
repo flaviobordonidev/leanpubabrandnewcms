@@ -1,0 +1,4 @@
+# Editing e new sulle views
+
+mi sono allungato troppo sul capitolo precedente. Dovremo riorganizzare il contenuto.
+Chiudiamo il cap01 con i seeds e i models con qualche esempio da console. E mettiamo qui tutta la successiva parte di implementazione nei views.

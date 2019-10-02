@@ -1,0 +1,133 @@
+        <!-- start header -->
+        <header>
+            <!-- start navigation -->
+            <nav class="navbar navbar-default bootsnav navbar-top header-light bg-transparent nav-box-width white-link"><!-- start navigation --> 
+              <div class="container-fluid nav-header-container">
+                <div class="row">
+                  <div class="col-md-2 col-xs-5"><!-- start logo -->
+                      <!--<a href="index.html" title="Pofo" class="logo"><%#= image_tag "pofo/logo.png", 'data-rjs': image_path('pofo/logo@2x.png'), class: "logo-dark", alt: "Pofo" %><%= image_tag "pofo/logo-white.png", 'data-rjs': image_path('pofo/logo-white@2x.png'), alt: "Pofo", class: "logo-light default" %></a>-->
+                      <%= link_to root_path, class: "logo" do %>
+                        <%= image_tag "pofo/logo.png", 'data-rjs': image_path('pofo/logo@2x.png'), class: "logo-dark", alt: "Pofo" %><%= image_tag "pofo/logo-white.png", 'data-rjs': image_path('pofo/logo-white@2x.png'), alt: "Pofo", class: "logo-light default" %>
+                      <% end %>
+                  </div><!-- end logo -->
+                  <div class="col-md-7 col-xs-2 width-auto pull-right accordion-menu xs-no-padding-right">
+                    <button type="button" class="navbar-toggle collapsed pull-right" data-toggle="collapse" data-target="#navbar-collapse-toggle-1">
+                        <span class="sr-only">toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <div class="navbar-collapse collapse pull-right" id="navbar-collapse-toggle-1">
+                      <ul id="accordion" class="nav navbar-nav navbar-left no-margin alt-font text-normal" data-in="fadeIn" data-out="fadeOut">
+                        <li><a href="#" style="font-family:better-glory; font-size: 18px; display:inline-block;">HOME</a></li>
+                        <li><a href="#" style="font-family:better-glory; font-size: 18px; display:inline-block;">LA FORMULA</a></li>
+                        <li><a href="#" style="font-family:better-glory; font-size: 18px; display:inline-block;">LE ISOLE</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-md-2 col-xs-5 width-auto">
+                  </div>
+                </div>
+              </div>
+            </nav><!-- end navigation --> 
+        </header>
+        <!-- end header -->
+
+
+
+
+        <!-- start video style section -->
+        <section class="wow fadeIn parallax" data-stellar-background-ratio="0.1" style="background-image:url('<%= image_path('pofo/homepage.jpg') %>');">
+            <div class="opacity-extra-medium bg-black"></div>
+            <div class="container position-relative">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 text-center center-col  one-second-screen display-table page-title-large">
+                        <!--<a href="https://www.youtube.com/watch?v=Ma_i0JvdNN0" class="popup-youtube">-->
+                        <a href="https://www.youtube-nocookie.com/embed/Ma_i0JvdNN0?rel=0" class="popup-youtube">
+                        <!--<a href="https://player.vimeo.com/video/75976293" class="popup-vimeo">-->
+                          <%= image_tag("pofo/icon-play.png", class: "width-30", alt: "") %>
+                        </a>
+                        <h5 class="alt-font text-white" style="font-family:caligo; letter-spacing: 2px;">Il comportamento di una persona ha una struttura che può essere modellata, appresa, insegnata e anche cambiata.</h5>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- end video style section -->
+
+
+
+
+        <!-- start about title_section section -->
+        <section class="wow fadeIn">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-sm-11 col-xs-12 center-col text-center margin-two-bottom xs-margin-30px-bottom">
+                        <h6 class="alt-font text-medium-gray margin-5px-bottom text-uppercase text-medium margin-one-bottom" style="line-height: 4;">Benvenuti a Rebisworld</h6>
+                        <h6 class="font-weight-300 text-extra-dark-gray no-margin" style="line-height: 1.4;"><strong class="font-weight-400">La formula</strong> portata all’essenziale per passare al <strong class="font-weight-400">prossimo livello</strong>.
+Poggia le radici su concetti di <strong class="font-weight-400">Psicologia</strong>, <strong class="font-weight-400">Coaching</strong> e <strong class="font-weight-400">Neuroscienze</strong> che introducono ogni singolo creatore alla crescita personale e professionale in modo <strong class="font-weight-400">divertente</strong>.</h6>
+                        <h6>
+                          <br/>
+                          <a href="#modal-popup" class="popup-with-form btn btn-dark-gray btn-small text-extra-small btn-rounded margin-5px-top">Entra nella community &nbsp;<i class="fas fa-play-circle icon-very-small margin-5px-right no-margin-left" aria-hidden="true"></i></a>
+                          <!-- start modal pop-up -->
+                          <div id="modal-popup" class="white-popup-block mfp-hide col-lg-4 col-md-7 col-sm-8 col-xs-11 center-col bg-dark text-center modal-popup-main padding-50px-all border-radius-6">
+                              <!--<p class="margin-four">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>-->
+                              <div class="ml-form-embed"
+                                data-account="1395738:c7p4b5r4a6"
+                                data-form="1224232:z3e3m8">
+                              </div>
+                          </div>
+                          <!-- end modal pop-up -->
+                        </h6>
+                    </div>
+                </div>
+                <%#= render "feature_boxes" %>
+            </div>            
+        </section>
+        <!-- end about title_section section -->
+
+
+
+
+        <!-- start footer --> 
+        <!--<footer class="footer-classic-dark bg-extra-dark-gray padding-five-bottom xs-padding-30px-bottom">-->
+        <footer class="footer-classic-dark bg-dark-footer padding-50px-tb xs-padding-30px-tb">
+        
+            <!--<div class="bg-dark-footer padding-50px-tb xs-padding-30px-tb">-->
+                <div class="container">
+                    <div class="row equalize xs-equalize-auto">
+                        <!-- start social media -->
+                        <div class="col-md-4 col-sm-5 col-xs-12 col-xs-12 text-center display-table xs-text-center">
+                            <div class="display-table-cell vertical-align-middle">
+                                <div class="social-icon-style-8 display-inline-block vertical-align-middle">
+                                    <a href="javascript:void(0);" class="text-dark-gray">Term and Condition</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:void(0);" class="text-dark-gray">Privacy Policy</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end social media -->
+        
+                        <!-- start logo -->
+                        <div class="col-md-4 col-sm-2 col-xs-12 text-center display-table xs-margin-10px-bottom">
+                            <div class="display-table-cell vertical-align-middle">
+                                <%= link_to root_path do %>
+                                  <%= image_tag "pofo/logo-white.png", class: "footer-logo", 'data-rjs': image_path('pofo/logo-white@2x.png'), alt: "Pofo" %>
+                                <% end %>
+                                <br/>copyright&COPY; 2019
+                            </div>
+                        </div>
+                        <!-- end logo -->
+                        <!-- start social media -->
+                        <div class="col-md-4 col-sm-5 col-xs-12 col-xs-12 text-center display-table xs-text-center">
+                                <span class="alt-font margin-20px-right">On social networks</span>
+                                <div class="social-icon-style-8 display-inline-block vertical-align-middle">
+                                    <ul class="small-icon no-margin-bottom">
+                                        <li><a class="facebook text-white" href="https://www.facebook.com/rebisworld/" target="_blank"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
+                                        <li><a class="instagram text-white" href="https://instagram.com/rebisworld_the_original/" target="_blank"><i class="fab fa-instagram no-margin-right" aria-hidden="true"></i></a></li>
+                                    </ul>
+                                </div>
+                        </div>
+                        <!-- end social media -->
+                    </div>
+                </div>
+            <!--</div>-->
+        </footer>
+        <!-- end footer -->

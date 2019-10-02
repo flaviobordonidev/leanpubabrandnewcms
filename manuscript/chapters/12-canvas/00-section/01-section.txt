@@ -1,0 +1,43 @@
+-# Mettiamo il template Canvas "Blog" al nostro CMS base
+
+Dopo la sezione **beginning** e la sezione **brandnewcms** passiamo ad importare un tema sulla nostra applicazione.
+prepariamo il nostro Blog con il tema Canvas.
+
+
+
+
+LAVORIAMO SULLE TABELLE DI ESEMPIO EG_....
+IN QUESTO MODO LASCIAMO AMPIO SPAZIO DI MANOVRA PER IL PROGETTO FINALE SENZA ESSERE COSTRETTI AD ELIMINARE O MODIFICARE COLONNE NEL DB
+
+
+
+
+
+
+Risorse web:
+
+* [](http://themes.semicolonweb.com/html/canvas/intro.html)
+* [](https://themeforest.net/item/canvas-the-multipurpose-html5-template/9228123/support)
+
+---
+*** ATTENZIONE SU RAILS 5.1.2 hanno tolto dal Gemfile la gemma **gem 'jquery-rails'** ***
+da tener presente importando il template canvas.
+
+---
+http://themes.semicolonweb.com/html/canvas/
+http://themes.semicolonweb.com/html/canvas/intro.php
+http://themes.semicolonweb.com/html/canvas/index-corporate-4.php
+http://themes.semicolonweb.com/html/canvas/page-title-dark.php
+
+https://www.youtube.com/watch?v=2RkLP9h2wNA&list=PLiENd6US8xnyhFA-9KxMqrHiqG3GCTMad&index=19
+
+---
+http://themes.semicolonweb.com
+http://themes.semicolonweb.com/html/canvas/v5/icon-lists.html
+
+http://themes.semicolonweb.com/html/canvas/v5/index-corporate-4.php
+http://themes.semicolonweb.com/html/canvas/v5/page-title-dark.php
+
+http://support.semicolonweb.com/forums/topic/installing-in-ruby-on-rails-project/
+
+http://themes.semicolonweb.com/html/canvas/rs-demo-premium-beforeafter.html

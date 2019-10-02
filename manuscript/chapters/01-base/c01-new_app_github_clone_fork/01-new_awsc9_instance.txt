@@ -1,0 +1,76 @@
+# Nuova istanza awsC9
+
+Creiamo una nuova istanza su awsC9 (new environment) su cui creare una nuova app partendo da " s5beginning ".
+
+Su questo nuovo environment importeremo ( clone ) l'applicazione "s5beginning" prendendola da github.
+
+In questa serie di capitoli gestiamo un fork della nostra app in modo da crearne in pochi passaggi una copia che possiamo utilizzare in una nuova applicazione.
+
+Iniziamo la nuova applicazione s5cmsbase a partire da s5beginning.
+
+
+
+
+## Effettuiamo il login come amministratore
+
+https://console.aws.amazon.com/
+
+Scegliamo il link: "Sign-in using root account credentials"
+
+In questo modo lavoriamo come root di aws cloud9
+
+
+
+
+## Entriamo su cloud9
+
+Services -> Developer Tools -> Cloud9
+
+Selezioniamo la "AWS Region" EU (Frankfurt)
+
+Ed iniziamo a creare un nuovo ambiente.
+
+
+
+
+### step1
+
+Click su "Create environment"
+
+* Name: cmsbase
+* Description : v6 prepariamo un cms base da cui crearne vari
+
+Qui usiamo il nome della nostra applicazione e non "bl5_2". In questo nome non includiamo l'indicazione della versione; questa la possiamo mettere nella descrizione.
+
+
+
+
+### Step2
+
+* Environment type      : Create a new instance for environment (EC2)
+* Instance type         : t2.micro (1 GiB RAM + 1 vCPU)
+* Platform              : Ubuntu Server 18.04 LTS
+* Cost-saving setting   : After 30 minutes (default)
+
+
+
+
+### Step 3
+
+Review
+
+Click "Create environment"
+
+
+
+
+## Configuriamo la nostra sessione di AWS Cloud9
+
+* Main theme    : AWS Cloud9 Classic Dark Theme
+* Editor theme  : Cloud9 Night Low-Color
+* Keyboard Mode : Default
+
+Su preferences -> Soft tabs: 2
+
+
+L'ambiente è impostato. Adesso possiamo procedere ad importare un repository da GitHub.

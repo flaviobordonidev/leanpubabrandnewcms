@@ -1,0 +1,115 @@
+# Creiamo un mockups per la pagina the_formula
+
+Prendiamo spunto dal tema pofo e creiamo la pagina della forumla.
+
+
+
+
+## Apriamo il branch "Mockup the Formula"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b mf
+~~~~~~~~
+
+
+
+
+## Creiamo la view mockups/the_formula
+
+
+{id="03-03-01_03", title=".../app/views/mockups/the_formula.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+        <!-- start header -->
+        <header>
+            <!-- start navigation -->
+~~~~~~~~
+
+[Codice 01](#06-01-01_01all)
+
+
+
+
+## Implementiamo istradamento
+
+
+{id="03-03-01_03", title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=28}
+~~~~~~~~
+  get 'mockups/the_formula'
+~~~~~~~~
+
+[Codice 02](#06-01-01_01all)
+
+
+
+
+## Aggiorniamo controller
+
+
+{id="03-03-01_03", title=".../controllers/mockups_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+  def the_formula
+    render layout: 'mockups_pofo'
+  end
+~~~~~~~~
+
+[Codice 03](#06-01-01_01all)
+
+
+
+
+## Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+
+
+
+## Archiviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Mockup the_formula"
+~~~~~~~~
+
+
+
+
+## Publichiamo su Heroku
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku mf:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge mf
+$ git branch -d mf
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~

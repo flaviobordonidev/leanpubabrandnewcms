@@ -1,0 +1,28 @@
+# Rebisworld - Blog - posts
+
+adattiamo i posts a Rebisworld
+
+
+
+## Apriamo il branch "Rebisworld Blog"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b rb
+~~~~~~~~
+
+
+
+
+## Creiamo i Posts
+
+questa parte usa lo scaffold. la abbiamo già fatta in 01-base/c03-eg_posts_seeds.
+questa volta creiamo i campi che servono a Rebisworld
+
+
+
+
+
+
+
+

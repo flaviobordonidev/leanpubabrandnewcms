@@ -1,0 +1,21 @@
+<!-- start section -->
+<section class="wow fadeIn">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12 xs-text-center">
+        <figure class="wp-caption alignright">
+          <%= post.paragraph_image5.attached? ? image_tag(@post.paragraph_image5, alt: "") : image_tag('pofo/blog-details-img10.jpg', alt: "") %><figcaption class="wp-caption-text"><%= post.paragraph_image_label5 %></figcaption>
+        </figure>
+        <span class="text-medium alt-font font-weight-600 margin-20px-bottom display-block text-extra-dark-gray"><%= post.paragraph_title5 %></span>
+        <p><%= sanitize post.paragraph_content5 %></p>
+        
+        <figure class="wp-caption alignleft">
+          <%= post.paragraph_image6.attached? ? image_tag(@post.paragraph_image6, alt: "") : image_tag('pofo/blog-details-img11.jpg', alt: "") %><figcaption class="wp-caption-text"><%= post.paragraph_image_label6 %></figcaption>
+        </figure>
+        <span class="text-medium alt-font font-weight-600 margin-20px-bottom display-block text-extra-dark-gray"><%= post.paragraph_title6 %></span>
+        <p><%= sanitize post.paragraph_content6 %></p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- end section -->

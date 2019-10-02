@@ -1,0 +1,59 @@
+<div class="card">
+  <div class="card-header">
+    <%= "Paragrafo" %>
+  </div>
+
+  <div class="card-body">
+
+    <div class="field">
+      <%= form.label :title %>
+      <%= form.text_field :title, class: "form-control" %>
+    </div>
+
+    <div class="field">
+      <%= form.label :list_position %>
+      <%= form.text_field :list_position %>
+
+      <%= form.label :pstyle %>
+      <%#= form.text_field :pstyle %>
+      <%= form.select(:pstyle, PostParagraph.pstyles.keys.map {|pstyle| [pstyle.titleize,pstyle]}) %>
+
+      <!--<div class="form-check form-check-inline">-->
+      <!--  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">-->
+      <!--  <label class="form-check-label" for="inlineRadio1">foto al centro</label>-->
+      <!--</div>-->
+      <!--<div class="form-check form-check-inline">-->
+      <!--  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">-->
+      <!--  <label class="form-check-label" for="inlineRadio2">foto a sinistra</label>-->
+      <!--</div>-->
+      <!--<div class="form-check form-check-inline">-->
+      <!--  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">-->
+      <!--  <label class="form-check-label" for="inlineRadio3">foto a destra</label>-->
+      <!--</div>-->
+
+      <%= form.check_box :_destroy %>
+      <%= form.label :_destroy, "Elimina paragrafo" %>
+      <%#= form.hidden_field :_destroy %>
+    </div>
+
+
+
+    <div class="field">
+      <%= form.label :image %>
+      <!--<br><img src="https://images.pexels.com/photos/634843/pexels-photo-634843.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=200" alt="Immagine demo presa da pexels.com" width="100" height="100"><br>-->
+      <% if form.object.image.attached? %>
+        <%= image_tag form.object.image.variant(resize: "100x100") %>
+      <% else %>
+        <p>Nessuna immagine presente</p>
+      <% end %>
+      <%= form.file_field :image, class: "form-control-file" %>
+    </div>
+
+    <div class="field">
+      <%= form.label :content %>
+      <%#= form.text_area :content, rows: "49", class: "form-control" %>
+      <%= form.trix_editor :content, required: true, autofocus: true %>
+    </div>
+
+  </div><!--.card-body -->
+</div><!--.card -->

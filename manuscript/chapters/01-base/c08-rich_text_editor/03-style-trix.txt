@@ -1,0 +1,25 @@
+# Cambiamo lo style di Trix
+
+
+
+
+## Personalizziamo lo stile di trix 
+
+Cambiamo lo sfondo creando la classe "trix-style".
+
+{title=".../app/views/components/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=64}
+~~~~~~~~
+    <%#= f.trix_editor :content, class: 'trix-style' %>
+    <trix-editor input="content", class="trix-style"></trix-editor>
+~~~~~~~~
+
+
+{title=".../app/assets/stylesheets/application_global.scss", lang=HTML+Mako, line-numbers=on, starting-line-number=9}
+~~~~~~~~
+// TEXT EDITOR TRIX
+.trix-style
+{
+  background-color: #FFFFFF;
+}
+// TEXT EDITOR TRIX end
+~~~~~~~~

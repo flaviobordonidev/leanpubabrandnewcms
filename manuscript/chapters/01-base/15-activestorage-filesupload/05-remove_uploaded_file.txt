@@ -1,0 +1,136 @@
+# Eliminiamo il file caricato
+
+Questo codice noi lo usiamo per rimuovere la singola immagine " has_one_attached :main_image " ma è pensato anche per caricamenti multipli di immagini " has_many_attached :main_image ". 
+
+Risorse web:
+
+* [How do I create a delete button for images uploaded with Active Storage](https://gorails.com/forum/how-do-i-create-a-delete-button-for-images-uploaded-with-active-storage)
+* https://stackoverflow.com/questions/49515529/rails-5-2-active-storage-purging-deleting-attachments
+
+
+
+## Nel model post
+
+Nel model abbiamo già attivato la variabile " mmain_image " per ActionStorage in modo da poter caricare le immagini.
+Nel model Post nella sezione " # == Attributes ", sottosezione " ## ActiveStorage "
+
+{id="01-11-02_01", title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=14}
+~~~~~~~~
+  has_one_attached :main_image
+~~~~~~~~
+
+[Codice 01](#01-11-02_01all)
+
+
+
+
+## Sul controller authors/posts_controller
+
+Creiamo una nuova azione " delete_image_attachment " sul controller
+
+{id="01-11-02_02", title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=74}
+~~~~~~~~
+  def delete_image_attachment
+    @image_to_delete = ActiveStorage::Attachment.find(params[:id])
+    @image_to_delete.purge
+    redirect_back(fallback_location: request.referer)
+  end
+~~~~~~~~
+
+[Codice 02](#01-11-02_02all)
+
+
+
+
+## su routes
+
+Prepariamo un instradamento per puntare alla nuova azione " delete_image_attachment ". 
+
+{id="01-11-02_01", title=".../app/config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=4}
+~~~~~~~~
+  namespace :authors do
+    resources :posts, :except => [:show] do
+      member do
+        delete :delete_image_attachment
+      end
+    end
+  end
+~~~~~~~~
+
+[Codice 03](#01-11-02_01all)
+
+
+vediamo il path
+
+~~~~~~~~
+$ rails routes | egrep "delete_image_attachment"
+
+ubuntu:~/environment/cmsbase (lmp) $ rails routes | egrep "delete_image_attachment"
+delete_image_attachment_authors_post DELETE /authors/posts/:id/delete_image_attachment(.:format)                                     authors/posts#delete_image_attachment
+~~~~~~~~
+
+
+
+
+## Su authors/posts/_form
+
+Usiamo il nuovo instradamento sul link per eliminare l'immagine
+
+{id="01-11-02_03", title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=70}
+~~~~~~~~
+                <p><%= link_to 'Remove', delete_image_attachment_authors_post_path(post.main_image.id), method: :delete, data: { confirm: 'Are you sure?' } %></p>
+~~~~~~~~
+
+[Codice 04](#01-11-02_01all)
+
+
+
+
+
+
+
+Here is the model
+
+~~~~~~~~
+class Space < ApplicationRecord
+  belongs_to :user
+
+  has_many_attached :space_image
+
+end
+~~~~~~~~
+
+The controller
+
+~~~~~~~~
+class SpacesController < ApplicationController
+  before_action :set_space, except: [:index, :new, :create, :delete_image_attachment]
+  before_action :authenticate_user!, except: [:show]
+
+  def delete_image_attachment
+    @space_image = ActiveStorage::Attachment.find(params[:id])
+    @space_image.purge
+    redirect_back(fallback_location: request.referer)
+  end
+
+  private
+    def set_space
+      @space = Space.find(params[:id])
+    end
+end
+~~~~~~~~
+
+The view
+
+~~~~~~~~
+<div>
+  <% if @space.space_image.attached? %>
+    <% @space.space_image.each do |space_image| %>
+    <%= image_tag space_image, class: "avatar-medium" %>
+    <%= link_to 'Remove', delete_image_attachment_space_url(space_image.id),
+                method: :delete,
+                  data: { confirm: 'Are you sure?' } %>
+    <% end %>
+  <% end %>
+</div>
+~~~~~~~~

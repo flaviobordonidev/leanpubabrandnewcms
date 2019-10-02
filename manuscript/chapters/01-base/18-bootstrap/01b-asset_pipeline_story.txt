@@ -1,0 +1,46 @@
+# Asset pipeline
+
+implementiamo lo stylesheet, il codice javascript e le immagini attraverso l'asset_pipeline.
+
+Risorse web:
+
+* [rails guide: 2.2 Asset Organization](http://guides.rubyonrails.org/asset_pipeline.html)
+
+
+
+
+## Cos'è l'asset_pipeline
+
+Introdotto da Rails 4 l'asset_pipeline è un modo di organizzare i files con codice dedicato al frontend.
+
+Ci sono fondamentalmente tre cartelle principali dove mettere il codice:
+
+1. app/assets
+2. lib/assets
+3. vendor/assets/
+
+Il codice in app/assets è quello che ha la precedenza e questa cartella è pensata per tutto il codice scritto da noi per qusta applicazione.
+Il codice in lib/assets viene per secondo ed è pensata per il codice scritto da noi a livello di libreria, ossia del codice che utilizzeremo anche in altre applicazioni.
+Il coice in vendor/assets/ è interpellato per ultimo e questa cartella è pensata per codice scritto da terze parti. Ed è proprio il nostro caso. 
+Quindi il codice js, saas e le immagini del canvas le mettiamo nella cartella vendor/assets.
+
+Nei nostri files manifest possiamo omettere il percorso principale. 
+Ad esempio nel file manifest app/asset/application.js le seguenti linee di codice:
+
+//= require home
+//= require moovinator
+//= require slider
+//= require phonebox
+
+richiamano i seguenti files:
+
+app/assets/javascripts/home.js
+lib/assets/javascripts/moovinator.js
+vendor/assets/javascripts/slider.js
+
+* Se ci fosse un file app/assets/javascripts/slider.js questo avrebbe la precedenza e maschererebbe il file in vendor/assets/javascripts/slider.js. E' bene quindi stare attenti ed evitare files con lo stesso nome.
+* Inoltre il raggruppamento avviene in ordine alfabetico quindi si deve stare attenti alla sequenza del codice perché spesso è importante che alcuni files siano raggruppati prima di altri.
+* Inoltre si deve prestare attenzione alla gestione delle sottocartelle perché, anche se è possibile usarle, si rischia di doverle dichiarare una per una. 
+* È importante notare che i file a cui si desidera fare riferimento all'esterno di un "manifest" devono essere aggiunti all'array di precompilazione o non saranno disponibili nell'ambiente di produzione.
+* Inoltre da rails 5.2 si preferisce all'asset_pipeline il webpack ma al momento i due ambienti coesistono.
+

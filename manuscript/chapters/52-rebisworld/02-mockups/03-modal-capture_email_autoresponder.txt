@@ -1,0 +1,71 @@
+# Apriamo una finestra modale con all'interno la pagina cattura email
+
+La finestra modale la attiviamo dal tema pofo. Invece la cattura dell'email fa parte dell'autoresponder MailerLite (alternativa ad Aweber e Getresponse).
+
+
+
+
+## La finestra modale
+
+la prendiamo dal mockup xxxx
+
+
+
+
+## Autoresponder MailerLite
+
+Per inserire una form di cattura email nel nostro website (Embed Form) facciamo login su mailerlite.com, nel menu andiamo su " Forms ", dalla pagina che si apre selezioniamo il tab " Embedded Forms " e sulla form che ci interessa clicchiamo " Get Embedded code ".
+
+MailerLite -> Forms -> Embedded Forms -> <select_form> -> " Get Embedded code "
+
+L'inserimento è fatto in 2 passaggi:
+
+1) del codice da inserire per tutta l'applicazione prima del tag </head>. (Questo lo mettiamo nel layout.)
+2) del codice da inserire dove vogliamo che appaia la maschera di cattura emails (Embed form)
+
+
+
+
+### MailerLite code for layout
+
+JavaScript snippetHTML codeShow popup on click event
+Insert the following snippet of JavaScript on every page of your website right before the closing </head> tag.
+
+Please note: You only need to add this snippet once, even if you plan to have a few different forms. There is no need to insert this JavaScript snippet if you already have it on your website.
+
+{id="03-03-01_03", title=".../app/views/layout/pofo.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<!-- MailerLite Universal -->
+<script>
+(function(m,a,i,l,e,r){ m['MailerLiteObject']=e;function f(){
+var c={ a:arguments,q:[]};var r=this.push(c);return "number"!=typeof r?r:f.bind(c.q);}
+f.q=f.q||[];m[e]=m[e]||f.bind(f.q);m[e].q=m[e].q||f.q;r=a.createElement(i);
+var _=a.getElementsByTagName(i)[0];r.async=1;r.src=l+'?v'+(~~(new Date().getTime()/1000000));
+_.parentNode.insertBefore(r,_);})(window, document, 'script', 'https://static.mailerlite.com/js/universal.js', 'ml');
+
+var ml_account = ml('accounts', '1395738', 'c7p4b5r4a6', 'load');
+</script>
+<!-- End MailerLite Universal -->
+~~~~~~~~
+
+[Codice 01](#06-01-01_01all)
+
+
+
+
+### MailerLite code for Embed form
+
+Copy and paste the code provided below, wherever you want the form to appear.
+
+{id="03-03-01_03", title=".../app/views/homepage/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div class="ml-form-embed"
+  data-account="1395738:c7p4b5r4a6"
+  data-form="1224232:z3e3m8">
+</div>
+~~~~~~~~
+
+[Codice 02](#06-01-01_01all)
+
+
+

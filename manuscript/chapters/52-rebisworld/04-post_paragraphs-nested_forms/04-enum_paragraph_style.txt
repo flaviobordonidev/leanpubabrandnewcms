@@ -1,0 +1,308 @@
+# Paragraph styles - enum
+
+Gestiamo tre tipologie differenti di presentazione del paragrafo: con immagine centrale, con immagine a sinistra, con immagine a destra.
+
+
+Risorse interne:
+
+* vedi 99-rails_references/12-enum
+
+
+
+
+
+## Apriamo il branch "Paragraph Styles Enum"
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b pse
+~~~~~~~~
+
+
+
+
+## Aggiungiamo il campo pstyle:enum alla tabella post_paragraphs
+
+Il campo lo chiamiamo "pstyle" invece di "style" per evitare eventuali conflitti con nomi riservati.
+nel db postgresql si possono implementare dei campi di tipo "enum" ma per attivare la gestione "enum" di Rails usiamo la tipologia "integer" nel db. Implementeremo la gestione del campo con la tipologia "enum" direttamente nel model più avanti in questo capitolo.
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails g migration add_pstyle_to_post_paragraphs pstyle:integer
+~~~~~~~~
+
+Modifichiamo il migrate aggiungendo un default e l'indice per velocizzare queries che usano "pstyle"
+
+{id="01-09-03_01", title=".../db/migrate/xxx_add_pstyle_to_post_paragraphs.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+    add_column :post_paragraphs, :pstyle, :integer, default: 0
+    add_index :post_paragraphs, :pstyle, unique: false
+~~~~~~~~
+
+[Codice 01](#01-09-03_01all)
+
+Effettuiamo il migrate del database per creare la tabella sul database
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails db:migrate
+~~~~~~~~
+
+
+
+
+## Aggiorniamo il Model implementando ENUM
+
+{id="01-09-03_02", title=".../models/post_paragraph.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+  enum pstyle: {central: 0, left: 1, right:2}
+~~~~~~~~
+
+[Codice 02](#01-09-03_02all)
+
+
+
+
+## Assegnamo uno stile ai nostri paragrafi da terminale rails
+
+verifichiamo tutti gli stili presenti nella colonna "pstyle" assegnata ad enum.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+-> PostParagraph.pstyles
+
+2.6.3 :001 > PostParagraph.pstyles
+ => {"central"=>0, "left"=>1, "right"=>2} 
+~~~~~~~~
+
+
+rendiamo il primo paragrafo con immagine allineata a sinistra
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+-> PostParagraph.first
+-> PostParagraph.first.left!
+-> PostParagraph.first
+
+
+2.6.3 :004 > PostParagraph.first
+  PostParagraph Load (0.3ms)  SELECT  "post_paragraphs".* FROM "post_paragraphs" ORDER BY "post_paragraphs"."id" ASC LIMIT $1  [["LIMIT", 1]]
+ => #<PostParagraph id: 2, post_id: 5, title: "Cicoria", content: "<div>ripassata <del>im</del> <strong>in</strong> p...", imagecaption: nil, youtube: nil, youtubecaption: nil, vimeo: nil, vimeocaption: nil, created_at: "2019-09-16 13:07:24", updated_at: "2019-09-17 12:51:10", pstyle: "central"> 
+2.6.3 :005 > PostParagraph.first.left!
+  PostParagraph Load (0.6ms)  SELECT  "post_paragraphs".* FROM "post_paragraphs" ORDER BY "post_paragraphs"."id" ASC LIMIT $1  [["LIMIT", 1]]
+   (0.3ms)  BEGIN
+  Post Load (5.2ms)  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT $2  [["id", 5], ["LIMIT", 1]]
+  PostParagraph Update (0.5ms)  UPDATE "post_paragraphs" SET "pstyle" = $1, "updated_at" = $2 WHERE "post_paragraphs"."id" = $3  [["pstyle", 1], ["updated_at", "2019-09-23 10:32:57.121285"], ["id", 2]]
+   (0.9ms)  COMMIT
+ => true 
+2.6.3 :006 > PostParagraph.first
+  PostParagraph Load (0.6ms)  SELECT  "post_paragraphs".* FROM "post_paragraphs" ORDER BY "post_paragraphs"."id" ASC LIMIT $1  [["LIMIT", 1]]
+ => #<PostParagraph id: 2, post_id: 5, title: "Cicoria", content: "<div>ripassata <del>im</del> <strong>in</strong> p...", imagecaption: nil, youtube: nil, youtubecaption: nil, vimeo: nil, vimeocaption: nil, created_at: "2019-09-16 13:07:24", updated_at: "2019-09-23 10:32:57", pstyle: "left"> 
+2.6.3 :007 > 
+~~~~~~~~
+
+Altro modo
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+-> PostParagraph.first.update(pstyle: :left)
+
+
+2.6.3 :008 > PostParagraph.first.update(pstyle: :left)
+  PostParagraph Load (0.8ms)  SELECT  "post_paragraphs".* FROM "post_paragraphs" ORDER BY "post_paragraphs"."id" ASC LIMIT $1  [["LIMIT", 1]]
+   (0.1ms)  BEGIN
+  Post Load (0.3ms)  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT $2  [["id", 5], ["LIMIT", 1]]
+   (0.1ms)  COMMIT
+ => true 
+~~~~~~~~
+
+Altro modo
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+-> par = PostParagraph.first 
+-> par.pstyle = :left
+-> par.save
+~~~~~~~~
+
+verifichiamo che stile hanno il primo ed il secondo paragrafo
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+-> PostParagraph.first.left?
+ => true 
+
+-> PostParagraph.second.left? 
+ => false 
+
+-> PostParagraph.second.central?
+ => true
+
+-> PostParagraph.first.pstyle
+ => "left" 
+
+-> PostParagraph.second.pstyle
+ => "central" 
+~~~~~~~~
+
+prendiamo una lista di tutti i :left
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+-> PostParagraph.left
+
+
+2.6.3 :009 > PostParagraph.left
+  PostParagraph Load (0.3ms)  SELECT  "post_paragraphs".* FROM "post_paragraphs" WHERE "post_paragraphs"."pstyle" = $1 LIMIT $2  [["pstyle", 1], ["LIMIT", 11]]
+ => #<ActiveRecord::Relation [#<PostParagraph id: 2, post_id: 5, title: "Cicoria", content: "<div>ripassata <del>im</del> <strong>in</strong> p...", imagecaption: nil, youtube: nil, youtubecaption: nil, vimeo: nil, vimeocaption: nil, created_at: "2019-09-16 13:07:24", updated_at: "2019-09-23 10:32:57", pstyle: "left">]> 
+~~~~~~~~
+
+prendiamo una lista di tutti i :central
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+-> PostParagraph.central
+
+
+2.6.3 :011 > PostParagraph.central
+  PostParagraph Load (2.3ms)  SELECT  "post_paragraphs".* FROM "post_paragraphs" WHERE "post_paragraphs"."pstyle" = $1 LIMIT $2  [["pstyle", 0], ["LIMIT", 11]]
+ => #<ActiveRecord::Relation [#<PostParagraph id: 7, post_id: 5, title: "La bella lavanderina", content: "<div>Girando in todo lava i&nbsp;<strong>fazzolett...", imagecaption: nil, youtube: nil, youtubecaption: nil, vimeo: nil, vimeocaption: nil, created_at: "2019-09-16 15:54:39", updated_at: "2019-09-17 12:51:10", pstyle: "central">]>
+~~~~~~~~
+
+prendiamo una lista di tutti i :right
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+-> PostParagraph.right
+
+
+2.6.3 :015 > PostParagraph.right
+  PostParagraph Load (0.6ms)  SELECT  "post_paragraphs".* FROM "post_paragraphs" WHERE "post_paragraphs"."pstyle" = $1 LIMIT $2  [["pstyle", 2], ["LIMIT", 11]]
+ => #<ActiveRecord::Relation []>
+~~~~~~~~
+
+usciamo
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+-> exit
+~~~~~~~~
+
+
+
+
+## Attiviamo la white list sul controller
+
+Invece di cambiare i ruoli da console adesso li cambiamo dalla nostra view. Per poter passare i parametri attraverso le views, o meglio il sumbit del form, dobbiamo inserirli nella white list del controller. Una procedura detta "Strong_params" o "mass-assignment".
+Il controller di riferimento è authors/posts_controller. Mettiamo nella whitelist la colonna :pstyle. 
+
+{id="01-09-03_03", title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=83}
+~~~~~~~~
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def post_params
+      params.require(:post).permit(:title, :incipit, :content, :content_type, :video_youtube, :video_vimeo, :seocontent, :user_id, :main_image, :published, :published_at, :tag_list, :paraghraph_title1, :paragraph_content1, :paragraph_image1, :paragraph_title2, :paragraph_content2, :paragraph_title3, :paragraph_content3, :paragraph_title4, :paragraph_content4, :paragraph_image4, :paragraph_title5, :paragraph_content5, :paragraph_image5, :paragraph_image_label5, :paragraph_title6, :paragraph_content6, :paragraph_image6, :paragraph_image_label6, post_paragraphs_attributes: [:id, :title, :content, :_destroy, :pstyle])
+    end
+~~~~~~~~
+
+[Codice 03](#01-09-03_03all)
+
+
+
+
+## Aggiorniamo la view
+
+Aggiungiamo un selettore per permettere di cambiare ruolo
+
+{id="01-09-03_06", title=".../app/views/authors/posts/_paragraph_fields.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+~~~~~~~~
+    <div class="field">    
+      <%= form.label :pstyle %>
+      <%#= form.text_field :pstyle %>
+      <%= form.select(:pstyle, PostParagraph.pstyles.keys.map {|pstyle| [pstyle.titleize,pstyle]}) %>
+    </div>
+~~~~~~~~
+
+[Codice 06](#01-09-03_06all)
+
+Attenzione: deve essere attivo solo uno dei due campi: "form.text_field :role" o "form.select(:role...". Se attiviamo entrambi i campi verrà passato come params solo il valore dell'ultimo campo perché hanno lo stesso nome.
+
+I> Per approfondimenti vedi sezione 99-rails_references/views/data_types/select-collection_select
+
+
+
+
+
+### Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+* https://mycloud9path.amazonaws.com/authors/posts
+
+Andiamo in edit sui vari articoli e ne vediamo i vari paragrafi. Volendo possiamo anche cambiarli
+
+
+
+
+## Salviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "Add role:enum to table users"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su Heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku re:master
+$ heroku run rails db:migrate
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge re
+$ git branch -d re
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
+
+
+
+
+## Il codice del capitolo
+
+
+
+
+[Codice 01](#01-09-03_01)
+
+{id="01-09-03_01all", title=".../db/migrate/xxx_add_role_to_users.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+~~~~~~~~
