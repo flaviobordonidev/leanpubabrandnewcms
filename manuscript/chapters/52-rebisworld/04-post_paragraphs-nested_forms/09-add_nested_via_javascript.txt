@@ -1,0 +1,5 @@
+# Implementiamo codice javascript per aggiungere elementi annidati
+
+Al momento c'è questo articolo di Gennaio 2019 https://www.pluralsight.com/guides/ruby-on-rails-nested-attributes
+
+Su Rails 6 useremo i video di Driftruby per implementarli con la nuova libreria javascript di Rails al posto di jquery.

@@ -9,14 +9,7 @@ chapters/frontmatter/03-introduction.txt
 
 mainmatter:
 
-chapters/01-beginning/00-section/01-section.txt
+chapters/01-base/00-section/01-section.txt
 
-chapters/01-beginning/01-new_app/01-aws_cloud9-story.txt
-chapters/01-beginning/01-new_app/02-aws_cloud9-as-root.txt
-chapters/01-beginning/01-new_app/03-aws_cloud9-as-user.txt
-chapters/01-beginning/01-new_app/04-install_postgresql.txt
-chapters/01-beginning/01-new_app/04b-install_postgresql_on_ec2_amazon.txt
-chapters/01-beginning/01-new_app/05-new_app.txt
-chapters/01-beginning/01-new_app/06-pg-myapp-databases.txt
-chapters/01-beginning/01-new_app/07-ruby_version.txt
-chapters/01-beginning/01-new_app/08-credentials_and_masterkey.txt
+chapters/01-base/01-new_app/01-aws_cloud9-story.txt
+chapters/01-base/01-new_app/02-aws_IAM_user_for_cloud9.txt

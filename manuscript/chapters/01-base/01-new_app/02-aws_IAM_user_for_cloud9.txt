@@ -1,6 +1,10 @@
 # L'ambiente di sviluppo AWS come IAM user
 
-Il consiglio di sicurezza di Amazon Web Server è creare un utente IAM per gestire cloud9.
+Non è una buona idea lavorara su cloud9 come root. Lo stesso Amazon Web Server consiglia di creare un utente IAM per gestire cloud9.
+Tra le varie ragioni due sono da evidenziare:
+* mantenere la sicurezza
+* l'utente root non può essere scelto come collaboratore per altri ambienti aws cloud9.
+
 
 ATTENZIONE:
 l'utente IAM è visto come una persona differente dall'utente principale "root" e quindi avrà un suo ambiente cloud9 e le app create come "root" non saranno visibili nell'ambiente dello IAM user e viceversa.
@@ -8,12 +12,9 @@ E' quindi importante scegliere con cura l'utente:
 * se si vogliono raggruppare le app fatte per i vari clienti si possono usare IAM users con il nome dei nostri clienti
 * se voglio vedere tutte le app uso un unico utente 
 
+
 ATTENZIONE:
 Con lo IAM user si possono incorrere in errori per mancanza di autorizzazioni. Cosa che con "root" non avviene perché ha accesso a tutto.
-
-Un consiglio è quello di lavorare inizialmente come 'root' e poi migrare tutta l'applicazione sotto uno IAM user
-
-Possiamo SALTARE questo capitolo perché in questo tutorial lavoreremo come 'root'
 
 
 
@@ -30,35 +31,20 @@ Scegliamo il link: "Sign-in using root account credentials"
 
 
 
-## Creiamo un nuovo gruppo per usare Cloud9
+## Creiamo un nuovo utente dedicato all'uso di Cloud9
 
-Evitiamo di usare l'utente amministratore per ragioni di sicurezza. Creiamo un nuovo utente con i permessi limitati al solo utilizzo di Cloud9.
- 
-Services -> Security, Identity, & Compliance -> IAM
+Creiamo un nuovo utente Cloud9 con permesso di effettuare il login.
 
-Nel menu che appare sulla sinistra scegliamo Groups -> Create New Group
-
-* Group Name: Cloud9
-* Attach Policies 
-    arn:aws:iam::aws:policy/AWSCloud9Administrator 
-
-![Fig. 01](images/01-beginning/01-new_app/02_01-aws-iam-group.PNG)
-
-02_01-aws-iam-group
-
-
-## Creiamo un nuovo utente per usare Cloud9
-
-Creiamo un nuovo utente Cloud9 e lo assegnamo al gruppo Cloud9
-
-Guardiamo lo User ARN -> arn:aws:iam::93703132901:user/cloud9
-
-Il numero è usato per il login come utente
 
 
 
 
 ## Effettuiamo login come nuovo IAM utente Cloud9
+
+Guardiamo lo User ARN -> arn:aws:iam::93703132901:user/cloud9
+
+Il numero è usato per il login come utente
+
 
 Effettuiamo il logout come amministratore
 

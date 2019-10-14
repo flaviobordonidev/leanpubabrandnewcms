@@ -36,7 +36,7 @@ $ git config -l
 
 
 ubuntu:~/environment/cmspofo (master) $ git config --global user.name "Flavio Bordoni"
-ubuntu:~/environment/cmspofo (master) $ git config --global user.email "flavio.bordoni@gmail.com"
+ubuntu:~/environment/cmspofo (master) $ git config --global user.email "flavio.bordoni.dev@gmail.com"
 ubuntu:~/environment/cmspofo (master) $ git config -l
 core.editor=/usr/bin/nano
 user.name=Flavio Bordoni

@@ -45,10 +45,12 @@ Click su "Create environment"
 
 Diamo il nome della nostra app rails con un numero progressivo in fondo in modo da tener traccia delle varie versioni che si verranno a creare.
 
-* Name: s5beginning 
-* Description : la mia applicazione iniziale della serie 6.
+* Name: bs6_0
+* Description : App base con Rails 6.0
 
 ![Fig. 03](images/01-beginning/01-new_app/01_03-create_environment-step1.PNG)
+
+La chiamiamo " bs6_0 " ad indicare che è l'applicazione " base " usando Rails 6.0
 
 
 

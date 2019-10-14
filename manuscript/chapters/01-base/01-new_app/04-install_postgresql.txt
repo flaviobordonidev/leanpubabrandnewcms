@@ -9,12 +9,9 @@ Di default Rails ha attivo il database sqlite3 ma noi sin da subito nella nostra
 Usiamo PostgreSQL perché è lo stesso database che usa Heroku; e noi useremo Heroku per mettere la nostra app in produzione.
 
 
+Risorse interne:
 
-
-Risorse web:
-
-* [How to Install PostgreSQL on Ubuntu 18.04](https://linuxize.com/post/how-to-install-postgresql-on-ubuntu-18-04/)
-* [How To Install and Use PostgreSQL on Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-18-04)
+* 99-rails_references/postgresql/01-install
 
 
 
@@ -31,14 +28,6 @@ Install Postgres via apt
 $ sudo apt update
 $ sudo apt install postgresql postgresql-contrib libpq-dev
 --> y
-
-oppure
-
-$ sudo su - 
--> sudo apt update
--> sudo apt install postgresql postgresql-contrib libpq-dev
---> y
--> exit
 ~~~~~~~~
 
 
