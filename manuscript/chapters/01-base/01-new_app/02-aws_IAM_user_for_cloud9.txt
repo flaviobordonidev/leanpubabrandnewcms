@@ -1,14 +1,18 @@
 # L'ambiente di sviluppo AWS come IAM user
 
 Non è una buona idea lavorara su cloud9 come root. Lo stesso Amazon Web Server consiglia di creare un utente IAM per gestire cloud9.
+
 Tra le varie ragioni due sono da evidenziare:
+
 * mantenere la sicurezza
 * l'utente root non può essere scelto come collaboratore per altri ambienti aws cloud9.
 
 
 ATTENZIONE:
 l'utente IAM è visto come una persona differente dall'utente principale "root" e quindi avrà un suo ambiente cloud9 e le app create come "root" non saranno visibili nell'ambiente dello IAM user e viceversa.
+
 E' quindi importante scegliere con cura l'utente:
+
 * se si vogliono raggruppare le app fatte per i vari clienti si possono usare IAM users con il nome dei nostri clienti
 * se voglio vedere tutte le app uso un unico utente 
 
@@ -35,6 +39,12 @@ Scegliamo il link: "Sign-in using root account credentials"
 
 Creiamo un nuovo utente Cloud9 con permesso di effettuare il login.
 
+![Fig. 01](images/01-base/01-new_app/02_fig01-aws_IAM_user_new_step1.png)
+
+![Fig. 02](images/01-base/01-new_app/02_fig02-aws_IAM_user_new_step2.png)
+
+![Fig. 03](images/01-base/01-new_app/02_fig03-aws_IAM_user_new_step3.png)
+
 
 
 
@@ -50,4 +60,4 @@ Effettuiamo il logout come amministratore
 
 Nel login scegliamo -> "Sign in to a different account"
 
-![Fig. 02](images/01-beginning/01-new_app/02_02-aws-login-as-iam-user-cloud9.PNG)
+![Fig. 04](images/01-base/01-new_app/02_fig04-aws-login-as-iam-user-cloud9.png)
