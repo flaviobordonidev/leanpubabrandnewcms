@@ -138,8 +138,8 @@ Nel login scegliamo -> "Sign in to a different account"
 
 [Codice 01](#01-01-05_01)
 
-{format: ruby title=".../config/database.yml"}
-```
+{title=".../config/database.yml FANC"}
+```ruby
 # PostgreSQL. Versions 9.3 and up are supported.
 #
 # Install the pg driver:
@@ -234,4 +234,4 @@ xsxsxsxsx
 
 
 {format: ruby}
-![](chapters/01-base/01-new_app/06_01-config-database.yml "Hello World in Ruby")
+![](resources/chapters/01-base/01-new_app/07_01-gemfile.rb "Hello World in Ruby")
