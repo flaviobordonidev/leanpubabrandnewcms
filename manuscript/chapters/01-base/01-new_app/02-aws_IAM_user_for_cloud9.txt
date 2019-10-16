@@ -88,6 +88,9 @@ AWS -> Service -> IAM -> Users -> Add user
     Visualizza il riepilogo delle scelte fatte
 * Step5
 
+![A Piece of Cake](cake.png)
+
+NA TORTA
 
 ![Fig. 01](images/01-base/01-new_app/02_fig01-aws_IAM_user_new_step1.png)
 
