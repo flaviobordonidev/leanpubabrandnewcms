@@ -95,6 +95,7 @@ AWS -> Service -> IAM -> Users -> Add user
 ![Fig. 03](chapters/01-base/01-new_app/02_fig03-aws_IAM_user_new_step2b.png)
 
 
+[Codice 01.../config/database.yml](#01-01-05_01all)
 
 {id: "01-01-05_01", title: ".../config/database.yml", format: yaml, line-numbers: true, number-from: 24}
 ```
@@ -102,8 +103,8 @@ development:
   <<: *default
   database: bl6_0_development
 ```
+[vai da pippo](#pippo)
 
-[Codice 01](#01-01-05_01all)
 
 
 
@@ -144,7 +145,7 @@ puts "hello"
 
 blablabla blabla
 
-[Codice 01](#01-01-05_01)
+[Codice 01 - .../config/database.yml](#01-01-05_01){id: "pippo"}
 
 {id: "01-01-05_01all", title: ".../config/database.yml", format: yaml, line-numbers: true, number-from: 1}
 ```
