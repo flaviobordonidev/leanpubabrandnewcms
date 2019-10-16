@@ -2,6 +2,10 @@
 
 Iniziamo una nuova app su Rails
 
+
+LAVORIAMO SULLE TABELLE DI ESEMPIO EG_....
+IN QUESTO MODO LASCIAMO AMPIO SPAZIO DI MANOVRA PER IL PROGETTO FINALE SENZA ESSERE COSTRETTI AD ELIMINARE O MODIFICARE COLONNE NEL DB
+
 in questo volume: 
 
 * Creiamo una nuova app Rails con database PostgreSql e ne visualizziamo il preview
@@ -20,3 +24,18 @@ in questo volume:
 
 ---
 *  Definiamo l'ambiente di sviluppo.
+
+---
+Volume2
+
+Questo volume continua a partire da quanto già fatto nei seguenti volumi:
+
+* 01-beginnning
+
+
+in questo volume: 
+
+* facciamo tutta la parte di "dashboard" che permette all'autore di creare i vari articoli (posts).
+* Prepariamo anche una "bozza" di quello che è il Blog visibile da tutti.
+* Successivamente su questa bozza si potranno caricare diversi temi.
+* Il primo tema che utilizzeremo in un'altra sezione sarà Canvas. (vedi cms_canvas)

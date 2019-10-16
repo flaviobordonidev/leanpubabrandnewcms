@@ -1,13 +1,6 @@
 # Creiamo uno IAM user per Cloud9
 
-Possiamo saltare questo capitolo.
-
 Non è una buona idea lavorara su cloud9 come root. Lo stesso Amazon Web Server consiglia di creare un utente IAM per gestire cloud9.
-Si hanno però diverse impostazioni di sicurezza da dover considerare ed attivare, quindi inizialmente lavoreremo come root.
-
-INFO:
-
-Se vogliamo condividere il nostro ambiente aws Cloud9 con un collaboratore che è loggato come root dobbiamo invitarlo come " arn:aws:iam::870054134107:root ".
 
 
 Risorse interne:
@@ -51,7 +44,41 @@ Scegliamo il link: "Sign-in using root account credentials"
 
 ## Creiamo un nuovo utente dedicato all'uso di Cloud9
 
-Creiamo un nuovo utente Cloud9 con permesso di effettuare il login.
+Creiamo un nuovo utente IAM con permesso di effettuare il login sulla console aws da assegnare a Flavio Bordoni.
+
+L'utente IAM " user_FB " è quello che Flavio Bordoni userà per lavorare su amazon web server di volta in volta gli implementeremo le varie autorizzazioni.
+Usiamo il prefisso " user_ " per differenziare gli utenti IAM che identificano delle persone fisiche da quelli che identificano applicativi.
+
+Abbiamo due tipi di prefissi per gli utenti IAM:
+
+* user_ : identifica persone fisiche che accedono ai vari servizi di aws.
+* bot_  : identifica applicativi che accedono ai vari servizi di aws.
+
+
+AWS -> Service -> IAM -> Users -> Add user
+
+* Una volta fatto login dalla ConsoleHome AWS faccaimo click sul service "IAM". 
+* Andiamo sul link Users e ne creiamo uno nuovo cliccando "Add user".
+
+
+* Step1
+    User name   : user_fb
+    Access type : AWS Management Console access
+    Console password 
+    -> Custom password : mypassword
+    Require password reset : no
+* Step2
+    Permissions 
+    -> policy : AmazonS3FullAccess
+    -> policy : AWSCloud9Administrator
+    -> policy : AWSCloud9EnvironmentMember
+    -> policy : AWSCloud9User
+* Step3
+    Non aggiungiamo nessun tag
+* Step4
+    Visualizza il riepilogo delle scelte fatte
+* Step5
+
 
 ![Fig. 01](images/01-base/01-new_app/02_fig01-aws_IAM_user_new_step1.png)
 

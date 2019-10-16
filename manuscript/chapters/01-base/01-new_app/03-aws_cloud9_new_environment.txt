@@ -1,20 +1,23 @@
-# Lavoriamo come root di aws cloud9
+# Creiamo nuovo ambiente cloud9
 
 
 
+Risorse interne:
 
-## Effettuiamo il login come amministratore
-
-https://console.aws.amazon.com/
-
-Scegliamo il link: "Sign-in using root account credentials"
-
+*
 
 
 
 ## Entriamo su cloud9
 
+Facciamo login come utente IAM " user_fb " ed andiamo sul servizio di cloud9
+
 Services -> Developer Tools -> Cloud9
+
+
+
+
+## Impostiamo la Region
 
 Selezioniamo la "AWS Region" più vicina a noi. Ad esempio "Ireland"
 
@@ -36,47 +39,41 @@ Un consiglio è quello di lasciare inizialmente la AWS Region di default perché
 
 
 
-### step1
 
-Click su "Create environment"
+## Creiamo il nuovo ambiente cloud9
 
-Diamo il nome della nostra app rails con un numero progressivo in fondo in modo da tener traccia delle varie versioni che si verranno a creare.
-
-* Name: bl6_0
-* Description : App base con Rails 6.0
-
-![Fig. 03](images/01-base/01-new_app/03_fig03-aws_c9_new_environment_step1.png)
-
-La chiamiamo " bl6_0 " ad indicare che è l'applicazione " baseline " creata con Rails 6.0.
+Il nuovo ambiente lo chiamiamo " bl6_0 " ad indicare che è l'applicazione " baseline " creata con Rails 6.0.
 Per applicazione baseline intendiamo quella che ha il 90% di tutto quello che ci serve per sviluppare e quindi un ottimo punto di partanza da clonare per tutte le altre applicazioni.
 
 
+* Step1
+    Name: bl6_0
+    Description : App base con Rails 6.0
+* Step2
+    Environment type      : Create a new instance for environment (EC2)
+    Instance type         : t2.micro (1 GiB RAM + 1 vCPU)
+    Platform              : Ubuntu Server 18.04 LTS
+    Cost-saving setting   : After 30 minutes (default)
+* Step 3
+    Review
 
 
-### Step2
+![Fig. 03](images/01-base/01-new_app/03_fig03-aws_c9_new_environment_step1.png)
 
-Iniziamo con il server virtuale di default che è sufficiente per iniziare. Possiamo potenziarlo in seguito.
-Più potenza diamo più ci costa.
+Click su "Create environment"
 
-* Environment type      : Create a new instance for environment (EC2)
-* Instance type         : t2.micro (1 GiB RAM + 1 vCPU)
-* Platform              : Ubuntu Server 18.04 LTS
-* Cost-saving setting   : After 30 minutes (default)
 
 ![Fig. 04](images/01-base/01-new_app/03_fig04-aws_c9_new_environment_step2.png)
 
+Lasciamo il server virtuale di default che è sufficiente per iniziare. Possiamo potenziarlo in seguito. Più potenza diamo più ci costa.
 
-
-
-### Step 3
-
-Review
 
 ![Fig. 05](images/01-base/01-new_app/03_fig05-aws_c9_new_environment_step3.png)
 
 Click "Create environment"
 
-Sono presentati i seguenti consigli che è interessante implementare successivamente con calma:
+
+Ci sono presentati i seguenti consigli che è interessante implementare successivamente con calma:
 
 Raccomandiamo le seguenti migliori pratiche per l'utilizzo dell'ambiente AWS Cloud9
 

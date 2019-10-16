@@ -14,4 +14,5 @@ chapters/01-base/00-section/01-section.txt
 chapters/01-base/01-new_app/01-aws_cloud9-story.txt
 chapters/01-base/01-new_app/02-aws_IAM_user_for_cloud9.txt
 chapters/01-base/01-new_app/03-aws_cloud9_new_environment.txt
-
+chapters/01-base/01-new_app/04-install_postgresql.txt
+chapters/01-base/01-new_app/05-new_app.txt

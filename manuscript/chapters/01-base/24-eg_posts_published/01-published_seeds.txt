@@ -15,7 +15,7 @@ $ git checkout -b pub
 
 
 
-## Aggiungiamo le colonne per publish su posts
+## Aggiungiamo le colonne per publish su eg_posts
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
