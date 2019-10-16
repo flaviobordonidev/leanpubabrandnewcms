@@ -139,7 +139,7 @@ Nel login scegliamo -> "Sign in to a different account"
 {id: "01-01-05_01all"}
 [Codice 01 - .../config/database.yml](#01-01-05_01)
 
-{format: yaml, line-numbers: true, number-from: 1}
+{caption: "fanculo", format: yaml, line-numbers: true, number-from: 1}
 ```
 # PostgreSQL. Versions 9.3 and up are supported.
 #
