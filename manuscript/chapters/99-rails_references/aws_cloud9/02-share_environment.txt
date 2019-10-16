@@ -1,0 +1,22 @@
+# Condividiamo l'ambiente cloud9
+
+
+Risorse web:
+
+* [](https://docs.aws.amazon.com/cloud9/latest/user-guide/share-environment.html)
+* [](https://docs.aws.amazon.com/cloud9/latest/user-guide/share-environment.html#share-environment-invite-user)
+
+
+
+
+
+## Invite users
+
+In the Share this environment dialog box, for Invite Members, type one of the following.
+
+* To invite an IAM user, type the user's name.
+* To invite the AWS account root user, type arn:aws:iam::123456789012:root, replacing 123456789012 with your AWS account ID.
+* To invite a user with an assumed role or a federated user with an assumed role, type arn:aws:sts::123456789012:assumed-role/MyAssumedRole/MyAssumedRoleSession, replacing 123456789012 with your AWS account ID, MyAssumedRole with the name of the assumed role, and MyAssumedRoleSession with the session name for the assumed role.
+
+
+arn:aws:iam::870054134107:root

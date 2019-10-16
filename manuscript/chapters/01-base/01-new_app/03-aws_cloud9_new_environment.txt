@@ -16,11 +16,9 @@ Scegliamo il link: "Sign-in using root account credentials"
 
 Services -> Developer Tools -> Cloud9
 
-![Fig. 01](images/01-beginning/01-new_app/01_01-awscloud9-root_account.PNG)
-
 Selezioniamo la "AWS Region" più vicina a noi. Ad esempio "Ireland"
 
-![Fig. 02](images/01-beginning/01-new_app/01_02-aws-iam_user-console-region.PNG)
+![Fig. 01](images/01-base/01-new_app/03_fig01-aws-iam_user-console-region.png)
 
 Ed iniziamo a creare un nuovo ambiente. E' un processo in 3 passi.
 
@@ -31,8 +29,7 @@ Inoltre ogni Region ha dei costi di fatturazione differenti. Ad esempio:
 * EU (Ireland)          : $0.11 per GB-month of General Purpose SSD (gp2) 
 * US East (N. Virginia) : $0.10 per GB-month of General Purpose SSD (gp2) 
 
-
-![Fig. 02b](images/01-beginning/01-new_app/01_02b-aws-region_billing.PNG)
+![Fig. 02](images/01-base/01-new_app/03_fig02-aws-region_billing.png)
 
 Un consiglio è quello di lasciare inizialmente la AWS Region di default perché normalmente è quella più economica ed intervenire in un secondo momento nel cambio della Region; una volta valutate le prestazioni.
 
@@ -45,12 +42,13 @@ Click su "Create environment"
 
 Diamo il nome della nostra app rails con un numero progressivo in fondo in modo da tener traccia delle varie versioni che si verranno a creare.
 
-* Name: bs6_0
+* Name: bl6_0
 * Description : App base con Rails 6.0
 
-![Fig. 03](images/01-beginning/01-new_app/01_03-create_environment-step1.PNG)
+![Fig. 03](images/01-base/01-new_app/03_fig03-aws_c9_new_environment_step1.png)
 
-La chiamiamo " bs6_0 " ad indicare che è l'applicazione " base " usando Rails 6.0
+La chiamiamo " bl6_0 " ad indicare che è l'applicazione " baseline " creata con Rails 6.0.
+Per applicazione baseline intendiamo quella che ha il 90% di tutto quello che ci serve per sviluppare e quindi un ottimo punto di partanza da clonare per tutte le altre applicazioni.
 
 
 
@@ -65,7 +63,7 @@ Più potenza diamo più ci costa.
 * Platform              : Ubuntu Server 18.04 LTS
 * Cost-saving setting   : After 30 minutes (default)
 
-![Fig. 04](images/01-beginning/01-new_app/01_04-create_environment-step2.PNG)
+![Fig. 04](images/01-base/01-new_app/03_fig04-aws_c9_new_environment_step2.png)
 
 
 
@@ -74,7 +72,7 @@ Più potenza diamo più ci costa.
 
 Review
 
-![Fig. 05](images/01-beginning/01-new_app/01_05-create_environment-step3.PNG)
+![Fig. 05](images/01-base/01-new_app/03_fig05-aws_c9_new_environment_step3.png)
 
 Click "Create environment"
 
@@ -96,12 +94,12 @@ Raccomandiamo le seguenti migliori pratiche per l'utilizzo dell'ambiente AWS Clo
 * Editor theme  : Cloud9 Night Low-Color
 * Keyboard Mode : Default
 
-![Fig. 06](images/01-beginning/01-new_app/01_06-dark_theme.PNG)
+![Fig. 06](images/01-base/01-new_app/03_fig06-dark_theme.png)
 
 
 Su preferences -> Soft tabs: 2
 
-![Fig. 07](images/01-beginning/01-new_app/01_07-soft_tabs.PNG)
+![Fig. 07](images/01-base/01-new_app/03_fig07-soft_tabs.png)
 
 
 L'ambiente è impostato. Adesso possiamo creare una nuova applicazione Rails.

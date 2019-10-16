@@ -1,23 +1,37 @@
-# L'ambiente di sviluppo AWS come IAM user
+# Creiamo uno IAM user per Cloud9
+
+Possiamo saltare questo capitolo.
 
 Non è una buona idea lavorara su cloud9 come root. Lo stesso Amazon Web Server consiglia di creare un utente IAM per gestire cloud9.
+Si hanno però diverse impostazioni di sicurezza da dover considerare ed attivare, quindi inizialmente lavoreremo come root.
 
-Tra le varie ragioni due sono da evidenziare:
+INFO:
 
-* mantenere la sicurezza
-* l'utente root non può essere scelto come collaboratore per altri ambienti aws cloud9.
+Se vogliamo condividere il nostro ambiente aws Cloud9 con un collaboratore che è loggato come root dobbiamo invitarlo come " arn:aws:iam::870054134107:root ".
 
 
-ATTENZIONE:
-l'utente IAM è visto come una persona differente dall'utente principale "root" e quindi avrà un suo ambiente cloud9 e le app create come "root" non saranno visibili nell'ambiente dello IAM user e viceversa.
+Risorse interne:
+
+* 99-rails_references/aws_cloud9/02-share_environment
+
+
+
+
+## Procediamo comunque
+
+Se decidiamo di creare un utente IAM facciamo ATTENZIONE:
+
+l'utente IAM è visto come una persona differente dall'utente principale "root" e quindi avrà un suo ambiente cloud9.
+Le app create come "root" o come un altro utente IAM non saranno visibili in "Your environments". Le possiamo comunque trovare in "Account environments".
 
 E' quindi importante scegliere con cura l'utente:
 
-* se si vogliono raggruppare le app fatte per i vari clienti si possono usare IAM users con il nome dei nostri clienti
-* se voglio vedere tutte le app uso un unico utente 
+* se si vogliamo raggruppare le app fatte per i vari clienti possiamo usare IAM users con il nome dei nostri clienti
+* se vogliamo vedere tutte le app in un unico punto usiamo un unico IAM user. 
 
 
 ATTENZIONE:
+
 Con lo IAM user si possono incorrere in errori per mancanza di autorizzazioni. Cosa che con "root" non avviene perché ha accesso a tutto.
 
 
@@ -41,11 +55,13 @@ Creiamo un nuovo utente Cloud9 con permesso di effettuare il login.
 
 ![Fig. 01](images/01-base/01-new_app/02_fig01-aws_IAM_user_new_step1.png)
 
-![Fig. 02](images/01-base/01-new_app/02_fig02-aws_IAM_user_new_step2.png)
+![Fig. 02](images/01-base/01-new_app/02_fig02-aws_IAM_user_new_step2a.png)
 
-![Fig. 03](images/01-base/01-new_app/02_fig03-aws_IAM_user_new_step3.png)
+![Fig. 03](images/01-base/01-new_app/02_fig03-aws_IAM_user_new_step2b.png)
 
+![Fig. 04](images/01-base/01-new_app/02_fig04-aws_IAM_user_new_step3.png)
 
+![Fig. 05](images/01-base/01-new_app/02_fig05-aws_IAM_user_new_step4.png)
 
 
 

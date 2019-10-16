@@ -22,6 +22,8 @@ $ rails s -b $IP -p $PORT
 
 https://rebisworld3-flaviobordonidev.c9users.io/
 
+---
+http://placehold.it/850x1000
 
 
 ---

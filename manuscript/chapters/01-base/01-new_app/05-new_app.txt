@@ -1,35 +1,10 @@
 # Nuova app Rails 6 utilizzando Cloud9 workspace
 
 
-Risorse web:
+Risorse interne:
 
-* [yarn site installation Debian / Ubuntu](https://yarnpkg.com/lang/en/docs/install/#debian-stable)
-
-
-## Installiamo yarn per Rails 6
-
-NO!!! NON DOBBIAMO INSTALLARLO NOI. CI PENSA IL BUNDLE di RAILS
-
-Prima di installare rails 6 dobbiamo assicurarci che sia installato yarn per la gestione di webpack.
-Per evitare problemi di autorizzazione lo installiamo con i diritti di root.
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ sudo su - 
--> curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
--> echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
--> sudo apt-get update && sudo apt-get install yarn
-
--> sudo apt-get update && sudo apt-get install --no-install-recommends yarn
--> exit
-~~~~~~~~
-
-verifichiamo che si è installato
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-yarn --version
-~~~~~~~~
+* 99-rails_references/gems/rails
+* 99-rails_references/yarn/01-yarn
 
 
 
@@ -42,34 +17,115 @@ I> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/rails)
 I>
 I> facciamo riferimento al [tutorial della gemma](https://rubyonrails.org/)
 
-Poiché pubblicheremo in produzione la nostra applicazione su Heroku verifichiamo che quale versione Rails è supportata su 
+Poiché pubblicheremo in produzione la nostra applicazione su Heroku verifichiamo quale versione Rails è supportata su 
 
-* [Heroku devcenter - Getting Started on Heroku with Rails 5.x](https://devcenter.heroku.com/articles/getting-started-with-rails5)
-
-Altra fonte utile è 
-
-* [Michael Hartl - Rails Tutorial 1.2.2 Installing Rails](https://www.railstutorial.org/book/beginning)
+* [Heroku devcenter - Getting Started on Heroku with Rails 6.x](https://devcenter.heroku.com/articles/getting-started-with-rails6)
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ cd ~/environment
-$ gem install rails -v 5.2.3
+$ gem install rails -v 6.0.0
 ~~~~~~~~
 
-
-
-La versione ufficiale è la 5.2.3 ma abbiamo già la versione 6 che è alla realease candidate 2 ed è molto stabile quindi la installiamo con:
-
-~~~~~~~~
-gem install rails --pre
-~~~~~~~~
 
 Per verificare quale versione di rails abbiamo installato
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
+$ rails -v
+
+
 ubuntu:~/environment $ rails -v
-Rails 6.0.0.rc2
+Rails 6.0.0
+~~~~~~~~
+
+
+
+
+## Installiamo yarn per Rails 6
+
+Prima di creare una nuova app su rails 6 dobbiamo assicurarci che sia installato yarn per la gestione di webpack.
+Per evitare problemi di autorizzazione lo installiamo con i diritti di root.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo su - 
+-> curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+-> echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+-> sudo apt-get -y update && sudo apt-get -y install yarn
+-> exit
+
+
+ubuntu:~/environment $ sudo su -
+root@ip-172-31-89-200:~# curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+OK
+root@ip-172-31-89-200:~# echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+deb https://dl.yarnpkg.com/debian/ stable main
+root@ip-172-31-89-200:~# sudo apt-get -y update && sudo apt-get -y install yarn
+Hit:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic InRelease
+Get:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic-updates InRelease [88.7 kB]                                                 
+Get:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic-backports InRelease [74.6 kB]                                               
+Hit:4 http://security.ubuntu.com/ubuntu bionic-security InRelease                                                                       
+Hit:5 https://download.docker.com/linux/ubuntu bionic InRelease                                                                         
+Get:6 https://dl.yarnpkg.com/debian stable InRelease [17.1 kB]                                                               
+Get:7 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic-updates/main amd64 Packages [752 kB]
+Get:8 https://dl.yarnpkg.com/debian stable/main amd64 Packages [9122 B]
+Get:9 https://dl.yarnpkg.com/debian stable/main all Packages [9122 B]
+Fetched 951 kB in 1s (1246 kB/s)
+Reading package lists... Done
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following additional packages will be installed:
+  libc-ares2 libhttp-parser2.7.1 nodejs nodejs-doc
+The following NEW packages will be installed:
+  libc-ares2 libhttp-parser2.7.1 nodejs nodejs-doc yarn
+0 upgraded, 5 newly installed, 0 to remove and 18 not upgraded.
+Need to get 6496 kB of archives.
+After this operation, 30.1 MB of additional disk space will be used.
+Get:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 nodejs-doc all 8.10.0~dfsg-2ubuntu0.4 [752 kB]
+Get:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 libc-ares2 amd64 1.14.0-1 [37.1 kB]
+Get:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 libhttp-parser2.7.1 amd64 2.7.1-2 [20.6 kB]
+Get:4 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 nodejs amd64 8.10.0~dfsg-2ubuntu0.4 [4796 kB]
+Get:5 https://dl.yarnpkg.com/debian stable/main amd64 yarn all 1.19.1-1 [890 kB]
+Fetched 6496 kB in 0s (46.1 MB/s)                         
+Selecting previously unselected package nodejs-doc.
+(Reading database ... 159112 files and directories currently installed.)
+Preparing to unpack .../nodejs-doc_8.10.0~dfsg-2ubuntu0.4_all.deb ...
+Unpacking nodejs-doc (8.10.0~dfsg-2ubuntu0.4) ...
+Selecting previously unselected package yarn.
+Preparing to unpack .../archives/yarn_1.19.1-1_all.deb ...
+Unpacking yarn (1.19.1-1) ...
+Selecting previously unselected package libc-ares2:amd64.
+Preparing to unpack .../libc-ares2_1.14.0-1_amd64.deb ...
+Unpacking libc-ares2:amd64 (1.14.0-1) ...
+Selecting previously unselected package libhttp-parser2.7.1:amd64.
+Preparing to unpack .../libhttp-parser2.7.1_2.7.1-2_amd64.deb ...
+Unpacking libhttp-parser2.7.1:amd64 (2.7.1-2) ...
+Selecting previously unselected package nodejs.
+Preparing to unpack .../nodejs_8.10.0~dfsg-2ubuntu0.4_amd64.deb ...
+Unpacking nodejs (8.10.0~dfsg-2ubuntu0.4) ...
+Setting up nodejs-doc (8.10.0~dfsg-2ubuntu0.4) ...
+Setting up libhttp-parser2.7.1:amd64 (2.7.1-2) ...
+Setting up yarn (1.19.1-1) ...
+Setting up libc-ares2:amd64 (1.14.0-1) ...
+Setting up nodejs (8.10.0~dfsg-2ubuntu0.4) ...
+update-alternatives: using /usr/bin/nodejs to provide /usr/bin/js (js) in auto mode
+Processing triggers for man-db (2.8.3-2ubuntu0.1) ...
+Processing triggers for libc-bin (2.27-3ubuntu1) ...
+root@ip-172-31-89-200:~# exit
+logout
+~~~~~~~~
+
+verifichiamo che si è installato
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ yarn --version
+
+
+ubuntu:~/environment $ yarn --version
+1.19.1
 ~~~~~~~~
 
 
@@ -77,33 +133,17 @@ Rails 6.0.0.rc2
 
 ## Creiamo l'applicazione
 
-Una volta installato Rails passiamo a creare l'applicazione
+Passiamo a creare l'applicazione
 In produzione Heroku utilizza postgreSQL quindi lo installiamo anche localmente.
 Possiamo gestire postgreSQL localmente nell'ambiente di sviluppo e test perché su cloud9 è già preinstallato postgreSQL e dobbiamo solo farlo partire. Un'alternativa era quella di caricare la gemma "pg" solo per l'ambiente di produzione. Ma se possibile è preferibile usare nell'ambiente di sviluppo le stesse risorse usate in produzione.
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ cd ~/environment
-$ rails _6.0.0.rc2_ new bl6_0 --database=postgresql
+$ rails _6.0.0_ new bl6_0 --database=postgresql
 ~~~~~~~~
 
-Mi da il messaggio
-
-"Yarn not installed. Please download and install Yarn from https://yarnpkg.com/lang/en/docs/install/"
-
-
-Allora installiamo la 5.2.3
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ cd ~/environment
-$ rails _5.2.3_ new bl5_2 --database=postgresql
-~~~~~~~~
-
-
-Il nome "bl5_2" vuol dire " baseline 5.2 " ad indicare che siamo partiti da rails 5.2.x
-Usiamo questo nome perché, creando più istanze su awsC9, il nome dell'applicazione lo diamo al nome dell'istanza awsC9.
-Inoltre, quando faremo un clone dell'applicazione non saremo costretti a rinominarla.
+Il nome "bl6_0" vuol dire " baseline 6.0 " ad indicare che siamo partiti da rails 6.0.x
 
 
 
@@ -114,7 +154,7 @@ Per aprire la nuova applicazione entriamo nella cartella elisinfo5 e facciamo pa
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ cd bl5_2
+$ cd bl6_0
 $ rails s
 
 
@@ -131,9 +171,31 @@ Use Ctrl-C to stop
 ~~~~~~~~
 
 su cloud9 clicchiamo sul link di "Preview" in alto e scegliamo "Preview Running Application"
-In basso a destra si apre la finestra di preview con un messaggio di errore perché manca la connessione al database PostgreSQL.
+In basso a destra si apre la finestra di preview con un messaggio di errore " Blocked host: ... " perché manca il permesso di connettersi al web server locale.
 
-![Fig. 01](images/01-beginning/01-new_app/04_01-preview-db_error.png)
+![Fig. 01](images/01-beginning/01-new_app/04_01-preview-error_connection.png)
+
+
+
+
+## Risolviamo problema di connessione
+
+Before running rails server, it’s necessary on some systems (including the cloud IDE) to allow connections to the local web server. To enable this, you should navigate to the file config/environments/development.rb and paste in the two extra lines shown in Listing 1.7 and Figure 1.13.
+
+Permettiamo le connessioni al web server locale.
+
+{id="01-01-05_01", title=".../config/environments/development.rb", lang=ruby, line-numbers=on, starting-line-number=63}
+~~~~~~~~
+  # Allow connections to local server.
+  config.hosts.clear
+~~~~~~~~
+
+[Codice 01](#01-01-05_01all)
+
+Adesso se clicchiamo sul link di "Preview" in alto e scegliamo "Preview Running Application"
+In basso a destra si apre la finestra di preview con un altro messaggio di errore perché manca la connessione al database PostgreSQL.
+
+![Fig. 02](images/01-beginning/01-new_app/04_01-preview-db_error.png)
 
 Per vedere il preview su un tab separato del browser fare click sull'icona di espansione. Quella che quando vai sopra con il cursore apre tip "Pop Out into new windows"
 

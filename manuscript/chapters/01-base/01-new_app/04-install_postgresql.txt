@@ -27,7 +27,7 @@ Install Postgres via apt
 ~~~~~~~~
 $ sudo apt update
 $ sudo apt install postgresql postgresql-contrib libpq-dev
---> y
+-> y
 ~~~~~~~~
 
 
@@ -58,7 +58,7 @@ I comandi VIM da usare sono:
 * [:w] per salvare
 * [:q] per uscire
 
-![Fig. 01](images/01-beginning/01-new_app/03_01-postgresql_conf-uncomment-addresses_and_port.PNG)
+![Fig. 01](images/01-base/01-new_app/04_fig01-postgresql_conf-uncomment-addresses_and_port.png)
 
 
 
@@ -83,6 +83,8 @@ host    all             all             127.0.0.1/32            ident
 host    all             all             ::1/128                 ident
 ~~~~~~~~
 
+![Fig. 02](images/01-base/01-new_app/04_fig02-postgresql_conf-default-addresses_and_port.png)
+
 E modificare in
 
 ~~~~~~~~
@@ -94,6 +96,8 @@ host    all             ubuntu          127.0.0.1/0             trust
 # IPv6 local connections:
 host    all             all             ::1/128                 md5
 ~~~~~~~~
+
+![Fig. 03](images/01-base/01-new_app/04_fig03-postgresql_conf-updated-addresses_and_port.png)
 
 
 
@@ -119,7 +123,7 @@ $ sudo service postgresql restart
 
 * login as postgres user
 * login to postgres db as postgres user
-* cambia la password
+* cambiamo la password
 
 
 
@@ -151,8 +155,6 @@ postgres=# \q
 logout
 ec2-user:~/environment $ 
 ~~~~~~~~
-
-![Fig. 02](images/01-beginning/01-new_app/03_02-pg_change_password_and_create_user.PNG)
 
 Adesso è tutto inizializzato e pronto per lavorare su aws Cloud9.
 
