@@ -95,7 +95,7 @@ AWS -> Service -> IAM -> Users -> Add user
 ![Fig. 03](chapters/01-base/01-new_app/02_fig03-aws_IAM_user_new_step2b.png)
 
 
-{id: "01-01-05_01", caption: ".../config/database.yml -- [codice: 01]", format: yaml, line-numbers: true, number-from: 24}
+{id: "01-01-05_01", caption: ".../config/database.yml -- codice 01", format: yaml, line-numbers: true, number-from: 24}
 ```
 development:
   <<: *default
@@ -137,7 +137,7 @@ Nel login scegliamo -> "Sign in to a different account"
 
 
 
-{id: "01-01-05_01all", caption: ".../config/database.yml -- codice: 01", format: yaml, line-numbers: true, number-from: 1}
+{id: "01-01-05_01all", caption: ".../config/database.yml -- codice 01", format: yaml, line-numbers: true, number-from: 1}
 ```
 # PostgreSQL. Versions 9.3 and up are supported.
 #
@@ -233,7 +233,3 @@ xsxsxsxsx sx
 sx sxx 
 s 
 xsxsxsxsx 
-
-
-{format: ruby}
-![](resources/chapters/01-base/01-new_app/07_01-gemfile.rb "Hello World in Ruby")
