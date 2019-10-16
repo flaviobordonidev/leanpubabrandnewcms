@@ -135,6 +135,14 @@ Nel login scegliamo -> "Sign in to a different account"
 
 ## Il codice del capitolo
 
+blablabla
+
+{title: "Hello World in Ruby"}
+```ruby
+puts "hello"
+```
+
+blablabla blabla
 
 [Codice 01](#01-01-05_01)
 
