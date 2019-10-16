@@ -4,6 +4,9 @@ https://leanpub.com/leanpubabrandnewcms/preview
 https://leanpub.com/help/getting_started_sync_dropbox
 https://leanpub.com/help/manual
 
+https://leanpub.com/markua/read
+http://markua.com/
+
 ---
 http://pygments.org/demo/   ->  vedi il codice nel menu a cascata
 

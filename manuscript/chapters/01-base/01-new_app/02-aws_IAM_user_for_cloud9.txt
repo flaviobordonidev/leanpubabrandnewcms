@@ -10,7 +10,21 @@ Risorse interne:
 
 
 
-## Procediamo comunque
+## I tre ambienti di cloud9
+
+Su cloud9 ci sono tre raggruppamenti di ambiente:
+
+* Your environments
+    gli ambienti creati da uno specifico utente IAM. Ad esempio:
+    - user_FB@870054134107 vede i suoi ambienti
+    - user_AB@870054134107 vede i suoi ambienti
+* Shared with you
+    gli ambienti in cui l'utente è stato invitato
+* Account environments
+    gli ambienti di tutti gli utenti IAM di uno specifico account (Ad esempio: 870054134107)
+
+Nel gruppo di ambiente "
+
 
 Se decidiamo di creare un utente IAM facciamo ATTENZIONE:
 
@@ -21,11 +35,6 @@ E' quindi importante scegliere con cura l'utente:
 
 * se si vogliamo raggruppare le app fatte per i vari clienti possiamo usare IAM users con il nome dei nostri clienti
 * se vogliamo vedere tutte le app in un unico punto usiamo un unico IAM user. 
-
-
-ATTENZIONE:
-
-Con lo IAM user si possono incorrere in errori per mancanza di autorizzazioni. Cosa che con "root" non avviene perché ha accesso a tutto.
 
 
 
