@@ -95,12 +95,13 @@ AWS -> Service -> IAM -> Users -> Add user
 ![Fig. 03](chapters/01-base/01-new_app/02_fig03-aws_IAM_user_new_step2b.png)
 
 
-{id: "01-01-05_01", caption: "codice 01 - [.../config/database.yml]", format: yaml, line-numbers: true, number-from: 24}
+{id: "01-01-05_01", caption: ".../config/database.yml   codice: 01", format: yaml, line-numbers: true, number-from: 24}
 ```
 development:
   <<: *default
   database: bl6_0_development
 ```
+
 [tutto il codice](#01-01-05_01all)
 
 
@@ -136,7 +137,7 @@ Nel login scegliamo -> "Sign in to a different account"
 
 
 
-{id: "01-01-05_01all", caption: "codice01 - [.../config/database.yml]", format: yaml, line-numbers: true, number-from: 1}
+{id: "01-01-05_01all", caption: ".../config/database.yml   codice: 01", format: yaml, line-numbers: true, number-from: 1}
 ```
 # PostgreSQL. Versions 9.3 and up are supported.
 #
