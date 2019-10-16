@@ -138,7 +138,7 @@ Nel login scegliamo -> "Sign in to a different account"
 
 [Codice 01](#01-01-05_01)
 
-{format: ruby, title=".../config/database.yml"}
+{format: ruby title=".../config/database.yml"}
 ```
 # PostgreSQL. Versions 9.3 and up are supported.
 #
@@ -226,3 +226,12 @@ production:
   username: bl6_0
   password: <%= ENV['BL6_0_DATABASE_PASSWORD'] %>
 ```
+
+xsxsxsxsx sx 
+sx sxx 
+s 
+xsxsxsxsx 
+
+
+{format: ruby}
+![](chapters/01-base/01-new_app/06_01-config-database.yml "Hello World in Ruby")
