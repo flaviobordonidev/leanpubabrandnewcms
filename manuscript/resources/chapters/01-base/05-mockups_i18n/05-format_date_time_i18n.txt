@@ -82,7 +82,6 @@ Per approfondimenti sulle variabili di formattazione vedi [Volume 1 - Cap 3.3](#
 
 
 
-
 **
 
 Meglio non usare " Time.now " perché ha un bug nella gestione dei fusi orari. (vedi 99-rails_references/data_types/date_time)
