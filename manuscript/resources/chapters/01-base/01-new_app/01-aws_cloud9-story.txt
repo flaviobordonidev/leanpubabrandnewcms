@@ -1,3 +1,4 @@
+{id: 01-base-01-new_app-01-01-aws_cloud9-story}
 # L'ambiente di sviluppo AWS
 
 Il nostro ambiente di sviluppo è Amazon Web Server Cloud9

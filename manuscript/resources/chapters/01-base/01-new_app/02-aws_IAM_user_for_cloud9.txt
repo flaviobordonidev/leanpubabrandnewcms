@@ -104,7 +104,7 @@ development:
 
 [tutto il codice](#01-01-05_01all)
 
-
+Facciamo riferimento alla storia di Cloud9 [Volume 1 - Cap 3.3](#01-base-03-mockups-03-format_date_time)
 
 
 ![Fig. 04](images/01-base/01-new_app/02_fig04-aws_IAM_user_new_step3.png)

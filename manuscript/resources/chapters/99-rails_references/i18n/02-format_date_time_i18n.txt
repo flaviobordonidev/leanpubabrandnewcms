@@ -1,0 +1,13 @@
+# Tradurre le date
+
+Di default il comando di formattazione della data prende i nomi in inglese. Vediamo come implementare l'Italiano.
+
+Risorse interne:
+
+* 01-base/05-mockups_i18n/05-format_date_time_i18n
+
+Risorse web:
+
+* [Guida di Rails - Internationalization](http://guides.rubyonrails.org/i18n.html)
+* [rails-i18n repository at GitHub - tutte le lingue](https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale)
+* [rails-i18n repository at GitHub - italiano](https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/it.yml)
