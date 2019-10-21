@@ -1,7 +1,7 @@
 # Installiamo PostgreSQL
 
 ***
-Questa procedura è per istanze di awsC9 EC2 con OS Amazon Linux 
+Questa procedura è per ambienti di Cloud9 (istanze EC2) con sistema operativo Amazon Linux 
 ***
 
 Se avessimo utilizzato l'istanza con OS Amazon Linux avremmo dovuto installare PostgreSQL come descritto in questo capitolo.

@@ -1,7 +1,7 @@
 # Installiamo PostgreSQL
 
 ***
-Questa procedura è per istanze di awsC9 EC2 con OS Ubuntu 
+Questa procedura è per ambienti di Cloud9 (istanze EC2) con sistema operativo Ubuntu
 ***
 
 Il database postgreSQL non è installato di default su AWS Cloud9
@@ -18,10 +18,7 @@ Risorse interne:
 
 ## Installiamo PostgreSQL
 
-Siamo su EC2 instance con OS Ubuntu che usa "apt" come packet manager
-
-Setting up Postgres on Cloud9 IDE
-Install Postgres via apt
+Siamo su instance EC2 con OS Ubuntu che usa "apt" come packet manager.
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
@@ -33,7 +30,7 @@ $ sudo apt install postgresql postgresql-contrib libpq-dev
 
 
 
-## Edit postgres conf to connect via localhost:5432
+## Impostiamo il file di configurazione di postgreSQL per collegarsi via localhost:5432
 
 Impostiamo il collegamento di rails a postgresql con l'indirizzo "localhost" e la porta "5432"
 
@@ -58,19 +55,19 @@ I comandi VIM da usare sono:
 * [:w] per salvare
 * [:q] per uscire
 
-![Fig. 01](images/01-base/01-new_app/04_fig01-postgresql_conf-uncomment-addresses_and_port.png)
+![Fig. 01](chapters/01-base/01-new_app/04_fig01-postgresql_conf-uncomment-addresses_and_port.png)
 
 
 
 
-## Update pg_hba.conf file for ec2-user auth:
+## Aggiorniamo il file " pg_hba.conf " per l'autenticazione
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ sudo vim /etc/postgresql/10/main/pg_hba.conf
 ~~~~~~~~
 
-Trovare la parte che è
+Troviamo la parte che è
 
 ~~~~~~~~
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
@@ -85,7 +82,7 @@ host    all             all             ::1/128                 ident
 
 ![Fig. 02](images/01-base/01-new_app/04_fig02-postgresql_conf-default-addresses_and_port.png)
 
-E modificare in
+e la modificchiamo in
 
 ~~~~~~~~
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
@@ -102,7 +99,9 @@ host    all             all             ::1/128                 md5
 
 
 
-## Start / Restart postgres server
+## Riavviamo il servizio postgreSQL
+
+Start / Restart postgres server
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
@@ -119,14 +118,9 @@ $ sudo service postgresql restart
 
 
 
-## Login as Postgres User and Change Password / Add user: "ubuntu"
+## Cambiamo la password per l'utente di default di postgreSQL ed aggiungiamo utente " ubuntu "
 
-* login as postgres user
-* login to postgres db as postgres user
-* cambiamo la password
-
-
-
+Logghiamoci su PostgreSQL come utente " postgres " che è l'utente di default, e gli cambiamo la password. Inoltre aggiungiamo l'utente " ubuntu ".
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
@@ -163,13 +157,13 @@ Adesso è tutto inizializzato e pronto per lavorare su aws Cloud9.
 
 ## Future connessioni al database
 
-Se in futuro volessimo lavorare da linea di comando direttamente sul database PostgreSQL possiamo effettuare Login come utente "ec2-user" con il seguente codice:
+Se in futuro volessimo lavorare da linea di comando direttamente sul database PostgreSQL potremmo effettuare Login con:
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ psql postgres
 ~~~~~~~~
 
-Una volta entrati possiamo creare il nostro proprio database e lavorare sulle tabelle.
+Una volta entrati potremmo creare il nostro proprio database e lavorare sulle tabelle.
 
 Ma per quanto riguarda il nostro tutorial abbiamo già tutto quello che ci serve per continuare.
