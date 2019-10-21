@@ -2,12 +2,54 @@
 
 Di default il comando di formattazione della data prende i nomi in inglese. Vediamo come implementare l'Italiano.
 
+
 Risorse interne:
 
 * 01-base/05-mockups_i18n/05-format_date_time_i18n
+* 01-base/03-mockups/03-format_date_time
+
 
 Risorse web:
 
 * [Guida di Rails - Internationalization](http://guides.rubyonrails.org/i18n.html)
 * [rails-i18n repository at GitHub - tutte le lingue](https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale)
 * [rails-i18n repository at GitHub - italiano](https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/it.yml)
+
+
+
+
+## Internazionalizziamo la data di un articolo (post)
+
+L'helper " l " internazionalizza (in18) la variabile che gli viene passata. Inoltre il parametro dopo la virgola specifica che formato passare.
+Il formato lo prende da config/locales/xx.yml. Nel locale en.yml se non sono presenti i valori sono comunque implicitamente espressi e rails li utilizza. Per renderli espliciti possiamo copiarli da https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/en.yml.
+
+{caption: ".../app/views/posts/show.html.erb", format: HTML+Mako, line-numbers: false}
+```
+l(post.published_at, format: :short) %>
+```
+
+{caption: ".../config/locales/it.yml", format: yaml, line-numbers: false}
+```
+    formats:
+      default: "%d/%m/%Y"
+      long: "%d %B %Y"
+      short: "%d %b"
+```
+
+
+
+
+## Esempio
+
+{caption: ".../app/views/posts/_pofo_posts_content_section.html.erb", format: HTML+Mako, line-numbers: false}
+```
+<span class="blabla bla"><%= post.published_at.blank? ? "" : l(post.published_at, format: :short) %></span>
+```
+
+
+{caption: ".../app/views/posts/_pofo_page_title_section2.html.erb", format: HTML+Mako, line-numbers: false}
+```
+<%= l @post.published_at, format: :short if @post.published_at.present? %>&nbsp;&nbsp;
+```
+
+

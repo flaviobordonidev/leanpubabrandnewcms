@@ -1,0 +1,58 @@
+# Il popup che avvisa che il sito usa cookies
+
+Per essere 100% compliance con la GDPR il pupup che implementiamo può non essere sufficiente.
+Verificate il testo ed i links che sono richiesti per il vostro caso specifico.
+
+Per avere una copertura totale si può usare il servizio a pagamento di iubenda.
+
+Di seguito alcune soluzioni gratuite:
+
+## cookieinfoscript
+
+https://cookieinfoscript.com/
+
+++++++++++++++++++++++++++++++++++++++++
+<script type="text/javascript" id="cookieinfo"
+	src="//cookieinfoscript.com/js/cookieinfo.min.js">
+</script>
+++++++++++++++++++++++++++++++++++++++++
+
+Add the code just before the closing </body> tag in your website.
+
+
+
+
+## la buona vecchia cookie policy di Google
+
+allego lo script che dovrai inserire alla fine della pagina prima del chiusura del tag </head>:
+
+++++++++++++++++++++++++++++++++++++++++
+
+<!-- Alert Cookies Policy -->
+<script src="/cookiechoices.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function(event) {
+    cookieChoices.showCookieConsentBar('INFORMATIVA - Il sito utilizza i cookie di terze parti per profilare gli utenti',
+      'Chiudi e accetta', 'Approfondisci', 'http://www.feelgoodsnowboard.com/cookie_policy.html');
+  });
+</script>
+<!-- Alert Cookies Policy —>
+
+++++++++++++++++++++++++++++++++++++++++
+
+Sulla root del sito rinomina e inserisci il file che ti ho allegato rinominandolo cookiechoises,js 
+
+Inoltre ti allego la pagina cookie_policy.html da cui ricavare il testo per la pagina di riferimento indicata nello script.
+
+
+
+## Una soluzione GDPR compliance
+
+https://cookie-script.com/features.html
+
+
+## Una soluzione GDPR compliance ed opensource
+
+https://cookieconsent.osano.com/
+https://www.osano.com/plans
+https://github.com/osano/cookieconsent/

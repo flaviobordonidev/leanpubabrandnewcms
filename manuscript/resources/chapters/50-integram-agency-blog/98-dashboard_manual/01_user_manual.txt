@@ -1,0 +1,13 @@
+# Manuale utente per la dashboard
+
+Creiamo un manuale integrato nella nostra applicazione che spiega come usare la dashboard.
+
+E' solo usare una pagina statica " user_manual " con tanti partials uno ogni capitolo.
+
+user_manual
+  show.html.erb
+  _chap1.erb
+  _chap2.erb
+  _chap3.erb
+  ...
+

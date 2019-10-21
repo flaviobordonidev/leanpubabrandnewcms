@@ -10,7 +10,7 @@ Risorse interne:
 
 
 
-## I tre ambienti di cloud9
+## I tre gruppi di ambienti di cloud9
 
 Su cloud9 ci sono tre raggruppamenti di ambiente:
 
@@ -23,7 +23,7 @@ Su cloud9 ci sono tre raggruppamenti di ambiente:
 * Account environments
     gli ambienti di tutti gli utenti IAM di uno specifico account (Ad esempio: 870054134107)
 
-Nel gruppo di ambiente "
+
 
 
 Se decidiamo di creare un utente IAM facciamo ATTENZIONE:
@@ -33,16 +33,17 @@ Le app create come "root" o come un altro utente IAM non saranno visibili in "Yo
 
 E' quindi importante scegliere con cura l'utente:
 
-* se si vogliamo raggruppare le app fatte per i vari clienti possiamo usare IAM users con il nome dei nostri clienti
+* se vogliamo raggruppare le app fatte per i vari clienti possiamo usare IAM users con il nome dei nostri clienti.
 * se vogliamo vedere tutte le app in un unico punto usiamo un unico IAM user. 
+
+Per questo tutorial creiamo l'utente " user_fb ", ossia " utente Flavio Bordoni ", con il diritto di accesso alla console di aws e tutti i diritti di utilizzo di Cloud9
 
 
 
 
 ## Effettuiamo il login come amministratore
 
-Vediamo adesso come creare uno IAM user dedicato a cloud9. 
-
+Vediamo adesso come creare uno IAM user da dedicare a cloud9. 
 
 https://console.aws.amazon.com/
 
@@ -53,7 +54,7 @@ Scegliamo il link: "Sign-in using root account credentials"
 
 ## Creiamo un nuovo utente dedicato all'uso di Cloud9
 
-Creiamo un nuovo utente IAM con permesso di effettuare il login sulla console aws da assegnare a Flavio Bordoni.
+Creiamo un nuovo utente IAM, da assegnare a Flavio Bordoni, con il permesso di effettuare il login sulla console aws.
 
 L'utente IAM " user_FB " è quello che Flavio Bordoni userà per lavorare su amazon web server di volta in volta gli implementeremo le varie autorizzazioni.
 Usiamo il prefisso " user_ " per differenziare gli utenti IAM che identificano delle persone fisiche da quelli che identificano applicativi.
@@ -94,6 +95,12 @@ AWS -> Service -> IAM -> Users -> Add user
 
 ![Fig. 03](chapters/01-base/01-new_app/02_fig03-aws_IAM_user_new_step2b.png)
 
+![Fig. 04](chapters/01-base/01-new_app/02_fig04-aws_IAM_user_new_step3.png)
+
+![Fig. 05](chapters/01-base/01-new_app/02_fig05-aws_IAM_user_new_step4.png)
+
+![Fig. 06](chapters/01-base/01-new_app/02_fig06-aws_IAM_user_new_step5.png)
+
 
 {id: "01-01-05_01", caption: ".../config/database.yml -- codice 01", format: yaml, line-numbers: true, number-from: 24}
 ```
@@ -104,12 +111,8 @@ development:
 
 [tutto il codice](#01-01-05_01all)
 
+
 Facciamo riferimento alla storia di Cloud9 [Volume 1 - Cap 1.1](#01-base-01-new_app-01-01-aws_cloud9-story)
-
-
-![Fig. 04](images/01-base/01-new_app/02_fig04-aws_IAM_user_new_step3.png)
-
-![Fig. 05](images/01-base/01-new_app/02_fig05-aws_IAM_user_new_step4.png)
 
 
 
@@ -125,16 +128,12 @@ Effettuiamo il logout come amministratore
 
 Nel login scegliamo -> "Sign in to a different account"
 
-![Fig. 04](images/01-base/01-new_app/02_fig04-aws-login-as-iam-user-cloud9.png)
-
-
-
+![Fig. 07](images/01-base/01-new_app/02_fig07-aws-login-as-iam-user-cloud9.png)
 
 
 
 
 ## Il codice del capitolo
-
 
 
 {id: "01-01-05_01all", caption: ".../config/database.yml -- codice 01", format: yaml, line-numbers: true, number-from: 1}

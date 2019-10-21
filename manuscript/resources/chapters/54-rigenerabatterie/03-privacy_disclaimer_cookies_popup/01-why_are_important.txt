@@ -1,0 +1,14 @@
+# Perché sono importanti
+
+Sono importanti perché sono richiesti dalla legge. Se non si hanno si rischiano multe salate.
+Non solo, se non si rispetta la GDPR, si può incorrere in denunce da parte di persone che visitano il tuo sito e che dichiarano di aver avuto violazioni di privacy perché non erano state informate che i loro dati erano raccolti.
+Si può usare iubenda che aggiorna costantemente le informazioni con i loro avvocati oppure s
+
+## Perché non dichiarare di tutto
+
+Perché non usare un docuemnto che dice che le persone accettano che noi raccogliamo tutti i loro dati personali anche se non è così?
+Perché se esce sul giornale che un applicativo è stato hackerato ed i dati sensibili sono stati esposti, se noi dichiariamo che lo stiamo usando siamo passibili di denuncia per responsabilità di vasamento dei dati.
+
+
+Spesso la privacy ed il disclaimer sono messi insiemi e chiamati "Termini e condizioni"(Terms and conditions)
+
