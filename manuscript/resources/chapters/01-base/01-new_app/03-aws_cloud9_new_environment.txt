@@ -23,7 +23,7 @@ Services -> Developer Tools -> Cloud9
 
 Per aumentare le prestazioni dovremmo selezionare la "AWS Region" più vicina a noi, o meglio ai nostri clienti. Ad esempio "Ireland".
 
-![Fig. 01](images/01-base/01-new_app/03_fig01-aws-iam_user-console-region.png)
+![Fig. 01](chapters/01-base/01-new_app/03_fig01-aws-iam_user-console-region.png)
 
 Ma c'è da tenere anche presente ceh ogni Region ha dei costi di fatturazione differenti. Ad esempio: 
 
@@ -31,7 +31,7 @@ Ma c'è da tenere anche presente ceh ogni Region ha dei costi di fatturazione di
 * EU (Ireland)          : $0.11 per GB-month of General Purpose SSD (gp2) 
 * US East (N. Virginia) : $0.10 per GB-month of General Purpose SSD (gp2) 
 
-![Fig. 02](images/01-base/01-new_app/03_fig02-aws-region_billing.png)
+![Fig. 02](chapters/01-base/01-new_app/03_fig02-aws-region_billing.png)
 
 Un consiglio è quello di lasciare inizialmente la AWS Region di default perché normalmente è quella più economica ed intervenire in un secondo momento nel cambio della Region; una volta valutate le prestazioni.
 
@@ -60,17 +60,17 @@ Per applicazione baseline intendiamo che ha il 90% di tutto quello che ci serve 
     Review
 
 
-![Fig. 03](images/01-base/01-new_app/03_fig03-aws_c9_new_environment_step1.png)
+![Fig. 03](chapters/01-base/01-new_app/03_fig03-aws_c9_new_environment_step1.png)
 
 Click su "Create environment"
 
 
-![Fig. 04](images/01-base/01-new_app/03_fig04-aws_c9_new_environment_step2.png)
+![Fig. 04](chapters/01-base/01-new_app/03_fig04-aws_c9_new_environment_step2.png)
 
 Lasciamo il server virtuale di default che è sufficiente per iniziare. Possiamo potenziarlo in seguito. Più potenza diamo più ci costa.
 
 
-![Fig. 05](images/01-base/01-new_app/03_fig05-aws_c9_new_environment_step3.png)
+![Fig. 05](chapters/01-base/01-new_app/03_fig05-aws_c9_new_environment_step3.png)
 
 Click "Create environment"
 
@@ -93,12 +93,12 @@ Raccomandiamo le seguenti migliori pratiche per l'utilizzo dell'ambiente AWS Clo
 * Editor theme  : Cloud9 Night Low-Color
 * Keyboard Mode : Default
 
-![Fig. 06](images/01-base/01-new_app/03_fig06-dark_theme.png)
+![Fig. 06](chapters/01-base/01-new_app/03_fig06-dark_theme.png)
 
 
 Su preferences -> Soft tabs: 2
 
-![Fig. 07](images/01-base/01-new_app/03_fig07-soft_tabs.png)
+![Fig. 07](chapters/01-base/01-new_app/03_fig07-soft_tabs.png)
 
 
 L'ambiente è impostato. Adesso possiamo creare una nuova applicazione Rails.
