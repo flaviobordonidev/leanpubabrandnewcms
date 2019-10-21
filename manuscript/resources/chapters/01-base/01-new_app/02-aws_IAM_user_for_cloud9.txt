@@ -79,15 +79,16 @@ AWS -> Service -> IAM -> Users -> Add user
     Require password reset : no
 * Step2
     Permissions 
-    -> policy : AmazonS3FullAccess
+    -> policy : AdministratorAccess
     -> policy : AWSCloud9Administrator
     -> policy : AWSCloud9EnvironmentMember
     -> policy : AWSCloud9User
 * Step3
-    Non aggiungiamo nessun tag
+    Non aggiungiamo nessun tag.
 * Step4
-    Visualizza il riepilogo delle scelte fatte
+    Visualizza il riepilogo delle scelte fatte.
 * Step5
+    L'utente IAM è stato creato e possiamo scaricarci il file ".csv" o inviarci un'email.
 
 ![Fig. 01](chapters/01-base/01-new_app/02_fig01-aws_IAM_user_new_step1.png)
 
@@ -102,26 +103,18 @@ AWS -> Service -> IAM -> Users -> Add user
 ![Fig. 06](chapters/01-base/01-new_app/02_fig06-aws_IAM_user_new_step5.png)
 
 
-{id: "01-01-05_01", caption: ".../config/database.yml -- codice 01", format: yaml, line-numbers: true, number-from: 24}
-```
-development:
-  <<: *default
-  database: bl6_0_development
-```
-
-[tutto il codice](#01-01-05_01all)
-
-
 Facciamo riferimento alla storia di Cloud9 [Volume 1 - Cap 1.1](#01-base-01-new_app-01-01-aws_cloud9-story)
 
 
 
 
-## Effettuiamo login come nuovo IAM utente Cloud9
+## Effettuiamo login come nuovo utente IAM ed andiamo su Cloud9
 
-Guardiamo lo User ARN -> arn:aws:iam::93703132901:user/cloud9
+Andiamo sull'account e verifichiamo il nostro Account Id
 
-Il numero è usato per il login come utente
+Account Id: 870054134107 
+
+(Lo stesso numero è anche utilizzato nello User ARN -> arn:aws:iam::870054134107:user/user_fb)
 
 
 Effettuiamo il logout come amministratore
@@ -130,105 +123,8 @@ Nel login scegliamo -> "Sign in to a different account"
 
 ![Fig. 07](images/01-base/01-new_app/02_fig07-aws-login-as-iam-user-cloud9.png)
 
+Una volta effettuato il login possiamo andare su Service Cloud9 e questa volta non ci apparirà il messaggio di avvertimento che usare " root " non è consigliato.
 
+![Fig. 08](images/01-base/01-new_app/02_fig08-aws_c9_dashboard_IAM_root.png)
 
-
-## Il codice del capitolo
-
-
-{id: "01-01-05_01all", caption: ".../config/database.yml -- codice 01", format: yaml, line-numbers: true, number-from: 1}
-```
-# PostgreSQL. Versions 9.3 and up are supported.
-#
-# Install the pg driver:
-#   gem install pg
-# On macOS with Homebrew:
-#   gem install pg -- --with-pg-config=/usr/local/bin/pg_config
-# On macOS with MacPorts:
-#   gem install pg -- --with-pg-config=/opt/local/lib/postgresql84/bin/pg_config
-# On Windows:
-#   gem install pg
-#       Choose the win32 build.
-#       Install PostgreSQL and put its /bin directory on your path.
-#
-# Configure Using Gemfile
-# gem 'pg'
-#
-default: &default
-  adapter: postgresql
-  encoding: unicode
-  # For details on connection pooling, see Rails configuration guide
-  # https://guides.rubyonrails.org/configuring.html#database-pooling
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-
-development:
-  <<: *default
-  database: bl6_0_development
-
-  # The specified database role being used to connect to postgres.
-  # To create additional roles in postgres see `$ createuser --help`.
-  # When left blank, postgres will use the default role. This is
-  # the same name as the operating system user that initialized the database.
-  #username: bl6_0
-
-  # The password associated with the postgres role (username).
-  #password:
-
-  # Connect on a TCP socket. Omitted by default since the client uses a
-  # domain socket that doesn't need configuration. Windows does not have
-  # domain sockets, so uncomment these lines.
-  #host: localhost
-
-  # The TCP port the server listens on. Defaults to 5432.
-  # If your server runs on a different port number, change accordingly.
-  #port: 5432
-
-  # Schema search path. The server defaults to $user,public
-  #schema_search_path: myapp,sharedapp,public
-
-  # Minimum log levels, in increasing order:
-  #   debug5, debug4, debug3, debug2, debug1,
-  #   log, notice, warning, error, fatal, and panic
-  # Defaults to warning.
-  #min_messages: notice
-
-# Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
-# Do not set this db to the same as development or production.
-test:
-  <<: *default
-  database: bl6_0_test
-
-# As with config/credentials.yml, you never want to store sensitive information,
-# like your database password, in your source code. If your source code is
-# ever seen by anyone, they now have access to your database.
-#
-# Instead, provide the password as a unix environment variable when you boot
-# the app. Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
-# for a full rundown on how to provide these environment variables in a
-# production deployment.
-#
-# On Heroku and other platform providers, you may have a full connection URL
-# available as an environment variable. For example:
-#
-#   DATABASE_URL="postgres://myuser:mypass@localhost/somedatabase"
-#
-# You can use this database configuration with:
-#
-#   production:
-#     url: <%= ENV['DATABASE_URL'] %>
-#
-production:
-  <<: *default
-  database: bl6_0_production
-  username: bl6_0
-  password: <%= ENV['BL6_0_DATABASE_PASSWORD'] %>
-```
-
-[indietro](#01-01-05_01)
-
-
-xsxsxsxsx sx 
-sx sxx 
-s 
-xsxsxsxsx 
+Ma questo lo vedremo nel prossimo capitolo.

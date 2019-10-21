@@ -1,10 +1,12 @@
 # Creiamo nuovo ambiente cloud9
 
+Creiamo l'ambiente per la nostra applicazione Rails.
 
 
 Risorse interne:
 
-*
+* 99-rails_references-aws_cloud9
+
 
 
 
@@ -19,14 +21,11 @@ Services -> Developer Tools -> Cloud9
 
 ## Impostiamo la Region
 
-Selezioniamo la "AWS Region" più vicina a noi. Ad esempio "Ireland"
+Per aumentare le prestazioni dovremmo selezionare la "AWS Region" più vicina a noi, o meglio ai nostri clienti. Ad esempio "Ireland".
 
 ![Fig. 01](images/01-base/01-new_app/03_fig01-aws-iam_user-console-region.png)
 
-Ed iniziamo a creare un nuovo ambiente. E' un processo in 3 passi.
-
-ATTENZIONE! Gli ambienti visualizzati sono in funzione della AWS Region selezionata. Se cambiamo Region non vedremo più degli ambienti caricati con la Region precedente. Basta riselezionare la Region precedente per rivisualizzarli.
-Inoltre ogni Region ha dei costi di fatturazione differenti. Ad esempio: 
+Ma c'è da tenere anche presente ceh ogni Region ha dei costi di fatturazione differenti. Ad esempio: 
 
 * EU (Frankfurt)        : n/a
 * EU (Ireland)          : $0.11 per GB-month of General Purpose SSD (gp2) 
@@ -36,14 +35,17 @@ Inoltre ogni Region ha dei costi di fatturazione differenti. Ad esempio:
 
 Un consiglio è quello di lasciare inizialmente la AWS Region di default perché normalmente è quella più economica ed intervenire in un secondo momento nel cambio della Region; una volta valutate le prestazioni.
 
+ATTENZIONE! Gli ambienti visualizzati sono in funzione della AWS Region selezionata. Se cambiamo Region non vedremo più degli ambienti caricati con la Region precedente. Basta riselezionare la Region precedente per rivisualizzarli.
 
 
 
 
 ## Creiamo il nuovo ambiente cloud9
 
+Creare un nuovo ambiente è un processo in 3 passi.
+
 Il nuovo ambiente lo chiamiamo " bl6_0 " ad indicare che è l'applicazione " baseline " creata con Rails 6.0.
-Per applicazione baseline intendiamo quella che ha il 90% di tutto quello che ci serve per sviluppare e quindi un ottimo punto di partanza da clonare per tutte le altre applicazioni.
+Per applicazione baseline intendiamo che ha il 90% di tutto quello che ci serve per sviluppare e quindi un ottimo punto di partanza da clonare per tutte le altre applicazioni.
 
 
 * Step1
