@@ -121,10 +121,10 @@ Effettuiamo il logout come amministratore
 
 Nel login scegliamo -> "Sign in to a different account"
 
-![Fig. 07](images/01-base/01-new_app/02_fig07-aws-login-as-iam-user-cloud9.png)
+![Fig. 07](chapters/01-base/01-new_app/02_fig07-aws-login-as-iam-user-cloud9.png)
 
 Una volta effettuato il login possiamo andare su Service Cloud9 e questa volta non ci apparirà il messaggio di avvertimento che usare " root " non è consigliato.
 
-![Fig. 08](images/01-base/01-new_app/02_fig08-aws_c9_dashboard_IAM_root.png)
+![Fig. 08](chapters/01-base/01-new_app/02_fig08-aws_c9_dashboard_IAM_root.png)
 
 Ma questo lo vedremo nel prossimo capitolo.
