@@ -16,3 +16,6 @@ resources/chapters/01-base/01-new_app/02-aws_IAM_user_for_cloud9.txt
 resources/chapters/01-base/01-new_app/03-aws_cloud9_new_environment.txt
 resources/chapters/01-base/01-new_app/04-install_postgresql.txt
 resources/chapters/01-base/01-new_app/05-new_app.txt
+resources/chapters/01-base/01-new_app/06-pg_app_databases.txt
+resources/chapters/01-base/01-new_app/07-ruby_version.txt
+resources/chapters/01-base/01-new_app/08-credentials_and_masterkey.txt

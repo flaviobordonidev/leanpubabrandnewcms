@@ -35,7 +35,7 @@ Per verificare quale versione di rails abbiamo installato
 $ rails -v
 
 
-ubuntu:~/environment $ rails -v
+user_fb:~/environment $ rails -v
 Rails 6.0.0
 ~~~~~~~~
 
@@ -56,7 +56,7 @@ $ sudo su -
 -> exit
 
 
-ubuntu:~/environment $ sudo su -
+user_fb:~/environment $ sudo su -
 root@ip-172-31-89-200:~# curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 OK
 root@ip-172-31-89-200:~# echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
@@ -124,7 +124,7 @@ verifichiamo che si è installato
 $ yarn --version
 
 
-ubuntu:~/environment $ yarn --version
+user_fb:~/environment $ yarn --version
 1.19.1
 ~~~~~~~~
 

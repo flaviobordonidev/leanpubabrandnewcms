@@ -1,0 +1,34 @@
+# Passiamo da LMF a Markua
+
+Passiamo da Leanpub Flavoured Markdown (LFM) a Markua.
+
+
+
+
+## LFM example
+
+{id="01-01-05_01", title=".../config/database.yml", lang=yaml, line-numbers=on, starting-line-number=24}
+~~~~~~~~
+development:
+  <<: *default
+  database: bl6_0_development
+~~~~~~~~
+
+[Codice 01](#01-01-05_01all)
+
+
+
+
+## Markua example
+
+{id: "01-01-06_01", caption: ".../config/database.yml -- codice 01", format: yaml, line-numbers: true, number-from: 24}
+```
+development:
+  <<: *default
+  database: bl6_0_development
+```
+
+[tutto il codice](#01-01-06_01all)
+
+
+

@@ -62,12 +62,43 @@ I comandi VIM da usare sono:
 
 ## Aggiorniamo il file " pg_hba.conf " per l'autenticazione
 
+Nel seguente file di configurazione impostiamo la connessione locale IPv4 sull'indirizzo di "localhost" (127.0.0.1) e l'id dell'utente registrato nel sistema operativo.
+
+Attenzione:
+Se ci logghiamo su AWS come " root " nel prompt del terminal vediamo il nome " ubuntu ": 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+ubuntu:~/environment $
+~~~~~~~~
+
+Invece se ci logghiamo su AWS come utente IAM " user_fb " nel prompt del terminal vediamo il nome " user_fb ": 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+user_fb:~/environment $
+~~~~~~~~
+
+Comunque in entrambi i casi l'" id " dell'utente registrato è " ubuntu " e questo lo verifichiamo con il seguente comando: 
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ whoami
+
+
+user_fb:~/environment $ whoami
+ubuntu
+~~~~~~~~
+
+
+Aggiorniamo quindi il file di configurazione
+
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ sudo vim /etc/postgresql/10/main/pg_hba.conf
 ~~~~~~~~
 
-Troviamo la parte che è
+Troviamo la parte:
 
 ~~~~~~~~
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
@@ -75,26 +106,29 @@ Troviamo la parte che è
 # "local" is for Unix domain socket connections only
 local   all             all                                     peer
 # IPv4 local connections:
-host    all             all             127.0.0.1/32            ident
+host    all             all             127.0.0.1/32            md5
 # IPv6 local connections:
-host    all             all             ::1/128                 ident
+host    all             all             ::1/128                 md5
+# Allow replication connections from localhost, by a user with the
+# replication privilege.
+local   replication     all                                     peer
+host    replication     all             127.0.0.1/32            md5
+host    replication     all             ::1/128                 md5
 ~~~~~~~~
 
 ![Fig. 02](images/01-base/01-new_app/04_fig02-postgresql_conf-default-addresses_and_port.png)
 
-e la modificchiamo in
+e modifichiamo le seguenti due righe:
 
 ~~~~~~~~
-# TYPE  DATABASE        USER            ADDRESS                 METHOD
 # "local" is for Unix domain socket connections only
 local   all             all                                     trust
 # IPv4 local connections:
 host    all             ubuntu          127.0.0.1/0             trust
-# IPv6 local connections:
-host    all             all             ::1/128                 md5
 ~~~~~~~~
 
 ![Fig. 03](images/01-base/01-new_app/04_fig03-postgresql_conf-updated-addresses_and_port.png)
+
 
 
 
@@ -124,7 +158,7 @@ Logghiamoci su PostgreSQL come utente " postgres " che è l'utente di default, e
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ sudo su - postgres 
+$ sudo su - postgres
 -> psql -U postgres
 --> ALTER USER postgres WITH PASSWORD 'myPassword123';
 --> CREATE USER "ubuntu" SUPERUSER;
