@@ -46,14 +46,15 @@ Decomentiamo le righe (da --> a)
 
 (la seconda riga potrebbe già essere decommentata)
 
-I comandi VIM da usare sono:
+Per fare delle modifiche con VIM:
 
 * muoversi con le frecce. 
-* [i] per entrare in modalità modifica. 
-* [canc] per cancellare.
-* [ESC] per uscire dalla modifica.
-* [:w] per salvare
-* [:q] per uscire
+* premere [i] per entrare in modalità modifica. 
+* premere [canc] per cancellare.
+* premere [ESC] per uscire dalla modalità modifica.
+* Quando si è fuori dalla modalità modifica digitare " :w " e premere [ENTER] per salvare.
+* Quando si è fuori dalla modalità modifica digitare " :q " e premere [ENTER] per uscire.
+* Quando si è fuori dalla modalità modifica digitare " :wq " e premere [ENTER] per salvare ed uscire.
 
 ![Fig. 01](chapters/01-base/01-new_app/04_fig01-postgresql_conf-uncomment-addresses_and_port.png)
 
@@ -118,7 +119,7 @@ host    replication     all             127.0.0.1/32            md5
 host    replication     all             ::1/128                 md5
 ```
 
-![Fig. 02](images/01-base/01-new_app/04_fig02-postgresql_conf-default-addresses_and_port.png)
+![Fig. 02](chapters/01-base/01-new_app/04_fig02-postgresql_conf-default-addresses_and_port.png)
 
 e modifichiamo le seguenti due righe:
 
@@ -129,7 +130,7 @@ local   all             all                                     trust
 host    all             ubuntu          127.0.0.1/0             trust
 ```
 
-![Fig. 03](images/01-base/01-new_app/04_fig03-postgresql_conf-updated-addresses_and_port.png)
+![Fig. 03](chapters/01-base/01-new_app/04_fig03-postgresql_conf-updated-addresses_and_port.png)
 
 
 

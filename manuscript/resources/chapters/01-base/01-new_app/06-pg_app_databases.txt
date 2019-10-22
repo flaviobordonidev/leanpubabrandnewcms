@@ -1,6 +1,6 @@
 # PostgreSQL Databases per myapp
 
-Creiamo i databases su postgreSQL in modo da attivare la connessione con la nostra applicazione myapp
+Creiamo i databases su postgreSQL in modo da attivare la connessione con la nostra applicazione Rails.
 
 
 Risorse interne:
@@ -185,11 +185,11 @@ $ sudo service postgresql start
 $ rails s
 ~~~~~~~~
 
-![Fig. 01](images/01-base/01-new_app/06_fig01-preview_working.png)
+![Fig. 01](chapters/01-base/01-new_app/06_fig01-preview_working.png)
 
 Anche se non riceviamo errore sembra non stia funzionando ma è un problema di preview dentro aws Cloud9. Basta aprirlo su una nuovo tab del browser e vediamo che funziona tutto!
 
-![Fig. 02](images/01-base/01-new_app/06_fig02-preview_working_new_tab.png)
+![Fig. 02](chapters/01-base/01-new_app/06_fig02-preview_working_new_tab.png)
 
 si apre un nuovo tab del browser sull'URL del root_path:
 
