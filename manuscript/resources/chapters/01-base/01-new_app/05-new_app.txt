@@ -172,7 +172,7 @@ Use Ctrl-C to stop
 su cloud9 clicchiamo sul link di "Preview" in alto e scegliamo "Preview Running Application"
 In basso a destra si apre la finestra di preview con un messaggio di errore " Blocked host: ... " perché manca il permesso di connettersi al web server locale.
 
-![Fig. 01](chapters/01-base/01-new_app/04_01-preview-error_connection.png)
+![Fig. 01](chapters/01-base/01-new_app/05_01-preview-error_connection.png)
 
 
 
@@ -194,7 +194,7 @@ Permettiamo le connessioni al web server locale.
 Adesso se clicchiamo sul link di "Preview" in alto e scegliamo "Preview Running Application"
 In basso a destra si apre la finestra di preview con un altro messaggio di errore perché manca la connessione al database PostgreSQL.
 
-![Fig. 02](chapters/01-base/01-new_app/04_01-preview-db_error.png)
+![Fig. 02](chapters/01-base/01-new_app/05_01-preview-db_error.png)
 
 Per vedere il preview su un tab separato del browser fare click sull'icona di espansione. Quella che quando vai sopra con il cursore apre tip "Pop Out into new windows"
 
