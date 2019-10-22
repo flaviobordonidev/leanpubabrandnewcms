@@ -20,12 +20,12 @@ Risorse interne:
 
 Siamo su instance EC2 con OS Ubuntu che usa "apt" come packet manager.
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ sudo apt update
 $ sudo apt install postgresql postgresql-contrib libpq-dev
 -> y
-~~~~~~~~
+```
 
 
 
@@ -34,10 +34,10 @@ $ sudo apt install postgresql postgresql-contrib libpq-dev
 
 Impostiamo il collegamento di rails a postgresql con l'indirizzo "localhost" e la porta "5432"
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ sudo vim /etc/postgresql/10/main/postgresql.conf
-~~~~~~~~
+```
 
 Decomentiamo le righe (da --> a)
 
@@ -67,40 +67,42 @@ Nel seguente file di configurazione impostiamo la connessione locale IPv4 sull'i
 Attenzione:
 Se ci logghiamo su AWS come " root " nel prompt del terminal vediamo il nome " ubuntu ": 
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 ubuntu:~/environment $
-~~~~~~~~
+```
+
 
 Invece se ci logghiamo su AWS come utente IAM " user_fb " nel prompt del terminal vediamo il nome " user_fb ": 
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 user_fb:~/environment $
-~~~~~~~~
+```
+
 
 Comunque in entrambi i casi l'" id " dell'utente registrato è " ubuntu " e questo lo verifichiamo con il seguente comando: 
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ whoami
 
 
 user_fb:~/environment $ whoami
 ubuntu
-~~~~~~~~
+```
 
 
 Aggiorniamo quindi il file di configurazione
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ sudo vim /etc/postgresql/10/main/pg_hba.conf
-~~~~~~~~
+```
 
 Troviamo la parte:
 
-~~~~~~~~
+```
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
 
 # "local" is for Unix domain socket connections only
@@ -114,18 +116,18 @@ host    all             all             ::1/128                 md5
 local   replication     all                                     peer
 host    replication     all             127.0.0.1/32            md5
 host    replication     all             ::1/128                 md5
-~~~~~~~~
+```
 
 ![Fig. 02](images/01-base/01-new_app/04_fig02-postgresql_conf-default-addresses_and_port.png)
 
 e modifichiamo le seguenti due righe:
 
-~~~~~~~~
+```
 # "local" is for Unix domain socket connections only
 local   all             all                                     trust
 # IPv4 local connections:
 host    all             ubuntu          127.0.0.1/0             trust
-~~~~~~~~
+```
 
 ![Fig. 03](images/01-base/01-new_app/04_fig03-postgresql_conf-updated-addresses_and_port.png)
 
@@ -137,17 +139,17 @@ host    all             ubuntu          127.0.0.1/0             trust
 
 Start / Restart postgres server
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ sudo service postgresql start
-~~~~~~~~
+```
 
 or
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ sudo service postgresql restart
-~~~~~~~~
+```
 
 
 
@@ -156,8 +158,8 @@ $ sudo service postgresql restart
 
 Logghiamoci su PostgreSQL come utente " postgres " che è l'utente di default, e gli cambiamo la password. Inoltre aggiungiamo l'utente " ubuntu ".
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ sudo su - postgres
 -> psql -U postgres
 --> ALTER USER postgres WITH PASSWORD 'myPassword123';
@@ -182,7 +184,7 @@ postgres=# \q
 -bash-4.2$ exit
 logout
 ec2-user:~/environment $ 
-~~~~~~~~
+```
 
 Adesso è tutto inizializzato e pronto per lavorare su aws Cloud9.
 
@@ -193,10 +195,10 @@ Adesso è tutto inizializzato e pronto per lavorare su aws Cloud9.
 
 Se in futuro volessimo lavorare da linea di comando direttamente sul database PostgreSQL potremmo effettuare Login con:
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ psql postgres
-~~~~~~~~
+```
 
 Una volta entrati potremmo creare il nostro proprio database e lavorare sulle tabelle.
 

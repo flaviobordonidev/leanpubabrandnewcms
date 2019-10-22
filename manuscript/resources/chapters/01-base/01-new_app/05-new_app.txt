@@ -21,23 +21,23 @@ Poiché pubblicheremo in produzione la nostra applicazione su Heroku verifichiam
 
 * [Heroku devcenter - Getting Started on Heroku with Rails 6.x](https://devcenter.heroku.com/articles/getting-started-with-rails6)
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ cd ~/environment
 $ gem install rails -v 6.0.0
-~~~~~~~~
+```
 
 
 Per verificare quale versione di rails abbiamo installato
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ rails -v
 
 
 user_fb:~/environment $ rails -v
 Rails 6.0.0
-~~~~~~~~
+```
 
 
 
@@ -47,8 +47,8 @@ Rails 6.0.0
 Prima di creare una nuova app su rails 6 dobbiamo assicurarci che sia installato yarn per la gestione di webpack.
 Per evitare problemi di autorizzazione lo installiamo con i diritti di root.
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ sudo su - 
 -> curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 -> echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
@@ -115,18 +115,18 @@ Processing triggers for man-db (2.8.3-2ubuntu0.1) ...
 Processing triggers for libc-bin (2.27-3ubuntu1) ...
 root@ip-172-31-89-200:~# exit
 logout
-~~~~~~~~
+```
 
 verifichiamo che si è installato
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ yarn --version
 
 
 user_fb:~/environment $ yarn --version
 1.19.1
-~~~~~~~~
+```
 
 
 
@@ -137,11 +137,11 @@ Passiamo a creare l'applicazione
 In produzione Heroku utilizza postgreSQL quindi lo installiamo anche localmente.
 Possiamo gestire postgreSQL localmente nell'ambiente di sviluppo e test perché su cloud9 è già preinstallato postgreSQL e dobbiamo solo farlo partire. Un'alternativa era quella di caricare la gemma "pg" solo per l'ambiente di produzione. Ma se possibile è preferibile usare nell'ambiente di sviluppo le stesse risorse usate in produzione.
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ cd ~/environment
 $ rails _6.0.0_ new bl6_0 --database=postgresql
-~~~~~~~~
+```
 
 Il nome "bl6_0" vuol dire " baseline 6.0 " ad indicare che siamo partiti da rails 6.0.x
 
@@ -152,8 +152,8 @@ Il nome "bl6_0" vuol dire " baseline 6.0 " ad indicare che siamo partiti da rail
 
 Per aprire la nuova applicazione entriamo nella cartella elisinfo5 e facciamo partire il web server
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ cd bl6_0
 $ rails s
 
@@ -168,7 +168,7 @@ Puma starting in single mode...
 * Environment: development
 * Listening on tcp://localhost:8080
 Use Ctrl-C to stop
-~~~~~~~~
+```
 
 su cloud9 clicchiamo sul link di "Preview" in alto e scegliamo "Preview Running Application"
 In basso a destra si apre la finestra di preview con un messaggio di errore " Blocked host: ... " perché manca il permesso di connettersi al web server locale.
@@ -184,13 +184,13 @@ Before running rails server, it’s necessary on some systems (including the clo
 
 Permettiamo le connessioni al web server locale.
 
-{id="01-01-05_01", title=".../config/environments/development.rb", lang=ruby, line-numbers=on, starting-line-number=63}
-~~~~~~~~
+{id: "01-01-05_01", caption: ".../config/environments/development.rb -- codice 01", format: ruby, line-numbers: true, number-from: 63}
+```
   # Allow connections to local server.
   config.hosts.clear
-~~~~~~~~
+```
 
-[Codice 01](#01-01-05_01all)
+[tutto il codice](#01-01-05_01all)
 
 Adesso se clicchiamo sul link di "Preview" in alto e scegliamo "Preview Running Application"
 In basso a destra si apre la finestra di preview con un altro messaggio di errore perché manca la connessione al database PostgreSQL.

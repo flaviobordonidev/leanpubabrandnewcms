@@ -17,6 +17,14 @@ development:
 [Codice 01](#01-01-05_01all)
 
 
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo apt update
+$ sudo apt install postgresql postgresql-contrib libpq-dev
+-> y
+~~~~~~~~
+
+
 
 
 ## Markua example
@@ -31,4 +39,9 @@ development:
 [tutto il codice](#01-01-06_01all)
 
 
-
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo apt update
+$ sudo apt install postgresql postgresql-contrib libpq-dev
+-> y
+```
