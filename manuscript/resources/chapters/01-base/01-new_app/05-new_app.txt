@@ -1,4 +1,5 @@
-# Nuova app Rails 6 su ambiente aws Cloud9
+{id: 01-base-01-new_app-05-new_app}
+# Cap 1.5 -- Nuova app Rails 6 su ambiente aws Cloud9
 
 
 Risorse interne:

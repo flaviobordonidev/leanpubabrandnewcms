@@ -1,4 +1,5 @@
-# Creiamo uno IAM user per Cloud9
+{id: 01-base-01-new_app-02-aws_IAM_user_for_cloud9}
+# Cap 1.2 -- Creiamo uno IAM user per Cloud9
 
 Non è una buona idea lavorara su cloud9 come root. Lo stesso Amazon Web Server consiglia di creare un utente IAM per gestire cloud9.
 
@@ -103,7 +104,7 @@ AWS -> Service -> IAM -> Users -> Add user
 ![Fig. 06](chapters/01-base/01-new_app/02_fig06-aws_IAM_user_new_step5.png)
 
 
-Facciamo riferimento alla storia di Cloud9 [Volume 1 - Cap 1.1](#01-base-01-new_app-01-01-aws_cloud9-story)
+Facciamo riferimento alla storia di Cloud9 [Volume 1 - Cap 1.1](#01-base-01-new_app-01-aws_cloud9-story)
 
 
 
