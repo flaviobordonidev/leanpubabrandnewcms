@@ -47,6 +47,11 @@ Oppure da terminale
 {caption: "terminal", format: bash, line-numbers: false}
 ```
 $ ls -a
+
+
+user_fb:~/environment/bl6_0 (master) $ ls -a
+.   .browserslistrc  .gitignore     Gemfile       README.md  app              bin     config.ru  lib  node_modules  postcss.config.js  storage  tmp     yarn.lock
+..  .git             .ruby-version  Gemfile.lock  Rakefile   babel.config.js  config  db         log  package.json  public             test     vendor
 ```
 
 
@@ -61,7 +66,8 @@ Per verificare le impostazioni di git eseguiamo
 ```
 $ git config -l
 
-ec2-user:~/environment/myapp (master) $ git config -l
+
+user_fb:~/environment/bl6_0 (master) $ git config -l
 core.editor=/usr/bin/nano
 core.repositoryformatversion=0
 core.filemode=true
@@ -69,9 +75,9 @@ core.bare=false
 core.logallrefupdates=true
 ```
 
-First-time system setup
-Before using Git, you should perform a couple of one-time setup steps. 
-These are system setups, meaning you only have to do them once per computer:
+
+Essendo la prima configurazione del sistema, prima di usare Git, dobbiamo eseguire un paio di passaggi di configurazione una tantum.
+Queste sono le impostazioni di sistema, il che significa che dobbiamo eseguirle una sola volta per computer:
 
 {caption: "terminal", format: bash, line-numbers: false}
 ```
@@ -80,9 +86,9 @@ $ git config --global user.email "my@email.com"
 $ git config -l
 
 
-ec2-user:~/environment/myapp (master) $ git config --global user.name "My Name"
-ec2-user:~/environment/myapp (master) $ git config --global user.email "my@email.com"
-ec2-user:~/environment/myapp (master) $ git config -l
+user_fb:~/environment/myapp (master) $ git config --global user.name "My Name"
+user_fb:~/environment/myapp (master) $ git config --global user.email "my@email.com"
+user_fb:~/environment/bl6_0 (master) $ git config -l
 core.editor=/usr/bin/nano
 user.name=My Name
 user.email=my@email.com
