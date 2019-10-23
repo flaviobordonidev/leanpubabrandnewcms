@@ -39,7 +39,7 @@ I> Ricordiamoci di entrare nella directory del nostro nuovo applicativo "myapp" 
 
 Questo genera anche la cartella nascosta git ed i vari files tra cui gitignore per vedere possiamo visualizzare i files nascosti dalla ruota dentata al lato del nome del workspace scegliendo dal menu a discesa la voce "show hidden files"
 
-![Fig. 01](images/01-beginning/02-git/02_01-aws_cloud9-show_hidden_files.PNG)
+![Fig. 01](chapters/01-base/02-git/02_fig01-aws_cloud9-show_hidden_files.png)
 
 
 Oppure da terminale
