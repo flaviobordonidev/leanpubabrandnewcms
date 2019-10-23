@@ -19,3 +19,5 @@ resources/chapters/01-base/01-new_app/05-new_app.txt
 resources/chapters/01-base/01-new_app/06-pg_app_databases.txt
 resources/chapters/01-base/01-new_app/07-ruby_version.txt
 resources/chapters/01-base/01-new_app/08-credentials_and_masterkey.txt
+
+resources/chapters/01-base/02-git/01-git_story.txt
