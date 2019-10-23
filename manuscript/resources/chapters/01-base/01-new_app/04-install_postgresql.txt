@@ -49,7 +49,7 @@ Decomentiamo le righe (da --> a)
 
 Per fare delle modifiche con VIM:
 
-* muoversi con le frecce. 
+* muoversi con le frecce sulla tastiera. 
 * premere [i] per entrare in modalità modifica. 
 * premere [canc] per cancellare.
 * premere [ESC] per uscire dalla modalità modifica.
