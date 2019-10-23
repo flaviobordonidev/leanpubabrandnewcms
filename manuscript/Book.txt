@@ -23,3 +23,5 @@ resources/chapters/01-base/01-new_app/08-credentials_and_masterkey.txt
 resources/chapters/01-base/02-git/01-git_story.txt
 resources/chapters/01-base/02-git/02-inizializziamo_git.txt
 resources/chapters/01-base/02-git/03-daily_routine.txt
+
+resources/chapters/01-base/03-mockups/01-mockups.txt
