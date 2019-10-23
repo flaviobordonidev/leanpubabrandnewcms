@@ -1,4 +1,5 @@
-# Esempio di pagine statiche
+{id: 01-base-03-mockups-01-mockups}
+# Cap 3.1 -- Esempio di pagine statiche
 
 Esempio di pagine statiche dello sviluppatore. Inizio con delle example_static_pages di appoggio per lo sviluppatore. Così da poter implementare l'internazionalizzazione ed il login sul back-office
 
