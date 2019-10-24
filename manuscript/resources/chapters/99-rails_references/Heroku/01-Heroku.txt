@@ -1,0 +1,17 @@
+# Heroku
+
+L'ambiente scelto per mandare in produzione le nostre applicazioni Rails.
+
+
+Risorse interne:
+
+* 01-base/04-heroku/02-inizializiamo_heroku
+
+
+Risorse web:
+
+* https://devcenter.heroku.com/articles/getting-started-with-rails5
+* https://devcenter.heroku.com/articles/heroku-cli#download-and-install
+* https://www.railstutorial.org/book/_single-page#sec-deploying
+
+

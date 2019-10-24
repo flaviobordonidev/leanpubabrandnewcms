@@ -58,3 +58,153 @@ views/posts/show
 —
 <%= @post.user.username %>
 —
+
+---
+Google maps:
+http://stackoverflow.com/questions/38186827/google-maps-autocomplete-js-is-working-on-localhost-but-not-on-heroku
+just goto google console, enable the "Google Places API Web Service"
+
+http://ubilabs.github.io/geocomplete/
+
+---
+---
+Creazione Nuove Utente 
+
+L'inserimento di un nuovo utente va effettuato tramite rails console con i comandi che effettuarenno l'append del nuovo record direttamente sulla tabella users. Si possono usare entrambi i metodi portati ad esempio qui di seguito: 
+
+$ sudo service postgresql start
+
+$ rails c 
+
+Metodo 1
+> User.new({email: 'donazioni@duomomilano.it', password: 'D*****@2017', password_confirmation: 'D*****@2017'}).save
+
+Metodo 2
+> u = User.new({email: 'donazioni@duomomilano.it', password: 'D*****@2017', password_confirmation: 'D*****@2017'})
+> u.save
+
+Una volta creato il nuovo record, per aggiungerlo nel menù a cascata dell'home page e permettere all'amministratore di vedere tutti i kiosk inseriti, e filtrare le transazioni relative, bisogna inserire il seguente blocco comandi nel file homepage_controller.rb, come di seguito mostrato:
+
+# Save the Children: 2
+    when "user@mail.com"
+      @company_name = "Save the Children"
+      @kiosks = Company.find(2).kiosks
+      
+Come dopo ogni aggiunta o cambio di codice, dobbiamo caricare le modifiche su Git e poi inviarle in produzione su Heroku.      
+      
+---
+Angle esempio online 
+
+https://angle-on-rails.herokuapp.com/forms/upload
+
+---
+Per forzare un push usare -f
+
+$ git push -f heroku nomebranch:master
+---
+
+Quando apri un workspace condiviso il link "Share" in alto a destra non c'è più.
+Allora una volta fatto partire il server con ** $ rails s -b $IP -p $PORT **
+L'url da usare ha la struttura https://<nomeworkspace>-<nomeutentec9>.c9users.io
+es:
+    https://donamat5-bobdesa64.c9users.io
+    https://ang5-donamat-flaviobordonidev.c9users.io
+
+Un modo per prenderlo è lanciare "Preview -> Preview Running Application" e copiarsi l'URL che viene usato in una finestra locale.
+
+---
+Verfichiamo import su heroku
+Come primo passo verifichiamo che la cartella tmp non ha file .csv già caricati
+
+$ heroku run ls tmp
+
+Dopodiché ci colleghiamo alla console rails su heroku
+
+$ heroku run rails c
+
+
+bobdesa64:~/workspace/donamat (ks) $ heroku run ls tmp
+Running ls tmp on ⬢ limitless-chamber-62677... up, run.3110
+cache  heroku-buildpack-release-step.yml
+bobdesa64:~/workspace/donamat (ks) $ heroku run rails c
+Running rails c on ⬢ limitless-chamber-62677... up, run.5745
+Loading production environment (Rails 5.0.0.1)
+irb(main):001:0> ftp = Net::FTP.new
+=> #<Net::FTP:0x007f88c1039340 @mon_owner=nil, @mon_count=0, @mon_mutex=#<Thread::Mutex:0x007f88c10392a0>, @binary=true, @passive=true, @debug_mode=false, @resume=false, @sock=#<Net::FTP::NullSocket:0x007f88c1039278>, @logged_in=false, @open_timeout=nil, @read_timeout=60>
+irb(main):002:0> ftp.connect("romasportface.com",21)
+=> nil
+irb(main):003:0> ftp.login("rmsport02@romasportface.com","166$}ItcoLr")
+=> true
+irb(main):004:0> ftp.passive = true
+=> true
+irb(main):005:0> ftp.getbinaryfile("MRDP1-transactions.txt", "tmp/MRDP1-transactions.txt")
+=> nil
+irb(main):006:0> ftp.close
+=> nil
+irb(main):007:0> exit
+bobdesa64:~/workspace/donamat (ks) $ heroku run ls tmp
+Running ls tmp on ⬢ limitless-chamber-62677... up, run.3183
+cache  heroku-buildpack-release-step.yml
+bobdesa64:~/workspace/donamat (ks) $ 
+
+Non ci ha copiato il file. (forse lo ha copiato e quando il processo ha terminato lo ha cancellato)
+
+http://stackoverflow.com/questions/5542916/ftp-to-rails-app-hosted-on-heroku
+
+Heroku does not support your application receiving FTP. you can store files in #{Rails.root}/tmp/. However, these files are only available to the process that created them. When the process completes, the files are purged. 
+
+
+---
+You can use library links below:
+
+http://www.ruby-doc.org/stdlib-1.9.3/libdoc/net/ftp/rdoc/index.html
+
+and you can use EventMachine https://github.com/schleyfox/em-ftp-client.
+
+require 'net/ftp'
+ftp = Net::FTP.new
+ftp.connect("myhostname.com",21)
+ftp.login("myuser","my password")
+ftp.chdir("/mydirectory")
+ftp.passive = true
+ftp.getbinaryfile("mysourcefile", "mydestfile")
+
+
+---
+Liberiamo spazio su C9 (clear up / free up disk space)
+
+https://community.c9.io/t/how-do-i-clear-up-disk-space-after-its-full/213/2
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ du -hx / -t 50000000
+~~~~~~~~
+
+Nel mio caso si erano presi quasi tutto lo spazio disco i temporanei di heroku:
+** 1.8G    /home/ubuntu/.local/share/heroku/tmp **
+Li ho liberati con il comando:
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+sudo rm -rf /home/ubuntu/.local/share/heroku/tmp/*
+~~~~~~~~
+
+
+heroku run ls tmp
+
+---
+TODO
+-- arrotondamento (così modifico le tabelle ed importo anche la data e l'ora)
+-- non considerare in import i dati duplicati dalla macchina chiosco (perché con aggiornamenti java sta creando randomicamente dei record duplicati)
+-- data e ora (la visualizzo nelle views)
+-- buona punteggiatura (ultima formalità)
+
+-- Gestione utenti più evoluta / Gestione di un numero di utenti superiore a 20.
+-- Esportazione tabella in csv o excel (con finestra temporale)
+
+
+---
+STAMPARE IL LIBRO con LULU.com
+https://www.davidebarranca.com/2019/04/printing-leanpub-books-on-lulu/

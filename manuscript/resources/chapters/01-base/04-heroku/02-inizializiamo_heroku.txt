@@ -1,38 +1,38 @@
-# Heroku
+{id: 01-base-04-heroku-02-inizializiamo_heroku}
+# Cap 4.2 -- Andiamo in produzione su Heroku
 
 Pubblichiamo la nostra applicazionie sull'ambiente di produzione Heroku.
 
 Andiamo subito in produzione così risolviamo di volta in volta gli eventuali problemi che si presentano senza essere costretti a fare un troubleshooting su tutto l'applicativo.
 
-Risorse web:
+Risorse interne:
 
-* https://devcenter.heroku.com/articles/getting-started-with-rails5
-* https://devcenter.heroku.com/articles/heroku-cli#download-and-install
-* https://www.railstutorial.org/book/_single-page#sec-deploying
+* 99-rails_references/Heroku/
 
 
 
 
 ## Apriamo il branch "Pubblichiamo in Produzione"
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ git checkout -b pp
-~~~~~~~~
+```
 
 
 
 
 ## Verifichiamo se abbiamo Heroku installato su aws Cloud9  
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ heroku --version
 
 
-ec2-user:~/environment $ heroku --version
-bash: heroku: command not found
-~~~~~~~~
+user_fb:~/environment/bl6_0 (master) $ heroku --version
+Command 'heroku' not found, but can be installed with:
+sudo snap install heroku
+```
 
 Nel nostro caso non è installato.
 
@@ -44,7 +44,7 @@ Nel nostro caso non è installato.
 
 Per prima cosa creiamoci un account su www.heroku.com
 
-![fig. 01](images/01-beginning/04-heroku/02_01-heroku_signup.PNG)
+![fig. 01](chapters/01-base/04-heroku/02_fig01-heroku_signup.png)
 
 
 
@@ -55,16 +55,16 @@ Per prima cosa creiamoci un account su www.heroku.com
 Come abbiamo già fatto per PostgreSQL, anche Heroku lo installiamo sulla cartella principale di aws Cloud9: "/environment".
 Assicuriamoci di essere sulla cartella principale
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ cd ~/environment
-~~~~~~~~
+```
 
 Per installare Heroku dobbiamo scaricare ed installare la "heroku CLI" (ex heroku-toolbelt).
 Seguendo le indicazioni di [Heroku](https://devcenter.heroku.com/articles/heroku-cli) il comando che dobbiamo usare da aws cloud9, che è un "docker container" è questo:
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ sudo su - 
 -> curl https://cli-assets.heroku.com/install.sh | sh
 -> exit
@@ -87,19 +87,19 @@ heroku/7.19.4 linux-x64 node-v11.3.0
 [root@ip-172-31-34-226 ~]# exit
 logout
 ec2-user:~/environment $ 
-~~~~~~~~
+```
 
 
 Verifichiamo che l'installazione è andata a buon fine.
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ heroku --version
 
 
 ec2-user:~/environment $ heroku --version
 heroku/7.19.4 linux-x64 node-v11.3.0
-~~~~~~~~
+```
 
 
 
@@ -108,10 +108,10 @@ heroku/7.19.4 linux-x64 node-v11.3.0
 
 Un'alternativa è eseguire la stringa di comando preparata da Michael Hartl del railstutorial.
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ source <(curl -sL https://cdn.learnenough.com/heroku_install)
-~~~~~~~~
+```
 
 Questo comando esegue uno script fatto da Michael che esegue i seguenti passi:
 * Scarica il pacchetto per linux dal sito di heroku (https://cli-assets.heroku.com/heroku-linux-x64.tar.gz) tramite curl. 
@@ -127,12 +127,12 @@ I> Questa alternativa funziona ma tutte le volte che riapro l'istanza di cloud9 
 
 proviamo a lanciarla come super user
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ sudo -s
 $ source <(curl -sL https://cdn.learnenough.com/heroku_install)
 $ exit
-~~~~~~~~
+```
 
 
 
@@ -141,39 +141,39 @@ $ exit
 
 Visualizza la versione di nvm
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ nvm
 
 $ nvm ls
 
 $ nvm ls-remote
-~~~~~~~~
+```
 
 Update npm
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ nvm i v8         # Any version > 8 will do e.g. nvm i v9 
-~~~~~~~~
+```
 
 Install heroku cli
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ npm install -g heroku
 
 $ npm install -g npm
-~~~~~~~~
+```
 
 Done!
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ heroku --version
 
 heroku/7.0.15 linux-x64 node-v8.11.1
-~~~~~~~~
+```
 
 
 
@@ -182,16 +182,16 @@ heroku/7.0.15 linux-x64 node-v8.11.1
 
 Torniamo nella cartella della nostra applicazione Rails
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ cd myapp
-~~~~~~~~
+```
 
 
 Loghiamoci con le credenziali usate nella creazione dell'account heroku (sign_up).
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ heroku login
 
 ec2-user:~/environment/myapp (master) $ heroku login
@@ -200,7 +200,7 @@ heroku: Press any key to open up the browser to login or q to exit:
  ›   login --interactive
  ›
 Logging in... done
-~~~~~~~~
+```
 
 Questa procedura ti fa fare il login sulla pagina web. Basta cliccare sul link, scegliere "open" ed eseguire il login.
 
@@ -209,8 +209,8 @@ Questa procedura ti fa fare il login sulla pagina web. Basta cliccare sul link, 
 
 Aggiungiamo la nostra chiave di criptatura in modo da stabilire un canale sicuro tra aws Cloud9 ed Heroku.
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ heroku keys:add
 
 
@@ -236,39 +236,39 @@ The key's randomart image is:
 +----[SHA256]-----+
 Uploading /home/ec2-user/.ssh/id_rsa.pub SSH key... done
 ec2-user:~/environment/myapp (master) $ 
-~~~~~~~~
+```
 
 
 Creiamo una nuova app su heroku.
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ heroku create
 
 
 cloud9:~/environment/rigenerabatterie (pubprod) $ heroku create
 Creating app... done, ⬢ pacific-sea-70617
 https://pacific-sea-70617.herokuapp.com/ | https://git.heroku.com/pacific-sea-70617.git
-~~~~~~~~
+```
 
 l'app viene creata dinamnicamente. In questo caso è stato creato "pacific-sea-70617" ma può essere qualsiasi nome.
 
 
 Per verficarlo si può usare il comando
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ heroku domains
 
 cloud9:~/environment/rigenerabatterie (pubprod) $ heroku domains
 === pacific-sea-70617 Heroku Domain
 pacific-sea-70617.herokuapp.com
-~~~~~~~~
+```
 
 o
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ heroku apps:info
 
 cloud9:~/environment/rigenerabatterie (pubprod) $ heroku apps:info
@@ -282,19 +282,19 @@ Repo Size:      0 B
 Slug Size:      0 B
 Stack:          heroku-18
 Web URL:        https://pacific-sea-70617.herokuapp.com/
-~~~~~~~~
+```
 
 
 Possiamo verificare che abbiamo la configurazione git corretta con
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ git config --list | grep heroku
 
 cloud9:~/environment/rigenerabatterie (pubprod) $ git config --list | grep heroku
 remote.heroku.url=https://git.heroku.com/pacific-sea-70617.git
 remote.heroku.fetch=+refs/heads/*:refs/remotes/heroku/*
-~~~~~~~~
+```
 
 Se vedi "fatal: not in a git directory" allora probabilmente non sei nella directory corretta. Altrimenti puoi mandare in produzione il tuo codice.
 
@@ -305,8 +305,8 @@ Se vedi "fatal: not in a git directory" allora probabilmente non sei nella direc
 
 Diamo all'app di heroku un nome simile a quello della nostra istanza di aws cloud9 (myapp_1) così è più facile associarli.
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ heroku rename myapp-1-blabla
 
 ec2-user:~/environment/myapp (master) $ heroku rename myapp-1-blabla
@@ -314,15 +314,15 @@ Renaming quiet-waters-28223 to myapp-1-blabla... done
 https://myapp-1-blabla.herokuapp.com/ | https://git.heroku.com/myapp-1-blabla.git
 Git remote heroku updated
  ▸    Don't forget to update git remotes for all other local checkouts of the app.
-~~~~~~~~
+```
 
 Attenzione:
 Il nome deve essere unico in tutto l'ambiente Heroku. Nel nostro caso ho aggiunto "-blabla" per renderlo unico.
 
 verifichiamo di nuovo le informazione della nostra app
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ heroku apps:info
 
 
@@ -337,26 +337,26 @@ Repo Size:      0 B
 Slug Size:      0 B
 Stack:          heroku-18
 Web URL:        https://myapp-1-blabla.herokuapp.com/
-~~~~~~~~
+```
 
 e la configurazione di git
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ git config --list | grep heroku
 
 ec2-user:~/environment/myapp (master) $ git config --list | grep heroku
 remote.heroku.url=https://git.heroku.com/myapp-1-blabla.git
 remote.heroku.fetch=+refs/heads/*:refs/remotes/heroku/*
-~~~~~~~~
+```
 
 Adesso è tutto pronto. Posso fare il commit finale in locale e uploadare tutto in remoto.
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ git add -A
 $ git commit -m "ready to public in production on heroku"
-~~~~~~~~
+```
 
 
 
@@ -366,10 +366,10 @@ $ git commit -m "ready to public in production on heroku"
 Attenzione! per pubblicare su heroku da un branch si usa un comando specifico ( git push heroku yourbranch:master )
 (vedi https://devcenter.heroku.com/articles/git)
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ git push heroku pp:master
-~~~~~~~~
+```
 
 
 
@@ -381,10 +381,10 @@ https://myapp-1-blabla.herokuapp.com/
 
 I> siccome non abbiamo ancora tabelle di database è stato sufficiente fare il "git push" ma quando avremo tabelle di database dobbiamo ricordarci di eseguire il "migrate" anche su heroku.
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ heroku run rake db:migrate
-~~~~~~~~
+```
 
 
 
@@ -394,8 +394,8 @@ $ heroku run rake db:migrate
 Per visualizzare la nostra app sul web stiamo usando un dyno di tipo web.
 Vediamo quanti dynos abbiamo associato alla nostra app in produzione su heroku 
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ heroku ps
 
 
@@ -407,25 +407,26 @@ https://devcenter.heroku.com/articles/dyno-sleeping
 
 === web (Free): bin/rails server -p $PORT -e $RAILS_ENV (1)
 web.1: up 2019/01/03 15:15:56 +0000 (~ 5m ago)
-~~~~~~~~
+```
 
 abbiamo 1 dyno attivo **web.1: up**
 
 Se vogliamo assegnare più dynos usiamo il comando **ps:scale**. Ad esempio assicuriamoci di avere 1 dyno attivo per il web.
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ heroku ps:scale web=1
 
 
 ec2-user:~/environment/myapp (master) $ heroku ps:scale web=1
 Scaling dynos... done, now running web at 1:Free
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 
 Possiamo verificare che non è cambiato nulla perché era già attivo di default 1 dyno.
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ heroku ps
 
 
@@ -437,7 +438,7 @@ https://devcenter.heroku.com/articles/dyno-sleeping
 
 === web (Free): bin/rails server -p $PORT -e $RAILS_ENV (1)
 web.1: up 2019/01/03 15:15:56 +0000 (~ 5m ago)
-~~~~~~~~
+```
 
 
 

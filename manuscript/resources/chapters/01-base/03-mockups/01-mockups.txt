@@ -168,19 +168,22 @@ esempi:
 
 {caption: ".../views/mockups/page_a.html.erb -- codice 02", format: ruby, line-numbers: true, number-from: 1}
 ```
-<h1> Pagina A </h1>
-<p> Il testo verrà preso dal database ma alcuni messaggi sono passati dall'applicazione ed è quindi bene che vengano tradotti per essere pronti a supportare più lingue. </p>
+<h1> Benvenuti nella pagina  A </h1>
 <br>
 <p>  <%= link_to 'andiamo alla pagina B', mockups_page_b_path %> </p>
 ```
+
+![Fig. 01](chapters/01-base/03-mockups/01_fig01-views-mockups-page_a.png)
 
 
 {caption: ".../views/mockups/page_b.html.erb -- codice 03", format: ruby, line-numbers: true, number-from: 1}
 ```
 <h1> Benvenuti nella pagina B </h1>
-<p>  <%= link_to 'Torniamo alla pagina A',mockups_page_a_path %> </p>
+<p>  <%= link_to 'Torniamo alla pagina A', mockups_page_a_path %> </p>
 <p>  <%= link_to 'Torniamo alla homepage', root_path %> </p>
 ```
+
+![Fig. 02](chapters/01-base/03-mockups/01_fig02-views-mockups-page_b.png)
 
 
 

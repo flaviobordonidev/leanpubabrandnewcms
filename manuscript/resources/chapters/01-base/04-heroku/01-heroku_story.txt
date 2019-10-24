@@ -1,8 +1,22 @@
-# Heroku
+{id: 01-base-04-heroku-01-heroku_story}
+# Cap 4.1 -- La storia di Heroku
 
-In questo capitolo parliamo solo di cosa è Heroku della sua storia e del perché lo abbiamo scelto.
+In questo capitolo descriviamo cosa è Heroku, la sua storia ed il perché lo abbiamo scelto.
 
-Una storica piattaforma per la produzione con il vantaggio di presentarsi come un repository remoto (tipo GitHub) che semplifica enormemente la pubblicazione in produzione della nostra app.
+
+
+
+## Che cosa è Heroku
+
+Heroku è una storica piattaforma per la produzione con il vantaggio di presentarsi come un repository remoto (tipo GitHub) che semplifica enormemente la pubblicazione in produzione della nostra app.
+
+Heroku è stata una delle prime piattaforme a comparire sul web a permettere ai propri utenti di sviluppare, distribuire e gestire app direttamente online. Nonostante inizialmente fornisse supporto solo per progetti compatibili con l'interfaccia di programmazione web Rack, con il tempo Heroku ha ampliato la propria offerta aggiungendo centinaia di servizi e il supporto per sei linguaggi di programmazione (Java, Ruby, Node.js, Scala, Clojure, Python e PHP).
+
+![Fig. 01](chapters/01-base/04-heroku/01_fig01-heroku-homepage.png)
+
+Grazie all'integrazione con Git, ad esempio, gli utenti potranno sviluppare la loro app su una piattaforma esterna per poi importare il progetto all'interno del proprio account Heroku, lasciando che la piattaforma PaaS faccia il resto del “lavoro sporco” per renderla operativa e funzionante.
+
+Nel 2011 si unisce al team Yukihiro Matsumoto, chief designer di Ruby; in quello stesso anno la piattaforma si arricchirà del supporto ai linguaggi Node.js e Clojure. Nel settembre 2011 nasce, dalla collaborazione tra Heroku e Facebook, Heroku for Facebook, piattaforma di servizi ottimizzata per ospitare app sviluppate per il social network di Mark Zuckerberg.
 
 
 
@@ -19,18 +33,6 @@ Anche se la gran parte degli internauti crede che il cloud si risolva esclusivam
 
 
 
-## Che cosa è Heroku
-Heroku è stata una delle prime piattaforme a comparire sul web a permettere ai propri utenti di sviluppare, distribuire e gestire app direttamente online. Nonostante inizialmente fornisse supporto solo per progetti compatibili con l'interfaccia di programmazione web Rack, con il tempo Heroku ha ampliato la propria offerta aggiungendo centinaia di servizi e il supporto per sei linguaggi di programmazione (Java, Ruby, Node.js, Scala, Clojure, Python e PHP).
-
-![Fig. 01](images/01-beginning/04-heroku/01_01-heroku-homepage.PNG)
-
-Grazie all'integrazione con Git, ad esempio, gli utenti potranno sviluppare la loro app su una piattaforma esterna per poi importare il progetto all'interno del proprio account Heroku, lasciando che la piattaforma PaaS faccia il resto del “lavoro sporco” per renderla operativa e funzionante.
-
-Nel 2011 si unisce al team Yukihiro Matsumoto, chief designer di Ruby; in quello stesso anno la piattaforma si arricchirà del supporto ai linguaggi Node.js e Clojure. Nel settembre 2011 nasce, dalla collaborazione tra Heroku e Facebook, Heroku for Facebook, piattaforma di servizi ottimizzata per ospitare app sviluppate per il social network di Mark Zuckerberg.
-
-
-
-
 ## La storia di Heroku
 Nata da un'idea di James Lindenbaum, Adam Wiggins e Orion Henry, Heroku fa la sua comparsa sul web nella seconda parte del 2007, mettendo a disposizione degli utenti una piattaforma sulla quale far girare applicazioni compatibili con Rack.
 La crescita della piattaforma è molto veloce e porta con sé molte novità: nell'ottobre 2009 al gruppo dei fondatori si aggiunge Byron Sebastian, che va a ricoprire il ruolo di CEO; l'anno successivo la piattaforma è acquistata da Salesforce.com e implementata come sussidiaria dell'azienda.
@@ -41,7 +43,8 @@ La crescita della piattaforma è molto veloce e porta con sé molte novità: nel
 ## A cosa serve e come funziona Heroku
 Lo scopo della piattaforma è quello di fornire agli utenti le risorse informatiche (sia hardware sia software) necessarie a distribuire e far “girare” app web-based su svariate piattaforme (ad esempio la già citata Facebook). In questo modo gli sviluppatori non dovranno preoccuparsi di avere un'adeguata infrastruttura informatica a supporto della loro creatura, ma potranno affittarla da Heroku. Non solo: la piattaforma ideata da James Lindenbaum, Adam Wiggins e Orion Henry si occupa anche del “lavoro sporco”, compilando ed eseguendo automaticamente l'app non appena il codice sorgente sarà caricato nell'ambiente operativo. I programmatori potranno così concentrarsi sullo sviluppo di un codice il più possibile “pulito” e privo di bug, demandando alla piattaforma PaaS il resto dei compiti.
 
-![Fig. 02](images/01-beginning/04-heroku/01_02-heroku_metrics.PNG)
+![Fig. 02](chapters/01-base/04-heroku/01_fig02-heroku_metrics.png)
+
 
 Alla base dei servizi di Heroku troviamo i dyno, container di funzioni capace di eseguire un solo comando che può essere
 un processo web, un processo worker (batch) o un altro tipo di processo la cui sintassi è consentita nel file Procfile.

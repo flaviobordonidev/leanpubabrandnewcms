@@ -1,8 +1,8 @@
 frontmatter:
 
-resources/chapters/frontmatter/01-acknowledgments.txt
-resources/chapters/frontmatter/02-preface.txt
-resources/chapters/frontmatter/03-introduction.txt
+resources/frontmatter/01-acknowledgments.txt
+resources/frontmatter/02-preface.txt
+resources/frontmatter/03-introduction.txt
 
 
 
@@ -25,3 +25,6 @@ resources/chapters/01-base/02-git/02-inizializziamo_git.txt
 resources/chapters/01-base/02-git/03-daily_routine.txt
 
 resources/chapters/01-base/03-mockups/01-mockups.txt
+
+resources/chapters/01-base/04-heroku/01-heroku_story.txt
+resources/chapters/01-base/04-heroku/02-inizializiamo_heroku.txt
