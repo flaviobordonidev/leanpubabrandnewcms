@@ -1,4 +1,4 @@
-cloud9:~/environment/rigenerabatterie (pubprod) $ git push heroku pubprod:master
+cloud9:~/environment/bl6_0 (pp) $ git push heroku pp:master
 Counting objects: 112, done.
 Compressing objects: 100% (97/97), done.
 Writing objects: 100% (112/112), 25.90 KiB | 1.44 MiB/s, done.
