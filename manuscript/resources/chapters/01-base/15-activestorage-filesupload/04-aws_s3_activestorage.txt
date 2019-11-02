@@ -19,9 +19,9 @@ Risorse web:
 ## Apriamo il branch "AWS S3 on ActiveRecord"
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout -b asar
-~~~~~~~~
+```
 
 
 
@@ -35,26 +35,26 @@ I>
 I> facciamo riferimento al [tutorial github della gemma](http://github.com/aws/aws-sdk-ruby)
 
 {id="01-11-04_01", title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=48}
-~~~~~~~~
+```
 # API clients for AWS S3 services. Comunicazione con Amazon Web Service S3 per ActiveStorage
 gem 'aws-sdk-s3', '~> 1.46'
-~~~~~~~~
+```
 
 [Codice 01](#01-11-04_01all)
 
 Attenzione:
 In passato si doveva aggiungere l'opzione "require: false", ma oggi non serve più 
-~~~~~~~~
+```
 # API clients for AWS S3 services. Comunicazione con Amazon Web Service S3 per ActiveStorage
 gem "aws-sdk-s3", require: false
-~~~~~~~~
+```
 
 Eseguiamo l'installazione della gemma con bundle
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ bundle install
-~~~~~~~~
+```
 
 
 
@@ -64,7 +64,7 @@ $ bundle install
 Entrando in console da awsC9 siamo già collegati ad Amazon e possiamo vedere tutti i buckets
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails c
 -> s3 = Aws::S3::Client.new
 -> resp = s3.list_buckets
@@ -78,12 +78,12 @@ $ rails c
 2.6.3 :004 > resp.buckets.map(&:name)
  => ["brandnewcms-dev", "elisinfo", "elisinfo-dev", "flatest", "myapp-dev", "myapp-prod", "rebisworldbr-dev", "rebisworldbr-prod", "rigenerabatterie-dev", "rigenerabatterie-prod", "s5beginning-dev", "temi-it"] 
 2.6.3 :005 > 
-~~~~~~~~
+```
 
 Proviamo a leggere il contenuto del bucket "s5beginning-dev"
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 -> resp = s3.list_objects(bucket: 's5beginning-dev', max_keys: 2)
 -> resp.contents.each do |object|
 -->  puts "#{object.key} => #{object.etag}"
@@ -96,7 +96,7 @@ Proviamo a leggere il contenuto del bucket "s5beginning-dev"
 2.6.3 :008?>   end
  => [] 
 2.6.3 :009 > 
-~~~~~~~~
+```
 
 Effettivamente è vuoto perché ancora non abbiamo messo nessun file al suo interno.
 
@@ -110,10 +110,10 @@ Se vi state chiedendo come fa la console ad avere autorizzazione a leggere nel b
 Nel file di configurazione dell'ambiente di sviluppo impostiamo "config.active_storage.service" su ":amazondev" al posto di ":local". La variabile ":amazondev" la creiamo nel prossimo paragrafo. Visto che sia lo sviluppo che la produzione puntano ad aws s3 la variabile l'avremmo potuta chiamare semplicemente ":amazon" ma abbiamo preferito distinguerla per far capire didatticamente che puoi chiamarla come vuoi e per predisporci all'eventuale creazione di due utenze IAM diverse una per il bucket "myapp-dev" e l'altra per "myapp-prod".
 
 {id="01-11-04_02", title=".../app/config/environments/development.rb", lang=ruby, line-numbers=on, starting-line-number=30}
-~~~~~~~~
+```
   # Store uploaded files on the local file system (see config/storage.yml for options)
   config.active_storage.service = :amazondev
-~~~~~~~~
+```
 
 [Codice 02](#01-11-04_02all)
 
@@ -125,7 +125,7 @@ Nel file di configurazione dell'ambiente di sviluppo impostiamo "config.active_s
 Rails predispone commentata le linee di codice per effettuare il collegamento. Dobbiamo solo decommentarle ed adattarle alle nostre esigenze.
 
 {id="01-11-04_03", title=".../app/config/storage.yml", lang=yaml, line-numbers=on, starting-line-number=5}
-~~~~~~~~
+```
 # Use rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
 amazondev:
   service: S3
@@ -133,7 +133,7 @@ amazondev:
   secret_access_key: <%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
   region: us-east-1
   bucket: s5beginning-dev
-~~~~~~~~
+```
 
 [Codice 03](#01-11-04_03all)
 
@@ -147,9 +147,9 @@ Non resta che impostare in modo sicuro, le variabili access_key_id e secret_acce
 Implementiamo le due secrets nel file criptato "credentials". Per editare il file eseguire:
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ EDITOR=vim rails credentials:edit
-~~~~~~~~
+```
 
 Questo apre il file decrittato sul terminale usando vim. Come potrai vedere il file decrittato assomiglia ad un normale file .yml
 
@@ -162,11 +162,11 @@ Per editarlo:
 Quando salvi rail automaticamente critta il file usando la master key.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 aws:
   access_key_id: AKI...LWBYA
   secret_access_key: sx1......G2nyKdela
-~~~~~~~~
+```
 
 ![Fig. 01](images/01-beginning/11-activestorage-filesupload/04_01-rails-encrypted-credentials.png)
 
@@ -180,11 +180,11 @@ Il nostro "aws" lo avremmo potuto più correttamente chiamare "aws_iam_bots5begi
 Verifichiamo che le variabili aws che abbiamo appena aggiunto siano correttamente implementate
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails c
 -> Rails.application.credentials.dig(:aws, :access_key_id)   # => "AKI...LWBYA"
 -> Rails.application.credentials.dig(:aws, :secret_access_key)   # => "sx1......G2nyKdela"
-~~~~~~~~
+```
 
 
 
@@ -192,10 +192,10 @@ $ rails c
 ### Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 proviamo adesso a caricare un file.
 
@@ -216,17 +216,17 @@ Settiamo config production per Amazon S3
 Al posto di **:local** usiamo **:amazonprod**
 
 {id="01-11-04_04", title=".../app/config/environments/production.rb", lang=ruby, line-numbers=on, starting-line-number=41}
-~~~~~~~~
+```
   # Store uploaded files on the local file system (see config/storage.yml for options)
   config.active_storage.service = :amazonprod
-~~~~~~~~
+```
 
 [Codice 04](#01-11-04_04all)
 
 Aggiorniamo lo storage.yml aggiungendo ":amazonprod" con relativa configurazione. (al momento con le stesse credentials di **:amazondev**. Ma in seguito creeremo un utente IAM per la produzione e qui metteremo le sue credenziali. Oppure lasciamo il solo utente IAM "botmyapp" con accesso ai due buckets "myapp-dev" e "myapp-prod")
 
 {id="01-11-04_05", title=".../app/config/storage.yml", lang=yaml, line-numbers=on, starting-line-number=5}
-~~~~~~~~
+```
 # Use rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
 amazonprod:
   service: S3
@@ -234,7 +234,7 @@ amazonprod:
   secret_access_key: <%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
   region: eu-east-1
   bucket: s5beginning-prod
-~~~~~~~~
+```
 
 [Codice 05](#01-11-04_05all)
 
@@ -246,10 +246,10 @@ Nel frattempo avremmo già creato il nuovo bucket "s5beginning-prod" su AWS S3 p
 ## aggiorniamo git 
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "add AWS S3 connection to upload images with ActiveRecord in Production"
-~~~~~~~~
+```
 
 
 
@@ -257,9 +257,9 @@ $ git commit -m "add AWS S3 connection to upload images with ActiveRecord in Pro
 ## Publichiamo su heroku
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push heroku asar:master
-~~~~~~~~
+```
 
 Se provassimo adesso ad andare sull'URL di produzione
 
@@ -280,12 +280,12 @@ Heroku non ha le variabili per accedere al bucket "myapp-prod" che abbiamo creat
 Passiamo le variabile d'ambiente ad heroku via terminale
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ heroku config:set AWS_ACCESS_KEY_ID='AKIA....JTOMA'
 $ heroku config:set AWS_SECRET_ACCESS_KEY='LwdJ........45KHZ'
 $ heroku config:set AWS_REGION='us-east-1'
 $ heroku config:set S3_BUCKET_NAME='s5beginning-prod'
-~~~~~~~~
+```
 
 Le avremmo potute passare anche tramite web GUI di heroku.
 
@@ -310,9 +310,9 @@ Interessante vedere che la nostra archiviazione su AWS rimane nascosta all'utent
 Se sul browser facciamo click con tasto destro del mouse sull'immagine e scelgiamo la voce **inspect** si apre la finestra laterale con evidenziato il relativo codice HTML.
 
 {title="inspector", lang=html, line-numbers=off}
-~~~~~~~~
+```
 <img src="https://s5beginning.herokuapp.com/rails/active_storage/representations/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCdz09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--8a64acf62bd23522d13f983ab83ca26c6cdc72cd/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCam9MY21WemFYcGxTU0lNTkRBd2VEUXdNQVk2QmtWVSIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--a645c12ff9721ed60214122b6cd9df735ff736ae/samuel-zeller-34775-unsplash.jpg">
-~~~~~~~~
+```
 
 Possiamo vedere che l'immagine sembra sul nostro server heroku ma in realtà è solo il puntamento sul database. La vera immagine è su Amazon Web Service S3.
 
@@ -324,7 +324,7 @@ Possiamo vedere che l'immagine sembra sul nostro server heroku ma in realtà è 
 
   #DAFA
 
-~~~~~~~~
+```
 > s3 = Aws::S3::Resource.new(region: 'us-east-1')
 Aws::Sigv4::Errors::MissingCredentialsError: missing credentials, provide credentials with one of the following options:
   - :access_key_id and :secret_access_key
@@ -343,7 +343,7 @@ Aws::Sigv4::Errors::MissingCredentialsError: missing credentials, provide creden
 > obj.upload_file(filepath)
 
 > cs3 = Aws::S3::Client.new(region: 'eu-central-1', access_key_id: 'AKIxxxBYA', secret_access_key: 'sx1xxxKdela')
-~~~~~~~~
+```
 
 
 
@@ -355,11 +355,11 @@ Aws::Sigv4::Errors::MissingCredentialsError: missing credentials, provide creden
 se abbiamo finito le modifiche e va tutto bene:
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout master
 $ git merge asar
 $ git branch -d asar
-~~~~~~~~
+```
 
 
 
@@ -369,9 +369,9 @@ $ git branch -d asar
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push origin master
-~~~~~~~~
+```
 
 
 
@@ -384,7 +384,7 @@ $ git push origin master
 [Codice 01](#01-11-04_01)
 
 {id="01-11-04_01all", title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -456,7 +456,7 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-~~~~~~~~
+```
 
 
 
@@ -464,7 +464,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 [Codice 02](#01-11-04_02)
 
 {id="01-11-04_02all", title=".../app/config/environments/development.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -530,7 +530,7 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 end
-~~~~~~~~
+```
 
 
 
@@ -538,7 +538,7 @@ end
 [Codice 03](#01-11-04_03)
 
 {id="01-11-04_03all", title=".../app/config/storage.yml", lang=yaml, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 test:
   service: Disk
   root: <%= Rails.root.join("tmp/storage") %>
@@ -573,4 +573,4 @@ amazondev:
 #   service: Mirror
 #   primary: local
 #   mirrors: [ amazon, google, microsoft ]
-~~~~~~~~
+```

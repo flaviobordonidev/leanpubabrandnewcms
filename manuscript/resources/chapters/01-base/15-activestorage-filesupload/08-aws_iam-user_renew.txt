@@ -8,6 +8,6 @@ In questo capitolo creeremo un nuovo IAM user e lo assoceremo al nostro sito per
 ## Apriamo il branch "New Iam User"
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout -b niu
-~~~~~~~~
+```

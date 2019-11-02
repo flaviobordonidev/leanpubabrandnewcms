@@ -14,9 +14,9 @@ Risorse web:
 ## Apriamo il branch "SignIn SignOut"
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout -b siso
-~~~~~~~~
+```
 
 
 
@@ -29,16 +29,16 @@ la variabile **current_user** è generata tramite la gemma "devise" e contiene l
 Se nessun utente è loggato/autenticato riceviamo un errore nel codice. Per evitarlo mettiamo il controllo "if current_user.present?"
 
 {title=".../app/views/mockups/page_a.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=10}
-~~~~~~~~
+```
 <p> utente attivo: <%= current_user.email if current_user.present? == true %> </p>
-~~~~~~~~
+```
 
 Usiamo l'operatore ternario "condizione ? azione_true : azione_false" per visualizzare la stringa "nessun utente loggato" invece di lasciare un vuoto.
 
 {id="01-07-03_01", title=".../app/views/mockups/page_a.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=10}
-~~~~~~~~
+```
 <p> utente attivo: <%= current_user.present? == true ? current_user.email : "nessun utente loggato" %>
-~~~~~~~~
+```
 
 [Codice 01](#01-07-03_01all)
 
@@ -49,9 +49,9 @@ Usiamo l'operatore ternario "condizione ? azione_true : azione_false" per visual
 ## Aggiungiamo logout
 
 {id="01-07-03_02", title=".../app/views/mockups/page_a.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=10}
-~~~~~~~~
+```
 <%= link_to "Sign Out", destroy_user_session_path, method: :delete %>
-~~~~~~~~
+```
 
 [Codice 02](#01-07-03_02all)
 
@@ -66,9 +66,9 @@ Se lo proviamo verrà ricaricata la stessa pagina homepage/show perché è la pa
 invece di usare l'url mettiamo un pulsante di login su page_a
 
 {id="01-07-03_03", title=".../app/views/mockups/page_a.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=10}
-~~~~~~~~
+```
 <p>  <%= link_to "login", new_user_session_path %> </p>
-~~~~~~~~
+```
 
 [Codice 03](#01-07-03_03all)
 
@@ -82,10 +82,10 @@ Se lo proviamo verrà ricaricata la stessa pagina homepage/show perché è la pa
 Attiviamo il webserver
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 andiamo alla pagina principale (root_path) quindi all'URL:
 
@@ -100,10 +100,10 @@ andiamo alla pagina principale (root_path) quindi all'URL:
 path_names seve a rinominare le chiamate sull'URL per il sign_in, sign_out, sign_up, ...
 
 {title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=9}
-~~~~~~~~
+```
   devise_for :users, path_names: {sign_in: 'login'}
   resources :users
-~~~~~~~~
+```
 
 
 
@@ -111,7 +111,7 @@ path_names seve a rinominare le chiamate sull'URL per il sign_in, sign_out, sign
 ### Verifichiamo gli instradamenti
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails routes | egrep "users"
 
 
@@ -132,7 +132,7 @@ ec2-user:~/environment/myapp (siso) $ rails routes | egrep "users"
                             PATCH  /users/:id(.:format)                                                                     users#update
                             PUT    /users/:id(.:format)                                                                     users#update
                             DELETE /users/:id(.:format)                                                                     users#destroy
-~~~~~~~~
+```
 
 Possiamo vedere che adesso c'è il percorso "/users/login" al posto del precedente "/users/sign_in".
 
@@ -144,10 +144,10 @@ Possiamo vedere che adesso c'è il percorso "/users/login" al posto del preceden
 Attiviamo il webserver
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 verifichiamo gli URLs:
 
@@ -162,10 +162,10 @@ verifichiamo gli URLs:
 Il parametro "path: ''" elimina gli instradamnenti di default di devise
 
 {title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=9}
-~~~~~~~~
+```
   devise_for :users, path_names: {sign_in: 'login'}, path: ''
   resources :users
-~~~~~~~~
+```
 
 Così avremo un più pulito "/login" invece di "/users/login"
 
@@ -175,7 +175,7 @@ Così avremo un più pulito "/login" invece di "/users/login"
 ### Verifichiamo gli instradamenti
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails routes | egrep "users"
 
 
@@ -188,7 +188,7 @@ ec2-user:~/environment/myapp (siso) $ rails routes | egrep "users"
                             PATCH  /users/:id(.:format)                                                                     users#update
                             PUT    /users/:id(.:format)                                                                     users#update
                             DELETE /users/:id(.:format)                                                                     users#destroy
-~~~~~~~~
+```
 
 
 
@@ -198,10 +198,10 @@ ec2-user:~/environment/myapp (siso) $ rails routes | egrep "users"
 Attiviamo il webserver
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 verifichiamo gli URLs:
 
@@ -217,17 +217,17 @@ verifichiamo gli URLs:
 user_signed_in? è la stessa cosa di current_user.present?
 
 {title=".../app/views/example_static_pages/page_a.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=18}
-~~~~~~~~
+```
 <p>
     <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-danger" if current_user.present? == true %>
     <%= link_to "Sign In", new_user_session_path, class: "btn btn-danger" if current_user.present? == false %>
 </p>
-~~~~~~~~
+```
 
 oppure già predisposto per formattazione BootStrap ed inserimento icone
 
 {title=".../app/views/example_static_pages/page_a.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=18}
-~~~~~~~~
+```
 <p>
   <% if current_user.present? %>
     <%= link_to destroy_user_session_path, method: :delete, class: "btn btn-danger" do %>
@@ -239,7 +239,7 @@ oppure già predisposto per formattazione BootStrap ed inserimento icone
     <% end %>
   <% end %>
 </p>
-~~~~~~~~
+```
 
 
 
@@ -255,12 +255,12 @@ la views di login ha generalmente uno stile diverso dalle altre pagine quindi di
 Nella cartella views/layouts creiamo una nuova view che chiamiamo "entrance" ed all'interno copiamo tutto il codice che al momento è nella vew "application" (la view del layout di default)
 
 {id="01-07-03_04", title=".../app/views/layout/entrance.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <!DOCTYPE html>
 <html>
   <head>
     <title>Benvenuto</title>
-~~~~~~~~
+```
 
 [Codice 04](#01-07-03_04all)
 
@@ -276,7 +276,7 @@ Attiviamo i controllers di devise per il model "User" in modo da poter indicare 
 E' arrivato il momento di effettuare il passaggio numero 5 dello script di devise che avevamo lasciato in sospeso.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails generate devise:views users
 $ rails generate devise:controllers users
 
@@ -328,7 +328,7 @@ Some setup you must do manually if you haven't yet:
     end
 
 ===============================================================================
-~~~~~~~~
+```
 
 Questo ci crea le seguenti nuove cartelle e files:
 
@@ -346,9 +346,9 @@ I> Se avessimo già effettuato il passaggio numero 5, il "rails generate devise:
 Aggiungiamo il parametro "controllers: { sessions: 'users/sessions' }" a "devise_for :users", questo indica a devise di usare i nuovi controllers (e non quelli di default).
 
 {id="01-07-03_05", title="/config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=5}
-~~~~~~~~
+```
   devise_for :users, path_names: {sign_in: 'login'}, path: '', controllers: { sessions: 'users/sessions' }
-~~~~~~~~
+```
 
 [Codice 05](#01-07-03_05all)
 
@@ -363,9 +363,9 @@ quidi il parametro sarebbe stato
 * controllers: {sessions: 'users/sessions', registrations: 'users/registrations'}
 
 {title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=9}
-~~~~~~~~
+```
   devise_for :users, path_names: {sign_in: 'login'}, path: '', controllers: {sessions: 'users/sessions', registrations: 'users/registrations'}
-~~~~~~~~
+```
 
 
 
@@ -375,9 +375,9 @@ quidi il parametro sarebbe stato
 Per indicare di usare il nostro nuovo layout dobbiamo aggiornare il controller. Ed è per questo che abbiamo usato ** rails generate devise:controllers users **. Infatti adesso abbiamo in chiaro il controller di devise che gestisce il sign_in/login sign_out/logout. 
 
 {id="01-07-03_06", title="/app/controllers/users/sessions_controller.rb", lang=ruby, line-numbers=on, starting-line-number=6}
-~~~~~~~~
+```
   layout 'entrance'
-~~~~~~~~
+```
 
 [Codice 06](#01-07-03_06all)
 
@@ -389,10 +389,10 @@ Aggiungendo "layout 'entrance'" indichiamo a tutte le azioni di sessions_control
 ### Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 * https://mycloud9path.amazonaws.com/
 * https://mycloud9path.amazonaws.com/login
@@ -405,10 +405,10 @@ Nella pagina di login il tab del browser ha il nome "Benvenuto"
 ## Salviamo su git
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "New layout entrance for login"
-~~~~~~~~
+```
 
 
 
@@ -416,10 +416,10 @@ $ git commit -m "New layout entrance for login"
 ## Pubblichiamo su Heroku
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push heroku siso:master
 $ heroku run rails db:migrate
-~~~~~~~~
+```
 
 
 
@@ -429,11 +429,11 @@ $ heroku run rails db:migrate
 se abbiamo finito le modifiche e va tutto bene:
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout master
 $ git merge siso
 $ git branch -d siso
-~~~~~~~~
+```
 
 
 
@@ -443,9 +443,9 @@ $ git branch -d siso
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push origin master
-~~~~~~~~
+```
 
 
 
@@ -466,14 +466,14 @@ $ git push origin master
 [Codice 01](#01-07-03_01)
 
 {id="01-07-03_01all", title=".../app/views/example_static_pages/page_a.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <h1> <%= t "example_static_pages.page_a.first_header" %> </h1>
 <p> <%= t "example_static_pages.page_a.first_paragraph" %> </p>
 <br>
 <p>  <%= link_to t("example_static_pages.page_a.link_goto_page_B"), example_static_pages_page_b_path %> </p>
 <br/>
 <p> utente attivo: <%= current_user.present? == true ? current_user.email : "nessun utente loggato" %>
-~~~~~~~~
+```
 
 
 
@@ -481,7 +481,7 @@ $ git push origin master
 [Codice 02](#01-07-03_02)
 
 {id="01-07-03_02all", title=".../app/views/example_static_pages/page_a.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <h1> <%= t "example_static_pages.page_a.first_header" %> </h1>
 <p> <%= t "example_static_pages.page_a.first_paragraph" %> </p>
 <br>
@@ -490,7 +490,7 @@ $ git push origin master
 <p> utente attivo: <%= current_user.present? == true ? current_user.email : "nessun utente loggato" %>
 <br/>
 <p>  <%= link_to "Sign Out", destroy_user_session_path, method: :delete %> </p>
-~~~~~~~~
+```
 
 
 
@@ -498,7 +498,7 @@ $ git push origin master
 [Codice 03](#01-07-03_03)
 
 {id="01-07-03_03all", title=".../app/views/example_static_pages/page_a.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <h1> <%= t "example_static_pages.page_a.first_header" %> </h1>
 <p> <%= t "example_static_pages.page_a.first_paragraph" %> </p>
 <br>
@@ -508,7 +508,7 @@ $ git push origin master
 <br/>
 <p>  <%= link_to "Sign Out", destroy_user_session_path, method: :delete %> </p>
 <p>  <%= link_to "Sign In", new_user_session_path %> </p>
-~~~~~~~~
+```
 
 
 
@@ -516,7 +516,7 @@ $ git push origin master
 [Codice 04](#01-07-03_04)
 
 {id="01-07-03_04all", title=".../app/views/layout/entrance.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <!DOCTYPE html>
 <html>
   <head>
@@ -535,7 +535,7 @@ $ git push origin master
     <%= yield %>
   </body>
 </html>
-~~~~~~~~
+```
 
 
 
@@ -543,7 +543,7 @@ $ git push origin master
 [Codice 05](#01-07-03_05)
 
 {id="01-07-03_05all", title="/config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 Rails.application.routes.draw do
 
   root 'example_static_pages#page_a'
@@ -555,7 +555,7 @@ Rails.application.routes.draw do
   get 'example_static_pages/page_b'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
-~~~~~~~~
+```
 
 
 
@@ -563,7 +563,7 @@ end
 [Codice 06](#01-07-03_06)
 
 {id="01-07-03_06all", title="/app/controllers/users/sessions_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 # frozen_string_literal: true
 
 class Users::SessionsController < Devise::SessionsController
@@ -593,4 +593,4 @@ class Users::SessionsController < Devise::SessionsController
   #   devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
   # end
 end
-~~~~~~~~
+```

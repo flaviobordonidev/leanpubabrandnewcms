@@ -11,9 +11,9 @@ Per approfondimenti vedi capitolo 99-rails_references/data_types/date_time
 ## Apriamo il branch "Published Submit"
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout -b ps
-~~~~~~~~
+```
 
 
 
@@ -23,12 +23,12 @@ $ git checkout -b ps
 Per passare i valori a published e published_at tramite form abilitiamo i campi nella whitelist.
 
 {id="02-08-02_01", title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
-~~~~~~~~
+```
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
       params.require(:post).permit(:title, :incipit, :content, :type_of_content, :video_youtube, :video_vimeo, :seocontent, :user_id, :main_image, :published, :published_at)
     end
-~~~~~~~~
+```
 
 [Codice 01](#02-08-02_01all)
 
@@ -38,7 +38,7 @@ Per passare i valori a published e published_at tramite form abilitiamo i campi 
 ## Creiamo il check_box "published" ed il text_field "published_at"
 
 {id="02-08-02_02", title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=29}
-~~~~~~~~
+```
           <li class="list-group-item">
             <div class="field">
               <%= form.label :published, class: "control-label" %>
@@ -52,7 +52,7 @@ Per passare i valori a published e published_at tramite form abilitiamo i campi 
               <%= form.text_field :published_at, class: "form-control" %>
             </div>
           </li>
-~~~~~~~~
+```
 
 [Codice 02](#02-08-02_02all)
 
@@ -65,22 +65,22 @@ Visto che lavoriamo sui parametri che vengono passati sul submit del form è meg
 Aggiorniamo sia l'azione " update " sia l'azione " create " del controller.
 
 {id="02-08-02_03", title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
-~~~~~~~~
+```
   def update
     #raise "published è #{params[:post][:published] == "1"} - published_at è #{params[:post][:published_at].blank?} - La data di oggi è #{DateTime.current}"
     # params restituisce una stringa ed il check-box restituisce "1" se flaggato.
     params[:post][:published_at] = "#{DateTime.current}" if params[:post][:published] == "1" and params[:post][:published_at].blank?
     params[:post][:published_at] = "" if params[:post][:published] == "0"
-~~~~~~~~
+```
 
 
 {id="02-08-02_03", title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
-~~~~~~~~
+```
   def create
     # params restituisce una stringa ed il check-box restituisce "1" se flaggato.
     params[:post][:published_at] = "#{DateTime.current}" if params[:post][:published] == "1" and params[:post][:published_at].blank?
     params[:post][:published_at] = "" if params[:post][:published] == "0"
-~~~~~~~~
+```
 
 
 [Codice 03](#02-08-02_03all)
@@ -88,13 +88,13 @@ Aggiorniamo sia l'azione " update " sia l'azione " create " del controller.
 
 Il seguente codice non funzionerebbe:
 
-~~~~~~~~
+```
     @post.published_at |= Time.now if @post.published == true  
 
 oppure
 
     @post.update(published_at: DateTime.current) if @post.published == true and @post.published_at.blank?
-~~~~~~~~
+```
 
 
 
@@ -102,10 +102,10 @@ oppure
 ## Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 apriamo il browser sull'URL:
 
@@ -123,14 +123,14 @@ Nella pagina edit, sul submit del form:
 ## Aggiorniamo index
 
 {id="02-08-02_02", title=".../app/views/authors/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=22}
-~~~~~~~~
+```
       <th>Pubblicato</th>
-~~~~~~~~
+```
 
 {id="02-08-02_02", title=".../app/views/authors/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=38}
-~~~~~~~~
+```
         <td><%= post.published_at %></td>
-~~~~~~~~
+```
 
 
 
@@ -141,7 +141,7 @@ creiamo l'attributo virtuale "published_at_formatted"
 Nel model Post nella sezione " # == Instance Methods ", sottosezione " ## getter method "
 
 {title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=13}
-~~~~~~~~
+```
   ## getter method
   def published_at_formatted 
     if published_at.present?
@@ -151,14 +151,14 @@ Nel model Post nella sezione " # == Instance Methods ", sottosezione " ## getter
       "non pubblicato"
     end
   end
-~~~~~~~~
+```
 
 Aggiorniamo index
 
 {id="02-08-02_02", title=".../app/views/authors/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=38}
-~~~~~~~~
+```
         <td><%= post.published_at_formatted %></td>
-~~~~~~~~
+```
 
 
 
@@ -166,12 +166,12 @@ Aggiorniamo index
 ## Aggiorniamo show
 
 {id="02-08-02_02", title=".../app/views/authors/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=22}
-~~~~~~~~
+```
 <p>
   <strong>Pubblicato:</strong>
   <%= @post.published_at_formatted %>
 </p>
-~~~~~~~~
+```
 
 
 
@@ -180,10 +180,10 @@ Aggiorniamo index
 ## archiviamo su git
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "add published to views/authors/posts with automatic update of published_at"
-~~~~~~~~
+```
 
 
 
@@ -191,9 +191,9 @@ $ git commit -m "add published to views/authors/posts with automatic update of p
 ## Pubblichiamo su heroku
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push heroku ps:master
-~~~~~~~~
+```
 
 
 
@@ -203,11 +203,11 @@ $ git push heroku ps:master
 se abbiamo finito le modifiche e va tutto bene:
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout master
 $ git merge ps
 $ git branch -d ps
-~~~~~~~~
+```
 
 
 
@@ -217,9 +217,9 @@ $ git branch -d ps
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push origin master
-~~~~~~~~
+```
 
 
 
@@ -232,7 +232,7 @@ $ git push origin master
 [Codice 01](#02-08-02_01)
 
 {id="02-08-02_01all", title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class Authors::PostsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_post, only: [:edit, :update, :destroy]
@@ -310,7 +310,7 @@ class Authors::PostsController < ApplicationController
       params.require(:post).permit(:title, :incipit, :content, :type_of_content, :video_youtube, :video_vimeo, :seocontent, :date_chosen, :user_id, :main_image, :published, :published_at)
     end
 end
-~~~~~~~~
+```
 
 
 
@@ -318,7 +318,7 @@ end
 [Codice 02](#02-08-02_02)
 
 {id="02-08-02_02all", title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <%= form_with(model: post, local: true, url: authors_url) do |form| %>
   <% if post.errors.any? %>
     <div id="error_explanation">
@@ -463,7 +463,7 @@ end
   </div>
 
 <% end %>
-~~~~~~~~
+```
 
 
 
@@ -471,7 +471,7 @@ end
 [Codice 03](#02-08-02_03)
 
 {id="02-08-02_03all", title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class Authors::PostsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_post, only: [:edit, :update, :destroy]
@@ -553,4 +553,4 @@ class Authors::PostsController < ApplicationController
       params.require(:post).permit(:title, :incipit, :content, :type_of_content, :video_youtube, :video_vimeo, :seocontent, :date_chosen, :user_id, :main_image, :published, :published_at)
     end
 end
-~~~~~~~~
+```

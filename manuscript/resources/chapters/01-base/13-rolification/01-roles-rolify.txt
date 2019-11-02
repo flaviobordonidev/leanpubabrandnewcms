@@ -32,9 +32,9 @@ Risorse web:
 ## Apriamo il branch "Roles Rolify"
 
 {title="terminale", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout -b rr
-~~~~~~~~
+```
 
 
 
@@ -46,19 +46,19 @@ I>
 I> facciamo riferimento al [tutorial github della gemma](https://github.com/RolifyCommunity/rolify)
 
 {title="Gemfile", lang=ruby, line-numbers=on, starting-line-number=43}
-~~~~~~~~
+```
 # Very simple Roles library
 gem 'rolify', '~> 5.2'
-~~~~~~~~
+```
 
 [tutto il codice: Gemfile](#beginning-authentication-authorization-rolification-02a-Gemfile)
 
 Eseguiamo l'installazione della gemma con bundle
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ bundle install
-~~~~~~~~
+```
 
 
 
@@ -67,7 +67,7 @@ $ bundle install
 Creiamo le classi "Role" e "User" per definire i ruoli. Sono le classi di default e la classe "User" combina con la scelta "user" di default di devise.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails g rolify Role User
 
 # ===============================================================================
@@ -82,7 +82,7 @@ $ rails g rolify Role User
 # 
 # Inside your User class (or the name you gave as argument otherwise the default 
 # is user.rb), rolify method has been inserted to provide rolify methods.
-~~~~~~~~
+```
 
 lo script:
 * crea il nuovo modello role.rb
@@ -91,7 +91,7 @@ lo script:
 * crea il seguente migrate
 
 {title=".../db/migrate/xxx_rolify_create_roles.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class RolifyCreateRoles < ActiveRecord::Migration[5.2]
   def change
     create_table(:roles) do |t|
@@ -110,15 +110,15 @@ class RolifyCreateRoles < ActiveRecord::Migration[5.2]
     add_index(:users_roles, [ :user_id, :role_id ])
   end
 end
-~~~~~~~~
+```
 
 eseguiamo il migrate
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails db:migrate
-~~~~~~~~
+```
 
 l'impostazione base è terminata possiamo già usare rolify.
 
@@ -128,13 +128,13 @@ l'impostazione base è terminata possiamo già usare rolify.
 ## Aggiungiamo degli utenti da console 
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails c
 > User.create(name: 'A', email: 'ann@test.abc', password: 'password', password_confirmation: 'password')
 > User.create(name: 'B', email: 'bob@test.abc', password: 'password', password_confirmation: 'password')
 > User.create(name: 'C', email: 'carl@test.abc', password: 'password', password_confirmation: 'password')
 > exit
-~~~~~~~~
+```
 
 
 
@@ -143,11 +143,11 @@ $ rails c
 Associamo e togliamo un ruolo al primo utente disponibile.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails c
 > User.first.add_role :admin
 > User.first.remove_role :admin
-~~~~~~~~
+```
 
 vediamo adesso degli scenari di utilizzo
 
@@ -202,7 +202,7 @@ in questo capitolo e nei capitoli successivi faremo degli esempi per i seguenti 
 ### Scenario con solo admin (come roles-admin)
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails c
 
   # Definiamo un ruolo globale
@@ -215,7 +215,7 @@ $ rails c
 > user.remove_role :admin
 > user.has_role? :admin
 => false
-~~~~~~~~
+```
 
 
 
@@ -223,7 +223,7 @@ $ rails c
 ### Scenario con silver, gold, platinum (come roles-enum)
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails c
 
 > u1 = User.find(1)
@@ -259,7 +259,7 @@ $ rails c
 > u1.remove_role :silver
 > u2.remove_role :gold
 > u3.remove_role :platinum
-~~~~~~~~
+```
 
 
 
@@ -270,7 +270,7 @@ $ rails c
 In questo caso oltre il ruolo tipo "enum" (silver o gold o platinum) posso avere in aggiunta un ruolo "bonus" (es: gold e bonus)
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails c
 
 > u1 = User.find(1)
@@ -301,7 +301,7 @@ $ rails c
 > u1.remove_role :silver
 > u1.remove_role :bonus
 > u2.remove_role :gold
-~~~~~~~~
+```
 
 
 
@@ -311,7 +311,7 @@ $ rails c
 In questo scenario l'utente 1 ha accesso a cucina, sala e bagno mentre l'utente 2 ha accesso solo a sala e bagno
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails c
 
 > u1 = User.find(1)
@@ -346,7 +346,7 @@ $ rails c
 > u1.remove_role :bagno
 > u2.remove_role :sala
 > u2.remove_role :bagno
-~~~~~~~~
+```
 
 
 

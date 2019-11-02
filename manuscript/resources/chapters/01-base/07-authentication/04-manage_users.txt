@@ -16,9 +16,9 @@ Risorse web:
 ## Apriamo il branch "Gestione Utenti"
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout -b gu
-~~~~~~~~
+```
 
 
 
@@ -32,9 +32,9 @@ Creiamo il controller per la tabella users.
 I> Nota che “users” è plurale quando si crea il controller. (al contrario dello scaffold in cui si usa il singolare)
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails g controller users index
-~~~~~~~~
+```
 
 Inizializiamo con la sola azione **index** perché le altre le aggiungiamo di volta in volta.
 Avremmo potuto inizializzare tutte e 7 le azioni restfull con ** $ rails g controller users index show new edit create update destroy **
@@ -48,7 +48,7 @@ Creiamoci anche uno scaffold di esempio per aiutarci ad inserire il codice nel n
 Per i campi possiamo rifarci allo schema del database
 
 {id="01-07-04_01", title=".../db/schema.rb", lang=ruby, line-numbers=on, starting-line-number=18}
-~~~~~~~~
+```
   create_table "users", force: :cascade do |t|
     t.string "name", default: "", null: false
     t.string "email", default: "", null: false
@@ -58,20 +58,20 @@ Per i campi possiamo rifarci allo schema del database
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-~~~~~~~~
+```
 
 [Codice 01](#01-07-04_01all)
 
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails g scaffold EgUser name:string email:string encrypted_password:string
-~~~~~~~~
+```
 
 questo crea il migrate:
 
 {title=".../db/migrate/xxx_create_eg_users.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class CreateEgUsers < ActiveRecord::Migration[5.2]
   def change
     create_table :eg_users do |t|
@@ -83,26 +83,26 @@ class CreateEgUsers < ActiveRecord::Migration[5.2]
     end
   end
 end
-~~~~~~~~
+```
 
 Effettuiamo il migrate del database per creare la tabella sul database
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails db:migrate
-~~~~~~~~
+```
 
 Vediamo che lo schema del database si è aggiornato
 
 {id="01-07-04_02", title=".../db/schema.rb", lang=ruby, line-numbers=on, starting-line-number=18}
-~~~~~~~~
+```
   create_table "eg_users", force: :cascade do |t|
 .
 .
 .
   create_table "users", force: :cascade do |t|
-~~~~~~~~
+```
 
 [Codice 02](#01-07-04_02all)
 
@@ -116,9 +116,9 @@ Potevamo evitare di fare il migrate ed eliminare il file di migrate (.../db/migr
 invece di crearci lo scaffold di una tabella example_users avremmo potuto lanciare il comando come se stessimo creando la tabella users senza eseguire il "$ rails db:migrate" e cancellando il file di migrate
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails g scaffold User name:string email:string encrypted_password:string remember_created_at:datetime
-~~~~~~~~
+```
 
 in questo modo avremmo avuto tutto già pronto. :)
 Però per la didattica di questo libro creiamo il controller User da zero aiutandoci con EgUser.
@@ -131,13 +131,13 @@ Però per la didattica di questo libro creiamo il controller User da zero aiutan
 Aggiorniamo il controller implementando l'azione index per visualizzare l'elenco di tutti gli utenti
 
 {id="01-07-04_03", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=3}
-~~~~~~~~
+```
   # GET /users
   # GET /users.json    
   def index
     @users = User.all
   end
-~~~~~~~~
+```
 
 [Codice 03](#01-07-04_03all)
 
@@ -149,7 +149,7 @@ Aggiorniamo il controller implementando l'azione index per visualizzare l'elenco
 Apriamo il nuovo file "index.html.erb" dentro la cartella "views/users". Ci copiamo il contenuto di "views/eg_users/index.html.erb" e lo riadattiamo
 
 {id="01-07-04_04", title=".../app/views/users/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <p id="notice"><%= notice %></p>
 
 <h1>Users</h1>
@@ -159,7 +159,7 @@ Apriamo il nuovo file "index.html.erb" dentro la cartella "views/users". Ci copi
     <tr>
       <th>Name</th>
       <th>Email</th>
-~~~~~~~~
+```
 
 [Codice 04](#01-07-04_04all)
 
@@ -171,10 +171,10 @@ Se avessimo voluto tenere tutto organizzato in una sottocartella tipo "views/use
 ### Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 * https://mycloud9path.amazonaws.com/users
 
@@ -187,12 +187,12 @@ Aggiorniamo il controller implementando l'azione show per visualizzare il singol
 Copiamo ed implementiamo la parte di codice per l'azione show, il before_action lo lascio pronto anche per le prossime azioni.
 
 {id="01-07-04_05", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=2}
-~~~~~~~~
+```
   before_action :set_user, only: [:show]
-~~~~~~~~
+```
 
 {title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=10}
-~~~~~~~~
+```
   # GET /users/1
   # GET /users/1.json
   def show
@@ -203,20 +203,20 @@ Copiamo ed implementiamo la parte di codice per l'azione show, il before_action 
     def set_user
       @user = User.find(params[:id])
     end
-~~~~~~~~
+```
 
 [Codice 05](#01-07-04_05all)
 
 Per la sola azione user non serviva il before_action con il metodo private. Bastava:
 
 {title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=off}
-~~~~~~~~
+```
   # GET /users/1
   # GET /users/1.json
   def show
       @user = User.find(params[:id])
   end
-~~~~~~~~
+```
 
 Ma è utile ed elegante estrarre "@user = User.find(params[:id])" in un metodo private perché questo è chiamato anche da altre azioni (:show, :edit, :update e :destroy)
 
@@ -228,14 +228,14 @@ Ma è utile ed elegante estrarre "@user = User.find(params[:id])" in un metodo p
 Creiamo il nuovo file "show.html.erb" dentro la cartella "views/users". Ci copiamo il contenuto di "views/example_users/show.html.erb" e lo riadattiamo
 
 {id="01-07-04_06", title=".../app/views/users/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <p id="notice"><%= notice %></p>
 
 <p>
   <strong>Name:</strong>
   <%= @user.name %>
 </p>
-~~~~~~~~
+```
 
 [Codice 06](#01-07-04_06all)
 
@@ -245,10 +245,10 @@ Creiamo il nuovo file "show.html.erb" dentro la cartella "views/users". Ci copia
 ### Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 * https://mycloud9path.amazonaws.com/users/1
 
@@ -261,12 +261,12 @@ Aggiorniamo il controller implementando le azioni edit ed update per editare i c
 Copiamo ed implementiamo la parte di codice per le azioni edit ed update.
 
 {id="01-07-04_07", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=2}
-~~~~~~~~
+```
   before_action :set_user, only: [:show, :edit, :update]
-~~~~~~~~
+```
 
 {title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=15}
-~~~~~~~~
+```
   # GET /users/1/edit
   def edit
   end
@@ -284,15 +284,15 @@ Copiamo ed implementiamo la parte di codice per le azioni edit ed update.
       end
     end
   end
-~~~~~~~~
+```
 
 {title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=40}
-~~~~~~~~
+```
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
       params.require(:user).permit(:name, :email, :encrypted_password)
     end
-~~~~~~~~
+```
 
 [Codice 07](#01-07-04_07all)
 
@@ -304,15 +304,15 @@ Copiamo ed implementiamo la parte di codice per le azioni edit ed update.
 Creiamo i nuovi files "edit.html.erb" e "_form.html.erb" dentro la cartella "views/users". Ci copiamo il contenuto dei files su "views/example_users/..." e lo riadattiamo.
 
 {id="01-07-04_08", title=".../app/views/users/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
-~~~~~~~~
+```
 <%= render 'form', user: @user %>
-~~~~~~~~
+```
 
 [Codice 08](#01-07-04_08all)
 
 
 {id="01-07-04_09", title=".../app/views/users/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <%= form_with(model: user, local: true) do |form| %>
 
   <div class="field">
@@ -324,7 +324,7 @@ Creiamo i nuovi files "edit.html.erb" e "_form.html.erb" dentro la cartella "vie
     <%= form.label :password_confirmation %>
     <%= form.text_field :password_confirmation %>
   </div>
-~~~~~~~~
+```
 
 [Codice 09](#01-07-04_09all)
 
@@ -334,10 +334,10 @@ Creiamo i nuovi files "edit.html.erb" e "_form.html.erb" dentro la cartella "vie
 ### Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 * https://mycloud9path.amazonaws.com/users/1/edit
 
@@ -352,7 +352,7 @@ Devise ci offre la soluzione perché accetta la password passata attraverso i ca
 Quindi usiamo questi campi al posto del campo **encrypted_password**
 
 {title=".../app/views/users/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=24}
-~~~~~~~~
+```
   <div class="field">
     <%= form.label :password %>
     <%= form.text_field :password %>
@@ -362,17 +362,17 @@ Quindi usiamo questi campi al posto del campo **encrypted_password**
     <%= form.label :password_confirmation %>
     <%= form.text_field :password_confirmation %>
   </div>
-~~~~~~~~
+```
 
 Ed aggiorniamo la white-list del controller 
 
 {title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=40}
-~~~~~~~~
+```
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
       params.require(:user).permit(:name, :email, :password, :password_confirmation, :remember_created_at)
     end
-~~~~~~~~
+```
 
 Adesso L'update funziona per tutti i campi ma abbiamo un problema di sicurezza perché ogni utente può cambiare nome, email e password a tutti gli utenti.
 Questo problema di sicurezza lo risolveremo nei prossimi capitoli.
@@ -385,15 +385,15 @@ Aggiorniamo il controller implementando le azioni new e create per creare un nuo
 Copiamo ed implementiamo la parte di codice per le azioni new e create.
 
 {id="01-07-04_10", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=15}
-~~~~~~~~
+```
   # GET /users/new
   def new
     @user = User.new
   end
-~~~~~~~~
+```
 
 {title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=24}
-~~~~~~~~
+```
   # POST /users
   # POST /users.json
   def create
@@ -409,7 +409,7 @@ Copiamo ed implementiamo la parte di codice per le azioni new e create.
       end
     end
   end
-~~~~~~~~
+```
 
 [Codice 10](#01-07-04_10all)
 
@@ -421,9 +421,9 @@ Copiamo ed implementiamo la parte di codice per le azioni new e create.
 Creiamo il nuovo file "new.html.erb" dentro la cartella "views/users". Ci copiamo il contenuto del file su "views/example_users/..." e lo riadattiamo.
 
 {id="01-07-04_11", title=".../app/views/users/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
-~~~~~~~~
+```
 <%= render 'form', user: @user %>
-~~~~~~~~
+```
 
 [Codice 11](#01-07-04_11all)
 
@@ -436,10 +436,10 @@ In pratica la differenza tra "edit" e "new" è tutta nelle azioni del controller
 ### Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 * https://mycloud9path.amazonaws.com/users/new
 
@@ -463,7 +463,7 @@ Le autenticazioni con devise sono implementate in fase di creazione degli utenti
 Quindi i seguenti utenti che abbiamo già creato hanno tutti il processo di autenticazione con devise:
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails c
 -> User.all
 
@@ -471,7 +471,7 @@ $ rails c
   User Load (0.3ms)  SELECT  "users".* FROM "users" LIMIT $1  [["LIMIT", 11]]
  => #<ActiveRecord::Relation [#<User id: 2, name: "Bob", email: "bob@test.abc", created_at: "2019-01-06 09:40:34", updated_at: "2019-01-06 09:40:34", role: "user">, #<User id: 3, name: "Carl", email: "carl@test.abc", created_at: "2019-01-06 09:40:51", updated_at: "2019-01-06 09:40:51", role: "user">, #<User id: 5, name: "Elvis", email: "elvis@test.abc", created_at: "2019-01-06 09:41:30", updated_at: "2019-01-06 23:46:51", role: "user">, #<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2019-01-04 11:53:46", updated_at: "2019-01-08 11:43:42", role: "admin">, #<User id: 4, name: "David", email: "david@test.abc", created_at: "2019-01-06 09:41:12", updated_at: "2019-01-08 12:41:32", role: "author">, #<User id: 9, name: "flavio", email: "flavio@test.abc", created_at: "2019-01-09 07:54:10", updated_at: "2019-01-09 07:54:10", role: "user">]> 
 2.4.1 :002 > 
-~~~~~~~~
+```
 
 Ognuno di questi utenti viene autenticato inserendo la sua user e password nella pagina di login. In altre parole è accettato ad entrare.
 
@@ -486,12 +486,12 @@ Aggiorniamo il controller implementando l'azione destroy per eliminare un utente
 copiamo ed implementiamo la parte di codice per l'azione destroy.
 
 {id="01-07-04_12", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=2}
-~~~~~~~~
+```
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-~~~~~~~~
+```
 
 {title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=15}
-~~~~~~~~
+```
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
@@ -501,7 +501,7 @@ copiamo ed implementiamo la parte di codice per l'azione destroy.
       format.json { head :no_content }
     end
   end
-~~~~~~~~
+```
 
 [Codice 12](#01-07-04_12all)
 
@@ -511,9 +511,9 @@ copiamo ed implementiamo la parte di codice per l'azione destroy.
 ## Verifichiamo il link "destroy" nella view index
 
 {title=".../app/views/users/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=25}
-~~~~~~~~
+```
         <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-~~~~~~~~
+```
 
 
 
@@ -521,10 +521,10 @@ copiamo ed implementiamo la parte di codice per l'azione destroy.
 ### Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 * https://mycloud9path.amazonaws.com/users
 
@@ -536,10 +536,10 @@ Eliminiamo l'utente "flav" (id: 6)
 ## Salviamo su git
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "Implement views to manage users"
-~~~~~~~~
+```
 
 
 
@@ -547,19 +547,19 @@ $ git commit -m "Implement views to manage users"
 ## Pubblichiamo su Heroku
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push heroku gu:master
 $ heroku run rails db:migrate
-~~~~~~~~
+```
 
 popoliamo con i 6 utenti anche il database remoto su heroku
 
 Lo potremmo fare da console con
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ heroku run rails c
-~~~~~~~~
+```
 
 Ma visto che abbiamo implementato l'interfaccia grafica lo facciamo a partire dall'URL:
 
@@ -573,11 +573,11 @@ Ma visto che abbiamo implementato l'interfaccia grafica lo facciamo a partire da
 se abbiamo finito le modifiche e va tutto bene:
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout master
 $ git merge gu
 $ git branch -d gu
-~~~~~~~~
+```
 
 
 
@@ -587,9 +587,9 @@ $ git branch -d gu
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push origin master
-~~~~~~~~
+```
 
 
 
@@ -602,7 +602,7 @@ $ git push origin master
 [Codice 01](#01-07-04_01)
 
 {id="01-07-04_01all", title=".../db/schema.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
     t.string "name", default: "", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -611,7 +611,7 @@ $ git push origin master
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-~~~~~~~~
+```
 
 
 
@@ -619,7 +619,7 @@ $ git push origin master
 [Codice 02](#01-07-04_02)
 
 {id="01-07-04_02all", title=".../db/schema.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -660,7 +660,7 @@ ActiveRecord::Schema.define(version: 2019_01_05_225934) do
   end
 
 end
-~~~~~~~~
+```
 
 
 
@@ -669,7 +669,7 @@ end
 [Codice 03](#01-07-04_03)
 
 {id="01-07-04_03all", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
-~~~~~~~~
+```
 class UsersController < ApplicationController
 
   # GET /users
@@ -679,7 +679,7 @@ class UsersController < ApplicationController
   end
 
 end
-~~~~~~~~
+```
 
 
 
@@ -688,7 +688,7 @@ end
 [Codice 04](#01-07-04_04)
 
 {id="01-07-04_04all", title=".../app/views/users/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <p id="notice"><%= notice %></p>
 
 <h1>Users</h1>
@@ -722,7 +722,7 @@ end
 <br>
 
 <%= link_to 'New User', new_user_path %>
-~~~~~~~~
+```
 
 
 
@@ -730,7 +730,7 @@ end
 [Codice 05](#01-07-04_05)
 
 {id="01-07-04_05all", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class UsersController < ApplicationController
   before_action :set_example_user, only: [:show]
 
@@ -752,7 +752,7 @@ class UsersController < ApplicationController
     end
 
 end
-~~~~~~~~
+```
 
 
 
@@ -760,7 +760,7 @@ end
 [Codice 06](#01-07-04_06)
 
 {id="01-07-04_06all", title=".../app/views/users/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <p id="notice"><%= notice %></p>
 
 <p>
@@ -785,7 +785,7 @@ end
 
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>
-~~~~~~~~
+```
 
 
 
@@ -793,7 +793,7 @@ end
 [Codice 07](#01-07-04_07)
 
 {id="01-07-04_07all", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit]
 
@@ -839,7 +839,7 @@ class UsersController < ApplicationController
     end
 
 end
-~~~~~~~~
+```
 
 
 
@@ -848,14 +848,14 @@ end
 [Codice 08](#01-07-04_08)
 
 {id="01-07-04_08all", title=".../app/views/users/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <h1>Editing User</h1>
 
 <%= render 'form', user: @user %>
 
 <%= link_to 'Show', @user %> |
 <%= link_to 'Back', users_path %>
-~~~~~~~~
+```
 
 
 
@@ -864,7 +864,7 @@ end
 [Codice 09](#01-07-04_09)
 
 {id="01-07-04_09all", title=".../app/views/users/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <%= form_with(model: user, local: true) do |form| %>
   <% if user.errors.any? %>
     <div id="error_explanation">
@@ -897,7 +897,7 @@ end
     <%= form.submit %>
   </div>
 <% end %>
-~~~~~~~~
+```
 
 
 
@@ -906,7 +906,7 @@ end
 [Codice 10](#01-07-04_10)
 
 {id="01-07-04_10all", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update]
 
@@ -972,7 +972,7 @@ class UsersController < ApplicationController
     end
 
 end
-~~~~~~~~
+```
 
 
 
@@ -981,13 +981,13 @@ end
 [Codice 11](#01-07-04_11)
 
 {id="01-07-04_11all", title=".../app/views/users/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <h1>New User</h1>
 
 <%= render 'form', user: @user %>
 
 <%= link_to 'Back', users_path %>
-~~~~~~~~
+```
 
 
 
@@ -996,7 +996,7 @@ end
 [Codice 12](#01-07-04_12)
 
 {id="01-07-04_12all", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
@@ -1072,4 +1072,4 @@ class UsersController < ApplicationController
     end
 
 end
-~~~~~~~~
+```

@@ -11,10 +11,10 @@ In questo capitolo impostiamo come lingua di default l'italiano.
 sulla configurazione dell'applicazione impostiamo la lingua di default cambiando il "locale" di default:
 
 {id="01-05-02_01", title=".../config/application.rb", lang=ruby, line-numbers=on, starting-line-number=18}
-~~~~~~~~
+```
     config.i18n.default_locale = :it
     config.i18n.fallbacks = true
-~~~~~~~~
+```
 
 [Codice 01](#01-05-02_01all)
 
@@ -25,11 +25,11 @@ sulla configurazione dell'applicazione impostiamo la lingua di default cambiando
 
 se era attivo stoppare il webserver (CTRL+C) e riavviarlo per permettere a Rails di caricare il file it.yml
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 Se visualizziamo sul browser vediamo che, al posto dei segnoposto, ora c'è la lingua italiana.
 
@@ -45,13 +45,13 @@ Spostiamo le linee di codice all'interno di config/initializers come richiesto d
 Creaiamo un nuovo file con estensione ".rb" che possiamo chiamare come vogliamo; scegliamo "i18n.rb".
 
 {id="01-05-02_02", title=".../config/initializers/i18n.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 # Be sure to restart your server when you modify this file.
 
 # Set the default language.
 Rails.application.config.i18n.default_locale = :it
 Rails.application.config.i18n.fallbacks = true
-~~~~~~~~
+```
 
 [Codice 02](#01-05-02_02all)
 
@@ -65,10 +65,10 @@ Abbiamo inoltre aggiunto due linee di commento all'inizio.
 ## Salviamo su Git
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "set i18n default_locale = :it"
-~~~~~~~~
+```
 
 
 
@@ -76,9 +76,9 @@ $ git commit -m "set i18n default_locale = :it"
 ## publichiamo su heroku
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push heroku mi:master
-~~~~~~~~
+```
 
 
 
@@ -107,7 +107,7 @@ Lo chiudiamo nel prossimo capitolo
 [Codice 01](#01-05-02_01)
 
 {id="01-05-02_01all", title=".../config/application.rb", lang=ruby, line-numbers=on, starting-line-number=21}
-~~~~~~~~
+```
 require_relative 'boot'
 
 require 'rails/all'
@@ -130,7 +130,7 @@ module Myapp
     config.i18n.fallbacks = true
   end
 end
-~~~~~~~~
+```
 
 
 
@@ -138,10 +138,10 @@ end
 [Codice 02](#01-05-02_02)
 
 {id="01-05-02_02all", title=".../config/initializers/i18n.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 # Be sure to restart your server when you modify this file.
 
 # Set the default language.
 Rails.application.config.i18n.default_locale = :it
 Rails.application.config.i18n.fallbacks = true
-~~~~~~~~
+```

@@ -8,9 +8,9 @@ Siccome molti passaggi sono simili a quelli del capitolo precedente, in questo c
 ## Apriamo il branch "Authorization ExamplePost"
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout -b aep
-~~~~~~~~
+```
 
 
 
@@ -18,7 +18,7 @@ $ git checkout -b aep
 ## Aggiungiamo policy per ExamplePost
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails g pundit:policy EgPost
 
 
@@ -27,12 +27,12 @@ Running via Spring preloader in process 4105
       create  app/policies/example_post_policy.rb
       invoke  test_unit
       create    test/policies/example_post_policy_test.rb
-~~~~~~~~
+```
 
 questo crea la seguente policy
 
 {title=".../app/policies/example_post_policy.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class ExamplePostPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
@@ -40,7 +40,7 @@ class ExamplePostPolicy < ApplicationPolicy
     end
   end
 end
-~~~~~~~~
+```
 
 
 
@@ -90,7 +90,7 @@ destroy
 
 
 {title=".../app/policies/eg_post_policy.rb", lang=ruby, line-numbers=on, starting-line-number=3}
-~~~~~~~~
+```
   def index?
     true
   end
@@ -130,7 +130,7 @@ destroy
       false
     end
   end
-~~~~~~~~
+```
 
 
 
@@ -141,16 +141,16 @@ Poiché con la chiamata "@user.present?" ottengo già TRUE o FALSE, non ho bisog
 Quindi possiamo riscrivere la policy per show
 
 {title=".../app/policies/example_post_policy.rb", lang=ruby, line-numbers=on, starting-line-number=7}
-~~~~~~~~
+```
   def show?
     @user.present?
   end
-~~~~~~~~
+```
 
 Invece per la policy di update togliamo la verifica "if @user.user?". Questo permette all'utente di modificare i suoi propri record ma non potendoli creare non ha record da modificare.
 
 {id="01-09-06_01", title=".../app/policies/example_post_policy.rb", lang=ruby, line-numbers=on, starting-line-number=7}
-~~~~~~~~
+```
   def update?
     if @user.present?
       @user.id == @record.user_id or @user.admin?
@@ -158,7 +158,7 @@ Invece per la policy di update togliamo la verifica "if @user.user?". Questo per
       false
     end
   end
-~~~~~~~~
+```
 
 [Codice 01](#01-09-06_01all)
 
@@ -168,34 +168,34 @@ Invece per la policy di update togliamo la verifica "if @user.user?". Questo per
 ## Implementiamo nel controller
 
 {id="01-09-06_02", title=".../app/controllers/eg_posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=6}
-~~~~~~~~
+```
   def index
     @eg_posts = EgPost.all
     authorize @eg_posts
-~~~~~~~~
+```
 
 {title=".../app/controllers/eg_posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=17}
-~~~~~~~~
+```
   def new
     @eg_post = EgPost.new
     authorize @eg_post
-~~~~~~~~
+```
 
 {title=".../app/controllers/eg_posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=28}
-~~~~~~~~
+```
   def create
     @eg_post = EgPost.new(eg_post_params)
     authorize @eg_post
-~~~~~~~~
+```
 
 Per le azioni [:show, :edit, :update, :destroy], che chiamano la funzione "set_user" con il before_action, inserisco l'autorizzazione direttamente sulla funzione "set_user"
 
 {title=".../app/controllers/eg_posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=71}
-~~~~~~~~
+```
     def set_eg_post
       @eg_post = EgPost.find(params[:id])
       authorize @eg_post
-~~~~~~~~
+```
 
 [Codice 02](#01-09-06_02all)
 
@@ -205,10 +205,10 @@ Per le azioni [:show, :edit, :update, :destroy], che chiamano la funzione "set_u
 ### Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 * https://mycloud9path.amazonaws.com/eg_posts
 
@@ -218,10 +218,10 @@ $ rails s
 ## aggiorniamo git 
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "add pundit authorization on all actions of example_post"
-~~~~~~~~
+```
 
 
 
@@ -268,7 +268,7 @@ destroy
 
 
 {id="01-09-06_03", title=".../app/policies/example_post_policy.rb", lang=ruby, line-numbers=on, starting-line-number=3}
-~~~~~~~~
+```
   def index?
     if @user.present?
       case @user.role
@@ -363,7 +363,7 @@ destroy
       false
     end
   end
-~~~~~~~~
+```
 
 [Codice 03](#01-09-06_03all)
 
@@ -375,10 +375,10 @@ In questo modo mi è molto più chiaro capire la logica delle autorizzazioni.
 ### Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 * https://mycloud9path.amazonaws.com/eg_posts
 
@@ -388,10 +388,10 @@ $ rails s
 ## aggiorniamo git 
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "Refactor policies conditions like the logical schema"
-~~~~~~~~
+```
 
 
 
@@ -399,10 +399,10 @@ $ git commit -m "Refactor policies conditions like the logical schema"
 ## Publichiamo su heroku
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push heroku aep:master
 $ heroku run rake db:migrate
-~~~~~~~~
+```
 
 Ricordiamo che lato produzione su heroku c'è un database indipendente da quello di sviluppo. Se si è seguito il tutorial avremo la tabella già con i records inseriti e quindi speculare a quella di sviluppo.
 
@@ -414,11 +414,11 @@ Ricordiamo che lato produzione su heroku c'è un database indipendente da quello
 se abbiamo finito le modifiche e va tutto bene:
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout master
 $ git merge aep
 $ git branch -d aep
-~~~~~~~~
+```
 
 
 
@@ -428,9 +428,9 @@ $ git branch -d aep
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push origin master
-~~~~~~~~
+```
 
 
 
@@ -444,7 +444,7 @@ $ git push origin master
 [Codice 01](#01-09-06_01)
 
 {id="01-09-06_01all", title=".../app/policies/example_post_policy.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class ExamplePostPolicy < ApplicationPolicy
 
   def index?
@@ -485,7 +485,7 @@ class ExamplePostPolicy < ApplicationPolicy
     end
   end
 end
-~~~~~~~~
+```
 
 
 
@@ -493,7 +493,7 @@ end
 [Codice 02](#01-09-06_02)
 
 {id="01-09-06_02all", title=".../app/controllers/example_posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class ExamplePostsController < ApplicationController
   before_action :set_example_post, only: [:show, :edit, :update, :destroy]
 
@@ -577,4 +577,4 @@ class ExamplePostsController < ApplicationController
       params.require(:example_post).permit(:title, :incipit, :user_id, :header_image)
     end
 end
-~~~~~~~~
+```

@@ -29,3 +29,5 @@ resources/chapters/01-base/03-mockups/01-mockups.txt
 resources/chapters/01-base/04-heroku/01-heroku_story.txt
 resources/chapters/01-base/04-heroku/02-inizializiamo_heroku.txt
 resources/chapters/01-base/04-heroku/03-heroku_finish.txt
+
+resources/chapters/01-base/05-mockups_i18n/01-mockups_i18n.txt

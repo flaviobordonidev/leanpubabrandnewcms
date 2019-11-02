@@ -7,9 +7,9 @@
 ## Apriamo il branch "User Pagination"
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout -b up
-~~~~~~~~
+```
 
 
 
@@ -26,18 +26,18 @@ Non serve perché abbiamo inserito " include Pagy::Backend " a livello di applic
 Chiamiamo la funzione "pagy()" nelle azioni dei nostri controllers. Implementiamo la paginazione nell'azione "index"
 
 {id="02-09-01_03", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
     @pagy, @users = pagy(User.all)
-~~~~~~~~
+```
 
 [[ TODO - DA RIVEDERE AGGIUNGENDO AUTORIZZAZIONE SU PUNDIT
     Aggiungiamo ordinamento discendente in base a quando sono creati ed implementiamo un "livello di sicurezza" ossia se non si è amministratori viene visualizzato il solo utente loggato. Questa implementazione di "sicurezza" non è fatta seguendo la procedura corretta. Andrebbe prima impostata a livello di autorizzazione con pundit. 
     
     {id="02-09-01_03", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-    ~~~~~~~~
+    ```
         @pagy, @users = pagy(User.where(id: current_user.id)) unless current_user.admin?
         @pagy, @users = pagy(User.all.order(created_at: "DESC")) if current_user.admin?
-    ~~~~~~~~
+    ```
 
     [Codice 03](#02-09-01_03all)
 ]]
@@ -59,9 +59,9 @@ Non serve perché abbiamo inserito " include Pagy::Frontend " a livello di appli
 Usiamo l'helper "pagy_nav()" messo a disposizione da pagy e lo passiamo con sanitize (un eccesso di zelo in sicurezza che paghiamo con un leggero abbassamento delle prestazioni).
 
 {title="views/users/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=36}
-~~~~~~~~
+```
 <%= sanitize pagy_nav(@pagy) %>
-~~~~~~~~
+```
 
 
 
@@ -69,10 +69,10 @@ Usiamo l'helper "pagy_nav()" messo a disposizione da pagy e lo passiamo con sani
 ## Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 apriamo il browser sull'URL:
 
@@ -90,9 +90,9 @@ Di default sono impostati 20 records ogni pagina. Riduciamoli a 2 così avremo a
 
 
 {title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
     @pagy, @users = pagy(User.all, items: 2)
-~~~~~~~~
+```
 
 
 
@@ -103,9 +103,9 @@ Di default l'ordinamento è crescente in base l'ultima modifica fatta, quindi og
 
 
 {title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
     @pagy, @users = pagy(User.all.order(created_at: "DESC"), items: 2)
-~~~~~~~~
+```
 
 
 
@@ -113,10 +113,10 @@ Di default l'ordinamento è crescente in base l'ultima modifica fatta, quindi og
 ## Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 apriamo il browser sull'URL:
 

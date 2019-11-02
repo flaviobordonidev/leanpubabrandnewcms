@@ -12,7 +12,7 @@ Risorse interne:
 ## Trasliamo i parametri di default di Rails per il nostro locale (it.yml)
 
 {id="01-05-01_01", title=".../config/locales/it.yml", lang=yaml, line-numbers=on, starting-line-number=4}
-~~~~~~~~
+```
 it:
 
 # variabili globali prese da https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/it.yml
@@ -48,7 +48,7 @@ it:
     - ott
     - nov
     - dic
-~~~~~~~~
+```
 
 [Codice 01](#01-05-01_01all)
 
@@ -58,11 +58,11 @@ it:
 per formattare in italiano la data possiamo usare le stesse variabili di " strftime " all'interno del nostro locale (it.yml)
 
 {id="01-05-01_01", title=".../config/locales/it.yml", lang=yaml, line-numbers=on, starting-line-number=4}
-~~~~~~~~
+```
   time:
     formats:
       short: "ora %d %^B %Y" 
-~~~~~~~~
+```
 
 [Codice 01](#01-05-01_01all)
 
@@ -70,10 +70,10 @@ per formattare in italiano la data possiamo usare le stesse variabili di " strft
 e richiamiamo la formattazione con l'helper " l "
 
 {title=".../app/views/posts/_pofo_page_title_section2.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
-~~~~~~~~
+```
 <%#= @post.published_at.strftime("%d %^B %Y") %>
 <%= l @post.published_at, format: :short %>
-~~~~~~~~
+```
 
 [Codice 06](#02-06-01_01all)
 
@@ -86,12 +86,12 @@ Per approfondimenti sulle variabili di formattazione vedi [Volume 1 - Cap 3.3](#
 
 Meglio non usare " Time.now " perché ha un bug nella gestione dei fusi orari. (vedi 99-rails_references/data_types/date_time)
 
-~~~~~~~~
+```
   <%#= l Time.now, format: :short %>
-~~~~~~~~
+```
 
 Invece usiamo " DateTime.current " che gestisce meglio tutto.
 
-~~~~~~~~
+```
   <%#= l DateTime.current, format: :short %>
-~~~~~~~~
+```

@@ -8,9 +8,9 @@ E' veramente semplice. basta indicare il percorso del video dentro un tag **<ifr
 ## Apriamo il branch "Insert Video"
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout -b iv
-~~~~~~~~
+```
 
 
 
@@ -22,7 +22,7 @@ Visualizziamo in ogni pagina posts/show gli stessi due video; uno caricato su Yo
 I> Attenzione "http://" non funziona con rails che vuole il più sicuro "https://"
 
 {id="02-10-01_01", title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <p>
   <strong>Video youtube:</strong>
   <%= @post.video_youtube %>
@@ -42,7 +42,7 @@ I> Attenzione "http://" non funziona con rails che vuole il più sicuro "https:/
   	<iframe src="https://player.vimeo.com/video/87701971" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
   </div>
 </p>
-~~~~~~~~
+```
 
 [Codice 01](#02-10-01_01all)
 
@@ -54,7 +54,7 @@ Per YouTube il parametro "autoplay=1" il video parte in automatico; con "autopla
 ## Visualizziamo i video solo se abbiamo i campi impostati
 
 {title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <p>
   <strong>Video youtube:</strong>
   <%= @post.video_youtube %>
@@ -76,7 +76,7 @@ Per YouTube il parametro "autoplay=1" il video parte in automatico; con "autopla
     </div>
   <% end %>
 </p>
-~~~~~~~~
+```
 
 
 
@@ -89,7 +89,7 @@ agiorniamo il nostro articolo inserendo i seguenti puntamenti:
 * per Vimeo = 
 
 {title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <p>
   <strong>Video youtube:</strong>
   <%= @post.video_youtube %>
@@ -111,13 +111,13 @@ agiorniamo il nostro articolo inserendo i seguenti puntamenti:
     </div>
   <% end %>
 </p>
-~~~~~~~~
+```
 
 Per youtube potevamo anche impostare che l'autoplay si attivava da parametro sull'url ad esempio aggiungendo "<%#= params[:autoplay] || 0 %>":
 
-~~~~~~~~
+```
 <iframe src='https://www.youtube.com/embed/<%#= @post.video_youtube %>?rel=0&autoplay='<%#= params[:autoplay] || 0 %>' frameborder='0' allowfullscreen></iframe>
-~~~~~~~~
+```
 
 
 
@@ -125,10 +125,10 @@ Per youtube potevamo anche impostare che l'autoplay si attivava da parametro sul
 ### Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 apriamo il browser sull'URL:
 
@@ -140,10 +140,10 @@ apriamo il browser sull'URL:
 ## archiviamo su git
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "add embedded youtube and vimeo videos on posts/show"
-~~~~~~~~
+```
 
 
 
@@ -151,9 +151,9 @@ $ git commit -m "add embedded youtube and vimeo videos on posts/show"
 ## Pubblichiamo su heroku
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push heroku iv:master
-~~~~~~~~
+```
 
 
 
@@ -163,11 +163,11 @@ $ git push heroku iv:master
 se abbiamo finito le modifiche e va tutto bene:
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout master
 $ git merge iv
 $ git branch -d iv
-~~~~~~~~
+```
 
 
 
@@ -177,9 +177,9 @@ $ git branch -d iv
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push origin master
-~~~~~~~~
+```
 
 
 
@@ -197,5 +197,5 @@ $ git push origin master
 [Codice 01](#02-10-01_01)
 
 {id="02-10-01_01all", title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
-~~~~~~~~
+```
+```

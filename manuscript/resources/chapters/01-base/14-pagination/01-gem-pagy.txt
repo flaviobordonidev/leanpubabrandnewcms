@@ -15,9 +15,9 @@ Risorse web:
 ## Apriamo il branch "Pagination with Pagy"
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout -b pp
-~~~~~~~~
+```
 
 
 
@@ -44,19 +44,19 @@ I>
 I> facciamo riferimento al [tutorial github della gemma](https://github.com/ddnexus/pagy)
 
 {id="02-09-01_01", title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=45}
-~~~~~~~~
+```
 # Agnostic pagination in plain ruby
 gem 'pagy', '~> 3.4', '>= 3.4.1'
-~~~~~~~~
+```
 
 [Codice 01](#02-09-01_01all)
 
 Eseguiamo l'installazione della gemma con bundle
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ bundle install
-~~~~~~~~
+```
 
 
 
@@ -71,9 +71,9 @@ Abbiamo due scelte:
 Scegliamo di includere la paginazione in tutti i controllers perché per quelli che non la utilizzano non crea nessun problema.
 
 {id="02-09-01_02", title=".../app/controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 include Pagy::Backend
-~~~~~~~~
+```
 
 [Codice 02](#02-09-01_02all)
 
@@ -85,9 +85,9 @@ include Pagy::Backend
 Adesso che abbiamo incluso pagy possiamo chiamare la funzione "pagy()" nelle azioni dei nostri controllers. Implementiamo la paginazione nell'azione index di eg_posts_controller
 
 {id="02-09-01_03", title=".../app/controllers/eg_posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
     @pagy, @posts = pagy(Post.all)
-~~~~~~~~
+```
 
 [Codice 03](#02-09-01_03all)
 
@@ -99,9 +99,9 @@ Adesso che abbiamo incluso pagy possiamo chiamare la funzione "pagy()" nelle azi
 includiamo la paginazione anche in application_helper in modo da rendere disponibili gli helpers di pagy a tutte le views
 
 {id="02-09-01_04", title=".../app/helpers/application_helper.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
   include Pagy::Frontend
-~~~~~~~~
+```
 
 [Codice 04](#02-09-01_04all)
 
@@ -113,38 +113,38 @@ includiamo la paginazione anche in application_helper in modo da rendere disponi
 Possiamo usare l'helper "pagy_nav()" messo a disposizione da pagy.
 
 {title="views/eg_posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=36}
-~~~~~~~~
+```
 <%= raw pagy_nav(@pagy) %>
-~~~~~~~~
+```
 
 un modo più compatto di scrivere lo stesso codice è usando il "doppio uguale" 
 
 {title="views/eg_posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=36}
-~~~~~~~~
+```
 <%== pagy_nav(@pagy) %>
-~~~~~~~~
+```
 
 se invece usiamo la sintassi classica senza "raw" ci viene passato il codice HTML.
 
 {title="views/eg_posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=36}
-~~~~~~~~
+```
 <%= pagy_nav(@pagy) %>
-~~~~~~~~
+```
 
 Possiamo usare "raw" perché sappiamo che pagy già evita query-injections.
 Ma se vogliamo essere espressamente prudenti possiamo usare "html_safe" invece di "raw" ma è sconsigliato perché "html_safe" ha alcuni difetti.
 
 {title="views/eg_posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=36}
-~~~~~~~~
+```
 <%= pagy_nav(@pagy).html_safe %>
-~~~~~~~~
+```
 
 Se vogliamo essere esplicitamente prudenti è bene usare "sanitize" 
 
 {title="views/eg_posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=36}
-~~~~~~~~
+```
 <%= sanitize pagy_nav(@pagy) %>
-~~~~~~~~
+```
 
 
 
@@ -152,10 +152,10 @@ Se vogliamo essere esplicitamente prudenti è bene usare "sanitize"
 ## Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 apriamo il browser sull'URL:
 
@@ -172,9 +172,9 @@ Di default sono impostati 20 records ogni pagina. Riduciamoli a 2 così avremo a
 
 
 {title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
     @pagy, @posts = pagy(Post.all, items: 2)
-~~~~~~~~
+```
 
 
 
@@ -183,10 +183,10 @@ Di default sono impostati 20 records ogni pagina. Riduciamoli a 2 così avremo a
 ## Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 apriamo il browser sull'URL:
 
@@ -200,10 +200,10 @@ E vediamo la paginazione. Questa volta appaiono i links di navigazione tra le pa
 ## archiviamo su git
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "add pagination with pagy"
-~~~~~~~~
+```
 
 
 
@@ -211,9 +211,9 @@ $ git commit -m "add pagination with pagy"
 ## Pubblichiamo su heroku
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push heroku pp:master
-~~~~~~~~
+```
 
 
 
@@ -223,11 +223,11 @@ $ git push heroku pp:master
 se abbiamo finito le modifiche e va tutto bene:
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout master
 $ git merge pp
 $ git branch -d pp
-~~~~~~~~
+```
 
 
 
@@ -237,9 +237,9 @@ $ git branch -d pp
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push origin master
-~~~~~~~~
+```
 
 
 
@@ -253,7 +253,7 @@ $ git push origin master
 [Codice 01](#02-09-01_01)
 
 {id="02-09-01_01all", title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -339,7 +339,7 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-~~~~~~~~
+```
 
 
 
@@ -347,7 +347,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 [Codice 02](#02-09-01_02all)
 
 {id="02-09-01_02", title=".../app/controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class ApplicationController < ActionController::Base
   include Pundit
   include Pagy::Backend
@@ -375,7 +375,7 @@ class ApplicationController < ActionController::Base
       redirect_to request.referrer || root_path, notice: "You are not authorized to perform this action."
     end
 end
-~~~~~~~~
+```
 
 
 
@@ -383,8 +383,8 @@ end
 [Codice 04](#02-09-01_04)
 
 {id="02-09-01_04all", title=".../app/helpers/application_helper.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 module ApplicationHelper
   include Pagy::Frontend
 end
-~~~~~~~~
+```

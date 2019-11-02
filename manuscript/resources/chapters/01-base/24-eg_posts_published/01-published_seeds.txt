@@ -8,9 +8,9 @@ filtriamo per gli articoli pubblicati.
 ## Apriamo il branch "PUBlished"
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout -b pub
-~~~~~~~~
+```
 
 
 
@@ -18,33 +18,33 @@ $ git checkout -b pub
 ## Aggiungiamo le colonne per publish su eg_posts
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails g migration AddPublishedToPosts published:boolean published_at:datetime
-~~~~~~~~
+```
 
 * published_at   : Utile per gestire pubblicazioni automatiche o allineare le date con le campagne di email marketing.
 
 aggiungiamo al migrate creato il " default: false " alla colonna :published
 
 {id="02-08-01_01", title=".../db/migrate/xxx_add_published_to_posts.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class AddPublishedToPosts < ActiveRecord::Migration[5.2]
   def change
     add_column :posts, :published, :boolean, default: false
     add_column :posts, :published_at, :datetime
   end
 end
-~~~~~~~~
+```
 
 [Codice 01](#02-08-01_01all)
 
 eseguiamo il migrate 
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails db:migrate
-~~~~~~~~
+```
 
 
 
@@ -55,9 +55,9 @@ aggiungiamo uno scope per gli articoli pubblicati.
 Nel model nella sezione "# == Scopes".
 
 {id="02-08-01_02", title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=28}
-~~~~~~~~
+```
   scope :published, -> { where(published: true) }
-~~~~~~~~
+```
 
 [Codice 02](#02-08-01_02all)
 
@@ -70,9 +70,9 @@ Per limitare la visibilità ai soli articoli pubblicati per una persona non logg
 Nel controller "default posts_controller" sull'azione " index "
 
 {id="02-08-01_03", title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
-~~~~~~~~
+```
     @posts = Post.published.order(created_at: "DESC")
-~~~~~~~~
+```
 
 [Codice 03](#02-08-01_03all)
 
@@ -82,7 +82,7 @@ Nel controller "default posts_controller" sull'azione " index "
 ## Impostiamo da terminale un articolo come pubblicato
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails c
 -> Post.first.published
@@ -100,7 +100,7 @@ $ rails c
  2.6.3 :003 > Post.first.published
   Post Load (0.6ms)  SELECT  "posts".* FROM "posts" ORDER BY "posts"."id" ASC LIMIT $1  [["LIMIT", 1]]
  => true 
-~~~~~~~~
+```
 
 
 
@@ -108,10 +108,10 @@ $ rails c
 ## Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 apriamo il browser sull'URL:
 
@@ -125,10 +125,10 @@ Adesso viene visualizzato solo l'articolo in cui abbiamo impostato "published: t
 ## archiviamo su git
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "add published to posts"
-~~~~~~~~
+```
 
 
 
@@ -136,10 +136,10 @@ $ git commit -m "add published to posts"
 ## Pubblichiamo su heroku
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push heroku pub:master
 $ heroku run rails db:migrate
-~~~~~~~~
+```
 
 
 
@@ -149,11 +149,11 @@ $ heroku run rails db:migrate
 se abbiamo finito le modifiche e va tutto bene:
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout master
 $ git merge pub
 $ git branch -d pub
-~~~~~~~~
+```
 
 
 
@@ -163,9 +163,9 @@ $ git branch -d pub
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push origin master
-~~~~~~~~
+```
 
 
 
@@ -178,14 +178,14 @@ $ git push origin master
 [Codice 01](#02-08-01_01)
 
 {id="02-08-01_01all", title=".../db/migrate/xxx_add_published_to_posts.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class AddPublishedToPosts < ActiveRecord::Migration[5.2]
   def change
     add_column :posts, :published, :boolean, default: false
     add_column :posts, :published_at, :datetime
   end
 end
-~~~~~~~~
+```
 
 
 
@@ -193,7 +193,7 @@ end
 [Codice 02](#02-08-01_02)
 
 {id="02-08-01_02all", title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class Post < ApplicationRecord
   # == Constants ============================================================
 
@@ -231,7 +231,7 @@ class Post < ApplicationRecord
   end
   
 end
-~~~~~~~~
+```
 
 
 
@@ -239,7 +239,7 @@ end
 [Codice 03](#02-08-01_03)
 
 {id="02-08-01_03all", title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
@@ -254,4 +254,4 @@ class PostsController < ApplicationController
     @post = Post.friendly.find(params[:id])
   end
 end
-~~~~~~~~
+```

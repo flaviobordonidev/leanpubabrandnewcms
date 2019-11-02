@@ -8,9 +8,9 @@ Vogliamo rendere dinamico il titolo che appare nel tab del browser. In questo ca
 ## Apriamo il branch "Dynamic Title on Browser Tabs"
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout -b dtbt
-~~~~~~~~
+```
 
 
 
@@ -20,9 +20,9 @@ $ git checkout -b dtbt
 Implementiamo il cambio del titolo nel layout application con un "yield(:mytitle)" che è una specie di segna posto o di contenitore vuoto da riempire con delle chiamate fatte nelle altre views
 
 {id="01-08b-01_01", title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=4}
-~~~~~~~~
+```
     <title><%= yield(:html_head_title) %> | Baseline5_2</title>
-~~~~~~~~
+```
 
 [Codice 01](#01-08b-01_01all)
 
@@ -34,40 +34,40 @@ Implementiamo il cambio del titolo nel layout application con un "yield(:mytitle
 Sulle views di nostro interesse collochiamo i contenuti per il nostro "contenitore vuoto" yield(:html_head_title). I contenuti sono passati al contenitore con il provide(:html_head_title, "il mio contenuto"). Inseriamo il codice all'inizio tra dei divisori "<%# == Meta_data"
 
 {title=".../app/views/users/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
-~~~~~~~~
+```
 <%# == Meta_data ============================================================ %>
 
 <% provide(:html_head_title, "Tutti gli utenti") %>
 
 <%# == Meta_data - end ====================================================== %>
-~~~~~~~~
+```
 
 {title=".../app/views/users/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
-~~~~~~~~
+```
 <%# == Meta_data ============================================================ %>
 
 <% provide(:html_head_title, @user.name) %>
 
 <%# == Meta_data - end ====================================================== %>
-~~~~~~~~
+```
 
 {title=".../app/views/users/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
-~~~~~~~~
+```
 <%# == Meta_data ============================================================ %>
 
 <% provide(:html_head_title, "Modifica #{@user.name}") %>
 
 <%# == Meta_data - end ====================================================== %>
-~~~~~~~~
+```
 
 {title=".../app/views/users/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
-~~~~~~~~
+```
 <%# == Meta_data ============================================================ %>
 
 <% provide(:html_head_title, "Nuovo utente") %>
 
 <%# == Meta_data - end ====================================================== %>
-~~~~~~~~
+```
 
 
 
@@ -75,10 +75,10 @@ Sulle views di nostro interesse collochiamo i contenuti per il nostro "contenito
 ## Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 apriamolo il browser sull'URL:
 
@@ -91,7 +91,7 @@ apriamolo il browser sull'URL:
 
 
 {id="02-03-01_01", title=".../config/locales/en.yml", lang=yaml, line-numbers=on, starting-line-number=4}
-~~~~~~~~
+```
   users:
     index:
       html_head_title: "All users"
@@ -99,13 +99,13 @@ apriamolo il browser sull'URL:
       html_head_title: "Edit"
     new:
       html_head_title: "New post"
-~~~~~~~~
+```
 
 [Codice 01](#02-03-01_01all)
 
 
 {id="02-03-01_02", title=".../config/locales/it.yml", lang=yaml, line-numbers=on, starting-line-number=4}
-~~~~~~~~
+```
   users:
     index:
       html_head_title: "Tutti gli utenti"
@@ -113,7 +113,7 @@ apriamolo il browser sull'URL:
       html_head_title: "Modifica"
     new:
       html_head_title: "Nuovo utente"
-~~~~~~~~
+```
 
 [Codice 02](#02-03-01_02all)
 
@@ -123,26 +123,26 @@ apriamolo il browser sull'URL:
 ### Aggiungiamo le chiamate alle views
 
 {title=".../app/views/users/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
-~~~~~~~~
+```
 <% provide(:html_head_title, "#{t 'users.index.html_head_title'}") %>
-~~~~~~~~
+```
 
 La chiamata per show la lasciamo così com'è
 
 {title=".../app/views/users/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
-~~~~~~~~
+```
 <% provide(:html_head_title, @user.name) %>
-~~~~~~~~
+```
 
 {title=".../app/views/users/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
-~~~~~~~~
+```
 <% provide(:html_head_title, "#{t 'users.edit.html_head_title'} #{@user.name}") %>
-~~~~~~~~
+```
 
 {title=".../app/views/users/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
-~~~~~~~~
+```
 <% provide(:html_head_title, "#{t 'users.new.html_head_title'}") %>
-~~~~~~~~
+```
 
 
 
@@ -150,10 +150,10 @@ La chiamata per show la lasciamo così com'è
 ## salviamo su git
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "Dynamic title on browser tabs"
-~~~~~~~~
+```
 
 
 
@@ -161,9 +161,9 @@ $ git commit -m "Dynamic title on browser tabs"
 ## Pubblichiamo su Heroku
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push heroku dtbt:master
-~~~~~~~~
+```
 
 
 
@@ -173,19 +173,19 @@ $ git push heroku dtbt:master
 se abbiamo finito le modifiche e va tutto bene:
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout master
 $ git merge dtbt
 $ git branch -d dtbt
-~~~~~~~~
+```
 
 
 aggiorniamo github
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push origin master
-~~~~~~~~
+```
 
 
 
@@ -198,6 +198,6 @@ $ git push origin master
 [Codice 01](#01-08b-01_01)
 
 {id="01-08b-01_01all", title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 
-~~~~~~~~
+```

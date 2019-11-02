@@ -12,9 +12,9 @@ Appare la finestra di login ed una volta loggato in alto si ha il menu di wordpr
 ## Apriamo il branch "Dashboard Navbar Authentication"
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout -b dna
-~~~~~~~~
+```
 
 
 
@@ -30,7 +30,7 @@ Ci sono due opzioni:
 Iniziamo inserendo il link di login e logout sul menu.
 
 {id="02-07-07_01", title=".../app/views/layouts/_dashboard_navbar.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=34}
-~~~~~~~~
+```
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
           <%= link_to current_user.email, user_path(current_user.id), class: "nav-link" if current_user.present? == true %>
@@ -41,7 +41,7 @@ Iniziamo inserendo il link di login e logout sul menu.
           <%= link_to "Login", new_user_session_path, class: "btn btn-danger" if current_user.present? == false %>
         </li>
       </ul>
-~~~~~~~~
+```
 
 [Codice 01](#02-07-02_01all)
 
@@ -52,10 +52,10 @@ Iniziamo inserendo il link di login e logout sul menu.
 Aggiungiamo la barra di navigazione anche ai nostri mockups; ad eccezione di mockups/login che resta con il suo e di mockups/page_a a cui lasciamo il layout/application
 
 {id="02-07-02_02", title=".../app/views/layouts/_dashboard_navbar.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=34}
-~~~~~~~~
+```
 class MockupsController < ApplicationController
   layout 'dashboard'
-~~~~~~~~
+```
 
 [Codice 02](#02-07-02_02all)
 
@@ -68,23 +68,23 @@ class MockupsController < ApplicationController
 Sul layout application visualizziamo la dashboard_navbar solo se c'è un utente loggato.
 
 {id="02-03-03_02", title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=13}
-~~~~~~~~
+```
     <%= render 'layouts/dashboard_navbar' if current_user.present? %>
-~~~~~~~~
+```
 
 [Codice 02](#02-03-03_02all)
 
 potevamo usare 
 
-~~~~~~~~
+```
     <% if current_user.present? %> <%= render 'layouts/dashboard_navbar' %><% end %>
-~~~~~~~~
+```
 
 oppure
 
-~~~~~~~~
+```
     <% if user_signed_in? %> <%= render 'layouts/dashboard_navbar' %><% end %>
-~~~~~~~~
+```
 
 
 
@@ -92,10 +92,10 @@ oppure
 ### Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 apriamo il browser sull'URL:
 
@@ -109,10 +109,10 @@ apriamo il browser sull'URL:
 salviamo su git
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "Add navbar login-logout"
-~~~~~~~~
+```
 
 
 
@@ -120,9 +120,9 @@ $ git commit -m "Add navbar login-logout"
 ## Pubblichiamo su Heroku
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push heroku da:master
-~~~~~~~~
+```
 
 
 
@@ -132,19 +132,19 @@ $ git push heroku da:master
 se abbiamo finito le modifiche e va tutto bene:
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout master
 $ git merge da
 $ git branch -d da
-~~~~~~~~
+```
 
 
 aggiorniamo github
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push origin master
-~~~~~~~~
+```
 
 
 
@@ -157,5 +157,5 @@ $ git push origin master
 [Codice 01](#02-03-03_01)
 
 {id="02-03-03_01all", title=".../app/views/layouts/_dashboard_navbar.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
-~~~~~~~~
+```
+```

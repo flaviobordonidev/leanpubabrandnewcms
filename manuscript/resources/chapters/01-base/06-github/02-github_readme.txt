@@ -7,9 +7,9 @@ Facciamo un backup della nostra applicazione su Github.
 ## Apriamo il branch "GitHub"
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout -b gh
-~~~~~~~~
+```
 
 
 
@@ -21,17 +21,17 @@ Quando ci colleghiamo su github la pagina che ci presenta l'applicazione è quel
 Il file README che ci interessa è quello dentro la cartella della nostra applicazione Rails.
 
 {id="01-06-02_01", title=".../README.md",lang=markdown, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 # Myapp-1 BlaBlaBla
 ==
-~~~~~~~~
+```
 
 {title=".../README.md",lang=markdown, line-numbers=on, starting-line-number=34}
-~~~~~~~~
+```
 history:
 
 * v0.1.0  08.03.19  creazione dell'applicazione su rails 5.2.2
-~~~~~~~~
+```
 
 [Codice 01](#01-06-02_01all)
 
@@ -43,10 +43,10 @@ Mano a mano che sviluppiamo l'applicazione aggiorniamo anche il readme. Nello sp
 ## Salviamo su git
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "add readme"
-~~~~~~~~
+```
 
 
 
@@ -54,9 +54,9 @@ $ git commit -m "add readme"
 ## pubblichiamo su heroku
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push heroku gh:master
-~~~~~~~~
+```
 
 
 
@@ -75,7 +75,7 @@ Lo chiudiamo nel prossimo capitolo
 [Codice 01](#01-06-02_01)
 
 {id="01-06-02_01all", title=".../README.md",lang=markdown, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 # Myapp v0.1.0
 ==
 Questa app è stata fatta da me e serve a fare quello che voglio io.
@@ -90,4 +90,4 @@ BlaBlaBla
 history:
 
 * v0.1.0  18.06.18  creazione dell'applicazione su rails 5.2.0
-~~~~~~~~
+```

@@ -10,7 +10,7 @@ Invece di passarlo a livello di layout lo passiamo direttamente nel file views/m
 
 
 {id="02-04-03_01", title=".../app/views/mockups/login.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=19}
-~~~~~~~~
+```
 <!DOCTYPE html>
 <html>
   <head>
@@ -24,7 +24,7 @@ Invece di passarlo a livello di layout lo passiamo direttamente nel file views/m
   
   <body>
     <div class="container">
-~~~~~~~~
+```
 
 [Codice 01](#02-04-03_01all)
 
@@ -36,10 +36,10 @@ Adesso BootStrap è attivo anche per la pagina mockups/login
 ### Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 apriamo il browser sull'URL:
 
@@ -56,7 +56,7 @@ Vediamo che ha acquisito lo stile bootstrap. Adesso aggiungiamo uno stile person
 Creiamo il file login.scss e ci inseriamo la parte di CSS
 
 {id="02-04-03_02", title=".../app/assets/stylesheets/login.scss", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 :root {
   --input-padding-x: 1.5rem;
   --input-padding-y: .75rem;
@@ -66,7 +66,7 @@ body {
   background: #007bff;
   background: linear-gradient(to right, #0062E6, #33AEFF);
 }
-~~~~~~~~
+```
 
 [Codice 02](#02-04-03_02all)
 
@@ -80,9 +80,9 @@ body {
 Se lo avessimo voluto aggiungere a tutta l'applicazione avremmo dovuto importarlo nel file stylesheets/application
 
 {id="02-04-03_03", title=".../app/assets/stylesheets/application.scss", lang=ruby, line-numbers=on, starting-line-number=23}
-~~~~~~~~
+```
 @import "login";
-~~~~~~~~
+```
 
 [Codice 03](#02-04-03_03all)
 
@@ -96,10 +96,10 @@ Ma noi vogliamo lo stile login.scss solo per la pagina mockups/login, quindi rir
 Per avere lo stile login.scss solo sulla pagina mockups/login aggiungiamo la chiamata direttamente su views/mockups/login.html.erb
 
 {id="02-04-03_04", title=".../app/views/mockups/login.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=10}
-~~~~~~~~
+```
     <%= stylesheet_link_tag    'login', media: 'all', 'data-turbolinks-track': 'reload' %>
   </head>
-~~~~~~~~
+```
 
 [Codice 04](#02-04-03_04all)
 
@@ -113,14 +113,14 @@ Questo però non è sufficiente perché dobbiamo aggiungerlo anche al "precompil
 Aggiungiamo la nostra chiamata nel precompile. 
 
 {id="02-04-03_05", title=".../config/application.rb", lang=ruby, line-numbers=on, starting-line-number=19}
-~~~~~~~~
+```
     #---
     # il codice qui in basso andrebbe su config/initializers/assets.rb
 
     # precompile assets pofo stylesheets                                                             
     config.assets.precompile += ['login.css'
                                 ]
-~~~~~~~~
+```
 
 [Codice 05](#02-04-03_05all)
 
@@ -129,10 +129,10 @@ Aggiungiamo la nostra chiamata nel precompile.
 ### Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 apriamo il browser sull'URL:
 
@@ -146,10 +146,10 @@ Vediamo che tutto funziona come ci aspettavamo.
 ## archiviamo su git
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "add mockups/login stylesheets"
-~~~~~~~~
+```
 
 
 
@@ -157,9 +157,9 @@ $ git commit -m "add mockups/login stylesheets"
 ## Pubblichiamo su heroku
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push heroku ml:master
-~~~~~~~~
+```
 
 
 

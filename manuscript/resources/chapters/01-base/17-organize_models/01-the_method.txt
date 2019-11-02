@@ -16,7 +16,7 @@ Risorse web
 Allinterno dei models della nostra applicazione usare i seguenti divisori
 
 {title=".../app/models/my_model.rb", lang=ruby, line-numbers=on, starting-line-number=14}
-~~~~~~~~
+```
   # == Constants ============================================================
   
   # == Extensions ===========================================================
@@ -34,7 +34,7 @@ Allinterno dei models della nostra applicazione usare i seguenti divisori
   # == Class Methods ========================================================
 
   # == Instance Methods =====================================================
-~~~~~~~~
+```
 
 
 
@@ -296,7 +296,7 @@ Typically, I leave private and protected methods to the end. Since the class for
 Here is your model organized based the suggestions in the model:
 
 {title=".../app/models/user.rb", lang=ruby, line-numbers=on, starting-line-number=14}
-~~~~~~~~
+```
 class User < ActiveRecord::Base
   # == Constants ============================================================
 
@@ -365,4 +365,4 @@ private
     self.location = LocationService.query(self)
   end
 end
-~~~~~~~~
+```

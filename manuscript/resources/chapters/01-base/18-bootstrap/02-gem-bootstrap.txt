@@ -17,9 +17,9 @@ Riferimenti web:
 ## Apriamo il branch "BootStrap"
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout -b bs
-~~~~~~~~
+```
 
 
 
@@ -34,19 +34,19 @@ I>
 I> facciamo riferimento al [sito ufficiale](http://getbootstrap.com/docs/4.0/getting-started/download/)
 
 {title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=48}
-~~~~~~~~
+```
 # The most popular HTML, CSS, and JavaScript framework. http://getbootstrap.com
 gem 'bootstrap', '~> 4.3', '>= 4.3.1'
-~~~~~~~~
+```
 
 
 Bootstrap JavaScript dipende da jQuery. Da rails 5.1 non è più installata di default la gemma 'jquery-rails' ma bootstrap lo usa ancora quindi la aggiungiamo.
 
 {id="02-01-02_01", title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=50}
-~~~~~~~~
+```
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
-~~~~~~~~
+```
 
 [Codice 01](#02-01-02_01all)
 
@@ -54,21 +54,21 @@ gem 'jquery-rails'
 Eseguiamo l'installazione utilizzando bundle
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ bundle install
-~~~~~~~~
+```
 
 La gemma è installata. Verifichiamo che sprockets-rails sia almeno alla versione v2.3.2. 
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ bundle show sprockets-rails
 
 
 ubuntu:~/environment/s5beginning (bs) $ bundle show sprockets-rails
 The dependency tzinfo-data (>= 0) will be unused by any of the platforms Bundler is installing for. Bundler is installing for ruby but the dependency is only for x86-mingw32, x86-mswin32, x64-mingw32, java. To add those platforms to the bundle, run `bundle lock --add-platform x86-mingw32 x86-mswin32 x64-mingw32 java`.
 /home/ubuntu/.rvm/gems/ruby-2.6.3/gems/sprockets-rails-3.2.1
-~~~~~~~~
+```
 
 Adesso non ci resta che informare l'asset-pipeline della presenza di bootstrap.
 
@@ -104,20 +104,20 @@ Al momento implementiamo bootstrap solo per il layout application
 da:
 
 {title=".../app/assets/stylesheets/application.scss", lang=ruby, line-numbers=on, starting-line-number=12}
-~~~~~~~~
+```
  *
  *= require_tree .
  *= require_self
  */
-~~~~~~~~
+```
 
 a:
 
 {title=".../app/assets/stylesheets/application.scss", lang=ruby, line-numbers=on, starting-line-number=12}
-~~~~~~~~
+```
  *
  */
-~~~~~~~~
+```
 
 E' bene non usare *= require in Sass altrimenti gli altri stylesheets non saranno in grado di accedere alle variabili globali o ai mixins di Bootstrap.
 
@@ -127,10 +127,10 @@ E' bene non usare *= require in Sass altrimenti gli altri stylesheets non sarann
 #### 3. aggiungiamo gli @import 
 
 {id="02-01-02_02", title=".../app/assets/stylesheets/application.scss", lang=ruby, line-numbers=on, starting-line-number=15}
-~~~~~~~~
+```
 // Custom bootstrap variables must be set or imported *before* bootstrap.
 @import "bootstrap";
-~~~~~~~~
+```
 
 [Codice 02](#02-01-02_02all)
 
@@ -139,10 +139,10 @@ OPZIONALE.
 Per usare i gliphicon potrebbe essere necessario importare "bootstrap-sprockets" (forse da rails 5.1 non serve più)
 
 {title=".../app/assets/stylesheets/application.scss", lang=ruby, line-numbers=on, starting-line-number=14}
-~~~~~~~~
+```
 // "bootstrap-sprockets" must be imported before "bootstrap" and "bootstrap variables"
 @import "bootstrap-sprockets"; //this allow the gliphicon to work 
-~~~~~~~~
+```
 
 
 
@@ -154,11 +154,11 @@ togliamo "//= require_tree ."
 e aggiungiamo i vari "//= require ..."
 
 {id="02-01-02_03", title=".../app/assets/javascripts/application.js", lang=ruby, line-numbers=on, starting-line-number=13}
-~~~~~~~~
+```
 //= require jquery3
 //= require popper
 //= require bootstrap-sprockets
-~~~~~~~~
+```
 
 [Codice 03](#02-01-02_03all)
 
@@ -170,10 +170,10 @@ Non possiamo mettere entrambi "bootstrap" e "bootstrap-sprockets" ne dobbiamo sc
 ## Salviamo su git
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "install bootstrap"
-~~~~~~~~
+```
 
 
 
@@ -181,9 +181,9 @@ $ git commit -m "install bootstrap"
 ## Pubblichiamo su Heroku
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push heroku bs:master
-~~~~~~~~
+```
 
 
 
@@ -203,7 +203,7 @@ lo chiudiamo nel prossimo capitolo dopo aver conferma che bootstrap funziona cor
 [Codice 01](#02-01-02_01)
 
 {id="02-01-02_01all", title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -280,7 +280,7 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-~~~~~~~~
+```
 
 
 
@@ -288,7 +288,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 [Codice 02](#02-01-02_02)
 
 {id="02-01-02_02all", title=".../app/assets/stylesheets/application.scss", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files
  * listed below.
@@ -305,7 +305,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 // Custom bootstrap variables must be set or imported *before* bootstrap.
 @import "bootstrap";
-~~~~~~~~
+```
 
 
 
@@ -313,7 +313,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 [Codice 03](#02-01-02_03)
 
 {id="02-01-02_03all", title=".../app/assets/javascripts/application.js", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 // This is a manifest file that'll be compiled into application.js, which will include all the files
 // listed below.
 //
@@ -332,4 +332,4 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 //= require rails-ujs
 //= require activestorage
 //= require turbolinks
-~~~~~~~~
+```

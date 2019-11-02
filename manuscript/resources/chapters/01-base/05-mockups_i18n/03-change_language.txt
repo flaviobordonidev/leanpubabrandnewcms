@@ -14,7 +14,7 @@ Implementiamo la multilingua (i18n) passando sull'url **it** o **en** come param
 Impostiamo il fatto di poter cambiare il locale direttamente dall'URL. Per far questo creiamo un parametro che chiamiamo params[:locale]. Il nome del parametro è ininfluente. Scegliamo :locale solo per maggior chiarezza. Questo parametro lo utiliziamo sull'azione che chiamiamo "set_locale" e mettiamo su application_controller così viene eseguita per tutta l'applicazione. Per farla eseguire la richiamiamo dal before_action
 
 {title=".../app/controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
                 # request.remote_ip
   end
 end
-~~~~~~~~
+```
 
 I> ti ricordo che il default_locale lo abbiamo già impostato nella capitolo precedente
 I>
@@ -48,10 +48,10 @@ I> il before_action sostituisce il before_filter che si usava su Rails 3
 Attiviamo il database postgresql e facciamo partire il nostro webserver puma su cloud9
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 Visualizziamo sul browser i vari URLs:
 
@@ -67,7 +67,7 @@ Visualizziamo sul browser i vari URLs:
 implementiamo su global_settings la possibilità di cambiare lingua. Al momento sono presenti solo due lingue inglese ed italiano. Aggiungiamo al tab/panel logout anche il tab/panel language e lo impostiamo come tab/panel attivo. 
 
 {title=".../app/views/global_settings/index.html.erb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <div class="container-fluid rear_mode">
 
   <div class="row">
@@ -114,11 +114,11 @@ implementiamo su global_settings la possibilità di cambiare lingua. Al momento 
   </div> <!-- /row -->
 
 </div> <!-- /rear_mode -->
-~~~~~~~~
+```
 
 
 {title=".../app/views/global_settings/_pane_language.html.erb", lang=ruby, line-numbers=on, starting-line-number=3}
-~~~~~~~~
+```
 <div class="list-group left-pad right-pad bottom-pad">
   <%= link_to params.permit(:locale).merge(locale: 'en'), class: "list-group-item #{'active' if params[:locale] == 'en'}" do %>
     <span class="glyphiconmy ico_language_us right-pad"></span> Inglese
@@ -133,7 +133,7 @@ implementiamo su global_settings la possibilità di cambiare lingua. Al momento 
    ok
   <% end %>
 </div>
-~~~~~~~~
+```
 
 
 
@@ -141,10 +141,10 @@ implementiamo su global_settings la possibilità di cambiare lingua. Al momento 
 verifichiamo che funziona tutto
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s -b $IP -p $PORT
-~~~~~~~~
+```
 
 
 
@@ -169,19 +169,19 @@ Per cambiare il "locale" uso un before_action sul file application_controller.rb
 
 
 {title="controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=6}
-~~~~~~~~
+```
 before_action :set_locale
-~~~~~~~~
+```
 
 {title="controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=9}
-~~~~~~~~
+```
 private
 
 #set language for internationalization
 def set_locale
   I18n.locale = params[:locale] if params[:locale].present?
 end
-~~~~~~~~
+```
 
 [tutto il codice](#beginning-example_static_pages_i18n-03a-application_controller.rb)
 
@@ -194,15 +194,15 @@ Per far questo mettiamo tutti i nostri percorsi "routes" dentro un blocco "scope
 [codice: application config 08](#code-application-config-08)
 
 {title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=2}
-~~~~~~~~
+```
 scope "(:locale)", locale: /en|it/ do
-~~~~~~~~
+```
 
 potevo lasciare uno scope più ampio 
 
-~~~~~~~~
+```
 scope "(:locale)" do
-~~~~~~~~
+```
 
 ma questo mi creava un problema di sicurezza. Molto meglio verificare che sia passato un "locale" valido. Nel nostro caso o "it" o "en" che ho gestito nei miei files yml con la traduzione.
 
@@ -211,10 +211,10 @@ ma questo mi creava un problema di sicurezza. Molto meglio verificare che sia pa
 può essere necessario riavviare il webserver per permettere a Rails di caricare il file it.yml
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 CTRL+C        (per stoppare)
 $ rails s     (per ripartire)
-~~~~~~~~
+```
 
 
 verifichiamo sul browser http://localhost:3000
@@ -224,10 +224,10 @@ verifichiamo sul browser http://localhost:3000
 
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "set i18n static at the end of the URL"
-~~~~~~~~
+```
 
 
 
@@ -238,11 +238,11 @@ Avere un blocco "scope" su routes mi crea un problema sul comportamento di defau
 [Codice: application controllers 02](#code-application-controllers-02)
 
 {title="controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=21}
-~~~~~~~~
+```
 def default_url_options(options = {})
   {locale: I18n.locale}
 end
-~~~~~~~~
+```
 
 
 
@@ -251,17 +251,17 @@ end
 
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "set i18n change language on url"
-~~~~~~~~
+```
 
 publichiamo su heroku
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push heroku tpi18n:master
-~~~~~~~~
+```
 
 
 
@@ -271,8 +271,8 @@ $ git push heroku tpi18n:master
 se abbiamo finito le modifiche e va tutto bene:
 
 {title="terminale", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout master
 $ git merge tpi18n
 $ git branch -d tpi18n
-~~~~~~~~
+```

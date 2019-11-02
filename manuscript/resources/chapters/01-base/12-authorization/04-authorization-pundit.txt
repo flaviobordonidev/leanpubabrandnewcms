@@ -29,9 +29,9 @@ Risorse web
 ## Apriamo il branch "Pundit Install"
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout -b pi
-~~~~~~~~
+```
 
 
 
@@ -43,19 +43,19 @@ I>
 I> facciamo riferimento al [tutorial github della gemma](https://github.com/varvet/pundit)
 
 {id="01-09-04_01", title="Gemfile", lang=ruby, line-numbers=on, starting-line-number=42}
-~~~~~~~~
+```
 # Object oriented authorization for Rails applications
 gem 'pundit', '~> 2.0', '>= 2.0.1'
-~~~~~~~~
+```
 
 [Codice 01](#01-09-04_01all)
 
 Eseguiamo l'installazione della gemma con bundle
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ bundle install
-~~~~~~~~
+```
 
 
 
@@ -65,9 +65,9 @@ $ bundle install
 Includiamo Pundit nel nostro application controller.
 
 {id="01-09-04_02", title=".../app/controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=4}
-~~~~~~~~
+```
   include Pundit
-~~~~~~~~
+```
 
 [Codice 02](#01-09-04_02all)
 
@@ -83,22 +83,22 @@ Questo passaggio è opzionale ma è interessante farlo per avere una policy gene
 Il "generatore" imposterà una politica applicativa con alcune impostazioni predefinite utili.Il "generator" will set up an application policy with some useful defaults.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails g pundit:install
 
 
 ec2-user:~/environment/myapp (pi) $ rails g pundit:install
 Running via Spring preloader in process 9137
       create  app/policies/application_policy.rb
-~~~~~~~~
+```
 
 Questo ci crea il seguente codice
 
 {id="01-09-04_03", title=".../app/policies/application_policy.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class ApplicationPolicy
   attr_reader :user, :record
-~~~~~~~~
+```
 
 [Codice 03](#01-09-04_03all)
 
@@ -111,10 +111,10 @@ E con questo abbiamo predisposto l'ambiente di pundit. Nel prossimo capitolo ini
 ## archiviamo su git
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "install pundit"
-~~~~~~~~
+```
 
 
 
@@ -122,9 +122,9 @@ $ git commit -m "install pundit"
 ## Publichiamo su heroku
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push heroku pi:master
-~~~~~~~~
+```
 
 
 
@@ -134,11 +134,11 @@ $ git push heroku pi:master
 se abbiamo finito le modifiche e va tutto bene:
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout master
 $ git merge pi
 $ git branch -d pi
-~~~~~~~~
+```
 
 
 
@@ -148,9 +148,9 @@ $ git branch -d pi
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push origin master
-~~~~~~~~
+```
 
 
 
@@ -163,7 +163,7 @@ $ git push origin master
 [Codice 01](#01-09-04_01)
 
 {id="01-09-04_01all", title="Gemfile", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -232,7 +232,7 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-~~~~~~~~
+```
 
 
 
@@ -240,7 +240,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 [Codice 02](#01-09-04_02)
 
 {id="01-09-04_02all", title=".../app/controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
 
@@ -259,7 +259,7 @@ class ApplicationController < ActionController::Base
       devise_parameter_sanitizer.permit(:account_update, keys: [:role])
     end
 end
-~~~~~~~~
+```
 
 
 
@@ -267,7 +267,7 @@ end
 [Codice 03](#01-09-04_03)
 
 {id="01-09-04_03all", title=".../app/policies/application_policy.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class ApplicationPolicy
   attr_reader :user, :record
 
@@ -317,4 +317,4 @@ class ApplicationPolicy
     end
   end
 end
-~~~~~~~~
+```

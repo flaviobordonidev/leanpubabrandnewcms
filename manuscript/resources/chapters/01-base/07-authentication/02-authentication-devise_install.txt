@@ -31,9 +31,9 @@ Risorse web:
 ## Apriamo il branch "Login Devise Install"
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout -b ldi
-~~~~~~~~
+```
 
 
 
@@ -45,19 +45,19 @@ I>
 I> facciamo riferimento al [tutorial github della gemma](https://github.com/plataformatec/devise)
 
 {id="01-07-02_01", title="Gemfile", lang=ruby, line-numbers=on, starting-line-number=40}
-~~~~~~~~
+```
 # Flexible authentication solution for Rails with Warden 
 gem 'devise', '~> 4.6', '>= 4.6.2'
-~~~~~~~~
+```
 
 [Codice 01](#01-07-02_01all)
 
 Eseguiamo l'installazione della gemma con bundle
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ bundle install
-~~~~~~~~
+```
 
 
 
@@ -68,7 +68,7 @@ Eseguiamo lo script di installazione di devise su rails (Anche noto con il nome 
 Il "generator" installerà un inizializzatore che descrive tutte le opzioni di configurazione di Devise. E' importante leggere e seguire le varie azioni proposte.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails g devise:install
 
 
@@ -104,7 +104,7 @@ Some setup you must do manually if you haven't yet:
        rails g devise:views
 
 ===============================================================================
-~~~~~~~~
+```
 
 Completiamo i 4 punti riportati sul testo che appare dopo devise:install.
 
@@ -116,10 +116,10 @@ Completiamo i 4 punti riportati sul testo che appare dopo devise:install.
 relativo alla parte di settaggio sia in sviluppo che in produzione.
 
 {id="01-07-02_02", title=".../config/environments/development.rb", lang=ruby, line-numbers=on, starting-line-number=38}
-~~~~~~~~
+```
   # Devise config
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
-~~~~~~~~
+```
 
 [Codice 02](#01-07-02_02all)
 
@@ -127,21 +127,21 @@ Nel prossimo passaggio dobbiamo mettere l'host di produzione. Nel nostro caso qu
 Per trovare il nome host su heroku o ci loggiamo oppure usiamo il comando:
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ heroku domains
 
 ubuntu:~/environment/s5beginning (ldi) $ heroku domains
 === s5beginning Heroku Domain
 s5beginning.herokuapp.com
-~~~~~~~~
+```
 
 Adesso che abbiamo il nome dell'host su heroku lo possiamo usare nel file di configurazione.
 
 {id="01-07-02_03", title=".../config/environments/production.rb", lang=ruby, line-numbers=on, starting-line-number=72}
-~~~~~~~~
+```
   # Devise config
   config.action_mailer.default_url_options = { host: 's5beginning.herokuapp.com', port: 3000 }
-~~~~~~~~
+```
 
 [Codice 03](#01-07-02_03all)
 
@@ -161,9 +161,9 @@ I> (https://devcenter.heroku.com/articles/using-the-cli).
 Abbiamo già impostato la root sul root file e per il momento lo lasciamo così.
 
 {id="01-07-02_04", title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=3}
-~~~~~~~~
+```
   root 'example_static_pages#page_a'
-~~~~~~~~
+```
 
 [Codice 04](#01-07-02_04all)
 
@@ -175,26 +175,26 @@ Abbiamo già impostato la root sul root file e per il momento lo lasciamo così.
 mettiamo su layouts/application la visualizzazione dei messaggi di avviso
 
 {title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=13}
-~~~~~~~~
+```
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
-~~~~~~~~
+```
 
 miglioriamoli un poco, quando installeremo bootstrap saranno ancora meglio.
 
 {title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=13}
-~~~~~~~~
+```
     <p class="alert alert-info"><%= notice %></p>
     <p class="alert alert-warning"><%= alert %></p>
-~~~~~~~~
+```
 
 visualizziamoli solo quando servono
 
 {id="01-07-02_05", title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=13}
-~~~~~~~~
+```
     <% if notice %><p class="alert alert-info"><%= notice %></p><% end %>
     <% if alert %><p class="alert alert-warning"><%= alert %></p><% end %>
-~~~~~~~~
+```
 
 [Codice 05](#01-07-02_05all)
 
@@ -216,7 +216,7 @@ Questa operazione la posticipiamo al momento della creazione della tabella **use
 Implementiamo il MODEL di devise "User" che crea anche la tabella users usando il "rails generate devise MyModel".
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails g devise User
 
 
@@ -230,7 +230,7 @@ Running via Spring preloader in process 9533
       create      test/fixtures/users.yml
       insert    app/models/user.rb
        route  devise_for :users
-~~~~~~~~
+```
 
 I> La maggior parte delle volte il MyModel usato è "User", ma esistono situazioni in cui si preferisce dare un nome più esplicito. Ad esempio per gli utenti di un Blog si può usare "Author" invece di "User". Questo per evidenziare che sono gli autori degli articoli che si loggano. Ma come "best practise" è meglio restare su un generico "User" che più avanti prenderà un "ruolo" a seguito dell'autenticazione.
 
@@ -238,16 +238,16 @@ I> La maggior parte delle volte il MyModel usato è "User", ma esistono situazio
 Aggiungiamo una colonna di tipo string al migrate
 
 {title=".../db/migrate/xxx_devise_create_users.rb", lang=ruby, line-numbers=on, starting-line-number=7}
-~~~~~~~~
+```
       t.string :name
-~~~~~~~~
+```
 
 Aggiungiamogli anche che non può avere un valore "null" e che di default ha una stringa vuota "".
 
 {id="01-07-02_06", title=".../db/migrate/xxx_devise_create_users.rb", lang=ruby, line-numbers=on, starting-line-number=7}
-~~~~~~~~
+```
       t.string :name,               null: false, default: ""
-~~~~~~~~
+```
 
 [Codice 06](#01-07-02_06all)
 
@@ -269,20 +269,20 @@ Questa è la lista dei moduli Devise che sono attivi per questo modello:
 Commentiamo :registerable nel model perché non vogliamo che sia possibile per gli utenti registrarsi come utente.
 
 {title=".../app/models/user.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :registerable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable,
          :recoverable, :rememberable, :validatable
 end
-~~~~~~~~
+```
 
 
 Effettuiamo il migrate.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails db:migrate
 
@@ -296,7 +296,7 @@ ec2-user:~/environment/myapp (ldi) $ rails db:migrate
 -- add_index(:users, :reset_password_token, {:unique=>true})
    -> 0.0039s
 == 20190104111729 DeviseCreateUsers: migrated (0.0467s) =======================
-~~~~~~~~
+```
 
 
 
@@ -307,10 +307,10 @@ Sistemiamo gli instradamenti per la parte di autenticazione gestita tramite Devi
 Mettiamo gli instradamenti per tutte le azioni Restful di user aggiungendo "resources :users" dopo "devise_for :users"
 
 {id="01-07-02_07", title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=5}
-~~~~~~~~
+```
   devise_for :users
   resources :users
-~~~~~~~~
+```
 
 [Codice 07](#01-07-02_07all)
 
@@ -327,7 +327,7 @@ I> La route **devise_for :users** deve essere messa prima di **resources :users*
 verifichiamo gli instradamenti che si sono attivati per "user" a seguto del cambio su routes
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails routes | egrep "user"
 
 
@@ -348,7 +348,7 @@ ec2-user:~/environment/myapp (ldi) $ rails routes | egrep "user"
                             PATCH  /users/:id(.:format)                                                                     users#update
                             PUT    /users/:id(.:format)                                                                     users#update
                             DELETE /users/:id(.:format)                                                                     users#destroy
-~~~~~~~~
+```
 
 
 
@@ -361,35 +361,35 @@ Se volessimo riattivare :registerable Basta aggiornare il model, decommentando  
 
 
 {title=".../app/models/user.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 end
-~~~~~~~~
+```
 
 e rieseguire il migrate
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails db:migrate
-~~~~~~~~
+```
 
 Adesso se riverifichiamo gli instradamenti vediamo che è presente anche "registerable"
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails routes | egrep "user"
-~~~~~~~~
+```
 
 Il link per arrivare sulla view di "registerable" risulta quindi
 
-~~~~~~~~
+```
   <%= link_to "Edit #{current_user.email} Profile", edit_user_registration_path %>
-~~~~~~~~
+```
 
 
 
@@ -397,7 +397,7 @@ Il link per arrivare sulla view di "registerable" risulta quindi
 ## Aggiungiamo un utente da console
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails c
 -> User.create(name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda')
 
@@ -412,16 +412,16 @@ Loading development environment (Rails 5.2.2)
    (0.9ms)  COMMIT
  => #<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2019-01-04 11:53:46", updated_at: "2019-01-04 11:53:46"> 
 2.4.1 :002 > exit
-~~~~~~~~
+```
 
 Oppure
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails c
 -> u = User.new({name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda'})
 -> u.save
-~~~~~~~~
+```
 
 Da notare che, a differenza dei normali inserimenti nel database, questa volta abbiamo anche delle parentesi graffe **{}** da inserire.
 
@@ -429,12 +429,12 @@ Da notare che, a differenza dei normali inserimenti nel database, questa volta a
 Se avessimo attivato l'opzione **:confirmable** avremmo dovuto **skippare** la **confirmation**
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails c
 -> u = User.new({name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda'})
 -> u.skip_confirmation!
 -> u.save
-~~~~~~~~
+```
 
 
 
@@ -444,10 +444,10 @@ $ rails c
 Attiviamo il webserver
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 Per verificarlo dobbiamo andare alla pagina **users/sign_in** quindi all'URL:
 
@@ -467,10 +467,10 @@ I> Poiché non abbiamo ancora implementato il pulsante di logout, una volta logg
 ## salviamo su git
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "Install Devise and start implementation"
-~~~~~~~~
+```
 
 
 
@@ -478,9 +478,9 @@ $ git commit -m "Install Devise and start implementation"
 ## Pubblichiamo su Heroku
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push heroku ldi:master
-~~~~~~~~
+```
 
 
 
@@ -491,22 +491,22 @@ Questo errore non si dovrebbe presentare, ma...
 
 ...se il **git push heroku ...** si fermarsse con il seguente errore nella log
 
-~~~~~~~~
+```
 remote:        rake aborted!
 remote:        Devise.secret_key was not set. Please add the following to your Devise initializer:
 remote:        
 remote:          config.secret_key = '496bf68dc3...5e3'
 remote:        
 remote:        Please ensure you restarted your application after installing Devise or setting the key.
-~~~~~~~~
+```
 
 Dovremmo attivare questo secrets. 
 Non editiamo il file config/credentials.yml.enc perché usiamo la secret_key_base che è già impostata.
 
 {title=".../config/initializers/devise.rb", lang=ruby, line-numbers=on, starting-line-number=11}
-~~~~~~~~
+```
   config.secret_key = Rails.application.credentials.secret_key_base
-~~~~~~~~
+```
 
 Per far si che heroku riesca a decrittare il file config/credentials.yml.enc dobbiamo passargli la variabile d'ambiente con la master key. (RAILS_MASTER_KEY env variable)
 
@@ -531,13 +531,13 @@ Se avessimo voluto cambiare il file credentials.yml.enc per impostare la secret 
 Come abbiamo visto nel precedente capitolo sui "secrets" è bene non passare la chiave in chiaro nel file devise.rb ma invece usiamo config/credentials.yml.enc
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ EDITOR=vim rails credentials:edit
-~~~~~~~~
+```
 
 si apre vim sempre nel terminale. inseriamo la secret per devise ("i", "CTRL+c", "CTRL+v", "ESC")
 
-~~~~~~~~
+```
 # aws:
 #   access_key_id: 123
 #   secret_access_key: 345
@@ -548,30 +548,30 @@ devise:
 # Used as the base secret for all MessageVerifiers in Rails, including the one protecting cookies.
 secret_key_base: 845ade...0847
 ~
-~~~~~~~~
+```
 
 salviamo ed usciamo da vim (":w", ":q") e riceviamo il messaggio che il file è stato aggiornato.
 Attenzione il file è tipo yml quindi si deve indentare. Non usare il "TAB" ma gli spazi della barra spaziatrice. Diamo 2 spazi per restare in standard Rails.
 
-~~~~~~~~
+```
 $ EDITOR=vim rails credentials:edit
 # New credentials encrypted and saved.
-~~~~~~~~
+```
 
 verifichiamo che funziona
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails c
 > Rails.application.credentials.devise[:secret_key]     # => "845ade..."
-~~~~~~~~
+```
 
 Adesso possiamo passare il secret nel file di inizializzazione di devise
 
 {title=".../config/initializers/devise.rb", lang=ruby, line-numbers=on, starting-line-number=11}
-~~~~~~~~
+```
   config.secret_key = Rails.application.credentials.devise[:secret_key]
-~~~~~~~~
+```
 
 Solo che al momento questa non funziona. Funziona solo con il segret di default e quindi al momento non possiamo fare un secret personalizzato per devise.
 
@@ -581,10 +581,10 @@ Solo che al momento questa non funziona. Funziona solo con il segret di default 
 ### Salviamo su git
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "Implement Devise on heroku"
-~~~~~~~~
+```
 
 
 
@@ -592,10 +592,10 @@ $ git commit -m "Implement Devise on heroku"
 ### Riproviamo a Pubblicare su Heroku
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push heroku ldi:master
 $ heroku run rails db:migrate
-~~~~~~~~
+```
 
 
 
@@ -605,7 +605,7 @@ $ heroku run rails db:migrate
 Installando devise siamo intervenuti sul database locale e quindi dobbiamo aggiornare anche quello remoto su Heroku
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ heroku run rails c
 -> User.create(name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda')
 
@@ -620,7 +620,7 @@ D, [2019-01-04T12:56:51.851607 #4] DEBUG -- :   User Create (2.1ms)  INSERT INTO
 D, [2019-01-04T12:56:51.854986 #4] DEBUG -- :    (2.7ms)  COMMIT
 => #<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2019-01-04 12:56:51", updated_at: "2019-01-04 12:56:51">
 irb(main):002:0> exit
-~~~~~~~~
+```
 
 
 
@@ -648,11 +648,11 @@ I> Poiché non abbiamo ancora implementato il pulsante di logout, una volta logg
 se abbiamo finito le modifiche e va tutto bene:
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout master
 $ git merge ldi
 $ git branch -d ldi
-~~~~~~~~
+```
 
 
 
@@ -660,9 +660,9 @@ $ git branch -d ldi
 ## Facciamo un backup su Github
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push origin master
-~~~~~~~~
+```
 
 
 
@@ -675,7 +675,7 @@ $ git push origin master
 [Codice 01](#01-07-02_01)
 
 {id="01-07-02_01all", title="Gemfile", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -741,7 +741,7 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-~~~~~~~~
+```
 
 
 
@@ -750,7 +750,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 
 {id="01-07-02_02all", title=".../config/environments/development.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -815,7 +815,7 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 end
-~~~~~~~~
+```
 
 
 
@@ -823,7 +823,7 @@ end
 [Codice 03](#01-07-02_03)
 
 {id="01-07-02_03all", title=".../config/environments/production.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -921,7 +921,7 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 end
-~~~~~~~~
+```
 
 
 
@@ -930,7 +930,7 @@ end
 [Codice 04](#01-07-02_04)
 
 {id="01-07-02_04all", title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 Rails.application.routes.draw do
   
   root 'example_static_pages#page_a'
@@ -939,7 +939,7 @@ Rails.application.routes.draw do
   get 'example_static_pages/page_b'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
-~~~~~~~~
+```
 
 
 
@@ -948,7 +948,7 @@ end
 [Codice 05](#01-07-02_05)
 
 {id="01-07-02_05all", title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <!DOCTYPE html>
 <html>
   <head>
@@ -967,7 +967,7 @@ end
     <%= yield %>
   </body>
 </html>
-~~~~~~~~
+```
 
 
 
@@ -976,7 +976,7 @@ end
 [Codice 06](#01-07-02_06)
 
 {id="01-07-02_06all", title=".../db/migrate/xxx_devise_create_users.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 # frozen_string_literal: true
 
 class DeviseCreateUsers < ActiveRecord::Migration[5.2]
@@ -1022,7 +1022,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.2]
     # add_index :users, :unlock_token,         unique: true
   end
 end
-~~~~~~~~
+```
 
 
 
@@ -1030,7 +1030,7 @@ end
 [Codice 07](#01-07-02_07)
 
 {id="01-07-02_07", title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 Rails.application.routes.draw do
 
   root 'example_static_pages#page_a'
@@ -1042,4 +1042,4 @@ Rails.application.routes.draw do
   get 'example_static_pages/page_b'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
-~~~~~~~~
+```

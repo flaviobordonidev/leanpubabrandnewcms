@@ -24,13 +24,13 @@ Non implementiamo una relazione molti a molti ma sfruttiamo invece la gemma roli
 *********************************************************
 Simplesmente adicionamos o macro resourcify no model que queremos utilizar na definição dos papeis.
 
-~~~~~~~~
+```
 class Company < ActiveRecord::Base
   # ...
 
   resourcify
 end
-~~~~~~~~
+```
 
 
 user.add_role :investor, company
@@ -89,9 +89,9 @@ end
 Rolify ci offre metodi di query per interagire con le nostre risorse che sono dichiarate con **resourcify**. 
 Con il metodo **.with_role* siamo in grado di recuperare tutte le società in cui un utente specifico ha il ruolo di investitore.
 
-~~~~~~~~
+```
 Company.with_role(:investor, user)
-~~~~~~~~
+```
 
 Quindi abbiamo tutte le società in cui l'utente è un investitore, con una semplice chiamata di metodo.
 
@@ -109,7 +109,7 @@ Non ci resta che eseguire la query di cui abbiamo bisogno.
 
 O Rolify define também o método #has_role? o utilizamos para verificar se o usuário possui qualquer papel de investor, caso ele possua listamos apenas as empresas em que ele tem acesso, caso não possua nenhum papel de investidor exibimos todas as empresas.
 
-~~~~~~~~
+```
 class CompanyPolicy < ApplicationPolicy
 
   # ...
@@ -124,17 +124,17 @@ class CompanyPolicy < ApplicationPolicy
     end
   end
 end
-~~~~~~~~
+```
 
 Rolify definisce anche il metodo **has_role?**. 
 Lo usiamo per verificare se l'utente ha un ruolo di investitore; se lo ha elenchiamo solo le società a cui ha accesso, se non ha alcun ruolo di investitore mostriamo tutte le società.
 
 Avendo definito il nostro **scope** non ci resta che chiamarlo nel controller usando **policy_scope**.
 
-~~~~~~~~
+```
 def index
   @companies = policy_scope(Company)
 end
-~~~~~~~~
+```
 
 Ora, a seconda del ruolo dell'utente, viene visualizzato un elenco con tutte le società o solo con quelle in cui l'utente è un investitore.

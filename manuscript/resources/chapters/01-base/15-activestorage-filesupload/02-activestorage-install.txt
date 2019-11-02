@@ -17,9 +17,9 @@ Risorse web:
 ## Apriamo il branch "Active Storage Files Upload"
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout -b asfu
-~~~~~~~~
+```
 
 
 
@@ -29,18 +29,18 @@ Poiché questa non è una gemma da aggiungere ma è già integrata in Rails dobb
 
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails active_storage:install
 
 
 ec2-user:~/environment/myapp (aec) $ rails active_storage:install
 Copied migration 20190112095656_create_active_storage_tables.active_storage.rb from active_storage
-~~~~~~~~
+```
 
 questo crea il migrate:
 
 {title=".../db/migrate/xxx_create_active_storage_tables.active_storage.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 # This migration comes from active_storage (originally 20170806125915)
 class CreateActiveStorageTables < ActiveRecord::Migration[5.2]
   def change
@@ -68,7 +68,7 @@ class CreateActiveStorageTables < ActiveRecord::Migration[5.2]
     end
   end
 end
-~~~~~~~~
+```
 
 Questo migrate crea due tabelle:
 
@@ -78,10 +78,10 @@ Questo migrate crea due tabelle:
 Effettuiamo il migrate del database per creare la tabella sul database
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails db:migrate
-~~~~~~~~
+```
 
 
 
@@ -93,20 +93,20 @@ Il settaggio per il production (su Heroku) lo facciamo nel prossimo capitolo.
 In realtà per l'upload in locale è già preconfigurato di default
 
 {title=".../config/environments/development.rb", lang=ruby, line-numbers=on, starting-line-number=30}
-~~~~~~~~
+```
   # Store uploaded files on the local file system (see config/storage.yml for options)
   config.active_storage.service = :local
-~~~~~~~~
+```
 
 Verifichiamo la variabile ":local" nello storage.yml
 
 {title=".../config/storage.yml", lang=yaml, line-numbers=on, starting-line-number=5}
-~~~~~~~~
+```
 local:
   service: Disk
   root: <%= Rails.root.join("storage") %>
   #host: "http://localhost:5000" #se usi una porta logica diversa dalla 3000.
-~~~~~~~~
+```
 
 
 
@@ -116,9 +116,9 @@ local:
 Implementiamo un campo in cui carichiamo le immagini per i nostri articoli usando "has_one_attached" di active_storage
 
 {id="01-11-02_01", title=".../app/models/eg_post.rb", lang=ruby, line-numbers=on, starting-line-number=4}
-~~~~~~~~
+```
   has_one_attached :header_image
-~~~~~~~~
+```
 
 [Codice 01](#01-11-02_01all)
 
@@ -132,12 +132,12 @@ Ogni volta che facciamo l'upload di un'immagine come "header_image" questa chiam
 Inseriamo il nostro nuovo campo "header_image" nella whitelist
 
 {id="01-11-02_02", title=".../app/controllers/eg_posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=74}
-~~~~~~~~
+```
     # Never trust parameters from the scary internet, only allow the white list through.
     def eg_post_params
       params.require(:eg_post).permit(:title, :incipit, :user_id, :header_image)
     end
-~~~~~~~~
+```
 
 [Codice 02](#01-11-02_02all)
 
@@ -147,12 +147,12 @@ Inseriamo il nostro nuovo campo "header_image" nella whitelist
 ## Implementiamo la view
 
 {id="01-11-02_03", title=".../app/views/eg_posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=70}
-~~~~~~~~
+```
   <div class="field">
     <%= form.label :header_image %>
     <%= form.file_field :header_image %>
   </div>
-~~~~~~~~
+```
 
 [Codice 03](#01-11-02_03all)
 
@@ -160,13 +160,13 @@ Inseriamo il nostro nuovo campo "header_image" nella whitelist
 Per visualizzare l'immagine basta "image_tag @eg_post.header_image" ma per sicurezza mettiamo anche un controllo
 
 {id="01-11-02_04", title=".../app/views/eg_posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=70}
-~~~~~~~~
+```
 <% if @eg_post.header_image.attached? %>
   <p><%= image_tag @eg_post.header_image %></p>
 <% else %>
   <p>Nessuna immagine presente</p>
 <% end %>
-~~~~~~~~
+```
 
 [Codice 04](#01-11-02_04all)
 
@@ -179,10 +179,10 @@ non usiamo ".present?" perché darebbe sempre "true". Per verificare la presenza
 ### Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 andiamo alla pagina con l'elenco degli articoli ossia sull'URL:
 
@@ -192,7 +192,7 @@ Creaiamo un nuovo articolo ed aggiungiamo un'immagine. Verremo portati su show e
 Possiamo inoltre vedere nella log (sul terminale) l'attività di upload nel database:
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 Started POST "/example_posts" for 151.29.82.254 at 2019-01-12 15:31:14 +0000
 Processing by ExamplePostsController#create as HTML
   Parameters: {"utf8"=>"✓", "authenticity_token"=>"xxx", "example_t"=>"blablabl balbalb a", "user_id"=>"1", "header_image"=>#<ActionDispatch::Http::UploadedFile:0x007efbe81408d0 @tempfile=#<Tempfile:/tmp/RackMultipartture.PNG", @content_type="image/png", @headers="Content-Disposition: form-data; name=\"example_post[header_image]\"; filename=\"Capture.PNG\"\r\nConten post"}
@@ -214,7 +214,7 @@ Processing by ExamplePostsController#create as HTML
 [ActiveJob] Enqueued ActiveStorage::AnalyzeJob (Job ID: a86c99b7-7c8e-477b-88d7-10c65f22bf77) to Async(default) with arguments: #<GlobalID:0x007efbdc24b/2>>
 Redirected to https://2f1de42498c044ff840e5bf7bb1058a4.vfs.cloud9.eu-west-1.amazonaws.com/example_posts/10
 Completed 302 Found in 53ms (ActiveRecord: 5.4ms)
-~~~~~~~~
+```
 
 
 
@@ -224,9 +224,9 @@ Completed 302 Found in 53ms (ActiveRecord: 5.4ms)
 Per ridimensionare l'immagine possiamo chiamare il **.variant(...)**
 
 {title=".../app/views/eg_posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=70}
-~~~~~~~~
+```
   <p><%= image_tag @eg_post.header_image.variant(resize: "400x400") %></p>
-~~~~~~~~
+```
 
 Attenzione! per funzionare il .variand necessita di minimagic
 
@@ -242,11 +242,11 @@ I>
 I> facciamo riferimento al [tutorial github della gemma](https://github.com/minimagick/minimagick)
 
 {id="01-11-02_05", title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=30}
-~~~~~~~~
+```
 # Use ActiveStorage variant
 #gem 'mini_magick', '~> 4.8'
 gem 'mini_magick', '~> 4.9', '>= 4.9.5'
-~~~~~~~~
+```
 
 [Codice 05](#01-11-02_05all)
 
@@ -256,9 +256,9 @@ I> In realtà la gemma è già presente nel Gemfile basterebbe solo decommentarl
 Eseguiamo l'installazione della gemma con bundle
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ bundle install
-~~~~~~~~
+```
 
 
 
@@ -276,34 +276,34 @@ Per funzionare mini_magick ha bisogno di imagemagick presente, quindi installiam
 Nella maggior parte dei casi usiamo "apt-get". Ma non su aws Cloud9.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo apt-get install imagemagick
-~~~~~~~~
+```
 
 Se non funziona eseguire:
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo apt-get update
 $ sudo apt-get install imagemagick
-~~~~~~~~
+```
 
 Se neanche questo funziona eseguire:
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo add-apt-repository main
 $ sudo apt-get update
 $ sudo apt-get install imagemagick
-~~~~~~~~
+```
 
 
 Attenzione! Se su cloud9 abbiamo scelto Amazon Linux invece di Ubuntu dobbiamo usare yum invece di apt-get.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo yum install ImageMagick
-~~~~~~~~
+```
 
 
 
@@ -311,10 +311,10 @@ $ sudo yum install ImageMagick
 ### Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 verifichiamo che adesso la pagina show visualizza un'immagine di 400x400; andiamo all'URL:
 
@@ -326,10 +326,10 @@ verifichiamo che adesso la pagina show visualizza un'immagine di 400x400; andiam
 ## salviamo su git
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "Install ActiveStorage and start implementation"
-~~~~~~~~
+```
 
 
 
@@ -337,12 +337,12 @@ $ git commit -m "Install ActiveStorage and start implementation"
 ## Pubblichiamo su Heroku
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push heroku asfu:master
 $ heroku run rails db:migrate
-~~~~~~~~
+```
 
-~~~~~~~~
+```
 remote: ###### WARNING:
 remote:        We detected that some binary dependencies required to
 remote:        use all the preview features of Active Storage are not
@@ -350,7 +350,7 @@ remote:        present on this system.
 remote:        
 remote:        For more information please see:
 remote:          https://devcenter.heroku.com/articles/active-storage-on-heroku
-~~~~~~~~
+```
 
 Heroku accetta uploads di immagini direttamente sul suo sito ma è bene attivare un servizio terzo: Amazon S3, Google GCS, Microsoft AzureStorage, Digitalocean, ...
 Attenzione. Anche se le immagini heroku le accetta si rischia che queste vengono cancellate dopo un po' di tempo. E comunque occupano del prezioso spazio su Heroku.
@@ -369,11 +369,11 @@ Nel prossimo capitolo attiviamo Amazon Web Service S3.
 se abbiamo finito le modifiche e va tutto bene:
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout master
 $ git merge asfu
 $ git branch -d asfu
-~~~~~~~~
+```
 
 
 
@@ -381,9 +381,9 @@ $ git branch -d asfu
 ## Facciamo un backup su Github
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push origin master
-~~~~~~~~
+```
 
 
 
@@ -396,14 +396,14 @@ $ git push origin master
 [Codice 01](#01-11-02_01)
 
 {id="01-11-02_01all", title=".../app/models/example_post.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class ExamplePost < ApplicationRecord
 
  has_one_attached :header_image
 
   belongs_to :user
 end
-~~~~~~~~
+```
 
 
 
@@ -411,7 +411,7 @@ end
 [Codice 02](#01-11-02_02)
 
 {{id="01-11-02_02all", title=".../app/controllers/example_posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class ExamplePostsController < ApplicationController
   before_action :set_example_post, only: [:show, :edit, :update, :destroy]
 
@@ -490,7 +490,7 @@ class ExamplePostsController < ApplicationController
       params.require(:example_post).permit(:title, :incipit, :user_id, :header_image)
     end
 end
-~~~~~~~~
+```
 
 
 
@@ -498,7 +498,7 @@ end
 [Codice 03](#01-11-02_03)
 
 {id="01-11-02_03all", title=".../app/views/example_posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <%= form_with(model: example_post, local: true) do |form| %>
   <% if example_post.errors.any? %>
     <div id="error_explanation">
@@ -536,7 +536,7 @@ end
     <%= form.submit %>
   </div>
 <% end %>
-~~~~~~~~
+```
 
 
 
@@ -544,7 +544,7 @@ end
 [Codice 04](#01-11-02_04)
 
 {id="01-11-02_04all", title=".../app/views/example_posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <p id="notice"><%= notice %></p>
 
 <p>
@@ -570,7 +570,7 @@ end
 
 <%= link_to 'Edit', edit_example_post_path(@example_post) %> |
 <%= link_to 'Back', example_posts_path %>
-~~~~~~~~
+```
 
 
 
@@ -578,7 +578,7 @@ end
 [Codice 05](#01-11-02_05)
 
 {id="01-11-02_05all", title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -647,4 +647,4 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-~~~~~~~~
+```

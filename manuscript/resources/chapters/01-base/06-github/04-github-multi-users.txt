@@ -277,7 +277,7 @@ Voglio tornare al commit "add back all javascripts files" mi basta vedere il suo
 
 A> $ git log
 
-~~~~~~~~
+```
 .
 .
 .
@@ -303,7 +303,7 @@ Date:   Thu Jan 21 22:17:24 2016 +0100
 commit f23617aedb9c5c180d494e9093465e437fa0b44b
 Author: Flavio Bordoni <flavio.bordoni.dev@gmail.com>
 Date:   Thu Jan 21 22:13:37 2016 +0100
-~~~~~~~~
+```
 
 A> $ git revert --no-commit fc7244b7d7bca02754b952a2e3736e891121b8eb..HEAD
 A>

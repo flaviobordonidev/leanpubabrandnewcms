@@ -17,7 +17,7 @@ Diamo il ruolo di autore all'utente con id=3 per la sola tabella **posts** e sol
 Lasciamo senza ruoli l'utente con id=4
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails c
 
   # Definiamo un ruolo globale
@@ -65,7 +65,7 @@ $ rails c
 => false
 > u3.has_role? :author, Post.find(5)
 => false
-~~~~~~~~
+```
 
 Il primo utente ha il ruolo :admin per tutto (a livello globale).
 Il secondo utente ha il ruolo :moderator per tutti gli articoli (a livello di classe Post)
@@ -83,7 +83,7 @@ Può però crearne di nuovi. Una volta creati gli assegnamo il ruolo di autore p
 In pratica questo viene usato assegnando il ruolo tutte le volte che l'autore crea un nuovo articolo. Quindi inserisco il ruolo durante l'azione "create".
 
 {title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=11}
-~~~~~~~~
+```
   def create
     @post = Post.new(post_params)
       if @post.save
@@ -93,7 +93,7 @@ In pratica questo viene usato assegnando il ruolo tutte le volte che l'autore cr
         render :new
       end
   end
-~~~~~~~~
+```
 
 
 ### Implementiamo le autorizzazioni
@@ -116,7 +116,7 @@ Non ci dobbiamo preoccupare che il controller per la modifica degli articoli è 
 Ci occuperemo nel prossimo paragrafo di coinvolgere il controller che ci interessa implementando le autorizzazioni.
 
 {title=".../app/policies/post_policy.rb", lang=ruby, line-numbers=on, starting-line-number=11}
-~~~~~~~~
+```
   class PostPolicy < ApplicationPolicy
   
     def index?
@@ -154,7 +154,7 @@ Ci occuperemo nel prossimo paragrafo di coinvolgere il controller che ci interes
       end
     end
   end
-~~~~~~~~
+```
 
 
 ******
@@ -178,7 +178,7 @@ In questo scenario usiamo la tabella example_posts che abbiamo creato nei capito
 Non vengono più scritti o modificati articoli ma gli utenti con ruolo di moderatore possono cancellare qualsiasi articolo.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails c
 
   # Definiamo un ruolo per una classe
@@ -197,7 +197,7 @@ $ rails c
 => true
 
 > user.remove_role :moderator, Post
-~~~~~~~~
+```
 
 In questo esempio il primo utente ha il ruolo :moderator per tutti gli articoli (a livello di classe Post) ma non a livello globale.
 
@@ -209,7 +209,7 @@ In questo esempio il primo utente ha il ruolo :moderator per tutti gli articoli 
 In questo scenario l'utente con id=1 è autore di solo due articoli
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails c
 
   # Definiamo un ruolo per una istanza
@@ -229,12 +229,12 @@ $ rails c
 => false
 
 > user.remove_role :moderator, Post
-~~~~~~~~
+```
 
 In pratica questo viene usato assegnando il ruolo tutte le volte che l'autore crea un nuovo articolo. Quindi inserisco il ruolo durante l'azione "create".
 
 {title="/app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=11}
-~~~~~~~~
+```
   def create
     @post = Post.new(post_params)
       if @post.save
@@ -244,7 +244,7 @@ In pratica questo viene usato assegnando il ruolo tutte le volte che l'autore cr
         render :new
       end
   end
-~~~~~~~~
+```
 
 
 
@@ -257,7 +257,7 @@ In questo scenario
 
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails c
 
   # Definiamo un ruolo per una classe
@@ -301,7 +301,7 @@ $ rails c
 > u2.remove_role :moderator
 
 > user.remove_role :moderator, Post
-~~~~~~~~
+```
 
 
 
@@ -343,7 +343,7 @@ Questo scenario utillizza la tabella example_companies
 
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails c
 
   # Definiamo un ruolo globale
@@ -373,7 +373,7 @@ $ rails c
   # Rimuoviamo un ruolo
 > user = User.find(3)
 > user.remove_role :moderator
-~~~~~~~~
+```
 
 
 

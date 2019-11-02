@@ -8,9 +8,9 @@ Facciamo lavorare il nostro menu a cascata. Visualizziamo nella pagina posts/sho
 ## Apriamo il branch "Filter on Content_type"
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout -b fct
-~~~~~~~~
+```
 
 
 
@@ -21,7 +21,7 @@ utilizziamo lo switch case..when per visualizzare solo il tipo di articolo selez
 Lo switch avrà la seguente struttura:
 
 {title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <% case @post.type_of_content %>
 <% when "image" %>
   <% raise "image" %>
@@ -34,12 +34,12 @@ Lo switch avrà la seguente struttura:
 <% else %>
   <% raise "menu a cascata type_of_content null o con valore non consentito" %>
 <% end %>
-~~~~~~~~
+```
 
 completiamo il tutto 
 
 {id="02-10-02_01", title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <p>
   <% case @post.type_of_content %>
   <% when "image" %>
@@ -73,7 +73,7 @@ completiamo il tutto
     <p> raise "menu a cascata type_of_content null o con valore non consentito" </p>
   <% end %>
 </p>
-~~~~~~~~
+```
 
 [Codice 01](#02-10-02_01all)
 
@@ -83,10 +83,10 @@ completiamo il tutto
 ### Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 apriamo il browser sull'URL:
 
@@ -98,10 +98,10 @@ apriamo il browser sull'URL:
 ## archiviamo su git
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "add case when to show according content_type"
-~~~~~~~~
+```
 
 
 
@@ -109,9 +109,9 @@ $ git commit -m "add case when to show according content_type"
 ## Pubblichiamo su heroku
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push heroku fct:master
-~~~~~~~~
+```
 
 
 
@@ -121,11 +121,11 @@ $ git push heroku fct:master
 se abbiamo finito le modifiche e va tutto bene:
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout master
 $ git merge fct
 $ git branch -d fct
-~~~~~~~~
+```
 
 
 
@@ -135,9 +135,9 @@ $ git branch -d fct
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push origin master
-~~~~~~~~
+```
 
 
 
@@ -150,5 +150,5 @@ $ git push origin master
 [Codice 01](#02-10-02_01)
 
 {id="02-10-02_01all", title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
-~~~~~~~~
+```
+```

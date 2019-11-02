@@ -84,7 +84,7 @@ AWS -> Service -> S3 -> Bucket name -> Permissions -> CORS configuration
 Di default ci sono permessi GET da qualsiasi origine ma nessun PUT.
 
 {title="CORS configuration",lang=markdown, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <!-- Sample policy -->
 <CORSConfiguration>
 	<CORSRule>
@@ -94,12 +94,12 @@ Di default ci sono permessi GET da qualsiasi origine ma nessun PUT.
 		<AllowedHeader>Authorization</AllowedHeader>
 	</CORSRule>
 </CORSConfiguration>
-~~~~~~~~
+```
 
 Lasciamo tutti i domini (<AllowedOrigin>*</AllowedOrigin>) ed aggiungiamo anche la possibilità di fare PUT e POST per poter caricare i files.
 
 {title="CORS configuration",lang=markdown, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <!-- Sample policy -->
 <CORSConfiguration>
 	<CORSRule>
@@ -116,7 +116,7 @@ Lasciamo tutti i domini (<AllowedOrigin>*</AllowedOrigin>) ed aggiungiamo anche 
 		<AllowedHeader>*</AllowedHeader>
 	</CORSRule>
 </CORSConfiguration>
-~~~~~~~~
+```
 
 Click su SAVE per applicarli al nostro bucket.
 
@@ -127,7 +127,7 @@ Diremo al server di Amazon di accettare richieste solo dai nostri domini. Nel no
 ![AWS S3](brandnewcms/12img-s3-bucket-cors.png)
 
 {title="CORS configuration",lang=markdown, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <!-- Sample policy -->
 <CORSConfiguration>
 	<CORSRule>
@@ -138,7 +138,7 @@ Diremo al server di Amazon di accettare richieste solo dai nostri domini. Nel no
 		<AllowedHeader>Authorization</AllowedHeader>
 	</CORSRule>
 </CORSConfiguration>
-~~~~~~~~
+```
 
 
 
@@ -165,7 +165,7 @@ AWS -> Service -> S3 -> Bucket name -> Permissions -> CORS configuration
 Lasciamo tutti i domini (<AllowedOrigin>*</AllowedOrigin>) ed aggiungiamo anche la possibilità di fare PUT e POST per poter caricare i files.
 
 {title="CORS configuration",lang=markdown, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <!-- Sample policy -->
 <CORSConfiguration>
 	<CORSRule>
@@ -182,7 +182,7 @@ Lasciamo tutti i domini (<AllowedOrigin>*</AllowedOrigin>) ed aggiungiamo anche 
 		<AllowedHeader>*</AllowedHeader>
 	</CORSRule>
 </CORSConfiguration>
-~~~~~~~~
+```
 
 Click su SAVE per applicarli al nostro bucket.
 

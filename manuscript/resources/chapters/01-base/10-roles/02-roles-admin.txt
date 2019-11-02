@@ -15,76 +15,76 @@ Volendo usare livelli più alti di gestione dei ruoli con "enum" o "rolify" poss
 ## Apriamo il branch "Roles Admin"
 
 {title="terminale", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout -b ra
-~~~~~~~~
+```
 
 
 
 
 ## Aggiungiamo l'attributo role_admin
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ rails generate migration add_admin_to_users role_admin:boolean
-~~~~~~~~
+```
 
 Aggiungiamo al migration l'opzione ** defautl: false ** per la colonna role_admin
 
 {title=".../db/migrate/xxx_add_admin_to_users.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class AddAdminToUsers < ActiveRecord::Migration
   def change
     add_column :users, :role_admin, :boolean, default: false
   end
 end
-~~~~~~~~
+```
 
 Eseguiamo il migrate
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ sudo service postgresql start
 $ rake db:migrate
-~~~~~~~~
+```
 
 Adesso possiamo identificare se un utente loggato è amministratore.
 
 {title="verifichiamo se amministratore", lang=ruby, line-numbers=off}
-~~~~~~~~
+```
 if current_user.role_admin?
   # do something
 end
-~~~~~~~~
+```
 
 
 Se ho un caso particolare in cui una pagina può non avere un utente loggato usiamo .try() per evitare l'errore.
 Se *current_user* è *nil* non viene generato un errore (raising an undefined method admin? for nil:NilClass exception)
 
 {title="verifichiamo se amministratore", lang=ruby, line-numbers=off}
-~~~~~~~~
+```
 if current_user.try(:role_admin?)
   # do something
 end
-~~~~~~~~
+```
 
 Se voglio dare i diritti di amministratore (grant admin status) da codice posso dare:
 
 {title="grant admin status", lang=ruby, line-numbers=off}
-~~~~~~~~
+```
 current_user.update_attribute :role_admin, true
-~~~~~~~~
+```
 
 
 
 
 ## Salviamo su git
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ git add -A
 $ git commit -m "Add role_admin from table users"
-~~~~~~~~
+```
 
 
 
@@ -93,17 +93,17 @@ $ git commit -m "Add role_admin from table users"
 
 Abbiamo finito. Non ci resta che fare il "deployment in production" pubblicando la nostra applicazione su heroku.
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ git push heroku ra:master
-~~~~~~~~
+```
 
 Non funziona perché su heroku non abbiamo eseguito il migrate.
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ heroku run rake db:migrate
-~~~~~~~~
+```
 
 
 
@@ -114,37 +114,37 @@ Togliamo la colonna "role_admin" di tipo boolean dalla tabella users perché nel
 Per togliere la colonna eseguiamo il rollback ed eliminiamo il migrate?
 Non è la scelta migliore perché abbiamo già pubblicato su heroku. Invece creiamo un nuovo migration di eliminazione della colonna.
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 rails g migration RemoveRoleAdminFromUsers role_admin:boolean
-~~~~~~~~
+```
 
 {lang=ruby, line-numbers=on, starting-line-number=3}
-~~~~~~~~
+```
 remove_column :users, :role_admin, :boolean
-~~~~~~~~
+```
 
 
 
 
 ## Salviamo su git
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ git add -A
 $ git commit -m "Remove role_admin from table users"
-~~~~~~~~
+```
 
 
 
 
 ## Pubblichiamo su Heroku
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ git push heroku ra:master
 $ heroku run rails db:migrate
-~~~~~~~~
+```
 
 
 
@@ -153,12 +153,12 @@ $ heroku run rails db:migrate
 
 se abbiamo finito le modifiche e va tutto bene:
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ git checkout master
 $ git merge ra
 $ git branch -d ra
-~~~~~~~~
+```
 
 
 
@@ -167,7 +167,7 @@ $ git branch -d ra
 
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ git push origin master
-~~~~~~~~
+```

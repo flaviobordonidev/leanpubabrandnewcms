@@ -4,9 +4,9 @@
 ## Apriamo il branch "Text Editor Trix Install"
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout -b teti
-~~~~~~~~
+```
 
 
 
@@ -30,10 +30,10 @@ I>
 I> facciamo riferimento al [tutorial github della gemma](https://github.com/kylefox/trix)
 
 {id="02-07-02_01", title="Gemfile", lang=ruby, line-numbers=on, starting-line-number=56}
-~~~~~~~~
+```
 # A rich text editor for everyday writing 
 gem 'trix-rails', '~> 2.0', require: 'trix'
-~~~~~~~~
+```
 
 [Codice 01](#02-07-02_01all)
 
@@ -42,9 +42,9 @@ oltre la gemma è richiesto di specificare ", require: 'trix'" perché non viene
 Eseguiamo l'installazione della gemma con bundle 
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ bundle install
-~~~~~~~~
+```
 
 
 
@@ -54,28 +54,28 @@ $ bundle install
 Aggiungiamo sul file manifest dello stile
 
 {id="02-07-02_02", title=".../app/assets/stylesheets/application.scss", lang=ruby, line-numbers=on, starting-line-number=15}
-~~~~~~~~
+```
 //*= require trix 
-~~~~~~~~
+```
 
 [Codice 02](#02-07-02_02all)
 
 
 l'asset pipeline ha questa forma curiosa di gestire codice dentro il commento.
 un'alro modo di inserirlo è 
-~~~~~~~~
+```
 /*
 *= require trix 
 */
-~~~~~~~~
+```
 
 
 Aggiungiamo sul file manifest di javascript
 
 {id="02-07-02_03", title=".../app/assets/javascripts/application.js", lang=ruby, line-numbers=on, starting-line-number=18}
-~~~~~~~~
+```
 //= require trix
-~~~~~~~~
+```
 
 [Codice 03](#02-07-02_03all)
 
@@ -87,13 +87,13 @@ Aggiungiamo sul file manifest di javascript
 sostituiamo il text_area con il trix_editor
 
 {id="02-07-02_04", title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=59}
-~~~~~~~~
+```
       <div class="field">
         <%= form.label :content %>
         <%#= form.text_area :content, rows: "3", class:'form-control' %>
         <%= form.trix_editor :content, required: true, autofocus: true %>
       </div>
-~~~~~~~~
+```
 
 [Codice 04](#02-07-02_04all)
 
@@ -103,10 +103,10 @@ ATTENZIONE. Se in fase di sviluppo vogliamo vedere anche la text_area aggiornata
 * aggiungere ", id: "content"" nel "text_area :content" perché Trix ha bisogno di riportare nell'attributo "input" l'id del campo. (forse da trix 2.0 non serve più)
 * lasciare la chiamata a trix in stile html "<trix-editor input="..."></trix-editor>" dove al posto dei puntini "..." si mette l'id del campo text_area.
 
-~~~~~~~~
+```
     <%= form.text_area :content, id: "content", class: 'form-control', rows: '5' %>
     <trix-editor input="content"></trix-editor>
-~~~~~~~~
+```
 
 
 
@@ -115,16 +115,16 @@ ATTENZIONE. Se in fase di sviluppo vogliamo vedere anche la text_area aggiornata
 
 
 {title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
     <%= sanitize "#{@post.content}" %>
-~~~~~~~~
+```
 
 
 INFO. A volte si usa l'attributo **class="preserve-line-breaks"** per mantenere gli invii a capo anche in visualizzazione. (https://stackoverflow.com/questions/30593103/preserve-line-breaks-in-textarea)
 
-~~~~~~~~
+```
     <p class="preserve-line-breaks"> <%= "#{@post.content}" %> </p>
-~~~~~~~~
+```
 
 Con trix questo non è necessario perché viene passato direttamente codice HTML. E' invece importante per la sicurezza fare il **sanitize** del testo per evitare inserimento di codice malevolo (malicious code injection) ad esempio codice javascript che cerca di prendere diritti di amministratore.
 
@@ -134,10 +134,10 @@ Con trix questo non è necessario perché viene passato direttamente codice HTML
 ## archiviamo su git
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "add trix to posts"
-~~~~~~~~
+```
 
 
 
@@ -145,9 +145,9 @@ $ git commit -m "add trix to posts"
 ## Publichiamo su heroku
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push heroku teti:master
-~~~~~~~~
+```
 
 
 
@@ -157,11 +157,11 @@ $ git push heroku teti:master
 se abbiamo finito le modifiche e va tutto bene:
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout master
 $ git merge teti
 $ git branch -d teti
-~~~~~~~~
+```
 
 
 
@@ -171,9 +171,9 @@ $ git branch -d teti
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push origin master
-~~~~~~~~
+```
 
 
 
@@ -186,7 +186,7 @@ $ git push origin master
 [Codice 01](#02-07-01_01)
 
 {id="02-07-01_01all", title="Gemfile", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -269,7 +269,7 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-~~~~~~~~
+```
 
 
 
@@ -277,7 +277,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 [Codice 02](#02-07-01_02)
 
 {id="02-07-01_02all", title=".../app/assets/stylesheets/application.scss", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files
  * listed below.
@@ -297,7 +297,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 // Custom bootstrap variables must be set or imported *before* bootstrap.
 @import "bootstrap";
 @import "debug_bootstrap_grid";
-~~~~~~~~
+```
 
 
 
@@ -305,7 +305,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 [Codice 03](#02-07-01_03)
 
 {id="02-07-01_03all", title=".../app/assets/javascripts/application.js", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 // This is a manifest file that'll be compiled into application.js, which will include all the files
 // listed below.
 //
@@ -325,7 +325,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 //= require rails-ujs
 //= require activestorage
 //= require turbolinks
-~~~~~~~~
+```
 
 
 
@@ -333,7 +333,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 [Codice 04](#02-07-01_04)
 
 {id="02-07-01_04all", title=".../app/views/components/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <%= form_with(model: post, local: true, url: authors_url) do |form| %>
   <% if post.errors.any? %>
     <div id="error_explanation">
@@ -466,4 +466,4 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
   </div>
 
 <% end %>
-~~~~~~~~
+```

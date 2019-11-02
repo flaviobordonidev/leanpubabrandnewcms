@@ -30,9 +30,9 @@ Questo capitolo è anche detto authors_account perché gestiamo l'account dell'a
 ## Apriamo il branch "Add Fields to Users"
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout -b afu
-~~~~~~~~
+```
 
 
 
@@ -45,28 +45,28 @@ ATTENZIONE:
 Non usate come nome di colonna "bio" perché su heroku prende errore essendo un nome riservato.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails g migration AddBiographyToUsers biography:text
-~~~~~~~~
+```
 
 questo crea il migrate:
 
 {title=".../db/migrate/xxx_add_biography_to_users.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class AddBioToUsers < ActiveRecord::Migration[5.2]
   def change
     add_column :users, :biography, :text
   end
 end
-~~~~~~~~
+```
 
 eseguiamo il migrate 
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails db:migrate
-~~~~~~~~
+```
 
 
 
@@ -77,10 +77,10 @@ Poiché usiamo ActiveStorage non aggiungiamo nessuna colonna alla tabella users 
 Attiviamo upload immagine per il model User nella sezione "# == Attributes"
 
 {id="02-05-03_01", title=".../app/models/user.rb", lang=ruby, line-numbers=on, starting-line-number=12}
-~~~~~~~~
+```
   ## ActiveStorage
   has_one_attached :account_image
-~~~~~~~~
+```
 
 [Codice 01](#02-05-03_01all)
 
@@ -95,12 +95,12 @@ Potevamo chiamarla semplicemente "image" ed avremmo avuto "@user.image" ma "@use
 Inseriamo i nostri nuovi campi "bio" e "account_image" nella whitelist
 
 {id="02-05-03_02", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=88}
-~~~~~~~~
+```
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
       params.require(:user).permit(:name, :email, :password, :password_confirmation, :remember_created_at, :role, :biography, :account_image)
     end
-~~~~~~~~
+```
 
 [Codice 02](#02-05-03_02all)
 
@@ -110,21 +110,21 @@ Inseriamo i nostri nuovi campi "bio" e "account_image" nella whitelist
 ## Implementiamo la view
 
 {id="02-05-03_03", title=".../app/views/users/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=81}
-~~~~~~~~
+```
            <div class="field">
               <%= form.label :biography %>
               <%= form.text_area :biography, rows: "5", class: "form-control" %>
             </div>
-~~~~~~~~
+```
 
 {title=".../app/views/users/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=81}
-~~~~~~~~
+```
             <div class="field">
               <%= form.label :account_image %>
               <br><img src="https://images.pexels.com/photos/634843/pexels-photo-634843.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=100&w=100" alt="Immagine demo presa da pexels.com" width="100" height="100"><br>
               <%= form.file_field :account_image %>
             </div>
-~~~~~~~~
+```
 
 [Codice 03](#02-05-03_03all)
 
@@ -132,7 +132,7 @@ Inseriamo i nostri nuovi campi "bio" e "account_image" nella whitelist
 Aggiorniamo la pagina "show"
 
 {id="02-05-03_04", title=".../app/views/users/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=23}
-~~~~~~~~
+```
 <p>
   <strong>Biography:</strong>
   <%= @user.biography %>
@@ -146,7 +146,7 @@ Aggiorniamo la pagina "show"
     Nessuna immagine presente
   <% end %>
 </p>
-~~~~~~~~
+```
 
 [Codice 04](#02-05-03_04all)
 
@@ -160,10 +160,10 @@ non usiamo ".present?" perché darebbe sempre "true". Per verificare la presenza
 ### Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 andiamo alla pagina con l'elenco degli articoli ossia sull'URL:
 
@@ -176,7 +176,7 @@ andiamo alla pagina con l'elenco degli articoli ossia sull'URL:
 
 Per ridimensionare l'immagine usiamo variant che si basa su ImageMagick. Vediamo di seguito come si comporta il ridimensionamento con tre soluzioni differenti:
 
-~~~~~~~~
+```
 <p>
   <strong>Image:</strong>
   <% if @user.account_image.attached? %>
@@ -187,11 +187,11 @@ Per ridimensionare l'immagine usiamo variant che si basa su ImageMagick. Vediamo
     Nessuna immagine presente
   <% end %>
 </p>
-~~~~~~~~
+```
 
 Rendiamo tonde le immagini
 
-~~~~~~~~
+```
 <p>
   <strong>Image:</strong>
   <% if @user.account_image.attached? %>
@@ -202,7 +202,7 @@ Rendiamo tonde le immagini
     Nessuna immagine presente
   <% end %>
 </p>
-~~~~~~~~
+```
 
 
 
@@ -210,10 +210,10 @@ Rendiamo tonde le immagini
 ### Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 andiamo all'URL:
 
@@ -225,10 +225,10 @@ andiamo all'URL:
 ## archiviamo su git
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "add fields to users"
-~~~~~~~~
+```
 
 
 
@@ -236,10 +236,10 @@ $ git commit -m "add fields to users"
 ## Pubblichiamo su heroku
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push heroku afu:master
 $ heroku run rails db:migrate
-~~~~~~~~
+```
 
 
 
@@ -249,11 +249,11 @@ $ heroku run rails db:migrate
 se abbiamo finito le modifiche e va tutto bene:
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout master
 $ git merge afu
 $ git branch -d afu
-~~~~~~~~
+```
 
 
 
@@ -263,9 +263,9 @@ $ git branch -d afu
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push origin master
-~~~~~~~~
+```
 
 
 
@@ -282,4 +282,4 @@ $ git push origin master
 [Codice 01](#02-15-01_01)
 
 {id="02-15-01_01all", title=".../app/models/user.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```

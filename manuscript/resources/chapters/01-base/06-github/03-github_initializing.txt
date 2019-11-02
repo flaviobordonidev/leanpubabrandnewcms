@@ -34,12 +34,12 @@ Per far comunicare Github con aws Cloud9 dobbiamo fargli condividere la chiave p
 Andiamo sul terminale di aws Cloud9 e visualizziamo e copiamoci la chiave pubblica (public key) di aws Cloud9.
 
 {title="terminale", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ cat ~/.ssh/id_rsa.pub
 
 ec2-user:~/environment/myapp (espi) $ cat ~/.ssh/id_rsa.pub
 ssh-rsa AAAAB3...[...]...MmDRyKWg5 ec2-user@ip-172-56-27-218
-~~~~~~~~
+```
 
 Copiare tutta la chiave pubblica, compreso 'ssh-rsa', e passarla su Github -> Settings -> SSH and GPG keys -> button "New SSH key"
 
@@ -67,9 +67,9 @@ Appena creato il nuovo repository ci viene presentato un "Quick setup"
 Aggiungiamo sul nostro git il repository remoto "myapp-01.git" creato sul nostro account github "flaviobordonidev" usando SSH.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git remote add origin git@github.com:flaviobordonidev/myapp-01.git
-~~~~~~~~
+```
 
 Se avessimo voluto usare HTTPS avremmo usato "git remote add origin https://github.com/flaviobordonidev/myapp-01.git"
 
@@ -86,11 +86,11 @@ Prima di spostare il nostro git locale sul repository remoto Github dobbiamo chi
 se abbiamo finito le modifiche e va tutto bene:
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout master
 $ git merge gh
 $ git branch -d gh
-~~~~~~~~
+```
 
 
 
@@ -100,18 +100,18 @@ $ git branch -d gh
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push origin master
-~~~~~~~~
+```
 
 il comando "git push" sposta sul branch remoto "origin" il branch locale "master".
 
 Spostiamo in remoto anche la parte dei tag in cui abbiamo messo la versione v.0.1.0
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push origin master --tag
-~~~~~~~~
+```
 
 Se adesso facciamo un refresh alla pagina di Github vedremo il nostro nuovo repository con la nostra myapp-01
 

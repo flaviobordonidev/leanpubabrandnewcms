@@ -8,9 +8,9 @@ Impostiamo i "divisori" visti nel metodo di organizzazione
 ## Apriamo il branch "Organize Models"
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout -b om
-~~~~~~~~
+```
 
 
 
@@ -18,7 +18,7 @@ $ git checkout -b om
 ## EgCompany
 
 {id="01-14-02_01", title=".../app/models/eg_company.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class EgCompany < ApplicationRecord
   # == Constants ============================================================
   
@@ -39,7 +39,7 @@ class EgCompany < ApplicationRecord
   # == Instance Methods =====================================================
 
 end
-~~~~~~~~
+```
 
 [Codice 01](#01-14-02_01all)
 
@@ -49,7 +49,7 @@ end
 ## EgPost
 
 {title=".../app/models/example_post.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class EgPost < ApplicationRecord
   # == Constants ============================================================
   
@@ -75,14 +75,14 @@ class EgPost < ApplicationRecord
   # == Instance Methods =====================================================
 
 end
-~~~~~~~~
+```
 
 
 
 ## EgUser
 
 {title=".../app/models/example_user.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class EgUser < ApplicationRecord
   # == Constants ============================================================
   
@@ -103,7 +103,7 @@ class EgUser < ApplicationRecord
   # == Instance Methods =====================================================
 
 end
-~~~~~~~~
+```
 
 
 
@@ -111,7 +111,7 @@ end
 ## User
 
 {title=".../app/models/user.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 class User < ApplicationRecord
 
   # == Constants ============================================================
@@ -143,7 +143,7 @@ class User < ApplicationRecord
   # == Instance Methods =====================================================
 
 end
-~~~~~~~~
+```
 
 
 
@@ -155,10 +155,10 @@ end
 ## archiviamo su git
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "organize models"
-~~~~~~~~
+```
 
 
 
@@ -166,9 +166,9 @@ $ git commit -m "organize models"
 ## Publichiamo su heroku
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push heroku om:master
-~~~~~~~~
+```
 
 
 
@@ -178,11 +178,11 @@ $ git push heroku om:master
 se abbiamo finito le modifiche e va tutto bene:
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout master
 $ git merge om
 $ git branch -d om
-~~~~~~~~
+```
 
 
 
@@ -192,9 +192,9 @@ $ git branch -d om
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push origin master
-~~~~~~~~
+```
 
 
 
@@ -207,5 +207,5 @@ $ git push origin master
 [Codice 01](#01-14-02_01)
 
 {id="01-14-02_01all", title="Gemfile", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
-~~~~~~~~
+```
+```
