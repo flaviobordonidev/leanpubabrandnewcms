@@ -502,7 +502,7 @@ To https://git.heroku.com/rigenerabatterie1.git
 cloud9:~/environment/rigenerabatterie (pubprod) $ 
 ```
 
-[tutto il codice](#01-04-03_01)
+[indietro](#01-04-03_01)
 
 
 
@@ -566,7 +566,7 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 ```
 
-[tutto il codice](#01-04-03_02)
+[indietro](#01-04-03_02)
 
 
 
@@ -576,7 +576,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 web: bundle exec puma -C config/puma.rb
 ```
 
-[tutto il codice](#01-04-03_03)
+[indietro](#01-04-03_03)
 
 
 
@@ -600,4 +600,4 @@ on_worker_boot do
 end
 ```
 
-[tutto il codice](#01-04-03_04)
+[indietro](#01-04-03_04)

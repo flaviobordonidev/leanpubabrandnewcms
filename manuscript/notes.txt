@@ -60,6 +60,12 @@ views/posts/show
 —
 
 ---
+Sul Gemfile per mettere più gruppi su un'unica riga si usa un array []. Es:
+
+# Call 'byebug' anywhere in the code to stop execution and get a debugger console
+gem 'byebug', group: [:development, :test]
+
+---
 Google maps:
 http://stackoverflow.com/questions/38186827/google-maps-autocomplete-js-is-working-on-localhost-but-not-on-heroku
 just goto google console, enable the "Google Places API Web Service"
@@ -101,8 +107,16 @@ https://angle-on-rails.herokuapp.com/forms/upload
 Per forzare un push usare -f
 
 $ git push -f heroku nomebranch:master
----
 
+---
+Updating Git remotes
+è possibile cambiare manualmente usando il CLI l'app di heroku.
+~~~~~~~~
+$ git remote rm heroku
+$ heroku git:remote -a newname 
+~~~~~~~~
+
+---
 Quando apri un workspace condiviso il link "Share" in alto a destra non c'è più.
 Allora una volta fatto partire il server con ** $ rails s -b $IP -p $PORT **
 L'url da usare ha la struttura https://<nomeworkspace>-<nomeutentec9>.c9users.io
@@ -169,6 +183,18 @@ ftp.chdir("/mydirectory")
 ftp.passive = true
 ftp.getbinaryfile("mysourcefile", "mydestfile")
 
+---
+Facciamo un "pull request" su github per fare il merge e chiudere il branch.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git pull origin master
+$ git merge homepage
+$ git push origin master
+$ git branch -d homepage
+$ git push origin :homepage
+~~~~~~~~
 
 ---
 Liberiamo spazio su C9 (clear up / free up disk space)
@@ -208,3 +234,226 @@ TODO
 ---
 STAMPARE IL LIBRO con LULU.com
 https://www.davidebarranca.com/2019/04/printing-leanpub-books-on-lulu/
+
+---
+CURSORE MULTIPLO su UBUNTU
+
+Hold down CTRL+ALT and click in multiple locations
+Hold down ALT+SHIFT, click the mouse, and drag the cursor up or down in the editor
+Through the menu bar at Edit > Selection > Multiple Selections
+
+---
+Bella spiegazione di attr_accessor = attr_read (getter) + attr_write (setter)
+
+https://stackoverflow.com/questions/4370960/what-is-attr-accessor-in-ruby
+
+
+
+---
+https://coderwall.com/p/1dsjoq/quickly-re-run-rails-migrations
+
+rake db:migrate:redo
+
+
+for migration with schema ID 20100421175455 the command would be:
+
+rake db:migrate:redo VERSION=20100421175455
+Reference: http://stackoverflow.com/a/5600310
+
+
+---
+Organizzare i models
+https://www.zmwolski.com/Organizing-Ruby-on-Rails-Models
+
+  # == Constants ============================================================
+
+  # == Attributes ===========================================================
+  
+  # == Extensions ===========================================================
+
+  # == Relationships ========================================================
+
+  # == Validations ==========================================================
+
+  # == Scopes ===============================================================
+
+  # == Callbacks ============================================================
+
+  # == Class Methods ========================================================
+
+  # == Instance Methods =====================================================
+
+Esempio:
+
+  # == Constants ============================================================
+  
+  GENDERS = [[‘Male’, ‘m’], [‘Female’, ’f’]].freeze
+
+  # == Attributes ===========================================================
+  
+  # ATTRIBUTES NOT MAPPED IN DATABASE (getter and setter methods)
+
+  # paperclip ------------------------------------------------------------------
+  attr_accessor :remove_logo
+  #-----------------------------------------------------------------------------
+
+  # globalize required ---------------------------------------------------------
+  translates :sector, :memo, :fallbacks_for_empty_translations => true
+  #-----------------------------------------------------------------------------
+
+  # == Extensions ===========================================================
+
+  # paperclip required ---------------------------------------------------------
+  has_attached_file :logo, styles: { thumb: ["64x64!", :png] }
+  #-----------------------------------------------------------------------------
+
+  has_attached_file :avatar, styles: {
+    square_100: ‘100x100#’,
+    square_300: ‘300x300#’
+  }
+
+  # == Relationships ========================================================
+    # associations
+    
+  has_many :documents
+
+  # == Validations ==========================================================
+  
+  validates: email, presence:     true,
+                    uniqueness:   true,
+                    email_format: true
+
+  # == Scopes ===============================================================
+
+  # == Callbacks ============================================================
+
+  # == Class Methods ========================================================
+  
+  def self.for_select
+    all.collect{|u| [“#{u.name} (#{u.email})”, u.id]}
+  end
+
+  # == Instance Methods =====================================================
+
+---
+i18n statica con "locales"
+
+# app/views/messages/_form.html.erb
+-----------------------------------
+<%= form_for :message do "f| %>
+  <%= f.label :title %>
+  <%= f.text_field :title %>
+  <%= f.label :name %>
+  <%= f.input :name, placeholder: true %>
+  <%= f.submit %>
+<% end %>
+
+
+# app/views/posts/_form.html.erb
+-----------------------------------
+<%= form_for :post do "f| %>
+  <%= f.label :title %>
+  <%= f.text_field :title %>
+  <%= f.label :name %>
+  <%= f.input :name, placeholder: true %>
+  <%= f.submit %>
+<% end %>
+
+en:
+  helpers:
+    label:
+      message:
+        name: "Name label"
+      post:
+        name: "Name label of post"
+    placeholder:
+      message:
+        name: "Your placeholder text here"
+      post:
+        name: "Your placeholder text here"
+    submit:
+      message:
+        create: "Create a new great messagge!"
+        update: "Save changes to this message."
+      post:
+        create: "Create a new lovelly post!"
+        update: "Yes, save changes to this post."  
+  messages:
+    update:
+      notice: "Message was successfully updated."
+      alert: "Unable to update message."
+  posts:
+    update:
+      notice: "Post was successfully updated."
+      alert: "Unable to update post."
+
+
+If the helpers: path is not available, i18n will fallback to the activerecord: path. Very clear when using the excellent ** i18n-debug ** gem.
+https://github.com/fphilipe/i18n-debug
+
+https://mikerogers.io/2016/01/10/i18n-rails-internationalisation-i18n-cheatsheet.html
+
+https://webuild.envato.com/blog/how-to-organise-i18n-without-losing-your-translation-not-found/
+
+https://stackoverflow.com/questions/16977371/submit-button-helper-with-i18n-t
+
+https://stackoverflow.com/questions/36810203/list-of-available-i18n-translations-for-helpers-in-ruby-on-rails-4-and-simple
+
+
+---
+
+---
+‘unless … else’ is a terrible Ruby construct.
+
+--
+https://robots.thoughtbot.com/any-empty
+
+<% if @posts.empty? %> vuoto <% else %> pieno <% end %> --> Il modo più elegante
+<% if @posts.any? %> pieno  <% else %> vuoto <% end %> --> Questa è incorretta perché @posts.any? non è il contrario di @posts.empty?
+<% if ! @posts.empty? -%> pieno  <% else %> vuoto <% end %> --> Questo è il modo corretto di farlo
+
+[1, 2].any? => true
+[nil, nil].any? => false
+
+[1, 2].empty? => false
+[nil, nil].empty? => false
+
+---
+https://railsless.blogspot.it/2011/08/difference-between-nil-empty-blank.html
+Difference between .nil?, .empty?, .blank?, .present?
+
+.nil? ed .empty? sono funzioni ruby presenti in Rails. Invece .blank? e .present? sono solo rails e sono da preferire perché "normalizzano" le risposte come vedi dal seguente schema creato direttamente sulla ** $ rails c **
+
+nil.nil?    # => true
+[].nil?     # => false
+"".nil?     # => false
+"  ".nil?   # => false
+false.nil?  # => false
+
+nil.empty?    # => Undefined method
+[].empty?     # => true
+"".empty?     # => true
+"  ".empty?   # => false
+false.empty?  # => Undefined method
+
+nil.blank?    # => true
+[].blank?     # => true
+"".blank?     # => true
+"   ".blank?  # => true
+false.blank?  # => true
+
+nil.present?    # => false
+[].present?     # => false
+"".present?     # => false
+"  ".present?   # => false
+false.present?  # => false
+
+.nil?      For each object. Only if it is nil
+.empty?    Only for the objects: string, array, hash. If the object is empty
+.blank?    For each object. If the object is nil or empty
+.present?  The opposite of .blank? 
+
+present? è la negazione di blank?:
+
+address.present? == !address.blank?   # => true
+<% if !params[:locale].present? %> == <% if params[:locale].blank? %>

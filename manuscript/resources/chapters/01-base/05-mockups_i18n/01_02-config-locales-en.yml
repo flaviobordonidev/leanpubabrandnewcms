@@ -27,7 +27,11 @@
 #   'true': 'foo'
 #
 # To learn more, please read the Rails Internationalization guide
-# available at http://guides.rubyonrails.org/i18n.html.
+# available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  mockups:
+    page_a:
+      headline: "This is the homepage"
+      first_paragraph: "the text showed here is passed via a 'translation file' and this means that our application is ready to support more languages."
+      link_to_page_B: "Let's go to page B."

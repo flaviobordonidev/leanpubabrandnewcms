@@ -1,5 +1,5 @@
 {id: 01-base-05-mockups_i18n-01-mockups_i18n}
-# Cap 5.1 -- Internazionalizzazione della pagina di mockups.
+# Cap 5.1 -- Internazionalizzazione della pagina di mockups
 
 Attiviamo l'internazionalizzazione statica
 
@@ -41,7 +41,7 @@ Per tradurre in varie lingue il contenuto statico della nostra applicazione (que
 Usiamo l'helper "t" per tutte le stringhe che dobbiamo internazionalizzare.
 la stringa che viene passata all'helper "t" è un segnaposto che si usa nel file yaml associandogli la stringa corretta nella lingua scelta.
 
-{id: "01-04-03_02", caption: ".../app/views/mockups/page_a.html.erb -- codice 02", format: HTML+Mako, line-numbers: true, number-from: 1}
+{caption: ".../app/views/mockups/page_a.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 1}
 ```
 <h1> <%= t ".headline" %> </h1>
 <p> <%= t ".first_paragraph" %> </p>
@@ -63,7 +63,8 @@ Se visualizziamo sul browser vediamo che si visualizzano i segnaposto.
 
 * https://mycloud9path.amazonaws.com/mockups/page_a
 
-![Fig. 01](chapters/01-base/05-mockups_i18n/01_fig01-in18_page_a_placecard.png)
+![Fig. 01](chapters/01-base/05-mockups_i18n/01_fig01-i18n_page_a_placeholds.png)
+
 
 
 
@@ -74,7 +75,8 @@ Per far apparire le descrizioni invece dei segnaposti implementiamo il backend Y
 Iniziamo con il file en.yml perché l'inglese (en) è la lingua che viene selezionata di default.
 Avendo usato il "." davanti al nome del segnaposto, per convenzione Rails cerca il segnaposto catalogato nella rispettiva view. In questo caso sotto en -> mockups -> page_a.
 
-{id="01-05-01_01", title=".../config/locales/en.yml", lang=yaml, line-numbers=on, starting-line-number=4}
+
+{id="01-05-01_02", caption=".../config/locales/en.yml -- codice 02", lang=yaml, line-numbers=on, starting-line-number=32}
 ```
 en:
   mockups:
@@ -84,7 +86,8 @@ en:
       link_to_page_B: "Let's go to page B."
 ```
 
-[Codice 01](#01-05-01_01all)
+[tutto il codice](#01-05-01_02all)
+
 
 
 I> ATTENZIONE! i files YAML (.yml) sono sensibili all'indentatura. Per indentare usate gli "spazi" e non i "tabs".
@@ -92,12 +95,12 @@ I> ATTENZIONE! i files YAML (.yml) sono sensibili all'indentatura. Per indentare
 I> Attenzione! C'è un bug e sui partials non mi funziona il "." come previsto quando uso i partials. Ho quindi scelto di usare tutto il percorso:
 
 
-{title=".../app/views/mockups/page_a.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+{caption=".../app/views/mockups/page_a.html.erb -- codice 03", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
 ```
 <h1> <%= t "mockups.page_a.headline" %> </h1>
 <p> <%= t "mockups.page_a.first_paragraph" %> </p>
 <br>
-<p>  <%= link_to t("mockups.page_a.link_goto_page_B"), mockups_page_b_path %> </p>
+<p>  <%= link_to t("mockups.page_a.link_to_page_B"), mockups_page_b_path %> </p>
 ```
 
 
@@ -107,14 +110,14 @@ I> Attenzione! C'è un bug e sui partials non mi funziona il "." come previsto q
 
 Adesso creiamo il file it.yml per implementare la lingua italiana (it).
 
-{title=".../config/locales/it.yml", lang=yaml, line-numbers=on, starting-line-number=4}
+{caption=".../config/locales/it.yml -- codice 04", lang=yaml, line-numbers=on, starting-line-number=32}
 ```
 it:
   mockups:
     page_a:
       headline: "Questa è l'homepage"
       first_paragraph: "il testo mostrato è o passato da un 'file di traduzione' e questo significa che la nostra applicazione è pronta a supportare più lingue."
-      link_goto_page_B: "Andiamo alla pagina B"
+      link_to_page_B: "Andiamo alla pagina B"
 ```
 
 Questa traduzione è pronta ma non è ancora utilizzata nella nostra applicazione. La implementeremo nel prossimo capitolo. 
@@ -134,7 +137,7 @@ Se visualizziamo sul browser vediamo che, al posto dei segnoposto, la lingua che
 
 * https://mycloud9path.amazonaws.com/mockups/page_a
 
-![Fig. 02](chapters/01-base/05-mockups_i18n/01_fig02-in18_page_a.png)
+![Fig. 02](chapters/01-base/05-mockups_i18n/01_fig02-i18n_page_a.png)
 
 
 
@@ -172,22 +175,45 @@ Lo chiudiamo nel prossimo capitolo
 
 
 
-[Codice 01](#01-05-01_01)
+{id="01-05-01_02all", title=".../config/locales/en.yml -- codice 02", lang=yaml, line-numbers=on, starting-line-number=1}
+```
+# Files in the config/locales directory are used for internationalization
+# and are automatically loaded by Rails. If you want to use locales other
+# than English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t 'hello'
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t('hello') %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# The following keys must be escaped otherwise they will not be retrieved by
+# the default I18n backend:
+#
+# true, false, on, off, yes, no
+#
+# Instead, surround them with single quotes.
+#
+# en:
+#   'true': 'foo'
+#
+# To learn more, please read the Rails Internationalization guide
+# available at https://guides.rubyonrails.org/i18n.html.
 
-
-{id="01-05-01_01all", title=".../config/locales/en.yml", lang=yaml, line-numbers=on, starting-line-number=1}
+en:
+  mockups:
+    page_a:
+      headline: "This is the homepage"
+      first_paragraph: "the text showed here is passed via a 'translation file' and this means that our application is ready to support more languages."
+      link_to_page_B: "Let's go to page B."
 ```
 
-```
-
-
-
-
-[Codice 01 OLD](#01-05-01_01)
-
-vediamo il vecchio codice generato in automatico da Rails
-
-{id="01-05-01_01all", title=".../config/locales/en.yml - OLD", lang=yaml, line-numbers=on, starting-line-number=1}
-```
-
-```
+[indietro](#01-05-01_02)

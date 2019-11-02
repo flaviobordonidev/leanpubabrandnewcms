@@ -1,3 +1,18 @@
+---
+Galateo del codice. Come scrivere codice con stile.
+https://github.com/bbatsov/ruby-style-guide
+https://rubygarage.org/blog/best-ruby-gems-we-use?utm_source=rubyweekly&utm_medium=email
+https://8thlight.com/blog/christoph-gockel/2016/10/19/getting-rails-on-track-part-1-models.html?utm_source=rubyweekly&utm_medium=email
+http://codeloveandboards.com/blog/2014/02/05/ruby-and-method-arguments/
+
+* [console shortcuts](https://pragmaticstudio.com/blog/2014/3/11/console-shortcuts-tips-tricks)
+
+---
+Routes
+https://richonrails.com/articles/understanding-rails-routing
+
+
+---
 Rails for PHP Developers, The Pragmatic Programers (2008).pdf
 
 your methods should be relatively short. 

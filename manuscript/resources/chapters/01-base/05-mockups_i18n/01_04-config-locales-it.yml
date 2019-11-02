@@ -1,0 +1,6 @@
+it:
+  mockups:
+    page_a:
+      headline: "Questa è l'homepage"
+      first_paragraph: "il testo mostrato è o passato da un 'file di traduzione' e questo significa che la nostra applicazione è pronta a supportare più lingue."
+      link_to_page_B: "Andiamo alla pagina B"

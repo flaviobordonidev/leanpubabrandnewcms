@@ -1,4 +1,5 @@
-# Lingua di default
+{id: 01-base-05-mockups_i18n-02-default_language}
+# Cap 5.2 -- Lingua di default
 
 Nel precedente capitolo eravamo rimasti con il web server attivo e la visualizzazione della lingua inglese.
 In questo capitolo impostiamo come lingua di default l'italiano.
@@ -10,20 +11,20 @@ In questo capitolo impostiamo come lingua di default l'italiano.
 
 sulla configurazione dell'applicazione impostiamo la lingua di default cambiando il "locale" di default:
 
-{id="01-05-02_01", title=".../config/application.rb", lang=ruby, line-numbers=on, starting-line-number=18}
+{id="01-05-02_01", caption=".../config/application.rb -- codice 01", lang=ruby, line-numbers=on, starting-line-number=19}
 ```
     config.i18n.default_locale = :it
     config.i18n.fallbacks = true
 ```
 
-[Codice 01](#01-05-02_01all)
+[tutto il codice](#01-05-02_01all)
 
 
 
 
 ### Verifichiamo preview
 
-se era attivo stoppare il webserver (CTRL+C) e riavviarlo per permettere a Rails di caricare il file it.yml
+Chiudiamo il webserver (CTRL+C) e lo riavviamo per permettere a Rails di caricare le modifiche al file config/application
 
 {caption: "terminal", format: bash, line-numbers: false}
 ```
@@ -35,6 +36,8 @@ Se visualizziamo sul browser vediamo che, al posto dei segnoposto, ora c'è la l
 
 * https://mycloud9path.amazonaws.com/mockups/page_a
 
+![Fig. 01](chapters/01-base/05-mockups_i18n/02_fig01-i18n_page_a.png)
+
 
 
 
@@ -42,9 +45,9 @@ Se visualizziamo sul browser vediamo che, al posto dei segnoposto, ora c'è la l
 
 Spostiamo le linee di codice all'interno di config/initializers come richiesto dalle convenzioni rails.
 
-Creaiamo un nuovo file con estensione ".rb" che possiamo chiamare come vogliamo; scegliamo "i18n.rb".
+Creiamo un nuovo file con estensione ".rb" che possiamo chiamare come vogliamo; scegliamo "i18n.rb".
 
-{id="01-05-02_02", title=".../config/initializers/i18n.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+{caption=".../config/initializers/i18n.rb -- codice 02", lang=ruby, line-numbers=on, starting-line-number=1}
 ```
 # Be sure to restart your server when you modify this file.
 
@@ -53,9 +56,7 @@ Rails.application.config.i18n.default_locale = :it
 Rails.application.config.i18n.fallbacks = true
 ```
 
-[Codice 02](#01-05-02_02all)
-
-Come si può notare in questo caso abbiamo dovuto mettere tutto il percorso a partire da " Rails.appplication. " mentre quando eravamo su " application.rb " questo non era necessario perché ci trovavamo già all'interno della classe application che ereditava da " Rails::Application ".
+Come si può vedere in questo caso abbiamo dovuto mettere tutto il percorso a partire da " Rails.appplication. " mentre quando eravamo su " application.rb " questo non era necessario perché ci trovavamo già all'interno della classe application che ereditava da " Rails::Application ".
 
 Abbiamo inoltre aggiunto due linee di commento all'inizio.
 
@@ -87,7 +88,7 @@ $ git push heroku mi:master
 
 https://myapp-1-blabla.herokuapp.com/
 
-![Fig. 01](images/01-beginning/05-mockups_i18n/05_01-production-working.PNG)
+![Fig. 02](chapters/01-base/05-mockups_i18n/02_fig02-heroku_i18n_page_a.png)
 
 
 
@@ -104,9 +105,7 @@ Lo chiudiamo nel prossimo capitolo
 
 
 
-[Codice 01](#01-05-02_01)
-
-{id="01-05-02_01all", title=".../config/application.rb", lang=ruby, line-numbers=on, starting-line-number=21}
+{id="01-05-02_01all", caption=".../config/application.rb -- codice 01", lang=ruby, line-numbers=on, starting-line-number=1}
 ```
 require_relative 'boot'
 
@@ -116,10 +115,10 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module Myapp
+module Bl60
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 5.2
+    config.load_defaults 6.0
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
@@ -132,16 +131,4 @@ module Myapp
 end
 ```
 
-
-
-
-[Codice 02](#01-05-02_02)
-
-{id="01-05-02_02all", title=".../config/initializers/i18n.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-```
-# Be sure to restart your server when you modify this file.
-
-# Set the default language.
-Rails.application.config.i18n.default_locale = :it
-Rails.application.config.i18n.fallbacks = true
-```
+[indietro](#01-05-02_01)
