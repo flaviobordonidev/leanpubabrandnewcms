@@ -76,7 +76,7 @@ Iniziamo con il file en.yml perché l'inglese (en) è la lingua che viene selezi
 Avendo usato il "." davanti al nome del segnaposto, per convenzione Rails cerca il segnaposto catalogato nella rispettiva view. In questo caso sotto en -> mockups -> page_a.
 
 
-{id="01-05-01_02", caption=".../config/locales/en.yml -- codice 02", format: yaml, line-numbers: true, number-from: 32}
+{id: "01-05-01_02", caption: ".../config/locales/en.yml -- codice 02", format: yaml, line-numbers: true, number-from: 32}
 ```
 en:
   mockups:
@@ -95,7 +95,7 @@ I> ATTENZIONE! i files YAML (.yml) sono sensibili all'indentatura. Per indentare
 I> Attenzione! C'è un bug e sui partials non mi funziona il "." come previsto quando uso i partials. Ho quindi scelto di usare tutto il percorso:
 
 
-{caption=".../app/views/mockups/page_a.html.erb -- codice 03", format: HTML+Mako, line-numbers: true, number-from: 1}
+{caption: ".../app/views/mockups/page_a.html.erb -- codice 03", format: HTML+Mako, line-numbers: true, number-from: 1}
 ```
 <h1> <%= t "mockups.page_a.headline" %> </h1>
 <p> <%= t "mockups.page_a.first_paragraph" %> </p>
@@ -110,7 +110,7 @@ I> Attenzione! C'è un bug e sui partials non mi funziona il "." come previsto q
 
 Adesso creiamo il file it.yml per implementare la lingua italiana (it).
 
-{caption=".../config/locales/it.yml -- codice 04", format: yaml, line-numbers: true, number-from: 32}
+{caption: ".../config/locales/it.yml -- codice 04", format: yaml, line-numbers: true, number-from: 32}
 ```
 it:
   mockups:
@@ -175,7 +175,7 @@ Lo chiudiamo nel prossimo capitolo
 
 
 
-{id="01-05-01_02all", title=".../config/locales/en.yml -- codice 02", format: yaml, line-numbers: true, number-from: 1}
+{id: "01-05-01_02all", title=".../config/locales/en.yml -- codice 02", format: yaml, line-numbers: true, number-from: 1}
 ```
 # Files in the config/locales directory are used for internationalization
 # and are automatically loaded by Rails. If you want to use locales other
