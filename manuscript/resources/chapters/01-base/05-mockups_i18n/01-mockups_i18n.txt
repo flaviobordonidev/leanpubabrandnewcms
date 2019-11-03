@@ -175,7 +175,7 @@ Lo chiudiamo nel prossimo capitolo
 
 
 
-{id: "01-05-01_02all", title=".../config/locales/en.yml -- codice 02", format: yaml, line-numbers: true, number-from: 1}
+{id: "01-05-01_02all", caption: ".../config/locales/en.yml -- codice 02", format: yaml, line-numbers: true, number-from: 1}
 ```
 # Files in the config/locales directory are used for internationalization
 # and are automatically loaded by Rails. If you want to use locales other

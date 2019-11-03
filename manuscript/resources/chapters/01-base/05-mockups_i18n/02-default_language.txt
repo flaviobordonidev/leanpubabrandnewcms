@@ -65,7 +65,7 @@ Abbiamo inoltre aggiunto due linee di commento all'inizio.
 
 ## Salviamo su Git
 
-{title="terminal", format: bash, line-numbers=off}
+{caption: "terminal", format: bash, line-numbers=off}
 ```
 $ git add -A
 $ git commit -m "set i18n default_locale = :it"
@@ -76,7 +76,7 @@ $ git commit -m "set i18n default_locale = :it"
 
 ## publichiamo su heroku
 
-{title="terminal", format: bash, line-numbers=off}
+{caption: "terminal", format: bash, line-numbers=off}
 ```
 $ git push heroku mi:master
 ```
