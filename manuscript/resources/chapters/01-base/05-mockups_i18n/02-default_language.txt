@@ -11,7 +11,7 @@ In questo capitolo impostiamo come lingua di default l'italiano.
 
 sulla configurazione dell'applicazione impostiamo la lingua di default cambiando il "locale" di default:
 
-{id="01-05-02_01", caption=".../config/application.rb -- codice 01", lang=ruby, line-numbers=on, starting-line-number=19}
+{id="01-05-02_01", caption=".../config/application.rb -- codice 01", format: ruby, line-numbers: true, number-from: 19}
 ```
     config.i18n.default_locale = :it
     config.i18n.fallbacks = true
@@ -47,7 +47,7 @@ Spostiamo le linee di codice all'interno di config/initializers come richiesto d
 
 Creiamo un nuovo file con estensione ".rb" che possiamo chiamare come vogliamo; scegliamo "i18n.rb".
 
-{caption=".../config/initializers/i18n.rb -- codice 02", lang=ruby, line-numbers=on, starting-line-number=1}
+{caption=".../config/initializers/i18n.rb -- codice 02", format: ruby, line-numbers: true, number-from: 1}
 ```
 # Be sure to restart your server when you modify this file.
 
@@ -65,7 +65,7 @@ Abbiamo inoltre aggiunto due linee di commento all'inizio.
 
 ## Salviamo su Git
 
-{title="terminal", lang=bash, line-numbers=off}
+{title="terminal", format: bash, line-numbers=off}
 ```
 $ git add -A
 $ git commit -m "set i18n default_locale = :it"
@@ -76,7 +76,7 @@ $ git commit -m "set i18n default_locale = :it"
 
 ## publichiamo su heroku
 
-{title="terminal", lang=bash, line-numbers=off}
+{title="terminal", format: bash, line-numbers=off}
 ```
 $ git push heroku mi:master
 ```
@@ -105,7 +105,7 @@ Lo chiudiamo nel prossimo capitolo
 
 
 
-{id="01-05-02_01all", caption=".../config/application.rb -- codice 01", lang=ruby, line-numbers=on, starting-line-number=1}
+{id="01-05-02_01all", caption=".../config/application.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
 ```
 require_relative 'boot'
 
