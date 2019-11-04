@@ -1,10 +1,10 @@
-# Inizializzazione di Github
+{id: 01-base-06-github-03-github_initializing}
+# Cap 6.3 -- Inizializzazione di Github
 
 
-Risorse web
+Risorse interne
 
-* https://help.github.com/articles/connecting-to-github-with-ssh/
-
+* 99-rails_references/git_github/github
 
 
 
@@ -19,16 +19,23 @@ non serve perché è rimasto aperto dal capitolo precedente
 
 Per prima cosa creiamoci un account su Github. Andiamo su www.github.com e clicchiamo "Sign up"
 
-![fig. 01](images/01-beginning/06-github/03_01-github_signup.PNG)
+![Fig. 01](chapters/01-base/06-github/03_fig01-github_signup.png)
 
 Se lo abbiamo già logghiamoci.
 
-![fig. 02](images/01-beginning/06-github/03_02-github_signin.PNG)
+![Fig. 02](chapters/01-base/06-github/03_fig02-github_signin.png)
 
 
 
 
 ## Github connessione con aws Cloud9
+
+Inizializziamo GitHub che useremo principalmente come repositroy remoto di backup del codice.
+
+
+
+
+## Condividiamo la chiave pubblica
 
 Per far comunicare Github con aws Cloud9 dobbiamo fargli condividere la chiave pubblica.
 Andiamo sul terminale di aws Cloud9 e visualizziamo e copiamoci la chiave pubblica (public key) di aws Cloud9.
@@ -46,7 +53,7 @@ Copiare tutta la chiave pubblica, compreso 'ssh-rsa', e passarla su Github -> Se
 Title: awsC9-cmspofo
 Key: ssh-rsa AAAAB3...[...]...MmDRyKWg5 ec2-user@ip-172-56-27-218
 
-![fig. 03](images/01-beginning/06-github/03_03-github_ssh_public_key.PNG)
+![Fig. 03](chapters/01-base/06-github/03_fig03-github_ssh_public_key.png)
 
 
 
@@ -55,23 +62,23 @@ Key: ssh-rsa AAAAB3...[...]...MmDRyKWg5 ec2-user@ip-172-56-27-218
 
 Creiamo un nuovo repository:
 
-* nome        : myapp-01
-* descrizione : mia applicazione su Rails
+* nome        : bl6_0
+* descrizione : mia applicazione Rails
 
-![fig. 04](images/01-beginning/06-github/03_04-github_new_repository.PNG)
+![Fig. 04](chapters/01-base/06-github/03_fig04-github_new_repository.png)
 
 Appena creato il nuovo repository ci viene presentato un "Quick setup"
 
-![fig. 05](images/01-beginning/06-github/03_05-github_quick_setup.PNG)
+![Fig. 05](chapters/01-base/06-github/03_fig05-github_quick_setup.png)
 
-Aggiungiamo sul nostro git il repository remoto "myapp-01.git" creato sul nostro account github "flaviobordonidev" usando SSH.
+Aggiungiamo sul nostro git il repository remoto "bl6_0.git" creato sul nostro account github "flaviobordonidev" usando SSH.
 
 {title="terminal", lang=bash, line-numbers=off}
 ```
-$ git remote add origin git@github.com:flaviobordonidev/myapp-01.git
+$ git remote add origin git@github.com:flaviobordonidev/bl6_0.git
 ```
 
-Se avessimo voluto usare HTTPS avremmo usato "git remote add origin https://github.com/flaviobordonidev/myapp-01.git"
+Se avessimo voluto usare HTTPS avremmo usato "git remote add origin https://github.com/flaviobordonidev/bl6_0.git"
 
 Il comando "git remote" è per attivare il repository remoto su un server esterno (nel nostro caso github.com).
 con "add origin" si dichiara che il nome di riferimento del repositroy remoto è "origin" (potevamo chiamarlo github ma per convenzione storica la stessa Github ha scelto di chiamarlo "origin").  
@@ -102,6 +109,21 @@ Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla
 {title="terminal", lang=bash, line-numbers=off}
 ```
 $ git push origin master
+-> yes
+
+
+user_fb:~/environment/bl6_0 (master) $ git push origin master
+The authenticity of host 'github.com (140.82.113.3)' can't be established.
+RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'github.com,140.82.113.3' (RSA) to the list of known hosts.
+Counting objects: 158, done.
+Compressing objects: 100% (138/138), done.
+Writing objects: 100% (158/158), 148.12 KiB | 3.80 MiB/s, done.
+Total 158 (delta 25), reused 0 (delta 0)
+remote: Resolving deltas: 100% (25/25), done.
+To github.com:flaviobordonidev/bl6_0.git
+ * [new branch]      master -> master
 ```
 
 il comando "git push" sposta sul branch remoto "origin" il branch locale "master".
@@ -111,8 +133,23 @@ Spostiamo in remoto anche la parte dei tag in cui abbiamo messo la versione v.0.
 {title="terminal", lang=bash, line-numbers=off}
 ```
 $ git push origin master --tag
+
+
+user_fb:~/environment/bl6_0 (master) $ git push origin master --tag
+Warning: Permanently added the RSA host key for IP address '140.82.114.3' to the list of known hosts.
+Total 0 (delta 0), reused 0 (delta 0)
+To github.com:flaviobordonidev/bl6_0.git
+ * [new tag]         v0.1.0 -> v0.1.0
 ```
 
 Se adesso facciamo un refresh alla pagina di Github vedremo il nostro nuovo repository con la nostra myapp-01
 
-![fig. 06](images/01-beginning/06-github/03_06-github_repository_overview.PNG)
+![Fig. 06](chapters/01-base/06-github/03_fig06-github_repository_overview.png)
+
+possiamo vedere tutti i nostri commits
+
+![Fig. 07](chapters/01-base/06-github/03_fig07-github_commits.png)
+
+ed i tags delle varie versioni
+
+![Fig. 08](chapters/01-base/06-github/03_fig08-github_tags.png)

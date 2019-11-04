@@ -80,9 +80,9 @@ $ rails s
 
 Visualizziamo sul browser i vari URLs:
 
-* https://mycloud9path.amazonaws.com/example_static_pages/page_a
-* https://mycloud9path.amazonaws.com/example_static_pages/page_a?locale=en
-* https://mycloud9path.amazonaws.com/example_static_pages/page_a?locale=it
+* https://mycloud9path.amazonaws.com/mockups/page_a
+* https://mycloud9path.amazonaws.com/mockups/page_a?locale=en
+* https://mycloud9path.amazonaws.com/mockups/page_a?locale=it
 
 
 
@@ -91,22 +91,35 @@ Visualizziamo sul browser i vari URLs:
 
 Sulla nostra " page_a " inseriamo due links per il cambio della lingua.
 
+{caption: ".../views/mockups/page_a.html.erb -- codice 02", format: ruby, line-numbers: true, number-from: 1}
+```
+<h1> <%= t ".headline" %> </h1>
+<p> <%= t ".first_paragraph" %> </p>
+<br>
+<p> <%= link_to t(".link_to_page_B"), mockups_page_b_path %> </p>
+<p> <%= link_to "Inglese", params.permit(:locale).merge(locale: 'en') %> </p>
+<p> <%= link_to "Italiano", params.permit(:locale).merge(locale: 'it') %> </p>
+```
 
 
 
 
+## Salviamo su Git
 
 {caption: "terminal", format: bash, line-numbers: false}
 ```
 $ git add -A
-$ git commit -m "set i18n change language on url"
+$ git commit -m "set i18n change language on url via params[:locale]"
 ```
 
-publichiamo su heroku
+
+
+
+## publichiamo su heroku
 
 {caption: "terminal", format: bash, line-numbers: false}
 ```
-$ git push heroku tpi18n:master
+$ git push heroku mi:master
 ```
 
 
@@ -119,6 +132,6 @@ se abbiamo finito le modifiche e va tutto bene:
 {caption: "terminal", format: bash, line-numbers: false}
 ```
 $ git checkout master
-$ git merge tpi18n
-$ git branch -d tpi18n
+$ git merge mi
+$ git branch -d mi
 ```

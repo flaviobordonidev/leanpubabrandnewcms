@@ -33,3 +33,6 @@ resources/chapters/01-base/04-heroku/03-heroku_finish.txt
 resources/chapters/01-base/05-mockups_i18n/01-mockups_i18n.txt
 resources/chapters/01-base/05-mockups_i18n/02-default_language.txt
 resources/chapters/01-base/05-mockups_i18n/03-change_language.txt
+
+resources/chapters/01-base/06-github/01-github_story.txt
+resources/chapters/01-base/06-github/02-github_readme.txt

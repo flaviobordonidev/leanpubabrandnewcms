@@ -1,3 +1,16 @@
+# Cambio della lingua come sottodirectory dell'url
+
+questo capitolo non lo usiamo nella nostra applicazione perché ci complica la gestione delle routes. Preferiamo usare params[:locale]. Comunque, a scopo didattico, questo capitolo tratta come 
+cambiare la lingua con degli urls tipo:
+
+* www.miodominio.com/it
+* www.miodominio.com/en
+
+
+
+
+## Implementiamo sulle routes
+
 Mettiamo la selezione della lingua all'interno dell'URL. Così avremo
 localhost:3000/it
 localhost:3000/en

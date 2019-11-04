@@ -1,0 +1,7 @@
+# Formattiamo le valute
+
+Formattiamo i prezzi per le varie valute, mantenendo la lingua impostata come default; l'italiano.
+
+Risorse interne:
+
+* 99-rails_references/i18n/02-format_date_time_i18n
