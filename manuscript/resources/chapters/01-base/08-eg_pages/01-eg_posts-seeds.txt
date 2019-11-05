@@ -267,6 +267,10 @@ $ rake db:setup
 ```
 
 
+
+
+## archiviamo su git
+
 {title="terminal", lang=bash, line-numbers=off}
 ```
 $ git add -A

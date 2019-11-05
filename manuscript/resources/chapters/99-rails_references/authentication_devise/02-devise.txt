@@ -1,0 +1,28 @@
+# Devise
+
+installiamo e configuriamo devise
+
+
+Risorse interne:
+
+* 01-base/07-authentication/02-authentication-devise_install
+
+
+Risorse web:
+
+  * https://github.com/plataformatec/devise
+  * https://github.com/plataformatec/devise/wiki/Example-Applications
+  * http://railsapps.github.io/tutorial-rails-devise-rspec-cucumber.html
+  * http://railsapps.github.io/tutorial-rails-mongoid-devise.html
+  * Railscasts pro 209-devise-revised
+  * http://railsapps.github.io/tutorial-rails-mongoid-devise.html
+
+  * https://www.mirrorcommunications.com/blog/build-a-blog-with-devise-part-2
+    In this tutorial, we will install devise and create the user and post model. We will also set up emails in production with the Heroku Sendgrid addon.
+
+  * https://www.mirrorcommunications.com/blog/build-a-blog-with-devise-part-3
+    We are likely going to need at least two to three posts just to customize devise. The first thing I want to do is add the FriendlyId gem, so we can create nice looking user and post urls, such as: https://yourdomain/users/your-name.
+
+  * https://github.com/plataformatec/devise/wiki/How-Tos1
+  
+  *https://devcenter.heroku.com/articles/using-the-cli

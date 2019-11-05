@@ -23,7 +23,7 @@ ruby 2.6.3p62 (2019-04-16 revision 67580) [x86_64-linux]
 verifichiamo sul gemfile 
 
 
-{id: "01-01-07_01", caption: ".../Gemfile -- codice 01", format: yaml, line-numbers: true, number-from: 4}
+{id: "01-01-07_01", caption: ".../Gemfile -- codice 01", format: ruby, line-numbers: true, number-from: 4}
 ```
 ruby '2.6.3'
 ```

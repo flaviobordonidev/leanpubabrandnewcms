@@ -37,3 +37,7 @@ resources/chapters/01-base/05-mockups_i18n/03-change_language.txt
 resources/chapters/01-base/06-github/01-github_story.txt
 resources/chapters/01-base/06-github/02-github_readme.txt
 resources/chapters/01-base/06-github/03-github_initializing.txt
+
+resources/chapters/01-base/07-authentication/01-devise_story.txt
+resources/chapters/01-base/07-authentication/02-authentication-devise_install.txt
+resources/chapters/01-base/07-authentication/03-devise-finish.txt
