@@ -1,5 +1,5 @@
-{id: 01-base-07-authentication-02-authentication-devise_install}
-# Cap 7.2 -- Users seeds
+{id: 01-base-07-authentication-03-devise-users-seeds}
+# Cap 7.3 -- Users seeds
 
 Creiamo la tabella " users " tramite devise e la popoliamo.
 

@@ -1,12 +1,16 @@
-# Rifiniamo la parte di autenticazione con devise
+{id: 01-base-07-authentication-04-devise-login_logout}
+# Cap 7.4 -- devise login logout
 
-Implementiamo i link di login/sign_in e di logout/sign_out, mostriamo utente loggato, personaliziamo gli URLs, e personaliziamo il layout per il login.
+Rifiniamo la parte di autenticazione con devise:
 
+* Implementiamo i links di login e di logout.
+* Mostriamo utente loggato.
+* Personaliziamo gli URLs: usiamo " .../login ", al posto di " .../users/sign_in ".
+* Personaliziamo il layout per il login.
 
-Risorse web:
+Risorse interne:
 
-* [Sito di devise](https://github.com/plataformatec/devise)
-* [Permetti agli utenti di editare la loro password](https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-edit-their-password)
+* 99-rails_references-authentication_devise-02-devise
 
 
 
