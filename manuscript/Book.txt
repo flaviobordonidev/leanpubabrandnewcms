@@ -40,4 +40,5 @@ resources/chapters/01-base/06-github/03-github_initializing.txt
 
 resources/chapters/01-base/07-authentication/01-devise_story.txt
 resources/chapters/01-base/07-authentication/02-authentication-devise_install.txt
-resources/chapters/01-base/07-authentication/03-devise-finish.txt
+resources/chapters/01-base/07-authentication/03-devise-users-seeds.txt
+resources/chapters/01-base/07-authentication/04-devise-login_logout.txt
