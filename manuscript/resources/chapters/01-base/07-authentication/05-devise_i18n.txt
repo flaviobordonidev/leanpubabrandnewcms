@@ -112,32 +112,32 @@ Adesso tutti i messaggi di devise sono tradotti in italiano.
 
 ## verifichiamo che funziona tutto
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 
 
 
 ## Archiviamo su git
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ git add -A
 $ git commit -m "add login_devise i18n"
-~~~~~~~~
+```
 
 
 
 
 ## Publichiamo su heroku
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ git push heroku di:master
-~~~~~~~~
+```
 
 
 
@@ -146,12 +146,12 @@ $ git push heroku di:master
 
 se abbiamo finito le modifiche e va tutto bene:
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ git checkout master
 $ git merge di
 $ git branch -d di
-~~~~~~~~
+```
 
 
 
