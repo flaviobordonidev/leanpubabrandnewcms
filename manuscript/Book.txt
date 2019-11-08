@@ -42,3 +42,5 @@ resources/chapters/01-base/07-authentication/01-devise_story.txt
 resources/chapters/01-base/07-authentication/02-authentication-devise_install.txt
 resources/chapters/01-base/07-authentication/03-devise-users-seeds.txt
 resources/chapters/01-base/07-authentication/04-devise-login_logout.txt
+resources/chapters/01-base/07-authentication/05-devise_i18n.txt
+resources/chapters/01-base/07-authentication/06-manage_users.txt
