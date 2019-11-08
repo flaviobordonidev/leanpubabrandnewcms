@@ -100,7 +100,7 @@ confrontando il file con quello inglese generato automaticamente da devise impos
 {caption: ".../config/locale/devise.it.yml -- segue", format: yaml, line-numbers: true, number-from: 52}
 ```
       updated_but_not_signed_in: "Il tuo account è stato aggiornato correttamente, ma poiché la password è stata modificata, è necessario accedere nuovamente"
-``
+```
 
 [tutto il codice](#01-07-05_03all)
 
