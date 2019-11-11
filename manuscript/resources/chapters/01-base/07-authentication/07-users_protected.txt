@@ -1,4 +1,5 @@
-# Implementiamo la sicurezza e la protezione di Devise
+{id: 01-base-07-authentication-07-users_protected}
+# Cap 7.7 -- Implementiamo la sicurezza e la protezione di Devise
 
 Rendiamo non accessibili le pagine di gestione degli utenti a chi non è autenticato.
 Questa è quasi una forma di autorizzazione ma l'autorizzazione vera è basata su ruoli differenti che hanno i vari utenti che fanno login / che si autenticano.

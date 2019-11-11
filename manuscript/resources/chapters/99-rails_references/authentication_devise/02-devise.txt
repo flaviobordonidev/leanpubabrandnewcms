@@ -6,6 +6,7 @@ installiamo e configuriamo devise
 Risorse interne:
 
 * 01-base/07-authentication/02-authentication-devise_install
+* 01-base/07-authentication/06-manage_users
 
 
 Risorse web:
@@ -34,6 +35,7 @@ We are likely going to need at least two to three posts just to customize devise
 * https://github.com/plataformatec/devise/wiki/How-To:-Change-the-default-sign_in-and-sign_out-routes
 * https://github.com/plataformatec/devise#configuring-routes
 
+* [Gestire gli utenti tramite interfaccia CRUD](https://github.com/plataformatec/devise/wiki/How-To:-Manage-users-through-a-CRUD-interface)
 
 
 
