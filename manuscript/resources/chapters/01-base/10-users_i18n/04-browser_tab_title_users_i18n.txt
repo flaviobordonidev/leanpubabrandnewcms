@@ -1,0 +1,129 @@
+# Rendiamo multilingua il titolo nel tab del browser
+
+Attiviamo le traduzioni per il titolo nel tab del browser
+
+
+
+
+## Apriamo il branch 
+
+continuiamo con lo stesso branch del capitolo precedente
+
+
+
+
+## Implementiamo internazionalizzazione (i18n)
+
+Non mettiamo la traduzione per "show" perché richiamiamo solo il nome dell'utente. L'avremmo inserita se avessimo usato una frase tipo "Show user" ("Mostra utente").
+
+{id="02-03-01_01", title=".../config/locales/en.yml", lang=yaml, line-numbers=on, starting-line-number=4}
+```
+  users:
+    index:
+      html_head_title: "All users"
+    edit:
+      html_head_title: "Edit"
+    new:
+      html_head_title: "New post"
+```
+
+[Codice 01](#02-03-01_01all)
+
+
+{id="02-03-01_02", title=".../config/locales/it.yml", lang=yaml, line-numbers=on, starting-line-number=4}
+```
+  users:
+    index:
+      html_head_title: "Tutti gli utenti"
+    edit:
+      html_head_title: "Modifica"
+    new:
+      html_head_title: "Nuovo utente"
+```
+
+[Codice 02](#02-03-01_02all)
+
+
+
+
+## Aggiungiamo le chiamate alle views
+
+{title=".../app/views/users/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
+```
+<% provide(:html_head_title, "#{t 'users.index.html_head_title'}") %>
+```
+
+La chiamata per show la lasciamo così com'è
+
+{title=".../app/views/users/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
+```
+<% provide(:html_head_title, @user.name) %>
+```
+
+{title=".../app/views/users/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
+```
+<% provide(:html_head_title, "#{t 'users.edit.html_head_title'} #{@user.name}") %>
+```
+
+{title=".../app/views/users/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
+```
+<% provide(:html_head_title, "#{t 'users.new.html_head_title'}") %>
+```
+
+
+
+
+## salviamo su git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "Internationalization title on browser tabs"
+```
+
+
+
+
+## Pubblichiamo su Heroku
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push heroku dtbt:master
+```
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout master
+$ git merge dtbt
+$ git branch -d dtbt
+```
+
+
+aggiorniamo github
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push origin master
+```
+
+
+
+
+## Il codice del capitolo
+
+
+
+
+[Codice 01](#01-08b-01_01)
+
+{id="01-08b-01_01all", title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+```
+
+```

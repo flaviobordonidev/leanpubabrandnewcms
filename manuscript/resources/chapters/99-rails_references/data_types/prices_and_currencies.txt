@@ -1,0 +1,3 @@
+# Che tipo di dato è meglio usare per gestire prezzi?
+
+è bene usare "decimal"

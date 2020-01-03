@@ -1,0 +1,229 @@
+# Implementiamo lo stile sulla vera pagina di Login
+
+La pagina di login è quella di Devise quindi andiamo a vederla
+
+
+
+
+## Devise Login
+
+la pagina di login di devise la troviamo sotto views/users/sessions/new.html.erb
+
+{id="02-04-04_01", title=".../app/views/users/sessions/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=19}
+```
+<h2>Log in</h2>
+
+<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password %><br />
+    <%= f.password_field :password, autocomplete: "current-password" %>
+  </div>
+
+  <% if devise_mapping.rememberable? %>
+    <div class="field">
+      <%= f.check_box :remember_me %>
+      <%= f.label :remember_me %>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit "Log in" %>
+  </div>
+<% end %>
+
+<%= render "users/shared/links" %>
+```
+
+[Codice 01](#02-04-04_01all)
+
+
+
+
+## Il layout/entrance
+
+Nei capitoli precedenti abbiamo associato le pagine users/session di devise al layout "entrance" esplicitandolo nel controller users
+
+
+{id="02-04-04_02", title=".../controllers/users/sessions_controller.rb", lang=ruby, line-numbers=on, starting-line-number=6}
+```
+  layout 'entrance'
+```
+
+[Codice 02](#02-04-04_02all)
+
+
+Quindi lavoriamo sul layout "entrance" per abilitare bootstrap e lo stile personalizzato "login.scss"
+
+
+{id="02-04-04_03", title=".../app/views/layouts/entrance.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=10}
+```
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Benvenuto</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag    'login', media: 'all', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <% if notice %><p class="alert alert-info"><%= notice %></p><% end %>
+    <% if alert %><p class="alert alert-warning"><%= alert %></p><% end %>
+    <%= yield %>
+  </body>
+</html>
+```
+
+[Codice 03](#02-04-04_03all)
+
+
+
+
+## Aggiorniamo la pagina login di devise
+
+Per prima cosa copiamo la parte di mockups/login all'inizio della view
+
+{id="02-04-04_04", title=".../app/views/users/sessions/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=19}
+```
+<div class="container">
+  <div class="row">
+```
+
+[Codice 04](#02-04-04_04all)
+
+Verifichiamo sul preview come si presenta e poi sostituiamo di volta in volta i campi dinamici.
+
+
+
+
+### Step 1 di sostituzione
+
+{id="02-04-04_05", title=".../app/views/users/sessions/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=8}
+```
+          <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "form-signin") do |f| %>
+
+            <div class="form-label-group">
+              <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+              <label for="inputEmail">Email address</label>
+            </div>
+            <div class="field">
+              <%= f.label :email %><br />
+              <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+            </div>
+```
+
+[Codice 05](#02-04-04_05all)
+
+
+
+
+### Step 2 di sostituzione
+
+{id="02-04-04_06", title=".../app/views/users/sessions/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=8}
+```
+          <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "form-signin") do |f| %>
+
+            <div class="form-label-group">
+              <%= f.email_field :email, autofocus: true, required: true, autocomplete: "email", id: "inputEmail", class: "form-control", placeholder: "Email address" %>
+              <%= f.label :email, for: "inputEmail" %>
+            </div>
+
+            <div class="form-label-group">
+              <%= f.password_field :password, autocomplete: "current-password", id: "inputPassword", class: "form-control", placeholder: "Password", required: true %>
+              <%= f.label :password, for: "inputPassword" %>
+            </div>
+
+            <% if devise_mapping.rememberable? %>
+              <div class="custom-control custom-checkbox mb-3">
+                <%= f.check_box :remember_me, class: "custom-control-input", id: "customCheck1" %>
+                <%= f.label :remember_me, for: "customCheck1", class: "custom-control-label" %>
+              </div>
+            <% end %>
+
+            <div class="actions">
+              <%= f.submit "Log in", class: "btn btn-lg btn-primary btn-block text-uppercase" %>
+            </div>
+```
+
+[Codice 06](#02-04-04_06all)
+
+
+
+
+## Verifichiamo preview
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails s
+```
+
+apriamo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/login
+
+Vediamo che tutto funziona come ci aspettiamo.
+
+
+
+
+
+
+## archiviamo su git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "add login stylesheets"
+```
+
+
+
+
+## Pubblichiamo su heroku
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push heroku ml:master
+```
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout master
+$ git merge ml
+$ git branch -d ml
+```
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push origin master
+```
+
+
+
+
+## Il codice del capitolo
+
+

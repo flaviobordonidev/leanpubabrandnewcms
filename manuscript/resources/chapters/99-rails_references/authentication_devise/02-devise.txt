@@ -37,6 +37,23 @@ We are likely going to need at least two to three posts just to customize devise
 
 * [Gestire gli utenti tramite interfaccia CRUD](https://github.com/plataformatec/devise/wiki/How-To:-Manage-users-through-a-CRUD-interface)
 
+* [redirect to a specific page on successful sign_in](https://github.com/plataformatec/devise/wiki/How-To:-redirect-to-a-specific-page-on-successful-sign_in,-sign_out,-and-or-sign_up)
+* [elaborate on the redirect](https://stackoverflow.com/questions/13129254/how-to-direct-user-to-a-specific-page-after-logging-in-with-devise-and-rails)
+
+
+
+
+## Avvisi di passaggio di versione
+
+I> Attenzione!
+I>
+I> For Rails 5, note that protect_from_forgery is no longer prepended to the before_action chain, so if you have set authenticate_user before protect_from_forgery, your request will result in "Can't verify CSRF token authenticity." To resolve this, either change the order in which you call them, or use protect_from_forgery prepend: true.
+
+I> Attenzione!
+I> Strong Parameters
+I> The Parameter Sanitizer API has changed for Devise 4
+
+
 
 
 ## Visualizziamo i messaggi di errore

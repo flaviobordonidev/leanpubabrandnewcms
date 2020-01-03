@@ -1,9 +1,27 @@
 # Gestire l'internazionalizzazione
 
+Risorse interne:
+
+* 01-base/05-mockups_i18n
+
 Risorse web:
 
+* [Rails Internationalization guide](https://guides.rubyonrails.org/i18n.html)
+* [Set-up for Using Locales from URL Params and Basic I18n Usage](https://dev.to/morinoko/setting-up-i18n-for-rails-with-locales-from-url-params-38pg)
 * [Rails internationalisation (i18n) cheatsheet](https://mikerogers.io/2016/01/10/i18n-rails-internationalisation-i18n-cheatsheet.html)
 * [ActionView::Helpers::FormHelper.label documentation](http://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-label)
+* https://guides.rubyonrails.org/i18n.html#setting-the-locale-from-the-client-supplied-information
+* https://stackoverflow.com/questions/7113736/detect-browser-language-in-rails/36028149
+* https://stackoverflow.com/questions/55860171/protect-from-forgery-in-rails-6
+* https://phrase.com/blog/posts/rails-i18n-guide/
+
+
+
+## Implementiamo internazionalizzazione
+
+usiamo questo articolo * [Set-up for Using Locales from URL Params and Basic I18n Usage](https://dev.to/morinoko/setting-up-i18n-for-rails-with-locales-from-url-params-38pg)
+#TODO
+
 
 
 
@@ -51,6 +69,27 @@ en:
       message:
         name: "Name attribute (fallback for when label is nil)"
 ~~~~~~~~
+
+altro esempio:
+
+~~~~~~~~
+<% form_for @post do |f| %>
+  <%= f.label :title %>
+  <%= f.text_field :title %>
+  <%= f.submit %>
+<% end %>
+~~~~~~~~
+
+~~~~~~~~
+en:
+  helpers:
+    label:
+      post:
+        title: 'Customized title'
+~~~~~~~~
+
+If the helpers: path is not available, i18n will fallback to the activerecord: path. Very clear when using the excellent i18n-debug gem.
+
 
 
 
@@ -167,25 +206,3 @@ Alternatively if you start without a dot, it'll look from the start of the i18n 
 en:
   pricing_information: "That'll cost %{price}"
 ~~~~~~~~
-
-
-
-## Altro from stackoverflow
-
-~~~~~~~~
-<% form_for @post do |f| %>
-  <%= f.label :title %>
-  <%= f.text_field :title %>
-  <%= f.submit %>
-<% end %>
-~~~~~~~~
-
-~~~~~~~~
-en:
-  helpers:
-    label:
-      post:
-        title: 'Customized title'
-~~~~~~~~
-
-If the helpers: path is not available, i18n will fallback to the activerecord: path. Very clear when using the excellent i18n-debug gem.

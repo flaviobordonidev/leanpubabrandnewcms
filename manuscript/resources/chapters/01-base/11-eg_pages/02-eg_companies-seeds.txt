@@ -1,0 +1,147 @@
+{id: 01-base-08-eg_pages-02-eg_companies-seeds}
+# Cap 8.2 -- Tabella di esempio per le aziende
+
+Creiamo una tabella di esempio che ci aiuterà nei prossimi capitoli per verificare le future implementazioni.
+
+
+
+
+## Apriamo il branch "Example Companies"
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout -b ec
+```
+
+
+
+
+## Impementiamo tabella example_companies
+
+implementiamo tutta la gestione delle aziendei come esempio inclusa la tabella eg_companies
+Generiamo tutto lo "scaffold" perché vogliamo anche i controllers e le views. 
+ - il "migrate" crea la sola tabella
+ - il "model" oltre alla tabella crea il model per il collegamento uno-a-molti.
+ - lo "scaffold" crea anche il controller e le views.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ rails g scaffold EgCompany name:string note:text
+```
+
+
+vediamo il migrate creato
+
+{id: "01-08-02_01", caption: ".../db/migrate/xxx_create_eg_companies.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
+```
+class CreateEgCompanies < ActiveRecord::Migration[6.0]
+  def change
+    create_table :eg_companies do |t|
+      t.string :name
+      t.text :note
+
+      t.timestamps
+    end
+  end
+end
+```
+
+[tutto il codice](#01-08-02_01all)
+
+
+eseguiamo il migrate 
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails db:migrate
+```
+
+
+
+
+## Inseriamo qualche azienda da console
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ rails c
+-> EgCompany.new(name: "AAA srl", note: "industria chimica").save
+-> EgCompany.new(name: "BAB snc", note: "industria farmaceutica").save
+-> EgCompany.new(name: "CABBA SpA", note: "ITC").save
+
+-> exit
+```
+
+
+
+
+## seeds
+
+Impostiamo il file dei seeds per popolare la tabella in automatico invece della procedura manuale appena eseguita.
+
+{title=".../db/seeds.rb", lang=ruby, line-numbers=on, starting-line-number=25}
+```
+puts "Inseriamo tre aziende"
+
+EgCompany.new(name: "AAA srl", note: "industria chimica").save
+EgCompany.create(name: "BAB snc", note: "industria farmaceutica")
+EgCompany.new(name: "CABBA SpA", note: "ITC").save
+```
+
+
+
+
+## Salviamo su git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "Add table eg_companies"
+```
+
+
+
+
+## Pubblichiamo su Heroku
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push heroku ec:master
+$ heroku run rails db:migrate
+```
+
+per popolare il database di heroku 
+
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ heroku run rails c
+```
+
+e rifare i passi fatti precedentemente per il database locale
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout master
+$ git merge ec
+$ git branch -d ec
+```
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push origin master
+```

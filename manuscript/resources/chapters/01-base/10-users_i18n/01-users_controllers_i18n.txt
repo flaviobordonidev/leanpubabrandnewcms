@@ -1,0 +1,51 @@
+{id: 01-base-10-users_i18n-01-users_controllers_i18n}
+# Cap 10.1 -- Internazionalizzazione dei messaggi
+
+Al momento abbiamo lasciato dei messaggi scritti direttamente nel codice ma questo non ci permette di gestire più lingue. Passiamo i messaggi attraverso i files " locales ".
+
+
+
+
+## I messaggi nei controllers
+
+Gestiamo i messaggi "notice" ed "alerts" in users_controller
+
+azione create
+
+{id: "01-10-01_01", caption: ".../app/controllers/users_controller.rb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 31}
+```
+        format.html { redirect_to @user, notice: t(".notice") }
+```
+
+azione update
+
+{caption: ".../app/controllers/users_controller.rb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 31}
+```
+          redirect_to @user, notice: t(".notice")
+```
+
+
+{id: "01-10-01_02", caption: ".../config/locales/it.yml -- codice 02", format: yaml, line-numbers: true, number-from: 1}
+```
+it:
+  users:
+    create:
+      notice: "L'utente è stato creato con successo."
+    update:
+      notice: "L'utente è stato aggiornato con successo."
+```
+
+{id: "01-10-01_03", caption: ".../config/locales/en.yml -- codice 03", format: yaml, line-numbers: true, number-from: 1}
+```
+en:
+  users:
+    create:
+      notice: 'User was successfully created.'
+    update:
+      notice: 'User was successfully updated.'
+```
+
+
+
+
+

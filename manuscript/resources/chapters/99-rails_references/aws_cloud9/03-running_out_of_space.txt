@@ -1,0 +1,365 @@
+# Liberiamo spazio su C9 (clear up / free up disk space)
+
+https://community.c9.io/t/how-do-i-clear-up-disk-space-after-its-full/213/2
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ du -hx / -t 50000000
+~~~~~~~~
+
+Nel mio caso si erano presi quasi tutto lo spazio disco i temporanei di heroku:
+** 1.8G    /home/ubuntu/.local/share/heroku/tmp **
+Li ho liberati con il comando:
+
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+sudo rm -rf /home/ubuntu/.local/share/heroku/tmp/*
+~~~~~~~~
+
+
+~~~~~~~~
+heroku run ls tmp
+~~~~~~~~
+
+
+
+
+## Esempio di uso
+
+~~~~~~~~
+user_fb:~/environment (master) $ du -hx / -t 50000000
+du: cannot read directory '/root': Permission denied
+57M     /lib/modules/4.15.0-1054-aws/kernel
+58M     /lib/modules/4.15.0-1054-aws
+57M     /lib/modules/4.15.0-1052-aws/kernel
+58M     /lib/modules/4.15.0-1052-aws
+57M     /lib/modules/4.15.0-1056-aws/kernel
+58M     /lib/modules/4.15.0-1056-aws
+57M     /lib/modules/4.15.0-1021-aws/kernel
+58M     /lib/modules/4.15.0-1021-aws
+239M    /lib/modules
+288M    /lib
+du: cannot read directory '/lost+found': Permission denied
+du: cannot read directory '/tmp/systemd-private-9c8d0267aa3347098e7ec43aa88b418f-systemd-timesyncd.service-QZ6ooM': Permission denied
+du: cannot read directory '/tmp/systemd-private-9c8d0267aa3347098e7ec43aa88b418f-apache2.service-b6oaRP': Permission denied
+du: cannot read directory '/tmp/systemd-private-9c8d0267aa3347098e7ec43aa88b418f-systemd-resolved.service-w83LVb': Permission denied
+76M     /home/ubuntu/.nvm/versions/node/v8.16.0/lib/node_modules
+76M     /home/ubuntu/.nvm/versions/node/v8.16.0/lib
+49M     /home/ubuntu/.nvm/versions/node/v8.16.0/bin
+127M    /home/ubuntu/.nvm/versions/node/v8.16.0
+127M    /home/ubuntu/.nvm/versions/node
+127M    /home/ubuntu/.nvm/versions
+131M    /home/ubuntu/.nvm
+50M     /home/ubuntu/environment/manuscript/resources/chapters
+51M     /home/ubuntu/environment/manuscript/resources
+51M     /home/ubuntu/environment/manuscript
+66M     /home/ubuntu/environment/.git/objects
+66M     /home/ubuntu/environment/.git
+139M    /home/ubuntu/environment
+67M     /home/ubuntu/.rvm/gems/ruby-2.6.3/doc
+128M    /home/ubuntu/.rvm/gems/ruby-2.6.3
+128M    /home/ubuntu/.rvm/gems
+48M     /home/ubuntu/.rvm/src/ruby-2.6.3/enc
+108M    /home/ubuntu/.rvm/src/ruby-2.6.3/ext
+402M    /home/ubuntu/.rvm/src/ruby-2.6.3
+408M    /home/ubuntu/.rvm/src
+612M    /home/ubuntu/.rvm
+94M     /home/ubuntu/.local/share/heroku/tmp/474232256/heroku/lib/node_modules
+149M    /home/ubuntu/.local/share/heroku/tmp/474232256/heroku/lib
+156M    /home/ubuntu/.local/share/heroku/tmp/474232256/heroku
+156M    /home/ubuntu/.local/share/heroku/tmp/474232256
+94M     /home/ubuntu/.local/share/heroku/tmp/719438803/heroku/lib/node_modules
+149M    /home/ubuntu/.local/share/heroku/tmp/719438803/heroku/lib
+156M    /home/ubuntu/.local/share/heroku/tmp/719438803/heroku
+156M    /home/ubuntu/.local/share/heroku/tmp/719438803
+94M     /home/ubuntu/.local/share/heroku/tmp/221469825/heroku/lib/node_modules
+149M    /home/ubuntu/.local/share/heroku/tmp/221469825/heroku/lib
+156M    /home/ubuntu/.local/share/heroku/tmp/221469825/heroku
+156M    /home/ubuntu/.local/share/heroku/tmp/221469825
+466M    /home/ubuntu/.local/share/heroku/tmp
+466M    /home/ubuntu/.local/share/heroku
+466M    /home/ubuntu/.local/share
+466M    /home/ubuntu/.local
+1.4G    /home/ubuntu
+1.4G    /home
+du: cannot read directory '/var/lib/php/sessions': Permission denied
+du: cannot read directory '/var/lib/private': Permission denied
+65M     /var/lib/dpkg/info
+67M     /var/lib/dpkg
+du: cannot read directory '/var/lib/amazon': Permission denied
+du: cannot read directory '/var/lib/containerd': Permission denied
+du: cannot read directory '/var/lib/docker': Permission denied
+du: cannot read directory '/var/lib/mysql-files': Permission denied
+du: cannot read directory '/var/lib/mysql-keyring': Permission denied
+du: cannot read directory '/var/lib/polkit-1': Permission denied
+du: cannot read directory '/var/lib/mysql': Permission denied
+du: cannot read directory '/var/lib/snapd/cache': Permission denied
+101M    /var/lib/snapd/seed/snaps
+101M    /var/lib/snapd/seed
+du: cannot read directory '/var/lib/snapd/cookie': Permission denied
+215M    /var/lib/snapd/snaps
+316M    /var/lib/snapd
+du: cannot read directory '/var/lib/update-notifier/package-data-downloads/partial': Permission denied
+du: cannot read directory '/var/lib/apt/lists/partial': Permission denied
+120M    /var/lib/apt/lists
+120M    /var/lib/apt
+519M    /var/lib
+du: cannot read directory '/var/tmp/systemd-private-9c8d0267aa3347098e7ec43aa88b418f-systemd-timesyncd.service-5RxS0q': Permission denied
+du: cannot read directory '/var/tmp/systemd-private-9c8d0267aa3347098e7ec43aa88b418f-systemd-resolved.service-EccGQW': Permission denied
+du: cannot read directory '/var/tmp/systemd-private-9c8d0267aa3347098e7ec43aa88b418f-apache2.service-d7iFRI': Permission denied
+du: cannot read directory '/var/cache/ldconfig': Permission denied
+du: cannot read directory '/var/cache/apt/archives/partial': Permission denied
+72M     /var/cache/apt
+80M     /var/cache
+465M    /var/log/journal/f5f4110c7d584dcba4efad9729ae4268
+465M    /var/log/journal
+494M    /var/log
+du: cannot read directory '/var/spool/rsyslog': Permission denied
+du: cannot read directory '/var/spool/cron/atjobs': Permission denied
+du: cannot read directory '/var/spool/cron/crontabs': Permission denied
+du: cannot read directory '/var/spool/cron/atspool': Permission denied
+1.6G    /var
+104M    /boot
+114M    /usr/lib/jvm/java-8-openjdk-amd64/jre/lib
+115M    /usr/lib/jvm/java-8-openjdk-amd64/jre
+153M    /usr/lib/jvm/java-8-openjdk-amd64
+153M    /usr/lib/jvm
+112M    /usr/lib/python3/dist-packages
+112M    /usr/lib/python3
+72M     /usr/lib/python3.6/config-3.6m-x86_64-linux-gnu
+94M     /usr/lib/python3.6
+77M     /usr/lib/python2.7
+315M    /usr/lib/x86_64-linux-gnu
+74M     /usr/lib/debug
+51M     /usr/lib/go-1.9/pkg/linux_amd64
+59M     /usr/lib/go-1.9/pkg/tool/linux_amd64
+59M     /usr/lib/go-1.9/pkg/tool
+114M    /usr/lib/go-1.9/pkg
+123M    /usr/lib/go-1.9
+85M     /usr/lib/gcc/x86_64-linux-gnu/7
+85M     /usr/lib/gcc/x86_64-linux-gnu
+85M     /usr/lib/gcc
+50M     /usr/lib/snapd
+1.2G    /usr/lib
+483M    /usr/bin
+49M     /usr/sbin
+64M     /usr/local/lib/python3.6/dist-packages/astroid/tests/testdata
+65M     /usr/local/lib/python3.6/dist-packages/astroid/tests
+66M     /usr/local/lib/python3.6/dist-packages/astroid
+185M    /usr/local/lib/python3.6/dist-packages
+185M    /usr/local/lib/python3.6
+51M     /usr/local/lib/python2.7/dist-packages/codeintel/codeintel2/stdlibs
+68M     /usr/local/lib/python2.7/dist-packages/codeintel/codeintel2
+85M     /usr/local/lib/python2.7/dist-packages/codeintel
+153M    /usr/local/lib/python2.7/dist-packages
+153M    /usr/local/lib/python2.7
+338M    /usr/local/lib
+338M    /usr/local
+113M    /usr/src/linux-aws-headers-4.15.0-1051
+115M    /usr/src/linux-aws-headers-4.15.0-1021
+113M    /usr/src/linux-aws-headers-4.15.0-1048
+113M    /usr/src/linux-aws-headers-4.15.0-1050
+115M    /usr/src/linux-aws-headers-4.15.0-1037
+113M    /usr/src/linux-aws-headers-4.15.0-1047
+113M    /usr/src/linux-aws-headers-4.15.0-1054
+115M    /usr/src/linux-aws-headers-4.15.0-1044
+113M    /usr/src/linux-aws-headers-4.15.0-1052
+115M    /usr/src/linux-aws-headers-4.15.0-1045
+113M    /usr/src/linux-aws-headers-4.15.0-1056
+1.3G    /usr/src
+75M     /usr/share/emacs/25.2/lisp
+89M     /usr/share/emacs/25.2
+89M     /usr/share/emacs
+60M     /usr/share/go-1.9/src
+71M     /usr/share/go-1.9
+60M     /usr/share/doc
+533M    /usr/share
+3.9G    /usr
+du: cannot read directory '/opt/containerd': Permission denied
+64M     /opt/c9/python3/lib/python3.6/site-packages/astroid/tests/testdata
+65M     /opt/c9/python3/lib/python3.6/site-packages/astroid/tests
+66M     /opt/c9/python3/lib/python3.6/site-packages/astroid
+135M    /opt/c9/python3/lib/python3.6/site-packages
+136M    /opt/c9/python3/lib/python3.6
+136M    /opt/c9/python3/lib
+140M    /opt/c9/python3
+49M     /opt/c9/lib/server
+66M     /opt/c9/lib
+50M     /opt/c9/node
+74M     /opt/c9/python2/lib/python2.7/site-packages
+74M     /opt/c9/python2/lib/python2.7
+74M     /opt/c9/python2/lib
+78M     /opt/c9/python2
+571M    /opt/c9
+571M    /opt
+du: cannot read directory '/etc/ssl/private': Permission denied
+du: cannot read directory '/etc/sudoers.d': Permission denied
+du: cannot read directory '/etc/polkit-1/localauthority': Permission denied
+7.7G    /
+user_fb:~/environment (master) $ 
+~~~~~~~~
+
+
+Eliminiamo i temporanei di heroku
+
+~~~~~~~~
+user_fb:~/environment (master) $ sudo rm -rf /home/ubuntu/.local/share/heroku/tmp/*
+user_fb:~/environment (master) $ du -hx / -t 50000000
+du: cannot read directory '/root': Permission denied
+57M     /lib/modules/4.15.0-1054-aws/kernel
+58M     /lib/modules/4.15.0-1054-aws
+57M     /lib/modules/4.15.0-1052-aws/kernel
+58M     /lib/modules/4.15.0-1052-aws
+57M     /lib/modules/4.15.0-1056-aws/kernel
+58M     /lib/modules/4.15.0-1056-aws
+57M     /lib/modules/4.15.0-1021-aws/kernel
+58M     /lib/modules/4.15.0-1021-aws
+239M    /lib/modules
+288M    /lib
+du: cannot read directory '/lost+found': Permission denied
+du: cannot read directory '/tmp/systemd-private-9c8d0267aa3347098e7ec43aa88b418f-systemd-timesyncd.service-QZ6ooM': Permission denied
+du: cannot read directory '/tmp/systemd-private-9c8d0267aa3347098e7ec43aa88b418f-apache2.service-b6oaRP': Permission denied
+du: cannot read directory '/tmp/systemd-private-9c8d0267aa3347098e7ec43aa88b418f-systemd-resolved.service-w83LVb': Permission denied
+76M     /home/ubuntu/.nvm/versions/node/v8.16.0/lib/node_modules
+76M     /home/ubuntu/.nvm/versions/node/v8.16.0/lib
+49M     /home/ubuntu/.nvm/versions/node/v8.16.0/bin
+127M    /home/ubuntu/.nvm/versions/node/v8.16.0
+127M    /home/ubuntu/.nvm/versions/node
+127M    /home/ubuntu/.nvm/versions
+131M    /home/ubuntu/.nvm
+50M     /home/ubuntu/environment/manuscript/resources/chapters
+51M     /home/ubuntu/environment/manuscript/resources
+51M     /home/ubuntu/environment/manuscript
+66M     /home/ubuntu/environment/.git/objects
+66M     /home/ubuntu/environment/.git
+139M    /home/ubuntu/environment
+67M     /home/ubuntu/.rvm/gems/ruby-2.6.3/doc
+128M    /home/ubuntu/.rvm/gems/ruby-2.6.3
+128M    /home/ubuntu/.rvm/gems
+48M     /home/ubuntu/.rvm/src/ruby-2.6.3/enc
+108M    /home/ubuntu/.rvm/src/ruby-2.6.3/ext
+402M    /home/ubuntu/.rvm/src/ruby-2.6.3
+408M    /home/ubuntu/.rvm/src
+612M    /home/ubuntu/.rvm
+927M    /home/ubuntu
+927M    /home
+du: cannot read directory '/var/lib/php/sessions': Permission denied
+du: cannot read directory '/var/lib/private': Permission denied
+65M     /var/lib/dpkg/info
+67M     /var/lib/dpkg
+du: cannot read directory '/var/lib/amazon': Permission denied
+du: cannot read directory '/var/lib/containerd': Permission denied
+du: cannot read directory '/var/lib/docker': Permission denied
+du: cannot read directory '/var/lib/mysql-files': Permission denied
+du: cannot read directory '/var/lib/mysql-keyring': Permission denied
+du: cannot read directory '/var/lib/polkit-1': Permission denied
+du: cannot read directory '/var/lib/mysql': Permission denied
+du: cannot read directory '/var/lib/snapd/cache': Permission denied
+101M    /var/lib/snapd/seed/snaps
+101M    /var/lib/snapd/seed
+du: cannot read directory '/var/lib/snapd/cookie': Permission denied
+215M    /var/lib/snapd/snaps
+316M    /var/lib/snapd
+du: cannot read directory '/var/lib/update-notifier/package-data-downloads/partial': Permission denied
+du: cannot read directory '/var/lib/apt/lists/partial': Permission denied
+120M    /var/lib/apt/lists
+120M    /var/lib/apt
+519M    /var/lib
+du: cannot read directory '/var/tmp/systemd-private-9c8d0267aa3347098e7ec43aa88b418f-systemd-timesyncd.service-5RxS0q': Permission denied
+du: cannot read directory '/var/tmp/systemd-private-9c8d0267aa3347098e7ec43aa88b418f-systemd-resolved.service-EccGQW': Permission denied
+du: cannot read directory '/var/tmp/systemd-private-9c8d0267aa3347098e7ec43aa88b418f-apache2.service-d7iFRI': Permission denied
+du: cannot read directory '/var/cache/ldconfig': Permission denied
+du: cannot read directory '/var/cache/apt/archives/partial': Permission denied
+72M     /var/cache/apt
+80M     /var/cache
+465M    /var/log/journal/f5f4110c7d584dcba4efad9729ae4268
+465M    /var/log/journal
+494M    /var/log
+du: cannot read directory '/var/spool/rsyslog': Permission denied
+du: cannot read directory '/var/spool/cron/atjobs': Permission denied
+du: cannot read directory '/var/spool/cron/crontabs': Permission denied
+du: cannot read directory '/var/spool/cron/atspool': Permission denied
+1.6G    /var
+104M    /boot
+114M    /usr/lib/jvm/java-8-openjdk-amd64/jre/lib
+115M    /usr/lib/jvm/java-8-openjdk-amd64/jre
+153M    /usr/lib/jvm/java-8-openjdk-amd64
+153M    /usr/lib/jvm
+112M    /usr/lib/python3/dist-packages
+112M    /usr/lib/python3
+72M     /usr/lib/python3.6/config-3.6m-x86_64-linux-gnu
+94M     /usr/lib/python3.6
+77M     /usr/lib/python2.7
+315M    /usr/lib/x86_64-linux-gnu
+74M     /usr/lib/debug
+51M     /usr/lib/go-1.9/pkg/linux_amd64
+59M     /usr/lib/go-1.9/pkg/tool/linux_amd64
+59M     /usr/lib/go-1.9/pkg/tool
+114M    /usr/lib/go-1.9/pkg
+123M    /usr/lib/go-1.9
+85M     /usr/lib/gcc/x86_64-linux-gnu/7
+85M     /usr/lib/gcc/x86_64-linux-gnu
+85M     /usr/lib/gcc
+50M     /usr/lib/snapd
+1.2G    /usr/lib
+483M    /usr/bin
+49M     /usr/sbin
+64M     /usr/local/lib/python3.6/dist-packages/astroid/tests/testdata
+65M     /usr/local/lib/python3.6/dist-packages/astroid/tests
+66M     /usr/local/lib/python3.6/dist-packages/astroid
+185M    /usr/local/lib/python3.6/dist-packages
+185M    /usr/local/lib/python3.6
+51M     /usr/local/lib/python2.7/dist-packages/codeintel/codeintel2/stdlibs
+68M     /usr/local/lib/python2.7/dist-packages/codeintel/codeintel2
+85M     /usr/local/lib/python2.7/dist-packages/codeintel
+153M    /usr/local/lib/python2.7/dist-packages
+153M    /usr/local/lib/python2.7
+338M    /usr/local/lib
+338M    /usr/local
+113M    /usr/src/linux-aws-headers-4.15.0-1051
+115M    /usr/src/linux-aws-headers-4.15.0-1021
+113M    /usr/src/linux-aws-headers-4.15.0-1048
+113M    /usr/src/linux-aws-headers-4.15.0-1050
+115M    /usr/src/linux-aws-headers-4.15.0-1037
+113M    /usr/src/linux-aws-headers-4.15.0-1047
+113M    /usr/src/linux-aws-headers-4.15.0-1054
+115M    /usr/src/linux-aws-headers-4.15.0-1044
+113M    /usr/src/linux-aws-headers-4.15.0-1052
+115M    /usr/src/linux-aws-headers-4.15.0-1045
+113M    /usr/src/linux-aws-headers-4.15.0-1056
+1.3G    /usr/src
+75M     /usr/share/emacs/25.2/lisp
+89M     /usr/share/emacs/25.2
+89M     /usr/share/emacs
+60M     /usr/share/go-1.9/src
+71M     /usr/share/go-1.9
+60M     /usr/share/doc
+533M    /usr/share
+3.9G    /usr
+du: cannot read directory '/opt/containerd': Permission denied
+64M     /opt/c9/python3/lib/python3.6/site-packages/astroid/tests/testdata
+65M     /opt/c9/python3/lib/python3.6/site-packages/astroid/tests
+66M     /opt/c9/python3/lib/python3.6/site-packages/astroid
+135M    /opt/c9/python3/lib/python3.6/site-packages
+136M    /opt/c9/python3/lib/python3.6
+136M    /opt/c9/python3/lib
+140M    /opt/c9/python3
+49M     /opt/c9/lib/server
+66M     /opt/c9/lib
+50M     /opt/c9/node
+74M     /opt/c9/python2/lib/python2.7/site-packages
+74M     /opt/c9/python2/lib/python2.7
+74M     /opt/c9/python2/lib
+78M     /opt/c9/python2
+571M    /opt/c9
+571M    /opt
+du: cannot read directory '/etc/ssl/private': Permission denied
+du: cannot read directory '/etc/sudoers.d': Permission denied
+du: cannot read directory '/etc/polkit-1/localauthority': Permission denied
+7.3G    /
+user_fb:~/environment (master) $ 
+~~~~~~~~
+
+Abbiamo liberato 0.3G. Su root "/" siamo passati da 7.7G a 7.3G.

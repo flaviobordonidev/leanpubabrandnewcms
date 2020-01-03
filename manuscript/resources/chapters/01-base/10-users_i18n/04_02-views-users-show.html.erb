@@ -1,0 +1,30 @@
+<%# == Meta_data ============================================================ %>
+
+<% provide(:html_head_title, @user.name) %>
+
+<%# == Meta_data - end ====================================================== %>
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @user.name %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @user.email %>
+</p>
+
+<p>
+  <strong>Encrypted password:</strong>
+  <%= @user.encrypted_password %>
+</p>
+
+<p>
+  <strong>Remember created at:</strong>
+  <%= @user.remember_created_at %>
+</p>
+
+<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Back', users_path %>

@@ -1,0 +1,84 @@
+## Implementiamo il pannello *lingua* sui *settaggi globali*. 
+
+implementiamo su global_settings la possibilità di cambiare lingua. Al momento sono presenti solo due lingue inglese ed italiano. Aggiungiamo al tab/panel logout anche il tab/panel language e lo impostiamo come tab/panel attivo. 
+
+{title=".../app/views/global_settings/index.html.erb", lang=ruby, line-numbers=on, starting-line-number=1}
+```
+<div class="container-fluid rear_mode">
+
+  <div class="row">
+    <div class="col-xs-9 col-sm-10 col-lg-11">
+      <ul class="nav nav-pills bottom-pad top-pad left-pad">
+        <li class="<%= 'active' if params[:tab_active].nil? or params[:tab_active] == 'language' %>">
+          <%= link_to "#pane_language", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_language" %>
+          <% end %>
+          <!-- <a href="#pane_language" data-toggle="tab"><span class="glyphiconmy ico_language"></span></a> -->
+        </li>
+
+        <li class="<%= 'active' if params[:tab_active] == 'logout' %>">
+          <%= link_to "#pane_logout", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_logout" %>
+          <% end %>
+          <!-- <a href="#pane_logout" data-toggle="tab"><span class="glyphiconmy ico_logout"></span></a> -->
+        </li>
+      </ul>
+    </div>
+    <div class="col-xs-3 col-sm-2 col-lg-1">
+      <%= render "button_close" %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="tab-content">
+        <div id="pane_language" class="tab-pane <%= 'active' if params[:tab_active] == nil or params[:tab_active] == 'language'  %>">
+          <div class="text-center bottom-pad">
+            <h4>Language</h4>
+          </div>
+          <%= render 'pane_language' %>
+        </div>
+        
+        <div id="pane_logout" class="tab-pane <%= 'active' if params[:tab_active] == 'logout'  %>">
+          <div class="text-center bottom-pad">
+            <h4>Logout</h4>
+          </div>
+          <%= render 'pane_logout' %>
+        </div>
+      </div><!-- /.tab-content -->
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+</div> <!-- /rear_mode -->
+```
+
+
+{title=".../app/views/global_settings/_pane_language.html.erb", lang=ruby, line-numbers=on, starting-line-number=3}
+```
+<div class="list-group left-pad right-pad bottom-pad">
+  <%= link_to params.permit(:locale).merge(locale: 'en'), class: "list-group-item #{'active' if params[:locale] == 'en'}" do %>
+    <span class="glyphiconmy ico_language_us right-pad"></span> Inglese
+  <% end %>
+  <%= link_to params.permit(:locale).merge(locale: "it"), class: "list-group-item #{'active' if params[:locale] == 'it'}" do %>
+    <span class="glyphiconmy ico_language_it right-pad"></span> Italiano
+  <% end %>
+</div>
+
+<div class="list-group left-pad right-pad bottom-pad">
+  <%= link_to homepage_show_path, class: "btn btn-primary btn-block" do %>
+   ok
+  <% end %>
+</div>
+```
+
+
+
+
+verifichiamo che funziona tutto
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+```
+

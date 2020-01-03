@@ -5,6 +5,10 @@ Eseguendo gli scaffolds la web gui è creata in automatico ma in questo capitolo
 
 I componenti sono quello che noi chiediamo/compriamo dai ns fornitori
 
+Frase per le offerte:
+“The product(s) based on this proposal are available for shipment 60 days from receipt and acknowledgement of your order.” 
+“The product(s) based on this proposal are available for shipment 60 days from receipt and acknowledgement of your written order and verification of acceptable financing.”
+
 
 
 
@@ -29,9 +33,14 @@ La tabella dei componenti avrà i seguenti campi:
 
 * memo (text) : Appunti interni sul componente. (a.k.a.: notifica). (es: questo componente la XY inc. lo chiama Xzvolo)
 * description (text) : Descrizione dettagliata per l'ordine
+* shelf_life (integer) : Intervallo di tempo, in giorni, che il prodotto una volta acquistato può stare in magazzino
+* service_life (integer) : Intervallo di tempo, in giorni, che il prodotto una volta installato può ussere usato
+* lifetime (integer) : Intervallo di tempo, in giorni, da quando un prodotto viene venduto a quando viene scartato
+* expiration_date (date) : è la data oltre la quale il prodotto non può più essere usato.
 
 dati sul prezzo:
 
+* price_expiration_date (date) : validità del prezzo (es: su un listino del 2019 la validità potrebbe essere 31/12/2019)
 * supplier_price_list (decimal) : prezzo di listino fornitore
 * currency (string) : valuta (es: EUR, USD, CHF, BRL, ...)
 * currency_exchange (decimal) : fattore di cambio (es: EUR/valuta se la nostra applicazione ha come settaggio di default EUR)

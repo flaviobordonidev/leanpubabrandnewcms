@@ -1,0 +1,238 @@
+{id: 01-base-08-eg_pages-03-eg_products-seeds}
+# Cap 8.3 -- Tabella di esempio per i componenti
+
+Creiamo una tabella di esempio di componenti che colleghiamo alle aziende.
+I "componenti" sono le "merci che noi acquistiamo" e che possiamo usare per costruire un nostro prodotto.
+I "prodotti" sono le "merci che noi vendiamo" e possono essere costituite da più componenti.
+
+
+
+
+## Apriamo il branch "Example Components"
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout -b ec
+```
+
+
+
+
+## Impementiamo tabella si esempio per i componenti
+
+La tabella dei componenti avrà i seguenti campi:
+
+* part_number (string) : Il part_number dato dal Fornitore.
+* name (string) : Il nome del componente (a.k.a.: "model" o "short_description"). Descrizione che va sul DDT di reso o nella tabellina in testa ordine.
+* image (useremo active-storage) : L'immagine del componente, utile in fase d'ordine
+* eg_company_id (integer) : relazione molti-a-uno con l'azienda Fornitrice, quella di esempio (eg_company).
+
+* description (text) : Descrizione dettagliata per l'ordine
+* shelf_life (integer) : Intervallo di tempo, in giorni, che il prodotto una volta acquistato può stare in magazzino
+* service_life (integer) : Intervallo di tempo, in giorni, che il prodotto una volta installato può essere usato
+
+dati sul prezzo:
+
+* supplier_price_list_expiration_date (datetime) : validità del prezzo (es: su un listino del 2019 la validità potrebbe essere 31/12/2019)
+* supplier_price_list (decimal) : prezzo di listino fornitore
+* currency (string) : valuta (es: EUR, USD, CHF, BRL, ...)
+* currency_exchange (decimal) : fattore di cambio (es: EUR/valuta se la nostra applicazione ha come settaggio di default EUR)
+* currency_rounding (integer + enum array-of-string-values) : arrotondamento dopo il cambio valuta. elenco a cascata in cui scegli: centinaia, decine, unità, decimi, centesimi. 
+* -> prezzo di listino fornitore EUR (questo valore viene calcolato)
+* supplier_discount (decimal) : sconto che il forntore fa a noi espresso in percentuale (%)
+* supplier_discount_rounding (integer + enum array-of-string-values) : arrotondamento dopo lo sconto. Elenco a cascata.
+* -> prezzo base di acquisto EUR (questo valore viene calcolato)
+
+dati per dogana:
+
+* country_of_origin (string) : CH
+* custom_tariff_number (string) : 9027.900
+* net_weight (decimal) : 0.054 Kg
+
+
+implementiamo tutta la gestione delle aziendei come esempio inclusa la tabella eg_products
+Generiamo tutto lo "scaffold" perché vogliamo anche i controllers e le views. 
+ - il "migrate" crea la sola tabella
+ - il "model" oltre alla tabella crea il model per il collegamento uno-a-molti.
+ - lo "scaffold" crea anche il controller e le views.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ rails g scaffold EgComponent part_number:string name:string eg_company:references description:text shelf_life:integer service_life:integer supplier_price_list_expiration_date:datetime supplier_price_list:decimal currency:string currency_exchange:decimal currency_rounding:integer supplier_discount:decimal supplier_discount_rounding:integer country_of_origin:string custom_tariff_number:string net_weight:decimal
+```
+
+
+vediamo il migrate creato
+
+{id: "01-08-03_01", caption: ".../db/migrate/xxx_create_eg_components.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
+```
+class CreateEgComponents < ActiveRecord::Migration[6.0]
+  def change
+    create_table :eg_components do |t|
+      t.string :part_number
+      t.string :name
+      t.references :eg_company, null: false, foreign_key: true
+      t.text :description
+      t.integer :shelf_life
+      t.integer :service_life
+      t.datetime :supplier_price_list_expiration_date
+      t.decimal :supplier_price_list
+      t.string :currency
+      t.decimal :currency_exchange
+      t.integer :currency_rounding
+      t.decimal :supplier_discount
+      t.integer :supplier_discount_rounding
+      t.string :country_of_origin
+      t.string :custom_tariff_number
+      t.decimal :net_weight
+
+      t.timestamps
+    end
+  end
+end
+```
+
+[tutto il codice](#01-08-03_01all)
+
+
+eseguiamo il migrate 
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails db:migrate
+```
+
+
+
+
+## Completiamo la relazione uno-a-molti
+
+verifichiamo eg_components, il lato "molti", quello con la chiave esterna
+
+{id: "01-08-03_02", caption: ".../app/models/eg_component.rb -- codice 02", format: ruby, line-numbers: true, number-from: 2}
+```
+  belongs_to :eg_company
+```
+
+[tutto il codice](#01-08-03_02all)
+
+
+completiamo user, il lato "uno"
+
+{id: "01-08-03_03", caption: ".../app/models/eg_company.rb -- codice 03", format: ruby, line-numbers: true, number-from: 7}
+```
+  has_many :eg_components
+```
+
+[tutto il codice](#01-08-03_03all)
+
+
+
+
+## Inseriamo due componenti da console
+
+Inseriamo qualche componente da terminale nel database locale
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ rails c
+-> c1 = EgCompany.first
+-> c1.eg_components.create(part_number: "PNNSF-NR-SOFT-IDRO12", name: "penna a sfera nera", description: "Fantastica penna a sfera nera. Scorrevole e dall'impugnatura ergonomica")
+
+-> c2 = EgCompany.second
+-> c2.eg_components.new(part_number: "PNNSF-RD-HARD-DRY7O5", name: "penna a sfera rossa per geometri", description: "Utilissima penna a sfera rossa per utilizzo su carte millesimali. Utile aiuto per correzioni sulle misure delle piantine catastali su rilevamenti in campo.").save
+
+-> exit
+```
+
+Nota: ".create(...)" è uguale a ".new(...).save"
+
+
+Se avessimo voluto inserire direttamente la chiave esterna "company_id" senza sfruttare la relazione avremmo fatto così.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ rails c
+-> EgComponent.create(company_id: 2, part_number: "PNNSF-RD-HARD-DRY7O5", name: "penna a sfera rossa per geometri", description: "Utilissima blabla")
+
+-> exit
+```
+
+Ma questo modo è sconsigliato.
+
+
+
+
+## seeds
+
+Impostiamo il file dei seeds per popolare la tabella in automatico invece della procedura manuale appena eseguita.
+
+{title=".../db/seeds.rb", lang=ruby, line-numbers=on, starting-line-number=25}
+```
+puts "Inseriamo due componenti"
+
+c1 = EgCompany.find(1)
+c1.eg_components.create(part_number: "PNNSF-NR-SOFT-IDRO12", name: "penna a sfera nera", description: "Fantastica penna a sfera nera. Scorrevole e dall'impugnatura ergonomica")
+
+c2 = EgCompany.find(2)
+c2.eg_components.create(part_number: "PNNSF-RD-HARD-DRY7O5", name: "penna a sfera rossa per geometri", description: "Utilissima penna a sfera rossa per utilizzo su carte millesimali. Utile aiuto per correzioni sulle misure delle piantine catastali su rilevamenti in campo.")
+```
+
+
+
+
+## Salviamo su git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "Add table eg_components"
+```
+
+
+
+
+## Pubblichiamo su Heroku
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push heroku ec:master
+$ heroku run rails db:migrate
+```
+
+per popolare il database di heroku 
+
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ heroku run rails c
+```
+
+e rifare i passi fatti precedentemente per il database locale
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout master
+$ git merge ec
+$ git branch -d ec
+```
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push origin master
+```

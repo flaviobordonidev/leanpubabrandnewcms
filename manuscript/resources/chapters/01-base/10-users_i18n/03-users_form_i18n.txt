@@ -1,0 +1,183 @@
+
+
+
+
+## Inseriamo un segnaposto nei campi del form
+
+Inseriamo un segnaposto nei campi del form (Input Placeholders). Possiamo dire a Rails di usare "i18n placeholder" passando il parametro "placeholder: true" nelle opzioni dei campi input del form.
+
+{caption: ".../app/views/users/_form.html.erb -- codice 04", format: HTML+Mako, line-numbers: true, number-from: 31}
+```
+<%= form_with(model: user, local: true) do |form| %>
+  ...
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name, placeholder: true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :email %>
+    <%= form.text_field :email, placeholder: true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :password %>
+    <%= form.text_field :password, placeholder: true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :password_confirmation %>
+    <%= form.text_field :password_confirmation, placeholder: true %>
+  </div>
+```
+
+{id: "01-10-01_02", caption: ".../config/locales/it.yml -- codice 02", format: yaml, line-numbers: true, number-from: 1}
+```
+it:
+  helpers:
+    placeholder:
+      user:
+        name: "nome utente"
+        email: "email"
+        password: "password"
+        password_confirmation: "conferma password"
+```
+
+{id: "01-10-01_03", caption: ".../config/locales/en.yml -- codice 03", format: yaml, line-numbers: true, number-from: 1}
+```
+en:
+  helpers:
+    placeholder:
+      user:
+        name: "user name"
+        email: "email"
+        password: "password"
+        password_confirmation: "password confirmation"
+```
+
+
+
+
+
+
+
+
+
+## Labels
+
+Lato form non devo fare nulla. L'importante è che ci sia la "label" per ogni campo.
+
+{caption: ".../app/views/users/_form.html.erb", format: HTML+Mako, line-numbers: true, number-from: 31}
+```
+    <%= form.label :name %>
+  ...
+    <%= form.label :email %>
+  ...
+    <%= form.label :password %>
+  ...
+    <%= form.label :password_confirmation %>
+```
+
+{id: "01-10-01_02", caption: ".../config/locales/it.yml -- codice 02", format: yaml, line-numbers: true, number-from: 1}
+```
+it:
+  ...
+  activerecord:
+    attributes:
+      user:
+        name: "Nome utente" # fallback for when label is nil
+  ...
+  helpers:
+    label:
+      user:
+        name: "Nome utente"
+```
+
+If the helpers: path is not available, i18n will fallback to the activerecord: path. Very clear when using the excellent i18n-debug gem.
+
+
+Lo possiamo verificare commentando nome utente:
+
+{id: "01-10-01_02", caption: ".../config/locales/it.yml", format: yaml, line-numbers: true, number-from: 1}
+```
+it:
+  ...
+  activerecord:
+    attributes:
+      user:
+        name: "Nome utente (backup label)" # fallback for when label is nil
+  ...
+  helpers:
+    label:
+      user:
+        #name: "Nome utente"
+```
+
+
+
+
+
+
+
+
+
+
+## Submit buttons
+
+You can change the value of your create and update submit buttons:
+
+{title=".../app/views/messages/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=56}
+~~~~~~~~
+<%= form_for :message do "f| %>
+  <%= f.submit %>
+<% end %>
+~~~~~~~~
+
+{id="01-05-01_01all", title=".../config/locales/en.yml", lang=yaml, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+en:
+  helpers:
+    submit:
+      message:
+        create: "Create a new %{model}"
+        update: "Save changes to %{model}"
+~~~~~~~~
+
+
+
+
+## Adhocly in views (With arguments)
+
+You can also pass arguments into the i18n translate method, like so:
+
+{title=".../app/views/messages/_sidebar.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=56}
+~~~~~~~~
+<%= t ".pricing_information", price: number_to_currency(200, precision: 2) %>
+~~~~~~~~
+
+{id="01-05-01_01all", title=".../config/locales/en.yml", lang=yaml, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+en:
+  messages:
+    sidebar:
+      pricing_information: "That'll cost %{price}"
+~~~~~~~~
+
+This would return the text:
+
+That'll cost $200.00
+
+Alternatively if you start without a dot, it'll look from the start of the i18n tree, for example:
+
+{title=".../app/views/messages/_sidebar.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=56}
+~~~~~~~~
+<%= t "pricing_information", price: number_to_currency(200, precision: 2) %>
+~~~~~~~~
+
+{id="01-05-01_01all", title=".../config/locales/en.yml", lang=yaml, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+en:
+  pricing_information: "That'll cost %{price}"
+~~~~~~~~
+
+

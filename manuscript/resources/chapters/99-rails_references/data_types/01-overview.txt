@@ -1,0 +1,67 @@
+# The ActiveRecord data types available in Rails 5.
+
+Risorse web:
+
+* https://stackoverflow.com/questions/17918117/rails-4-list-of-available-datatypes
+* https://michaelsoolee.com/rails-activerecord-data-types/
+
+
+
+
+## in ordine alfabetico
+
+:binary
+:boolean
+:date
+:datetime
+:decimal
+:float
+:integer
+:bigint
+:primary_key
+:references
+:string
+:text
+:time
+:timestamp
+
+
+
+
+## per tipologie
+
+:primary_key
+:string
+:text
+:integer
+:bigint
+:float
+:decimal
+:numeric
+:datetime
+:time
+:date
+:binary
+:boolean
+:references
+:timestamp
+
+These data types are used in instances such as migrations.
+
+def change
+  create_table :categories do |t|
+    t.string :title
+    t.boolean :is_subcategory
+    t.string :permalink
+    t.timestamps
+  end
+end
+
+
+
+
+## E' meglio usare date o datetime?
+
+se non si hanno milioni di records nelle nostre tabelle in cui può avere senso ottimizzare, è preferibile usare sempre "datetime" anche se si vuole archiviare semplicemente una data.
+
+

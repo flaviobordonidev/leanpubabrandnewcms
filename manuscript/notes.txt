@@ -1,3 +1,7 @@
+Impostare che se l'utente loggato non è amministratore nell'azione index di users_controller facciamo un redirect all'azione show.
+Da vedere se il redirect fa in tempo o se è bypassata dall'autorizzazione di pundit.
+
+--
 www.leanpub.com
 https://leanpub.com/leanpubabrandnewcms/preview
 
@@ -183,6 +187,7 @@ ftp.chdir("/mydirectory")
 ftp.passive = true
 ftp.getbinaryfile("mysourcefile", "mydestfile")
 
+
 ---
 Facciamo un "pull request" su github per fare il merge e chiudere il branch.
 
@@ -196,32 +201,9 @@ $ git branch -d homepage
 $ git push origin :homepage
 ~~~~~~~~
 
----
-Liberiamo spazio su C9 (clear up / free up disk space)
-
-https://community.c9.io/t/how-do-i-clear-up-disk-space-after-its-full/213/2
-
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ du -hx / -t 50000000
-~~~~~~~~
-
-Nel mio caso si erano presi quasi tutto lo spazio disco i temporanei di heroku:
-** 1.8G    /home/ubuntu/.local/share/heroku/tmp **
-Li ho liberati con il comando:
-
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-sudo rm -rf /home/ubuntu/.local/share/heroku/tmp/*
-~~~~~~~~
-
-
-heroku run ls tmp
 
 ---
-TODO
+TODO per DONAMAT
 -- arrotondamento (così modifico le tabelle ed importo anche la data e l'ora)
 -- non considerare in import i dati duplicati dalla macchina chiosco (perché con aggiornamenti java sta creando randomicamente dei record duplicati)
 -- data e ora (la visualizzo nelle views)

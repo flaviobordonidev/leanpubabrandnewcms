@@ -4,11 +4,9 @@
 Per il cambio della lingua (Internazionalizzazione) ci sono varie soluzioni.
 
 
-Risorse web:
+Risorse interne:
 
-* https://guides.rubyonrails.org/i18n.html#setting-the-locale-from-the-client-supplied-information
-* https://stackoverflow.com/questions/7113736/detect-browser-language-in-rails/36028149
-* https://stackoverflow.com/questions/55860171/protect-from-forgery-in-rails-6
+* 99-rails_references/i18n/01-cheatsheet
 
 
 
@@ -53,18 +51,27 @@ I> il before_action sostituisce il before_filter che si usava su Rails 3
 class ApplicationController < ActionController::Base
   before_action :set_locale
 
+  #keep internationalization through links
+  def default_url_options
+    { locale: I18n.locale }
+  end
+
   #-----------------------------------------------------------------------------
   private
   
   #set language for internationalization
   def set_locale
-    I18n.locale = params[:locale] if params[:locale].present?
+    I18n.locale = params[:locale] || I18n.default_locale
   end
 end
 ```
 
 Se non è presente nessun parametro è utilizzato il " default_locale " che abbiamo già impostato nel capitolo precedente.
 
+Il metodo "default_url_options" si assicura che il "locale" sia incluso nell'url quando usiamo gli "helpers" per gli instradamenti (routes) come "user_path". Altrimenti dovremmo includere il "param" "locale" ogni volta; per esempio "users_url(locale: I18n.locale)".
+
+In passato usavo la seguente riga di codice in "set_locale": "I18n.locale = params[:locale] if params[:locale].present?"
+ 
 
 
 

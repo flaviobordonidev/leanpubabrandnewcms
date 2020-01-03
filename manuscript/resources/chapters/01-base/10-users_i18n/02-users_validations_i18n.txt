@@ -1,0 +1,62 @@
+
+# Internazionalizzazione dei messaggi di validazione (Validation messagges i18n)
+
+
+
+
+
+## verifichiamo da console
+
+Per capire i nomi degli attributi possiamo mandare delle validazioni da console ed usare "user.errors.details"
+Quello che ci serve è "user.errors.details" ci dice quale campo ha l'errore di validazione e tutti i nomi degli attributi di quel campo che stanno sbagliando.
+
+
+Creiamo un nuovo utente con tutti i campi vuoti e testiamo la validazione:
+
+```
+$ rails c
+> user = User.new
+> user.valid?
+> user.errors.details
+> user.errors.messages
+
+2.6.3 :004 > user = User.new
+ => #<User id: nil, name: "", email: "", created_at: nil, updated_at: nil> 
+2.6.3 :005 > user.errors.messages
+ => {} 
+2.6.3 :006 > user.valid?
+  User Exists? (0.7ms)  SELECT 1 AS one FROM "users" WHERE "users"."name" = $1 LIMIT $2  [["name", ""], ["LIMIT", 1]]
+  User Exists? (0.2ms)  SELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2  [["email", ""], ["LIMIT", 1]]
+ => false 
+2.6.3 :007 > user.errors.messages
+ => {:email=>["il campo email non può essere vuoto", "translation missing: it.activerecord.errors.models.user.attributes.email.invalid"], :password=>["translation missing: it.activerecord.errors.models.user.attributes.password.blank", "translation missing: it.activerecord.errors.models.user.attributes.password.too_short"], :name=>["translation missing: it.activerecord.errors.models.user.attributes.name.blank"]} 
+2.6.3 :008 > 
+```
+
+Avendo in piedi l'internazionalizzazione possiamo anche usare il messaggio di "translation missing:" per capire il nome degli attributi, perché saranno quelli non ancora tradotti :).
+
+
+Adessoc creiamo un nuovo utente riempiendo il campo email con un valore errato ed il campo password con una password troppo corta e lasciando vuoto il confirmation:
+
+```
+$ rails c
+> user = User.new({name: "", email: 'mia.email@ errata.it', password: 'no', password_confirmation: ''})
+> user.valid?
+> user.errors.messages
+> user.errors.details
+
+2.6.3 :001 > user = User.new({name: "", email: 'mia.email@ errata.it', password: 'no', password_confirmation: ''})
+ => #<User id: nil, name: "", email: "mia.email@ errata.it", created_at: nil, updated_at: nil> 
+2.6.3 :002 > user.valid?
+  User Exists? (1.0ms)  SELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2  [["email", "mia.email@ errata.it"], ["LIMIT", 1]]
+  User Exists? (0.3ms)  SELECT 1 AS one FROM "users" WHERE "users"."name" = $1 LIMIT $2  [["name", ""], ["LIMIT", 1]]
+  User Exists? (0.3ms)  SELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2  [["email", "mia.email@ errata.it"], ["LIMIT", 1]]
+ => false 
+2.6.3 :003 > user.errors.messages
+ => {:email=>[": non valida"], :password_confirmation=>["translation missing: it.activerecord.errors.models.user.attributes.password_confirmation.confirmation"], :password=>[": troppo corta"], :name=>["translation missing: it.activerecord.errors.models.user.attributes.name.blank"]} 
+2.6.3 :004 > 
+```
+
+
+
+
