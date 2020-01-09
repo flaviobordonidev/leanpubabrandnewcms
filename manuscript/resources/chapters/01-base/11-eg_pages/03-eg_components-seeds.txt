@@ -1,5 +1,5 @@
-{id: 01-base-08-eg_pages-03-eg_products-seeds}
-# Cap 8.3 -- Tabella di esempio per i componenti
+{id: 01-base-08-eg_pages-11-eg_products-seeds}
+# Cap 11.3 -- Tabella di esempio per i componenti
 
 Creiamo una tabella di esempio di componenti che colleghiamo alle aziende.
 I "componenti" sono le "merci che noi acquistiamo" e che possiamo usare per costruire un nostro prodotto.

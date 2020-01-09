@@ -1,5 +1,5 @@
-{id: 01-base-08-eg_pages-02-eg_companies-seeds}
-# Cap 8.2 -- Tabella di esempio per le aziende
+{id: 01-base-11-eg_pages-02-eg_companies-seeds}
+# Cap 11.2 -- Tabella di esempio per le aziende
 
 Creiamo una tabella di esempio che ci aiuterà nei prossimi capitoli per verificare le future implementazioni.
 

@@ -1,6 +1,12 @@
+{id: 01-base-10-users_i18n-02-users_validations_i18n}
+# Cap 10.2 -- Internazionalizzazione dei messaggi di validazione (Validation messagges i18n)
 
-# Internazionalizzazione dei messaggi di validazione (Validation messagges i18n)
 
+
+
+## Apriamo il branch 
+
+continuiamo con lo stesso branch del capitolo precedente
 
 
 
@@ -13,6 +19,7 @@ Quello che ci serve è "user.errors.details" ci dice quale campo ha l'errore di 
 
 Creiamo un nuovo utente con tutti i campi vuoti e testiamo la validazione:
 
+{caption: "terminal", format: bash, line-numbers: false}
 ```
 $ rails c
 > user = User.new
@@ -36,8 +43,9 @@ $ rails c
 Avendo in piedi l'internazionalizzazione possiamo anche usare il messaggio di "translation missing:" per capire il nome degli attributi, perché saranno quelli non ancora tradotti :).
 
 
-Adessoc creiamo un nuovo utente riempiendo il campo email con un valore errato ed il campo password con una password troppo corta e lasciando vuoto il confirmation:
+Adesso creiamo un nuovo utente riempiendo il campo email con un valore errato ed il campo password con una password troppo corta e lasciando vuoto il confirmation:
 
+{caption: "terminal", format: bash, line-numbers: false}
 ```
 $ rails c
 > user = User.new({name: "", email: 'mia.email@ errata.it', password: 'no', password_confirmation: ''})
@@ -60,3 +68,110 @@ $ rails c
 
 
 
+## Implementiamo le internazionalizzazioni
+
+Avendo visto il nome degli attributi adesso possiamo implementare le traduzioni sui locales.
+
+{id: "01-10-02_01", caption: ".../config/locales/it.yml -- codice 01", format: yaml, line-numbers: true, number-from: 1}
+```
+it:
+[...]
+  users:
+  [...]
+    errors:
+      models:
+        user:
+          attributes:
+            name:
+              blank: ": campo obbligatorio"
+            email:
+              blank: ": campo obbligatorio"
+              invalid: ": non valida"
+            password:
+              blank: ": campo obbligatorio"
+              too_short: ": troppo corta"
+            password_confirmation:
+              confirmation: ": non corrisponde con password"
+```
+
+{id: "01-10-02_02", caption: ".../config/locales/en.yml -- codice 02", format: yaml, line-numbers: true, number-from: 1}
+```
+en:
+[...]
+  users:
+  [...]
+    errors:
+      models:
+        user:
+          attributes:
+            name:
+              blank: ": cannot be blank"
+            email:
+              blank: ": cannot be blank"
+              invalid: ": invalid"
+            password:
+              blank: ": cannot be blank"
+              too_short: ": too short"
+            password_confirmation:
+              confirmation: ": doesn't match with password"
+```
+
+
+
+
+## Verifichiamo preview
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails s
+```
+
+apriamolo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/users
+
+Creando un nuovo utente o aggiornando un utente esistente con dei valori che non rispettano le validazioni, vediamo i nuovi messaggi tradotti.
+
+
+
+
+## salviamo su git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "users validation messages i18n"
+```
+
+
+
+
+## Pubblichiamo su Heroku
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push heroku ui:master
+```
+
+
+
+
+## Chiudiamo il branch
+
+lo lasciamo aperto per il prossimo capitolo
+
+
+
+
+## Il codice del capitolo
+
+
+
+
+[Codice 01](#01-08b-01_01)
+
+{id="01-08b-01_01all", title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+```
+
+```

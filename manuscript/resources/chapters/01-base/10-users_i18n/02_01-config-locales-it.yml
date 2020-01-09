@@ -1,0 +1,49 @@
+it:
+  activerecord:
+    attributes:
+      user:
+        name: "Nome utentez" # fallback for when label is nil
+  form_errors_message:
+    one: "1 errore ha impedito il salvataggio"
+    other: "%{count} errori hanno impedito il salvataggio"
+  mockups:
+    page_a:
+      headline: "Questa è l'homepage"
+      first_paragraph: "il testo mostrato è o passato da un 'file di traduzione' e questo significa che la nostra applicazione è pronta a supportare più lingue."
+      link_to_page_B: "Andiamo alla pagina B"
+  users:
+    index:
+      html_head_title: "Tutti gli utenti"
+    new:
+      html_head_title: "Nuovo utente"
+    edit:
+      html_head_title: "Modifica"
+    create:
+      notice: "L'utente è stato creato con successo."
+    update:
+      notice: "L'utente è stato aggiornato con successo."
+    errors:
+      models:
+        user:
+          attributes:
+            name:
+              blank: ": campo obbligatorio"
+            email:
+              blank: ": campo obbligatorio"
+              invalid: ": non valida"
+            password:
+              blank: ": campo obbligatorio"
+              too_short: ": troppo corta"
+            password_confirmation:
+              confirmation: ": non corrisponde con password"
+  helpers:
+    label:
+      user:
+        #name: "Nome utente"
+    placeholder:
+      user:
+        name: "nome utente"
+        email: "email"
+        password: "password"
+        password_confirmation: "conferma password"
+

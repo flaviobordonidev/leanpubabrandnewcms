@@ -1,5 +1,5 @@
-{id: 01-base-08-eg_pages-01-eg_posts-seeds}
-# Cap 8.1 -- Tabelle di esempio per gli articoli
+{id: 01-base-11-eg_pages-01-eg_posts-seeds}
+# Cap 11.1 -- Tabelle di esempio per gli articoli
 
 Abbiamo già creato la tabella " users " inizializzando " devise " adesso creiamo la tabelle di esempio " eg_posts " che ci ci aiuterà a verificare le future implementazioni che faremo nei prossimi capitoli.
 
@@ -26,7 +26,6 @@ La tabella avrà le seguenti colonne:
 * meta_description  -> (160 caratteri) Un riassunto dell'articolo per il SEO con key-words. Ultimamente Google ha allungato a 320 ma li mostra solo per le primissime posizioni.
 * headline          -> (65 caratteri) il Titolo dell'articolo; come i titoli dei giornali.
 * incipit           -> (160 caratteri) Una descrizione da mettere nell'indice degli articoli.
-
 
 
 
@@ -181,7 +180,7 @@ il metodo ".create" è equivalente a ".new" seguito da ".save". E' solo un modo 
 
 Spieghiamo con degli esempi un po' di codice ruby che abbiamo appena usato.
 
-
+{caption: "terminal", format: bash, line-numbers: false}
 ```
 5.times { puts "i" }
 
@@ -196,6 +195,7 @@ i
 ```
 
 
+{caption: "terminal", format: bash, line-numbers: false}
 ```
 5.times do 
   puts "i"
@@ -214,6 +214,7 @@ i
 ```
 
 
+{caption: "terminal", format: bash, line-numbers: false}
 ```
 5.times { |i| puts i }
 
@@ -228,6 +229,7 @@ i
 ```
 
 
+{caption: "terminal", format: bash, line-numbers: false}
 ```
 5.times do |i| 
   puts i
@@ -291,12 +293,16 @@ Per lanciare il comando e popolare tutto in automatico si può usare:
 $ rake db:seed 
 ```
 
+questo comando si aspetta le tabelle già pronte ed esegue solo query di inserimento tramite i seeds
+
 oppure
 
 {caption: "terminal", format: bash, line-numbers: false}
 ```
 $ rake db:setup
 ```
+
+questo comando prima esegue i migrate creando le tabelle e poi esegue le query di inserimento tramite i seeds
 
 
 

@@ -116,7 +116,15 @@ $ git push heroku dtbt:master
 
 ## Chiudiamo il branch
 
-lo lasciamo aperto per il prossimo capitolo
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout master
+$ git merge dtbt
+$ git branch -d dtbt
+```
 
 
 

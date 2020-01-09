@@ -1,3 +1,12 @@
+{id: 01-base-10-users_i18n-03-users_form_i18n}
+# Cap 10.3 -- Internazionalizzazione dei campi nei forms
+
+
+
+
+## Apriamo il branch 
+
+continuiamo con lo stesso branch del capitolo precedente
 
 
 
@@ -6,7 +15,7 @@
 
 Inseriamo un segnaposto nei campi del form (Input Placeholders). Possiamo dire a Rails di usare "i18n placeholder" passando il parametro "placeholder: true" nelle opzioni dei campi input del form.
 
-{caption: ".../app/views/users/_form.html.erb -- codice 04", format: HTML+Mako, line-numbers: true, number-from: 31}
+{caption: ".../app/views/users/_form.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 31}
 ```
 <%= form_with(model: user, local: true) do |form| %>
   ...
@@ -30,6 +39,9 @@ Inseriamo un segnaposto nei campi del form (Input Placeholders). Possiamo dire a
     <%= form.text_field :password_confirmation, placeholder: true %>
   </div>
 ```
+
+
+diamo la traduzione al placeholder nei locales
 
 {id: "01-10-01_02", caption: ".../config/locales/it.yml -- codice 02", format: yaml, line-numbers: true, number-from: 1}
 ```
@@ -58,11 +70,6 @@ en:
 
 
 
-
-
-
-
-
 ## Labels
 
 Lato form non devo fare nulla. L'importante è che ci sia la "label" per ogni campo.
@@ -77,6 +84,9 @@ Lato form non devo fare nulla. L'importante è che ci sia la "label" per ogni ca
   ...
     <%= form.label :password_confirmation %>
 ```
+
+
+mettiamo la traduzione alle labels nei locales
 
 {id: "01-10-01_02", caption: ".../config/locales/it.yml -- codice 02", format: yaml, line-numbers: true, number-from: 1}
 ```
@@ -93,7 +103,7 @@ it:
         name: "Nome utente"
 ```
 
-If the helpers: path is not available, i18n will fallback to the activerecord: path. Very clear when using the excellent i18n-debug gem.
+Se il percorso tramite "helpers:" non è disponibile, i18n userà il percorso alternativo "activerecord:".
 
 
 Lo possiamo verificare commentando nome utente:
@@ -116,68 +126,107 @@ it:
 
 
 
+## I pulsanti di "Submit"
 
+Cambiamo i valori dei pulsanti di "submit" per nuovo o aggiornamento utente.
 
+Verifichiamo che il pulsante sia presente nel form
 
-
-
-
-## Submit buttons
-
-You can change the value of your create and update submit buttons:
-
-{title=".../app/views/messages/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=56}
+{caption: ".../app/views/users/_form.html.erb", format: HTML+Mako, line-numbers: true, number-from: 56}
 ~~~~~~~~
-<%= form_for :message do "f| %>
-  <%= f.submit %>
+<%= form_with(model: user, local: true) do |form| %>
+  [...]
+  <div class="actions">
+    <%= form.submit %>
+  </div>
 <% end %>
 ~~~~~~~~
 
-{id="01-05-01_01all", title=".../config/locales/en.yml", lang=yaml, line-numbers=on, starting-line-number=1}
-~~~~~~~~
-en:
+
+e traduciamo il suo valore sui locales
+
+{id: "01-10-01_02", caption: ".../config/locales/it.yml", format: yaml, line-numbers: true, number-from: 1}
+```
+it:
+  [...]
   helpers:
+    [...]
     submit:
-      message:
-        create: "Create a new %{model}"
-        update: "Save changes to %{model}"
-~~~~~~~~
+      user:
+        create: "Crea %{model}"
+        update: "Aggiorna %{model}"
+```
 
 
 
 
-## Adhocly in views (With arguments)
-
-You can also pass arguments into the i18n translate method, like so:
-
-{title=".../app/views/messages/_sidebar.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=56}
-~~~~~~~~
-<%= t ".pricing_information", price: number_to_currency(200, precision: 2) %>
-~~~~~~~~
-
-{id="01-05-01_01all", title=".../config/locales/en.yml", lang=yaml, line-numbers=on, starting-line-number=1}
-~~~~~~~~
-en:
-  messages:
-    sidebar:
-      pricing_information: "That'll cost %{price}"
-~~~~~~~~
-
-This would return the text:
-
-That'll cost $200.00
-
-Alternatively if you start without a dot, it'll look from the start of the i18n tree, for example:
-
-{title=".../app/views/messages/_sidebar.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=56}
-~~~~~~~~
-<%= t "pricing_information", price: number_to_currency(200, precision: 2) %>
-~~~~~~~~
-
-{id="01-05-01_01all", title=".../config/locales/en.yml", lang=yaml, line-numbers=on, starting-line-number=1}
-~~~~~~~~
-en:
-  pricing_information: "That'll cost %{price}"
-~~~~~~~~
+## Traduciamo il nome del model
 
 
+{id: "01-10-01_02", caption: ".../config/locales/it.yml", format: yaml, line-numbers: true, number-from: 1}
+```
+it:
+  activerecord:
+    [...]
+    models:
+      user: "utente"
+```
+
+
+
+
+## Verifichiamo preview
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails s
+```
+
+apriamolo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/users
+
+
+
+
+
+## salviamo su git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "users form fields i18n"
+```
+
+
+
+
+## Pubblichiamo su Heroku
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push heroku ui:master
+```
+
+
+
+
+## Chiudiamo il branch
+
+lo lasciamo aperto per il prossimo capitolo
+
+
+
+
+## Il codice del capitolo
+
+
+
+
+[Codice 01](#01-08b-01_01)
+
+{id="01-08b-01_01all", title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+```
+
+```

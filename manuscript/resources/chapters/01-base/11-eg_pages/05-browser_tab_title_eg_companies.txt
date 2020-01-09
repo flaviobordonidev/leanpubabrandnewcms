@@ -1,0 +1,21 @@
+{id: 01-base-11-eg_pages-05-browser_tab_title_eg_companies}
+# Cap 11.5 -- Rendiamo multilingua il titolo nel tab del browser per eg_companies
+
+Attiviamo le traduzioni per il titolo nel tab del browser.
+
+
+
+
+## Apriamo il branch "Browser Tab EgCompanies"
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout -b btec
+```
+
+
+
+
+## Implementiamo internazionalizzazione (i18n)
+
+Creiamo delle nuove voci nei locales che aggiungeremo poi alle views.

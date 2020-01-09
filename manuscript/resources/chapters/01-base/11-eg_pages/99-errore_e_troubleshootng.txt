@@ -1,9 +1,14 @@
+# ERRORE E TROUBLESHOOTING
+
+Un piccolo errore non faceva funzionare l'applicativo su Heroku. Vediamo cosa era successo.
 
 
-## ERRORE E TROUBLESHOOTING
+
+
+## In locale funziona ma in produzione no.
 
 Anche se in locale funzionava tutto su heroku avevo un errore quando premevo link per creare nuovo articolo.
-guardando le log di heroku ho visto che il problema è sul controller per l'azione new. (Alquanto ovvio ^_^)
+guardando le log di heroku ho visto che il problema era sul controller per l'azione new. (Alquanto ovvio ^_^)
 L'indizio importante è stato "unknown attribute 'author_id' for Post"
 
 {caption: "terminal", format: bash, line-numbers: false}

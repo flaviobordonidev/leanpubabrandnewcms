@@ -25,7 +25,7 @@ ora per ottenere la API key, clicchiamo nel menu a tendina sulla voce crea crede
 Recuperiamo la API key generata
 la chiave generata automaticamente è utilizzabile su qualsiasi sito, poichè è visibile in chiaro, quindi anche altre persone che individuano la nostra chiave sul nostro sito potrebbero utilizzarla per i loro scopi, compromettendo sia le statistiche dei report generati sia il limite di utilizzo a noi assegnato. Per evitare questo “pericolo” possiamo restringere il campo di utilizzo della nostra chiave per determinati siti o domini, lo possiamo fare cliccando sul link della chiave e accedendo alla pagina credenziali inserire gli URL http che ci interessano.
 
-![google apis console](images/googlemaps/google_api/credenziali.png)
+![google apis console](images/googlemaps/01-fig1-credenziali.png)
 
 Restringiamo l'utilizzo della chiave per un solo dominio ed i suoi sottodomini
 abbiamo ristretto l’utilizzo della chiave per il solo dominio e per tutti i sottodomini di https://donamat5-bobdesa64.c9users.io/ riferito alla piattaforma di sviluppo e https://limitless-chamber-62677.herokuapp.com/ per quanto attiene la piattaforma di produzione. Dobbiamo considerare che è necessario attivarlo in ogni tipologia di URL: 
@@ -42,4 +42,4 @@ Con lo stesso metodo sopra descritto abbiamo creato una chiave  per gestire la G
 Da questa stessa pagina si possono abilitare altre API accedendo alla libreria che elenca tutte le API popolari.
 Oltre tutto dalla dashboard è possibile disabilitare e abilitare ogni singola API e monitorare con dei grafici a linea l'utilizzo in modalità real time.
 
-![google apis console](images/googlemaps/google_api/grafici_api.png)
+![google apis console](images/googlemaps/01-fig2-grafici_api.png)

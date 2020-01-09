@@ -56,12 +56,23 @@ dati per dogana:
 * custom_tariff_no : 9027.900
 * net_weight : 0.054 Kg
 
-Informazioni per composizione prodtotto:
+Informazioni per composizione prodotto:
 
 * to_be_used_with: elenco di sistemi dove viene usato (es: CFL30, CFL30 by-pass, CFL30S in-line, CFLJ, CFLJS, KFL30(M), KFL30S(M), KFLJ(S)(M) 
 
 http://www.justinweiss.com/articles/creating-easy-readable-attributes-with-activerecord-enums/
 https://stackoverflow.com/questions/36487900/rails-using-enum-in-a-where-query
+
+
+* special_note: informazioni importanti ad esempio: "disponibile solo insieme a un nuovo apparato dalla fabbrica"
+
+    ART.NR. – DESCRIPTION
+    118695 – Profibus DP intercace pcb for PhaseGuard and TurbiGuard
+    Only available together with equipment ex factory
+    PRICE
+    Net CHF 824.00
+
+
 
 
 Usiamo lo Scaffold che mi imposta già l'applicazione in stile restful con le ultime convenzioni Rails.

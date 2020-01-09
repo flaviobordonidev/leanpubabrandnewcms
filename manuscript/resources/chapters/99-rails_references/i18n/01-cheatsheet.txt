@@ -4,6 +4,7 @@ Risorse interne:
 
 * 01-base/05-mockups_i18n
 
+
 Risorse web:
 
 * [Rails Internationalization guide](https://guides.rubyonrails.org/i18n.html)
@@ -14,6 +15,8 @@ Risorse web:
 * https://stackoverflow.com/questions/7113736/detect-browser-language-in-rails/36028149
 * https://stackoverflow.com/questions/55860171/protect-from-forgery-in-rails-6
 * https://phrase.com/blog/posts/rails-i18n-guide/
+* i18n-debug gem
+
 
 
 
