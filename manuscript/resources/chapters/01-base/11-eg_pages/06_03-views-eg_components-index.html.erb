@@ -1,0 +1,61 @@
+<%# == Meta_data ============================================================ %>
+
+<% provide(:html_head_title, "#{t '.html_head_title'}") %>
+
+<%# == Meta_data - end ====================================================== %>
+
+<p id="notice"><%= notice %></p>
+
+<h1>Eg Components</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Company</th>
+      <th>Description</th>
+      <th>Shelf life</th>
+      <th>Service life</th>
+      <th>Supplier price list expiration date</th>
+      <th>Supplier price list</th>
+      <th>Currency</th>
+      <th>Currency exchange</th>
+      <th>Currency rounding</th>
+      <th>Supplier discount</th>
+      <th>Discount rounding</th>
+      <th>Country of origin</th>
+      <th>Custom tariff number</th>
+      <th>Net weight</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @eg_components.each do |eg_component| %>
+      <tr>
+        <td><%= eg_component.name %></td>
+        <td><%= eg_component.eg_company_id %></td>
+        <td><%= eg_component.description %></td>
+        <td><%= eg_component.shelf_life %></td>
+        <td><%= eg_component.service_life %></td>
+        <td><%= eg_component.supplier_price_list_expiration_date %></td>
+        <td><%= eg_component.supplier_price_list %></td>
+        <td><%= eg_component.currency %></td>
+        <td><%= eg_component.currency_exchange %></td>
+        <td><%= eg_component.currency_rounding %></td>
+        <td><%= eg_component.supplier_discount %></td>
+        <td><%= eg_component.discount_rounding %></td>
+        <td><%= eg_component.country_of_origin %></td>
+        <td><%= eg_component.custom_tariff_number %></td>
+        <td><%= eg_component.net_weight %></td>
+        <td><%= link_to 'Show', eg_component %></td>
+        <td><%= link_to 'Edit', edit_eg_component_path(eg_component) %></td>
+        <td><%= link_to 'Destroy', eg_component, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Eg Component', new_eg_component_path %>

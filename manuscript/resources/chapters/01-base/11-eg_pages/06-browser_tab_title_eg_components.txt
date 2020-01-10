@@ -1,0 +1,143 @@
+{id: 01-base-11-eg_pages-06-browser_tab_title_eg_components}
+# Cap 11.6 -- Rendiamo multilingua il titolo nel tab del browser per eg_components
+
+Attiviamo le traduzioni per il titolo nel tab del browser.
+
+
+
+
+## Apriamo il branch "Browser Tab EgComponents"
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout -b btec
+```
+
+
+
+
+## Implementiamo internazionalizzazione (i18n)
+
+Creiamo delle nuove voci nei locales che aggiungeremo poi alle views.
+
+{id: "01-10-05_01", caption: ".../config/locales/it.yml -- codice 01", format: yaml, line-numbers: true, number-from: 4}
+```
+  eg_components:
+    index:
+      html_head_title: "Tutti i componenti"
+    show:
+      html_head_title: "Comp."
+    edit:
+      html_head_title: "Modifica"
+    new:
+      html_head_title: "Nuovo componente"
+```
+
+
+
+{id: "01-10-04_02", caption: ".../config/locales/en.yml -- codice 02", format: yaml, line-numbers: true, number-from: 4}
+```
+  eg_components:
+    index:
+      html_head_title: "All components"
+    show:
+      html_head_title: "Component"
+    edit:
+      html_head_title: "Edit"
+    new:
+      html_head_title: "New component"
+```
+
+
+
+
+
+## Aggiungiamo le chiamate alle views
+
+traduciamo index
+
+{title=".../app/views/eg_components/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
+```
+<% provide(:html_head_title, "#{t '.html_head_title'}") %>
+```
+
+traduciamo show
+
+{title=".../app/views/eg_components/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
+```
+<% provide(:html_head_title, "#{t '.html_head_title'}: #{@eg_component.name}") %>
+```
+
+traduciamo edit
+
+{title=".../app/views/eg_components/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
+```
+<% provide(:html_head_title, "#{t '.html_head_title'} #{@eg_component.name}") %>
+```
+
+traduciamo new
+
+{title=".../app/views/eg_components/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
+```
+<% provide(:html_head_title, "#{t '.html_head_title'}") %>
+```
+
+
+
+
+## salviamo su git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "Internationalization title on browser tabs"
+```
+
+
+
+
+## Pubblichiamo su Heroku
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push heroku btep:master
+```
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout master
+$ git merge btep
+$ git branch -d btep
+```
+
+
+
+
+# Aggiorniamo github
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push origin master
+```
+
+
+
+
+## Il codice del capitolo
+
+
+
+
+[Codice 01](#01-08b-01_01)
+
+{id="01-08b-01_01all", title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+```
+
+```

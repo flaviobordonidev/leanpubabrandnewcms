@@ -54,6 +54,8 @@ resources/chapters/01-base/10-users_i18n/01-users_controllers_i18n.txt
 resources/chapters/01-base/10-users_i18n/02-users_validations_i18n.txt
 resources/chapters/01-base/10-users_i18n/03-users_form_i18n.txt
 resources/chapters/01-base/10-users_i18n/04-browser_tab_title_users_i18n.txt
+resources/chapters/01-base/10-users_i18n/05-browser_tab_title_eg_companies.txt
+resources/chapters/01-base/10-users_i18n/06-browser_tab_title_eg_components.txt
 
 resources/chapters/01-base/11-eg_pages/01-eg_posts-seeds.txt
 

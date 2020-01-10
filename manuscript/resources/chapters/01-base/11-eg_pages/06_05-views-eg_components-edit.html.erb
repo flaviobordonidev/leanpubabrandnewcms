@@ -1,0 +1,12 @@
+<%# == Meta_data ============================================================ %>
+
+<% provide(:html_head_title, "#{t '.html_head_title'} #{@eg_component.name}") %>
+
+<%# == Meta_data - end ====================================================== %>
+
+<h1>Editing Eg Component</h1>
+
+<%= render 'form', eg_component: @eg_component %>
+
+<%= link_to 'Show', @eg_component %> |
+<%= link_to 'Back', eg_components_path %>

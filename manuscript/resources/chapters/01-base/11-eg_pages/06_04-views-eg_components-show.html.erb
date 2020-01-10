@@ -1,0 +1,85 @@
+<%# == Meta_data ============================================================ %>
+
+<% provide(:html_head_title, "#{t '.html_head_title'}: #{@eg_component.name}") %>
+
+<%# == Meta_data - end ====================================================== %>
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @eg_component.name %>
+</p>
+
+<p>
+  <strong>Company:</strong>
+  <%= @eg_component.eg_company_id %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @eg_component.description %>
+</p>
+
+<p>
+  <strong>Shelf life:</strong>
+  <%= @eg_component.shelf_life %>
+</p>
+
+<p>
+  <strong>Service life:</strong>
+  <%= @eg_component.service_life %>
+</p>
+
+<p>
+  <strong>Supplier price list expiration date:</strong>
+  <%= @eg_component.supplier_price_list_expiration_date %>
+</p>
+
+<p>
+  <strong>Supplier price list:</strong>
+  <%= @eg_component.supplier_price_list %>
+</p>
+
+<p>
+  <strong>Currency:</strong>
+  <%= @eg_component.currency %>
+</p>
+
+<p>
+  <strong>Currency exchange:</strong>
+  <%= @eg_component.currency_exchange %>
+</p>
+
+<p>
+  <strong>Currency rounding:</strong>
+  <%= @eg_component.currency_rounding %>
+</p>
+
+<p>
+  <strong>Supplier discount:</strong>
+  <%= @eg_component.supplier_discount %>
+</p>
+
+<p>
+  <strong>Discount rounding:</strong>
+  <%= @eg_component.discount_rounding %>
+</p>
+
+<p>
+  <strong>Country of origin:</strong>
+  <%= @eg_component.country_of_origin %>
+</p>
+
+<p>
+  <strong>Custom tariff number:</strong>
+  <%= @eg_component.custom_tariff_number %>
+</p>
+
+<p>
+  <strong>Net weight:</strong>
+  <%= @eg_component.net_weight %>
+</p>
+
+<%= link_to 'Edit', edit_eg_component_path(@eg_component) %> |
+<%= link_to 'Back', eg_components_path %>
