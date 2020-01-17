@@ -387,28 +387,9 @@ $ git push origin master
 
 
 
-[Codice 01](#01-08-01_01)
-
 {id="01-08-01_01all", title=".../app/models/example_post.rb", lang=ruby, line-numbers=on, starting-line-number=1}
 ```
-class ExamplePost < ApplicationRecord
-  belongs_to :user
-end
+#TODO
 ```
 
-
-
-
-[Codice 01](#01-08-01_02)
-
-{id="01-08-01_02all", title=".../app/models/user.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-```
-class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :registerable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable,
-         :recoverable, :rememberable, :validatable
-
-  has_many :eg_posts
-end
-```
+indietro

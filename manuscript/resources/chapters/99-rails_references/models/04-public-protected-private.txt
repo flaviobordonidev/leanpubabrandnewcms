@@ -1,6 +1,17 @@
 # Public Protected Private
 
-Risorse web
+I> il codice "protected" è prima del codice "private" perché è meno restrittivo.
+I>
+I> Dal più accessibile al più restrittivo abbiamo: "public" -> "protected" -> "private"
+
+
+Risorse interne:
+
+* 01-base/13-roles/04-implement_roles
+* 01-base/15-authorization/03-authorization-users
+
+
+Risorse web:
 
 * [Ruby Access Control](http://rubylearning.com/satishtalim/ruby_access_control.html)
 

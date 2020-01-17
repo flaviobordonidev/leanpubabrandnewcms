@@ -1,26 +1,50 @@
-# Aggiungi colonna (Add column)
+{id: 99-rails_references-migrations-08-change_column}
+# Cap 99.x -- Aggiungi colonna (Add column)
+
+Nel migration usiamo il codice:
 
 add_column :table_name, :column_name, type, options
 
 
 
 
-### Esempio1: Add corporate column to companies table
+## Esempio1: Add price column to eg_posts table
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ rails g migration AddPriceToEgPosts price:decimal
+```
+
+{caption: ".../db/migrate/xxx_add_price_to_eg_posts.rb", format: ruby, line-numbers: true, number-from: 1}
+```
+class AddPriceToEgPosts < ActiveRecord::Migration[6.0]
+  def change
+    add_column :eg_posts, :price, :decimal, precision: 19, scale: 4, default: 0
+  end
+end
+```
+
+
+
+
+## Esempio2: Add corporate column to companies table
+
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ rails g migration AddCorporateToCompany corporate:string
-~~~~~~~~
+```
 
-{lang=ruby, line-numbers=on, starting-line-number=3}
-~~~~~~~~
-add_column :companies, :corporate, :string
-~~~~~~~~
-
-
+{caption: ".../db/migrate/xxx_add_corporate_to_company.rb", format: ruby, line-numbers: true, number-from: 1}
+```
+  add_column :companies, :corporate, :string
+```
 
 
-### Esempio2: Add address columns to kiosks table
+
+
+## Esempio3: Add address columns to kiosks table
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
@@ -48,7 +72,7 @@ end
 
 
 
-## Esempio 3: Aggiungiamo le colonne video_id e select_media nella tabella posts 
+## Esempio 4: Aggiungiamo le colonne video_id e select_media nella tabella posts 
 
 * video_id      : string
 * select_media  : integer -> youtube-video, vimeo-video, foto, audio, quote)

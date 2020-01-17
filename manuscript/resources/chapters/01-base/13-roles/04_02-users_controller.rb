@@ -17,7 +17,7 @@ class UsersController < ApplicationController
   def new
     @user = User.new
   end
-  
+
   # GET /users/1/edit
   def edit
   end
@@ -29,7 +29,8 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        #format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.html { redirect_to @user, notice: t(".notice") }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new }
@@ -49,9 +50,10 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.update(user_params)
         format.html do
-          # Logghiamoci di nuovo automaticamente bypassando le validazioni
+          # Logghiamoci di nuovo automaticamente bypassando le validazioni se ci siamo cambiati i nostri dati
           sign_in(@user, bypass: true) if @user == current_user_temp
-          redirect_to @user, notice: 'User was successfully updated.'
+          #redirect_to @user, notice: 'User was successfully updated.'
+          redirect_to @user, notice: t(".notice")
         end
         format.json { render :show, status: :ok, location: @user }
       else
@@ -74,6 +76,7 @@ class UsersController < ApplicationController
     end
   end
 
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
@@ -82,7 +85,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation, :remember_created_at, :role)
+      params.require(:user).permit(:name, :email, :password, :password_confirmation, :role)
     end
-
 end

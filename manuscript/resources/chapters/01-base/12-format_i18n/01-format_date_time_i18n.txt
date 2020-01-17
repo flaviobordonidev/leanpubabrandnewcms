@@ -1,119 +1,63 @@
-# Formattiamo le date nelle varie lingue
+{id: 01-base-12-format_i18n-01-format_date_time_i18n}
+# Cap 12.1 -- Formattiamo le date nelle varie lingue
 
 Di default il comando di formattazione della data prende i nomi in inglese. Vediamo come implementare l'Italiano.
 
+
 Risorse interne:
 
+* 99-rails_references/data_types/date-time
 * 99-rails_references/i18n/02-format_date_time_i18n
 
 
 
 
-## Trasliamo i parametri di default di Rails per il nostro locale (it.yml)
+## Visualizziamo il campo ultimo aggiornamento degli articoli
 
-{id="01-05-01_01", title=".../config/locales/it.yml", lang=yaml, line-numbers=on, starting-line-number=4}
+di default la voce "t.timestamps" nei migrations crea le due colonne "created_at" e "updated_at" come possiamo vedere nello schema del database.
+
+{id: "01-12-01_01", caption: ".../db/schema.rb -- codice 01", format: ruby, line-numbers: true, number-from: 54}
 ```
-it:
-
-# variabili globali prese da https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/it.yml
-  activerecord:
-    errors:
-      messages:
-        record_invalid: 'Validazione fallita: %{errors}'
-        restrict_dependent_destroy:
-          has_one: Il record non può essere cancellato perchè esiste un %{record}
-            dipendente
-          has_many: Il record non può essere cancellato perchè esistono %{record}
-            dipendenti
-  date:
-    abbr_day_names:
-    - dom
-    - lun
-    - mar
-    - mer
-    - gio
-    - ven
-    - sab
-    abbr_month_names:
-    - 
-    - gen
-    - feb
-    - mar
-    - apr
-    - mag
-    - giu
-    - lug
-    - ago
-    - set
-    - ott
-    - nov
-    - dic
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
 ```
 
-[Codice 01](#01-05-01_01all)
+Possiamo usarli nella pagina show per visualizzare la data di creazione e quella dell'ultimo aggiornamento.
 
-
-## Traduciamo la stringa 
-
-per formattare in italiano la data possiamo usare le stesse variabili di " strftime " all'interno del nostro locale (it.yml)
-
-{id="01-05-01_01", title=".../config/locales/it.yml", lang=yaml, line-numbers=on, starting-line-number=4}
+{id: "01-12-01_02", caption: ".../app/views/eg_posts/show.html.erb -- codice 02", format: HTML+Mako, line-numbers: true, number-from: 3}
 ```
-  time:
-    formats:
-      short: "ora %d %^B %Y" 
-```
+<p>
+  <strong>created_at:</strong>
+  <%= @eg_post.created_at %>
+</p>
 
-[Codice 01](#01-05-01_01all)
-
-
-e richiamiamo la formattazione con l'helper " l "
-
-{title=".../app/views/posts/_pofo_page_title_section2.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
-```
-<%#= @post.published_at.strftime("%d %^B %Y") %>
-<%= l @post.published_at, format: :short %>
-```
-
-[Codice 06](#02-06-01_01all)
-
-Per approfondimenti sulle variabili di formattazione vedi [Volume 1 - Cap 3.3](#01-base-03-mockups-03-format_date_time)
-
-
-
-
-**
-
-Meglio non usare " Time.now " perché ha un bug nella gestione dei fusi orari. (vedi 99-rails_references/data_types/date_time)
-
-```
-  <%#= l Time.now, format: :short %>
-```
-
-Invece usiamo " DateTime.current " che gestisce meglio tutto.
-
-```
-  <%#= l DateTime.current, format: :short %>
+<p>
+  <strong>updated_at:</strong>
+  <%= @eg_post.updated_at %>
+</p>
 ```
 
 
-**
-
-{id: 01-base-03-mockups-03-format_date_time}
-# [Volume 1 - Cap 3.3] Formattiamo un campo data ora
 
 
+## Formattiamo la data
 
+Diamo un formato alla data con il metodo ".strftime". Per la creazione indichiamo il giorno il mese e l'anno, invece per l'ultimo aggiornamento usiamo più indicazioni:
 
-{title=".../app/views/posts/_pofo_page_title_section2.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
-~~~~~~~~
-<%= @post.published_at.strftime("%d %^B %Y") %>
-~~~~~~~~
+{id: "01-12-01_02", caption: ".../app/views/eg_posts/show.html.erb -- codice 03", format: HTML+Mako, line-numbers: true, number-from: 12}
+```
+<p>
+  <strong>created_at:</strong>
+  <%= @eg_post.created_at.strftime("day %d %^B %Y") %>
+</p>
 
-[Codice 06](#02-06-01_01all)
+<p>
+  <strong>updated_at:</strong>
+  <%= @eg_post.updated_at.strftime("%A %d %^B %Y at %H:%M and %S seconds") %>
+</p>
+```
 
-
-la variabile "@post.published_at" l'abbiamo formattata con ".strftime("%d %^B %Y")" di cui questi sono i parametri più usati:
+questi sono i parametri più usati di ".strftime":
 
 * %Y - Anno con incluso il secolo, ossia almeno con 4 cifre. Può essere anche negativo. Es: -0001, 0000, 1995, 2009, 14292, etc.
 * %y - Anno senza il secolo, ossia con solo 2 cifre. Es: 00..99
@@ -151,31 +95,147 @@ la variabile "@post.published_at" l'abbiamo formattata con ".strftime("%d %^B %Y
 
 * %L - Millisecond of the second (000..999)
 
-Per una lista completa dei formati per il metodo "strftime" visitare [APIDock](http://apidock.com/ruby/DateTime/strftime)
+Per una lista completa dei formati per il metodo ".strftime" visitiamo [APIDock](http://apidock.com/ruby/DateTime/strftime)
 
 
 
----
 
-models/post.rb
-~~~~~~~~
-## getter method
-  def display_day_published 
-    if published_at.present?
-      created_at.strftime('%-d %-b %Y')
-      #"Pupplicato il #{created_at.strftime('%-d %-b %Y')}"
-    else
-      "not published yet"
-    end
-  end
-~~~~~~~~
+## Traduciamo la data
+
+La data si presenta in inglese (nomi dei mesi, nomi dei giorni della settimana, ...) ed in questo paragrafo la traduciamo in italiano.
+Per formattare in italiano la data possiamo usare le stesse variabili di ".strftime" all'interno del nostro locale (it.yml).
+C'è chi ha già fatto questo lavoro quindi prendiamo la traduzione da https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/it.yml
+
+{id: "01-12-01_04", caption: ".../config/locales/it.yml -- codice 04", format: yaml, line-numbers: true, number-from: 4}
+```
+  time:
+    formats:
+      short: "giorno %d %^B %Y"
+      long: "%A %d %^B %Y alle %H:%M e %S secondi"
+
+  date:
+    abbr_day_names:
+    - dom
+    - lun
+    - mar
+    - mer
+    - gio
+    - ven
+    - sab
+    abbr_month_names:
+    - 
+    - gen
+    - feb
+    - mar
+    - apr
+    - mag
+    - giu
+    - lug
+    - ago
+    - set
+    - ott
+    - nov
+    - dic
+```
+
+[tutto il codice](#01-12-01_04all)
 
 
-models/post.rb
-~~~~~~~~
-  # == Scopes ===============================================================
+e richiamiamo la formattazione con l'helper "l"
 
-  scope :published, -> { where(published: true) }
-  scope :most_recent, -> { order(published_at: :desc) }
-  scope :order_by_id, -> { order(id: :desc) }
-~~~~~~~~
+{id: "01-12-01_05", caption: ".../app/views/eg_posts/show.html.erb -- codice 05", format: HTML+Mako, line-numbers: true, number-from: 12}
+```
+
+<p>
+  <strong>created_at:</strong>
+  <br>
+  <%= @eg_post.created_at.strftime("The day %d %^B %Y") %>
+  <br>
+  <%= l @eg_post.created_at, format: :short %>
+</p>
+
+<p>
+  <strong>updated_at:</strong>
+  <br>
+  <%= @eg_post.updated_at.strftime("%A %d %^B %Y at %H:%M and %S seconds") %>
+  <br>
+  <%= l @eg_post.created_at, format: :long %>
+</p>
+```
+
+[tutto il codice](#01-12-01_05all)
+
+
+
+
+## Verifichiamo preview
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails s
+```
+
+apriamolo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/eg_posts
+
+
+
+
+## salviamo su git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "I18n date fields created_at updated_at on eg_posts"
+```
+
+
+
+
+## Pubblichiamo su Heroku
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push heroku btep:master
+```
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout master
+$ git merge btep
+$ git branch -d btep
+```
+
+
+
+
+# Aggiorniamo github
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push origin master
+```
+
+
+
+
+## Il codice del capitolo
+
+
+
+
+[Codice 01](#01-08b-01_01)
+
+{id="01-08b-01_01all", title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+```
+
+```

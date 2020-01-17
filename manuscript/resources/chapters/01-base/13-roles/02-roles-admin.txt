@@ -1,20 +1,27 @@
-# Roles - admin
+{id: 01-base-13-roles-02-roles-admin}
+# Cap 13.2 -- Roles - admin
 
 Questo capitolo può essere saltato ai fini della creazione della nostra app. 
 E' un capitolo didattico in cui le modifiche inserite ad inizio capitolo sono poi tolte alla fine del capitolo.
 
 Questo è l'approccio più semplice della gestione dei ruoli. Esiste solo la possibilità di Amministratore o Utente normale. 
 Aggiungiamo il ruolo di amministratore utilizzando un attributo (admin attribute) e non un intero modello.
-Questo vuol dire aggiungere una colonna "admin" di tipo boolean sulla tabella **users**
+Questo vuol dire aggiungere una colonna "admin" di tipo boolean sulla tabella "users"
 
-Volendo usare livelli più alti di gestione dei ruoli con "enum" o "rolify" possiamo saltare questo capitolo
+Per la nostra applicazione possiamo saltare questo capitolo.
+
+
+Risorse interne:
+
+* 99-rails_references/
 
 
 
 
 ## Apriamo il branch "Roles Admin"
 
-{title="terminale", lang=bash, line-numbers=off}
+
+{caption: "terminal", format: bash, line-numbers: false}
 ```
 $ git checkout -b ra
 ```
@@ -29,9 +36,9 @@ $ git checkout -b ra
 $ rails generate migration add_admin_to_users role_admin:boolean
 ```
 
-Aggiungiamo al migration l'opzione ** defautl: false ** per la colonna role_admin
+Aggiungiamo al migration l'opzione "defautl: false" per la colonna role_admin
 
-{title=".../db/migrate/xxx_add_admin_to_users.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+{caption: ".../db/migrate/xxx_add_admin_to_users.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
 ```
 class AddAdminToUsers < ActiveRecord::Migration
   def change
@@ -50,7 +57,7 @@ $ rake db:migrate
 
 Adesso possiamo identificare se un utente loggato è amministratore.
 
-{title="verifichiamo se amministratore", lang=ruby, line-numbers=off}
+{caption: "verifichiamo se amministratore", format: bash, line-numbers: false}
 ```
 if current_user.role_admin?
   # do something
@@ -59,9 +66,9 @@ end
 
 
 Se ho un caso particolare in cui una pagina può non avere un utente loggato usiamo .try() per evitare l'errore.
-Se *current_user* è *nil* non viene generato un errore (raising an undefined method admin? for nil:NilClass exception)
+Se "current_user" è "nil" non viene generato un errore (raising an undefined method admin? for nil:NilClass exception)
 
-{title="verifichiamo se amministratore", lang=ruby, line-numbers=off}
+{caption: "verifichiamo se amministratore", format: bash, line-numbers: false}
 ```
 if current_user.try(:role_admin?)
   # do something
@@ -70,7 +77,7 @@ end
 
 Se voglio dare i diritti di amministratore (grant admin status) da codice posso dare:
 
-{title="grant admin status", lang=ruby, line-numbers=off}
+{caption: "grant admin status", format: bash, line-numbers: false}
 ```
 current_user.update_attribute :role_admin, true
 ```

@@ -1,4 +1,7 @@
-# Implementiamo le autorizzazioni per example_posts
+{id: 01-base-15-authorization-04-authorization-eg_posts}
+# Cap 15.3 -- Implementiamo le autorizzazioni per eg_posts
+
+Autentichiamo ed Autorizziamo la gestione degli articoli (eg_posts) in funzione del ruolo.
 
 Siccome molti passaggi sono simili a quelli del capitolo precedente, in questo capitolo inseriamo meno passaggi e meno spiegazioni.
 

@@ -2,6 +2,11 @@
 
 gestiamo l'autorizzazione, l'autenticazione e l'appartenenza ad un ruolo.
 
+Authorization is a requirement for many Rails applications. 
+Role-based authorization (  ) is easy to conceptualize and can be added to a User model using 
+an Active Record Enum attribute (use the Royce or Rolify gems if access is predicated on more than one assigned role). 
+Simple role-based authorization may be all you need. If your controller gets overly complex, switch to Pundit to manage authorization.
+
 
 
 
@@ -98,16 +103,3 @@ end
 
 
 ---
-https://www.linkedin.com/pulse/12-gems-every-rails-developer-should-know-2016-stayman-hou
-1. devise - Authentication
-2. CanCanCan - Authorization
-3. Kaminari - Pagination
-4. Ransack - Scoping/Searching/Filtering
-5. twitter-bootstrap-rails - Frontend
-6. CarrierWave - User Generated Files
-7. Searchkick - Intelligent Searching (Nature Language)
-8. Metamagic - SEO
-9. rails_config - Configuration
-10. Sequel - ORM (ActiveRecord Alternative)
-11. RuboCop - Static Code Analyzer, Code Smell
-12. Brakeman - Static Code Analyzer, Security

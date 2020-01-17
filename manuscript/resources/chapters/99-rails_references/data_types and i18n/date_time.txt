@@ -1,17 +1,17 @@
 # Gestire la data e l'ora in Rails
 
+
+Risorse interne:
+
+* 01-base/12-format_i18n/01-format_date_time_i18n
+* 03-cms_pofo/06-dynamic/01-posts_show_with_pofo
+
+
 Risorse web:
 
 * [Gestiamo le timezones](http://rpanachi.com/2016/07/04/ruby-is-time-to-talk-about-timezones)
 * [DateTime.now vs DateTime.current](https://jcxia.com/blog/A-DateTime-bug)
 * [spiegazione varia](https://viblo.asia/p/date-time-datetime-trong-ruby-and-rails-bJzKm0x659N)
-
-
-
-
-## Usi nel libro
-
-* 03-cms_pofo/06-dynamic/01-posts_show_with_pofo
 
 
 

@@ -58,4 +58,16 @@ resources/chapters/01-base/10-users_i18n/05-browser_tab_title_eg_companies.txt
 resources/chapters/01-base/10-users_i18n/06-browser_tab_title_eg_components.txt
 
 resources/chapters/01-base/11-eg_pages/01-eg_posts-seeds.txt
+resources/chapters/01-base/11-eg_pages/02-browser_tab_title_eg_posts_i18n.txt
+resources/chapters/01-base/11-eg_pages/03-eg_posts-protected.txt
 
+resources/chapters/01-base/12-format_i18n/01-format_date_time_i18n.txt
+resources/chapters/01-base/12-format_i18n/02-format_currencies_i18n.txt
+
+resources/chapters/01-base/13-roles/
+resources/chapters/01-base/13-roles/
+
+resources/chapters/01-base/15-authorization/01-theory.txt
+resources/chapters/01-base/15-authorization/02-authorization-pundit.txt
+resources/chapters/01-base/15-authorization/03-authorization-users.txt
+resources/chapters/01-base/15-authorization/04-authorization-eg_posts.txt

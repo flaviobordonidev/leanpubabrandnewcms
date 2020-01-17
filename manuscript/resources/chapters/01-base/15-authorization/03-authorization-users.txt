@@ -1,15 +1,14 @@
-# Implementiamo le autorizzazioni per users
+{id: 01-base-15-authorization-03-authorization-users}
+# Cap 15.3 -- Implementiamo le autorizzazioni per users
 
-Autentichiamo ed Autorizziamo in funzione del ruolo
+Autentichiamo ed Autorizziamo la gestione degli utenti (users) in funzione del ruolo.
 
 Finalmente cominciamo ad attivare la sicurezza ed iniziamo definendo le autorizzazioni per la gestione degli utenti; tabella users.
 
 
-Risorse web
-* [Devise authentication 48:50](https://www.youtube.com/watch?v=qruGD_8ry7k
-* [current_user present? and signed_in](https://stackoverflow.com/questions/45398702/what-is-the-difference-between-current-user-present-and-if-user-signed-in)
-* [Differenza fra public e private](https://www.codementor.io/anuraag.jpr/the-difference-between-public-private-and-protected-methods-in-ruby-6zsvkeeqr)
-* [Rails Authorization With Pundit - parte da zero ed installa anche devise ed usa anche spec tests](https://www.youtube.com/watch?v=qruGD_8ry7k)
+Risorse interne
+
+* 99-rails_references/authentication_authorization_roles/05-pundit
 
 
 
@@ -33,8 +32,8 @@ Per aggiungere una policy per un modello specifico aggiungiamo il nome del model
 $ rails g pundit:policy User
 
 
-ec2-user:~/environment/myapp (au) $ rails g pundit:policy User
-Running via Spring preloader in process 3973
+user_fb:~/environment/bl6_0 (pi) $ rails g pundit:policy User
+Running via Spring preloader in process 6589
       create  app/policies/user_policy.rb
       invoke  test_unit
       create    test/policies/user_policy_test.rb
@@ -42,7 +41,8 @@ Running via Spring preloader in process 3973
 
 questo ci crea la seguente policy
 
-{title=".../app/policies/user_policy.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+
+{id: "01-15-03_01", caption: ".../app/policies/user_policy.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
 ```
 class UserPolicy < ApplicationPolicy
   class Scope < Scope
@@ -53,6 +53,8 @@ class UserPolicy < ApplicationPolicy
 end
 ```
 
+
+ATTENZIONE:
 
 I> Se ci si fosse loggati come IAM user e non si fossero gestite bene le autorizzazioni potrebbe essere necessario lanciare lo script come root. Si dovrà successivamente rivedere le autorizzazioni dei files creati o ricopiare il codice su nuovi files. Se il file è stato creato lanciando lo script come root per poter modificare i files crearne uno nuovo, copiarci tutto il codice ed eliminare il vecchio.
 
@@ -85,39 +87,43 @@ Usando "enum" associamo il ruolo "admin" al primo utente
 ```
 $ sudo service postgresql start
 $ rails c
--> User.first.update(role: :admin)
+-> u= User.first
+-> u.role = :admin
+-> u.save(validate: false)
 
 
-2.4.1 :001 > User.first.update(role: :admin)
-  User Load (1.4ms)  SELECT  "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1  [["LIMIT", 1]]
-   (0.1ms)  BEGIN
-   (0.1ms)  COMMIT
+2.6.3 :004 > u= User.first
+  User Load (0.5ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1  [["LIMIT", 1]]
+ => #<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2019-11-05 15:17:00", updated_at: "2020-01-16 11:46:44", role: "admin"> 
+2.6.3 :005 > u.role = :admin
+ => :admin 
+2.6.3 :006 > u.save(validate: false)
  => true 
 ```
 
-Avremmo potuto anche usare ** User.first.admin! **
+Se avessimo commentato i "validate" nel model, avremmo potuto anche usare "User.first.admin!" o "User.first.update(role: :admin)".
 
 
 
 
 ## Implementiamo policy che autorizza la creazione di un nuovo post solo all'ammministratore
 
-{id="01-09-05_01", title=".../app/policies/user_policy.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+{id: "01-15-03_02", caption: ".../app/policies/user_policy.rb -- codice 02", format: ruby, line-numbers: true, number-from: 3}
 ```
   def create?
     @user.admin?
   end
 ```
 
-[Codice 01](#01-09-05_01all)
+[tutto il codice](#01-15-03_02all)
 
 Questo codice indica a pundit di vedere se siamo nell'azione create del controller e la autorizza solo se l'utente è "admin". 
-Infatti @user.admin? è TRUE se l'utente ha il ruolo di amministratore. Altrimenti @user.admin? è FALSE e pundit non autorizza l'esecuzione.
+Infatti "@user.admin?" è "TRUE" se l'utente ha il ruolo di amministratore. Altrimenti "@user.admin?" è "FALSE" e pundit non autorizza l'esecuzione.
 
-Non dobbiamo implementare anche la poilcy **new?** perché su **application_policy** viene impostato di default che **new?** prende le stesse autorizzazioni di **create?**.
+Non dobbiamo implementare anche la poilcy "new?" perché su "application_policy" viene impostato di default che "new?" prende le stesse autorizzazioni di "create?".
 Come possiamo vedere nella seguente chiamata:
 
-{title=".../app/policies/application_policy.rb", lang=ruby, line-numbers=on, starting-line-number=21}
+{id: "01-15-03_02", caption: ".../app/policies/application_policy.rb -- codice s.n.", format: ruby, line-numbers: true, number-from: 21}
 ```
   def new?
     create?
@@ -131,24 +137,26 @@ Come possiamo vedere nella seguente chiamata:
 
 Adesso che la policy di autorizzazione è pronta possiamo indicare all'azione "create" del controller "user" di passare per l'autorizzazione
 
-{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=19}
+{id: "01-15-03_03", caption: ".../app/controllers/users_controller.rb -- codice 03", format: ruby, line-numbers: true, number-from: 17}
 ```
   def new
     @user = User.new
     authorize @user
 ```
 
-{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=19}
+{caption: ".../app/controllers/users_controller.rb -- continua", format: ruby, line-numbers: true, number-from: 28}
 ```
   def create
     @user = User.new(user_params)
     authorize @user
 ```
 
+[tutto il codice](#01-15-03_02all)
 
 
 
-### Verifichiamo preview
+
+## Verifichiamo preview
 
 {caption: "terminal", format: bash, line-numbers: false}
 ```
@@ -159,7 +167,7 @@ $ rails s
 * https://mycloud9path.amazonaws.com/login
 
 Se ci logghiamo con il secondo utente (Bob) che non ha i diritti di amministratore, quando proviamo a creare un nuovo utente riceviamo l'errore: "Pundit::NotAuthorizedError in UsersController#new".
-Se ci logghiamo con il primo utente (Ann) che ha i diritti di amministratore, possiamo creare un nuovo utente senza nessun errore.
+Se ci logghiamo con il primo utente (Ann) che ha i diritti di amministratore (role: :administrator), possiamo creare un nuovo utente senza nessun errore.
 
 
 
@@ -179,15 +187,15 @@ $ git commit -m "add pundit authorization on actions new and create of users"
 
 Togliamo la protezione di Devise per le views "users" così rinforziamo il nostro scope di pundit (la nostra autorizzazione) includendo anche il caso di un utente non autenticato (non loggato).
 
-{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=2}
+{caption: ".../app/controllers/users_controller.rb -- codice: s.n.", format: ruby, line-numbers: true, number-from: 2}
 ```
   #before_action :authenticate_user!
 ```
 
-Adesso possiamo arrivare a users/index anche senza essere loggati. Se proviamo a creare un nuovo utente riceviamo un errore ma non è un errore di autorizzazione di pundit. E' un errore nel codice dell'applicazione. Risolviamo questo rinforziamo la protezione di pundit.
+Adesso possiamo arrivare a users/index anche senza essere loggati. 
+Se proviamo a creare un nuovo utente riceviamo un errore ma non è un errore di autorizzazione di pundit. E' un errore nel codice dell'applicazione. Lo risolviamo ed implementiamo l'autorizzazione.
 
-
-{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=19}
+{caption: ".../app/policies/user_policy.rb -- codice s.n.", format: ruby, line-numbers: true, number-from: 2}
 ```
   def create?
     if @user.present?
@@ -211,7 +219,8 @@ Unica eccezione è l'azione show che può essere eseguita:
 * sia dall'amministratore per tutti i record della tabella users
 * sia da qualsiasi utente loggato ma SOLO per il suo record della tabella users
 
-{id="01-09-05_02", title=".../app/policies/user_policy.rb", lang=ruby, line-numbers=on, starting-line-number=2}
+
+{id: "01-15-03_04", caption: ".../app/policies/user_policy.rb -- codice 04", format: ruby, line-numbers: true, number-from: 3}
 ```
   def index?
     true
@@ -251,7 +260,8 @@ Unica eccezione è l'azione show che può essere eseguita:
   end
 ```
 
-[Codice 02](#01-09-05_02all)
+[tutto il codice](#01-15-03_04all)
+
 
 La linea di codice "@user == @record" verifica se l'utente loggato è lo stesso del record a cui si vuole accedere.
 
@@ -271,7 +281,7 @@ La variabile "@record" è definita sulla classe ApplicationPolicy da cui la ered
 
 Adesso che la policy di autorizzazione è pronta possiamo indicare all'azione "index" del controller "users" di passare per l'autorizzazione
 
-{id="01-09-05_03", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=9}
+{id: "01-15-03_05", caption: ".../app/controllers/users_controller.rb -- codice 05", format: ruby, line-numbers: true, number-from: 9}
 ```
   def index
     @users = User.all
@@ -280,19 +290,19 @@ Adesso che la policy di autorizzazione è pronta possiamo indicare all'azione "i
 
 Per le azioni [:show, :edit, :update, :destroy], che chiamano la funzione "set_user" con il before_action, inserisco l'autorizzazione direttamente sulla funzione "set_user"
 
-{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=81}
+{caption: ".../app/controllers/users_controller.rb -- continua", format: ruby, line-numbers: true, number-from: 81}
 ```
     def set_user
       @user = User.find(params[:id])
       authorize @user
 ```
 
-[Codice 03](#01-09-05_03all)
+[tutto il codice](#01-15-03_05all)
 
 
 
 
-### Verifichiamo preview
+## Verifichiamo preview
 
 {caption: "terminal", format: bash, line-numbers: false}
 ```
@@ -321,16 +331,17 @@ $ git commit -m "add pundit authorization on all actions of users"
 ## Messaggio di non autorizzato invece dell'errore
 
 In fase di sviluppo l'errore Pundit::NotAuthorizedError è gestibile ma in fase di produzione no. Riceveremmo solo una pagina bianca con "Ops! c'è stato un errore".
-E' quindi opportuno gestire l'errore reindirizzando sulla pagina che ha provato l'azione non autorizzata e visualizzando un messaggio di "non autorizzato".
+E' quindi opportuno gestire l'errore reindirizzando sulla pagina che ha provocato l'azione non autorizzata e visualizzando un messaggio di "non autorizzato".
 
 Per farlo aggiungiamo il seguente codice ad ApplicationController.
 
-{id="01-09-05_04", title=".../app/controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=4}
+
+{id: "01-15-03_06", caption: ".../app/controllers/application_controller.rb -- codice 6", format: ruby, line-numbers: true, number-from: 4}
 ```
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 ```
- 
-{title=".../app/controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=17}
+
+{caption: ".../app/controllers/application_controller.rb -- continua", format: ruby, line-numbers: true, number-from: 17}
 ```
   private
 
@@ -339,7 +350,7 @@ Per farlo aggiungiamo il seguente codice ad ApplicationController.
     end
 ```
 
-[Codice 04](#01-09-05_04all)
+[tutto il codice](#01-15-03_06all)
 
 
 I> il codice "protected" è prima del codice "private" perché è meno restrittivo.
@@ -377,7 +388,7 @@ $ git commit -m "Rescue from Pundit::NotAuthorizedError"
 
 Rimettiamo la protezione di Devise per le views "users".
 
-{title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=2}
+{caption: ".../app/controllers/users_controller.rb -- codice: s.n.", format: ruby, line-numbers: true, number-from: 2}
 ```
   before_action :authenticate_user!
 ```
@@ -388,14 +399,14 @@ Rimettiamo la protezione di Devise per le views "users".
 ## Implementiamo l'autorizzazione per il cambio di ruolo
 
 Solo admin deve poter cambiare il ruolo!
-Lo so che tutta l'azione edit è già autorizzata da pundit ma aggiungiamo questa nel caso in cui volessimo permettere modifiche solo al proprio record dell'utente loggato, come facciamo per show.
+Lo so che tutta l'azione edit è già autorizzata da pundit ma aggiungiamo questa nel caso in cui volessimo permettere modifiche solo al proprio record dell'utente loggato, come facciamo per show. 
 Non sarà comunque il nostro caso perché le eventuali modifiche dell'utente loggato le faremmo fare a "registerable" di devise, però una sicurezza in più non guasta ^_^.
 
 Per questa autorizzazione non ci serve scomodare pundit. Scomodiamo solo l'helper di Devise.
 
 Inseriamo un controllo nel selettore che permettere di cambiare ruolo e lo visualizziamo solo se siamo amministratori
 
-{title=".../app/views/users/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+{id: "01-15-03_07", caption: ".../app/views/users/_form.html.erb -- codice 07", format: HTML+Mako, line-numbers: true, number-from: 12}
 ```
   <%# if user_signed_in? and current_user.admin? %>
   <% if current_user.present? and current_user.admin? %>
@@ -418,7 +429,7 @@ Adesso solo se l'utente è amministratore può cambiare i ruoli.
 
 Evitiamo di tagliarci il ramo su cui siamo seduti ^_^.
 
-{title=".../app/views/users/users/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
+{id: "01-15-03_07", caption: ".../app/views/users/_form.html.erb -- codice 07", format: HTML+Mako, line-numbers: true, number-from: 12}
 ```
   <% if current_user.present? and current_user.admin? and @user != current_user %>
     <div class="field">    
@@ -443,7 +454,7 @@ Ad esempio le due condizioni seguenti sono identiche:
 {caption: "terminal", format: bash, line-numbers: false}
 ```
 $ git add -A
-$ git commit -m "Protect views/users/edit"
+$ git commit -m "Pundit authorized views/users/edit"
 ```
 
 
@@ -454,15 +465,18 @@ $ git commit -m "Protect views/users/edit"
 {caption: "terminal", format: bash, line-numbers: false}
 ```
 $ git push heroku au:master
-$ heroku run rails db:migrate
 ```
+
+Non serve "heroku run rails db:migrate" perché non abbbiamo fatto modifiche al database.
 
 rendiamo amministratore anche il primo utente nel database di heroku
 
 {caption: "terminal", format: bash, line-numbers: false}
 ```
 $ heroku run rails c
--> User.first.admin!
+-> u= User.first
+-> u.role = :admin
+-> u.save(validate: false)
 ```
 
 
@@ -503,206 +517,5 @@ $ git push origin master
 
 {id="01-09-05_01all", title=".../app/policies/user_policy.rb", lang=ruby, line-numbers=on, starting-line-number=1}
 ```
-class UserPolicy < ApplicationPolicy
-  
-  def create?
-    @user.admin?
-  end
-  
-  class Scope < Scope
-    def resolve
-      scope.all
-    end
-  end
-end
-```
 
-
-
-
-[Codice 02](#01-09-05_02)
-
-{id="01-09-05_02all", title=".../app/policies/user_policy.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-```
-class UserPolicy < ApplicationPolicy
-
-  def index?
-    true
-  end
-
-  def show?
-    #@user.present? ? @user.admin? : false
-    if @user.present?
-      @user.admin? or @user == @record
-    else
-      false
-    end
-  end
-  
-  def create?
-    if @user.present?
-      @user.admin?
-    else
-      false
-    end
-  end
-  
-  def update?
-    if @user.present?
-      @user.admin?
-    else
-      false
-    end
-  end
-
-  def destroy?
-    if @user.present?
-      @user.admin?
-    else
-      false
-    end
-  end
-
-  class Scope < Scope
-    def resolve
-      scope.all
-    end
-  end
-end
-```
-
-
-
-
-[Codice 03](#01-09-05_03)
-
-{id="01-09-05_03all", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-```
-class UsersController < ApplicationController
-  before_action :authenticate_user!
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
-
-  # GET /users
-  # GET /users.json
-  def index
-    @users = User.all
-    authorize @users
-  end
-
-  # GET /users/1
-  # GET /users/1.json
-  def show
-  end
-
-  # GET /users/new
-  def new
-    @user = User.new
-    authorize @user
-  end
-  
-  # GET /users/1/edit
-  def edit
-  end
-
-  # POST /users
-  # POST /users.json
-  def create
-    @user = User.new(user_params)
-    authorize @user
-
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @user }
-      else
-        format.html { render :new }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /users/1
-  # PATCH/PUT /users/1.json
-  def update
-    if params[:user][:password].blank?
-      params[:user].delete(:password)
-      params[:user].delete(:password_confirmation)
-    end
-    current_user_temp = current_user
-    respond_to do |format|
-      if @user.update(user_params)
-        format.html do
-          # Logghiamoci di nuovo automaticamente bypassando le validazioni
-          sign_in(@user, bypass: true) if @user == current_user_temp
-          redirect_to @user, notice: 'User was successfully updated.'
-        end
-        format.json { render :show, status: :ok, location: @user }
-      else
-        format.html { render :edit }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /users/1
-  # DELETE /users/1.json
-  def destroy
-    @user.destroy unless @user == current_user
-    respond_to do |format|
-      format.html do 
-        redirect_to users_url, notice: 'User was successfully destroyed.' unless @user == current_user
-        redirect_to users_url, notice: 'Non posso eliminare utente loggato.' if @user == current_user
-      end
-      format.json { head :no_content }
-    end
-  end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
-      authorize @user
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation, :remember_created_at, :role)
-    end
-
-end
-```
-
-
-
-
-[Codice 04](#01-09-05_04)
-
-{id="01-09-05_04all", title=".../app/controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-```
-class ApplicationController < ActionController::Base
-  include Pundit
-
-  before_action :configure_permitted_parameters, if: :devise_controller?
-
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-
-  def after_sign_in_path_for(resource_or_scope)
-    users_path
-    #current_user
-  end
-
-  protected
-  
-    def configure_permitted_parameters
-      devise_parameter_sanitizer.permit(:sign_in, keys: [:role])
-      devise_parameter_sanitizer.permit(:sign_up, keys: [:role])
-      devise_parameter_sanitizer.permit(:account_update, keys: [:role])
-    end
-
-  private
-
-    def user_not_authorized
-      redirect_to request.referrer || root_path, notice: "You are not authorized to perform this action."
-    end
-end
 ```

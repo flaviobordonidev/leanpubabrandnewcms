@@ -1,0 +1,47 @@
+<%= form_with(model: eg_post, local: true) do |form| %>
+  <% if eg_post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(eg_post.errors.count, "error") %> prohibited this eg_post from being saved:</h2>
+
+      <ul>
+        <% eg_post.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :meta_title %>
+    <%= form.text_field :meta_title %>
+  </div>
+
+  <div class="field">
+    <%= form.label :meta_description %>
+    <%= form.text_field :meta_description %>
+  </div>
+
+  <div class="field">
+    <%= form.label :headline %>
+    <%= form.text_field :headline %>
+  </div>
+
+  <div class="field">
+    <%= form.label :incipit %>
+    <%= form.text_field :incipit %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :price %>
+    <%= form.text_field :price %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

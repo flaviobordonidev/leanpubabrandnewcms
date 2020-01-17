@@ -2,6 +2,8 @@
 
 Di default il comando di formattazione della data prende i nomi in inglese. Vediamo come implementare l'Italiano.
 
+* Vedi anche 99-rails_references/data_types/data-time
+
 
 Risorse interne:
 
@@ -53,3 +55,47 @@ l(post.published_at, format: :short) %>
 ```
 
 
+**
+
+Meglio non usare " Time.now " perché ha un bug nella gestione dei fusi orari. (vedi 99-rails_references/data_types/date_time)
+
+```
+  <%#= l Time.now, format: :short %>
+```
+
+Invece usiamo " DateTime.current " che gestisce meglio tutto.
+
+```
+  <%#= l DateTime.current, format: :short %>
+```
+
+
+**
+
+
+
+
+---
+
+models/post.rb
+```
+## getter method
+  def display_day_published 
+    if published_at.present?
+      created_at.strftime('%-d %-b %Y')
+      #"Pupplicato il #{created_at.strftime('%-d %-b %Y')}"
+    else
+      "not published yet"
+    end
+  end
+```
+
+
+models/post.rb
+```
+  # == Scopes ===============================================================
+
+  scope :published, -> { where(published: true) }
+  scope :most_recent, -> { order(published_at: :desc) }
+  scope :order_by_id, -> { order(id: :desc) }
+```
