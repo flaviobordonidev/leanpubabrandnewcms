@@ -1,0 +1,69 @@
+<%# == Meta_data ============================================================ %>
+
+<% provide(:html_head_title, "#{t '.html_head_title'}: #{@eg_post.headline}") %>
+
+<%# == Meta_data - end ====================================================== %>
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Meta title:</strong>
+  <%= @eg_post.meta_title %>
+</p>
+
+<p>
+  <strong>Meta description:</strong>
+  <%= @eg_post.meta_description %>
+</p>
+
+<p>
+  <strong>Headline:</strong>
+  <%= @eg_post.headline %>
+</p>
+
+<p>
+  <strong>Incipit:</strong>
+  <%= @eg_post.incipit %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @eg_post.user_id %>
+</p>
+
+<p>
+  <strong>Price:</strong>
+  <%= @eg_post.price %>
+  <br> numero formattato: <%= number_to_currency(@eg_post.price) %>
+  <br> numero formattato con 3 decimali: <%= number_to_currency(@eg_post.price, precision: 3) %>
+  <br> numero formattato con 4 decimali: <%= number_to_currency(@eg_post.price, precision: 4) %>
+  <br> numero formattato con 5 decimali (oltre i 4 dichiarati nel migrate quindi la quinta cifra decimale è sempre zero perché nel submit del form rails arrotonda): <%= number_to_currency(@eg_post.price, precision: 5) %>
+  <br> numero formattato con valuta: <%= number_to_currency(@eg_post.price)+" EUR" %>
+  <br> numero formattato con frase: <%= t ".price_fomatted", price: number_to_currency(@eg_post.price, precision: 2)+" EUR" %>
+  <br> numero formattato descrittivo: <%= t ".price_fomatted", price: number_to_human(@eg_post.price) %>
+</p>
+
+<p>
+  <strong>created_at:</strong>
+  <br>
+  <%= @eg_post.created_at.strftime("The day %d %^B %Y") %>
+  <br>
+  <%= l @eg_post.created_at, format: :short %>
+</p>
+
+<p>
+  <strong>updated_at:</strong>
+  <br>
+  <%= @eg_post.updated_at.strftime("%A %d %^B %Y at %H:%M and %S seconds") %>
+  <br>
+  <%= l @eg_post.created_at, format: :long %>
+</p>
+
+<% if @eg_post.header_image.attached? %>
+  <p><%= image_tag @eg_post.header_image %></p>
+<% else %>
+  <p>Nessuna immagine presente</p>
+<% end %>
+
+<%= link_to 'Edit', edit_eg_post_path(@eg_post) %> |
+<%= link_to 'Back', eg_posts_path %>

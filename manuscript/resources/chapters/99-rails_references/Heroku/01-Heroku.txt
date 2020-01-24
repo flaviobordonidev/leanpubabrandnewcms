@@ -10,6 +10,7 @@ Risorse interne:
 
 Risorse web:
 
+* https://devcenter.heroku.com/articles/getting-started-with-rails6
 * https://devcenter.heroku.com/articles/getting-started-with-rails5
 * https://devcenter.heroku.com/articles/heroku-cli#download-and-install
 

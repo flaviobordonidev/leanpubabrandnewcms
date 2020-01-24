@@ -1,4 +1,15 @@
-# Soluzioni Rail per upload immagini
+{id: 01-base-18-activestorage-filesupload-01-file_upload-story}
+# Cap 18.1 -- Soluzioni Rail per upload immagini
+
+
+Risorse interne:
+
+* 99-rails_references/active_storage/add_image-upload_file_aws
+
+
+
+
+## Lo scenario prima di Rails 5.2
 
 Prima di Rails 5.2 e della comparsa di ActiveRecord esistevano varie gemme per gestire gli upload ed i download dei files su rails è meglio usare una gemma specifica tipo:
 
@@ -7,28 +18,6 @@ Prima di Rails 5.2 e della comparsa di ActiveRecord esistevano varie gemme per g
 * carrierwave
 * paperclip
 * dragonfly
-
-
-Risorse web (sono del 2017):
-
-* https://www.sitepoint.com/uploading-files-with-paperclip/
-* https://devcenter.heroku.com/articles/paperclip-s3
-* https://github.com/thoughtbot/paperclip/wiki/Paperclip-with-Amazon-S3
-* https://github.com/thoughtbot/paperclip
-* http://stackoverflow.com/questions/36315596/how-do-i-read-files-in-rails-images-text-from-amazon-s3-that-were-uploaded-m
-* https://www.youtube.com/watch?v=0_2VBDoowHs&noredirect=1
-* https://aws.amazon.com/sdk-for-ruby/
-* https://rubygems.org/gems/aws-sdk
-
-* https://richonrails.com/articles/getting-started-with-paperclip
-* http://www.rubydoc.info/gems/paperclip/Paperclip/ClassMethods
-
-* [paperclip](https://www.sitepoint.com/uploading-files-with-paperclip/)
-* [paperclip](https://devcenter.heroku.com/articles/paperclip-s3)
-* [paperclip](http://stackoverflow.com/questions/32919273/access-denied-s3-with-paperclip)
-* [Paperclip](https://github.com/thoughtbot/paperclip/wiki/Paperclip-with-Amazon-S3)
-* [paperclip](http://rexstjohn.com/how-to-solve-access-denied-with-heroku-paperclip-s3-ror/)
-* [botpaperclip](https://console.aws.amazon.com/iam/home#users/botpaperclip)
 
 
 

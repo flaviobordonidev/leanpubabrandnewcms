@@ -1,0 +1,5 @@
+
+
+Risorse web:
+
+* [Amazon S3 POST](docs.aws.amazon.com/AmazonS3/latest/dev/UsingHTTPPOST.html)

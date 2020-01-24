@@ -34,13 +34,12 @@ I> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/aws-sd
 I>
 I> facciamo riferimento al [tutorial github della gemma](http://github.com/aws/aws-sdk-ruby)
 
-{id="01-11-04_01", title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=48}
+{id: "01-18-04_01", caption: ".../Gemfile -- codice 01", format: ruby, line-numbers: true, number-from: 25}
 ```
 # API clients for AWS S3 services. Comunicazione con Amazon Web Service S3 per ActiveStorage
-gem 'aws-sdk-s3', '~> 1.46'
+gem 'aws-sdk-s3', '~> 1.60', '>= 1.60.1'
 ```
-
-[Codice 01](#01-11-04_01all)
+[tutto il codice](#01-18-04_01all)
 
 Attenzione:
 In passato si doveva aggiungere l'opzione "require: false", ma oggi non serve più 
@@ -101,6 +100,10 @@ Proviamo a leggere il contenuto del bucket "s5beginning-dev"
 Effettivamente è vuoto perché ancora non abbiamo messo nessun file al suo interno.
 
 Se vi state chiedendo come fa la console ad avere autorizzazione a leggere nel bucket... me lo sto chiedendo anche io !??
+Scherzo. E' semplicemente perché stiamo lavorando con aws cloud9 e l'utente che lo sta usando "user_fb" ha le autorizzazioni anche per aws S3.
+
+Per fare una prova "dall'esterno" possiamo usare la console di heroku ($ heroku run rails c).
+E questa è una prova che facciamo alla fine del capitolo perché prima di poterlo usare dobbiamo spostare su heroku la nuova gemma appena installata.
 
 
 
@@ -109,22 +112,23 @@ Se vi state chiedendo come fa la console ad avere autorizzazione a leggere nel b
 
 Nel file di configurazione dell'ambiente di sviluppo impostiamo "config.active_storage.service" su ":amazondev" al posto di ":local". La variabile ":amazondev" la creiamo nel prossimo paragrafo. Visto che sia lo sviluppo che la produzione puntano ad aws s3 la variabile l'avremmo potuta chiamare semplicemente ":amazon" ma abbiamo preferito distinguerla per far capire didatticamente che puoi chiamarla come vuoi e per predisporci all'eventuale creazione di due utenze IAM diverse una per il bucket "myapp-dev" e l'altra per "myapp-prod".
 
-{id="01-11-04_02", title=".../app/config/environments/development.rb", lang=ruby, line-numbers=on, starting-line-number=30}
+{id: "01-18-04_02", caption: ".../app/config/environments/development.rb -- codice 02", format: ruby, line-numbers: true, number-from: 31}
 ```
-  # Store uploaded files on the local file system (see config/storage.yml for options)
+  # Store uploaded files on the local file system (see config/storage.yml for options).
+  #config.active_storage.service = :local
   config.active_storage.service = :amazondev
 ```
 
-[Codice 02](#01-11-04_02all)
+[tutto il codice](#01-18-04_02all)
 
 
 
 
-### Implementiamo la variabile ":amazondev" nello storage.yml
+## Implementiamo la variabile ":amazondev" nello storage.yml
 
 Rails predispone commentata le linee di codice per effettuare il collegamento. Dobbiamo solo decommentarle ed adattarle alle nostre esigenze.
 
-{id="01-11-04_03", title=".../app/config/storage.yml", lang=yaml, line-numbers=on, starting-line-number=5}
+{id: "01-18-04_03", caption: ".../app/config/storage.yml -- codice 03", format: yaml, line-numbers: true, number-from: 5}
 ```
 # Use rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
 amazondev:
@@ -135,14 +139,15 @@ amazondev:
   bucket: s5beginning-dev
 ```
 
-[Codice 03](#01-11-04_03all)
+[tutto il codice](#01-18-04_03all)
+
 
 Non resta che impostare in modo sicuro, le variabili access_key_id e secret_access_key, anche dette "secrets".
 
 
 
 
-### Implementiamo i due secrets
+## Implementiamo i due secrets
 
 Implementiamo le due secrets nel file criptato "credentials". Per editare il file eseguire:
 
@@ -170,12 +175,18 @@ aws:
 
 ![Fig. 01](images/01-beginning/11-activestorage-filesupload/04_01-rails-encrypted-credentials.png)
 
-Il nostro "aws" lo avremmo potuto più correttamente chiamare "aws_iam_bots5beginning" 
+
+Volendo essere più precisi avremmo potuto usare il più completo "aws_iam_bot_bl6_0" al posto "aws". In questo caso avremmo dovuto portare il cambiamento anche alle due chiamate su ".../app/config/storage.yml"
+
+```
+  access_key_id: <%= Rails.application.credentials.dig(:aws_iam_bot_bl6_0, :access_key_id) %>
+  secret_access_key: <%= Rails.application.credentials.dig(:aws_iam_bot_bl6_0, :secret_access_key) %>
+```
 
 
 
 
-### Verifichiamo lettura secrets nel file criptato
+## Verifichiamo lettura secrets nel file criptato
 
 Verifichiamo che le variabili aws che abbiamo appena aggiunto siano correttamente implementate
 
@@ -189,7 +200,7 @@ $ rails c
 
 
 
-### Verifichiamo preview
+## Verifichiamo preview
 
 {caption: "terminal", format: bash, line-numbers: false}
 ```
@@ -204,6 +215,8 @@ proviamo adesso a caricare un file.
 Funziona! Adesso le immagini sono caricate su aws s3 e non vengono più cancellate dopo poche ore.
 ATTENZIONE! Normalmente le immagini vengono caricate subito ma a volte ci può volere del tempo prima che l'immagine venga uploadata quindi non abbiate fretta e fate un refresh dopo alcuni minuti.
 
+Se su aws S3, entriamo nel bucket "bl6-0-dev" vediamo il file di cui abbiamo appena fatto l'upload. (Potrebbe essere necessario fare un refresh della pagina)
+
 ![Fig. 02](images/01-beginning/11-activestorage-filesupload/04_02-bucket-myapp-dev-file_uploaded.png)
 
 
@@ -213,32 +226,36 @@ ATTENZIONE! Normalmente le immagini vengono caricate subito ma a volte ci può v
 
 Settiamo config production per Amazon S3
 
-Al posto di **:local** usiamo **:amazonprod**
+Al posto di ":local" usiamo ":amazonprod"
 
-{id="01-11-04_04", title=".../app/config/environments/production.rb", lang=ruby, line-numbers=on, starting-line-number=41}
+
+{id: "01-18-04_04", caption: ".../app/config/environments/production.rb -- codice 04", format: ruby, line-numbers: true, number-from: 38}
 ```
-  # Store uploaded files on the local file system (see config/storage.yml for options)
+  # Store uploaded files on the local file system (see config/storage.yml for options).
+  #config.active_storage.service = :local
   config.active_storage.service = :amazonprod
 ```
 
-[Codice 04](#01-11-04_04all)
+[tutto il codice](#01-18-04_04all)
 
-Aggiorniamo lo storage.yml aggiungendo ":amazonprod" con relativa configurazione. (al momento con le stesse credentials di **:amazondev**. Ma in seguito creeremo un utente IAM per la produzione e qui metteremo le sue credenziali. Oppure lasciamo il solo utente IAM "botmyapp" con accesso ai due buckets "myapp-dev" e "myapp-prod")
 
-{id="01-11-04_05", title=".../app/config/storage.yml", lang=yaml, line-numbers=on, starting-line-number=5}
+Aggiorniamo lo storage.yml aggiungendo ":amazonprod" con relativa configurazione. (al momento con le stesse credentials di ":amazondev". Ma in seguito creeremo un utente IAM per la produzione e qui metteremo le sue credenziali. Oppure lasciamo il solo utente IAM "bot_myapp" con accesso ai due buckets "myapp-dev" e "myapp-prod")
+
+{id: "01-18-04_05", caption: ".../app/config/storage.yml -- codice 05", format: yaml, line-numbers: true, number-from: 5}
 ```
 # Use rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
 amazonprod:
   service: S3
   access_key_id: <%= Rails.application.credentials.dig(:aws, :access_key_id) %>
   secret_access_key: <%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
-  region: eu-east-1
-  bucket: s5beginning-prod
+  region: us-east-1
+  bucket: bl6-0-prod
 ```
 
-[Codice 05](#01-11-04_05all)
+[tutto il codice](#01-18-04_05all)
 
-Nel frattempo avremmo già creato il nuovo bucket "s5beginning-prod" su AWS S3 per mantenere distinte le immagini caricate come development da quelle caricate in produzione. (I passaggi sono gli stessi fatti per s5beginning-dev)
+
+Nel frattempo avremmo già creato il nuovo bucket "bl6-0-prod" su AWS S3 per mantenere distinte le immagini caricate come development da quelle caricate in produzione. (I passaggi sono gli stessi fatti per bl6-0-dev)
 
 
 
@@ -263,7 +280,7 @@ $ git push heroku asar:master
 
 Se provassimo adesso ad andare sull'URL di produzione
 
-* https://s5beginning.herokuapp.com/
+* https://bl6-0.herokuapp.com/
 
 riceveremmo un errore
 
@@ -274,7 +291,7 @@ Questo perché non abbiamo ancora passato ad heroku le variabili per collegarsi 
 
 
 
-### Passiamo ad Heroku variabili per collegamento ad aws S3
+## Passiamo ad Heroku variabili per collegamento ad aws S3
 
 Heroku non ha le variabili per accedere al bucket "myapp-prod" che abbiamo creato su aws S3.
 Passiamo le variabile d'ambiente ad heroku via terminale
@@ -284,11 +301,10 @@ Passiamo le variabile d'ambiente ad heroku via terminale
 $ heroku config:set AWS_ACCESS_KEY_ID='AKIA....JTOMA'
 $ heroku config:set AWS_SECRET_ACCESS_KEY='LwdJ........45KHZ'
 $ heroku config:set AWS_REGION='us-east-1'
-$ heroku config:set S3_BUCKET_NAME='s5beginning-prod'
+$ heroku config:set S3_BUCKET_NAME='bl6-0-prod'
 ```
 
 Le avremmo potute passare anche tramite web GUI di heroku.
-
 
 
 

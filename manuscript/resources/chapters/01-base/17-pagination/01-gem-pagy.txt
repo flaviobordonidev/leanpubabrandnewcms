@@ -1,13 +1,12 @@
-# Installiamo gemma Pagy per la paginazione (pagination)
+{id: 01-base-17-pagination-01-gem-pagy}
+# Cap 17.1 -- Installiamo gemma Pagy per la paginazione (pagination)
 
 Per dividere l'elenco su più pagine.
 Le gemme che vanno per la maggiore sono: will_paginate, kaminari e pagy. Scegliamo pagy perché è mooolto più veloce.
 
-Risorse web:
+Risorse interne
 
-* [GoRails pagy](https://gorails.com/episodes/pagination-with-pagy-gem)
-* [How to ufficiale. verso il fondo ha anche "Using Templates"](https://ddnexus.github.io/pagy/how-to.html)
-* [git page ufficiale](https://github.com/ddnexus/pagy)
+* 99-rails_references/views/pagination
 
 
 
@@ -43,13 +42,13 @@ I> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/pagy)
 I>
 I> facciamo riferimento al [tutorial github della gemma](https://github.com/ddnexus/pagy)
 
-{id="02-09-01_01", title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=45}
+{id: "01-17-01_01", caption: ".../Gemfile -- codice 01", format: ruby, line-numbers: true, number-from: 37}
 ```
 # Agnostic pagination in plain ruby
-gem 'pagy', '~> 3.4', '>= 3.4.1'
+gem 'pagy', '~> 3.7', '>= 3.7.2'
 ```
 
-[Codice 01](#02-09-01_01all)
+[tutto il codice](#01-17-01_01all)
 
 Eseguiamo l'installazione della gemma con bundle
 
@@ -70,27 +69,12 @@ Abbiamo due scelte:
 
 Scegliamo di includere la paginazione in tutti i controllers perché per quelli che non la utilizzano non crea nessun problema.
 
-{id="02-09-01_02", title=".../app/controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+{id: "01-17-01_02", caption: ".../app/controllers/application_controller.rb -- codice 02", format: ruby, line-numbers: true, number-from: 1}
 ```
 include Pagy::Backend
 ```
 
-[Codice 02](#02-09-01_02all)
-
-
-
-
-### Implementiamo la paginazione per eg_posts_controller
-
-Adesso che abbiamo incluso pagy possiamo chiamare la funzione "pagy()" nelle azioni dei nostri controllers. Implementiamo la paginazione nell'azione index di eg_posts_controller
-
-{id="02-09-01_03", title=".../app/controllers/eg_posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-```
-    @pagy, @posts = pagy(Post.all)
-```
-
-[Codice 03](#02-09-01_03all)
-
+[tutto il codice](#01-15-04_02all)
 
 
 
@@ -98,111 +82,21 @@ Adesso che abbiamo incluso pagy possiamo chiamare la funzione "pagy()" nelle azi
 
 includiamo la paginazione anche in application_helper in modo da rendere disponibili gli helpers di pagy a tutte le views
 
-{id="02-09-01_04", title=".../app/helpers/application_helper.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+{id: "01-17-01_04", caption: ".../app/helpers/application_helper.rb -- codice 04", format: ruby, line-numbers: true, number-from: 1}
 ```
   include Pagy::Frontend
 ```
 
-[Codice 04](#02-09-01_04all)
+[tutto il codice](#01-15-04_04all)
 
 
 
-
-### Implementiamo la pagina eg_posts/index
-
-Possiamo usare l'helper "pagy_nav()" messo a disposizione da pagy.
-
-{title="views/eg_posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=36}
-```
-<%= raw pagy_nav(@pagy) %>
-```
-
-un modo più compatto di scrivere lo stesso codice è usando il "doppio uguale" 
-
-{title="views/eg_posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=36}
-```
-<%== pagy_nav(@pagy) %>
-```
-
-se invece usiamo la sintassi classica senza "raw" ci viene passato il codice HTML.
-
-{title="views/eg_posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=36}
-```
-<%= pagy_nav(@pagy) %>
-```
-
-Possiamo usare "raw" perché sappiamo che pagy già evita query-injections.
-Ma se vogliamo essere espressamente prudenti possiamo usare "html_safe" invece di "raw" ma è sconsigliato perché "html_safe" ha alcuni difetti.
-
-{title="views/eg_posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=36}
-```
-<%= pagy_nav(@pagy).html_safe %>
-```
-
-Se vogliamo essere esplicitamente prudenti è bene usare "sanitize" 
-
-{title="views/eg_posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=36}
-```
-<%= sanitize pagy_nav(@pagy) %>
-```
-
-
-
-
-## Verifichiamo preview
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ sudo service postgresql start
-$ rails s
-```
-
-apriamo il browser sull'URL:
-
-* https://mycloud9path.amazonaws.com/authors/posts
-
-E vediamo la paginazione. Al momento i link sono disattivati perché abbiamo pochi articoli.
-
-
-
-
-## Scegliamo quanti records per pagina
-
-Di default sono impostati 20 records ogni pagina. Riduciamoli a 2 così avremo attivi i links per la paginazione.
-
-
-{title=".../app/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-```
-    @pagy, @posts = pagy(Post.all, items: 2)
-```
-
-
-
-
-
-## Verifichiamo preview
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ sudo service postgresql start
-$ rails s
-```
-
-apriamo il browser sull'URL:
-
-* https://mycloud9path.amazonaws.com/authors/posts
-
-E vediamo la paginazione. Questa volta appaiono i links di navigazione tra le pagine
-
-
-
-
-## archiviamo su git
+## Archiviamo su git
 
 {caption: "terminal", format: bash, line-numbers: false}
 ```
 $ git add -A
-$ git commit -m "add pagination with pagy"
+$ git commit -m "Install pagination with pagy"
 ```
 
 
@@ -220,26 +114,8 @@ $ git push heroku pp:master
 
 ## Chiudiamo il branch
 
-se abbiamo finito le modifiche e va tutto bene:
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git checkout master
-$ git merge pp
-$ git branch -d pp
-```
-
-
-
-
-## Facciamo un backup su Github
-
-Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git push origin master
-```
+Lo chiudiamo nei prossimi capitoli. 
+Al momento lo lasciamo aperto per implementare il pagination su "eg_posts" ed "users"
 
 
 
@@ -254,137 +130,4 @@ $ git push origin master
 
 {id="02-09-01_01all", title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=1}
 ```
-source 'https://rubygems.org'
-git_source(:github) { |repo| "https://github.com/#{repo}.git" }
-
-ruby '2.4.1'
-
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2.1', '>= 5.2.1.1'
-# Use postgresql as the database for Active Record
-gem 'pg', '>= 0.18', '< 2.0'
-# Use Puma as the app server
-gem 'puma', '~> 3.11'
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
-# See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'mini_racer', platforms: :ruby
-
-# Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '~> 4.2'
-# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
-gem 'turbolinks', '~> 5'
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.5'
-# Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 4.0'
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
-
-# Use ActiveStorage variant
-gem 'mini_magick', '~> 4.8'
-
-# API clients for AWS S3 services. Comunicazione con Amazon Web Service S3 per ActiveStorage
-gem "aws-sdk-s3", require: false
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
-# Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '>= 1.1.0', require: false
-
-# Flexible authentication solution for Rails with Warden 
-gem 'devise', '~> 4.5'
-
-# Object oriented authorization for Rails applications
-gem 'pundit', '~> 2.0'
-
-# The most popular HTML, CSS, and JavaScript framework. http://getbootstrap.com
-gem 'bootstrap', '~> 4.2', '>= 4.2.1'
-# Use jquery as the JavaScript library
-gem 'jquery-rails'
-
-# slugging and permalink for Active Record. For creating human-friendly strings URLs and use as if they were numeric ids.
-gem 'friendly_id', '~> 5.2', '>= 5.2.5'
-
-# A rich text editor for everyday writing 
-gem 'trix-rails', '~> 2.0', require: 'trix'
-
-# Agnostic pagination in plain ruby
-gem 'pagy', '~> 1.3', '>= 1.3.2'
-
-group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-end
-
-group :development do
-  # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
-  gem 'web-console', '>= 3.3.0'
-  gem 'listen', '>= 3.0.5', '< 3.2'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
-end
-
-group :test do
-  # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '>= 2.15'
-  gem 'selenium-webdriver'
-  # Easy installation and use of chromedriver to run system tests with Chrome
-  gem 'chromedriver-helper'
-end
-
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-```
-
-
-
-
-[Codice 02](#02-09-01_02all)
-
-{id="02-09-01_02", title=".../app/controllers/application_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-```
-class ApplicationController < ActionController::Base
-  include Pundit
-  include Pagy::Backend
-  
-  before_action :configure_permitted_parameters, if: :devise_controller?
-
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-
-  def after_sign_in_path_for(resource_or_scope)
-    users_path
-    #current_user
-  end
-
-  protected
-  
-    def configure_permitted_parameters
-      devise_parameter_sanitizer.permit(:sign_in, keys: [:role])
-      devise_parameter_sanitizer.permit(:sign_up, keys: [:role])
-      devise_parameter_sanitizer.permit(:account_update, keys: [:role])
-    end
-
-  private
-
-    def user_not_authorized
-      redirect_to request.referrer || root_path, notice: "You are not authorized to perform this action."
-    end
-end
-```
-
-
-
-
-[Codice 04](#02-09-01_04)
-
-{id="02-09-01_04all", title=".../app/helpers/application_helper.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-```
-module ApplicationHelper
-  include Pagy::Frontend
-end
 ```
