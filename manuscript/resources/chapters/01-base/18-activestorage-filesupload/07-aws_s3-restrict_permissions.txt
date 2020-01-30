@@ -1,4 +1,5 @@
-# Restringiamo i permessi
+{id: 01-base-18-activestorage-filesupload-07-aws_s3-restrict_permissions}
+# Cap 18.7 -- Restringiamo i permessi
 
 E' arrivato il momento di lavorare sui files CORS restringendo i permessi di accesso.
 

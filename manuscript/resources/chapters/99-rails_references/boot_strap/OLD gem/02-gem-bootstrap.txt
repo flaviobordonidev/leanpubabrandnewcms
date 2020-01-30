@@ -1,3 +1,13 @@
+{id: 01-base-21-bootstrap-01-bootstrap_story}
+# Cap 21.1 -- Bootstrap
+
+
+
+ATTENZIONE DA RAILS 6 NON SI USA LA GEMMA *_* grrr.
+
+
+
+
 # Gem bootstrap
 
 Molti temi e templates usano la libreria bootstrap come files css e javascripts. Nel nostro caso usiamo la gemma per installarla perché ha una completa integrazione con Rails. Ad esempio attivando bootstrap dal gemfile possiamo gestire correttamente il codice per il "link di delete" che altrimenti non funziona e si dovrebbe ricorrere al "button".

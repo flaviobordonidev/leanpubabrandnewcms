@@ -22,7 +22,7 @@ sulla configurazione dell'applicazione impostiamo la lingua di default cambiando
 
 
 
-### Verifichiamo preview
+## Verifichiamo preview
 
 Chiudiamo il webserver (CTRL+C) e lo riavviamo per permettere a Rails di caricare le modifiche al file config/application
 

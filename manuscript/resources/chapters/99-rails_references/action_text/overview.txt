@@ -1,9 +1,23 @@
-# Storia dei "rich text editors"
 
----
-Da rails 6 trix diventa Action Text!!
+## Come interagire con Trix di Action Text
+
+* https://blog.craz8.com/articles/2019/9/2/trix-config-object-and-rails-6-webpack
+
+```
+var Trix = require("trix")
+require("@rails/actiontext")
+
+Trix.config.blockAttributes.heading1.tagName = "h3";
+```
+
+In questo modo cambio il comportamento del bottone "TT" che invece di inserire h1 inserisce h3
+
+
+
+----
+
+In rails 6 la gemma "trix" è incorporata e diventa Action Text!
 Action Text is a brand new framework coming to Rails 6 that’s going to make creating, editing, and displaying rich text content in your applications super easy. It’s an integration between the Trix editor, Active Storage-backed file and image processing, and a text-processing flow that ties it all together. 
----
 
 installiamo un rich text editor per formattare meglio i nostri posts.
 TRIX - Open source gratuito sviluppato da BaseCamp
@@ -18,6 +32,8 @@ Più avanti integreremo la gestione dell'upload delle immagini xxx dentro Trix u
 
 
 Risorse web:
+
+* https://edgeguides.rubyonrails.org/action_text_overview.html
 
 * [BaseCamp Trix](https://github.com/basecamp/trix)
 * https://github.com/basecamp/trix#readme
@@ -49,10 +65,14 @@ Altre risorse web:
 
 
 
+## ALTRI WYSIWYG 
 
-## WYSIWYG TESTO E UPLOAD IMAGES ON AWS S3
+Per formattare il testo e fare upload di immagini 
 
-TRIX - Open source gratuito sviluppato da BaseCamp
+
+
+
+### TRIX - Open source gratuito sviluppato da BaseCamp
 
 * (go rails - Trix WYSIWYG Editor And File Uploads)[https://www.youtube.com/watch?v=eyM3_kdD-wY]
 * https://github.com/basecamp/trix
@@ -60,7 +80,9 @@ TRIX - Open source gratuito sviluppato da BaseCamp
 * (How to use Trix and Shrine for WYSIWYG Editing with Drag-and-Drop Image Uploading)[http://headway.io/blog/how-to-use-trix-and-shrine-for-wysiwyg-editing-with-drag-and-drop-image-uploading/]
 
 
-FROALA - Eccellente WYSIWYG a pagamento una tantum
+
+
+### FROALA - Eccellente WYSIWYG a pagamento una tantum
 
 * https://www.froala.com/wysiwyg-editor/plugins
 * (Ruby Snack #22: Froala WYSIWYG)[https://www.youtube.com/watch?v=BrR4dmp2Y8c]
@@ -69,10 +91,8 @@ FROALA - Eccellente WYSIWYG a pagamento una tantum
 * https://www.froala.com/wysiwyg-editor/docs/framework-plugins/rails
 
 
-TinyMCE - Ottimo WYSIWYG a pagamento continuativo
+
+
+### TinyMCE - Ottimo WYSIWYG a pagamento continuativo
 
 * https://www.tinymce.com
-
-
-
-

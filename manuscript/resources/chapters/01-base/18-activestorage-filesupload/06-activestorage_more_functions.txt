@@ -1,12 +1,13 @@
-## Aggiungiamo più funzionalità e controlli per l'upload delle immagini
+{id: 01-base-18-activestorage-filesupload-06-activestorage_more_functions}
+# Cap 18.6 -- Aggiungiamo più funzionalità e controlli per l'upload delle immagini
 
 
 implementiamo le funzionalità aggiuntive presenti nel video di gorails. Il caricare più files ed il gestire anche files pdf, suoni, video, svg, ...
 
-Risorse web:
+Risorse interne:
 
-  * [GoRails File uploading with ActiveStorage in Rails 5.2](https://gorails.com/episodes/file-uploading-with-activestorage-rails-5-2)
-  * [GoRails Direct Uploads with Rails ActiveStorage](https://gorails.com/episodes/direct-uploads-with-rails-active-storage)
+* 99-rails_references/active_storage/aws_s3
+
 
 
 

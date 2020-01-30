@@ -57,32 +57,26 @@ Nei capitoli precedenti abbiamo associato le pagine users/session di devise al l
 [Codice 02](#02-04-04_02all)
 
 
-Quindi lavoriamo sul layout "entrance" per abilitare bootstrap e lo stile personalizzato "login.scss"
+Quindi lavoriamo sul layout "entrance" per abilitare bootstrap e lo stile personalizzato "login.scss".
+Visto che questa parte di stile e di layout è differente dal resto dell'applicazione la separiamo mettendo a tutti i files interessati il prefisso "entrance_". Quindi:
 
+* Rinominiamo il file "login.scss" in "entrance_login.scss".
+* Duplichiamo il file "packs/application.js" e rinominiamo la copia in "packs/entrance_application.js".
+* Duplichiamo il file "stylesheets/application.scss" e rinominiamo la copia in "stylesheets/entrance_application.scss".
+
+Dal "layouts/entrance" chiamiamo il file webpack "entrance_application".
 
 {id="02-04-04_03", title=".../app/views/layouts/entrance.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=10}
 ```
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Benvenuto</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-    <%= stylesheet_link_tag    'login', media: 'all', 'data-turbolinks-track': 'reload' %>
-  </head>
-
-  <body>
-    <% if notice %><p class="alert alert-info"><%= notice %></p><% end %>
-    <% if alert %><p class="alert alert-warning"><%= alert %></p><% end %>
-    <%= yield %>
-  </body>
-</html>
+    <%= javascript_pack_tag 'entrance_application', 'data-turbolinks-track': 'reload' %>
 ```
 
 [Codice 03](#02-04-04_03all)
+
+
+
+
+
 
 
 

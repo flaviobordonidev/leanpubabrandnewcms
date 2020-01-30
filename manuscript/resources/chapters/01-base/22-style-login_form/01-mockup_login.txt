@@ -1,11 +1,12 @@
-# Mockup Login
+{id: 01-base-22-style-login_form01-mockup_login}
+# Cap 22.1 -- Mockup Login
 
 Usiamo BootStrap per dare uno stile al form iniziale di login. Creaimo un mockup, prima di inserire lo stile direttamente sul form di login di Devise.
 
 
-Risorse web:
+Riferimenti interni:
 
-* [Bootstrap 4 - Login Screen with Floating Labels](https://startbootstrap.com/snippets/login/)
+* 99-rails_reference/boot_strap/02-bootstrap_login
 
 
 
@@ -19,71 +20,109 @@ $ git checkout -b ml
 
 
 
-## Creiamo il nostro mockup posts_index
 
-creiamo il nuovo file login tra le nostre pagine statiche di esempio
+## Creiamo il nostro mockup login
 
-{id="02-04-01_01", title=".../app/views/mockups/login.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+Abbiamo già creato il controller mockups insieme alle due views "page_a" e "page_b" con "$ rails g controller Mockups page_a page_b". 
+Per una nuova pagina statica aggiungiamo un'azione al controller, un instradamento al file "routes" e creiamo il corrispondente nuovo file in "views/mockups/".
+
+
+Aggiorniamo il controller
+
+{id: "01-22-01_01", caption: ".../app/controllers/mockups_controller.rb -- codice 01", format: ruby, line-numbers: true, number-from: 4}
 ```
-<body>
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-        <div class="card card-signin my-5">
-          <div class="card-body">
-            <h5 class="card-title text-center">Sign In</h5>
-            <form class="form-signin">
-              <div class="form-label-group">
-                <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-                <label for="inputEmail">Email address</label>
-              </div>
-
-              <div class="form-label-group">
-                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-                <label for="inputPassword">Password</label>
-              </div>
-
-              <div class="custom-control custom-checkbox mb-3">
-                <input type="checkbox" class="custom-control-input" id="customCheck1">
-                <label class="custom-control-label" for="customCheck1">Remember password</label>
-              </div>
-              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign in</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</body>
+  def login
+  end
 ```
 
-[Codice 01](#02-04-01_01all)
+[tutto il codice](#01-22-01_01all)
 
 
-OPZIONALE:
-In addition add javascript on label to focus on textbox when click
+Aggiorno il file routes 
 
+{id: "01-22-01_02", caption: ".../config/routes.rb -- codice 02", format: ruby, line-numbers: true, number-from: 3}
 ```
-<input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
-<label for="inputEmail" onclick="document.getElementById('inputEmail').focus();">Email address</label>
+  get 'mockups/login'
+```
 
-<input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
-<label for="inputPassword" onclick="document.getElementById('inputPassword').focus();">Password</label>
+[tutto il codice](#01-22-01_02all)
+
+
+creiamo il nuovo file ".../app/views/mockups/login.html.erb" 
+
+{id: "01-22-01_03", caption: ".../app/views/mockups/login.html.erb -- codice 03", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<h1>LOGIN</h1>
 ```
 
 
 
 
-## Creiamo un layout specifico per il mockups/posts_index
+## Il tema preso da internet
 
-Poiché nella view mockups/posts_index mettiamo tutto il codice html, usiamo un layout che ha la sola chiamata "yield" che chiamiamo " mockups_yield ".
+In internet troviamo lo [snippet sign-in-split](https://startbootstrap.com/snippets/sign-in-split/) con il seguente codice HTML
 
-{id="02-04-01_02", title=".../app/views/layouts/mockups_yield.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+{id: "01-22-01_04", caption: "snippet_html_code -- codice 04", format: HTML+Mako, line-numbers: true, number-from: 1}
 ```
-<%= yield %>
+<div class="container-fluid">
+  <div class="row no-gutter">
+    <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
 ```
 
-[Codice 02](#02-04-01_02all)
+[tutto il codice](#01-22-01_04all)
+
+
+ed il seguente codice CSS
+
+{id: "01-22-01_05", caption: "snippet_css_code -- codice 05", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+:root {
+  --input-padding-x: 1.5rem;
+  --input-padding-y: 0.75rem;
+}
+
+.login,
+.image {
+```
+
+[tutto il codice](#01-22-01_05all)
+
+
+
+
+
+## Importiamolo nella nostra applicazione
+
+Riportiamo il codice nel nostro mockup. Prepariamo un layout dedicato per la fase iniziale del mockup in modo che sia più semplice fare il passaggio nella nostra applicazione.
+Chiamiamo questo layout "mockup_first_step" per indicare che è un layout il più semplice possibile che ci aiuta nel primo passo di importazione di codice dall'esterno.
+
+
+
+## Il mockup_first_step
+
+Creiamo il nuovo file "mockup_first_step.html.erb" nella cartella layouts.
+
+{id="01-22-01_06", title=".../app/views/layouts/mockup_first_step.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+```
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Mockup | Baseline 6.0</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <%= yield %>
+  </body>
+</html>
+```
+
+Questo layout ha gli elementi essenziali. Nei tags "<body></body>" c'è la sola chiamata <%= yield %> che importa tutto il codice della view. Nei tags "<head></head>" cè il titolo, due chiamate per la sicurezza informatica, e la chiamata al webpack "javascript_pack_tag 'application'" che, come abbiamo visto precedentemente, si occupa anche dello stylesheets.
+
+
 
 
 
@@ -92,29 +131,31 @@ Poiché nella view mockups/posts_index mettiamo tutto il codice html, usiamo un 
 
 aggiungiamo l'azione "login" al controller mockups e diciamogli di utilizzare il layout mockups_yield.
 
-{id="02-04-01_03", title=".../app/controllers/mockups_controller.rb", lang=ruby, line-numbers=on, starting-line-number=16}
+{id: "01-22-01_07", caption: ".../app/controllers/mockups_controller.rb -- codice 07", format: ruby, line-numbers: true, number-from: 16}
 ```
   def login
-    render layout: 'mockups_yield'
+    render layout: 'mockup_first_step'
   end
 ```
 
-[Codice 03](#02-04-01_03all)
+[tutto il codice](#01-22-01_07all)
 
 
 
 
-## Aggiorniamo gli instradamenti
 
-Aggiorniamo il file routes
+## Importiamo il codice HTML
 
-{id="02-04-01_04", title="config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=23}
+Adesso che è tutto pronto importiamo il codice HTML dello snippet nella nostra pagina di mockup.
+
+{id: "01-22-01_08", caption: ".../app/views/mockups/login.html.erb -- codice 03", format: HTML+Mako, line-numbers: true, number-from: 1}
 ```
-  get 'mockups/login'
+<div class="container-fluid">
+  <div class="row no-gutter">
+    <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
 ```
 
-[Codice 04](#02-04-01_04all)
-
+[tutto il codice](#01-22-01_08all)
 
 
 
@@ -131,7 +172,52 @@ apriamolo il browser sull'URL:
 
 * https://mycloud9path.amazonaws.com/mockups/login
 
-non ci resta che importare stylesheets e javascripts, ma questo lo vediamo nel prossimo capitolo
+Il form di login è presente ma manca lo stile. non ci resta che importare il codice CSS
+
+
+
+
+## Importiamo il codice CSS
+
+Importiamo il codice CSS dello snippet nella nostra pagina di mockup. Nello stylesheets/mockup_first_step abbiamo la chiamata al file "application.js" di webpack (javascript_pack_tag 'application'). E su quel file abbiamo richiamato il file di stile "application.scss" (require("../stylesheets/application.scss")). Creiamo quindi il nuovo file "login.scss", dove inseriamo il codice CSS dello snippet, e lo richiamiamo su "application.scss".
+
+{id: "01-22-01_09", caption: ".../app/javascript/stylesheets/application.scss -- codice 03", format: ruby, line-numbers: true, number-from: 3}
+```
+@import "./login";
+```
+
+[tutto il codice](#01-22-01_09all)
+
+
+{id: "01-22-01_10", caption: ".../app/javascript/stylesheets/login.scss -- codice 03", format: ruby, line-numbers: true, number-from: 3}
+```
+:root {
+  --input-padding-x: 1.5rem;
+  --input-padding-y: 0.75rem;
+}
+
+.login,
+.image {
+```
+
+[tutto il codice](#01-22-01_10all)
+
+
+
+
+## Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+```
+$ sudo service postgresql start
+$ rails s
+```
+
+apriamolo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/mockups/login
+
+Il form di login adesso ha "stile". 
 
 
 

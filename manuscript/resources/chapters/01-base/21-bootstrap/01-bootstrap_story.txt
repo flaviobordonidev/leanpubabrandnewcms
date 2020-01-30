@@ -1,4 +1,5 @@
-# Bootstrap
+{id: 01-base-21-bootstrap-01-bootstrap_story}
+# Cap 21.1 -- Bootstrap
 
 Prepariamo un'interfaccia grafica per la dashboard di gestione degli articoli. Questa parte è sganciata dal template scelto per la presentazione del Blog.
 Inizialmente preperiamo una dashboard molto semplice sfruttando la potente libreria bootstrap. In seguito sceglieremo un tema più elaborato per abbellire la dashboard ed aggiungervi ulteriori funzionalità.

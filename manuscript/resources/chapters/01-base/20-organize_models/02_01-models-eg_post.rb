@@ -7,9 +7,13 @@ class EgPost < ApplicationRecord
 
   ## Active Storage
   has_one_attached :header_image
+  
+  ## Action Text
+  has_rich_text :content
 
   # == Relationships ========================================================
 
+  ## association one-to-many
   belongs_to :user
 
   # == Validations ==========================================================

@@ -44,8 +44,13 @@
 
   <div class="field">
     <%= form.label :header_image %>
-    <%= form.file_field :header_image %>
-    <%= link_to 'Remove', delete_image_attachment_eg_post_path(eg_post.header_image.id), method: :delete, data: { confirm: 'Are you sure?' } if eg_post.header_image.attached? %>
+    <% if eg_post.header_image.attached? %>
+      <%= image_tag eg_post.header_image.variant(resize_to_fit: [100, 100]) %>
+      <%= link_to 'Remove', delete_image_attachment_eg_post_path(eg_post.header_image.id), method: :delete, data: { confirm: 'Are you sure?' } %>
+    <% else %>
+          <p>Nessuna immagine presente</p>
+    <% end %>
+    <p><%= form.file_field :header_image %></p>
   </div>
 
   <div class="actions">

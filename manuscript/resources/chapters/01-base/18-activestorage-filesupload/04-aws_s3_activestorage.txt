@@ -1,17 +1,13 @@
-# AWS S3 su ActiveRecord
+{id: 01-base-18-activestorage-filesupload-04-aws_s3_activestorage}
+# Cap 18.4 -- AWS S3 su ActiveRecord
 
 In questo capitolo implementiamo l'upload dei files su AWS S3 tramite ActiveRecord.
 Effettuiamo il collegamento con S3 usando i secrests criptati.
 
 
-Risorse web:
+Risorse interne:
 
-* [Rails Guides - Active Storage Overview - 2.2 Amazon S3 Service](http://edgeguides.rubyonrails.org/active_storage_overview.html)
-* [Direct Uploads with Rails ActiveStorage dal min 4:10](https://gorails.com/episodes/direct-uploads-with-rails-active-storage)
-* [Active Storage on Heroku](https://devcenter.heroku.com/articles/active-storage-on-heroku)
-* [s3-example](https://docs.aws.amazon.com/sdk-for-ruby/v3/developer-guide/s3-example-get-buckets-in-region.html)
-* [create bucket](https://docs.aws.amazon.com/AmazonS3/latest/dev/create-bucket-get-location-example.html#create-bucket-get-location-ruby)
-* [hartfordfive](https://gist.github.com/hartfordfive/19097441d3803d9aa75ffe5ecf0696da)
+* 99-rails_references/active_storage/aws_s3
 
 
 
@@ -222,12 +218,11 @@ Se su aws S3, entriamo nel bucket "bl6-0-dev" vediamo il file di cui abbiamo app
 
 
 
-## Implementiamo AWS S3 per la produzione su Heroku
+## Implementiamo AWS S3 per la produzione sul serve locale
 
-Settiamo config production per Amazon S3
+Questo paragrafo non serve per la produzione su Heroku. Lo implementiamo a scopo didattico per far vedere come implementare l'ambiente di produzione sullo stesso server dello sviluppo.
 
-Al posto di ":local" usiamo ":amazonprod"
-
+Settiamo config production per Amazon S3. (Al posto di ":local" usiamo ":amazonprod")
 
 {id: "01-18-04_04", caption: ".../app/config/environments/production.rb -- codice 04", format: ruby, line-numbers: true, number-from: 38}
 ```
@@ -256,6 +251,15 @@ amazonprod:
 
 
 Nel frattempo avremmo già creato il nuovo bucket "bl6-0-prod" su AWS S3 per mantenere distinte le immagini caricate come development da quelle caricate in produzione. (I passaggi sono gli stessi fatti per bl6-0-dev)
+
+
+
+
+## Implementiamo AWS S3 per la produzione su Heroku
+
+Creiamo il nuovo bucket "bl6-0-prod" su AWS S3 per mantenere distinte le immagini caricate come development da quelle caricate in produzione. (I passaggi sono gli stessi fatti per bl6-0-dev).
+
+Adesso passiamo la nuova gemma in produzione caricando tutto il codice con "git push" e successivamente passiamo le chiavi di accesso al bucket "bl6-0-prod" di aws S3 .
 
 
 

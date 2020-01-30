@@ -16,6 +16,7 @@ Rails.application.routes.draw do
 
   #get 'eg_posts', to:'eg_posts#index', as: :user_root #creates user_root_path (default path after sign_in)
   get 'users/index'
+  get 'mockups/login'
   get 'mockups/page_a'
   get 'mockups/page_b'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

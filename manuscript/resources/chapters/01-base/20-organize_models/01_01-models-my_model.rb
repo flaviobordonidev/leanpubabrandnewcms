@@ -1,4 +1,4 @@
-class EgCompany < ApplicationRecord
+class MyModel < ApplicationRecord
   # == Constants ============================================================
   
   # == Extensions ===========================================================
