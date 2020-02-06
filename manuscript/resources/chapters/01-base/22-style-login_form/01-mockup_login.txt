@@ -1,7 +1,9 @@
-{id: 01-base-22-style-login_form01-mockup_login}
+{id: 01-base-22-style-login_form-01-mockup_login}
 # Cap 22.1 -- Mockup Login
 
-Usiamo BootStrap per dare uno stile al form iniziale di login. Creaimo un mockup, prima di inserire lo stile direttamente sul form di login di Devise.
+Usiamo BootStrap per dare uno stile al form iniziale di login. Creiamo un mockup, prima di inserire lo stile direttamente sul form di login di Devise.
+
+Prepariamo una formattazione per la nostra applicazione. ATTENZIONE questa formattazione non ha niente a che vedere con il tema che importeremo successivamente. Questa formattazione sarà successivamente isolata ed utilizzata esclusivamente per il "dashboard" ossia per l'interfaccia grafica che si presenta agli autori che hanno effettuato il login per permettere loro di gestire i loro articoli (posts)
 
 
 Riferimenti interni:
@@ -60,7 +62,7 @@ creiamo il nuovo file ".../app/views/mockups/login.html.erb"
 
 ## Il tema preso da internet
 
-In internet troviamo lo [snippet sign-in-split](https://startbootstrap.com/snippets/sign-in-split/) con il seguente codice HTML
+In internet abbiamo trovato lo [snippet sign-in-split](https://startbootstrap.com/snippets/sign-in-split/) con il seguente codice HTML
 
 {id: "01-22-01_04", caption: "snippet_html_code -- codice 04", format: HTML+Mako, line-numbers: true, number-from: 1}
 ```
@@ -87,22 +89,23 @@ ed il seguente codice CSS
 
 [tutto il codice](#01-22-01_05all)
 
+e vogliamo importarlo nella nostra applicazione rails. Inizialmente come pagina statica (mockup).
 
 
 
 
-## Importiamolo nella nostra applicazione
+## Importiamo lo snippet nella nostra applicazione
 
-Riportiamo il codice nel nostro mockup. Prepariamo un layout dedicato per la fase iniziale del mockup in modo che sia più semplice fare il passaggio nella nostra applicazione.
-Chiamiamo questo layout "mockup_first_step" per indicare che è un layout il più semplice possibile che ci aiuta nel primo passo di importazione di codice dall'esterno.
-
+Riportiamo il codice dello snippet nel nostro mockup. Prima però prepariamo un layout dedicato per i mockups che sia il più semplice possibile e che punti ad un file webpack dedicato per il mockup. In questo modo possiamo caricare tutti gli stylesheets ed i javascript per le pagine di mockups ed invece caricare solo quelli necessarie per le pagine usate nell'applicazione. Chiamiamo questo layout "mockup".
 
 
-## Il mockup_first_step
 
-Creiamo il nuovo file "mockup_first_step.html.erb" nella cartella layouts.
 
-{id="01-22-01_06", title=".../app/views/layouts/mockup_first_step.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+## Il layout mockup
+
+Creiamo il nuovo file "mockup.html.erb" nella cartella layouts.
+
+{id="01-22-01_06", title=".../app/views/layouts/mockup.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
 ```
 <!DOCTYPE html>
 <html>
@@ -111,7 +114,7 @@ Creiamo il nuovo file "mockup_first_step.html.erb" nella cartella layouts.
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application_mockup', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
@@ -120,21 +123,19 @@ Creiamo il nuovo file "mockup_first_step.html.erb" nella cartella layouts.
 </html>
 ```
 
-Questo layout ha gli elementi essenziali. Nei tags "<body></body>" c'è la sola chiamata <%= yield %> che importa tutto il codice della view. Nei tags "<head></head>" cè il titolo, due chiamate per la sicurezza informatica, e la chiamata al webpack "javascript_pack_tag 'application'" che, come abbiamo visto precedentemente, si occupa anche dello stylesheets.
-
-
+Questo layout ha gli elementi essenziali. Nei tags "<body></body>" c'è la sola chiamata <%= yield %> che importa tutto il codice della view. Nei tags "<head></head>" cè il titolo, due chiamate per la sicurezza informatica, e la chiamata al webpack "javascript_pack_tag 'mockup'" che, come fatto anche precedentemente, si occuperà anche dello stylesheets.
 
 
 
 
 ## Aggiorniamo il controller
 
-aggiungiamo l'azione "login" al controller mockups e diciamogli di utilizzare il layout mockups_yield.
+Diciamo all'azione "login" del controller mockups di utilizzare il layout "mockup".
 
 {id: "01-22-01_07", caption: ".../app/controllers/mockups_controller.rb -- codice 07", format: ruby, line-numbers: true, number-from: 16}
 ```
   def login
-    render layout: 'mockup_first_step'
+    render layout: 'mockup'
   end
 ```
 
@@ -143,19 +144,46 @@ aggiungiamo l'azione "login" al controller mockups e diciamogli di utilizzare il
 
 
 
+## Creiamo i due files "application_mockup" per webpack
+
+Creiamo i due files "application_mockup" per webpack; uno per la parte javascript e l'altro per la pare stylesheets. 
+
+Duplichiamo il file "packs/application.js" e rinominiamo la copia "packs/application_mockup.js". Questo è il file chiamato da "javascript_pack_tag 'application_mockup'" nel layout "mockup". Aggiorniamo infine la copia indicandogli di puntare ad un nuovo stylesheets. (Inoltre potremmo togliere anche alcune chiamate; ad esempio quelle a "trix", ad "actiontext" e ad "activestorage" perché nei mockups non li usiamo) 
+
+{id: "01-22-01_08", caption: ".../app/javascript/packs/application_mockup.js -- codice 08", format: JavaScript, line-numbers: true, number-from: 1}
+```
+//Stylesheets
+require("../stylesheets/application_mockup.scss")
+...
+
+[tutto il codice](#01-22-01_08all)
+
+
+Duplichiamo il file "stylesheets/application.scss" e rinominiamo la copia "stylesheets/application_mockup.scss".
+
+{id: "01-22-01_09", caption: ".../app/javascript/stylesheets/application_mockup.scss -- codice 09", format: ruby, line-numbers: true, number-from: 1}
+```
+@import "bootstrap/scss/bootstrap"; // never forget the semicolon at the end
+@import "./custom";
+...
+
+[tutto il codice](#01-22-01_09all)
+
+
+
 
 ## Importiamo il codice HTML
 
 Adesso che è tutto pronto importiamo il codice HTML dello snippet nella nostra pagina di mockup.
 
-{id: "01-22-01_08", caption: ".../app/views/mockups/login.html.erb -- codice 03", format: HTML+Mako, line-numbers: true, number-from: 1}
+{id: "01-22-01_10", caption: ".../app/views/mockups/login.html.erb -- codice 10", format: HTML+Mako, line-numbers: true, number-from: 1}
 ```
 <div class="container-fluid">
   <div class="row no-gutter">
     <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
 ```
 
-[tutto il codice](#01-22-01_08all)
+[tutto il codice](#01-22-01_10all)
 
 
 
@@ -179,17 +207,17 @@ Il form di login è presente ma manca lo stile. non ci resta che importare il co
 
 ## Importiamo il codice CSS
 
-Importiamo il codice CSS dello snippet nella nostra pagina di mockup. Nello stylesheets/mockup_first_step abbiamo la chiamata al file "application.js" di webpack (javascript_pack_tag 'application'). E su quel file abbiamo richiamato il file di stile "application.scss" (require("../stylesheets/application.scss")). Creiamo quindi il nuovo file "login.scss", dove inseriamo il codice CSS dello snippet, e lo richiamiamo su "application.scss".
+Importiamo il codice CSS dello snippet nella nostra pagina di mockup. Nel layouts/mockup abbiamo la chiamata al file "application_mockup.js" di webpack (javascript_pack_tag 'application_mockup'). E su quel file abbiamo richiamato il file di stile "application_mockup.scss" (require("../stylesheets/application_mockup.scss")). Creiamo quindi il nuovo file "login.scss", dove inseriamo il codice CSS dello snippet, e lo richiamiamo da "application_mockup.scss".
 
-{id: "01-22-01_09", caption: ".../app/javascript/stylesheets/application.scss -- codice 03", format: ruby, line-numbers: true, number-from: 3}
+{id: "01-22-01_11", caption: ".../app/javascript/stylesheets/application_mockup.scss -- codice 11", format: ruby, line-numbers: true, number-from: 3}
 ```
 @import "./login";
 ```
 
-[tutto il codice](#01-22-01_09all)
+[tutto il codice](#01-22-01_11all)
 
 
-{id: "01-22-01_10", caption: ".../app/javascript/stylesheets/login.scss -- codice 03", format: ruby, line-numbers: true, number-from: 3}
+{id: "01-22-01_12", caption: ".../app/javascript/stylesheets/login.scss -- codice 12", format: ruby, line-numbers: true, number-from: 3}
 ```
 :root {
   --input-padding-x: 1.5rem;
@@ -200,7 +228,7 @@ Importiamo il codice CSS dello snippet nella nostra pagina di mockup. Nello styl
 .image {
 ```
 
-[tutto il codice](#01-22-01_10all)
+[tutto il codice](#01-22-01_12all)
 
 
 

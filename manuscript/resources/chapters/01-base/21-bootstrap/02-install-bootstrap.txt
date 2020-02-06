@@ -209,7 +209,7 @@ Per la posizione abbiamo creato una cartella stylesheets dentro la cartella di w
 Creiamo quindi la nuova cartella "stylesheets" dentro la cartella ".../app/javascript". Mettiamo nella cartella appena creata il file "application.scss".
 
 
-{id: "01-21-02_05", caption: ".../app/javascript/stylesheets/application.scss -- codice 05", format: JavaScript, line-numbers: true, number-from: 1}
+{id: "01-21-02_05", caption: ".../app/javascript/stylesheets/application.scss -- codice 05", format: ruby, line-numbers: true, number-from: 1}
 ```
 //@import "~bootstrap/scss/bootstrap"; // never forget the semicolon at the end
 @import "bootstrap/scss/bootstrap"; // never forget the semicolon at the end
@@ -231,8 +231,10 @@ Avendo inserito il "require("../stylesheets/application.scss")" in "javascript/p
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
 ```
 
-Così funziona tutto!
-Un'alternativa a "require("../stylesheets/application.scss")" dovrebbe essere il reinstradamento sul "layout" indicando di usare webpack (stylesheet_pack_tag) invece dell'asset pipeline (stylesheet_link_tag)
+Così funziona tutto in locale.
+
+
+ATTENZIONE: questo non funziona quando andiamo in produzione su heroku. Su Heroku serve "stylesheet_pack_tag"
 
 {id: "01-21-02_06", caption: ".../app/views/layouts/application.html.erb -- codice 06", format: HTML+Mako, line-numbers: true, number-from: 8}
 ```
@@ -241,7 +243,7 @@ Un'alternativa a "require("../stylesheets/application.scss")" dovrebbe essere il
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
 ```
 
-Ma questa modalità al momento non funziona. 
+Adesso lo style funziona anche su heroku.
 
 
 

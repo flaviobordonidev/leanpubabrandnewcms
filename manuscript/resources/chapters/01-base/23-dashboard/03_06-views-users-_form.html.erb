@@ -1,0 +1,102 @@
+<%= form_with(model: user, local: true) do |form| %>
+
+  <div class="row">
+    <!-- Basic info section -->
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><%= yield(:page_title) %></h5>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :email %>
+              <%= form.text_field :email, placeholder: true, class: "form-control" %>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :password %>
+              <%= form.password_field :password, placeholder: true, class: "form-control" %>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :password_confirmation %>
+              <%= form.password_field :password_confirmation, placeholder: true, class: "form-control" %>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <% if current_user.present? and current_user.admin? and @user != current_user %>
+              <div class="form-group">    
+                <%= form.label :role %>
+                <%#= form.select(:role, User.roles.keys.map {|role| [role.titleize,role]}) %>
+                <%= form.select(:role, User.roles.keys.map {|role| [role.titleize,role]}, {}, {class: "form-control"}) %>
+              </div>
+            <% end %>
+          </li>
+          <li class="list-group-item">
+            <div class="actions">
+              <%#= form.submit %>
+              <%#= form.submit "Aggiorna/Modifica", class: "btn btn-success btn-lg btn-block"%>
+              <%= form.submit class: "btn btn-success btn-lg btn-block"%>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- Optional info section -->
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Dati opzionali</h5>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :name %>
+              <%= form.text_field :name, placeholder: true, class: "form-control" %>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :account_image %>
+              <% if user.account_image.attached? %>
+                <%#= image_tag user.account_image.variant(resize_to_fit: [100, 100]), style: "border-radius: 50%" %>
+                <%= image_tag user.account_image.variant(resize_to_fill: [100, 100, { gravity: 'North' }]), style: "border-radius: 50%" %>
+                <%= image_tag user.account_image.variant(resize_to_fill: [100, 100, { gravity: 'South' }]), style: "border-radius: 50%" %>
+                <%= image_tag user.account_image.variant(resize_to_fill: [100, 100, { gravity: 'East' }]), style: "border-radius: 50%" %>
+                <%= image_tag user.account_image.variant(resize_to_fill: [100, 100, { gravity: 'West' }]), style: "border-radius: 50%" %>
+                <%= image_tag user.account_image.variant(resize_to_fill: [100, 100, { gravity: 'Center' }]), style: "border-radius: 50%" %>
+                <%= image_tag user.account_image.variant(resize_to_fill: [100, 100]), style: "border-radius: 50%" %>
+
+                <%#= link_to 'Remove', delete_image_attachment_eg_post_path(user.account_image.id), method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% else %>
+                    <p>Nessuna immagine presente</p>
+              <% end %>
+              <p><%= form.file_field :account_image %></p>
+            </div>
+          </li>
+          <li class="list-group-item">
+           <div class="field">
+              <%= form.label :biography %>
+              <%= form.text_area :biography, rows: "5", class: "form-control" %>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <% if user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= t("form_errors_message", count: user.errors.count) %></h2>
+      <ul>
+        <% user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<% end %>

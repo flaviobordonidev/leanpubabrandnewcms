@@ -54,3 +54,26 @@ You might need to point to a specific section (anchor) in the page which you can
 <%= link_to "Section", root_path(:anchor => "interesting-section") %>
 # => <a href="/#interesting-section">Section</a>
 
+
+
+
+## Links che puntano a azione specifica
+
+  questo paragrafo è interessante per creare dei links che puntano ad un'azione specifica da far fare al controller. Potrebbe essere anche non legata alla view.
+  Ad esempio si può mettere un link per fare un aggiornamento dei dati " get 'data_sync' => 'transactions#sync_db_via_ftp' (vedi Donamat Dashboard)
+  
+  ## Verifichiamo gli instradamenti dei links
+  
+  Giochiamo un po' con le routes. Aggiungiamo i percorsi "sections" e "signatures" ma al momento li leghiamo alle pagine di examples
+    
+  {id="02-03-02_03", title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=9}
+  ```
+    get 'sections' => 'mockups#page_a'
+    get 'signatures' => 'mockups#page_b'
+    get 'mockups/page_a'
+    get 'mockups/page_b'
+  ```
+  
+  [Codice 03](#02-03-02_03all)
+  
+  Così possiamo andare nella stessa pagina sia con il percorso di default mydomain.com/example_pages/page_c sia con mydomain.com/signatures

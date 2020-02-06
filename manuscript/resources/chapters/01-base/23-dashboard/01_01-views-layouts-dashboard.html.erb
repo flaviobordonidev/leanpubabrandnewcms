@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= yield(:html_head_title) %> | Baseline6_0</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%#= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %><!-- non usiamo asset-pipeline -->
+    <%= stylesheet_pack_tag 'application_dashboard', media: 'all', 'data-turbolinks-track': 'reload' %><!-- serve per heroku. In locale non serve perché indichiamo lo stile direttamente da "packs/application.js"-->
+    <%= javascript_pack_tag 'application_dashboard', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <p class="alert alert-info text-center">Ambiente Dashboard</p>
+    <% if notice %><p class="alert alert-info"><%= notice %></p><% end %>
+    <% if alert %><p class="alert alert-warning"><%= alert %></p><% end %>    
+    <%= yield %>
+  </body>
+</html>

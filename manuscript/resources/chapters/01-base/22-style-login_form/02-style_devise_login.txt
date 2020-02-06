@@ -1,4 +1,5 @@
-# Implementiamo lo stile sulla vera pagina di Login
+{id: 01-base-22-style-login_form-02-style_devise_login}
+# Cap 22.2 -- Implementiamo lo stile sulla vera pagina di Login
 
 La pagina di login è quella di Devise quindi andiamo a vederla
 
@@ -9,7 +10,7 @@ La pagina di login è quella di Devise quindi andiamo a vederla
 
 la pagina di login di devise la troviamo sotto views/users/sessions/new.html.erb
 
-{id="02-04-04_01", title=".../app/views/users/sessions/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=19}
+{id: "01-22-02_01", caption: ".../app/views/users/sessions/new.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 1}
 ```
 <h2>Log in</h2>
 
@@ -39,8 +40,6 @@ la pagina di login di devise la troviamo sotto views/users/sessions/new.html.erb
 <%= render "users/shared/links" %>
 ```
 
-[Codice 01](#02-04-04_01all)
-
 
 
 
@@ -48,35 +47,29 @@ la pagina di login di devise la troviamo sotto views/users/sessions/new.html.erb
 
 Nei capitoli precedenti abbiamo associato le pagine users/session di devise al layout "entrance" esplicitandolo nel controller users
 
-
-{id="02-04-04_02", title=".../controllers/users/sessions_controller.rb", lang=ruby, line-numbers=on, starting-line-number=6}
+{id: "01-22-02_02", caption: ".../controllers/users/sessions_controller.rb -- codice 02", format: ruby, line-numbers: true, number-from: 6}
 ```
   layout 'entrance'
 ```
 
-[Codice 02](#02-04-04_02all)
+[tutto il codice](#01-22-02_02all)
 
 
 Quindi lavoriamo sul layout "entrance" per abilitare bootstrap e lo stile personalizzato "login.scss".
-Visto che questa parte di stile e di layout è differente dal resto dell'applicazione la separiamo mettendo a tutti i files interessati il prefisso "entrance_". Quindi:
+Visto che questa parte di stile e di layout è differente dal resto dell'applicazione la separiamo come abbiamo fatto per i "mockups".
 
-* Rinominiamo il file "login.scss" in "entrance_login.scss".
-* Duplichiamo il file "packs/application.js" e rinominiamo la copia in "packs/entrance_application.js".
-* Duplichiamo il file "stylesheets/application.scss" e rinominiamo la copia in "stylesheets/entrance_application.scss".
+* Duplichiamo il file "packs/application_mockup.js" e rinominiamo la copia in "packs/application_entrance.js".
+* Duplichiamo il file "stylesheets/application_mockup.scss" e rinominiamo la copia in "stylesheets/application_entrance.scss".
 
-Dal "layouts/entrance" chiamiamo il file webpack "entrance_application".
+Dal "layouts/entrance" chiamiamo i due files webpack "application_entrance".
 
-{id="02-04-04_03", title=".../app/views/layouts/entrance.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=10}
+{id: "01-22-02_03", caption: ".../app/views/layouts/entrance.html.erb -- codice 03", format: HTML+Mako, line-numbers: true, number-from: 10}
 ```
-    <%= javascript_pack_tag 'entrance_application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag 'application_entrance', media: 'all', 'data-turbolinks-track': 'reload' %><!-- serve per heroku -->
+    <%= javascript_pack_tag 'application_entrance', 'data-turbolinks-track': 'reload' %>
 ```
 
-[Codice 03](#02-04-04_03all)
-
-
-
-
-
+[tutto il codice](#01-22-02_03all)
 
 
 
@@ -85,69 +78,98 @@ Dal "layouts/entrance" chiamiamo il file webpack "entrance_application".
 
 Per prima cosa copiamo la parte di mockups/login all'inizio della view
 
-{id="02-04-04_04", title=".../app/views/users/sessions/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=19}
+{id: "01-22-02_04", caption: ".../app/views/users/sessions/new.html.erb -- codice 04", format: HTML+Mako, line-numbers: true, number-from: 1}
 ```
 <div class="container">
   <div class="row">
 ```
 
-[Codice 04](#02-04-04_04all)
+[tutto il codice](#01-22-02_04all)
 
 Verifichiamo sul preview come si presenta e poi sostituiamo di volta in volta i campi dinamici.
 
 
 
 
-### Step 1 di sostituzione
+## Verifichiamo preview
 
-{id="02-04-04_05", title=".../app/views/users/sessions/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=8}
+{title="terminal", lang=bash, line-numbers=off}
 ```
-          <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "form-signin") do |f| %>
-
-            <div class="form-label-group">
-              <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-              <label for="inputEmail">Email address</label>
-            </div>
-            <div class="field">
-              <%= f.label :email %><br />
-              <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-            </div>
+$ sudo service postgresql start
+$ rails s
 ```
 
-[Codice 05](#02-04-04_05all)
+apriamolo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/login
+
+Verifichiamo la vera pagina di login. La pagina che si presenta ha il mockup finto in cima ed il vero form per il login più in basso nella pagina.
+Nei prossimi paragrafi sostituiamo i campi statici del mockup con quelli dinamici del vero form di login.
 
 
 
 
-### Step 2 di sostituzione
+## Sostituzione Passo 1
 
-{id="02-04-04_06", title=".../app/views/users/sessions/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=8}
+Mettiamo il form_for nella griglia ed inseriamo le varie formattazioni prendendole dal codice del mockup ed adattandole per il codice Rails.
+
+{id: "01-22-02_05", caption: ".../app/views/users/sessions/new.html.erb -- codice 05", format: HTML+Mako, line-numbers: true, number-from: 11}
 ```
-          <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "form-signin") do |f| %>
-
-            <div class="form-label-group">
-              <%= f.email_field :email, autofocus: true, required: true, autocomplete: "email", id: "inputEmail", class: "form-control", placeholder: "Email address" %>
-              <%= f.label :email, for: "inputEmail" %>
-            </div>
-
-            <div class="form-label-group">
-              <%= f.password_field :password, autocomplete: "current-password", id: "inputPassword", class: "form-control", placeholder: "Password", required: true %>
-              <%= f.label :password, for: "inputPassword" %>
-            </div>
-
-            <% if devise_mapping.rememberable? %>
-              <div class="custom-control custom-checkbox mb-3">
-                <%= f.check_box :remember_me, class: "custom-control-input", id: "customCheck1" %>
-                <%= f.label :remember_me, for: "customCheck1", class: "custom-control-label" %>
-              </div>
-            <% end %>
-
-            <div class="actions">
-              <%= f.submit "Log in", class: "btn btn-lg btn-primary btn-block text-uppercase" %>
-            </div>
+              <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+                <div class="form-label-group">
+                  <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "Email address" %>
+                  <%= f.label :email %>
+                </div>
+              
+                <div class="form-label-group">
+                  <%= f.password_field :password, autocomplete: "current-password", class: "form-control", placeholder: "password" %>
+                  <%= f.label :password %>
+                </div>
+              
+                <% if devise_mapping.rememberable? %>
+                  <div class="custom-control custom-checkbox mb-3">
+                    <%= f.check_box :remember_me, class: "custom-control-input" %>
+                    <%= f.label :remember_me, class: "custom-control-label" %>
+                  </div>
+                <% end %>
+              
+                <div class="actions">
+                  <%= f.submit "Log in", class: "btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" %>
+                </div>
+              <% end %>
 ```
 
-[Codice 06](#02-04-04_06all)
+
+Nota: Se fosse servito inserire una classe nel codice del form_for si sarebbe fatto come nel seguente esempio:
+
+{caption: "esempio didattico -- codice s.n.", format: HTML+Mako, line-numbers: true, number-from: 11}
+```
+              <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "form-signin") do |f| %>
+```
+
+
+
+
+## Sostituzione Passo 2
+
+Puliamo dal codice che non ci serve e che non usiamo.
+
+{id: "01-22-02_06", caption: ".../app/views/users/sessions/new.html.erb -- codice 06", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<div class="container-fluid">
+  <div class="row no-gutter">
+    <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
+```
+
+Al momento lasciamo come immagine il puntamento a "'https://source.unsplash.com/WEQbe2jBg40/600x1200'" che è su login.scss.
+
+
+Nota: Se avessimo usato il "forgot your password?" avremmo formattato il partial corrispondente.
+
+{id: "01-22-02_07", caption: ".../app/views/users/shared/_links.html.erb -- codice 07", format: HTML+Mako, line-numbers: true, number-from: 10}
+```
+  <%= link_to "Forgot your password?", new_password_path(resource_name), class: "small" %><br />
+```
 
 
 
@@ -169,14 +191,12 @@ Vediamo che tutto funziona come ci aspettiamo.
 
 
 
-
-
 ## archiviamo su git
 
 {caption: "terminal", format: bash, line-numbers: false}
 ```
 $ git add -A
-$ git commit -m "add login stylesheets"
+$ git commit -m "add style to login"
 ```
 
 

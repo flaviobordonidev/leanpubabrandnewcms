@@ -80,3 +80,30 @@ Important: Unlike switch statements in many other languages, Ruby’s case does 
 <% end %>
 ~~~~~~~~
 
+
+
+
+## Esempio sul menu di navigazione navbar
+
+```
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <% case params[:locale] %>
+          <% when "en" %>
+            Inglese
+          <% when "it" %>
+            Italiano
+          <% else %>
+            Italiano <!-- default -->
+          <% end %>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <%= link_to params.permit(:locale).merge(locale: 'en'), class: "dropdown-item #{'active' if params[:locale] == 'en'}" do %>
+            <span class="glyphiconmy ico_language_us right-pad"></span> Inglese
+          <% end %>
+          <%= link_to params.permit(:locale).merge(locale: "it"), class: "dropdown-item #{'active' if params[:locale] == 'it'}" do %>
+            <span class="glyphiconmy ico_language_it right-pad"></span> Italiano
+          <% end %>
+        </div>
+      </li>
+```
