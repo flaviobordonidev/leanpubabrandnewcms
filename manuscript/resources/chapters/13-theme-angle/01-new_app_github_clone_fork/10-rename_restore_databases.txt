@@ -1,0 +1,216 @@
+# PostgreSQL Databases per la mia app
+
+Creiamo i databases su postgreSQL in modo da attivare la connessione con la nostra applicazione myapp
+Questa installazione l'abbiamo già vista in dettaglio nel capitolo 01-beginning/01-new_app/06-pg_app_databases
+
+
+
+
+## Verifichiamo connessione
+
+Anche se già visto nel preview, verifichiamo da terminale che non c'è comunicazione con il database.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ rails db:migrate
+
+
+user_fb:~/environment/angletheme (rp) $ rails db:migrate
+rails aborted!
+ActiveRecord::NoDatabaseError: FATAL:  database "bl6_0_development" does not exist
+```
+
+Prende errore perché non esistono i databases. Inoltre i nomi dei databases che cerca riportano ancora il vecchio nome "bl6_0".
+
+
+
+
+## Rinominiamo sulla nostra app i databases da cercare
+
+rinominiamo da "bl6_0_development" a "angletheme_development".
+
+
+{id: "13-01-09_01", caption: ".../config/database.yml -- codice 01", format: yaml, line-numbers: true, number-from: 24}
+```
+development:
+  <<: *default
+  database: angletheme_development
+```
+
+{caption: ".../config/database.yml -- continua", format: yaml, line-numbers: true, number-from: 58}
+```
+test:
+  <<: *default
+  database: angletheme_test
+```
+
+{caption: ".../config/database.yml -- continua", format: yaml, line-numbers: true, number-from: 81}
+```
+production:
+  <<: *default
+  database: angletheme_production
+  username: angletheme
+  password: <%= ENV['PRODUCTION_DATABASE_PASSWORD'] %>
+```
+
+[tutto il codice](#13-01-09_01all)
+
+
+
+
+
+## Verifichiamo connessione
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ rails db:migrate
+
+
+user_fb:~/environment/angletheme (rp) $ rails db:migrate
+rails aborted!
+ActiveRecord::NoDatabaseError: FATAL:  database "angletheme_development" does not exist
+```
+
+Continua a prende errore perché non esistono i databases ma adesso i nomi dei databases che cerca sono corretti.
+
+
+
+
+## Creiamo i databases
+
+Creiamo i databases sul postgreSQL del workspace di cloud9.
+Creiamo i databases per development e test usando il comando "createdb" di postgreSQL.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ createdb angletheme_development
+$ createdb angletheme_test
+
+
+user_fb:~/environment/angletheme (rp) $ sudo service postgresql start
+user_fb:~/environment/angletheme (rp) $ createdb angletheme_development
+user_fb:~/environment/angletheme (rp) $ createdb angletheme_test
+user_fb:~/environment/angletheme (rp) $ 
+```
+
+Nella creazione dei databases non ho messaggi di creazione effettuata sul terminale. 
+
+verifichiamo però che adesso c'è comunicazione eseguendo
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ rails db:migrate
+
+
+user_fb:~/environment/angletheme (rp) $ rails db:migrate
+== 20191105135031 DeviseCreateUsers: migrating ================================
+-- create_table(:users)
+   -> 0.0201s
+-- add_index(:users, :email, {:unique=>true})
+   -> 0.0102s
+-- add_index(:users, :reset_password_token, {:unique=>true})
+   -> 0.0099s
+== 20191105135031 DeviseCreateUsers: migrated (0.0427s) =======================
+
+== 20191109221023 CreateEgUsers: migrating ====================================
+-- create_table(:eg_users)
+   -> 0.0215s
+== 20191109221023 CreateEgUsers: migrated (0.0223s) ===========================
+
+== 20191127115053 CreateEgPosts: migrating ====================================
+-- create_table(:eg_posts)
+   -> 0.0315s
+== 20191127115053 CreateEgPosts: migrated (0.0324s) ===========================
+
+== 20191209095017 CreateEgCompanies: migrating ================================
+-- create_table(:eg_companies)
+   -> 0.0213s
+== 20191209095017 CreateEgCompanies: migrated (0.0221s) =======================
+
+== 20191209161046 CreateEgComponents: migrating ===============================
+-- create_table(:eg_components)
+   -> 0.0315s
+== 20191209161046 CreateEgComponents: migrated (0.0323s) ======================
+
+== 20191210115437 AddPartNumberToEgCompany: migrating =========================
+-- add_column(:eg_companies, :part_number, :string)
+   -> 0.0018s
+== 20191210115437 AddPartNumberToEgCompany: migrated (0.0022s) ================
+
+== 20191210120124 AddPartNumberToEgComponent: migrating =======================
+-- add_column(:eg_components, :part_number, :string)
+   -> 0.0018s
+== 20191210120124 AddPartNumberToEgComponent: migrated (0.0022s) ==============
+
+== 20200114184808 AddPriceToEgPosts: migrating ================================
+-- add_column(:eg_posts, :price, :decimal, {:precision=>19, :scale=>4, :default=>0})
+   -> 0.0327s
+== 20200114184808 AddPriceToEgPosts: migrated (0.0331s) =======================
+
+== 20200116103657 AddRoleToUsers: migrating ===================================
+-- add_column(:users, :role, :integer, {:default=>0})
+   -> 0.0435s
+-- add_index(:users, :role, {:unique=>false})
+   -> 0.0100s
+== 20200116103657 AddRoleToUsers: migrated (0.0543s) ==========================
+
+== 20200121112150 CreateActiveStorageTables: migrating ========================
+-- create_table(:active_storage_blobs, {})
+   -> 0.0322s
+-- create_table(:active_storage_attachments, {})
+   -> 0.0429s
+== 20200121112150 CreateActiveStorageTables: migrated (0.0759s) ===============
+
+== 20200126163125 CreateActionTextTables: migrating ===========================
+-- create_table(:action_text_rich_texts)
+   -> 0.0329s
+== 20200126163125 CreateActionTextTables: migrated (0.0333s) ==================
+
+== 20200206104345 AddBiographyToUsers: migrating ==============================
+-- add_column(:users, :biography, :text)
+   -> 0.0018s
+== 20200206104345 AddBiographyToUsers: migrated (0.0022s) =====================
+
+== 20200207090044 AddPublishedToEgPosts: migrating ============================
+-- add_column(:eg_posts, :published, :boolean, {:default=>false})
+   -> 0.0323s
+-- add_column(:eg_posts, :published_at, :datetime)
+   -> 0.0009s
+== 20200207090044 AddPublishedToEgPosts: migrated (0.0337s) ===================
+
+== 20200218122804 CreateEgPostsTranslations: migrating ========================
+== 20200218122804 CreateEgPostsTranslations: migrated (0.0779s) ===============
+
+== 20200218165908 AddDescriptionToEgPosts: migrating ==========================
+-- add_column(:eg_posts, :description, :text)
+   -> 0.0019s
+== 20200218165908 AddDescriptionToEgPosts: migrated (0.0022s) =================
+
+== 20200218170858 AddDescriptionToEgPostTranslations: migrating ===============
+== 20200218170858 AddDescriptionToEgPostTranslations: migrated (0.0020s) ======
+
+== 20200218173303 RemoveDescriptionFieldFromEgPosts: migrating ================
+-- remove_column(:eg_posts, :description, :text)
+   -> 0.0017s
+== 20200218173303 RemoveDescriptionFieldFromEgPosts: migrated (0.0021s) =======
+
+user_fb:~/environment/angletheme (rp) $ 
+```
+
+Oltre a verificare che c'è comunicazione vengono anche eseguiti tutti i migration! :)
+
+
+
+
+## Verifichiamo preview
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails s
+```
+
+* https://mycloud9path.amazonaws.com/
+
+Sta funzionando! Dobbiamo solo aggiungere gli utenti per poter effettuare il login.

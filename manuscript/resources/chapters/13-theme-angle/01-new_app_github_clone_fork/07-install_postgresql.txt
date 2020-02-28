@@ -142,6 +142,10 @@ host    all             all             ::1/128                 md5
 {caption: "terminal", format: bash, line-numbers: false}
 ```
 $ sudo service postgresql start
+
+
+user_fb:~/environment/angletheme (rp) $ sudo service postgresql start
+user_fb:~/environment/angletheme (rp) $ 
 ```
 
 
@@ -178,3 +182,22 @@ ec2-user:~/environment $
 ```
 
 Adesso è tutto inizializzato e pronto per lavorare su aws Cloud9.
+
+
+
+
+## verifichiamo preview
+
+Attiviamo il webserver.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails s
+
+user_fb:~/environment/angletheme (master) $ sudo service postgresql start
+user_fb:~/environment/angletheme (master) $ rails s
+... ERRORE...
+```
+
+Prendiamo errore perché ci manca il ripristino di "Rails" che facciamo nel prossimo capitolo.
