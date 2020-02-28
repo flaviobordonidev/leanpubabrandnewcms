@@ -1,0 +1,180 @@
+# PostgreSQL Databases per myapp
+
+Ripristiniamo l'ambiente (Restore environment). Ripristiniamo il database PostgreeSQL
+
+
+
+
+## Apriamo il branch "Ripristiniamo PostgreSQL"
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout -b rp
+```
+
+
+
+
+## Errore su Bundle Install
+
+Per ripristinare l'ambiente Rails dobbiamo eseguire "bundle install"
+Però se lanciamo "bundle install" riceviamo un errore nella gemma PostgreeSQL perché non abbiamo PostgreeSQL installato.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ bundle install
+
+ubuntu:~/environment/s5beginning (master) $ bundle install
+The dependency tzinfo-data (>= 0) will be unused by any of the platforms Bundler is installing for. Bundler is installing for ruby but the dependency is only for x86-mingw32, x86-mswin32, x64-mingw32, java. To add those platforms to the bundle, run `bundle lock --add-platform x86-mingw32 x86-mswin32 x64-mingw32 java`.
+Fetching gem metadata from https://rubygems.org/............
+Fetching rake 12.3.3
+
+[...]
+
+To see why this extension failed to compile, please check the mkmf.log which can be found here:
+
+  /home/ubuntu/.rvm/gems/ruby-2.6.3/extensions/x86_64-linux/2.6.0/pg-1.1.4/mkmf.log
+
+extconf failed, exit code 1
+
+Gem files will remain installed in /home/ubuntu/.rvm/gems/ruby-2.6.3/gems/pg-1.1.4 for inspection.
+Results logged to /home/ubuntu/.rvm/gems/ruby-2.6.3/extensions/x86_64-linux/2.6.0/pg-1.1.4/gem_make.out
+
+An error occurred while installing pg (1.1.4), and Bundler cannot continue.
+Make sure that `gem install pg -v '1.1.4' --source 'https://rubygems.org/'` succeeds before bundling.
+
+In Gemfile:
+  pg
+```
+
+Prima di procedere dobbiamo quindi installare postgreSQL.
+Questa installazione l'abbiamo già vista in dettaglio nel capitolo 01-beginning/01-new_app/04-install_postgresql
+Quindi in questo capitolo saltiamo le spiegazioni.
+
+
+
+
+## Installiamo PostgreSQL
+
+Siamo su EC2 instance con OS Ubuntu che usa "apt" come packet manager
+
+Setting up Postgres on Cloud9 IDE
+Install Postgres via apt
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo apt update
+$ sudo apt install postgresql postgresql-contrib libpq-dev
+-> y
+```
+
+
+
+
+## Edit postgres conf to connect via localhost:5432
+
+Impostiamo il collegamento di rails a postgresql con l'indirizzo "localhost" e la porta "5432"
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo vim /etc/postgresql/10/main/postgresql.conf
+```
+
+Decomentiamo le righe (da --> a)
+
+* #listen_addresses = 'localhost' --> listen_addresses = 'localhost'
+* #port = 5432                    --> port = 5432
+
+(la seconda riga potrebbe già essere decommentata)
+
+I comandi VIM da usare sono:
+
+* muoversi con le frecce. 
+* [i] per entrare in modalità modifica. 
+* [canc] per cancellare.
+* [ESC] per uscire dalla modifica.
+* [:w] per salvare
+* [:q] per uscire
+
+![Fig. 01](images/01-beginning/01-new_app/03_01-postgresql_conf-uncomment-addresses_and_port.PNG)
+
+
+
+
+## Update pg_hba.conf file for ec2-user auth:
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo vim /etc/postgresql/10/main/pg_hba.conf
+```
+
+Trovare la parte che è
+
+```
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+# "local" is for Unix domain socket connections only
+local   all             all                                     peer
+# IPv4 local connections:
+host    all             all             127.0.0.1/32            md5
+# IPv6 local connections:
+host    all             all             ::1/128                 md5
+```
+
+E modificare in
+
+```
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+# "local" is for Unix domain socket connections only
+local   all             all                                     trust
+# IPv4 local connections:
+host    all             ubuntu          127.0.0.1/0             trust
+# IPv6 local connections:
+host    all             all             ::1/128                 md5
+```
+
+
+
+
+## Start / Restart postgres server
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+```
+
+
+
+
+## Login as Postgres User and Change Password / Add user: "ubuntu"
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo su - postgres 
+-> psql -U postgres
+--> ALTER USER postgres WITH PASSWORD 'myPassword123';
+--> CREATE USER "ubuntu" SUPERUSER;
+--> ALTER USER "ubuntu" WITH PASSWORD 'myPassword123';
+--> \q
+-> exit
+
+
+ec2-user:~/environment $ sudo su - postgres 
+-bash-4.2$ psql -U postgres
+psql (9.2.24)
+Type "help" for help.
+
+postgres=# ALTER USER postgres WITH PASSWORD 'myPassword123';
+ALTER ROLE
+postgres=# CREATE USER "ubuntu" SUPERUSER;
+CREATE ROLE
+postgres=# ALTER USER "ubuntu" WITH PASSWORD 'myPassword123';
+ALTER ROLE
+postgres=# \q
+-bash-4.2$ exit
+logout
+ec2-user:~/environment $ 
+```
+
+Adesso è tutto inizializzato e pronto per lavorare su aws Cloud9.

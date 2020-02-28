@@ -1,3 +1,0 @@
-# Inseriamo le immagini nel database
-
-basta aggiungere il campo <%= image_tag @post.image_url %>

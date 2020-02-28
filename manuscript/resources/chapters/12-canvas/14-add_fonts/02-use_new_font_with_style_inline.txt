@@ -1,5 +1,0 @@
-# Usiamo il nuovo font appena importato.
-
-Possiamo usarlo direttamente nella pagina html chiamadolo con style inline
-
-                <div style="font-family:Desdemona;">Il gioco</div>

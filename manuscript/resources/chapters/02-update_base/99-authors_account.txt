@@ -1,4 +1,23 @@
 
+
+
+```
+class Authors::PostsController < ApplicationController
+  before_action :set_post, only: [:edit, :update, :destroy]
+  before_action :authenticate_user!
+  layout 'dashboard'
+
+  # GET /posts
+  # GET /posts.json
+  def index
+    @posts = current_user.posts.order(created_at: "DESC") unless current_user.admin?
+    @posts = Post.all.order(created_at: "DESC") if current_user.admin?
+    authorize @posts
+  end
+```
+  
+
+
 E' la copia di 03-users_add_fields_round_image prima delle modifiche.
 
 Aveva del codice pensato per gli autori

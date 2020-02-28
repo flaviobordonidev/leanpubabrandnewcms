@@ -1,4 +1,6 @@
-# Pubblicato
+{id: 01-base-26-eg_posts_published-01-published_seeds}
+# Cap 26.1 -- Gestiamo publicazione articoli
+
 
 filtriamo per gli articoli pubblicati.
 
@@ -15,28 +17,29 @@ $ git checkout -b pub
 
 
 
-## Aggiungiamo le colonne per publish su eg_posts
+## Aggiungiamo le colonne per gestire la pubblicazione degli articoli
+
+Aggiungiamo due colonne alla tabella eg_posts
+
+* published      : Un campo boolean per tenere traccia se l'articolo è stato pubblicato o no.
+* published_at   : Utile per gestire pubblicazioni automatiche o allineare le date con le campagne di email marketing.
 
 {caption: "terminal", format: bash, line-numbers: false}
 ```
-$ rails g migration AddPublishedToPosts published:boolean published_at:datetime
+$ rails g migration AddPublishedToEgPosts published:boolean published_at:datetime
 ```
 
-* published_at   : Utile per gestire pubblicazioni automatiche o allineare le date con le campagne di email marketing.
+aggiungiamo al migrate creato il "default: false" alla colonna :published
 
-aggiungiamo al migrate creato il " default: false " alla colonna :published
-
-{id="02-08-01_01", title=".../db/migrate/xxx_add_published_to_posts.rb", lang=ruby, line-numbers=on, starting-line-number=1}
+{id: "01-26-01_01", caption: ".../db/migrate/xxx_add_published_to_eg_posts.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
 ```
-class AddPublishedToPosts < ActiveRecord::Migration[5.2]
+class AddPublishedToEgPosts < ActiveRecord::Migration[6.0]
   def change
-    add_column :posts, :published, :boolean, default: false
-    add_column :posts, :published_at, :datetime
+    add_column :eg_posts, :published, :boolean, default: false
+    add_column :eg_posts, :published_at, :datetime
   end
 end
 ```
-
-[Codice 01](#02-08-01_01all)
 
 eseguiamo il migrate 
 
@@ -54,12 +57,12 @@ $ rails db:migrate
 aggiungiamo uno scope per gli articoli pubblicati.
 Nel model nella sezione "# == Scopes".
 
-{id="02-08-01_02", title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=28}
+{id: "01-26-01_02", caption: ".../app/models/post.rb -- codice 02", format: ruby, line-numbers: true, number-from: 28}
 ```
   scope :published, -> { where(published: true) }
 ```
 
-[Codice 02](#02-08-01_02all)
+[tutto il codice](#01-26-01_02all)
 
 
 
@@ -67,14 +70,19 @@ Nel model nella sezione "# == Scopes".
 ## Aggiorniamo il posts_controller
 
 Per limitare la visibilità ai soli articoli pubblicati per una persona non loggata.
-Nel controller "default posts_controller" sull'azione " index "
+Aggiorniamo l'azione "index".
 
-{id="02-08-01_03", title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=5}
+{id: "01-26-01_03", caption: ".../app/controllers/eg_posts_controller.rb -- codice 03", format: ruby, line-numbers: true, number-from: 5}
 ```
-    @posts = Post.published.order(created_at: "DESC")
+    #@eg_posts = EgPost.all
+    #@pagy, @eg_posts = pagy(EgPost.all, items: 2)
+    #@posts = EgPost.published.order(created_at: "DESC")
+    @pagy, @eg_posts = pagy(EgPost.published.order(created_at: "DESC"), items: 2)
 ```
 
-[Codice 03](#02-08-01_03all)
+[tutto il codice](#01-26-01_03all)
+
+Nelle linee di codice commentate si vedono i vari passaggi fino ad arrivare a visualizzare solo gli articoli pubblicati con la paginazione.
 
 
 
@@ -85,20 +93,23 @@ Nel controller "default posts_controller" sull'azione " index "
 ```
 $ sudo service postgresql start
 $ rails c
--> Post.first.published
--> Post.first.update(published: true)
--> Post.first.published
+-> EgPost.first.published
+-> EgPost.first.update(published: true)
+-> EgPost.first.published
 
 
-2.6.3 :001 > Post.first.update(published: true)
-  Post Load (0.6ms)  SELECT  "posts".* FROM "posts" ORDER BY "posts"."id" ASC LIMIT $1  [["LIMIT", 1]]
+2.6.3 :007 > EgPost.first.published
+  EgPost Load (0.3ms)  SELECT "eg_posts".* FROM "eg_posts" ORDER BY "eg_posts"."id" ASC LIMIT $1  [["LIMIT", 1]]
+ => false 
+2.6.3 :008 > EgPost.first.update(published: true)
+  EgPost Load (0.6ms)  SELECT "eg_posts".* FROM "eg_posts" ORDER BY "eg_posts"."id" ASC LIMIT $1  [["LIMIT", 1]]
    (0.1ms)  BEGIN
-  User Load (8.2ms)  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2  [["id", 2], ["LIMIT", 1]]
-  Post Update (2.1ms)  UPDATE "posts" SET "published" = $1, "updated_at" = $2 WHERE "posts"."id" = $3  [["published", true], ["updated_at", "2019-08-24 12:36:49.201386"], ["id", 1]]
-   (0.9ms)  COMMIT
+  User Load (0.4ms)  SELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2  [["id", 1], ["LIMIT", 1]]
+  EgPost Update (0.5ms)  UPDATE "eg_posts" SET "published" = $1, "updated_at" = $2 WHERE "eg_posts"."id" = $3  [["published", true], ["updated_at", "2020-02-07 09:22:47.171470"], ["id", 1]]
+   (1.1ms)  COMMIT
  => true 
- 2.6.3 :003 > Post.first.published
-  Post Load (0.6ms)  SELECT  "posts".* FROM "posts" ORDER BY "posts"."id" ASC LIMIT $1  [["LIMIT", 1]]
+2.6.3 :009 > EgPost.first.published
+  EgPost Load (0.6ms)  SELECT "eg_posts".* FROM "eg_posts" ORDER BY "eg_posts"."id" ASC LIMIT $1  [["LIMIT", 1]]
  => true 
 ```
 
@@ -127,7 +138,7 @@ Adesso viene visualizzato solo l'articolo in cui abbiamo impostato "published: t
 {caption: "terminal", format: bash, line-numbers: false}
 ```
 $ git add -A
-$ git commit -m "add published to posts"
+$ git commit -m "add published to eg_posts"
 ```
 
 
@@ -174,84 +185,3 @@ $ git push origin master
 
 
 
-
-[Codice 01](#02-08-01_01)
-
-{id="02-08-01_01all", title=".../db/migrate/xxx_add_published_to_posts.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-```
-class AddPublishedToPosts < ActiveRecord::Migration[5.2]
-  def change
-    add_column :posts, :published, :boolean, default: false
-    add_column :posts, :published_at, :datetime
-  end
-end
-```
-
-
-
-
-[Codice 02](#02-08-01_02)
-
-{id="02-08-01_02all", title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-```
-class Post < ApplicationRecord
-  # == Constants ============================================================
-
-  # == Attributes ===========================================================
-
-  enum type_of_content: {image: 0, video_youtube: 1, video_vimeo:2, audio:3}
-  
-  ## ActiveStorage
-  has_one_attached :main_image
-  
-  # == Extensions ===========================================================
-
-  ## friendly_id
-  extend FriendlyId
-  friendly_id :title, use: :slugged
-
-  # == Relationships ========================================================
-
-  belongs_to :user
-
-  # == Validations ==========================================================
-
-  # == Scopes ===============================================================
-
-  scope :published, -> { where(published: true) }
-
-  # == Callbacks ============================================================
-
-  # == Class Methods ========================================================
-
-  # == Instance Methods =====================================================
-  
-  def should_generate_new_friendly_id?
-    title_changed?
-  end
-  
-end
-```
-
-
-
-
-[Codice 03](#02-08-01_03)
-
-{id="02-08-01_03all", title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-```
-class PostsController < ApplicationController
-  # GET /posts
-  # GET /posts.json
-  def index
-    @posts = Post.all.published
-    authorize @posts
-  end
-
-  # GET /posts/1
-  # GET /posts/1.json
-  def show
-    @post = Post.friendly.find(params[:id])
-  end
-end
-```

@@ -1,0 +1,278 @@
+# Importiamo il tema "Angle rails-seed" nella nostra app
+
+Iniziamo la comparazione; compariamo i files uno ad uno, così facendo studiamo anche come è strutturato il template Angular e come si integra con Rails.
+
+Inizia il nostro viaggio nella comparazione dei vari files con conseguente aggiunta di files nuovi files presenti solo nel tema e di modifiche. Entrambe fatte solo quando questo ha senso.
+Per la comparazione di files ci siamo aiutati con il programma "beyond compare" per Mac; ma anche altri sarebbero andati bene.
+Abbiamo fatto il download di "bl6_0" e l'abbiamo comparata con "rails-seed".
+
+
+
+
+## La struttura a cui prestare più attenzione
+
+Nella documentazione è riportata la struttura fino al livello dei files in cui sono presenti delle lavorazioni specifiche per il tema. I files che non sono elencati tendenzialmente sono quelli di base di rails e possiamo saltarli.
+
++---app
+|   +---assets
+|   |   +---api
+|   |   +---config
+|   |   +---i18n
+|   |   +---images
+|   |   +---stylesheets
+|   |       +---angle
+|   |           +---app
+|   |           |   +---charts
+|   |           |   +---common
+|   |           |   +---elements
+|   |           |   +---extras
+|   |           |   +---forms
+|   |           |   +---layout
+|   |           |   +---maps
+|   |           |   +---tables
+|   |           +---bootstrap
+|   |           |   +---mixins
+|   |           |   +---utilities
+|   |           |   +---vendor
+|   |           +---themes
+|   +---channels
+|   +---controllers
+|   +---helpers
+|   +---javascript
+|   |   +---channels
+|   |   +---packs
+|   |       +---angle
+|   |           +---custom
+|   |           +---modules
+|   |               +---charts
+|   |               +---common
+|   |               +---elements
+|   |               +---extras
+|   |               +---forms
+|   |               +---maps
+|   |               +---pages
+|   |               +---tables
+|   +---jobs
+|   +---mailers
+|   +---models
+|   +---views
+|       +---blog
+|       +---charts
+|       +---dashboard
+|       +---ecommerce
+|       +---elements
+|       +---extras
+|       +---forms
+|       +---forum
+|       +---layouts
+|       |   +---partials
+|       +---maps
+|       +---multilevel
+|       +---pages
+|       +---tables
+|       +---widgets
++---bin
++---config
++---db
++---lib
++---log
++---vendor
+
+Come possiamo vedere per importare il tema dobbiamo soffermarci principalmente all'interno della cartella "app".
+
+
+
+
+## Apriamo la cartella "rails-seed"
+
+ci troviamo la seguente situazione
+
+* app/
+* babel.config.js
+* bin/
+* config/
+* config.ru
+* db/
+* Gemfile
+* Gemgile.lock
+* lib/
+* modernizr-config.json
+* package-lock.json
+* package.json
+* postcss.config.js
+* public/
+* Rakefile
+* README.md
+
+Abbiamo visto nel paragrafo precedente che le modifiche significative sono nella cartella "app" che vedremo nel prossimo capitolo.
+In questo capitolo verifichiamo le restanti cartelle per assicurarci che non ci siano parti da importare.
+
+
+
+
+## babel.config.js
+
+Presente anche su bl6_0 con contenuto identico
+
+
+
+
+## config.ru
+
+Presente anche su bl6_0 con contenuto identico
+
+
+
+
+## Gemfile
+
+Presente anche su bl6_0 con differenze ma da non importare.
+
+Il Gemfile su bl6_0 ha più gemme ed è già predisposto per Heroku con la gemma "pg" per postgreeswl.
+Nel Gemfile del tema Angle c'è solo l'avviso che "HEROKU doesn't support sqlite3."
+
+
+
+
+## Gemfile.lock
+
+Presente anche su bl6_0 con differenze ma da non importare.
+
+Questo file è automaticamente creato/aggiornato ogni volta che lanciamo "$ bundle install"
+
+
+
+
+## modernizr-config.json
+
+Non presente su bl6_0 ma da non importare.
+
+Questo file viene creato a seguito del comando "$ npm install" perché è incluso nel "package.json"
+
+Modernizr
+Modernizr build is generated after the command npm install ends. Specifically, using the postinstall script in package.json which at the same time executes the "modernizr" scripts responsible for generating the file modernizr.custom.js under folder node_modules/modernizr/modernizr.custom.js The configuration of the Modernizr build can be found in file modernizr-config.json
+
+
+
+
+## package-lock.json
+
+Non presente su bl6_0 ma da non importare.
+
+Questo file viene creato a seguito del comando "$ npm install" perché è incluso nel "package.json"
+
+
+
+
+## package.json
+
+Presente anche su bl6_0 con differenze da implementare.
+
+Questo file è importante e vanno integrate le differenze perché è il file con la configurazione da cui sono prese le informazioni con il comando "$ npm install".
+
+
+{id: "13-02-02_01", caption: ".../package.json -- codice 01", format: json, line-numbers: true, number-from: 1}
+```
+{
+    "name": "angle",
+    "version": "0.0.0",
+    "description": "Angle - Bootstrap Admin Template",
+    "author": "@themicon_co",
+    "license": "https://wrapbootstrap.com/help/licenses",
+```
+
+[tutto il codice](#13-02-02_01all)
+
+
+
+
+## postcss.config.js
+
+Presente anche su bl6_0 con contenuto identico
+
+
+
+
+## Rakefile
+
+Presente anche su bl6_0 con contenuto identico
+
+
+
+
+## README.md
+
+Presente anche su bl6_0 con differenze ma da non importare.
+
+Questo file ha la descrizione della nostra applicazione.
+
+
+
+
+## app/
+
+Questa cartella la vediamo nel prossimo capitolo.
+
+
+
+
+## bin/
+
+Tutti i files presenti in questa cartella non hanno differenze significative da integrare.
+Possiamo saltarla
+
+
+
+
+## config/
+
+Questa cartella la vediamo nel prossimo capitolo.
+
+
+
+
+## db/
+
+Tutti i files presenti in questa cartella non hanno differenze significative da integrare.
+Possiamo saltarla
+
+
+
+
+## lib/
+
+Tutti i files presenti in questa cartella non hanno differenze significative da integrare.
+Possiamo saltarla
+
+
+
+
+## public/
+
+Tutti i files presenti in questa cartella non hanno differenze significative da integrare.
+Possiamo saltarla
+
+
+
+
+## Storage/
+
+Tutti i files presenti in questa cartella non hanno differenze significative da integrare.
+Possiamo saltarla
+
+
+
+
+## test/
+
+Tutti i files presenti in questa cartella non hanno differenze significative da integrare.
+Possiamo saltarla
+
+
+
+
+## Vendor/
+
+Tutti i files presenti in questa cartella non hanno differenze significative da integrare.
+Possiamo saltarla
+

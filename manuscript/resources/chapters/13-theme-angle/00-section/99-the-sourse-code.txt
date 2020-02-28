@@ -1,0 +1,56 @@
+# Angle Template - Update-WB04HF123
+
+Il codice ripreso da Roberto il 25 Febbraio 2020. Questo codice ha l'importante evoluzione per Rails 6.
+L'elemento principale è la migrazione da bower al webpack di Rails 6.
+
+* https://wrapbootstrap.com/theme/angle-bootstrap-admin-template-WB04HF123
+
+[...]
+On Tue, Feb 25, 2020 at 8:33 AM Roberto De Santis - i@ <roberto.desantis@integram-agency.com> wrote:
+Buongiorno Flavio,
+…here we go… <<link di wetransfer>> (Angle update)
+Ho dovuto fare un ‘film’ per non ripagarlo. Il repository ha politiche diverse da Themeforest.
+Comunque ci sono riuscito con un pò di diplomazia.
+Un saluto.
+RdS
+
+On 19 Feb 2020, at 13:12, Flavio Bordoni <flavio.bordoni@gmail.com> wrote:
+Con Rails 6 sono arrivato al punto di inserire il tema.
+Il tema Angle che abbiamo usato per la dashboard di Donamat ha una versione aggiornata a "3 mesi fa" che supporta "Ruby on Rails 6".
+Puoi farmi avere questo tema?
+Perché quello che abbiamo usato sfruttava bower ed invece rails 6 usa webpack.
+[...]
+
+
+
+
+## Attributi della versione
+
+Gli attributi ad oggi 25/02/2020
+
+Version:	4.6
+Type:	HTML Template
+Bootstrap:	Compatible with 4.x
+Layouts: Responsive, Fluid, Fixed-width
+Browsers:	IE 10, 11 - Latest Chrome - Latest Edge - Latest Firefox - Latest Safari
+Uses Less:	No
+Uses Sass:	Yes
+Category:	Admin & Dashboards
+Topic:	Internet & Web
+Labels:	admin, admin template, angular, asp.net, laravel, php, react, redux, typescript, vue
+Item#:	WB04HF123
+Released:	5 years ago
+Updated:	3 months ago
+
+
+Ruby on Rails
+Bootstrap 4 (official)
+Rails v6.0
+Webpacker for Scripts
+Assets pipeline for Styles
+HTML (ERB), SASS (scss) & ES6
+ERB Layouts based structure
+Translation (i18next)
+No jQuery (only required if using jQuery plugins)
+NPM package manager
+

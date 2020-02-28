@@ -1,0 +1,317 @@
+# Continuiamo l'importazione del tema "Angle rails-seed" nella nostra app
+
+Adesso è arrivato il momento di addentrarci nella cartella "config"
+
+
+
+
+## config/application.rb
+
+Presente anche su bl6_0 con differenze. Implementiamo le differenze che ci servono.
+
+* I commenti su "Time.zone default" e "default locale" che erano presenti su Rails 4 e sono stati tolti già da Rails 5.2
+* I "config.assets.precompile" per i files di stylesheets. (Se non li avessimo messi ci avrebbe comunque indicato di inserirli il gestore degli errrori di rails andando nelle views)
+
+{id: "13-02-04_01", caption: ".../config/application.rb -- codice 01", format: ruby, line-numbers: true, number-from: 27}
+```
+    config.assets.precompile += %w( base.css )
+    # precompile themes
+    config.assets.precompile += ['angle/themes/theme-a.css',
+                                 'angle/themes/theme-b.css',
+```
+
+[tutto il codice](#13-02-04_01all)
+
+
+
+
+## config/boot.rb
+
+File presente su bl6_0 con contenuto identico. Non lo importiamo.
+
+
+
+
+## config/cable.yml
+
+File presente su bl6_0 con contenuto sostanzialmente identico. Non lo importiamo.
+
+
+
+
+## config/credentials.yml.enc
+
+File presente su bl6_0 con differenze ma non si deve cambiare. Non lo importiamo.
+
+Questo è il file con le password ed i secrets criptati.
+
+
+
+
+## config/database.yml
+
+File presente su bl6_0 con contenuto differente ma non dobbiamo cambiarlo. Non lo importiamo.
+
+
+
+
+## config/environment.rb
+
+File presente su bl6_0 con contenuto identico. Non lo importiamo.
+
+
+
+
+## config/puma.rb
+
+File presente su bl6_0 con contenuto differente ma non dobbiamo cambiarlo. Non lo importiamo.
+
+Ha la descrizione dell'installazione iniziale di Rails. Noi per la nostra app lo abbiamo cambiato.
+
+
+
+
+## config/routes.rb
+
+Presente anche su bl6_0 con differenze. Implementiamo le differenze che ci servono.
+
+* Il percorso della pagina "singleview" del tema "Angle rails-seed"
+* Le api routes al momento le lasciamo ma in seguito elimineremo queste api perché usiamo i "locales" per l'internazionalizzazione.
+
+{id: "13-02-04_02", caption: ".../config/routes.rb -- codice 01", format: ruby, line-numbers: true, number-from: 27}
+```
+  get '/singleview' => 'singleview#index'
+
+.
+.
+.
+
+  # api routes
+  get '/api/i18n/:locale' => 'api#i18n'
+```
+
+[tutto il codice](#13-02-04_02all)
+
+
+
+
+## config/storage.yml
+
+File presente su bl6_0 con contenuto differente ma non dobbiamo cambiarlo. Non lo importiamo.
+
+Ha la descrizione dell'installazione iniziale di Rails. Noi per la nostra app lo abbiamo cambiato.
+
+
+
+
+## config/webpacker.yml
+
+File presente su bl6_0 con contenuto sostanzialmente identico. Non lo importiamo.
+
+
+
+
+## config/environments/development.rb
+
+File presente su bl6_0 con contenuto sostanzialmente identico. Non lo importiamo.
+
+
+
+
+## config/environments/production.rb
+
+File presente su bl6_0 con contenuto sostanzialmente identico. Non lo importiamo.
+
+
+
+
+## config/environments/test.rb
+
+File presente su bl6_0 con contenuto sostanzialmente identico. Non lo importiamo.
+
+
+
+
+## config/initializers/application_controller_renderer.rb
+
+File presente su bl6_0 con contenuto identico. Non lo importiamo.
+
+
+
+
+## config/initializers/assets.rb
+
+File presente su bl6_0 con contenuto identico. Non lo importiamo.
+
+
+
+
+## config/initializers/backtrace_silencers.rb
+
+File presente su bl6_0 con contenuto identico. Non lo importiamo.
+
+
+
+
+## config/initializers/content_security_policy.rb
+
+File presente su bl6_0 con contenuto identico. Non lo importiamo.
+
+
+
+
+## config/initializers/cookies_serializer.rb
+
+File presente su bl6_0 con contenuto identico. Non lo importiamo.
+
+
+
+
+## config/initializers/filter_parameter_logging.rb
+
+File presente su bl6_0 con contenuto identico. Non lo importiamo.
+
+
+
+
+## config/initializers/inflections.rb
+
+File presente su bl6_0 con contenuto identico. Non lo importiamo.
+
+
+
+
+## config/initializers/mime_types.rb
+
+File presente su bl6_0 con contenuto identico. Non lo importiamo.
+
+
+
+
+## /config/initializers/session_store.rb
+
+Su rails 6.0 non c'è più questo file e non credo serva.
+Verificare su google.
+
+
+
+
+## config/initializers/wrap_parameters.rb
+
+File presente su bl6_0 con contenuto identico. Non lo importiamo.
+
+
+
+
+## config/locales/en.yml
+
+File presente su bl6_0 con contenuto differente ma da non cambiare. Non lo importiamo.
+
+Nel file del tema c'è il file iniziale di Rails. Noi nella nostra app lo abbiamo modificato.
+
+
+
+
+## config/webpack/development.js
+
+File presente su bl6_0 con contenuto identico. Non lo importiamo.
+
+
+
+
+## config/webpack/environment.js
+
+File presente su bl6_0 con differenze. Implementiamo le differenze che ci servono.
+
+* Praticamente usiamo tutto il codice del file del tema.
+* I ";" in finale di comando sono opzionali. Scegliamo di lasciarli per restare allineati con quanto hanno fatto gli sviluppatori del tema Angle.
+
+{id: "13-02-04_03", caption: ".../config/webpack/environment.js -- codice 03", format: javascript, line-numbers: true, number-from: 1}
+```
+// config/webpack/environment.js
+const { environment } = require('@rails/webpacker');
+const webpack = require('webpack');
+
+// Add an additional plugin of your choosing : ProvidePlugin
+environment.plugins.append('Provide',
+```
+
+[tutto il codice](#13-02-04_03all)
+
+
+
+
+## config/webpack/production.js
+
+File presente su bl6_0 con contenuto identico. Non lo importiamo.
+
+
+
+
+## config/webpack/test.js
+
+File presente su bl6_0 con contenuto identico. Non lo importiamo.
+
+
+
+
+
+## Fine dei files da comparare
+
+Abbiamo finalmente finito tutte le comparazioni e le implementazioni. Possiamo finalmente provare il risultato finale.
+
+
+
+
+## Verifichiamo preview
+
+
+
+
+
+## Pubblichiamo su Heroku
+
+ricordarmi che figaro ha un comando da lanciare per passare le variabili d'ambiente su heroku.
+
+Publichiamo su heroku e lanciamo il comando e verifichiamo che è tutto ok.
+
+Possiamo anche spiegare su un paragrafo come caricare le variabili una per una se non avessimo figaro.
+(si può fare una per una sia a linea di comando con la heroku tool-belt oppure dal sito web di heroku)
+
+
+
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge angle
+$ git branch -d angle
+~~~~~~~~
+
+
+
+
+# Backup su github
+
+effettuiamo un backup sul repository remoto github.
+Spostiamo il nostro git locale sul repository remoto Github
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
+
+il comando "git push" sposta sul branch remoto "origin" il branch locale "master".
+Spostiamo in remoto anche la parte dei tag in cui abbiamo messo la versione v.0.1.0
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master --tag
+~~~~~~~~

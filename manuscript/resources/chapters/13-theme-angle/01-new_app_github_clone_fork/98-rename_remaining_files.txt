@@ -1,0 +1,98 @@
+# Rinominiamo i files restanti
+
+
+Ci sono rimasti da rinominare:
+
+* /s5cmsbeginning/package.json
+* /s5cmsbeginning/README.md
+* /s5cmsbeginning/app/views/layouts/application.html.erb
+* /s5cmsbeginning/config/cable.yml
+* /s5cmsbeginning/config/environments/production.rb
+
+
+
+
+## Aggiorniamo package.json
+
+{id="02-03-04_01", title=".../package.json", lang=yaml, line-numbers=on, starting-line-number=1}
+```
+{
+  "name": "s5cmsbeginning",
+```
+
+[Codice 01](#02-03-04_01all)
+
+
+
+
+## Aggiorniamo README.md
+
+{id="02-03-04_02", title=".../README.md", lang=yaml, line-numbers=on, starting-line-number=1}
+```
+# s5cmsbeginning
+==
+```
+
+[Codice 02](#02-03-04_02all)
+
+
+
+
+## Aggiorniamo layouts/application.html.erb
+
+{id="02-03-04_03", title=".../app/views/layouts/application.html.erb", lang=yaml, line-numbers=on, starting-line-number=3}
+```
+    <title>S5cmsbeginning</title>
+```
+
+[Codice 03](#02-03-04_03all)
+
+
+
+
+## Aggiorniamo config/cable.yml
+
+{id="02-03-04_04", title=".../config/cable.yml", lang=yaml, line-numbers=on, starting-line-number=10}
+```
+  channel_prefix: s5cmsbeginning_production
+```
+
+[Codice 04](#02-03-04_04all)
+
+
+
+
+## Aggiorniamo config/environments/production.rb
+
+{id="02-03-04_05", title=".../config/environments/production.rb", lang=yaml, line-numbers=on, starting-line-number=73}
+```
+  config.action_mailer.default_url_options = { host: 's5cmsbeginning.herokuapp.com', port: 3000 }
+```
+
+[Codice 05](#02-03-04_05all)
+
+
+dobbiamo cambiare anche su Heroku, o meglio creare una nuova app in produzione, come vedremo nel prossimo capitolo.
+
+
+
+
+## Salviamo su Git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "update remaining files from s5beginning to s5cmsbeginning"
+```
+
+ATTENZIONE!
+Non salviamo sui repository remoti (Heroku e GitHub) perché abbiamo ancora i puntamenti a s5beginning
+Nei capitoli successivi cambieremo i puntamenti alla nuova s5cmsbeginning ed andremo in produzione su Heroku e faremo un backup su GitHub.
+
+
+
+## Il codice del capitolo
+
+
+
+

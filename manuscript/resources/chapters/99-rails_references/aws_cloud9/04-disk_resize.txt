@@ -1,0 +1,121 @@
+# Resize disk space (storage size)
+
+
+Risorse web
+
+* https://n2ws.com/blog/how-to-guides/how-to-increase-the-size-of-an-aws-ebs-cloud-volume-attached-to-a-linux-machine
+
+
+
+
+## How to Increase the Size of an EBS Volume Attached to a Linux Machine
+
+Amazon Elastic Block Store (Amazon EBS) offers persistent storage for Amazon EC2 instances by means of block-level storage volumes. These volumes provide a scalable plug and play storage service, that persists independently of an instance’s life cycle. An EBS volume is cost-effective, scalable, and comes with three options:
+
+General Purpose (SSD)
+Provisioned IOPS (SSD)
+Magnetic (the old standard)
+
+An EBS volume can be attached as a root partition to an EBS-backed AMI instance or as a detachable device to any AWS EC2 instance. When a user creates an EBS volume, AWS provisions an appropriate amount of space to the user’s AWS account according to the size of the requested EBS volume. In the future, the user may need to increase the size of the EBS volume in order to accommodate a larger amount of data.
+
+
+
+
+## I tipi di istanze di cloud9
+
+in fase di creazione abbiamo 
+
+* t2 nano
+* t2 micro (la scelta di default)
+* t2 small
+* ...
+
+Queste istanze cambiano la RAM e le CPU a disposizione ma hanno tutte 10GB di spazio iniziale e scegliendo linux ubuntu 8GB li prende il sistema operativo. Quindi ci restano solo 2GB disponibili.
+
+Non serve aumentare la tipologia di istanza ma dobbiamo passare per i volumi associati per aumentare lo spazio disco.
+Vediamo come fare.
+
+
+
+
+## Ampliamo dai 10G di default a 12G - Metodo facile
+
+Questa procedura è la più semplice ed immediata ma richiede del tempo prima che le modifiche diventino effettive e questo può trarre in inganno e far pensare che non abbia funzionato. Se ci riproviamo riceviamo un messaggio di errore che ci depista e ci fa pensare che non sia possibile fare in questo modo. Ma se si ha la pazienza di aspettare, a volte anche qualche ora, allora si vedrà che funziona.
+
+Andiamo su services -> EC2 -> INSTANCES -> instances
+
+Tramite la colonna "name" identifichiamo l'istanza EC2 relativa alla nostra istanza Cloud9.
+Tutti i nomi delle istanze cloud9 hanno la struttura: "aws-cloud9-"+<nome istanza cloud9>+<id>
+Ad esempio: aws-cloud9-bl6-0-344675c50cee4a70168f22b38a509d5c
+
+Trovata la "riga" che ci interessa copiamoci il suo "instance id", normalmente è la colonna a fianco.
+Ad esempio: i-0746cbf70a73f6db0
+
+
+Andiamo su service -> EC2 -> ELASTIC BLOCK STORE -> Volumes
+
+Nel campo di ricerca inseriamo l'"instance id" e sul volume trovato eseguiamo:
+
+Action -> Modify Volume
+
+E cambiamo la dimensione da "10" a "12".
+
+
+
+
+## Ampliamo dai 10G di default a 16G - Metodo con snapshot
+
+Aumentiamo il "volume EBS principale" (root EBS volume) dai 10GB di default a 16GB.
+
+* Partiamo da un'istanza EC2 basata su Linux Ubuntu.
+* Aumentiamo le dimensioni del nostro volume EBS usando gli "snapshot".
+* Sganciamo il volume dalla nostra istanza Cloud9
+* Facciamo lo snapshot del volume.
+* Creiamo un nuovo volume più grande 
+
+
+
+
+## Lanciamo un'istanza aws cloud9
+
+Per prima cosa lanciamo un'istanza di cloud9, che a sua volta avvierà un'istanza EC2 con un volume EBS collegato come "root". 
+Il volume EBS radice (root EBS volume) viene utilizzato come riferimento, quindi è possibile seguire lo stesso passaggio per tutti i volumi.
+
+Eseguiamo da console il comando "df -h" per mostrare i dettagli del disco prima del ridimensionamento.
+
+
+```
+$ df -hT /dev/xvda1
+
+
+user_fb:~/environment $ df -hT /dev/xvda1
+Filesystem     Type  Size  Used Avail Use% Mounted on
+/dev/xvda1     ext4  9.7G  7.7G  2.0G  80% /
+user_fb:~/environment $ 
+```
+
+
+## Stop the istance
+
+To increase the size of the root volume, since this is an EBS-backed instance, first stop the instance temporarily.
+
+
+
+
+Blablabla da fa
+
+
+
+
+## Riapriamo l'istanza con cloud9 
+
+e vediamo che adesso lo spazio è aumentato
+
+```
+$ df -hT /dev/xvda1
+
+user_fb:~/environment $ df -hT /dev/xvda1
+Filesystem     Type  Size  Used Avail Use% Mounted on
+/dev/xvda1     ext4   16G  7.7G  7.8G  50% /
+```
+

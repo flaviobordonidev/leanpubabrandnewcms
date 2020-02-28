@@ -10,6 +10,17 @@ Risorse interne:
 
 
 
+ 
+## Verifichiamo dove eravamo rimasti
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git status
+$ git log
+```
+
+
+
 
 ## Continuiamo con il branch "Pubblichiamo in Produzione"
 

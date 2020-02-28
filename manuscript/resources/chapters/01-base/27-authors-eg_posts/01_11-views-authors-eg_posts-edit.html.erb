@@ -1,0 +1,14 @@
+<%# == Meta_data ============================================================ %>
+
+<% provide(:html_head_title, "#{t '.html_head_title'} #{@eg_post.headline}") %>
+<% provide(:menu_nav_link_eg_posts, "active") %>
+
+<%# == Meta_data - end ====================================================== %>
+
+<h1>Editing Eg Post</h1>
+
+<%#= render 'form', eg_post: @eg_post %>
+<%= render 'form', eg_post: @eg_post, authors_url: authors_eg_post_url(@eg_post) %>
+
+<%= link_to 'Show', @eg_post %> |
+<%= link_to 'Back', eg_posts_path %>

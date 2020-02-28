@@ -1,0 +1,85 @@
+# Aggiornamento del template
+
+E' stato reso disponibile un update del template Angle e creiamo un branch apposito per valutare l'impatto dello stesso sulla nostra applicazione.
+Creiamo quindi il branch "angleupdate"
+
+{title="terminale", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b angleupdate
+~~~~~~~~
+
+Iniziamo con l'aggiornamento del bower.json
+
+
+
+
+## /Bower.json
+
+Copiamo il file su C9-rails.
+ed eseguiamolo
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rake bower:install
+~~~~~~~~
+
+durante l'installazione di bower può essere richiesto che versione di jquery installare. la scelta più ovvia è la "10" perché è la versione maggiore "2.2.0" e perché c'è scritto che è quella richiesta da Angle che è il template che stiamo installando ^_^ 
+
+
+Proviamo heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "update bower"
+$ git push heroku angleupdate:master
+~~~~~~~~
+
+A> Potrebbe essere necessario forzare il push con l'opzione "--force" o "-f"
+A>
+A> $ git push -f heroku nomebranch:master
+
+
+
+
+## /app/assets/javascripts/angle/
+
+Copiamo la cartella su C9
+
+
+
+
+## /app/assets/stylesheets/angle/
+
+Copiamo la cartella su C9
+
+
+Proviamo heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "update angle folders"
+$ git push heroku angleupdate:master
+~~~~~~~~
+
+
+
+
+## Ci fermiamo qua
+
+l'aggiornamento è praticamente finito anche se ci sarebbero alcuni altri files da verificare...
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge angleupdate
+$ git branch -d angleupdate
+~~~~~~~~

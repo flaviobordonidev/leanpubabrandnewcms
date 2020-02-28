@@ -1,0 +1,318 @@
+# Continuiamo l'importazione del tema "Angle rails-seed" nella nostra app
+
+Adesso è arrivato il momento di addentrarci nella cartella "app".
+
+
+
+
+## app/assets/api/
+
+Cartella non presente su bl6_0. La importiamo.
+
+Copiamo la cartella (da -> a):
+
+* angle-seed/app/assets/api/  -> bl6_0/app/assets/
+
+
+
+
+
+## app/assets/i18n/
+
+Cartella non presente su bl6_0. La importiamo.
+
+Copiamo la cartella (da -> a):
+
+* angle-seed/app/assets/i18n/  -> bl6_0/app/assets/
+
+
+
+
+
+## /app/assets/images/angle/
+
+Cartella non presente su bl6_0. La importiamo.
+
+Copiamo la cartella (da -> a):
+
+* angle-seed/app/assets/images/angle/  -> bl6_0/app/assets/images/
+
+
+
+
+## /app/assets/stylesheets/angle/
+
+Cartella non presente su bl6_0. La importiamo.
+
+Copiamo la cartella (da -> a):
+
+* angle-seed/app/assets/stylesheets/angle/  -> bl6_0/app/assets/stylesheets/
+
+
+
+
+## app/assets/stylesheets/application.css.scss
+
+File presente su bl6_0 con estensione differente. Lo sostituiamo con il file del tema.
+
+Se vogliamo mantenere il file "application.scss" di bl6_0 lo rinominiamo in "applicationOLD.scss".
+
+Copiamo (da -> a):
+
+* angle-seed/app/assets/stylesheets/application.css.scss  -> bl6_0/app/assets/stylesheets/
+
+
+
+
+## app/assets/stylesheets/fonts.css.scss
+
+File non presente su bl6_0. Lo importiamo.
+
+Copiamo (da -> a):
+
+* angle-seed/app/assets/stylesheets/application.css.scss  -> bl6_0/app/assets/stylesheets/
+
+
+
+
+## app/assets/stylesheets/singleview.scss
+
+File non presente su bl6_0. Lo importiamo.
+
+Copiamo (da -> a):
+
+* angle-seed/app/assets/stylesheets/application.css.scss  -> bl6_0/app/assets/stylesheets/
+
+
+
+
+## app/assets/stylesheets/vendor.assets.css.scss
+
+File non presente su bl6_0. Lo importiamo.
+
+Copiamo (da -> a):
+
+* angle-seed/app/assets/stylesheets/vendor.assets.css.scss  -> bl6_0/app/assets/stylesheets/
+
+
+
+
+## app/channels/
+
+Cartella presente su bl6_0 con contenuto identico. Non la importiamo.
+
+
+
+
+## app/controllers/concerns
+
+File presente su bl6_0 con contenuto identico. Non la importiamo.
+
+
+
+
+## app/controllers/api_controller.rb
+
+File non presente su bl6_0. Lo importiamo.
+
+Copiamo (da -> a):
+
+* angle-seed/app/controllers/api_controller.rb  -> bl6_0/app/controllers/
+
+
+
+
+## app/controllers/application_controller.rb
+
+File presente su bl6_0 con differenze. Implementiamo le differenze che ci servono.
+
+Aggiungiamo la sola chiamata a dashboard che è presente nel file del tema Angle.
+
+{id: "13-02-03_01", caption: ".../app/controllers/application_controller.rb -- codice 01", format: ruby, line-numbers: true, number-from: 27}
+```
+def dashboard
+end
+```
+
+[tutto il codice](#13-02-03_01all)
+
+
+
+
+## app/controllers/singleview_controller.rb
+
+File non presente su bl6_0. Lo importiamo.
+
+Copiamo (da -> a):
+
+* angle-seed/app/controllers/singleview_controller.rb  -> bl6_0/app/controllers/
+
+
+
+
+## app/helpers/application_helper.rb
+
+File presente su bl6_0 con differenze. Implementiamo le differenze che ci servono.
+
+{id: "13-02-03_02", caption: ".../app/helpers/application_helper.rb -- codice 02", format: ruby, line-numbers: true, number-from: 27}
+```
+module ApplicationHelper
+  include Pagy::Frontend
+
+  def controller?(*controller)
+    controller.include?(params[:controller])
+  end
+
+  def action?(*action)
+    action.include?(params[:action])
+  end
+
+end
+```
+
+[tutto il codice](#13-02-03_02all)
+
+
+
+
+## app/controllers/singleview_helper.rb
+
+File non presente su bl6_0. Lo importiamo.
+
+Copiamo (da -> a):
+
+* angle-seed/app/helpers/singleview_helper.rb  -> bl6_0/app/helpers/
+
+
+
+
+## app/javascript/channels/
+
+Cartella presente su bl6_0 con contenuto identico. Non la importiamo.
+
+
+
+
+## app/javascript/packs/angle/
+
+Cartella non presente su bl6_0. La importiamo.
+
+Copiamo (da -> a):
+
+* angle-seed/app/javascript/packs/angle/  -> bl6_0/app/javascript/packs/
+
+
+
+
+## app/javascript/packs/application.js
+
+File presente su bl6_0 con differenze. Implementiamo le differenze che ci servono.
+
+{id: "13-02-03_03", caption: ".../app/javascript/packs/application.js -- codice 03", format: javascript, line-numbers: true, number-from: 11}
+```
+// Angle theme required
+require("modernizr/modernizr.custom.js");
+
+import appInit from './angle/app.init.js';
+document.addEventListener('DOMContentLoaded', appInit);
+// Angle theme end
+```
+
+[tutto il codice](#13-02-03_03all)
+
+
+
+
+## app/javascript/packs/singleview.js
+
+File non presente su bl6_0. Lo importiamo.
+
+Copiamo (da -> a):
+
+* angle-seed/app/javascript/packs/singleview.js  -> bl6_0/app/javascript/packs/
+
+
+
+
+## app/jobs/
+
+Cartella presente su bl6_0 con contenuto identico. Non la importiamo.
+
+
+
+
+## app/mailers/
+
+Cartella presente su bl6_0 con contenuto identico. Non la importiamo.
+
+
+
+
+## app/models
+
+Cartella presente su bl6_0 con contenuto differente ma non lo importiamo.
+
+
+
+
+## app/views/layouts/partials
+
+Cartella non presente su bl6_0. La importiamo.
+
+Copiamo (da -> a):
+
+* angle-seed/app/views/layouts/partials/  -> bl6_0/app/views/layouts/
+
+
+
+
+## app/views/layouts/application-h.html.erb
+
+File non presente su bl6_0. Lo importiamo.
+
+Copiamo (da -> a):
+
+* angle-seed/app/views/layouts/application-h.html.erb  -> bl6_0/app/views/layouts/
+
+
+
+
+## app/views/layouts/application.html.erb
+
+File presente su bl6_0. Ma lo importiamo.
+
+Rinominiamo (da -> a):
+
+* bl6_0/app/views/layouts/application.html.erb  -> bl6_0/app/views/layouts/applicationOLD.html.erb
+
+
+Copiamo (da -> a):
+
+* angle-seed/app/views/layouts/application.html.erb  -> bl6_0/app/views/layouts/
+
+
+Una differenza da far notare è che il "javascript_include_tag" di default rails lo mette sull '<head>' invece il template backend-rails lo mette in fondo al <body>
+Metterlo nell'"<head>" è teoricamnete migliore ma in pratica metterlo in fondo al <body> funziona molto meglio.
+
+
+
+
+## app/views/layouts/pages.html.erb
+
+File non presente su bl6_0. Lo importiamo.
+
+Copiamo (da -> a):
+
+* angle-seed/app/views/layouts/pages.html.erb  -> bl6_0/app/views/layouts/
+
+
+
+
+## app/views/singleview/
+
+Cartella non presente su bl6_0. La importiamo.
+
+Copiamo (da -> a):
+
+* angle-seed/app/views/singleview/  -> bl6_0/app/views/
+

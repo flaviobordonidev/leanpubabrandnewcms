@@ -208,7 +208,8 @@ end
     "Hello, from an instance method"
   end
  
-  private
+  private -------------------------------------------------------------------
+  
     def normalize_name
       self.name = name.downcase.titleize
     end

@@ -6,6 +6,17 @@ Servono principalmente in fase di sviluppo e sono un buon modo di interfacciamen
 
 
 
+ 
+## Verifichiamo dove eravamo rimasti
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git status
+$ git log
+```
+
+
+
 
 ## Apriamo il branch "Mockups Static Pages"
 

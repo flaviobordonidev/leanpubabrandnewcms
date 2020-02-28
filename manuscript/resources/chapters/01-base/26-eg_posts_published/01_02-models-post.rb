@@ -1,24 +1,19 @@
-class Post < ApplicationRecord
+class EgPost < ApplicationRecord
   # == Constants ============================================================
   
   # == Extensions ===========================================================
 
-  ## friendly_id
-  extend FriendlyId
-  
   # == Attributes ===========================================================
 
-  enum content_type: {image: 0, video_youtube: 1, video_vimeo: 2, audio: 3}
-
-  ## ActiveStorage
-  has_one_attached :main_image
-
-  ## friendly_id
-  friendly_id :title, use: :slugged
+  ## Active Storage
+  has_one_attached :header_image
+  
+  ## Action Text
+  has_rich_text :content
 
   # == Relationships ========================================================
 
-  ## one-to-many
+  ## association one-to-many
   belongs_to :user
 
   # == Validations ==========================================================
@@ -32,10 +27,5 @@ class Post < ApplicationRecord
   # == Class Methods ========================================================
 
   # == Instance Methods =====================================================
-
-  ## friendly_id
-  def should_generate_new_friendly_id?
-    title_changed?
-  end
 
 end

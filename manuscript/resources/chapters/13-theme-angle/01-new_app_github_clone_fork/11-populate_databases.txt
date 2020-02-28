@@ -1,0 +1,27 @@
+# Popoliamo i databases
+
+Inseriamo gli utenti ed i dati a posts. (se avevamo preparato i files "seeds" adesso bastava un comando.)
+
+
+
+
+## Aggiungiamo un utente da console
+
+Creiamo l'utente "Ann" e lo rendiamo amministratore
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ rails c
+-> User.create(name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda')
+-> User.last.admin!
+```
+
+
+
+## Popoliamo eg_posts
+
+...
+...
+..
+.
+

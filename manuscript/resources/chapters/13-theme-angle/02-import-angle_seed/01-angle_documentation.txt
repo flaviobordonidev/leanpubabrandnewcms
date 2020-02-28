@@ -1,0 +1,46 @@
+# Angle Documentation
+
+Il tema Angle mette a disposizione nel codice sorgente diverse 'cartelle' ognuna con un il tema adattato per un ambiente diverso.
+Il tema è molto ampio ed implementato per più ambienti tra cui: angular, frontend, lavarel, material, meteor, mvc5, netcore, next, rails, reactjs, static-html, vue.
+questo rende difficile l'approccio iniziale. Avendo già la nostra applicazione potremmo pensare di usare lo static-html ma essendo un tema per una dashboard anche le static-html hanno dei pacchetti di configurazione, nello specifico usano "gulp" e questo ci crea delle difficoltà di adattamento per "webpack".
+Quindi scegliamo la strada più ovvia che è quella di usare rails.
+
+
+## Cosa troviamo nella cartella rails
+
+Innanzi tutto esistono due cartelle rails. Per l'ambiente rails ci sono le due versioni:
+
+* rails-seed : che ha il minimo indispensabile
+* rails : che è la demo completa
+
+Entrambe hanno un'intera applicazione rails pronta da installare. Ma siccome noi già abbiamo la nostra applicazione rails il lavoro che faremo sarà quello di comparare un file alla volta e di importare quello che ci serve. Usando questo approccio è preferibile partire dalla cartella "rails-seed".
+
+
+
+
+## I progetti "seed"
+
+Per diversi ambienti esistono le cartelle "seed". Queste sono state create per darci solo lo scheletro dell'applicazione.
+
+This project is an application skeleton. You can use it to quickly bootstrap your VUE projects and dev environment for these projects. The seed app doesn't do much and has most of the feature removed so you can add them as per your needs just following the full-features version as example.
+
+This project is provided in order to start with the template using a different approach. Usually, templates will come with all features working and you need to remove them one by one in the way you don't need them. With the seed project you can start adding custom features and others from the full project to make grow your app. Since the files and structure is the same for the full and seed versions, you can save time using comparison tools that allows to apply changes from full features project into the seed project.
+
+
+
+
+## La documentazione del tema
+
+Anche se non ci è necessaria per procedere perché è tutto spiegato in questo libro, a titolo di conoscenza c'è la cartella "documentation" in cui sono riportate delle spiegazioni di massima per partire con il tema per ogni ambiente. A titolo di curiosità, alcune informazioni sono riportate solo su un ambiente e non sugli altri quindi a volte è utile leggere anche la documentazione riportata sugli ambienti che non stiamo usando perché ci possono essere delle informazioni interessanti che ci possono tornare utili.
+
+
+Starting the app
+This project it ready to run on a local machine.
+
+Once you have Ruby and Ruby on Rails installed:
+
+1- Open a terminal and go to the root folder of the project
+2- Run the command bundle install to install necessary gems
+3- Run npm install to install node dependencies
+4- Run the command rails server
+5- A new server will start listening at http://localhost:3000 to show your app.

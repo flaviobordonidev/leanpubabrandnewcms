@@ -1,7 +1,0 @@
-# Navbar on posts
-
-per mettere una barra di navigazione di modifica sopra i posts senza andare a toccare il loro layout si può fare un HTML "frame" su cui mettere dentro il sito post.
-
-Attenzione: HTML <frame> Tag. Not Supported in HTML5.
-
-Lascio a Roberto la ricerca di come fare ^_^

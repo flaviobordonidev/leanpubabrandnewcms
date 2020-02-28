@@ -1,0 +1,256 @@
+it:
+  activerecord:
+    attributes:
+      user:
+        name: "Nome utente" # fallback for when label is nil
+        email: "email"
+        password: "password"
+        password_confirmation: "conferma password"
+    models:
+      user: "utente"
+      eg_company: "azienda esempio"
+    errors:
+      models:
+        user:
+          attributes:
+            name:
+              blank: ": campo obbligatorio"
+            email:
+              blank: ": campo obbligatorio"
+              invalid: ": non valida"
+            password:
+              blank: ": campo obbligatorio"
+              too_short: ": troppo corta"
+            password_confirmation:
+              confirmation: ": non corrisponde con password"
+
+  form_errors_message:
+    one: "1 errore ha impedito il salvataggio"
+    other: "%{count} errori hanno impedito il salvataggio"
+
+  helpers:
+    label:
+      user:
+        name: "Nome utente"
+        email: "email"
+        password: "password"
+        password_confirmation: "conferma password"
+    placeholder:
+      user:
+        name: "nome utente"
+        email: "email"
+        password: "password"
+        password_confirmation: "conferma password"
+    submit:
+      user:
+        create: "Crea %{model}"
+        update: "Aggiorna %{model}"
+      eg_company:
+        create: "Crea %{model}"
+        update: "Aggiorna %{model}"
+
+  number:
+    currency:
+      format:
+        delimiter: "."
+        format: "%n %u"
+        precision: 2
+        separator: ","
+        significant: false
+        strip_insignificant_zeros: false
+        unit: ''
+    format:
+      delimiter: "."
+      precision: 2
+      separator: ","
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: "%n %u"
+        units:
+          billion: Miliardi
+          million: Milioni
+          quadrillion: Biliardi
+          thousand: Mila
+          trillion: Bilioni
+          unit: ''
+      format:
+        delimiter: ''
+        precision: 3
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: "%n %u"
+        units:
+          byte:
+            one: Byte
+            other: Byte
+          gb: GB
+          kb: KB
+          mb: MB
+          tb: TB
+    percentage:
+      format:
+        delimiter: ''
+        format: "%n%"
+    precision:
+      format:
+        delimiter: ''
+
+  time:
+    formats:
+      short: "il giorno %d %^B %Y"
+      long: "%A %d %^B %Y alle %H:%M e %S secondi"
+
+  date:
+    abbr_day_names:
+    - dom
+    - lun
+    - mar
+    - mer
+    - gio
+    - ven
+    - sab
+    abbr_month_names:
+    - 
+    - gen
+    - feb
+    - mar
+    - apr
+    - mag
+    - giu
+    - lug
+    - ago
+    - set
+    - ott
+    - nov
+    - dic
+    day_names:
+    - domenica
+    - lunedì
+    - martedì
+    - mercoledì
+    - giovedì
+    - venerdì
+    - sabato
+    formats:
+      default: "%d/%m/%Y"
+      long: "%d %B %Y"
+      short: "%d %b"
+    month_names:
+    - 
+    - gennaio
+    - febbraio
+    - marzo
+    - aprile
+    - maggio
+    - giugno
+    - luglio
+    - agosto
+    - settembre
+    - ottobre
+    - novembre
+    - dicembre
+    order:
+    - :day
+    - :month
+    - :year
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: circa un'ora
+        other: circa %{count} ore
+      about_x_months:
+        one: circa un mese
+        other: circa %{count} mesi
+      about_x_years:
+        one: circa un anno
+        other: circa %{count} anni
+      almost_x_years:
+        one: circa 1 anno
+        other: circa %{count} anni
+      half_a_minute: mezzo minuto
+      less_than_x_seconds:
+        one: meno di un secondo
+        other: meno di %{count} secondi
+      less_than_x_minutes:
+        one: meno di un minuto
+        other: meno di %{count} minuti
+      over_x_years:
+        one: oltre un anno
+        other: oltre %{count} anni
+      x_seconds:
+        one: 1 secondo
+        other: "%{count} secondi"
+      x_minutes:
+        one: 1 minuto
+        other: "%{count} minuti"
+      x_days:
+        one: 1 giorno
+        other: "%{count} giorni"
+      x_months:
+        one: 1 mese
+        other: "%{count} mesi"
+      x_years:
+        one: 1 anno
+        other: "%{count} anni"
+    prompts:
+      second: Secondi
+      minute: Minuto
+      hour: Ora
+      day: Giorno
+      month: Mese
+      year: Anno
+
+  # Controllers ----------------------------------------------------------------
+
+  eg_companies:
+    index:
+      html_head_title: "Tutte le aziende"
+    show:
+      html_head_title: "Az."
+    edit:
+      html_head_title: "Modifica"
+    new:
+      html_head_title: "Nuova azienda"
+
+  eg_components:
+    index:
+      html_head_title: "Tutti i componenti"
+    show:
+      html_head_title: "Comp."
+    edit:
+      html_head_title: "Modifica"
+    new:
+      html_head_title: "Nuovo componente"
+
+  eg_posts:
+    not_published: "non è stato ancora pubblicato"
+    index:
+      html_head_title: "Tutti gli articoli"
+    show:
+      html_head_title: "Art."
+      price_fomatted: "Questo costa %{price} di soldini"
+    edit:
+      html_head_title: "Modifica"
+    new:
+      html_head_title: "Nuovo articolo"
+
+  mockups:
+    page_a:
+      headline: "Questa è l'homepage"
+      first_paragraph: "il testo mostrato è o passato da un 'file di traduzione' e questo significa che la nostra applicazione è pronta a supportare più lingue."
+      link_to_page_B: "Andiamo alla pagina B"
+
+  users:
+    index:
+      html_head_title: "Tutti gli utenti"
+    new:
+      html_head_title: "Nuovo utente"
+    edit:
+      html_head_title: "Modifica"
+    create:
+      notice: "L'utente è stato creato con successo."
+    update:
+      notice: "L'utente è stato aggiornato con successo."
