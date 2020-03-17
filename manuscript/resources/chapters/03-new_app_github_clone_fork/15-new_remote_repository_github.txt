@@ -1,0 +1,118 @@
+# Facciamo il backup - Cambiamo repository remota su GitHub
+
+Ci spostiamo dalla repository che abbiamo clonato ad una nuova repository perché stiamo creando una nuova app.
+
+
+Risorse interne:
+
+* 99-rails_references/git_github/connect-a-cloned-app
+
+
+
+
+## Il puntamento attuale
+
+abbiamo già eliminato il puntamento a Github in un capitolo precedente quindi non risultano repositories remote di GitHub
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git remote -v
+
+user_fb:~/environment/angletheme (master) $ git remote -v
+heroku  https://git.heroku.com/angletheme.git (fetch)
+heroku  https://git.heroku.com/angletheme.git (push)
+```
+
+{title="terminale", lang=bash, line-numbers=off}
+```
+$ git config -l
+
+
+user_fb:~/environment/angletheme (master) $ git config -l
+credential.helper=!aws codecommit credential-helper $@
+credential.usehttppath=true
+core.editor=/usr/bin/nano
+user.name=Flavio Bordoni
+user.email=flavio.bordoni.dev@gmail.com
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+remote.heroku.url=https://git.heroku.com/angletheme.git
+remote.heroku.fetch=+refs/heads/*:refs/remotes/heroku/*
+```
+
+Come possiamo vedere abbiamo solo heroku come repository esterna e nessun puntamento a GitHub.
+
+
+
+
+## Il nuovo puntamento
+
+Le azioni da eseguire sono:
+
+1. Github sign_in
+    Logghiamoci su GitHub
+
+2. GitHub connessiona alla nostra istanza di aws Cloud9
+    Abbiamo già condiviso la chiave pubblica e quindi siamo connessi.
+
+3. Github nuovo repository
+    Creiamo un nuovo repository:
+
+    * nome        : angletheme
+    * descrizione : vestiamo la bl6_0 con tema Angle
+
+Appena creato il nuovo repository ci viene presentato un "Quick setup"
+
+Aggiungiamo sul nostro git il repository remoto "angletheme.git" creato sul nostro account github "flaviobordonidev" usando SSH.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git remote add origin git@github.com:flaviobordonidev/angletheme.git
+```
+
+Se avessimo voluto usare HTTPS avremmo usato "git remote add origin https://github.com/flaviobordonidev/angletheme.git"
+
+Il comando "git remote" è per attivare il repository remoto su un server esterno (nel nostro caso github.com).
+con "add origin" si dichiara che il nome di riferimento del repositroy remoto è "origin" (potevamo chiamarlo github ma per convenzione storica la stessa Github ha scelto di chiamarlo "origin").  
+
+
+verifichiamo il nuovo repository remoto "origin", che è quello di GitHub:
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git remote -v
+
+
+user_fb:~/environment/angletheme (master) $ git remote -v
+heroku  https://git.heroku.com/angletheme.git (fetch)
+heroku  https://git.heroku.com/angletheme.git (push)
+origin  git@github.com:flaviobordonidev/angletheme.git (fetch)
+origin  git@github.com:flaviobordonidev/angletheme.git (push)
+```
+
+Adesso oltre Heroku abbiamo anche il puntamento ad "origin", ossia a Github.
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push origin master
+```
+
+il comando "git push" sposta sul branch remoto "origin" il branch locale "master".
+
+Spostiamo in remoto anche la parte dei tag in cui abbiamo messo la versione v.0.1.0
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push origin master --tag
+```
+
+Se adesso facciamo un refresh alla pagina di Github vedremo il nostro nuovo repository con la nostra app "angletheme".

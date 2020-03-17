@@ -3,10 +3,9 @@
 In realtà creiamo una nuova sessione su heroku ma stiamo attenti a non sovrascrivere la nostra già esistente!
 I passaggi sono praticamente identici a quanto fatto nel capitolo 01-beginning/04-heroku/02-inizializiamo_heroku
 
+Risorse interne:
 
-Risorse web
-
-* [stackoverflow heroku-deployment-error-h10](https://stackoverflow.com/questions/13496827/heroku-deployment-error-h10-app-crashed)
+* 99-rails_references/Heroku/05-reconnect-a-cloned-app
 
 
 
@@ -28,16 +27,18 @@ $ git checkout -b acg
 $ heroku --version
 
 
-ubuntu:~/environment/s5cmsbeginning (acg) $ heroku --version
+user_fb:~/environment/angletheme (acg) $ heroku --version
 
 Command 'heroku' not found, but can be installed with:
 
 sudo snap install heroku
+
+user_fb:~/environment/angletheme (acg) $ 
 ```
 
-Nel nostro caso non è installato ed ubuntu ci consiglia di installarlo usando "snap"
+Nel nostro caso non è installato e riceviamo il consiglio di installarlo usando "snap", ma non seguiamo il consiglio.
 
-Se provassimo usando il suggerimento di ubuntu avremmo il seguente avviso:
+Se provassimo ad usare il comando consigliato avremmo il seguente avviso:
 
 {caption: "terminal", format: bash, line-numbers: false}
 ```
@@ -79,21 +80,22 @@ $ sudo su -
 -> exit
 
 
-ubuntu:~/environment/s5cmsbeginning (acg) $ sudo su -
-root@ip-172-31-43-161:~# curl https://cli-assets.heroku.com/install.sh | sh
+user_fb:~/environment/angletheme (acg) $ cd ~/environment
+user_fb:~/environment $ sudo su - 
+root@ip-172-31-40-231:~# curl https://cli-assets.heroku.com/install.sh | sh
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-100  1892  100  1892    0     0  20791      0 --:--:-- --:--:-- --:--:-- 21022
+100  1892  100  1892    0     0  12285      0 --:--:-- --:--:-- --:--:-- 12285
 Installing CLI from https://cli-assets.heroku.com/heroku-linux-x64.tar.xz
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-100 17.6M  100 17.6M    0     0  5915k      0  0:00:03  0:00:03 --:--:-- 5915k
-v11.14.0
+100 17.6M  100 17.6M    0     0  6102k      0  0:00:02  0:00:02 --:--:-- 6100k
+v12.13.0
 heroku installed to /usr/local/bin/heroku
-heroku/7.27.1 linux-x64 node-v11.14.0
-root@ip-172-31-43-161:~# exit
+heroku/7.39.0 linux-x64 node-v12.13.0
+root@ip-172-31-40-231:~# exit
 logout
-ubuntu:~/environment/s5cmsbeginning (acg) $ 
+user_fb:~/environment $
 ```
 
 
@@ -103,9 +105,8 @@ Verifichiamo che l'installazione è andata a buon fine.
 ```
 $ heroku --version
 
-
-ubuntu:~/environment/s5cmsbeginning (acg) $ heroku --version
-heroku/7.27.1 linux-x64 node-v11.14.0
+user_fb:~/environment $ heroku --version
+heroku/7.39.0 linux-x64 node-v12.13.0
 ```
 
 
@@ -117,7 +118,7 @@ Torniamo nella cartella della nostra applicazione Rails
 
 {caption: "terminal", format: bash, line-numbers: false}
 ```
-$ cd cmsbase
+$ cd angletheme
 ```
 
 
@@ -144,6 +145,7 @@ Aggiungiamo la nostra chiave di criptatura in modo da stabilire un canale sicuro
 {caption: "terminal", format: bash, line-numbers: false}
 ```
 $ heroku keys:add
+-> y
 
 
 ubuntu:~/environment/s5cmsbeginning (acg) $ heroku keys:add
@@ -221,7 +223,7 @@ Diamo all'app di heroku un nome simile a quello della nostra istanza di aws clou
 
 {caption: "terminal", format: bash, line-numbers: false}
 ```
-$ heroku rename cmsbase
+$ heroku rename angletheme
 
 
 ubuntu:~/environment/s5cmsbeginning (acg) $ heroku rename s5cmsbeginning
@@ -285,6 +287,17 @@ $ git push heroku acg:master
 $ heroku run rake db:migrate
 ```
 
+ATTENZIONE. Se la compilazione fallisce potrebbe essere necessario aggiornare bundle:
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ bundle update
+$ git add -A
+$ git commit -m "update bundle"
+```
+
+E riprovare a pubblicare su heroku
+
 
 
 ### Verifichiamo production
@@ -319,7 +332,7 @@ ubuntu:~/environment/s5beginning (acg) $ heroku logs --tail
 
 
 
-### Verifichiamo da Heroku console
+## Verifichiamo da Heroku console
 
 questo messaggio è molto più chiaro
 
@@ -346,6 +359,77 @@ P.S.
 un altro posto che ti può dare indicazioni è " heroku restart ". 
 heroku restart helped me identify my issue. My bin folder was missing.
 
+
+
+
+### Passiamo ad Heroku variabili per collegamento ad aws S3
+
+Heroku non ha le variabili per accedere al bucket "myapp-prod" che abbiamo creato su aws S3.
+Passiamo le variabile d'ambiente ad heroku via terminale
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku config:set AWS_ACCESS_KEY_ID='AKIA....JTOMA'
+$ heroku config:set AWS_SECRET_ACCESS_KEY='LwdJ........45KHZ'
+$ heroku config:set AWS_REGION='us-east-1'
+$ heroku config:set S3_BUCKET_NAME='angletheme-prod'
+~~~~~~~~
+
+
+
+
+### Verifichiamo production
+
+La nostra applicazione è ora in produzione su heroku. La possiamo vedere sul broser all'URL
+
+https://cmspofo.herokuapp.com/
+
+Adesso funziona tutto :)
+
+ATTENZIONE! se dovesse esserci un errore come detto prima analizzate prima "$ heroku run rails console" ed eventualmente anche "$ heroku logs --tail".
+Ad esempio qui ho visto anche che mi dava problemi il file "controllers/eg_posts_controllerOLD.rb" che è una copia che avevo fatto e che in development non dava problemi.
+
+
+
+
+## Aggiungiamo un utente da console
+
+Creiamo l'utente "Ann" e lo rendiamo amministratore
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku run rails c
+-> User.create(name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda')
+-> u = User.last
+-> u.role = :admin
+-> u.save(validate: false)
+~~~~~~~~
+
+Per colpa delle validazioni nel model User, non possiamo usare il comodo comando "User.last.admin!"
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge acg
+$ git branch -d acg
+~~~~~~~~
+
+
+
+
+
+
+
+
+
+**** OLD *****
 
 
 
@@ -405,7 +489,7 @@ Traceback (most recent call last):
 
 
 
-### Implementiamo i due secrets
+## Implementiamo i due secrets
 
 Implementiamo le due secrets nel file criptato "credentials". Per editare il file eseguire:
 
@@ -507,18 +591,4 @@ La nostra applicazione è ora in produzione su heroku. La possiamo vedere sul br
 https://cmspofo.herokuapp.com/
 
 Adesso funziona tutto :)
-
-
-
-
-## Chiudiamo il branch
-
-se abbiamo finito le modifiche e va tutto bene:
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git checkout master
-$ git merge acg
-$ git branch -d acg
-```
 

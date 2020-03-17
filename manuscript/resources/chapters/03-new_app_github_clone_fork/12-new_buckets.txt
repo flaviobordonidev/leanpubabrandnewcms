@@ -3,9 +3,9 @@
 
 
 
-### Effettuiamo il login su AWS
+## Effettuiamo il login su AWS
 
-andiamo sul sito di amazon web service https://console.aws.amazon.com e facciamo login.
+Andiamo sul sito di amazon web service https://console.aws.amazon.com e facciamo login.
 Di tutti i servizi (services) di AWS noi ne useremo solo due: 
 
 * Identity and Access Management (IAM)
@@ -18,21 +18,32 @@ Di tutti i servizi (services) di AWS noi ne useremo solo due:
 
 Per connetterci al "cestello dei files" (bucket) di AWS S3 abbiamo bisogno delle seguenti informazioni:
 
-* access_key_id
-* secret_access_key
-* s3_region
-* nome del bucket
+IAM user:
+
+  * access_key_id
+  * secret_access_key
+
+Bucket development:
+
+  * s3_region
+  * nome del bucket
+
+Bucket production:
+
+  * s3_region
+  * nome del bucket
 
 Le credentials, ossia access_key_id e secret_access_key, identificano l'utente IAM e quindi i diritti di accesso ad AmazonWebService (nel nostro caso al solo servizio S3).
 La s3_region ed il nome del bucket identificano dove archiviare i files.
 
+In genere è sufficiente un utente IAM per applicazione, ossia usiamo lo stesso utente per entrambi i buckets (production e development).
 
 
 
-### Lato IAM user
 
-Creiamo un nuovo utente - IAM user : Access key e Secret access key
+## Nuovo IAM user
 
+Creiamo un nuovo utente (IAM user) dedicato alla nostra applicazione "angletheme".
 E' utile avere un utente per ogni dominio web che ha i diritti di archiviare e visualizzare i files su AWS S3. Questo utente che non è un utente fisico ma del codice che si autentica ed archivia o visualizza i files viene definito "bot". Per comodità creeremo un utente "bot" per ogni nostra applicazione rails.
 
 AWS -> Service -> IAM -> Users
@@ -42,7 +53,7 @@ AWS -> Service -> IAM -> Users
 
 
 * Step1
-    User name   : botcmspofo
+    User name   : bot_angletheme
     Access type : Programmatic access
 * Step2
     Permissions : "AmazonS3FullAccess" senza altre configurazioni.
@@ -71,7 +82,7 @@ AWS -> Service -> S3
 Facciamo click su create bucket.
 
 * Step1
-    Bucket name : cmspofo-dev
+    Bucket name : angletheme-dev
     Region      : US East (N. Virginia)
 * Step2
     Lasciamo le opzioni di default
@@ -84,7 +95,7 @@ Facciamo click su create bucket.
 Facciamo click su create bucket.
 
 * Step1
-    Bucket name : cmspofo-prod
+    Bucket name : angletheme-prod
     Region      : US East (N. Virginia)
 * Step2
     Lasciamo le opzioni di default
@@ -103,7 +114,7 @@ AWS -> Service -> S3 -> Bucket name -> Properties -> Static website hosting -> E
 
 Fare click sul service "S3". Ci si presenterà un elenco con tutti i bucket creati con relativo nome. Facciamo click sul bucket, andiamo sul tab "properties" e facciamo click sul "quadrato" Static web hosting. Lì troveremo un Endpoint simile al seguente:
 
-Endpoint :  http://cmspofo-dev.s3-website-us-east-1.amazonaws.com
+Endpoint :  http://angletheme-dev.s3-website-us-east-1.amazonaws.com
 
 La region in questo caso è "us-east-1" e corrisponde alla region US East (N. Virginia)
 
@@ -116,49 +127,51 @@ E con questo abbiamo tutti i dati che ci servono per collegarci. Nel prossimo ca
 
 ## Indichiamo a Rails di usare i nuovi buckets
 
+Nei prossimi paragrafi indichiamo a rails di usare i nuovi buckets appena creati.
 
 
 
-### Implementiamo la variabile ":amazondev" nello storage.yml
+
+## Implementiamo la variabile ":amazondev" nello storage.yml
+
+Questo file è usato da activestorage e serve per l'upload di files. Il nome usato qui è collegato ai nomi usati su amazon web server S3.
+Per approfondimenti facciamo riferimento al capitolo 01-beginning/12-activestorage-filesupload/04-aws_s3_activestorage
 
 Rails predispone commentata le linee di codice per effettuare il collegamento. Dobbiamo solo decommentarle ed adattarle alle nostre esigenze.
 
-{id="01-11-04_03", title=".../app/config/storage.yml", lang=yaml, line-numbers=on, starting-line-number=5}
+{id: "13-01-12_01", caption: ".../app/config/storage.yml -- codice 01", format: yaml, line-numbers: true, number-from: 5}
 ```
 amazondev:
   service: S3
   access_key_id: <%= Rails.application.credentials.dig(:aws, :access_key_id) %>
   secret_access_key: <%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
   region: us-east-1
-  bucket: cmspofo-dev
+  bucket: angletheme-dev
 
 amazonprod:
   service: S3
   access_key_id: <%= Rails.application.credentials.dig(:aws, :access_key_id) %>
   secret_access_key: <%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
   region: us-east-1
-  bucket: cmspofo-prod
+  bucket: angletheme-prod
 ```
 
-[Codice 03](#01-11-04_03all)
+[tutto il codice](#13-01-12_01all)
 
 Non resta che impostare in modo sicuro, le variabili access_key_id e secret_access_key, anche dette "secrets".
 
 
 
 
-
-
-
-### Prima reimpostiamo il file config/master.key
+## Prima reimpostiamo il file config/master.key
 
 Per giusti motivi di sicurezza la "master key" non è passata tramite git. E' infatti aggiunta al file .gitignore.
 La troviamo nella nostra applicazione clonata perché viene ricreata in automatico ma la chiave che ha al suo interno è ovviamente differente.
 
-Entriamo sull'applicazione originaria che abbiamo clonato (cmsbase) e copiamoci il contenuto del file config/master.key
-Torniamo sulla nosta applicazione "cmspofo" e sostituiamo il contenuto del file config/master.key con quello copiato.
+Entriamo sull'applicazione originaria che abbiamo clonato (bl6_0) e copiamoci il contenuto del file config/master.key
+Torniamo sulla nosta applicazione "angletheme" e sostituiamo il contenuto del file config/master.key con quello copiato.
 
-{id="01-11-04_03", title=".../app/config/master.key", lang=text, line-numbers=on, starting-line-number=1}
+{id: "13-01-12_02", caption: ".../app/config/master.key -- codice 02", format: text, line-numbers: true, number-from: 1}
 ```
 67b535b7dec8b679a548a57823d2c110
 ```
@@ -166,9 +179,9 @@ Torniamo sulla nosta applicazione "cmspofo" e sostituiamo il contenuto del file 
 
 
 
-### Implementiamo i due secrets
+## Implementiamo i due secrets
 
-Implementiamo le due secrets nel file criptato "credentials". Per editare il file eseguire:
+Implementiamo le due secrets per lo IAM user nel file criptato "credentials". Per editare il file eseguire:
 
 {caption: "terminal", format: bash, line-numbers: false}
 ```
@@ -195,7 +208,7 @@ aws:
 
 
 
-### Verifichiamo lettura secrets nel file criptato
+## Verifichiamo lettura secrets nel file criptato
 
 Verifichiamo che le variabili aws che abbiamo appena aggiunto siano correttamente implementate
 
@@ -209,7 +222,7 @@ $ rails c
 
 
 
-### Verifichiamo preview
+## Verifichiamo preview
 
 {caption: "terminal", format: bash, line-numbers: false}
 ```
@@ -221,3 +234,5 @@ proviamo adesso a caricare un file.
 
 Funziona! Adesso le immagini sono caricate su aws s3 e non vengono più cancellate dopo poche ore.
 ATTENZIONE! Normalmente le immagini vengono caricate subito ma a volte ci può volere del tempo prima che l'immagine venga uploadata quindi non abbiate fretta e fate un refresh dopo alcuni minuti.
+
+Ci manca solo la gestione delle immagini, nello specifico il ridimensionamento, ma questo lo implementiamo nel prossimo capitolo.

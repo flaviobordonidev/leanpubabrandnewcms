@@ -1,0 +1,77 @@
+# Ripristiniamo minimagic
+
+Per vedere in sviluppo le immagini ridimensionate con "variant" dobbiamo reinstallare minimagic.
+Per funzionare ".variant" necessita di minimagic e MiniMagick richiede ImageMagic installato.
+Per approfondimenti vedi 01-beginning/15-activestorage-filesupload/02-activestorage-install.
+
+
+
+
+## Implementiamo il gestore delle immagini (imagemagick)
+
+Per funzionare mini_magick ha bisogno di imagemagick presente, quindi installiamolo su Cloud9. (Per la produzione, Heroku lo installa automaticamente)
+
+Essendo su una sessione di cloud9 con ubuntu usiamo "apt-get". (se avessimo scelto EC2 linux rivedi nei capitoli precedenti)
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo apt-get install imagemagick
+~~~~~~~~
+
+Per approfondimenti vedi 01-beginning/15-activestorage-filesupload/02-activestorage-install
+
+
+Se non funziona eseguire:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo apt-get update
+$ sudo apt-get install imagemagick
+~~~~~~~~
+
+Se neanche questo funziona eseguire:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo add-apt-repository main
+$ sudo apt-get update
+$ sudo apt-get install imagemagick
+~~~~~~~~
+
+
+
+
+## Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+adesso abbiamo anche le versioni delle immagini ridimensionate.
+
+
+
+
+## Salviamo su Git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "restore minimagic"
+```
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge rp
+$ git branch -d rp
+~~~~~~~~

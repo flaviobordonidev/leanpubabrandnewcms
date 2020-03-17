@@ -32,15 +32,3 @@ This project is provided in order to start with the template using a different a
 ## La documentazione del tema
 
 Anche se non ci è necessaria per procedere perché è tutto spiegato in questo libro, a titolo di conoscenza c'è la cartella "documentation" in cui sono riportate delle spiegazioni di massima per partire con il tema per ogni ambiente. A titolo di curiosità, alcune informazioni sono riportate solo su un ambiente e non sugli altri quindi a volte è utile leggere anche la documentazione riportata sugli ambienti che non stiamo usando perché ci possono essere delle informazioni interessanti che ci possono tornare utili.
-
-
-Starting the app
-This project it ready to run on a local machine.
-
-Once you have Ruby and Ruby on Rails installed:
-
-1- Open a terminal and go to the root folder of the project
-2- Run the command bundle install to install necessary gems
-3- Run npm install to install node dependencies
-4- Run the command rails server
-5- A new server will start listening at http://localhost:3000 to show your app.

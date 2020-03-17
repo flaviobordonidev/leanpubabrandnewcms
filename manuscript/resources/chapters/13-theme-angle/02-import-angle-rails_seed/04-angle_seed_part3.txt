@@ -7,7 +7,7 @@ Adesso è arrivato il momento di addentrarci nella cartella "config"
 
 ## config/application.rb
 
-Presente anche su bl6_0 con differenze. Implementiamo le differenze che ci servono.
+Presente anche su angletheme con differenze. Implementiamo le differenze che ci servono.
 
 * I commenti su "Time.zone default" e "default locale" che erano presenti su Rails 4 e sono stati tolti già da Rails 5.2
 * I "config.assets.precompile" per i files di stylesheets. (Se non li avessimo messi ci avrebbe comunque indicato di inserirli il gestore degli errrori di rails andando nelle views)
@@ -27,21 +27,21 @@ Presente anche su bl6_0 con differenze. Implementiamo le differenze che ci servo
 
 ## config/boot.rb
 
-File presente su bl6_0 con contenuto identico. Non lo importiamo.
+File presente su angletheme con contenuto identico. Non lo importiamo.
 
 
 
 
 ## config/cable.yml
 
-File presente su bl6_0 con contenuto sostanzialmente identico. Non lo importiamo.
+File presente su angletheme con contenuto sostanzialmente identico. Non lo importiamo.
 
 
 
 
 ## config/credentials.yml.enc
 
-File presente su bl6_0 con differenze ma non si deve cambiare. Non lo importiamo.
+File presente su angletheme con differenze ma non si deve cambiare. Non lo importiamo.
 
 Questo è il file con le password ed i secrets criptati.
 
@@ -50,21 +50,21 @@ Questo è il file con le password ed i secrets criptati.
 
 ## config/database.yml
 
-File presente su bl6_0 con contenuto differente ma non dobbiamo cambiarlo. Non lo importiamo.
+File presente su angletheme con contenuto differente ma non dobbiamo cambiarlo. Non lo importiamo.
 
 
 
 
 ## config/environment.rb
 
-File presente su bl6_0 con contenuto identico. Non lo importiamo.
+File presente su angletheme con contenuto identico. Non lo importiamo.
 
 
 
 
 ## config/puma.rb
 
-File presente su bl6_0 con contenuto differente ma non dobbiamo cambiarlo. Non lo importiamo.
+File presente su angletheme con contenuto differente ma non dobbiamo cambiarlo. Non lo importiamo.
 
 Ha la descrizione dell'installazione iniziale di Rails. Noi per la nostra app lo abbiamo cambiato.
 
@@ -73,7 +73,7 @@ Ha la descrizione dell'installazione iniziale di Rails. Noi per la nostra app lo
 
 ## config/routes.rb
 
-Presente anche su bl6_0 con differenze. Implementiamo le differenze che ci servono.
+Presente anche su angletheme con differenze. Implementiamo le differenze che ci servono.
 
 * Il percorso della pagina "singleview" del tema "Angle rails-seed"
 * Le api routes al momento le lasciamo ma in seguito elimineremo queste api perché usiamo i "locales" per l'internazionalizzazione.
@@ -97,7 +97,7 @@ Presente anche su bl6_0 con differenze. Implementiamo le differenze che ci servo
 
 ## config/storage.yml
 
-File presente su bl6_0 con contenuto differente ma non dobbiamo cambiarlo. Non lo importiamo.
+File presente su angletheme con contenuto differente ma non dobbiamo cambiarlo. Non lo importiamo.
 
 Ha la descrizione dell'installazione iniziale di Rails. Noi per la nostra app lo abbiamo cambiato.
 
@@ -106,84 +106,84 @@ Ha la descrizione dell'installazione iniziale di Rails. Noi per la nostra app lo
 
 ## config/webpacker.yml
 
-File presente su bl6_0 con contenuto sostanzialmente identico. Non lo importiamo.
+File presente su angletheme con contenuto sostanzialmente identico. Non lo importiamo.
 
 
 
 
 ## config/environments/development.rb
 
-File presente su bl6_0 con contenuto sostanzialmente identico. Non lo importiamo.
+File presente su angletheme con contenuto sostanzialmente identico. Non lo importiamo.
 
 
 
 
 ## config/environments/production.rb
 
-File presente su bl6_0 con contenuto sostanzialmente identico. Non lo importiamo.
+File presente su angletheme con contenuto sostanzialmente identico. Non lo importiamo.
 
 
 
 
 ## config/environments/test.rb
 
-File presente su bl6_0 con contenuto sostanzialmente identico. Non lo importiamo.
+File presente su angletheme con contenuto sostanzialmente identico. Non lo importiamo.
 
 
 
 
 ## config/initializers/application_controller_renderer.rb
 
-File presente su bl6_0 con contenuto identico. Non lo importiamo.
+File presente su angletheme con contenuto identico. Non lo importiamo.
 
 
 
 
 ## config/initializers/assets.rb
 
-File presente su bl6_0 con contenuto identico. Non lo importiamo.
+File presente su angletheme con contenuto identico. Non lo importiamo.
 
 
 
 
 ## config/initializers/backtrace_silencers.rb
 
-File presente su bl6_0 con contenuto identico. Non lo importiamo.
+File presente su angletheme con contenuto identico. Non lo importiamo.
 
 
 
 
 ## config/initializers/content_security_policy.rb
 
-File presente su bl6_0 con contenuto identico. Non lo importiamo.
+File presente su angletheme con contenuto identico. Non lo importiamo.
 
 
 
 
 ## config/initializers/cookies_serializer.rb
 
-File presente su bl6_0 con contenuto identico. Non lo importiamo.
+File presente su angletheme con contenuto identico. Non lo importiamo.
 
 
 
 
 ## config/initializers/filter_parameter_logging.rb
 
-File presente su bl6_0 con contenuto identico. Non lo importiamo.
+File presente su angletheme con contenuto identico. Non lo importiamo.
 
 
 
 
 ## config/initializers/inflections.rb
 
-File presente su bl6_0 con contenuto identico. Non lo importiamo.
+File presente su angletheme con contenuto identico. Non lo importiamo.
 
 
 
 
 ## config/initializers/mime_types.rb
 
-File presente su bl6_0 con contenuto identico. Non lo importiamo.
+File presente su angletheme con contenuto identico. Non lo importiamo.
 
 
 
@@ -198,14 +198,14 @@ Verificare su google.
 
 ## config/initializers/wrap_parameters.rb
 
-File presente su bl6_0 con contenuto identico. Non lo importiamo.
+File presente su angletheme con contenuto identico. Non lo importiamo.
 
 
 
 
 ## config/locales/en.yml
 
-File presente su bl6_0 con contenuto differente ma da non cambiare. Non lo importiamo.
+File presente su angletheme con contenuto differente ma da non cambiare. Non lo importiamo.
 
 Nel file del tema c'è il file iniziale di Rails. Noi nella nostra app lo abbiamo modificato.
 
@@ -214,14 +214,14 @@ Nel file del tema c'è il file iniziale di Rails. Noi nella nostra app lo abbiam
 
 ## config/webpack/development.js
 
-File presente su bl6_0 con contenuto identico. Non lo importiamo.
+File presente su angletheme con contenuto identico. Non lo importiamo.
 
 
 
 
 ## config/webpack/environment.js
 
-File presente su bl6_0 con differenze. Implementiamo le differenze che ci servono.
+File presente su angletheme con differenze. Implementiamo le differenze che ci servono.
 
 * Praticamente usiamo tutto il codice del file del tema.
 * I ";" in finale di comando sono opzionali. Scegliamo di lasciarli per restare allineati con quanto hanno fatto gli sviluppatori del tema Angle.
@@ -243,14 +243,14 @@ environment.plugins.append('Provide',
 
 ## config/webpack/production.js
 
-File presente su bl6_0 con contenuto identico. Non lo importiamo.
+File presente su angletheme con contenuto identico. Non lo importiamo.
 
 
 
 
 ## config/webpack/test.js
 
-File presente su bl6_0 con contenuto identico. Non lo importiamo.
+File presente su angletheme con contenuto identico. Non lo importiamo.
 
 
 
@@ -263,23 +263,50 @@ Abbiamo finalmente finito tutte le comparazioni e le implementazioni. Possiamo f
 
 
 
+## Partiamo. (Let's start)
+
+Preparati tutti i files eseguiamo i comandi di avvio
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ bundle install
+$ npm install
+$ rails db:migrate
+```
+
+(In realtà il "rails db:migrate" non serve ma male non fà :))
+
+
+
+
 ## Verifichiamo preview
 
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails s
+```
 
 
 
 
-## Pubblichiamo su Heroku
+## Salviamo su Git
 
-ricordarmi che figaro ha un comando da lanciare per passare le variabili d'ambiente su heroku.
-
-Publichiamo su heroku e lanciamo il comando e verifichiamo che è tutto ok.
-
-Possiamo anche spiegare su un paragrafo come caricare le variabili una per una se non avessimo figaro.
-(si può fare una per una sia a linea di comando con la heroku tool-belt oppure dal sito web di heroku)
-
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "Implement Angle Theme"
+```
 
 
+
+
+## publichiamo su heroku
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push heroku iat:master
+```
 
 
 
@@ -291,8 +318,8 @@ se abbiamo finito le modifiche e va tutto bene:
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ git checkout master
-$ git merge angle
-$ git branch -d angle
+$ git merge iat
+$ git branch -d iat
 ~~~~~~~~
 
 
@@ -315,3 +342,8 @@ Spostiamo in remoto anche la parte dei tag in cui abbiamo messo la versione v.0.
 ~~~~~~~~
 $ git push origin master --tag
 ~~~~~~~~
+
+
+
+
+## Il codice del capitolo

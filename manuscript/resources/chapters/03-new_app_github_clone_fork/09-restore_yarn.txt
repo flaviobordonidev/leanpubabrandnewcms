@@ -124,4 +124,61 @@ apriamo il browser sull'URL:
 
 * https://mycloud9path.amazonaws.com/
 
-E vediamo il seguente errore "FATAL: database "bl6_0_development" does not exist". Questo perché non abbiamo creato i databases su postgreSQL.
+E vediamo il seguente errore:
+
+[...]
+error Found 1 errors.                                                                                                                                  
+
+
+========================================
+  Your Yarn packages are out of date!
+  Please run `yarn install --check-files` to update.
+========================================
+[...]
+
+
+
+
+## Aggiorniamo yarn
+
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ yarn install --check-files
+
+
+user_fb:~/environment/pofotheme (rp) $ yarn install --check-files
+yarn install v1.22.4
+[1/4] Resolving packages...
+[2/4] Fetching packages...
+warning compression-webpack-plugin@2.0.0: Invalid bin field for "compression-webpack-plugin".
+info fsevents@1.2.9: The platform "linux" is incompatible with this module.
+info "fsevents@1.2.9" is an optional dependency and failed compatibility check. Excluding it from installation.
+[3/4] Linking dependencies...
+warning " > webpack-dev-server@3.8.2" has unmet peer dependency "webpack@^4.0.0".
+warning "webpack-dev-server > webpack-dev-middleware@3.7.2" has unmet peer dependency "webpack@^4.0.0".
+[4/4] Building fresh packages...
+Done in 22.62s.
+```
+
+Per approfondimenti: https://yarnpkg.com/en/docs/cli/check 
+
+
+
+
+## Verifichiamo preview
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails s
+```
+
+apriamo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/
+
+E vediamo il seguente errore "FATAL: database "bl6_0_development" does not exist". 
+
+Questo perché non abbiamo creato i databases su postgreSQL.
+

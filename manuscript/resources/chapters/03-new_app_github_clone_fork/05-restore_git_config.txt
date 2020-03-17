@@ -1,0 +1,56 @@
+# Ripristiniamo le impostazioni globali di Git
+
+Ripristiniamo l'ambiente (Restore environment). Partiamo dalle variabili globali di gitHub
+Adesso che ci siamo sganciati da gitHub possiamo riprendere ad utilizzare a pieno Git e quindi ripartiamo a creare i nostri branches.
+
+
+
+
+## Ripristiniamo le impostazioni globali di Git
+
+per approfondimenti possiamo rifarci al capitolo 01-beginning/02-git/02-inizializziamo_git
+
+Verifichiamo la configurazione di git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git config -l
+
+
+user_fb:~/environment/bl6_0 (master) $ git config -l
+credential.helper=!aws codecommit credential-helper $@
+credential.usehttppath=true
+core.editor=/usr/bin/nano
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+```
+
+Dobbiamo impostare di nuovo le variabili gloabali "user.name" e "user.email".
+Queste sono impostazioni di sistema, il che significa che devi eseguirle una sola volta per computer:
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git config --global user.name "My Name"
+$ git config --global user.email "my@email.com"
+$ git config -l
+
+
+user_fb:~/environment/bl6_0 (master) $ git config --global user.name "Flavio Bordoni"
+user_fb:~/environment/bl6_0 (master) $ git config --global user.email "flavio.bordoni.dev@gmail.com"
+user_fb:~/environment/bl6_0 (master) $ git config -l
+credential.helper=!aws codecommit credential-helper $@
+credential.usehttppath=true
+core.editor=/usr/bin/nano
+user.name=Flavio Bordoni
+user.email=flavio.bordoni.dev@gmail.com
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+```
+
+
+Più avanti quando attiveremo GitHub useremo la stessa email usata qui.
+Tieni presente che il nome e l'indirizzo email che utilizzi nella configurazione di Git saranno disponibili in tutti i repository che rendi pubblici.

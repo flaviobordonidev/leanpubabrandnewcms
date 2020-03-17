@@ -98,7 +98,7 @@ e vediamo i vari URLs sul nostro browser:
 
 ## Instradiamo con routes
 
-Aggiorno il file routes per mettere l'homepage come pagina principale (root)
+Aggiorniamo il file routes per mettere l'homepage come pagina principale (root)
 
 {id: "01-03-01_01", caption: ".../config/routes.rb -- codice 01", format: ruby, line-numbers: true, number-from: 3}
 ```

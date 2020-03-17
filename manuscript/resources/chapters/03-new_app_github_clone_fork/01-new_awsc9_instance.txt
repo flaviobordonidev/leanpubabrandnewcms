@@ -1,0 +1,76 @@
+# Nuova istanza awsC9
+
+Creiamo una nuova istanza su awsC9 (new environment) su cui creare una nuova app partendo da "bl6_0".
+
+Su questo nuovo environment importeremo/cloneremo l'applicazione "bl6_0" prendendola da github.
+
+Iniziamo la nuova applicazione "angletheme" a partire da "bl6_0".
+
+
+
+
+## Effettuiamo il login come amministratore
+
+https://console.aws.amazon.com/
+
+Scegliamo il link: "Sign-in using root account credentials".
+In questo modo lavoriamo come root di aws cloud9.
+
+Oppure entriamo con un AMI user che abbia i diritti di amministratore per cloud9.
+
+
+
+
+## Entriamo su cloud9
+
+Services -> Developer Tools -> Cloud9
+
+Selezioniamo la "AWS Region" EU (Frankfurt) (al momento il default costa meno)
+
+Ed iniziamo a creare un nuovo ambiente.
+
+
+
+
+### step1
+
+Click su "Create environment"
+
+* Name: angletheme
+* Description : Vestiamo il tema Angle al nostro bl6_0
+
+Qui usiamo il nome della nostra applicazione e non "bl6_0". 
+Non includiamo l'indicazione della versione nel nome.
+
+
+
+
+### Step2
+
+* Environment type      : Create a new instance for environment (EC2)
+* Instance type         : t2.micro (1 GiB RAM + 1 vCPU)
+* Platform              : Ubuntu Server 18.04 LTS
+* Cost-saving setting   : After 30 minutes (default)
+
+
+
+
+### Step 3
+
+Review
+
+Click "Create environment"
+
+
+
+
+## Configuriamo la nostra sessione di AWS Cloud9
+
+* Main theme    : AWS Cloud9 Classic Dark Theme
+* Editor theme  : Cloud9 Night Low-Color
+* Keyboard Mode : Default
+
+Su preferences -> Soft tabs: 2
+
+
+L'ambiente è impostato. Adesso possiamo procedere ad importare un repository da GitHub.

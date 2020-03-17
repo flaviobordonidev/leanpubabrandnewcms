@@ -1,0 +1,83 @@
+# Rinominiamo la nostra applicazione
+
+Dalla versione rails 4.1.x, se vogliamo rinominare la nosta applicazione, è sufficiente rinominare la cartella ed aggiornare il files "config/application.rb".
+Per rails 4.0.x era invece consigliabile usare la gemma "rename gem".
+
+
+Risorse interne:
+
+* 99-rails_references/rails-rename/rename_app.txt
+
+
+
+
+## Rinominiamo la cartella della nostra app
+
+o rinominiamo la cartella tramite la GUI awsC9 oppure da console con il comando:
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ cd ..
+$ mv bl6_0 angletheme
+```
+
+una volta rinominata la cartella ci basta aggiornare il file config/application.
+
+
+
+
+## Aggiorniamo config/application
+
+Apriamo il file config/application.rb, lì vediamo un modulo con lo stesso nome della nostra app. Tutto quello che dobbiamo fare è cambiare il nome del modulo con il nome della nuova app. 
+Quindi rinominiamo da "module Bl60" a "module Angletheme". Attenzione! La maiuscola è importante.
+
+{id: "13-01-06_01", caption: ".../config/application.rb -- codice 01", format: ruby, line-numbers: true, number-from: 9}
+```
+module Angletheme
+  class Application < Rails::Application
+    # Initialize configuration defaults for originally generated Rails version.
+```
+
+[tutto il codice](#13-01-06_01all)
+
+
+
+
+## verifichiamo preview
+
+Non arriviamo neanche a provare ad attivare il webserver perché ci manca il gestore dei database postgresql.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ cd angletheme
+$ sudo service postgresql start
+
+user_fb:~/environment $ cd angletheme/
+user_fb:~/environment/angletheme (master) $ sudo service postgresql start
+Failed to start postgresql.service: Unit postgresql.service not found.
+```
+
+Manca postgresql che installiamo nel prossimo capitolo
+
+
+
+
+## Salviamo su Git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "rename Rails app from bl6_0 to angletheme"
+```
+
+
+## Produzione e Backup
+Non possiamo salviamo sui repository remoti (Heroku e GitHub) perché dobbiamo implementarli di nuovo
+
+
+
+
+## Il codice del capitolo
+
+
+

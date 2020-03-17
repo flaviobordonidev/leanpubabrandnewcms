@@ -1,0 +1,163 @@
+# Importiamo il tema "Angle rails" nella nostra app
+
+Adesso che abbiamo già lo scheletro dell'applicazione, tramite la cartella "rails_seed", passiamo ad importare tutte le funzionalità disponibili su Angle tramite la cartella "rails".
+
+Potremmo comparare i files uno a uno come fatto per "rails_seed", ma è più divertente partire dalle views, importando di volta in volta gli elementi che ci servono.
+
+
+
+
+## Verifichiamo lo stato di git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git status
+```
+
+se serve facciamo il commit
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "Clean master branch to open a new branch"
+```
+
+
+
+
+## Apriamo il branch "Implement Angle theme Rails"
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout -b iar
+```
+
+
+
+## Le views dashboard
+
+La parte principale del tema Angle è la dashboard, quindi iniziamo da qui.
+
+* importiamo le views
+* importiamo il controller
+* importiamo il model (se c'è. Ma normalmente nei temi non c'è)
+* aggiorniamo il file routes
+* aggiorniamo stylesheets e javascripts
+
+
+
+
+## app/views/dashboard/
+
+Cartella non presente su angletheme. La importiamo.
+
+Copiamo la cartella (da -> a):
+
+* angle/app/views/dashboard/  -> angletheme/views/
+
+
+
+
+## app/controllers/dashboard_controller.rb
+
+File non presente su angletheme. Lo importiamo.
+
+Copiamo (da -> a):
+
+* angle/app/assets/stylesheets/application.css.scss  -> angletheme/app/assets/stylesheets/
+
+
+
+
+## app/models/dashboard.rb
+
+Si sarebbe chiamato così ma in realtà non c'è; come accade nella maggior parte dei temi
+
+
+
+
+## configuration/routes.rb
+
+Aggiorniamo il file routes
+
+{id: "13-03-01_01", caption: ".../config/routes.rb -- codice 01", format: ruby, line-numbers: true, number-from: 3}
+```
+  get 'dashboard/dashboard_h'
+```
+
+[tutto il codice](#13-03-01_01all)
+
+
+
+
+## Verifichiamo preview
+
+Attiviamo il webserver
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails s
+```
+
+e vediamo sull'URL:
+
+* https://mycloud9path.amazonaws.com/dashboard/dashboard_h
+
+riceviamo l'errore: The asset "dashboard.css" is not present in the asset pipeline.
+
+
+
+
+## Importiamo app/assets/stylesheets/dashboard.css.scss
+
+File non presente su angletheme. Lo importiamo.
+
+Copiamo (da -> a):
+
+* angle/app/assets/stylesheets/dashboard.css.scss  -> angletheme/app/assets/stylesheets/
+
+Riavviando il server riceviamo l'errore:
+Asset was not declared to be precompiled in production.
+Add `Rails.application.config.assets.precompile += %w( dashboard.css )` to `config/initializers/assets.rb` and restart your server
+
+
+
+
+## Aggiorniamo il precompile
+
+Come ci suggerisce il messaggio d'errore dovremmo inserlo nel file "config/initializers/assets.rb" ma noi abbiamo già tutto impostato in "config/application.rb"
+
+{id: "13-03-01_02", caption: ".../config/application.rb -- codice 02", format: ruby, line-numbers: true, number-from: 39}
+```
+    config.assets.precompile += [
+                                 # Stylesheets
+                                 'singleview.css',
+                                 'dashboard.css'
+                                ]
+```
+
+[tutto il codice](#13-03-01_02all)
+
+Riavviamo il server e riceviamo l'errore:
+Webpacker can't find dashboard in /home/ubuntu/environment/angletheme/public/packs/manifest.json. Possible causes:
+
+
+
+
+## Aggiorniamo webpacker
+
+L'errore indica la cartella "public" ma in realtà i files webpacker che sono su "public" sono generati. Il posto dove dobbiamo intervenire è in "javascripts/packs".
+
+Importiamo app/javascript/packs/dashboard.js
+
+File non presente su angletheme. Lo importiamo.
+
+Copiamo (da -> a):
+
+* angle/app/javascript/packs/dashboard.js  -> angletheme/app/javascript/packs/
+
+Riavviamo il server e va tutto bene.
+Funziona! ^_^
+
+

@@ -1,0 +1,87 @@
+# Cambiamo i collegamenti ai repository remoti di Git
+
+questa versione clonata ha ovviamente il riferimento di Git alla stessa repository esterna su GitHub di "bl6_0".
+Siccome noi vogliamo creare un'applicazione differente è fondamentale rimuovere i collegamenti alla repository su GitHub. Ne creeremo in seguito una nuova.
+
+
+Risorse interne:
+
+* 99-rails_references/git_github/github-removing-a-remote
+
+
+
+
+## Rimuoviamo repository remoto
+
+Verifichiamo i repositories remoti presenti sul nostro Git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git remote -v
+
+
+user_fb:~/environment/bl6_0 (master) $ git remote -v
+origin  git@github.com:flaviobordonidev/bl6_0.git (fetch)
+origin  git@github.com:flaviobordonidev/bl6_0.git (push)
+```
+
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git config -l
+
+
+user_fb:~/environment/bl6_0 (master) $ git config -l
+credential.helper=!aws codecommit credential-helper $@
+credential.usehttppath=true
+core.editor=/usr/bin/nano
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+remote.origin.url=git@github.com:flaviobordonidev/bl6_0.git
+```
+
+L'unico che si presenta è "origin", che è quello su GitHub, perché non abbiamo ancora installato il toolkit di Heroku.
+
+
+Rimuoviamo/scolleghiamo il repository remoto "origin"
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git remote rm origin
+
+
+user_fb:~/environment/bl6_0 (master) $ git remote rm origin
+user_fb:~/environment/bl6_0 (master) $ 
+```
+
+
+Verifichiamo che il repository remoto "origin" è stato scollegato
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git remote -v
+
+
+user_fb:~/environment/bl6_0 (master) $ git remote -v
+user_fb:~/environment/bl6_0 (master) $ 
+```
+
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git config -l
+
+
+user_fb:~/environment/bl6_0 (master) $ git config -l
+credential.helper=!aws codecommit credential-helper $@
+credential.usehttppath=true
+core.editor=/usr/bin/nano
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+```
+
+Adesso nei prossimi capitoli possiamo tranquillamente creare dei branches ed usare Git localmente senza temere di compromettere l'applicazione che abbiamo clonato, ossia "bl6_0".
