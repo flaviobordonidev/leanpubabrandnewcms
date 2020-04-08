@@ -21,13 +21,3 @@ in questo volume:
 * Lo rendiamo DRY
 * Creiamo solo mockups
 
-
-
-
-Risorse web:
-
-* http://www.themezaa.com/html/pofo/documentation/
-* http://www.themezaa.com/html/pofo/blog-only-text-full-width.html
-
-IL FILE " themeforest-xYrQiFEw-pofo-creative-agency-corporate-and-portfolio-multipurpose-template.zip " CONTIENE TUTTO IL TEMA
-LO ABBIAMO SCARICATO DA THEMEFOREST TRAMITE INTEGRAMSYSTEMS

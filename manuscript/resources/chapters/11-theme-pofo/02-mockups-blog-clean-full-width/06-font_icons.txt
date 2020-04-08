@@ -1,0 +1,233 @@
+# I fonts
+
+Non ci resta che importare i fonts sull'asset_pipeline ed associare le chiamate nel views/mockups/blog_clean_full_width.html.erb
+
+
+
+
+## Apriamo il branch "Implement Fonts"
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout -b if
+```
+
+
+
+
+## importiamo i fonts dal tema
+
+vediamo le chiamate ai fonts.
+
+{id: "11-02-06_01", caption: ".../app/views/mockups/blog_clean_full_width.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 28}
+```
+        <!-- et line icon --> 
+        <%= stylesheet_link_tag 'pofo/css/et-line-icons', media: 'all', 'data-turbolinks-track': 'reload' %>
+        <!-- font-awesome icon -->
+        <%#= stylesheet_link_tag 'pofo/css/font-awesome.min', media: 'all', 'data-turbolinks-track': 'reload' %>
+        <!-- themify icon -->
+        <%= stylesheet_link_tag 'pofo/css/themify-icons', media: 'all', 'data-turbolinks-track': 'reload' %>
+```
+
+Quella a "font-awesome" è commentata perché ci dava errore e questi fonts li implementiamo nel prossimo capitolo.
+
+
+
+
+## Il file et-line-icons
+
+Apriamo il file "et-line-icons.css" e vediamo che ha delle chiamate ai files della cartella "fonts"
+
+{id: "11-02-06_02", caption: ".../app/assets/stylesheets/pofo/css/et-line-icons.css -- codice 02", format: ruby, line-numbers: true, number-from: 1}
+```
+@font-face {
+	font-family: 'et-line';
+	src:url('../fonts/et-line.eot');
+	src:url('../fonts/et-line.eot?#iefix') format('embedded-opentype'),
+		url('../fonts/et-line.woff') format('woff'),
+		url('../fonts/et-line.ttf') format('truetype'),
+		url('../fonts/et-line.svg#et-line') format('svg');
+```
+
+
+
+
+
+
+## Il file font-awesome
+
+Lo vediamo nel prossimo capitolo
+
+
+
+
+## Il file themify-icons
+
+Apriamo il file "themify-icons.css" e vediamo che ha delle chiamate ai files della cartella "fonts"
+
+{title=".../app/assets/stylesheets/pofo/css/themify-icons.css", lang=ruby, line-numbers=on, starting-line-number=3}
+```
+	src:url('../fonts/themify.eot%3F-fvbane');
+	src:url('../fonts/themify.eot%3F') format('embedded-opentype'),
+		url('../fonts/themify.woff%3F-fvbane') format('woff'),
+		url('../fonts/themify.ttf%3F-fvbane') format('truetype'),
+		url('../fonts/themify.svg%3F-fvbane') format('svg');
+```
+
+ATTENZIONE:
+in una versione precedente di pofo alcuni files dei fonts avevano "%3F" al finale del nome e questo in html è il trattino basso "_".
+Ad esempio la chiamata "url('../fonts/themify.woff%3F-fvbane') format('woff')," si riferiva al file "themify.woff_-fvbane".
+
+
+
+
+## Impoprtiamo i fonts nella nostra app (da -> a)
+
+Copiamoci tutta la cartella fonts/. 
+
+
+* .../fonts/et-line.eot               ->  .../app/assets/stylesheets/pofo/fonts/et-line.eot
+* .../fonts/et-line.eot_              ->  .../app/assets/stylesheets/pofo/fonts/et-line.eot_  (%3F è "_" in html)
+* .../fonts/et-line.woff              ->  .../app/assets/stylesheets/pofo/fonts/et-line.woff
+* .../fonts/et-line.ttf               ->  .../app/assets/stylesheets/pofo/fonts/et-line.ttf
+* .../fonts/et-line.svg               ->  .../app/assets/stylesheets/pofo/fonts/et-line.svg
+* .../fonts/fa-brands-400.eot         ->  .../app/assets/stylesheets/pofo/fonts/fa-brands-400.eot
+* .../fonts/fa-brands-400.eot_        ->  .../app/assets/stylesheets/pofo/fonts/fa-brands-400.eot_
+* .../fonts/fa-brands-400.woff        ->  .../app/assets/stylesheets/pofo/fonts/fa-brands-400.woff
+* .../fonts/fa-brands-400.ttf         ->  .../app/assets/stylesheets/pofo/fonts/fa-brands-400.ttf
+* .../fonts/fa-brands-400.woff2.html  ->  .../app/assets/stylesheets/pofo/fonts/fa-brands-400.woff2.html
+* .../fonts/fa-brands-400.svg         ->  .../app/assets/stylesheets/pofo/fonts/fa-brands-400.svg
+* .../fonts/fa-regular-400.eot        ->  .../app/assets/stylesheets/pofo/fonts/
+* .../fonts/fa-regular-400.eot_       ->  .../app/assets/stylesheets/pofo/fonts/fa-regular-400.eot_
+* .../fonts/fa-regular-400.woff2.html ->  .../app/assets/stylesheets/pofo/fonts/fa-regular-400.woff2.html
+* .../fonts/fa-regular-400.woff       ->  .../app/assets/stylesheets/pofo/fonts/fa-regular-400.woff
+* .../fonts/fa-regular-400.ttf        ->  .../app/assets/stylesheets/pofo/fonts/fa-regular-400.ttf
+* .../fonts/fa-regular-400.svg        ->  .../app/assets/stylesheets/pofo/fonts/fa-regular-400.svg
+* .../fonts/fa-solid-900.eot          ->  .../app/assets/stylesheets/pofo/fonts/fa-solid-900.eot
+* .../fonts/fa-solid-900.eot_         ->  .../app/assets/stylesheets/pofo/fonts/fa-solid-900.eot_
+* .../fonts/fa-solid-900.woff2.html   ->  .../app/assets/stylesheets/pofo/fonts/fa-solid-900.woff2.html
+* .../fonts/fa-solid-900.woff         ->  .../app/assets/stylesheets/pofo/fonts/fa-solid-900.woff
+* .../fonts/fa-solid-900.ttf          ->  .../app/assets/stylesheets/pofo/fonts/fa-solid-900.ttf
+* .../fonts/fa-solid-900.svg          ->  .../app/assets/stylesheets/pofo/fonts/fa-solid-900.svg
+* .../fonts/themify.eot_-fvbane       ->  .../app/assets/stylesheets/pofo/fonts/themify.eot_-fvbane
+* .../fonts/themify.eot_              ->  .../app/assets/stylesheets/pofo/fonts/themify.eot_
+* .../fonts/themify.woff_-fvbane      ->  .../app/assets/stylesheets/pofo/fonts/themify.woff_-fvbane
+* .../fonts/themify.ttf_-fvbane       ->  .../app/assets/stylesheets/pofo/fonts/themify.ttf_-fvbane
+* .../fonts/themify.svg_-fvbane       ->  .../app/assets/stylesheets/pofo/fonts/themify.svg_-fvbane
+
+ATTENZIONE!
+Alcune di queste icone nell'ultima versione mancano ad esempio quelle che terminanon in "_-fvbane" però funziona ugualmente.
+Normalmente basta anche 1 solo file per tipo di font per funzionare. Le varie estensioni sono più che altro delle ridondanze che possono servire per casi particolari.
+
+ATTENZIONE!
+In locale alcune icone già funzionano ma per funzionare anche in remoto dobbiamo implementare le chiamate all'asset_pipeline.
+
+Abbiamo la maggior parte delle icone dentro il mega-menu e la freccia per ritornare in su quando scendiamo in basso nella pagina.
+
+
+
+
+## Implementiamo i fonts per Heroku
+
+Per poter visualizzare le icone in produzione su Heroku cambiamo tutte le chiamate url(...) con l'helper rails font-url(...)
+
+I> ATTENZIONE: assicuriamoci di usare **.scss**
+
+Se lasciamo <nome_file_icons>.css riceveremo un errore in fase di precompile di heroku perché l'helper font-url(...) non è riconosciuto come un comando css valido. 
+
+
+
+
+## Implementiamo et-line-icons per Heroku
+
+Modifichiamo estensione a ".scss" (SASS/scss) rinominando il file (da -> a):
+
+* .../app/assets/stylesheets/pofo/css/et-line-icons.css	->  .../app/assets/stylesheets/pofo/css/et-line-icons.scss
+
+
+{id: "11-02-06_01", caption: ".../app/assets/stylesheets/pofo/css/et-line-icons.scss -- codice 01", format: ruby, line-numbers: true, number-from: 3}
+```
+	src:font-url('../fonts/et-line.eot');
+	src:font-url('../fonts/et-line.eot?#iefix') format('embedded-opentype'),
+		font-url('../fonts/et-line.woff') format('woff'),
+		font-url('../fonts/et-line.ttf') format('truetype'),
+		font-url('../fonts/et-line.svg#et-line') format('svg');
+```
+
+[tutto il codice](#11-02-06_01all)
+
+
+
+
+## Implementiamo themify-icons per Heroku
+
+Modifichiamo estensione a ".scss" (SASS/scss) rinominando il file (da -> a):
+
+* .../app/assets/stylesheets/pofo/css/themify-icons.css	->  .../app/assets/stylesheets/pofo/css/themify-icons.scss
+
+
+{id: "11-02-06_02", caption: ".../app/assets/stylesheets/pofo/css/themify-icons.scss -- codice 02", format: ruby, line-numbers: true, number-from: 3}
+```
+	src:font-url('../fonts/themify.eot?-fvbane');
+	src:font-url('../fonts/themify.eot?#iefix-fvbane') format('embedded-opentype'),
+		font-url('../fonts/themify.woff?-fvbane') format('woff'),
+		font-url('../fonts/themify.ttf?-fvbane') format('truetype'),
+		font-url('../fonts/themify.svg?-fvbane#themify') format('svg');
+```
+
+Attenzione!
+Dobbiamo scrivere il nome del file cosi come è nella cartella dei fonts.
+Questo avviso è importante perché nella vecchia versione del tema alcuni files avevano una parte del nome con "%3F" che in html rappresenta "_" e questa non funzionava. Dovevamo rinominare la parte "%3F" con "_". 
+
+
+
+
+## Archiviamo su git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "Implement fonts for Heroku"
+```
+
+
+
+
+## Pubblichiamo su heroku
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push heroku if:master
+```
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout master
+$ git merge if
+$ git branch -d if
+```
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push origin master
+```
+
+
+
+
+## Il codice del capitolo
+

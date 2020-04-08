@@ -23,10 +23,10 @@ Risorse web:
 
 ## Apriamo il branch "Font Awesome Sass"
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ git checkout -b fas
-~~~~~~~~
+```
 
 
 
@@ -38,19 +38,19 @@ I>
 I> facciamo riferimento al [tutorial github della gemma](https://github.com/FortAwesome/font-awesome-sass)
 
 {id="03-01-05_01", title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=62}
-~~~~~~~~
+```
 # Font-Awesome SASS gem for use in Ruby projects
 gem 'font-awesome-sass', '~> 5.6', '>= 5.6.1'
-~~~~~~~~
+```
 
 [Codice 01](#03-01-05_01all)
 
 Eseguiamo l'installazione della gemma con bundle
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ bundle install
-~~~~~~~~
+```
 
 
 
@@ -71,10 +71,10 @@ Rimanendo il più possibile fedeli al tema pofo creiamo il file
 e dentro il file inseriamo le chiamate 
 
 .../app/assets/stylesheets/pofo/css/font-awesome-via_gem.scss
-~~~~~~~~
+```
 @import "font-awesome-sprockets";
 @import "font-awesome";
-~~~~~~~~
+```
 
 Il file "font-awesome-sprockets" include gli "sprocket assets helpers" utilizzati per trovare il percorso corretto ai files dei font.
 
@@ -86,9 +86,9 @@ Il file "font-awesome-sprockets" include gli "sprocket assets helpers" utilizzat
 rinominamo la chiamata dei fonts da "font-awesome.min" a "font-awesome-via_gem"
 
 ...example_static_pages/posts_index.html.erb
-~~~~~~~~
+```
         <%#= stylesheet_link_tag 'pofo/css/font-awesome-via_gem', media: 'all', 'data-turbolinks-track': 'reload' %>
-~~~~~~~~
+```
 
 
 
@@ -98,7 +98,7 @@ rinominamo la chiamata dei fonts da "font-awesome.min" a "font-awesome-via_gem"
 rinominamo la chiamata anche nell'array del precompile
 
 ...config/application.rb
-~~~~~~~~
+```
     # precompile assets pofo stylesheets                                                             
     config.assets.precompile += ['pofo/css/animate.css',
                                  'pofo/css/bootstrap.min.css',
@@ -115,7 +115,7 @@ rinominamo la chiamata anche nell'array del precompile
                                  'pofo/css/style.css',
                                  'pofo/css/responsive.css'
                                 ]
-~~~~~~~~
+```
 
 adesso funziona! Yeap!
 
@@ -125,21 +125,21 @@ adesso funziona! Yeap!
 
 ## archiviamo su git
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ git add -A
 $ git commit -m "add fontawesome via gem"
-~~~~~~~~
+```
 
 
 
 
 ## Pubblichiamo su heroku
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ git push heroku mp:master
-~~~~~~~~
+```
 
 
 
@@ -148,12 +148,12 @@ $ git push heroku mp:master
 
 se abbiamo finito le modifiche e va tutto bene:
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ git checkout master
 $ git merge mp
 $ git branch -d mp
-~~~~~~~~
+```
 
 
 
@@ -162,10 +162,10 @@ $ git branch -d mp
 
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ git push origin master
-~~~~~~~~
+```
 
 
 

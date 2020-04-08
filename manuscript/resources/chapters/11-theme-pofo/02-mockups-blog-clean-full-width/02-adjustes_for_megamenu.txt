@@ -1,0 +1,91 @@
+# Nei prossimi files facciamo un po' di modifiche per gestire il megamenu.
+
+
+
+
+*****
+Valutiamo anche il fatto di installare con webpack/yarn le librerie javascript necessarie.
+Ad esempio per lo script "wow" usiamo:
+
+https://yarnpkg.com/package/wow
+
+Perché la maggior parte degli script javascript sono librerie prese dal web dai creatori del tema/template.
+
+Questo vuol dire capire meglio come le hanno usate e fare le chiamate attraverso "webpack"
+
+ATTENZIONE: questo concetto lo usiamo più avanti con capitoli di "refactoring".
+Al momento si può ancora usare sproket (asset-pipeline) che rimane attivo per tutto Rails 6.
+****
+
+
+
+
+Continuavo ad avere errore tentando di andare in produzione ($ git push heroku brc:master)
+
+Ho scoperto che il problema era in tutti e tre i files di "revolution" lato assets/stylesheets
+
+QUESTO CI INSEGNA che di tanto in tanto dobbiamo pubblicare su heroku così quando si presenta l'eventuale errore abbiamo un nummero limitato di files e codice su cui interagire.
+
+
+
+
+---
+
+Di seguito i files che hanno funzionato ed attivato il megamenu anche su heroku.
+
+
+Facendo varie prove ho anche attivato Bootstrap attraverso webpack
+
+02_01-views-mockups_blog_clean_full_width.html
+```
+    <%= stylesheet_pack_tag 'application_mockup_pofo', media: 'all', 'data-turbolinks-track': 'reload' %><!-- serve per heroku. In locale non serve perché indichiamo lo stile direttamente da "packs/application.js"-->
+    <%= javascript_pack_tag 'application_mockup_pofo', 'data-turbolinks-track': 'reload' %>
+```
+
+
+javascript/packs/application_mockup_pofo.js
+```
+require("bootstrap")
+
+//Stylesheets
+require("../stylesheets/application_mockup_pofo.scss")
+```
+
+
+javascript/stylesheets/application_mockup_pofo.scss
+```
+@import "bootstrap/scss/bootstrap"; // never forget the semicolon at the end
+```
+
+ma non credo che questo servisse per il megamenu.
+
+
+
+
+---
+
+controllers/mockups_controller.rb
+```
+  def blog_clean_full_width
+    render layout: 'yield'
+  end
+```
+
+
+views/layouts/yield.html.erb
+```
+<%= yield %>
+```
+
+assets/stylesheets/pofo/css/... (qui ci sono la decina di files presi dal tema pofo)
+assets/stylesheets/pofo/revolution/css/... (i 3 files che erano qui li ho cancellati per evitare errore su heroku)
+
+assets/javascripts/pofo/js/... (qui ci sono la ventina di files presi dal tema pofo)
+assets/javascripts/pofo/revolution/js/... (qui ci sono i 2 files presi dal tema pofo)
+
+
+config/application.rb
+```
+    config.assets.precompile += ['pofo/css/animate.css',
+```
+

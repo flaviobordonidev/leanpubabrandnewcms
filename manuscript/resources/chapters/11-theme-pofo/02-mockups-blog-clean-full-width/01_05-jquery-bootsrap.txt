@@ -1,0 +1,8 @@
+# Il mega menu ed altre parti della pagina funzionano con bootstrap
+
+"Bootstrap" ha necessità di "Jquery" e di "Popper"
+
+
+Abbiamo già installato Bootstrap tramite webpack quindi basta includerlo nell'header.
+
+

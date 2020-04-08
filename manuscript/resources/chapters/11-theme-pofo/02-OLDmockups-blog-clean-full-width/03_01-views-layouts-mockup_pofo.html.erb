@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Mockup Pofo | Pofo Theme from Themeforest</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_pack_tag 'application_mockup_pofo', media: 'all', 'data-turbolinks-track': 'reload' %><!-- serve per heroku. In locale non serve perché indichiamo lo stile direttamente da "packs/application.js"-->
+    <%= javascript_pack_tag 'application_mockup_pofo', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <h1>SE QUESTO TESTO DIVENTA VERDE LO STYLESHEET STA FUNZIONANDO ^_^</h1>
+    <%= yield %>
+  </body>
+</html>

@@ -1,0 +1,311 @@
+# Font Awesome 5
+
+
+
+ATTENZIONE! Li puoi caricare direttamente su webpack!!!
+
+Iniziamo ad usare webpack
+
+ ^_^
+
+Vedi: [How to write Javascript in Rails 6 | Webpacker, Yarn and Sprockets](https://blog.capsens.eu/how-to-write-javascript-in-rails-6-webpacker-yarn-and-sprockets-cdf990387463)
+        Scendi in basso al paragrafo: "How to add bootstrap 4 and fontawesome 5 to a Rails 6 application"
+
+
+MERDA! Non mi ha funzionato!!!
+Non vedo neanche la griglia. Devo aver pasticciato da qualche parte anche perché ho ancora il layout "yarn"
+
+Va provato con più calma più avanti.
+
+
+Non uso neanche la versione più vecchia che funzionerebbe perché non voglio usare la gemma sul gemfile.
+Comunque il codice lo trovi più in basso qui sotto.
+
+
+
+
+
+
+## Apriamo il branch "Font Awesome"
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout -b fa
+```
+
+
+
+
+## Installiamo la libreria javascript con yarn
+
+Per installare tutto fontawesome, compresa la parte a pagamento, dovremmo usare:
+
+I> verifichiamo [l'ultima versione del package](https://yarnpkg.com/package/font-awesome)
+
+Per installarlo useremmo il comando "$ yarn add font-awesome".
+
+
+Ma a noi interessa la sola parte gratuita che ha un suo package "@fortawesome/fontawesome-free".
+
+I> verifichiamo [l'ultima versione del package](https://yarnpkg.com/package/@fortawesome/fontawesome-free)
+
+Eseguiamo l'installazione del package con yarn
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ yarn add @fortawesome/fontawesome-free
+
+
+user_fb:~/environment/pofotheme (fa) $ yarn add @fortawesome/fontawesome-free
+yarn add v1.22.4
+[1/4] Resolving packages...
+[2/4] Fetching packages...
+info fsevents@1.2.9: The platform "linux" is incompatible with this module.
+info "fsevents@1.2.9" is an optional dependency and failed compatibility check. Excluding it from installation.
+[3/4] Linking dependencies...
+warning " > webpack-dev-server@3.8.2" has unmet peer dependency "webpack@^4.0.0".
+warning "webpack-dev-server > webpack-dev-middleware@3.7.2" has unmet peer dependency "webpack@^4.0.0".
+[4/4] Building fresh packages...
+success Saved lockfile.
+success Saved 1 new dependency.
+info Direct dependencies
+└─ @fortawesome/fontawesome-free@5.13.0
+info All dependencies
+└─ @fortawesome/fontawesome-free@5.13.0
+Done in 7.10s.
+```
+
+Con questo comando yarn mette la libreria in cache su ".../node_modules/" ed aggiorna il file "package.json". Comunque la libreria javascript (package) non è ancora disponibile alla nosta applicazione.
+
+
+
+
+## Richiediamo la libreria javascript
+
+Richiediamo la libreria javascript così possiamo visualizzare le icone nel nostro meg-menu.
+
+{id: "01-17-01_01", caption: ".../app/javascript/packs/application.js -- codice 01", format: ruby, line-numbers: true, number-from: 37}
+```
+require("bootstrap");
+require("@fortawesome/fontawesome-free");
+```
+
+[tutto il codice](#01-17-01_01all)
+
+
+
+
+## Richiamiamo le icone su stylesheets
+
+---
+$fa-font-path: '@fortawesome/fontawesome-free/webfonts';
+@import '@fortawesome/fontawesome-free/scss/fontawesome';
+@import '@fortawesome/fontawesome-free/scss/regular';
+@import '@fortawesome/fontawesome-free/scss/solid';
+@import '@fortawesome/fontawesome-free/scss/brands';
+@import 'bootstrap/scss/bootstrap';
+---
+
+Ho provato a metterlo in più punti da asset_pipeline a webpack ma non mi ha funzionato!
+
+
+
+
+
+******************************************
+OLD
+******************************************
+
+
+* da font-awesome.min.css
+* a  font-awesome.min.scss
+
+{title=".../app/assets/stylesheets/pofo/css/font-awesome.min.css", lang=ruby, line-numbers=on, starting-line-number=3}
+```
+ * Font Awesome Free 5.0.10 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+```
+
+potremmo usare il comando di rinomina per rinominare tutte e 18 le chiamate da "url" a "font-url" ma non funzionerebbe! 
+Purtroppo nella versione minifyed di "fontawesome" l'helper "font-url" non viene gestito correttamente.
+
+Ci viene in aiuto la gemma che useremo nel prossimo capitolo.
+
+
+---
+Ecco il prossimo capitolo ^_^
+---
+
+
+come abbiamo visto il nostro tema utilizza  
+
+* Font Awesome Free 5.0.10 by @fontawesome - https://fontawesome.com
+
+per farlo funzionare la cosa più semplice è istallare una gemma. Ne esistono varie versioni.
+Ne abbiamo selezionate 2:
+
+* font-awesome-sass
+* font_awesome5_rails
+
+Proviamo prima "font-awesome-sass" perché ha molti più "commits" e molti più "contributors" quindi è più attiva e con una comunità che la supporta maggiore. Inoltre font-awesome-sass ha 6milioni di download mentre l'altra 25mila.
+
+
+Risorse web:
+
+* [sito github di font-awesome-sass](https://github.com/FortAwesome/font-awesome-sass)
+* [sito github di font_awesome5_rails](https://github.com/tomkra/font_awesome5_rails)
+
+
+
+
+## Apriamo il branch "Font Awesome Sass"
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout -b fas
+```
+
+
+
+
+## installiamo la gemma
+
+I> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/font-awesome-sass)
+I>
+I> facciamo riferimento al [tutorial github della gemma](https://github.com/FortAwesome/font-awesome-sass)
+
+{id="03-01-05_01", title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=62}
+```
+# Font-Awesome SASS gem for use in Ruby projects
+gem 'font-awesome-sass', '~> 5.6', '>= 5.6.1'
+```
+
+[Codice 01](#03-01-05_01all)
+
+Eseguiamo l'installazione della gemma con bundle
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ bundle install
+```
+
+
+
+## Aggiorniamo
+
+nella guida della gemma si consiglia di installare le chiamate "@import" nel file manifest "stylesheets/application" con l'estensione rinominata ".scss" per rispondere alle chiamate Sass.
+
+In realtà possiamo creare un nostro file ".scss" e metterci all'interno le chiamate "@import". L'unica cosa da fare in più è aggiungerlo nell'array del precompile.
+
+I> ATTENZIONE
+I>
+I> NON usare come nome del file "font_awesome.scss" perché è un nome già usato internamente dalla gemma. Ci darebbe il seguente errore "Error: An @import loop has been found".
+
+Rimanendo il più possibile fedeli al tema pofo creiamo il file 
+
+* .../app/assets/stylesheets/pofo/css/font-awesome-via_gem.scss
+
+e dentro il file inseriamo le chiamate 
+
+.../app/assets/stylesheets/pofo/css/font-awesome-via_gem.scss
+```
+@import "font-awesome-sprockets";
+@import "font-awesome";
+```
+
+Il file "font-awesome-sprockets" include gli "sprocket assets helpers" utilizzati per trovare il percorso corretto ai files dei font.
+
+
+
+
+## Aggiorniamo la pagina example_static_pages/posts_index
+
+rinominamo la chiamata dei fonts da "font-awesome.min" a "font-awesome-via_gem"
+
+...example_static_pages/posts_index.html.erb
+```
+        <%#= stylesheet_link_tag 'pofo/css/font-awesome-via_gem', media: 'all', 'data-turbolinks-track': 'reload' %>
+```
+
+
+
+
+## Aggiorniamo il precompile
+
+rinominamo la chiamata anche nell'array del precompile
+
+...config/application.rb
+```
+    # precompile assets pofo stylesheets                                                             
+    config.assets.precompile += ['pofo/css/animate.css',
+                                 'pofo/css/bootstrap.min.css',
+                                 'pofo/css/et-line-icons.css',
+                                 'pofo/css/font-awesome-via_gem.css',
+                                 'pofo/css/themify-icons.css',
+                                 'pofo/css/swiper.min.css',
+                                 'pofo/css/justified-gallery.min.css',
+                                 'pofo/css/magnific-popup.css',
+                                 'pofo/revolution/css/settings.css',
+                                 'pofo/revolution/css/layers.css',
+                                 'pofo/revolution/css/navigation.css',
+                                 'pofo/css/bootsnav.css',
+                                 'pofo/css/style.css',
+                                 'pofo/css/responsive.css'
+                                ]
+```
+
+adesso funziona! Yeap!
+
+
+
+
+
+## archiviamo su git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "add fontawesome via gem"
+```
+
+
+
+
+## Pubblichiamo su heroku
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push heroku mp:master
+```
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout master
+$ git merge mp
+$ git branch -d mp
+```
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push origin master
+```
+
+
+
+
+## Il codice del capitolo
+

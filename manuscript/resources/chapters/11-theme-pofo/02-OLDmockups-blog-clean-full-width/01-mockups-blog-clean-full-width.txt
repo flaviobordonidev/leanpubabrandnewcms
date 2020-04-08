@@ -1,0 +1,179 @@
+# La preparazione iniziale
+
+in questo capitolo scegliamo i files HTML dal tema ed importiamo tutti gli stylesheets ed i javascripts necessari. E' come se facessimo un puzzle ed il coperchio con l'immagine è quello che vediamo su internet visualizzando la pagina scelta. Nella nostra applicazione Rails montiamo piano piano i vari pezzi fino a raggiungere l'immagine che c'è sulla scatola.
+
+Questa prima parte è sganciata da tutto quello fatto in precedenza.
+Acquistiamo il tema Pofo dal sito "themeforest" e scarichiamo il file zip:
+
+* themeforest-xYrQiFEw-pofo-creative-agency-corporate-and-portfolio-multipurpose-template
+
+Lo scompattiamo ottenendo la cartella della documentazione (documentation) e la cartella principale (html).
+
+IL FILE " themeforest-xYrQiFEw-pofo-creative-agency-corporate-and-portfolio-multipurpose-template.zip " CONTIENE TUTTO IL TEMA
+LO ABBIAMO SCARICATO DA THEMEFOREST TRAMITE INTEGRAMSYSTEMS
+
+* http://www.themezaa.com/html/pofo/documentation/
+* http://www.themezaa.com/html/pofo/blog-only-text-full-width.html
+
+
+ATTENZIONE:
+( https://blog.capsens.eu/how-to-write-javascript-in-rails-6-webpacker-yarn-and-sprockets-cdf990387463 )
+Anche se webpack è il gestore di default per rails 6 è comunque ancora attivo anche l'asset_pipeline (che usa sprocket).
+Al momento l'asset_pipeline (con sprocket) è pensato per i files stylesheets (scss) e le immagini.
+Invece webpack è per i files javascripts
+
+Per importare Pofo è più facile usare l'asset_pipeline sia per lo stylesheets che per i javascripts.
+Ad oggi è ancora possibile e si possono avere anche files javascripts in parte su webpack ed in parte su javascripts. Questo ci facilita l'importazione del tema ma è una situazione che va bonificata.
+Con calma si deve spostare tutto su webpack.
+E' bene trovare anche una procedura che ci permetta di passare direttamente su webpack senza troppe difficoltà anche perché sprocket non è più sviluppato e probabilmente su Rails 7 potrebbe non essere più disponibile.
+
+
+
+
+## Apriamo il branch "Mockup Posts_Index"
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout -b mpi
+```
+
+
+
+
+## Scelti dal tema Pofo
+
+dalla cartella principale abbiamo scelto il seguente file per l'indice degli articoli
+
+* themeforest-pofo/html/blog-clean-full-width.html
+
+quindi iniziamo importando il codice di questo file nella nostra applicazione Rails.
+Successivamente importeremo i vari files di stylesheets, javascripts ed images mano a mano che si presenteranno.
+
+
+
+
+## Creiamo il nostro mockup blog_clean_full_width
+
+creiamo il nuovo file "blog_clean_full_width.html.erb" tra le nostre "pagine statiche di esempio" (mockups) e copiamo il contenuto del file html scelto dal tema (da -> a):
+
+* themeforest-pofo/html/blog-clean-full-width.html -> pofotheme/app/views/mockups/blog_clean_full_width.html.erb
+
+ATTENZIONE!
+Pofo usa il trattino meno "-" nel nome del file, invece Rails usa gli il trattino basso "_" e l'esensione del file cambia dal solo ".html" a ".html.erb".
+
+
+
+
+## Creiamo il layout yield
+
+Inizialmente usiamo il layout "yield" che praticamente passa solo tutto il contenuto delle pagine/views che lo usano.
+
+{id: "11-02-01_02", caption: ".../app/views/layouts/yield.html.erb -- codice 02", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<%= yield %>
+```
+
+[tutto il codice](#11-02-01_02all)
+
+Successivamente creeremo il layout "mockups_pofo", specifico per il tema tema pofo, perché ogni tema tende a mantenere le stesse chiamate stylesheets e javascripts per tutte le pagine.
+
+
+
+
+## Aggiorniamo il controller
+
+Aggiungiamo l'azione "blog_clean_full_width" al controller mockup e diciamogli di utilizzare il layout mockups_yield.
+
+{id: "11-02-01_03", caption: ".../app/controllers/mockups_controller.rb -- codice 03", format: ruby, line-numbers: true, number-from: 16}
+```
+  def blog_clean_full_width
+    render layout: 'yield'
+  end
+```
+
+[tutto il codice](#11-02-01_03all)
+
+
+
+
+## Aggiorniamo gli instradamenti
+
+Aggiorniamo il file routes
+
+{id: "11-02-01_04", caption: ".../config/routes.rb -- codice 04", format: ruby, line-numbers: true, number-from: 23}
+```
+  get 'mockups/blog_clean_full_width'
+```
+
+[tutto il codice](#11-02-01_04all)
+
+
+
+
+## Verifichiamo preview
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails s
+```
+
+apriamo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/mockups/blog_clean_full_width
+
+Riusciamo a visualizzare qualcosa ma c'è ancora molto da fare.
+Non ci resta che importare stylesheets e javascripts, ma questo lo vediamo nel prossimo capitolo
+
+
+
+
+## archiviamo su git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "add mockups/blog_clean_full_width"
+```
+
+
+
+
+## Pubblichiamo su heroku
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push heroku mpi:master
+```
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout master
+$ git merge mpi
+$ git branch -d mpi
+```
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push origin master
+```
+
+
+
+
+## Il codice del capitolo
+

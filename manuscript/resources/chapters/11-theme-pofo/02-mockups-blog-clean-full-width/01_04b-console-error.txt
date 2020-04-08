@@ -1,0 +1,586 @@
+Pubblicando su heroku riceviamo continuamente un errore su assets/pofo/revolution/css/settings.css
+
+remote:        I, [2020-03-20T14:20:25.208297 #287]  INFO -- : Writing /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/public/assets/pofo/revolution/css/settings-5f2317678dbf5347cc9a5932f725e7aedc1d298ba7b2c30af1b551516c07ee11.css
+remote:        I, [2020-03-20T14:20:25.208661 #287]  INFO -- : Writing /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/public/assets/pofo/revolution/css/settings-5f2317678dbf5347cc9a5932f725e7aedc1d298ba7b2c30af1b551516c07ee11.css.gz
+remote:        rake aborted!
+remote:        Sass::SyntaxError: Invalid CSS after "... filter: progid": expected ";", was ": DXImageTransf..."
+remote:        (sass):5652
+
+Ho provato a correggerlo ma probabilmente ho sbagliato qualche passaggio perché continuava a presentarsi.
+Allora ho Cancellato il file ed ha funzionato. Sono riuscito a pubblicare su heroku.
+
+
+A volte dei temi hanno dei files che sono ridondati e non servono realmente.
+Oppure hanno dei piccoli bugs che su html non si notano e a volte neanche su development ma saltano fuori quando andiamo in produzione su heroku.
+
+
+
+$ git push heroku brnc:master
+
+remote:        Using mini_magick 4.10.1
+remote:        Using ruby-vips 2.0.17
+remote:        Using image_processing 1.10.3
+remote:        Using jbuilder 2.9.1
+remote:        Using pagy 3.7.2
+remote:        Using pg 1.1.4
+remote:        Using puma 3.12.1
+remote:        Using pundit 2.1.0
+remote:        Using rack-proxy 0.6.5
+remote:        Using sprockets 3.7.2
+remote:        Using sprockets-rails 3.2.1
+remote:        Using rails 6.0.0
+remote:        Using rb-fsevent 0.10.3
+remote:        Using rb-inotify 0.10.0
+remote:        Using sass-listen 4.0.0
+remote:        Using sass 3.7.4
+remote:        Using tilt 2.0.10
+remote:        Using sass-rails 5.1.0
+remote:        Using turbolinks-source 5.2.0
+remote:        Using turbolinks 5.2.1
+remote:        Using webpacker 4.0.7
+remote:        Bundle complete! 23 Gemfile dependencies, 78 gems now installed.
+remote:        Gems in the groups development and test were not installed.
+remote:        Bundled gems are installed into `./vendor/bundle`
+remote:        Bundle completed (0.48s)
+remote:        Cleaning up the bundler cache.
+remote:        The dependency tzinfo-data (>= 0) will be unused by any of the platforms Bundler is installing for. Bundler is installing for ruby but the dependency is only for x86-mingw32, x86-mswin32, x64-mingw32, java. To add those platforms to the bundle, run `bundle lock --add-platform x86-mingw32 x86-mswin32 x64-mingw32 java`.
+remote: -----> Installing node-v10.15.3-linux-x64
+remote: -----> Installing yarn-v1.16.0
+remote: -----> Detecting rake tasks
+remote: -----> Preparing app for Rails asset pipeline
+remote:        Running: rake assets:precompile
+remote:        yarn install v1.16.0
+remote:        [1/4] Resolving packages...
+remote:        [2/4] Fetching packages...
+remote:        info fsevents@1.2.9: The platform "linux" is incompatible with this module.
+remote:        info "fsevents@1.2.9" is an optional dependency and failed compatibility check. Excluding it from installation.
+remote:        [3/4] Linking dependencies...
+remote:        warning " > webpack-dev-server@3.8.2" has unmet peer dependency "webpack@^4.0.0".
+remote:        warning "webpack-dev-server > webpack-dev-middleware@3.7.2" has unmet peer dependency "webpack@^4.0.0".
+remote:        [4/4] Building fresh packages...
+remote:        Done in 22.46s.
+remote:        I, [2020-03-20T14:20:22.454970 #287]  INFO -- : Writing /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/public/assets/pofo/css/animate-12276ed7c76379f10a8752e2cea12b086f43f9c89d3078c3167895ac536d56e7.css
+remote:        I, [2020-03-20T14:20:22.455600 #287]  INFO -- : Writing /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/public/assets/pofo/css/animate-12276ed7c76379f10a8752e2cea12b086f43f9c89d3078c3167895ac536d56e7.css.gz
+remote:        I, [2020-03-20T14:20:24.066060 #287]  INFO -- : Writing /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/public/assets/pofo/css/bootstrap.min-07207f20df7b9409166fdc9635d4d4606eed4ec389e52d05ac3305574bb51e24.css
+remote:        I, [2020-03-20T14:20:24.066237 #287]  INFO -- : Writing /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/public/assets/pofo/css/bootstrap.min-07207f20df7b9409166fdc9635d4d4606eed4ec389e52d05ac3305574bb51e24.css.gz
+remote:        I, [2020-03-20T14:20:24.143353 #287]  INFO -- : Writing /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/public/assets/pofo/css/et-line-icons-785950b9a3a014f4ea8083c0fc3bd7bbfbc95494eb0bbce394dbcc84b71f4c30.css
+remote:        I, [2020-03-20T14:20:24.143515 #287]  INFO -- : Writing /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/public/assets/pofo/css/et-line-icons-785950b9a3a014f4ea8083c0fc3bd7bbfbc95494eb0bbce394dbcc84b71f4c30.css.gz
+remote:        I, [2020-03-20T14:20:24.307222 #287]  INFO -- : Writing /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/public/assets/pofo/css/themify-icons-0df54f02c4129fd74920f7404d1d37be759e326e2421d0b1f15722caf6ac65ac.css
+remote:        I, [2020-03-20T14:20:24.307386 #287]  INFO -- : Writing /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/public/assets/pofo/css/themify-icons-0df54f02c4129fd74920f7404d1d37be759e326e2421d0b1f15722caf6ac65ac.css.gz
+remote:        I, [2020-03-20T14:20:24.438544 #287]  INFO -- : Writing /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/public/assets/pofo/css/swiper.min-e947c3adefd594df07c174ee460f2f7c82d98d7676c4460e99e6b33ff82ee8e8.css
+remote:        I, [2020-03-20T14:20:24.438722 #287]  INFO -- : Writing /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/public/assets/pofo/css/swiper.min-e947c3adefd594df07c174ee460f2f7c82d98d7676c4460e99e6b33ff82ee8e8.css.gz
+remote:        I, [2020-03-20T14:20:24.461932 #287]  INFO -- : Writing /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/public/assets/pofo/css/justified-gallery.min-59016fae5170ac7c1819093ab9d108b89acf1df372cfaf44fee8ed7792aa14ea.css
+remote:        I, [2020-03-20T14:20:24.462067 #287]  INFO -- : Writing /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/public/assets/pofo/css/justified-gallery.min-59016fae5170ac7c1819093ab9d108b89acf1df372cfaf44fee8ed7792aa14ea.css.gz
+remote:        I, [2020-03-20T14:20:24.564717 #287]  INFO -- : Writing /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/public/assets/pofo/css/magnific-popup-078308155c708fdc023c448016c0bfec3fab885458def6dca9243189b29cafcd.css
+remote:        I, [2020-03-20T14:20:24.564895 #287]  INFO -- : Writing /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/public/assets/pofo/css/magnific-popup-078308155c708fdc023c448016c0bfec3fab885458def6dca9243189b29cafcd.css.gz
+
+
+
+
+remote:        I, [2020-03-20T14:20:25.208297 #287]  INFO -- : Writing /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/public/assets/pofo/revolution/css/settings-5f2317678dbf5347cc9a5932f725e7aedc1d298ba7b2c30af1b551516c07ee11.css
+remote:        I, [2020-03-20T14:20:25.208661 #287]  INFO -- : Writing /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/public/assets/pofo/revolution/css/settings-5f2317678dbf5347cc9a5932f725e7aedc1d298ba7b2c30af1b551516c07ee11.css.gz
+remote:        rake aborted!
+remote:        Sass::SyntaxError: Invalid CSS after "... filter: progid": expected ";", was ": DXImageTransf..."
+remote:        (sass):5652
+
+
+
+
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:1308:in `expected'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:1238:in `expected'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:1233:in `tok!'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:815:in `block in try_declaration'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:1284:in `rethrow'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:820:in `try_declaration'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:743:in `declaration_or_ruleset'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:708:in `block_child'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:700:in `block_contents'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:689:in `block'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:681:in `ruleset'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:707:in `block_child'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:700:in `block_contents'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:137:in `stylesheet'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:41:in `parse'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/engine.rb:414:in `_to_tree'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/engine.rb:290:in `render'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/sass_compressor.rb:48:in `call'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/sass_compressor.rb:28:in `call'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/processor_utils.rb:75:in `call_processor'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/processor_utils.rb:57:in `block in call_processors'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/processor_utils.rb:56:in `reverse_each'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/processor_utils.rb:56:in `call_processors'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/loader.rb:134:in `load_from_unloaded'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/loader.rb:60:in `block in load'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/loader.rb:317:in `fetch_asset_from_dependency_cache'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/loader.rb:44:in `load'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/cached_environment.rb:20:in `block in initialize'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/cached_environment.rb:47:in `load'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/base.rb:66:in `find_asset'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/base.rb:73:in `find_all_linked_assets'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/manifest.rb:134:in `block in find'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/manifest.rb:133:in `each'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/manifest.rb:133:in `find'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/manifest.rb:186:in `compile'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sprockets-rails-3.2.1/lib/sprockets/rails/task.rb:68:in `block (3 levels) in define'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/rake/sprocketstask.rb:147:in `with_logger'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/sprockets-rails-3.2.1/lib/sprockets/rails/task.rb:67:in `block (2 levels) in define'
+remote:        /tmp/build_342c4dd097c02e70bc1c7d4a0f1618d7/vendor/bundle/ruby/2.6.0/gems/rake-13.0.0/exe/rake:27:in `<top (required)>'
+remote:        Tasks: TOP => assets:precompile
+remote:        (See full trace by running task with --trace)
+remote: 
+remote:  !
+remote:  !     Precompiling assets failed.
+remote:  !
+remote:  !     Push rejected, failed to compile Ruby app.
+remote: 
+remote:  !     Push failed
+remote: Verifying deploy...
+remote: 
+remote: !       Push rejected to pofotheme.
+remote: 
+To https://git.heroku.com/pofotheme.git
+ ! [remote rejected] jp -> master (pre-receive hook declined)
+error: failed to push some refs to 'https://git.heroku.com/pofotheme.git'
+user_fb:~/environment/pofotheme (jp) $ git add -A
+user_fb:~/environment/pofotheme (jp) $ git commit -m "Delete files"
+On branch jp
+nothing to commit, working tree clean
+user_fb:~/environment/pofotheme (jp) $ git push heroku jp:master
+Counting objects: 91, done.
+Compressing objects: 100% (85/85), done.
+Writing objects: 100% (91/91), 294.77 KiB | 4.33 MiB/s, done.
+Total 91 (delta 43), reused 0 (delta 0)
+remote: Compressing source files... done.
+remote: Building source:
+remote: 
+remote: -----> Ruby app detected
+remote: -----> Installing bundler 1.17.3
+remote: -----> Removing BUNDLED WITH version in the Gemfile.lock
+remote: -----> Compiling Ruby/Rails
+remote: -----> Using Ruby version: ruby-2.6.3
+remote: -----> Installing dependencies using bundler 1.17.3
+remote:        Running: bundle install --without development:test --path vendor/bundle --binstubs vendor/bundle/bin -j4 --deployment
+remote:        The dependency tzinfo-data (>= 0) will be unused by any of the platforms Bundler is installing for. Bundler is installing for ruby but the dependency is only for x86-mingw32, x86-mswin32, x64-mingw32, java. To add those platforms to the bundle, run `bundle lock --add-platform x86-mingw32 x86-mswin32 x64-mingw32 java`.
+remote:        Using rake 13.0.0
+remote:        Using concurrent-ruby 1.1.5
+remote:        Using i18n 1.7.0
+remote:        Using minitest 5.12.2
+remote:        Using thread_safe 0.3.6
+remote:        Using tzinfo 1.2.5
+remote:        Using zeitwerk 2.2.0
+remote:        Using activesupport 6.0.0
+remote:        Using builder 3.2.3
+remote:        Using erubi 1.9.0
+remote:        Using mini_portile2 2.4.0
+remote:        Using nokogiri 1.10.4
+remote:        Using rails-dom-testing 2.0.3
+remote:        Using crass 1.0.5
+remote:        Using loofah 2.3.1
+remote:        Using rails-html-sanitizer 1.3.0
+remote:        Using actionview 6.0.0
+remote:        Using rack 2.0.7
+remote:        Using rack-test 1.1.0
+remote:        Using actionpack 6.0.0
+remote:        Using nio4r 2.5.2
+remote:        Using websocket-extensions 0.1.4
+remote:        Using websocket-driver 0.7.1
+remote:        Using actioncable 6.0.0
+remote:        Using globalid 0.4.2
+remote:        Using activejob 6.0.0
+remote:        Using activemodel 6.0.0
+remote:        Using activerecord 6.0.0
+remote:        Using mimemagic 0.3.3
+remote:        Using marcel 0.3.3
+remote:        Using activestorage 6.0.0
+remote:        Using mini_mime 1.0.2
+remote:        Using mail 2.7.1
+remote:        Using actionmailbox 6.0.0
+remote:        Using actionmailer 6.0.0
+remote:        Using actiontext 6.0.0
+remote:        Using aws-eventstream 1.0.3
+remote:        Using aws-partitions 1.268.0
+remote:        Using aws-sigv4 1.1.0
+remote:        Using jmespath 1.4.0
+remote:        Using aws-sdk-core 3.89.1
+remote:        Using aws-sdk-kms 1.28.0
+remote:        Using aws-sdk-s3 1.60.1
+remote:        Using bcrypt 3.1.13
+remote:        Using msgpack 1.3.1
+remote:        Using bootsnap 1.4.5
+remote:        Using bundler 1.17.3
+remote:        Using orm_adapter 0.5.0
+remote:        Using method_source 0.9.2
+remote:        Using thor 0.20.3
+remote:        Using railties 6.0.0
+remote:        Using responders 3.0.0
+remote:        Using warden 1.2.8
+remote:        Using devise 4.7.1
+remote:        Using ffi 1.11.1
+remote:        Using request_store 1.5.0
+remote:        Using globalize 5.3.0
+remote:        Using mini_magick 4.10.1
+remote:        Using ruby-vips 2.0.17
+remote:        Using image_processing 1.10.3
+remote:        Using jbuilder 2.9.1
+remote:        Using pagy 3.7.2
+remote:        Using pg 1.1.4
+remote:        Using puma 3.12.1
+remote:        Using pundit 2.1.0
+remote:        Using rack-proxy 0.6.5
+remote:        Using sprockets 3.7.2
+remote:        Using sprockets-rails 3.2.1
+remote:        Using rails 6.0.0
+remote:        Using rb-fsevent 0.10.3
+remote:        Using rb-inotify 0.10.0
+remote:        Using sass-listen 4.0.0
+remote:        Using sass 3.7.4
+remote:        Using tilt 2.0.10
+remote:        Using sass-rails 5.1.0
+remote:        Using turbolinks-source 5.2.0
+remote:        Using turbolinks 5.2.1
+remote:        Using webpacker 4.0.7
+remote:        Bundle complete! 23 Gemfile dependencies, 78 gems now installed.
+remote:        Gems in the groups development and test were not installed.
+remote:        Bundled gems are installed into `./vendor/bundle`
+remote:        Bundle completed (0.52s)
+remote:        Cleaning up the bundler cache.
+remote:        The dependency tzinfo-data (>= 0) will be unused by any of the platforms Bundler is installing for. Bundler is installing for ruby but the dependency is only for x86-mingw32, x86-mswin32, x64-mingw32, java. To add those platforms to the bundle, run `bundle lock --add-platform x86-mingw32 x86-mswin32 x64-mingw32 java`.
+remote: -----> Installing node-v10.15.3-linux-x64
+remote: -----> Installing yarn-v1.16.0
+remote: -----> Detecting rake tasks
+remote: -----> Preparing app for Rails asset pipeline
+remote:        Running: rake assets:precompile
+remote:        yarn install v1.16.0
+remote:        [1/4] Resolving packages...
+remote:        [2/4] Fetching packages...
+remote:        info fsevents@1.2.9: The platform "linux" is incompatible with this module.
+remote:        info "fsevents@1.2.9" is an optional dependency and failed compatibility check. Excluding it from installation.
+remote:        [3/4] Linking dependencies...
+remote:        warning " > webpack-dev-server@3.8.2" has unmet peer dependency "webpack@^4.0.0".
+remote:        warning "webpack-dev-server > webpack-dev-middleware@3.7.2" has unmet peer dependency "webpack@^4.0.0".
+remote:        [4/4] Building fresh packages...
+remote:        Done in 21.59s.
+remote:        I, [2020-03-20T14:22:44.109811 #287]  INFO -- : Writing /tmp/build_de2b6a862854485652eaecb97a74446b/public/assets/pofo/css/animate-12276ed7c76379f10a8752e2cea12b086f43f9c89d3078c3167895ac536d56e7.css
+remote:        I, [2020-03-20T14:22:44.110194 #287]  INFO -- : Writing /tmp/build_de2b6a862854485652eaecb97a74446b/public/assets/pofo/css/animate-12276ed7c76379f10a8752e2cea12b086f43f9c89d3078c3167895ac536d56e7.css.gz
+remote:        I, [2020-03-20T14:22:45.738884 #287]  INFO -- : Writing /tmp/build_de2b6a862854485652eaecb97a74446b/public/assets/pofo/css/bootstrap.min-07207f20df7b9409166fdc9635d4d4606eed4ec389e52d05ac3305574bb51e24.css
+remote:        I, [2020-03-20T14:22:45.739067 #287]  INFO -- : Writing /tmp/build_de2b6a862854485652eaecb97a74446b/public/assets/pofo/css/bootstrap.min-07207f20df7b9409166fdc9635d4d4606eed4ec389e52d05ac3305574bb51e24.css.gz
+remote:        I, [2020-03-20T14:22:45.804801 #287]  INFO -- : Writing /tmp/build_de2b6a862854485652eaecb97a74446b/public/assets/pofo/css/et-line-icons-785950b9a3a014f4ea8083c0fc3bd7bbfbc95494eb0bbce394dbcc84b71f4c30.css
+remote:        I, [2020-03-20T14:22:45.804980 #287]  INFO -- : Writing /tmp/build_de2b6a862854485652eaecb97a74446b/public/assets/pofo/css/et-line-icons-785950b9a3a014f4ea8083c0fc3bd7bbfbc95494eb0bbce394dbcc84b71f4c30.css.gz
+remote:        I, [2020-03-20T14:22:45.968251 #287]  INFO -- : Writing /tmp/build_de2b6a862854485652eaecb97a74446b/public/assets/pofo/css/themify-icons-0df54f02c4129fd74920f7404d1d37be759e326e2421d0b1f15722caf6ac65ac.css
+remote:        I, [2020-03-20T14:22:45.968595 #287]  INFO -- : Writing /tmp/build_de2b6a862854485652eaecb97a74446b/public/assets/pofo/css/themify-icons-0df54f02c4129fd74920f7404d1d37be759e326e2421d0b1f15722caf6ac65ac.css.gz
+remote:        I, [2020-03-20T14:22:46.087483 #287]  INFO -- : Writing /tmp/build_de2b6a862854485652eaecb97a74446b/public/assets/pofo/css/swiper.min-e947c3adefd594df07c174ee460f2f7c82d98d7676c4460e99e6b33ff82ee8e8.css
+remote:        I, [2020-03-20T14:22:46.087842 #287]  INFO -- : Writing /tmp/build_de2b6a862854485652eaecb97a74446b/public/assets/pofo/css/swiper.min-e947c3adefd594df07c174ee460f2f7c82d98d7676c4460e99e6b33ff82ee8e8.css.gz
+remote:        I, [2020-03-20T14:22:46.127362 #287]  INFO -- : Writing /tmp/build_de2b6a862854485652eaecb97a74446b/public/assets/pofo/css/justified-gallery.min-59016fae5170ac7c1819093ab9d108b89acf1df372cfaf44fee8ed7792aa14ea.css
+remote:        I, [2020-03-20T14:22:46.127873 #287]  INFO -- : Writing /tmp/build_de2b6a862854485652eaecb97a74446b/public/assets/pofo/css/justified-gallery.min-59016fae5170ac7c1819093ab9d108b89acf1df372cfaf44fee8ed7792aa14ea.css.gz
+remote:        I, [2020-03-20T14:22:46.184925 #287]  INFO -- : Writing /tmp/build_de2b6a862854485652eaecb97a74446b/public/assets/pofo/css/magnific-popup-078308155c708fdc023c448016c0bfec3fab885458def6dca9243189b29cafcd.css
+remote:        I, [2020-03-20T14:22:46.185302 #287]  INFO -- : Writing /tmp/build_de2b6a862854485652eaecb97a74446b/public/assets/pofo/css/magnific-popup-078308155c708fdc023c448016c0bfec3fab885458def6dca9243189b29cafcd.css.gz
+remote:        I, [2020-03-20T14:22:46.797259 #287]  INFO -- : Writing /tmp/build_de2b6a862854485652eaecb97a74446b/public/assets/pofo/revolution/css/settings-5f2317678dbf5347cc9a5932f725e7aedc1d298ba7b2c30af1b551516c07ee11.css
+remote:        I, [2020-03-20T14:22:46.797894 #287]  INFO -- : Writing /tmp/build_de2b6a862854485652eaecb97a74446b/public/assets/pofo/revolution/css/settings-5f2317678dbf5347cc9a5932f725e7aedc1d298ba7b2c30af1b551516c07ee11.css.gz
+remote:        rake aborted!
+remote:        Sass::SyntaxError: Invalid CSS after "... filter: progid": expected ";", was ": DXImageTransf..."
+remote:        (sass):5652
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:1308:in `expected'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:1238:in `expected'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:1233:in `tok!'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:815:in `block in try_declaration'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:1284:in `rethrow'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:820:in `try_declaration'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:743:in `declaration_or_ruleset'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:708:in `block_child'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:700:in `block_contents'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:689:in `block'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:681:in `ruleset'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:707:in `block_child'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:700:in `block_contents'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:137:in `stylesheet'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:41:in `parse'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/engine.rb:414:in `_to_tree'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sass-3.7.4/lib/sass/engine.rb:290:in `render'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/sass_compressor.rb:48:in `call'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/sass_compressor.rb:28:in `call'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/processor_utils.rb:75:in `call_processor'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/processor_utils.rb:57:in `block in call_processors'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/processor_utils.rb:56:in `reverse_each'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/processor_utils.rb:56:in `call_processors'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/loader.rb:134:in `load_from_unloaded'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/loader.rb:60:in `block in load'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/loader.rb:317:in `fetch_asset_from_dependency_cache'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/loader.rb:44:in `load'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/cached_environment.rb:20:in `block in initialize'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/cached_environment.rb:47:in `load'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/base.rb:66:in `find_asset'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/base.rb:73:in `find_all_linked_assets'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/manifest.rb:134:in `block in find'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/manifest.rb:133:in `each'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/manifest.rb:133:in `find'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/sprockets/manifest.rb:186:in `compile'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sprockets-rails-3.2.1/lib/sprockets/rails/task.rb:68:in `block (3 levels) in define'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sprockets-3.7.2/lib/rake/sprocketstask.rb:147:in `with_logger'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/sprockets-rails-3.2.1/lib/sprockets/rails/task.rb:67:in `block (2 levels) in define'
+remote:        /tmp/build_de2b6a862854485652eaecb97a74446b/vendor/bundle/ruby/2.6.0/gems/rake-13.0.0/exe/rake:27:in `<top (required)>'
+remote:        Tasks: TOP => assets:precompile
+remote:        (See full trace by running task with --trace)
+remote: 
+remote:  !
+remote:  !     Precompiling assets failed.
+remote:  !
+remote:  !     Push rejected, failed to compile Ruby app.
+remote: 
+remote:  !     Push failed
+remote: Verifying deploy...
+remote: 
+remote: !       Push rejected to pofotheme.
+remote: 
+To https://git.heroku.com/pofotheme.git
+ ! [remote rejected] jp -> master (pre-receive hook declined)
+error: failed to push some refs to 'https://git.heroku.com/pofotheme.git'
+user_fb:~/environment/pofotheme (jp) $ git add -A
+user_fb:~/environment/pofotheme (jp) $ git commit -m "Delete files"
+[jp fe2d197] Delete files
+ 22 files changed, 3 insertions(+), 13654 deletions(-)
+ delete mode 100644 app/assets/stylesheets/pofo/revolution/css/closedhand.cur
+ delete mode 100644 app/assets/stylesheets/pofo/revolution/css/index.php
+ delete mode 100644 app/assets/stylesheets/pofo/revolution/css/layers.css
+ delete mode 100644 app/assets/stylesheets/pofo/revolution/css/navigation-skins/ares.css
+ delete mode 100644 app/assets/stylesheets/pofo/revolution/css/navigation-skins/custom.css
+ delete mode 100644 app/assets/stylesheets/pofo/revolution/css/navigation-skins/dione.css
+ delete mode 100644 app/assets/stylesheets/pofo/revolution/css/navigation-skins/erinyen.css
+ delete mode 100644 app/assets/stylesheets/pofo/revolution/css/navigation-skins/gyges.css
+ delete mode 100644 app/assets/stylesheets/pofo/revolution/css/navigation-skins/hades.css
+ delete mode 100644 app/assets/stylesheets/pofo/revolution/css/navigation-skins/hebe.css
+ delete mode 100644 app/assets/stylesheets/pofo/revolution/css/navigation-skins/hephaistos.css
+ delete mode 100644 app/assets/stylesheets/pofo/revolution/css/navigation-skins/hermes.css
+ delete mode 100644 app/assets/stylesheets/pofo/revolution/css/navigation-skins/hesperiden.css
+ delete mode 100644 app/assets/stylesheets/pofo/revolution/css/navigation-skins/metis.css
+ delete mode 100644 app/assets/stylesheets/pofo/revolution/css/navigation-skins/persephone.css
+ delete mode 100644 app/assets/stylesheets/pofo/revolution/css/navigation-skins/uranus.css
+ delete mode 100644 app/assets/stylesheets/pofo/revolution/css/navigation-skins/zeus.css
+ delete mode 100644 app/assets/stylesheets/pofo/revolution/css/navigation.css
+ delete mode 100644 app/assets/stylesheets/pofo/revolution/css/openhand.cur
+ delete mode 100644 app/assets/stylesheets/pofo/revolution/css/settings.css
+ delete mode 100644 app/assets/stylesheets/pofo/revolution/css/tp-color-picker.css
+user_fb:~/environment/pofotheme (jp) $ git push heroku jp:master
+Counting objects: 100, done.
+Compressing objects: 100% (93/93), done.
+Writing objects: 100% (100/100), 295.39 KiB | 4.16 MiB/s, done.
+Total 100 (delta 50), reused 0 (delta 0)
+remote: Compressing source files... done.
+remote: Building source:
+remote: 
+remote: -----> Ruby app detected
+remote: -----> Installing bundler 1.17.3
+remote: -----> Removing BUNDLED WITH version in the Gemfile.lock
+remote: -----> Compiling Ruby/Rails
+remote: -----> Using Ruby version: ruby-2.6.3
+remote: -----> Installing dependencies using bundler 1.17.3
+remote:        Running: bundle install --without development:test --path vendor/bundle --binstubs vendor/bundle/bin -j4 --deployment
+remote:        The dependency tzinfo-data (>= 0) will be unused by any of the platforms Bundler is installing for. Bundler is installing for ruby but the dependency is only for x86-mingw32, x86-mswin32, x64-mingw32, java. To add those platforms to the bundle, run `bundle lock --add-platform x86-mingw32 x86-mswin32 x64-mingw32 java`.
+remote:        Using rake 13.0.0
+remote:        Using concurrent-ruby 1.1.5
+remote:        Using i18n 1.7.0
+remote:        Using minitest 5.12.2
+remote:        Using thread_safe 0.3.6
+remote:        Using tzinfo 1.2.5
+remote:        Using zeitwerk 2.2.0
+remote:        Using activesupport 6.0.0
+remote:        Using builder 3.2.3
+remote:        Using erubi 1.9.0
+remote:        Using mini_portile2 2.4.0
+remote:        Using nokogiri 1.10.4
+remote:        Using rails-dom-testing 2.0.3
+remote:        Using crass 1.0.5
+remote:        Using loofah 2.3.1
+remote:        Using rails-html-sanitizer 1.3.0
+remote:        Using actionview 6.0.0
+remote:        Using rack 2.0.7
+remote:        Using rack-test 1.1.0
+remote:        Using actionpack 6.0.0
+remote:        Using nio4r 2.5.2
+remote:        Using websocket-extensions 0.1.4
+remote:        Using websocket-driver 0.7.1
+remote:        Using actioncable 6.0.0
+remote:        Using globalid 0.4.2
+remote:        Using activejob 6.0.0
+remote:        Using activemodel 6.0.0
+remote:        Using activerecord 6.0.0
+remote:        Using mimemagic 0.3.3
+remote:        Using marcel 0.3.3
+remote:        Using activestorage 6.0.0
+remote:        Using mini_mime 1.0.2
+remote:        Using mail 2.7.1
+remote:        Using actionmailbox 6.0.0
+remote:        Using actionmailer 6.0.0
+remote:        Using actiontext 6.0.0
+remote:        Using aws-eventstream 1.0.3
+remote:        Using aws-partitions 1.268.0
+remote:        Using aws-sigv4 1.1.0
+remote:        Using jmespath 1.4.0
+remote:        Using aws-sdk-core 3.89.1
+remote:        Using aws-sdk-kms 1.28.0
+remote:        Using aws-sdk-s3 1.60.1
+remote:        Using bcrypt 3.1.13
+remote:        Using msgpack 1.3.1
+remote:        Using bootsnap 1.4.5
+remote:        Using bundler 1.17.3
+remote:        Using orm_adapter 0.5.0
+remote:        Using method_source 0.9.2
+remote:        Using thor 0.20.3
+remote:        Using railties 6.0.0
+remote:        Using responders 3.0.0
+remote:        Using warden 1.2.8
+remote:        Using devise 4.7.1
+remote:        Using ffi 1.11.1
+remote:        Using request_store 1.5.0
+remote:        Using globalize 5.3.0
+remote:        Using mini_magick 4.10.1
+remote:        Using ruby-vips 2.0.17
+remote:        Using image_processing 1.10.3
+remote:        Using jbuilder 2.9.1
+remote:        Using pagy 3.7.2
+remote:        Using pg 1.1.4
+remote:        Using puma 3.12.1
+remote:        Using pundit 2.1.0
+remote:        Using rack-proxy 0.6.5
+remote:        Using sprockets 3.7.2
+remote:        Using sprockets-rails 3.2.1
+remote:        Using rails 6.0.0
+remote:        Using rb-fsevent 0.10.3
+remote:        Using rb-inotify 0.10.0
+remote:        Using sass-listen 4.0.0
+remote:        Using sass 3.7.4
+remote:        Using tilt 2.0.10
+remote:        Using sass-rails 5.1.0
+remote:        Using turbolinks-source 5.2.0
+remote:        Using turbolinks 5.2.1
+remote:        Using webpacker 4.0.7
+remote:        Bundle complete! 23 Gemfile dependencies, 78 gems now installed.
+remote:        Gems in the groups development and test were not installed.
+remote:        Bundled gems are installed into `./vendor/bundle`
+remote:        Bundle completed (0.48s)
+remote:        Cleaning up the bundler cache.
+remote:        The dependency tzinfo-data (>= 0) will be unused by any of the platforms Bundler is installing for. Bundler is installing for ruby but the dependency is only for x86-mingw32, x86-mswin32, x64-mingw32, java. To add those platforms to the bundle, run `bundle lock --add-platform x86-mingw32 x86-mswin32 x64-mingw32 java`.
+remote: -----> Installing node-v10.15.3-linux-x64
+remote: -----> Installing yarn-v1.16.0
+remote: -----> Detecting rake tasks
+remote: -----> Preparing app for Rails asset pipeline
+remote:        Running: rake assets:precompile
+remote:        yarn install v1.16.0
+remote:        [1/4] Resolving packages...
+remote:        [2/4] Fetching packages...
+remote:        info fsevents@1.2.9: The platform "linux" is incompatible with this module.
+remote:        info "fsevents@1.2.9" is an optional dependency and failed compatibility check. Excluding it from installation.
+remote:        [3/4] Linking dependencies...
+remote:        warning " > webpack-dev-server@3.8.2" has unmet peer dependency "webpack@^4.0.0".
+remote:        warning "webpack-dev-server > webpack-dev-middleware@3.7.2" has unmet peer dependency "webpack@^4.0.0".
+remote:        [4/4] Building fresh packages...
+remote:        Done in 22.02s.
+remote:        I, [2020-03-20T14:27:03.964551 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/css/animate-12276ed7c76379f10a8752e2cea12b086f43f9c89d3078c3167895ac536d56e7.css
+remote:        I, [2020-03-20T14:27:03.964964 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/css/animate-12276ed7c76379f10a8752e2cea12b086f43f9c89d3078c3167895ac536d56e7.css.gz
+remote:        I, [2020-03-20T14:27:05.570738 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/css/bootstrap.min-07207f20df7b9409166fdc9635d4d4606eed4ec389e52d05ac3305574bb51e24.css
+remote:        I, [2020-03-20T14:27:05.570928 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/css/bootstrap.min-07207f20df7b9409166fdc9635d4d4606eed4ec389e52d05ac3305574bb51e24.css.gz
+remote:        I, [2020-03-20T14:27:05.648001 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/css/et-line-icons-785950b9a3a014f4ea8083c0fc3bd7bbfbc95494eb0bbce394dbcc84b71f4c30.css
+remote:        I, [2020-03-20T14:27:05.648161 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/css/et-line-icons-785950b9a3a014f4ea8083c0fc3bd7bbfbc95494eb0bbce394dbcc84b71f4c30.css.gz
+remote:        I, [2020-03-20T14:27:05.829911 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/css/themify-icons-0df54f02c4129fd74920f7404d1d37be759e326e2421d0b1f15722caf6ac65ac.css
+remote:        I, [2020-03-20T14:27:05.830087 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/css/themify-icons-0df54f02c4129fd74920f7404d1d37be759e326e2421d0b1f15722caf6ac65ac.css.gz
+remote:        I, [2020-03-20T14:27:05.942623 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/css/swiper.min-e947c3adefd594df07c174ee460f2f7c82d98d7676c4460e99e6b33ff82ee8e8.css
+remote:        I, [2020-03-20T14:27:05.942780 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/css/swiper.min-e947c3adefd594df07c174ee460f2f7c82d98d7676c4460e99e6b33ff82ee8e8.css.gz
+remote:        I, [2020-03-20T14:27:05.959795 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/css/justified-gallery.min-59016fae5170ac7c1819093ab9d108b89acf1df372cfaf44fee8ed7792aa14ea.css
+remote:        I, [2020-03-20T14:27:05.959926 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/css/justified-gallery.min-59016fae5170ac7c1819093ab9d108b89acf1df372cfaf44fee8ed7792aa14ea.css.gz
+remote:        I, [2020-03-20T14:27:06.014335 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/css/magnific-popup-078308155c708fdc023c448016c0bfec3fab885458def6dca9243189b29cafcd.css
+remote:        I, [2020-03-20T14:27:06.014781 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/css/magnific-popup-078308155c708fdc023c448016c0bfec3fab885458def6dca9243189b29cafcd.css.gz
+remote:        I, [2020-03-20T14:27:06.215191 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/css/bootsnav-fbe0076f1fc76ef52dd2f774840405131b0f8506202f11fd1327dd65f18c675d.css
+remote:        I, [2020-03-20T14:27:06.215702 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/css/bootsnav-fbe0076f1fc76ef52dd2f774840405131b0f8506202f11fd1327dd65f18c675d.css.gz
+remote:        I, [2020-03-20T14:27:08.837310 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/css/style-3cddc47feb170e4f7424dfa0160905f82ec515c993e7399b038ec496aadbd9df.css
+remote:        I, [2020-03-20T14:27:08.837906 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/css/style-3cddc47feb170e4f7424dfa0160905f82ec515c993e7399b038ec496aadbd9df.css.gz
+remote:        I, [2020-03-20T14:27:11.182144 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/css/responsive-7497836f9501f5faf8ee5a007472d8cce03a606c62ce3036ae710e2c08a4680a.css
+remote:        I, [2020-03-20T14:27:11.182319 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/css/responsive-7497836f9501f5faf8ee5a007472d8cce03a606c62ce3036ae710e2c08a4680a.css.gz
+remote:        I, [2020-03-20T14:27:11.207901 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/jquery-693ce4426a47c40b80ac9cd618fbd633c4182bff664d1f25009813f456c3ed12.js
+remote:        I, [2020-03-20T14:27:11.208270 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/jquery-693ce4426a47c40b80ac9cd618fbd633c4182bff664d1f25009813f456c3ed12.js.gz
+remote:        I, [2020-03-20T14:27:11.217466 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/modernizr-8faab8c2b1f29c23b7509f108e8da90edaf8dbeed37b840af54108ea47dc8967.js
+remote:        I, [2020-03-20T14:27:11.217880 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/modernizr-8faab8c2b1f29c23b7509f108e8da90edaf8dbeed37b840af54108ea47dc8967.js.gz
+remote:        I, [2020-03-20T14:27:11.226723 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/bootstrap.min-504d59678f10d79a661b6cecdce5b8c1d5bfd98e860614584c0a40399552d61f.js
+remote:        I, [2020-03-20T14:27:11.226848 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/bootstrap.min-504d59678f10d79a661b6cecdce5b8c1d5bfd98e860614584c0a40399552d61f.js.gz
+remote:        I, [2020-03-20T14:27:11.233159 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/jquery.easing.1.3-dd0f348836e6fbe1cf117a4ae83c5efa4b8ee00730f4c2f17a8a2dcb0bb7e682.js
+remote:        I, [2020-03-20T14:27:11.233285 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/jquery.easing.1.3-dd0f348836e6fbe1cf117a4ae83c5efa4b8ee00730f4c2f17a8a2dcb0bb7e682.js.gz
+remote:        I, [2020-03-20T14:27:11.239165 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/skrollr.min-27e858146f636a48786eadc15686fc64cbbe267b66279f47379e4b386914f54e.js
+remote:        I, [2020-03-20T14:27:11.239291 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/skrollr.min-27e858146f636a48786eadc15686fc64cbbe267b66279f47379e4b386914f54e.js.gz
+remote:        I, [2020-03-20T14:27:11.243310 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/smooth-scroll-b068e22a093ed7c49bff6147b910aaccff2fb5347af77b028d99aed00703ad5b.js
+remote:        I, [2020-03-20T14:27:11.243436 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/smooth-scroll-b068e22a093ed7c49bff6147b910aaccff2fb5347af77b028d99aed00703ad5b.js.gz
+remote:        I, [2020-03-20T14:27:11.247439 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/jquery.appear-6304b4d937f74e63afd61f9b17334d9aad38529dc9ac21659b560489e3819200.js
+remote:        I, [2020-03-20T14:27:11.247566 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/jquery.appear-6304b4d937f74e63afd61f9b17334d9aad38529dc9ac21659b560489e3819200.js.gz
+remote:        I, [2020-03-20T14:27:11.257806 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/bootsnav-b57a539a9aeaf76878b363a89d770a9971d459c2ef949142e50eb7cf20cf7a80.js
+remote:        I, [2020-03-20T14:27:11.257934 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/bootsnav-b57a539a9aeaf76878b363a89d770a9971d459c2ef949142e50eb7cf20cf7a80.js.gz
+remote:        I, [2020-03-20T14:27:11.263404 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/jquery.nav-dcc437552219916f14a42ea7c796e42e58cf634d1e20bfed55b4f4706fff7183.js
+remote:        I, [2020-03-20T14:27:11.263585 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/jquery.nav-dcc437552219916f14a42ea7c796e42e58cf634d1e20bfed55b4f4706fff7183.js.gz
+remote:        I, [2020-03-20T14:27:11.268916 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/wow.min-49f976ba20ba250bf035a26b05bb98268c6a71fb6e3858bc0c32981c4d17f132.js
+remote:        I, [2020-03-20T14:27:11.269435 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/wow.min-49f976ba20ba250bf035a26b05bb98268c6a71fb6e3858bc0c32981c4d17f132.js.gz
+remote:        I, [2020-03-20T14:27:11.277791 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/page-scroll-40ff635bdae3618d7da093fcf4fb855030b2b67ff2dfe044432206d0a4758f0f.js
+remote:        I, [2020-03-20T14:27:11.278237 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/page-scroll-40ff635bdae3618d7da093fcf4fb855030b2b67ff2dfe044432206d0a4758f0f.js.gz
+remote:        I, [2020-03-20T14:27:11.297549 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/swiper.min-07ed0766768f1744f48cd03d44eeddc94958360205ff6bad2c0d25ca252f8b11.js
+remote:        I, [2020-03-20T14:27:11.297981 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/swiper.min-07ed0766768f1744f48cd03d44eeddc94958360205ff6bad2c0d25ca252f8b11.js.gz
+remote:        I, [2020-03-20T14:27:11.303804 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/jquery.count-to-65800a729f583f1366785a9890e856396f4563f7b1b2d3b8ea4e275950a65d5e.js
+remote:        I, [2020-03-20T14:27:11.304302 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/jquery.count-to-65800a729f583f1366785a9890e856396f4563f7b1b2d3b8ea4e275950a65d5e.js.gz
+remote:        I, [2020-03-20T14:27:11.311919 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/jquery.stellar-1f9ffdb18ba78d5775a4faf4b180ca68e36b45ecbce1490b218cbaa6395463db.js
+remote:        I, [2020-03-20T14:27:11.312330 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/jquery.stellar-1f9ffdb18ba78d5775a4faf4b180ca68e36b45ecbce1490b218cbaa6395463db.js.gz
+remote:        I, [2020-03-20T14:27:11.319092 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/jquery.magnific-popup.min-b29d983d739362882b1c8a48784521362dc73c717bf1f1f74371113fb8e443fa.js
+remote:        I, [2020-03-20T14:27:11.319409 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/jquery.magnific-popup.min-b29d983d739362882b1c8a48784521362dc73c717bf1f1f74371113fb8e443fa.js.gz
+remote:        I, [2020-03-20T14:27:11.341074 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/isotope.pkgd.min-64453ee6fb2cc951593adc5fd990c525ebc138a0888d0f3943d17c0dc4e32316.js
+remote:        I, [2020-03-20T14:27:11.341515 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/isotope.pkgd.min-64453ee6fb2cc951593adc5fd990c525ebc138a0888d0f3943d17c0dc4e32316.js.gz
+remote:        I, [2020-03-20T14:27:11.346962 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/imagesloaded.pkgd.min-d3cc10a4edc938ea8fc4148ad46ea7a07c51989f5b5653d51751bb576a192347.js
+remote:        I, [2020-03-20T14:27:11.347361 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/imagesloaded.pkgd.min-d3cc10a4edc938ea8fc4148ad46ea7a07c51989f5b5653d51751bb576a192347.js.gz
+remote:        I, [2020-03-20T14:27:11.352013 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/classie-6977e130d2dc21c0fe794d91a94b6a69eaa2d5bc630e4e39e90844c99c4186d0.js
+remote:        I, [2020-03-20T14:27:11.352482 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/classie-6977e130d2dc21c0fe794d91a94b6a69eaa2d5bc630e4e39e90844c99c4186d0.js.gz
+remote:        I, [2020-03-20T14:27:11.357010 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/hamburger-menu-2b2edab10348381a7c420a7ce2eed0e8cdac561201ddcae76191fff56b410526.js
+remote:        I, [2020-03-20T14:27:11.357191 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/hamburger-menu-2b2edab10348381a7c420a7ce2eed0e8cdac561201ddcae76191fff56b410526.js.gz
+remote:        I, [2020-03-20T14:27:11.380169 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/counter-23dbcd06f57d972829dc3591d86113cbb423d394af59b2164790ab6db72c26b4.js
+remote:        I, [2020-03-20T14:27:11.380322 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/counter-23dbcd06f57d972829dc3591d86113cbb423d394af59b2164790ab6db72c26b4.js.gz
+remote:        I, [2020-03-20T14:27:11.385083 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/jquery.fitvids-55172bb72e1e399cda77fc1539e7116ec4e27e26d96aa337b25ca4300489829c.js
+remote:        I, [2020-03-20T14:27:11.385208 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/jquery.fitvids-55172bb72e1e399cda77fc1539e7116ec4e27e26d96aa337b25ca4300489829c.js.gz
+remote:        I, [2020-03-20T14:27:11.388822 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/equalize.min-1111a87d2597c687722ca45f9ff52d4a36e079a23d87bad7dc9ad85e4063def3.js
+remote:        I, [2020-03-20T14:27:11.388949 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/equalize.min-1111a87d2597c687722ca45f9ff52d4a36e079a23d87bad7dc9ad85e4063def3.js.gz
+remote:        I, [2020-03-20T14:27:11.393134 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/skill.bars.jquery-308dc8751674fda199c6ad023d84fa3cba38f4eb98721e764bc7ad644cbee136.js
+remote:        I, [2020-03-20T14:27:11.393448 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/skill.bars.jquery-308dc8751674fda199c6ad023d84fa3cba38f4eb98721e764bc7ad644cbee136.js.gz
+remote:        I, [2020-03-20T14:27:11.399373 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/justified-gallery.min-f7b5c1ac1973cd7428315f0cc8c75c64683763be1ee717bbbe9e07d1d831cc27.js
+remote:        I, [2020-03-20T14:27:11.399831 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/justified-gallery.min-f7b5c1ac1973cd7428315f0cc8c75c64683763be1ee717bbbe9e07d1d831cc27.js.gz
+remote:        I, [2020-03-20T14:27:11.404931 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/jquery.easypiechart.min-c2bc40890f7ddc1a2882b70237dc70294728392c6d3db4df0a191c40f5ac67e5.js
+remote:        I, [2020-03-20T14:27:11.405466 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/jquery.easypiechart.min-c2bc40890f7ddc1a2882b70237dc70294728392c6d3db4df0a191c40f5ac67e5.js.gz
+remote:        I, [2020-03-20T14:27:11.410249 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/instafeed.min-aafdd35868a90560c5b4708a9ee201e4a3cc76cb9ce42cb60904029e95d7bad2.js
+remote:        I, [2020-03-20T14:27:11.410680 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/instafeed.min-aafdd35868a90560c5b4708a9ee201e4a3cc76cb9ce42cb60904029e95d7bad2.js.gz
+remote:        I, [2020-03-20T14:27:11.414749 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/retina.min-f434e7bb81666d659571b5d76d535a6416b5d7277621a6d8f8357e581e0b7cf0.js
+remote:        I, [2020-03-20T14:27:11.415213 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/retina.min-f434e7bb81666d659571b5d76d535a6416b5d7277621a6d8f8357e581e0b7cf0.js.gz
+remote:        I, [2020-03-20T14:27:11.434320 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/revolution/js/jquery.themepunch.tools.min-03981519a80b23ce53eae25f6065e1475f7ae62d2eea72d24f6759264a750b1d.js
+remote:        I, [2020-03-20T14:27:11.434690 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/revolution/js/jquery.themepunch.tools.min-03981519a80b23ce53eae25f6065e1475f7ae62d2eea72d24f6759264a750b1d.js.gz
+remote:        I, [2020-03-20T14:27:11.448321 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/revolution/js/jquery.themepunch.revolution.min-c596975ce6319ff66213efaaad896b56a6e17849d5d399244aa75da09be5730c.js
+remote:        I, [2020-03-20T14:27:11.448804 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/revolution/js/jquery.themepunch.revolution.min-c596975ce6319ff66213efaaad896b56a6e17849d5d399244aa75da09be5730c.js.gz
+remote:        I, [2020-03-20T14:27:11.473296 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/main-d352c13ce8089325337ca68f0dd59dc6ddf739bc8ace89c9699db156e7d6bdcd.js
+remote:        I, [2020-03-20T14:27:11.473423 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/js/main-d352c13ce8089325337ca68f0dd59dc6ddf739bc8ace89c9699db156e7d6bdcd.js.gz
+remote:        I, [2020-03-20T14:27:34.848822 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/application-6e3495fd46aca7110459ff2c84eb666ae2a1839ef2922e18a4d4d385c5b57898.css
+remote:        I, [2020-03-20T14:27:34.849804 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/application-6e3495fd46aca7110459ff2c84eb666ae2a1839ef2922e18a4d4d385c5b57898.css.gz
+remote:        I, [2020-03-20T14:27:34.858049 #289]  INFO -- : Writing /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/assets/pofo/css/bootstrap.min.css-c4c67449a48161948756315d653013fc88d1131448c52ae259c24b700f67923d.map
+remote:        Compiling…
+remote:        Compiled all packs in /tmp/build_77c24fce677a05c748838989f7fdf3bb/public/packs
+remote:        Browserslist: caniuse-lite is outdated. Please run next command `yarn upgrade`
+remote:        
+remote:        Asset precompilation completed (108.30s)
+remote:        Cleaning assets
+remote:        Running: rake assets:clean
+remote: -----> Detecting rails configuration
+remote: 
+remote: ###### WARNING:
+remote: 
+remote:        We detected that some binary dependencies required to
+remote:        use all the preview features of Active Storage are not
+remote:        present on this system.
+remote:        
+remote:        For more information please see:
+remote:          https://devcenter.heroku.com/articles/active-storage-on-heroku
+remote:        
+remote: 
+remote: 
+remote: ###### WARNING:
+remote: 
+remote:        There is a more recent Ruby version available for you to use:
+remote:        
+remote:        2.6.5
+remote:        
+user_fb:~/environment $ 

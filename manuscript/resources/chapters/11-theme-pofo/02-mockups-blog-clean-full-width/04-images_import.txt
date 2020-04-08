@@ -1,0 +1,199 @@
+# Le immagini
+
+Non ci resta che importare le immagini sull'asset_pipeline ed associare le chiamate nel views/st_homepage/index.html.erb
+
+
+Risorse web:
+
+* [how-to-escape-a-dash-in-a-ruby-symbol](https://stackoverflow.com/questions/8482024/how-to-escape-a-dash-in-a-ruby-symbol)
+* [ruby-1-9-hash-with-a-dash-in-a-key](https://stackoverflow.com/questions/2134702/ruby-1-9-hash-with-a-dash-in-a-key)
+
+
+
+
+## Apriamo il branch "Import Images"
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout -b ii
+```
+
+
+
+
+## importiamo le immagini dal tema Pofo all'asset_pipeline
+
+E' arrivato il momento di importare le immagini dal tema alla nostra app Rails. 
+
+
+## Seguiamo l'ordine delle chiamate sul file posts_index
+
+{id: "11-02-04_01", caption: ".../app/views/mockups/blog_clean_full_width.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 15}
+```
+        <link rel="shortcut icon" href="images/favicon.png">
+        <link rel="apple-touch-icon" href="images/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+```
+
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=58}
+```
+                            <a href="index.html" title="Pofo" class="logo"><img src="images/logo.png" data-rjs="images/logo@2x.png" class="logo-dark" alt="Pofo"><img src="images/logo-white.png" data-rjs="images/logo-white@2x.png" alt="Pofo" class="logo-light default"></a>
+```
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=287}
+```
+                                                            <a href="home-creative-studio.html" class="menu-banner-image"><img src="images/menu-banner-01.png" alt="portfolio"/></a>
+```
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=290}
+```
+                                                            <a href="home-creative-business.html" class="menu-banner-image"><img src="images/menu-banner-02.png" alt="portfolio"/></a>
+```
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=592}
+```
+        <section class="wow fadeIn parallax" data-stellar-background-ratio="0.5" style="background-image:url('images/parallax-bg33.jpg');">
+```
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=617}
+```
+                                    <img src="images/blog-img98.jpg" alt="">
+```
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=624}
+```
+                                    <img src="images/avtar-01.jpg" alt="" class="border-radius-100">
+```
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=636}
+```
+                                    <img src="images/blog-img99.jpg" alt="">
+```
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=643}
+```
+                                    <img src="images/avtar-02.jpg" alt="" class="border-radius-100">
+```
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=655}
+```
+                                    <img src="images/blog-img100.jpg" alt="">
+```
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=662}
+```
+                                    <img src="images/avtar-03.jpg" alt="" class="border-radius-100">
+```
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=674}
+```
+                                    <img src="images/blog-img101.jpg" alt="">
+```
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=681}
+```
+                                    <img src="images/avtar-04.jpg" alt="" class="border-radius-100">
+```
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=693}
+```
+                                    <img src="images/blog-img102.jpg" alt="">
+```
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=700}
+```
+                                    <img src="images/avtar-01.jpg" alt="" class="border-radius-100">
+```
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=712}
+```
+                                    <img src="images/blog-img103.jpg" alt="">
+```
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=719}
+```
+                                    <img src="images/avtar-02.jpg" alt="" class="border-radius-100">
+```
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=731}
+```
+                                    <img src="images/blog-img104.jpg" alt="">
+```
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=738}
+```
+                                    <img src="images/avtar-03.jpg" alt="" class="border-radius-100">
+```
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=750}
+```
+                                    <img src="images/blog-img105.jpg" alt="">
+```
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=757}
+```
+                                    <img src="images/avtar-04.jpg" alt="" class="border-radius-100">
+```
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=796}
+```
+                                <a href="index.html"><img class="footer-logo" src="images/logo-white.png" data-rjs="images/logo-white@2x.png" alt="Pofo"></a>
+```
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=833}
+```
+                                        <a href="blog-post-layout-01.html"><img src="images/latest-blog2.jpg" alt=""></a>
+```
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=839}
+```
+                                        <a href="blog-post-layout-02.html"><img src="images/latest-blog3.jpg" alt=""></a>
+```
+
+{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=845}
+```
+                                        <a href="blog-post-layout-03.html"><img src="images/latest-blog4.jpg" alt=""></a>
+```
+
+
+
+
+## Impoprtiamo le immagini nella nostra app (da -> a)
+
+* .../images/favicon.png                    ->  .../app/assets/images/pofo/favicon.png
+* .../images/apple-touch-icon-57x57.png     ->  .../app/assets/images/pofo/apple-touch-icon-57x57.png
+* .../images/apple-touch-icon-72x72.png     ->  .../app/assets/images/pofo/apple-touch-icon-72x72.png
+* .../images/apple-touch-icon-114x114.png   ->  .../app/assets/images/pofo/apple-touch-icon-114x114.png
+* .../images/logo.png                       ->  .../app/assets/images/pofo/logo.png
+* .../images/logo@2x.png                    ->  .../app/assets/images/pofo/logo@2x.png
+* .../images/logo-white.png                 ->  .../app/assets/images/pofo/logo-white.png
+* .../images/logo-white@2x.png              ->  .../app/assets/images/pofo/logo-white@2x.png
+* .../images/menu-banner-01.png             ->  .../app/assets/images/pofo/menu-banner-01.png
+* .../images/menu-banner-02.png             ->  .../app/assets/images/pofo/menu-banner-02.png
+* .../images/parallax-bg33.jpg              ->  .../app/assets/images/pofo/parallax-bg33.jpg
+* .../images/blog-img98.jpg                 ->  .../app/assets/images/pofo/blog-img98.jpg
+* .../images/avtar-01.jpg                   ->  .../app/assets/images/pofo/avtar-01.jpg
+* .../images/blog-img99.jpg                 ->  .../app/assets/images/pofo/blog-img99.jpg
+* .../images/avtar-02.jpg                   ->  .../app/assets/images/pofo/avtar-02.jpg
+* .../images/blog-img100.jpg                ->  .../app/assets/images/pofo/blog-img100.jpg
+* .../images/avtar-03.jpg                   ->  .../app/assets/images/pofo/avtar-03.jpg
+* .../images/blog-img101.jpg                ->  .../app/assets/images/pofo/blog-img101.jpg
+* .../images/avtar-04.jpg                   ->  .../app/assets/images/pofo/avtar-04.jpg
+* .../images/blog-img102.jpg                ->  .../app/assets/images/pofo/blog-img102.jpg
+* .../images/avtar-01.jpg                   ->  .../app/assets/images/pofo/avtar-01.jpg (doppione da non reinserire)
+* .../images/blog-img103.jpg                ->  .../app/assets/images/pofo/blog-img103.jpg
+* .../images/avtar-02.jpg                   ->  .../app/assets/images/pofo/avtar-02.jpg (doppione da non reinserire)
+* .../images//blog-img104.jpg               ->  .../app/assets/images/pofo//blog-img104.jpg
+* .../images/avtar-03.jpg                   ->  .../app/assets/images/pofo/avtar-03.jpg (doppione da non reinserire)
+* .../images/blog-img105.jpg                ->  .../app/assets/images/pofo/blog-img105.jpg
+* .../images/avtar-04.jpg                   ->  .../app/assets/images/pofo/avtar-04.jpg (doppione da non reinserire)
+* .../images/logo-white.png                 ->  .../app/assets/images/pofo/logo-white.png (doppione da non reinserire)
+* .../images/logo-white@2x.png              ->  .../app/assets/images/pofo/logo-white@2x.png (doppione da non reinserire)
+* .../images/latest-blog2.jpg               ->  .../app/assets/images/pofo/latest-blog2.jpg
+* .../images/latest-blog3.jpg               ->  .../app/assets/images/pofo/latest-blog3.jpg
+* .../images/latest-blog4.jpg               ->  .../app/assets/images/pofo/latest-blog4.jpg
+
+Una volta importate le immagini adattiamo le chiamate alle convenzioni dell'asset_pipeline
+

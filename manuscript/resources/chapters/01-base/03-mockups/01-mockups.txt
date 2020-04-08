@@ -111,7 +111,7 @@ Aggiorniamo il file routes per mettere l'homepage come pagina principale (root)
 
 
 
-### Verifichiamo preview
+## Verifichiamo preview
 
 Attiviamo il webserver
 
