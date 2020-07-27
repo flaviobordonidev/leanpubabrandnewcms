@@ -1,0 +1,12 @@
+# Pagina indice di Aziende e Persone
+
+Prepariamo il mockup per la pagina Aziende e relative Persone
+
+Poiché i mockups usano delle pagine statiche per "simulare" il comportamento delle pagine dinamiche creeremo più pagine in sequenza che raccontano delle storie di utilizzo dell'applicazione. Qualcosa di simile che si fa per i tests.
+Metteremo quindi un prefisso con una lettera per distinguere la storia ed un progressivo per lo sviluppo della storia.
+In questo capitolo tratteremo la storia "s1" che inizia con un utente che si trova nella pagina indice di aziende persone quindi con il file:
+
+* s1p1_company_person_maps_index
+
+
+

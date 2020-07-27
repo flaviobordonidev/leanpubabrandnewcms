@@ -1,0 +1,273 @@
+# Clonare app da GitHub
+
+Eseguire quanto riportato nel Volume 03-new_app_github_clone_fork
+
+
+
+
+## Le variabili per Elisinfo
+
+Mentre eseguiamo quanto riportato nel volume 03, usiamo i seguenti nomi quando richiesto:
+
+
+
+
+## 01-new_awsc9_instance
+
+  * Name: elisinfo
+  * Description : Il CRM basato su Rails bl6_0
+
+
+
+
+## 02-github_fork
+
+se stiamo continuando da pofotheme è già nel nostro "account di GitHub" e quindi non dobbiamo fare il fork.
+
+
+
+
+## 03-git_clone
+
+La chiave pubblica di criptatura per collegarti a github in modo sicuro:
+
+  * SSH keys Title: awsC9-elisinfo
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git clone git@github.com:flaviobordonidev/pofotheme.git
+-> yes
+```
+
+{caption: "terminal", format: bash, line-numbers: false}
+~~~~~~~~
+$ cd pofotheme
+~~~~~~~~
+
+
+
+
+## 04-remove_git_remote
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git remote -v
+```
+
+
+
+
+## 05-restore_git_config
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git config --global user.name "Flavio Bordoni"
+$ git config --global user.email "flavio.bordoni.dev@gmail.com"
+$ git config -l
+```
+
+
+
+
+## 06-rename_app
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ cd ..
+$ mv pofotheme elisinfo
+```
+
+{id: "50-01-06_01", caption: ".../config/application.rb -- codice 01", format: ruby, line-numbers: true, number-from: 9}
+```
+module Elisinfo
+  class Application < Rails::Application
+```
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "rename Rails app from pofotheme to elisinfo"
+```
+
+
+
+
+## 07-install_postgresql
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ cd elisinfo
+```
+
+Quello che possiamo personalizzare qui sono le password per gli utenti del database.
+
+
+
+
+## 08-restore_rails
+
+Installiamo rails
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ rails -v
+```
+
+
+Oggi 13/07/2020 abbiamo ricevuto i seguenti messaggi
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+Post-install message from i18n:
+
+HEADS UP! i18n 1.1 changed fallbacks to exclude default locale.
+But that may break your application.
+
+Please check your Rails app for 'config.i18n.fallbacks = true'.
+If you're using I18n (>= 1.1.0) and Rails (< 5.2.2), this should be
+'config.i18n.fallbacks = [I18n.default_locale]'.
+If not, fallbacks will be broken in your app by I18n 1.1.x.
+
+For more info see:
+https://github.com/svenfuchs/i18n/releases/tag/v1.1.0
+
+Post-install message from sass:
+
+Ruby Sass has reached end-of-life and should no longer be used.
+
+* If you use Sass as a command-line tool, we recommend using Dart Sass, the new
+  primary implementation: https://sass-lang.com/install
+
+* If you use Sass as a plug-in for a Ruby web framework, we recommend using the
+  sassc gem: https://github.com/sass/sassc-ruby#readme
+
+* For more details, please refer to the Sass blog:
+  https://sass-lang.com/blog/posts/7828841
+```
+
+
+
+
+## 09-restore_yarn
+
+Installiamo yarn
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ yarn --version
+```
+
+
+
+
+## 10-rename_restore_databases
+
+Rinominiamo (da --> a):
+
+* "pofotheme_development"   --> "elisinfo_development"
+* "pofotheme_test"          --> "elisinfo_test"
+* "pofotheme_production"    --> "elisinfo_production"
+
+Rinominiamo anche "pofotheme_production" anche se non lo usiamo perché usiamo heroku.
+Questo sarebbe il database che useremmo se andassimo in produzione sulla stessa macchina in cui facciamo sviluppo, ossia nel nostro caso sulla sessione ubunto EC2 di aws Cloud9.
+
+Creiamo i databases
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ createdb elisinfo_development
+$ createdb elisinfo_test
+```
+
+
+
+
+## 11-populate_databases
+
+Creiamo l'utente "Ann" e lo rendiamo amministratore
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ rails c
+-> User.create(name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda')
+-> u = User.last
+-> u.role = :admin
+-> u.save(validate: false)
+```
+
+
+
+
+## 12-new_buckets
+
+IAM user:
+
+  * User name         : bot_elisinfo
+  * access_key_id     : UL...WGERY
+  * secret_access_key : zx3I...ela+hg
+
+Bucket development:
+
+  * Bucket name : elisinfo-dev
+  * Region      : US East (N. Virginia)
+
+Bucket production:
+
+  * Bucket name : elisinfo-prod
+  * Region      : US East (N. Virginia)
+
+
+Su config/storage.yml aggiorniamo i nomi:
+
+amazondev:
+  region: us-east-1
+  bucket: elisinfo-dev
+
+amazonprod:
+  region: us-east-1
+  bucket: elisinfo-prod
+
+
+
+
+## 13-restore_minimagic
+
+installiamo minimagic
+
+
+
+
+## 14-connect_to_heroku
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ heroku --version
+```
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ heroku rename elisinfo
+```
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ heroku config:set AWS_ACCESS_KEY_ID='AKIA....JTOMA'
+$ heroku config:set AWS_SECRET_ACCESS_KEY='LwdJ........45KHZ'
+$ heroku config:set AWS_REGION='us-east-1'
+$ heroku config:set S3_BUCKET_NAME='elisinfo-prod'
+~~~~~~~~
+
+
+
+
+## 15-new_remote_repository_github
+
+Creiamo un nuovo repository Github
+
+    * nome        : elisinfo
+    * descrizione : Il CRM basato su Rails bl6_0
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git remote add origin git@github.com:flaviobordonidev/elisinfo.git
+```

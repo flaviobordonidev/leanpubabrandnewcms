@@ -177,6 +177,20 @@ Torniamo sulla nosta applicazione "angletheme" e sostituiamo il contenuto del fi
 ```
 
 
+In alternativa, per una maggior sicurezza, invece di riusare la stessa master.key, possiamo cancellare il file "config/credentials.yml.enc" dove sono archiviate le varie autorizzazioni e continuando al prossimo paragrafo verrà creato un nuovo file su cui riscriveremo da zero le nuove autorizzazioni.
+Il nuovo file al momento della creazione imposta anche un nuovo secret per i MessageVerifiers ed i cookies.
+
+{id: "13-01-12_02", caption: ".../app/config/credentials.yml.enc -- codice 02", format: text, line-numbers: true, number-from: 1}
+```
+# aws:
+#   access_key_id: 123
+#   secret_access_key: 345
+
+# Used as the base secret for all MessageVerifiers in Rails, including the one protecting cookies.
+secret_key_base: 6d2b4b2866340d5d4f621ea1703b556e92231de81677d5f22a313eb2a869394d62f83e97a83e16eb3b05f8db588a9dbe248f93629630d024f6f00977d68f399f
+```
+
+
 
 
 ## Implementiamo i due secrets

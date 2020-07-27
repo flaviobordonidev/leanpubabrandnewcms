@@ -1,0 +1,213 @@
+# Mockups Blog
+
+
+
+
+## Verifichiamo dove eravamo rimasti
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git status
+$ git log
+```
+
+
+
+
+## Apriamo il branch "Mockups Blog"
+
+Assicuriamoci di essere nella directory della nostra applicazione Rails e creiamo il ramo con git.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ cd ~/environment/bl6_0
+$ git checkout -b mb
+```
+
+
+
+
+## 1. Scegliamo una pagina html da importare.
+
+Scegliamo la pagina "blog-clean-full-width.html" perché vogliamo usare il tema per il nostro "eg_posts/index"
+Possiamo anche copiarla nella cartella .../app/views/mockups per mantenere un backup.
+
+{caption: ".../views/mockups/blog-clean-full-width.html -- codice 01", format: html, line-numbers: true, number-from: 1}
+```
+<!doctype html>
+<html class="no-js" lang="en">
+```
+
+
+
+
+## 2. Importiamo la pagina su mockups
+
+Copiamo la pagina html rinominandola (da -> a):
+
+* pofo/HTML/blog-clean-full-width.html  -> .../app/views/mockups/blog_clean_full_width.html.erb
+
+{caption: ".../views/mockups/blog_clean_full_width.html.erb -- codice 02", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<!doctype html>
+<html class="no-js" lang="en">
+```
+
+Notiamo che in html si preferisce separare le parole con il trattino meno "-" (dash) invece Rails preferisce il trattino basso "_" (underscore).
+
+
+
+
+## 3. Il layouts yield
+
+Prepariamo il layouts/yield che non aggiunge nulla ed è utile in questo caso perché abbiamo tutto il codice html nella pagina mockups/blog_clean_full_width.html.erb. 
+
+
+{caption: ".../views/layouts/yield.html.erb -- codice 03", format: ruby, line-numbers: true, number-from: 1}
+```
+<%= yield %>
+```
+
+
+
+
+## 4. Aggiorniamo controllers/mockups_controller.rb e config/routes.rb
+
+Aggiorniamo il controller
+
+{id: "01-03-01_01", caption: ".../app/controllers/mockups_controller.rb -- codice 04", format: ruby, line-numbers: true, number-from: 13}
+```
+  def blog_clean_full_width
+    render layout: 'yield'
+  end
+```
+
+[tutto il codice](#01-03-01_01all)
+
+
+
+
+## 5. Aggiorniamo il file routes
+
+Aggiorniamo l'instradamento
+
+{id: "01-03-01_01", caption: ".../config/routes.rb -- codice 05", format: ruby, line-numbers: true, number-from: 21}
+```
+  get 'mockups/blog_clean_full_width'
+```
+
+[tutto il codice](#01-03-01_01all)
+
+
+
+
+## Verifichiamo preview
+
+Attiviamo il webserver
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails s
+```
+
+e vediamo sull'URL:
+
+* https://mycloud9path.amazonaws.com/mockups/blog_clean_full_width
+
+Nel preview vediamo il testo senza stylesheets, images e javascripts.
+
+
+
+
+## Salviamo su git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "implement mockups"
+```
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout master
+$ git merge msp
+$ git branch -d msp
+```
+
+
+
+
+## Il codice del capitolo
+
+
+
+
+
+
+Fine. ^_^
+
+
+
+
+
+
+
+
+
+
+
+
+I passi seguenti stanno sugli altri captoli !!!!
+
+## 6. Importiamo le immagini
+
+copiamo le immagini (png, jpg) su "assets/images/pofo"
+
+
+
+
+## 7. Importiamo i files stylesheets
+
+copiamo i files stylesheets (css, scss) su "assets/stylesheets/pofo"
+
+
+
+
+## 8. Implementiamo puntamenti stylesheets sulla pagina
+
+su mockups/mypage.html.erb aggiustiamo i "puntamenti" per richiamare stylesheets, images e javascripts
+
+
+{caption: ".../views/mockups/blog_clean_full_width.html.erb -- codice 02", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+
+```
+
+
+
+
+## 9. Importiamo i files javascripts
+
+copiamo i files javascripts (js) su "assets/javascripts/pofo"
+
+
+
+
+## 10. Implementiamo puntamenti javascripts sulla pagina
+
+su mockups/mypage.html.erb aggiustiamo i "puntamenti" per richiamare javascripts
+
+
+{caption: ".../views/mockups/blog_clean_full_width.html.erb -- codice 02", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+
+```
+

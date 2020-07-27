@@ -7,49 +7,64 @@ Non ci resta che importare le immagini sull'asset_pipeline ed associare le chiam
 
 ## Apriamo il branch "Import Images"
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ git checkout -b ii
-~~~~~~~~
+usiamo il branch già aperto nel precedente capitolo
 
 
 
 
-## importiamo le immagini da Pofo all'asset_pipeline
+## Importiamo immagini ed implementiamole
 
-Impostiamo su posts_show gli helpers per puntare all'asset_pipeline ed aggiungiamo le nuove immagini all'occorrenza.
+Sfruttiamo quanto già fatto nella sezione "02-mockups-blog-clean-full-width" nei capitoli:
 
-{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=15}
-~~~~~~~~
+* 04-images_import
+* 05-images_implement
+* 06-font_icons
+* 07-font_awesome
+
+Di seguito quindi saltiamo vari passaggi ed andiamo direttamente al codice finale.
+Impostiamo gli helpers per puntare all'asset_pipeline ed aggiungiamo le nuove immagini all'occorrenza.
+
+{id: "11-03-03_01", caption: ".../app/views/mockups/blog_post_layout_05.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 18}
+```
         <link rel="shortcut icon" href="<%=image_path('pofo/favicon.png')%>">
         <link rel="apple-touch-icon" href="<%=image_path('pofo/apple-touch-icon-57x57.png')%>">
         <link rel="apple-touch-icon" sizes="72x72" href="<%=image_path('pofo/apple-touch-icon-72x72.png')%>">
         <link rel="apple-touch-icon" sizes="114x114" href="<%=image_path('pofo/apple-touch-icon-114x114.png')%>">
-~~~~~~~~
+```
 
-{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=59}
-~~~~~~~~
+{caption: ".../app/views/mockups/blog_post_layout_05.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 66}
+```
                             <a href="index.html" title="Pofo" class="logo"><%= image_tag "pofo/logo.png", 'data-rjs': image_path('pofo/logo@2x.png'), class: "logo-dark", alt: "Pofo" %><%= image_tag "pofo/logo-white.png", 'data-rjs': image_path('pofo/logo-white@2x.png'), alt: "Pofo", class: "logo-light default" %></a>
-~~~~~~~~
+```
 
-{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=288}
-~~~~~~~~
+{caption: ".../app/views/mockups/blog_post_layout_05.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 295}
+```
                                                             <a href="home-creative-studio.html" class="menu-banner-image"><%= image_tag "pofo/menu-banner-01.png", alt: "portfolio" %></a>
-~~~~~~~~
+```
 
-{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=291}
-~~~~~~~~
+{caption: ".../app/views/mockups/blog_post_layout_05.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 298}
+```
                                                             <a href="home-creative-business.html" class="menu-banner-image"><%= image_tag "pofo/menu-banner-02.png", alt: "portfolio" %></a>
-~~~~~~~~
+```
 
 la seguente immagine del menu è differente: 
-
-{title=".../app/views/example_static_pages/posts_index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=593}
-~~~~~~~~
-        <section class="wow fadeIn parallax" data-stellar-background-ratio="0.5" style="background-image:url('<%= image_path('pofo/parallax-bg54.jpg') %>');">
-~~~~~~~~
-
 * .../images/parallax-bg54.jpg  ->  .../app/assets/images/pofo/parallax-bg54.jpg
+
+note: Nell'ultima versione del tema hanno tolto molte immagini sostituendole con un url al sito placeholder mettendo 1920x1100
+Quindi mi sono scaricato un'immagine da https://www.pexels.com/ della dimensione 1920x1100 (in realtà era 1920x1260)
+
+{caption: ".../app/views/mockups/blog_post_layout_05.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 600}
+```
+        <section class="wow fadeIn parallax" data-stellar-background-ratio="0.5" style="background-image:url('<%= image_path('pofo/parallax-bg54.jpg') %>');">
+```
+
+
+
+{caption: ".../app/views/mockups/blog_post_layout_05.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 18}
+```
+```
+
+
 
 
 Abbiamo finito la parte del menu che è identica ed adesso iniziano le immagini su linee di codice differenti

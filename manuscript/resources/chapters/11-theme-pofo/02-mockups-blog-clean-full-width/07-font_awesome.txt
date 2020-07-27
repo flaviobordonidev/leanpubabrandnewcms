@@ -1,26 +1,14 @@
 # Font Awesome 5
 
+La libreria fontawesome è diversa dalle normali librerie di fonts e prima di webpack si usava una gemma Rails dedicata.
+Oggi possiamo integrarla usando direttamente webpack.
 
 
-ATTENZIONE! Li puoi caricare direttamente su webpack!!!
+Risorse esterne
 
-Iniziamo ad usare webpack
-
- ^_^
-
-Vedi: [How to write Javascript in Rails 6 | Webpacker, Yarn and Sprockets](https://blog.capsens.eu/how-to-write-javascript-in-rails-6-webpacker-yarn-and-sprockets-cdf990387463)
-        Scendi in basso al paragrafo: "How to add bootstrap 4 and fontawesome 5 to a Rails 6 application"
-
-
-MERDA! Non mi ha funzionato!!!
-Non vedo neanche la griglia. Devo aver pasticciato da qualche parte anche perché ho ancora il layout "yarn"
-
-Va provato con più calma più avanti.
-
-
-Non uso neanche la versione più vecchia che funzionerebbe perché non voglio usare la gemma sul gemfile.
-Comunque il codice lo trovi più in basso qui sotto.
-
+* [Questo mi ha dato l'imbeccata giusta YEAP](https://code-and-cookies.com/2020/01/new-rails-6-project/)
+* [altro sito](https://medium.com/@rodreegez/rails-6-webpacker-fontawesome-heroku-4cc0bf1705dd)
+* [Questo non ha funzionato :( merd](https://blog.capsens.eu/how-to-write-javascript-in-rails-6-webpacker-yarn-and-sprockets-cdf990387463)
 
 
 
@@ -49,7 +37,8 @@ Ma a noi interessa la sola parte gratuita che ha un suo package "@fortawesome/fo
 
 I> verifichiamo [l'ultima versione del package](https://yarnpkg.com/package/@fortawesome/fontawesome-free)
 
-Eseguiamo l'installazione del package con yarn
+Eseguiamo l'installazione del package con yarn (Otteniamo la libreria FontAwesome più aggiornata con yarn.)
+
 
 {caption: "terminal", format: bash, line-numbers: false}
 ```
@@ -75,46 +64,147 @@ info All dependencies
 Done in 7.10s.
 ```
 
+Attenzione: ci si può confondere perché la libreria prima usa il prefisso "fort" come fortezza che non centra nulla e poi usa "font" che ha più senso. *_*
+
 Con questo comando yarn mette la libreria in cache su ".../node_modules/" ed aggiorna il file "package.json". Comunque la libreria javascript (package) non è ancora disponibile alla nosta applicazione.
 
+{id: "11-02-06_01", caption: ".../package.json -- codice 01", format: ruby, line-numbers: true, number-from: 3}
+```
+{
+  "name": "bl6_0",
+  "private": true,
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.13.0",
+    "@rails/actioncable": "^6.0.0-alpha",
+    "@rails/actiontext": "^6.0.0",
+    "@rails/activestorage": "^6.0.0-alpha",
+    "@rails/ujs": "^6.0.0-alpha",
+    "@rails/webpacker": "^4.0.7",
+    "bootstrap": "^4.4.1",
+    "jquery": "^3.4.1",
+    "popper.js": "^1.16.1",
+    "trix": "^1.0.0",
+    "turbolinks": "^5.2.0"
+  },
+  "version": "0.1.0",
+  "devDependencies": {
+    "webpack-dev-server": "^3.8.2"
+  }
+}
+```
+
+[tutto il codice](#11-02-06_01all)
 
 
 
-## Richiediamo la libreria javascript
+## Importiamo/Richiediamo la libreria javascript
 
 Richiediamo la libreria javascript così possiamo visualizzare le icone nel nostro meg-menu.
+Nella pagina "mockups/blog_clean_full_width" richiamiamo degli specifici files "application_mockup_pofo" nella cartella javascript (quella di webpack) e non quelli di default "application".
 
-{id: "01-17-01_01", caption: ".../app/javascript/packs/application.js -- codice 01", format: ruby, line-numbers: true, number-from: 37}
+{id: "11-02-06_01", caption: ".../app/views/mockups/blog_clean_full_width.html.erb -- codice 02", format: HTML+Mako, line-numbers: true, number-from: 28}
 ```
-require("bootstrap");
-require("@fortawesome/fontawesome-free");
+    <%= stylesheet_pack_tag 'application_mockup_pofo', media: 'all', 'data-turbolinks-track': 'reload' %><!-- serve per heroku. In locale non serve perché indichiamo lo stile direttamente da "packs/application.js"-->
+    <%= javascript_pack_tag 'application_mockup_pofo', 'data-turbolinks-track': 'reload' %>
 ```
 
-[tutto il codice](#01-17-01_01all)
+
+su "javascript/packs/application_mockup_pofo.js" carichiamo innanzitutto la libreria fontawesome e poi puntiamo al file "javascript/stylesheets/application_mockup_pofo.scss"
+
+{id: "11-02-06_01", caption: ".../app/javascript/packs/application_mockup_pofo.js -- codice 03", format: JavaScript, line-numbers: true, number-from: 24}
+```
+//require("@fortawesome/fontawesome-free");
+import "@fortawesome/fontawesome-free/js/all";
+
+
+//Stylesheets
+require("../stylesheets/application_mockup_pofo.scss")
+```
+
+[tutto il codice](#11-02-06_01all)
+
+Abbiamo usato "import" invece di "require" perché in questo modo siamo riusciti a farlo funzionare. ^_^
+
+
+e dal file "javascript/stylesheets/application_mockup_pofo.scss" importiamo la libreria fontawesome
+
+{id: "11-02-06_01", caption: ".../app/javascript/stylesheets/application_mockup_pofo.scss -- codice 04", format: ruby, line-numbers: true, number-from: 25}
+```
+@import '@fortawesome/fontawesome-free';
+```
+
+[tutto il codice](#11-02-06_01all)
 
 
 
 
-## Richiamiamo le icone su stylesheets
+## Archiviamo su git
 
----
-$fa-font-path: '@fortawesome/fontawesome-free/webfonts';
-@import '@fortawesome/fontawesome-free/scss/fontawesome';
-@import '@fortawesome/fontawesome-free/scss/regular';
-@import '@fortawesome/fontawesome-free/scss/solid';
-@import '@fortawesome/fontawesome-free/scss/brands';
-@import 'bootstrap/scss/bootstrap';
----
-
-Ho provato a metterlo in più punti da asset_pipeline a webpack ma non mi ha funzionato!
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "Implement FontAwesom via webpack"
+```
 
 
 
 
+## Pubblichiamo su heroku
 
-******************************************
-OLD
-******************************************
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push heroku fa:master
+```
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout master
+$ git merge fa
+$ git branch -d fa
+```
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push origin master
+```
+
+
+
+
+## Il codice del capitolo
+
+
+
+
+
+
+
+
+
+
+
+----------------
+OLD DA ELIMINARE
+----------------
+
+I passaggi per installare fontawesome usando una gemma Rails dedicata.
+
+
+
 
 
 * da font-awesome.min.css

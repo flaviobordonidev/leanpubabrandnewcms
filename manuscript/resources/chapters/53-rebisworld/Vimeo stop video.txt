@@ -1,0 +1,9 @@
+
+Per Rebisworld Academy è importante stoppare e far ripartire il video.
+Oppure faccio tanti video che si interrompono ed il seguente parte con il submit della mia risposta.
+
+The Vimeo Player API allows you to interact with and control an embedded Vimeo Player.
+https://github.com/vimeo/player.js/
+
+Resume Vimeo video from last progress
+https://stackoverflow.com/questions/33124920/resume-vimeo-video-from-last-progress

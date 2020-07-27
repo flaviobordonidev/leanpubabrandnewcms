@@ -1,0 +1,53 @@
+## Icone su pagina the_formula
+
+Sostituiamo le immagini delle icone da quelle messe come font a delle immagini in png.
+
+
+
+## Views the_formula
+
+Su views/the_formula/show.html.rb (e su views/the_formula/show_en.html.rb)
+
+avevamo 
+
+```
+                    <!--<i aria-hidden="true" class="icon-grid"></i>-->
+                    <span class="text-medium-gray icon-medium" style="font-family:rebis">A</span>
+```
+
+La riga commentata era l'esempio del tema Pofo.
+La riga utilizzata usava una famiglia di font creata da noi. L'abbiamo nominata rebis ed usando un sito web "blabla" abbiamo messo dei dwg al posto delle lettere dell'alfabeto.
+La lettera "A" ha il disegno di un orologio (ad indicare il tempo di gioco)
+
+Abbiamo sostituito con un immagine png
+
+```
+                    <!--<i aria-hidden="true" class="icon-grid"></i>-->
+                    <!--<span class="text-medium-gray icon-medium" style="font-family:rebis">A</span>-->
+                    <%= image_tag "pofo/ico-time.png", alt: "time", class: "rounded-circle" %>
+```
+
+
+Lo abbiano fatto anche per l'icona dell'età mettendo il disegno di un vaso incrinato
+
+```
+                    <!--<i aria-hidden="true" class="icon-video"></i>-->
+                    <!--<span class="text-medium-gray icon-medium" style="font-family:rebis">B</span>-->
+                    <%= image_tag "pofo/ico-age.png", alt: "age", class: "rounded-circle" %>
+```
+
+
+Lo abbiano fatto anche per l'icona del numero di giocatori mettendo il disegno di più persone
+
+```
+                    <!--<i aria-hidden="true" class="icon-video"></i>-->
+                    <!--<span class="text-medium-gray icon-medium" style="font-family:rebis">B</span>-->
+                    <%= image_tag "pofo/ico-players.png", alt: "players", class: "rounded-circle" %>
+```
+
+
+Ovviamente ho caricato le tre immagini nell'asset_pipeline:
+
+* .../app/assets/images/pofo/ico-time.png
+* .../app/assets/images/pofo/ico-age.png
+* .../app/assets/images/pofo/ico-players.png

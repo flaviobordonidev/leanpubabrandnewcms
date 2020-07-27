@@ -9,6 +9,7 @@ ELISINFO - Il CRM basato su Rails
 Questo volume continua a partire da quanto già fatto nei seguenti volumi:
 
 * 01-beginnning
+* 11-theme-pofo
 
 
 in questo volume: 

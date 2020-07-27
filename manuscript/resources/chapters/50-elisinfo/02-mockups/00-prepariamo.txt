@@ -1,0 +1,25 @@
+# Prepariamo i mockups
+
+La scelta è quella di basarci su pofo.
+
+
+
+
+## Le vecchie App di riferimento
+
+Partiamo da Elisinfo 6 e ci ricostruiamo i mockups perché su Elisinfo 6 abbiamo lavorato direttamente sull'app.
+Importiamo tutto quello che ci serve da Elisinfo 6 e poi eliminiamo elisinfo 6.
+
+(Ho visto che elisinfo 5 non usa il tema pofo ma è fatto da zero con bootstrap. Il risultato è meno bello.)
+Al 90% possiamo eliminare elisinfo 5 ma prima di eliminarlo facciamo un confronto con la nuova applicazione, dopo che abbiamo preso tutto da elisinfo 6.
+Non vorrei rischiare di buttare un pezzo di codice che potrebbe farci comodo.
+
+L'ultimo controllo lo facciamo con il vecchio Elisinfo ed anche lì copiamo quello che ci è utile e poi lo eliminiamo.
+
+
+
+
+## Un unico controller mockups
+
+Non creiamo N controllers uno per ogni mockup. Invece li mettiamo tutti all'interno di "mockups".
+L'idea di fare più controllers era nata con il tema Angle perché quel tema sfrutta il nome del controller per accedere a determinati stylesheets e javascripts.

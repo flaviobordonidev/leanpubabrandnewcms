@@ -218,6 +218,8 @@ Sta funzionando! Dobbiamo solo aggiungere gli utenti per poter effettuare il log
 
 
 
-## Mandiamo in produzione su Heroku
+## Nei prossimi capitoli
 
-Non ancora perché dobbiamo creare i nuovi buckets su aws S3 per l'upload dei files e delle immagini.
+* Aggiungiamo l'utente amministratore al database
+* Creiamo i nuovi buckets su aws S3 per l'upload dei files e delle immagini.
+* Mandiamo in produzione su Heroku

@@ -7,6 +7,15 @@ Ripristiniamo l'ambiente (Restore environment). Ripristiniamo il database Postgr
 
 ## Apriamo il branch "Ripristiniamo PostgreSQL"
 
+Rientriamo nella directory dell'applicazione
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ cd angletheme
+```
+
+Ed apriamo un nuovo branch su Git
+
 {caption: "terminal", format: bash, line-numbers: false}
 ```
 $ git checkout -b rp
@@ -197,7 +206,8 @@ $ rails s
 
 user_fb:~/environment/angletheme (master) $ sudo service postgresql start
 user_fb:~/environment/angletheme (master) $ rails s
-... ERRORE...
+Could not find proper version of railties (6.0.0) in any of the sources
+Run `bundle install` to install missing gems.
 ```
 
 Prendiamo errore perché ci manca il ripristino di "Rails" che facciamo nel prossimo capitolo.

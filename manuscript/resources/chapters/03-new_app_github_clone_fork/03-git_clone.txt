@@ -101,7 +101,7 @@ Key     : ssh-rsa AAAAB3...[...]...xhUwU/K0waOEnEE9YRSEQ== flavio.bordoni.dev@gm
 
 Adesso che siamo collegati con GitHub possiamo clonare uno dei nostri repository.
 
-Prendiamo il riferimento del nostro repository "bl6_0" cliccando sul bottone "Clone or Download"
+Prendiamo il riferimento del nostro repository "bl6_0" cliccando sul bottone "Code" (ex "Clone or Download").
 
 ```
 git@github.com:flaviobordonidev/bl6_0.git

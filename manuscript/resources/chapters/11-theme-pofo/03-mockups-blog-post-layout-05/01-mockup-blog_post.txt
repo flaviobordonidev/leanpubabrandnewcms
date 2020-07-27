@@ -1,0 +1,137 @@
+# La preparazione iniziale
+
+Vengono fatti gli stessi passaggi fatti nel capitolo precedente per importare la pagina di visualizzazione del singolo articolo.
+
+
+
+
+## Verifichiamo dove eravamo rimasti
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git status
+$ git log
+```
+
+
+
+
+## Apriamo il branch "Mockup Blog Post"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b mbp
+~~~~~~~~
+
+
+## 1 e 2. Scegliamo la pagina html e la importiamo
+
+Scegliamo dal tema Pofo la pagina html per l'articolo singolo che useremo nella nostra app, come "eg_posts/show", e la importiamo come mockup.
+Una volta scelta la copiamo su "views/mockups" rinominandola (da -> a):
+
+* pofo/HTML/blog-post-layout-05.html  -> .../app/views/mockups/blog_post_layout_05.html.erb
+
+Notiamo in HTML il trattino meno "-" (dash) invece in Rails il trattino basso "_" (underscore).
+
+
+
+
+## 3, 4 e 5. Il layouts yield, il controller e routes
+
+Aggiungiamo l'azione "blog_post_layout_05" al controller mockup e diciamogli di utilizzare il layout "yeld" che abbiamo già creato nel capitolo precedente.
+
+{id: "01-03-01_01", caption: ".../app/controllers/mockups_controller.rb -- codice 04", format: ruby, line-numbers: true, number-from: 13}
+```
+  def blog_post_layout_05
+    render layout: 'yield'
+  end
+```
+
+[tutto il codice](#01-03-01_01all)
+
+
+Aggiorniamo l'instradamento
+
+{id: "01-03-01_01", caption: ".../config/routes.rb -- codice 05", format: ruby, line-numbers: true, number-from: 21}
+```
+  get 'mockups/blog_post_layout_05'
+```
+
+[tutto il codice](#01-03-01_01all)
+
+
+
+
+## Verifichiamo preview
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails s
+```
+
+e vediamo sull'URL:
+
+* https://mycloud9path.amazonaws.com/mockups/blog_post_layout_05
+
+Nel preview vediamo il testo senza stylesheets, images e javascripts.
+
+
+
+
+
+
+
+
+
+
+
+## archiviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add mockups/blog_post_layout_05"
+~~~~~~~~
+
+
+
+
+## Pubblichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku mps:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge mps
+$ git branch -d mps
+~~~~~~~~
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push origin master
+~~~~~~~~
+
+
+
+
+## Il codice del capitolo
+

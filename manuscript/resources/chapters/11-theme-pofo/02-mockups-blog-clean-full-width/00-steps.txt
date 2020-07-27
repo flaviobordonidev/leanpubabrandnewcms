@@ -1,0 +1,28 @@
+# I passaggi
+
+I passaggi per importare il tema Pofo sulla nostra app Rails:
+
+1. Scegliamo una pagina html da importare. Ad es: "mypage.html"
+2. La importiamo su mockups/mypage.html.erb
+3. Predisponiamo il layouts/yield in modo da lasciare tutto il codice html sulla view.
+4. Aggiorniamo controllers/mockups_controller.rb e config/routes.rb
+5. Nel preview vediamo il testo senza stylesheets, images e javascripts
+
+Siamo a un bivio:
+- continuiamo con la strada storica sprockrts/asset_pipeline. (Più facile)  
+- saltiamo direttamente al nuovo webpack. (Più impegnativo)
+
+La strada storica sprockets/asset_pipeline:
+
+6. copiamo i files stylesheets (css, scss) su "assets/stylesheets/pofo"
+7. copiamo le immagini (png, jpg) su "assets/images/pofo"
+8. copiamo i files javascripts (js) su "assets/javascripts/pofo"
+9. su mockups/mypage.html.erb aggiustiamo i "puntamenti" per richiamare stylesheets, images e javascripts
+
+
+La strada webpack:
+
+10. lascio come 6 oppure sposto su javascripts/packs
+11. lascio come 7 oppure sposto su javascripts/packs
+12. copiamo i files javascripts (js) su "javascripts/packs/pofo" ??!
+13. installiamo i files javascripts tramite "yarn add nomefile"
