@@ -1,0 +1,438 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <!-- title -->
+    <title>S1P1 – home</title>
+
+    <%= stylesheet_pack_tag 'application_mockup_pofo', media: 'all', 'data-turbolinks-track': 'reload' %><!-- serve per heroku. In locale non serve perché indichiamo lo stile direttamente da "packs/application.js"-->
+    <%= javascript_pack_tag 'application_mockup_pofo', 'data-turbolinks-track': 'reload' %>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1" />
+    <meta name="author" content="ThemeZaa">
+    <!-- description -->
+    <meta name="description" content="POFO is a highly creative, modern, visually stunning and Bootstrap responsive multipurpose agency and portfolio HTML5 template with 25 ready home page demos.">
+    <!-- keywords -->
+    <meta name="keywords" content="creative, modern, clean, bootstrap responsive, html5, css3, portfolio, blog, agency, templates, multipurpose, one page, corporate, start-up, studio, branding, designer, freelancer, carousel, parallax, photography, personal, masonry, grid, coming soon, faq">
+    <!-- favicon -->
+    <link rel="shortcut icon" href="<%=image_path('pofo/favicon.png')%>">
+    <link rel="apple-touch-icon" href="<%=image_path('pofo/apple-touch-icon-57x57.png')%>">
+    <link rel="apple-touch-icon" sizes="72x72" href="<%=image_path('pofo/apple-touch-icon-72x72.png')%>">
+    <link rel="apple-touch-icon" sizes="114x114" href="<%=image_path('pofo/apple-touch-icon-114x114.png')%>">
+
+    <!-- animation -->
+    <%= stylesheet_link_tag 'pofo/css/animate', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <!-- bootstrap -->
+    <%= stylesheet_link_tag 'pofo/css/bootstrap.min', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <!-- et line icon --> 
+    <%= stylesheet_link_tag 'pofo/css/et-line-icons', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <!-- font-awesome icon -->
+    <%#= stylesheet_link_tag 'pofo/css/font-awesome.min', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'pofo/css/font-awesome-free', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%#= stylesheet_pack_tag 'application_mockup_pofo', media: 'all', 'data-turbolinks-track': 'reload' %><!-- serve per heroku. In locale non serve perché indichiamo lo stile direttamente da "packs/application.js"-->
+    <!-- themify icon -->
+    <%= stylesheet_link_tag 'pofo/css/themify-icons', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <!-- swiper carousel -->
+    <%= stylesheet_link_tag 'pofo/css/swiper.min', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <!-- justified gallery  -->
+    <%= stylesheet_link_tag 'pofo/css/justified-gallery.min', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <!-- magnific popup -->
+    <%= stylesheet_link_tag 'pofo/css/magnific-popup', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <!-- revolution slider -->
+    <%#= stylesheet_link_tag 'pofo/revolution/css/settings', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%#= stylesheet_link_tag 'pofo/revolution/css/layers', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%#= stylesheet_link_tag 'pofo/revolution/css/navigation', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <!-- bootsnav -->
+    <%= stylesheet_link_tag 'pofo/css/bootsnav', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <!-- style -->
+    <%= stylesheet_link_tag 'pofo/css/style', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <!-- responsive css -->
+    <%= stylesheet_link_tag 'pofo/css/responsive', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+    <!--[if IE]>
+        <script src="js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <!-- start header -->
+    <header>
+      <!-- start navigation -->
+      <nav class="navbar navbar-default bootsnav background-white header-light navbar-top navbar-expand-lg">
+        <div class="container nav-header-container">
+          <!-- start logo -->
+          <div class="col-auto pl-lg-0">
+            <a href="index.html" title="Pofo" class="logo"><%= image_tag "elis/icons/arrow_left.png", 'data-rjs': image_path('elis/icons/arrow_left@2x.png'), class: "logo-dark", alt: "Pofo" %><%= image_tag "elis/icons/arrow_left.png", 'data-rjs': image_path('elis/icons/arrow_left@2x.png'), alt: "Pofo", class: "logo-light default" %></a>
+          </div>
+          <!-- end logo -->
+          <div class="col accordion-menu pr-0 pr-md-3">
+            <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#navbar-collapse-toggle-1">
+              <span class="sr-only">toggle navigation</span>
+              <%= image_tag "elis/icons/global_settings.png", alt: "menu" %>
+              <!--<span class="icon-bar"></span>-->
+              <!--<span class="icon-bar"></span>-->
+              <!--<span class="icon-bar"></span>-->
+            </button>
+            <div class="navbar-collapse collapse justify-content-end" id="navbar-collapse-toggle-1">
+              <ul id="accordion" class="nav navbar-nav navbar-left no-margin alt-font text-normal" data-in="fadeIn" data-out="fadeOut">
+                <!-- start menu item -->
+                <li class="dropdown megamenu-fw">
+                  <!--<a href="#">Flavio Bordoni</a><i class="fas fa-angle-down dropdown-toggle" data-toggle="dropdown" aria-hidden="true"></i>-->
+                  <a href="#" data-toggle="dropdown">Flavio Bordoni</a>
+                  <!-- start sub menu -->
+                  <div class="menu-back-div dropdown-menu megamenu-content mega-menu collapse mega-menu-full">
+                    <ul>
+                      <!-- start sub menu column  -->
+                      <li class="mega-menu-column col-lg-3">
+                        <!-- start sub menu item  -->
+                        <ul>
+                          <li class="dropdown-header">Account</li>
+                          <li><a href="home-classic-corporate.html">Ultimo accesso 27/07/2020 15:24</a></li>
+                          <li><a href="home-classic-digital-agency.html">Classic digital agency</a></li>
+                          <li><a href="home-classic-innovation-agency.html">Classic innovation agency</a></li>
+                          <li><a href="home-classic-web-agency.html">Classic web agency</a></li>
+                        </ul>
+                        <ul>
+                          <li class="dropdown-header">Altro</li>
+                          <li><a href="home-classic-corporate.html">Ultimo accesso 27/07/2020 15:24</a></li>
+                          <li><a href="home-classic-digital-agency.html">Classic digital agency</a></li>
+                          <li><a href="home-classic-innovation-agency.html">Classic innovation agency</a></li>
+                          <li><a href="home-classic-web-agency.html">Classic web agency</a></li>
+                        </ul>
+                        <!-- end sub menu item  -->
+                      </li>
+                      <!-- end sub menu column -->
+                      <!-- start sub menu column -->
+                      <li class="mega-menu-column col-lg-3">
+                          <!-- start sub menu item  -->
+                          <ul>
+                              <li class="dropdown-header">Creative Homepages</li>
+                              <li><a href="home-creative-studio.html">Creative studio</a></li>
+                              <li><a href="home-creative-business.html">Creative business</a></li>
+                              <li><a href="home-creative-simple-portfolio.html">Creative simple portfolio</a></li>
+                              <li><a href="home-creative-branding-agency.html">Creative branding agency</a></li>
+                              <li class="menu-new"><a href="home-creative-minimalist-portfolio.html">creative minimalist portfolio</a></li>
+                              <li><a href="home-creative-small-business.html">Creative small business</a></li>
+                              <li><a href="home-creative-designer.html">Creative designer</a></li>
+                              <li><a href="home-creative-agency.html">Creative agency</a></li>
+                          </ul>
+                          <!-- end sub menu item  -->
+                      </li>
+                      <!-- end sub menu column  -->
+                      <!-- start sub menu column  -->
+                      <li class="mega-menu-column col-lg-3">
+                          <!-- start sub menu item  -->
+                          <ul>
+                              <li class="dropdown-header">Portfolio Homepages</li>
+                              <li><a href="home-portfolio-minimal.html">Portfolio minimal</a></li>
+                              <li><a href="home-portfolio-multiple-carousel.html">Portfolio multiple carousel</a></li>
+                              <li><a href="home-portfolio-centered-slides.html">Portfolio centered slides</a></li>
+                              <li><a href="home-portfolio-personal.html">Portfolio personal</a></li>
+                              <li><a href="home-portfolio-metro.html">Portfolio metro</a></li>
+                              <li><a href="home-portfolio-full-screen-vertical.html">Portfolio full screen – vertical</a></li>
+                              <li><a href="home-portfolio-photographer.html">Portfolio photographer</a></li>
+                              <li><a href="home-portfolio-parallax.html">Portfolio parallax</a></li>
+                          </ul>
+                          <!-- end sub menu item  -->
+                      </li>
+                      <!-- end sub menu column  -->
+                      <!-- start sub menu column  -->
+                      <li class="mega-menu-column col-lg-3">
+                          <!-- start sub menu item  -->
+                          <ul>
+                              <li class="dropdown-header">Blog Homepages</li>
+                              <li><a href="home-blog-grid.html">Blog grid</a></li>
+                              <li><a href="home-blog-masonry.html">Blog masonry</a></li>
+                              <li><a href="home-blog-clean.html">Blog clean</a></li>
+                              <li><a href="home-blog-personal.html">Blog personal</a></li>
+                          </ul>
+                          <!-- end sub menu item  -->
+                      </li>
+                      <!-- end sub menu column  -->
+                    </ul>
+                    <!-- end sub menu -->
+                  </div>
+                </li>
+                <!-- end menu item -->
+                <!-- start menu item -->
+                <li class="dropdown megamenu-fw">
+                    <!--<a href="#">Elements</a><i class="fas fa-angle-down dropdown-toggle" data-toggle="dropdown" aria-hidden="true"></i>-->
+                    <a href="#" data-toggle="dropdown">Elements</a>
+                    <!-- start sub menu -->
+                    <div class="menu-back-div dropdown-menu megamenu-content mega-menu collapse mega-menu-full icon-list-menu">
+                        <ul>
+                            <!-- start sub menu column  -->
+                            <li class="mega-menu-column col-lg-3">
+                                <!-- start sub menu item  -->
+                                <ul>
+                                    <li class="dropdown-header">General elements</li>
+                                    <li><a href="accordions.html"><i class="ti-layout-accordion-separated"></i> Accordions</a></li>
+                                    <li><a href="buttons.html"><i class="ti-mouse"></i> Buttons</a></li>
+                                    <li><a href="team.html"><i class="ti-user"></i> Team</a></li>
+                                    <li><a href="team-carousel.html"><i class="ti-layout-slider-alt"></i> Team carousel</a></li>
+                                    <li><a href="clients.html"><i class="ti-id-badge"></i> Clients</a></li>
+                                    <li><a href="client-carousel.html"><i class="ti-layout-slider"></i> Client carousel</a></li>
+                                    <li><a href="subscribe.html"><i class="ti-bookmark"></i> Subscribe</a></li>
+                                    <li><a href="call-to-action.html"><i class="ti-headphone-alt"></i> Call to action</a></li>
+                                    <li><a href="tab.html"><i class="ti-layout-tab"></i> Tab</a></li>
+                                    <li><a href="google-map.html"><i class="ti-location-pin"></i> Google map</a></li>
+                                    <li><a href="text-slider.html"><i class="ti-layout-media-overlay"></i> Text slider</a></li>
+                                    <li><a href="contact-form.html"><i class="ti-clipboard"></i> Contact form</a></li>
+                                    <li><a href="image-gallery.html"><i class="ti-gallery"></i> Image gallery</a></li>
+                                </ul>
+                                <!-- end sub menu item  -->
+                            </li>
+                            <!-- end sub menu column -->
+                            <!-- start sub menu column -->
+                            <li class="mega-menu-column col-lg-3">
+                                <!-- start sub menu item  -->
+                                <ul>
+                                    <li class="dropdown-header">Infographics / icons</li>
+                                    <li><a href="process-bar.html"><i class="icon-hourglass"></i> Process bar</a></li>
+                                    <li><a href="icon-with-text.html"><i class="ti-layout-media-left"></i> Icon with text</a></li>
+                                    <li><a href="overline-icon-box.html"><i class="ti-layout-placeholder"></i> Overline icon box</a></li>
+                                    <li><a href="custom-icon-with-text.html"><i class="ti-layout-cta-btn-left"></i> Custom icon with text</a></li>
+                                    <li><a href="counters.html"><i class="ti-timer"></i> Counters</a></li>
+                                    <li><a href="countdown.html"><i class="ti-alarm-clock"></i> Countdown</a></li>
+                                    <li><a href="pie-charts.html"><i class="ti-pie-chart"></i> Pie charts</a></li>
+                                    <li><a href="text-box.html"><i class="ti-layout-cta-left"></i> Text box</a></li>
+                                    <li><a href="fancy-text-box.html"><i class="ti-layout-cta-center"></i> Fancy text box</a></li>
+                                </ul>
+                                <!-- end sub menu item  -->
+                            </li>
+                            <!-- end sub menu column  -->
+
+                            <!-- start sub menu column  -->
+                            <li class="mega-menu-column col-lg-3">
+                                <!-- start sub menu item  -->
+                                <ul>
+                                    <li class="dropdown-header">Interactive Elements</li>
+                                    <li><a href="testimonials.html"><i class="ti-thought"></i> Testimonials</a></li>
+                                    <li><a href="testimonials-carousel.html"><i class="ti-comments"></i> Testimonials carousel</a></li>
+                                    <li><a href="video.html"><i class="ti-video-camera"></i> Video</a></li>
+                                    <li><a href="interactive-banners.html"><i class="ti-image"></i> Interactive banners</a></li>
+                                    <li><a href="services.html"><i class="ti-headphone-alt"></i> Services</a></li>
+                                    <li><a href="portfolio-slider.html"><i class="ti-layout-slider-alt"></i> Portfolio slider</a></li>
+                                    <li><a href="info-banner.html"><i class="ti-layout-slider"></i> Info banner</a></li>
+                                    <li><a href="rotate-box.html"><i class="ti-layout-width-full"></i> Rotate box</a></li>
+                                    <li><a href="process-step.html"><i class="ti-stats-up"></i> Process step</a></li>
+                                    <li><a href="blog-posts.html"><i class="ti-comment-alt"></i> Blog posts</a></li>
+                                    <li><a href="instagram.html"><i class="ti-instagram"></i> Instagram</a></li>
+                                    <li><a href="parallax-scrolling.html"><i class="ti-exchange-vertical"></i> Parallax scrolling</a></li>
+                                </ul>
+                                <!-- end sub menu item  -->
+                            </li>
+                            <!-- end sub menu column  -->
+                            <!-- start sub menu column  -->
+                            <li class="mega-menu-column col-lg-3">
+                                <!-- start sub menu item  -->
+                                <ul>
+                                    <li class="dropdown-header">Text & containers</li>
+                                    <li><a href="heading.html"><i class="ti-text"></i> Heading</a></li>
+                                    <li><a href="dropcaps.html"><i class="ti-layout-accordion-list"></i> Dropcaps</a></li>
+                                    <li><a href="columns.html"><i class="ti-layout-column3-alt"></i> Columns</a></li>
+                                    <li><a href="blockquote.html"><i class="ti-quote-left"></i> Blockquote</a></li>
+                                    <li><a href="highlights.html"><i class="ti-underline"></i> Highlights</a></li>
+                                    <li><a href="message-box.html"><i class="ti-layout-media-right-alt"></i> Message box</a></li>
+                                    <li><a href="social-icons.html"><i class="ti-signal"></i> Social icons</a></li>
+                                    <li><a href="lists.html"><i class="ti-list"></i> Lists</a></li>
+                                    <li><a href="seperators.html"><i class="ti-layout-line-solid"></i> Separators</a></li>
+                                    <li><a href="pricing-table.html"><i class="ti-layout-grid2-thumb"></i> Pricing table</a></li>
+                                </ul>
+                                <!-- end sub menu item  -->
+                            </li>
+                            <!-- end sub menu column  -->
+                        </ul>
+                        <!-- end sub menu -->
+                    </div>
+                </li>
+                <!-- end menu item -->
+                </ul>
+            </div>
+          </div>
+          <div class="col-auto pr-lg-0">
+            <div class="header-searchbar">
+                <!--<a href="#search-header" class="header-search-form"><i class="fas fa-search search-button"></i></a>-->
+                <a href="#search-header" class="header-search-form"><%= image_tag "elis/icons/language_us.png", alt: "language" %></a>
+                <!-- search input-->
+                <form id="search-header" method="post" action="search-result.html" name="search-header" class="mfp-hide search-form-result">
+                    <div class="search-form position-relative">
+                        <button type="submit" class="fas fa-search close-search search-button"></button>
+                        <input type="text" name="search" class="search-input" placeholder="Enter your keywords..." autocomplete="off">
+                    </div>
+                </form>
+            </div>
+            <!--<div class="header-social-icon d-none d-md-inline-block">-->
+            <!--    <a href="https://www.facebook.com/" title="Facebook" target="_blank"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>-->
+            <!--    <a href="https://twitter.com/" title="Twitter" target="_blank"><i class="fab fa-twitter"></i></a>-->
+            <!--    <a href="https://dribbble.com/" title="Dribbble" target="_blank"><i class="fab fa-dribbble"></i></a>                          -->
+            <!--</div>-->
+          </div>
+          </div>
+      </nav>
+      <!-- end navigation --> 
+    </header>
+    <!-- end header -->
+
+
+
+
+    <!-- start form style 01 section -->
+    <section class="wow fadeIn padding-one-all" id="start-your-project">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-7 text-center margin-100px-bottom sm-margin-40px-bottom">
+            <div class="position-relative overflow-hidden w-100">
+              <!--<span class="text-small text-outside-line-full alt-font font-weight-600 text-uppercase">Contact Form Style 01</span>-->
+            </div>
+          </div>
+        </div>
+        <form id="project-contact-form" action="project-contact.php" method="post">
+          <div class="row">
+            <!--<div class="col-12">-->
+            <!--  <div id="success-project-contact-form" class="mx-0"></div>-->
+            <!--</div>-->
+            <div class="col-12 col-sm-2 col-lg-2">
+              <a class="btn btn-medium btn-rounded btn-transparent-dark-gray popup-with-zoom-anim wow fadeInUp" data-wow-delay="0.6s" href="#modal-popup2"><%= image_tag "elis/icons/home.png", alt: "home" %> Seleziona voce... &nbsp&nbsp&nbsp&nbsp</a>
+              <!-- start modal pop-up -->
+              <div id="modal-popup2" class="zoom-anim-dialog mfp-hide col-xl-3 col-lg-6 col-md-7 col-11 mx-auto bg-white text-center modal-popup-main padding-50px-all">
+                <input type="text" name="first_name" id="first_name" placeholder="Cerca ..." class="medium-input">
+                <!--<a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom" data-wow-delay="0.6s" href="#"><%#= image_tag "elis/icons/company.png", alt: "company" %> Azienda &nbsp&nbsp&nbsp&nbsp</a>-->
+                <%= link_to mockups_s1p2_company_index_path, class: "btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom", 'data-wow-delay': "0.6s" do %>
+                  <%= image_tag "elis/icons/company.png", alt: "company" %> Azienda &nbsp&nbsp&nbsp&nbsp
+                <% end %>
+                <a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom" data-wow-delay="0.6s" href="#"><%= image_tag "elis/icons/person.png", alt: "person" %> Persona &nbsp&nbsp&nbsp&nbsp</a>
+                <p class="margin-four">
+                <a href="#"><i class="fas fa-long-arrow-alt-left margin-5px-right d-none d-md-inline-block"></i> Prev</a>
+                22 di 99
+                <a href="#">Next <i class="fas fa-long-arrow-alt-right margin-5px-left d-none d-md-inline-block"></i></a>
+                </p>
+                <a class="btn btn-medium btn-rounded btn-dark-gray popup-modal-dismiss" href="#">Dismiss</a>
+              </div>
+              <!-- end modal pop-up -->
+            </div>
+            <div class="col-12 col-sm-10 col-lg-10">
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+    <!-- end form style 01 section -->
+
+
+    <!-- start section entries more used -->
+    <section class="wow fadeIn padding-one-all" id="start-your-project">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <p>Le voci più usate:</p>
+          </div>  
+          <div class="col-12 col-sm-2 col-lg-2">
+              <%= link_to mockups_s1p2_company_index_path, class: "btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom", 'data-wow-delay': "0.6s" do %>
+                <%= image_tag "elis/icons/company.png", alt: "company" %> Azienda &nbsp&nbsp&nbsp&nbsp
+              <% end %>
+              <a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom" data-wow-delay="0.6s" href="#"><%= image_tag "elis/icons/person.png", alt: "person" %> Persona &nbsp&nbsp&nbsp&nbsp</a>
+          </div>
+          <div class="col-12 col-sm-10 col-lg-10">
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- end  section entries more used -->
+
+
+    <!-- start footer --> 
+    <footer class="footer-classic-dark bg-extra-dark-gray padding-five-bottom sm-padding-30px-bottom">
+      <div class="container">
+        <div class="footer-bottom border-top border-color-medium-dark-gray padding-30px-top">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 text-small text-center">
+              <p>Benvenuti alla prima storia. In questa storia inseriamo un nuovo contatto da un biglietto da visita.</p>
+              <p>Partiamo da una situazione ex novo con DB vuoto.</p>
+              <p>Siamo nella pagina di home. Premiamo il pulsante "SELEZIONA VOCE...". Si apre un popup con l'elenco delle possibili voci. Selezioniamo "AZIENDA".</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 col-md-12 text-small text-center">
+              <a href="#" class="btn btn-small btn-transparent-white lg-margin-15px-bottom d-table d-lg-inline-block md-margin-lr-auto disabled"><i class="fas fa-long-arrow-alt-left margin-5px-right d-none d-md-inline-block"></i> Prev</a>
+              <span>&nbsp&nbsp&nbsp Story 1 - Page 1 &nbsp&nbsp&nbsp</span>
+              <%#= link_to "Next", mockups_s1p2_company_index_path, class: "btn btn-small btn-transparent-white lg-margin-15px-bottom d-table d-lg-inline-block md-margin-lr-auto" %>
+              <!--<a href="#" class="btn btn-small btn-transparent-white lg-margin-15px-bottom d-table d-lg-inline-block md-margin-lr-auto">Next <i class="fas fa-long-arrow-alt-right margin-5px-left d-none d-md-inline-block"></i></a>-->
+              <%= link_to mockups_s1p2_company_index_path, class: "btn btn-small btn-transparent-white lg-margin-15px-bottom d-table d-lg-inline-block md-margin-lr-auto" do %>
+                Next <i class="fas fa-long-arrow-alt-right margin-5px-left d-none d-md-inline-block"></i>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- end footer -->
+
+
+    <!-- start scroll to top -->
+    <a class="scroll-top-arrow" href="javascript:void(0);"><i class="ti-arrow-up"></i></a>
+    <!-- end scroll to top  -->
+
+
+    <!-- javascript libraries -->
+    <%= javascript_include_tag 'pofo/js/jquery', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'pofo/js/modernizr', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'pofo/js/bootstrap.min', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'pofo/js/jquery.easing.1.3', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'pofo/js/skrollr.min', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'pofo/js/smooth-scroll', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'pofo/js/jquery.appear', 'data-turbolinks-track' => true %>
+    <!-- menu navigation -->
+    <%= javascript_include_tag 'pofo/js/bootsnav.js', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'pofo/js/jquery.nav.js', 'data-turbolinks-track' => true %>
+
+    <!-- animation -->
+    <%= javascript_include_tag 'pofo/js/wow.min', 'data-turbolinks-track' => true %>
+    <!-- page scroll -->
+    <%= javascript_include_tag 'pofo/js/page-scroll', 'data-turbolinks-track' => true %>
+    <!-- swiper carousel -->
+    <%= javascript_include_tag 'pofo/js/swiper.min', 'data-turbolinks-track' => true %>
+    <!-- counter -->
+    <%= javascript_include_tag 'pofo/js/jquery.count-to', 'data-turbolinks-track' => true %>
+    <!-- parallax -->
+    <%= javascript_include_tag 'pofo/js/jquery.stellar', 'data-turbolinks-track' => true %>
+    <!-- magnific popup -->
+    <%= javascript_include_tag 'pofo/js/jquery.magnific-popup.min', 'data-turbolinks-track' => true %>
+    <!-- portfolio with shorting tab -->
+    <%= javascript_include_tag 'pofo/js/isotope.pkgd.min', 'data-turbolinks-track' => true %>
+    <!-- images loaded -->
+    <%= javascript_include_tag 'pofo/js/imagesloaded.pkgd.min', 'data-turbolinks-track' => true %>
+    <!-- pull menu -->
+    <%= javascript_include_tag 'pofo/js/classie', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'pofo/js/hamburger-menu', 'data-turbolinks-track' => true %>
+    <!-- counter  -->
+    <%= javascript_include_tag 'pofo/js/counter', 'data-turbolinks-track' => true %>
+    <!-- fit video  -->
+    <%= javascript_include_tag 'pofo/js/jquery.fitvids', 'data-turbolinks-track' => true %>
+    <!-- skill bars  -->
+    <%= javascript_include_tag 'pofo/js/skill.bars.jquery', 'data-turbolinks-track' => true %>
+    <!-- justified gallery  -->
+    <%= javascript_include_tag 'pofo/js/justified-gallery.min', 'data-turbolinks-track' => true %>
+    <!--pie chart-->
+    <%= javascript_include_tag 'pofo/js/jquery.easypiechart.min', 'data-turbolinks-track' => true %>
+    <!-- instagram -->
+    <%= javascript_include_tag 'pofo/js/instafeed.min', 'data-turbolinks-track' => true %>
+    <!-- retina -->
+    <%= javascript_include_tag 'pofo/js/retina.min', 'data-turbolinks-track' => true %>
+    <!-- revolution -->
+    <%#= javascript_include_tag 'pofo/revolution/js/jquery.themepunch.tools.min', 'data-turbolinks-track' => true %>
+    <%#= javascript_include_tag 'pofo/revolution/js/jquery.themepunch.revolution.min', 'data-turbolinks-track' => true %>
+    <!-- revolution slider extensions (load below extensions JS files only on local file systems to make the slider work! The following part can be removed on server for on demand loading) -->
+    <!--<script type="text/javascript" src="revolution/js/extensions/revolution.extension.actions.min.js"></script>
+    <script type="text/javascript" src="revolution/js/extensions/revolution.extension.carousel.min.js"></script>
+    <script type="text/javascript" src="revolution/js/extensions/revolution.extension.kenburn.min.js"></script>
+    <script type="text/javascript" src="revolution/js/extensions/revolution.extension.layeranimation.min.js"></script>
+    <script type="text/javascript" src="revolution/js/extensions/revolution.extension.migration.min.js"></script>
+    <script type="text/javascript" src="revolution/js/extensions/revolution.extension.navigation.min.js"></script>
+    <script type="text/javascript" src="revolution/js/extensions/revolution.extension.parallax.min.js"></script>
+    <script type="text/javascript" src="revolution/js/extensions/revolution.extension.slideanims.min.js"></script>
+    <script type="text/javascript" src="revolution/js/extensions/revolution.extension.video.min.js"></script>-->
+    <!-- setting -->
+    <%= javascript_include_tag 'pofo/js/main', 'data-turbolinks-track' => true %>
+  </body>
+</html>

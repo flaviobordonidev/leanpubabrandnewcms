@@ -1,0 +1,373 @@
+## Il menu principale - La lingua
+
+Adesso iniziamo a rendere dinamiche le varie parti a partire dal menu di navigazione.
+Lavoriamo sul menu di navigazione. Quello che pofo chiama header.
+
+Abbiamo:
+
+* il pulsante per tornare indietro
+* più settaggi globali, detti anche "voci del menu principale"
+  * l'utente loggato
+  * il pulsante di logout
+* il pulsante del cambio lingua
+
+
+
+
+## Apriamo il branch "Navigation Menu"
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout -b nm
+~~~~~~~~
+
+
+
+## Il menu di navigazione
+
+Il menu di navigazione è composto da varie parti, dette "voci del menu principale", ma noi iniziamo con una versione minimalista e mano a mano che andiamo avanti con lo sviluppo aggiungeremo nuove funzionalità.
+Quindi iniziamo riducendo al minimo i menu. Lasciamo solo le lingue, il login ed il logout.
+
+
+{id: "01-03-01_01", caption: ".../views/pages/home.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 3}
+```
+      <!-- start navigation -->
+      <nav class="navbar navbar-default bootsnav background-white header-light navbar-top navbar-expand-lg">
+        <div class="container nav-header-container">
+          <!-- start logo -->
+```
+
+[tutto il codice](#01-03-01_01all)
+
+
+
+
+
+
+## Visualizziamo il nome dell'utente loggato
+
+Usiamo la variabile "current_user" che ci fornisce Devise
+
+```
+<%= current_user.present? == true ? current_user.name : "nessun utente loggato" %>
+```
+
+
+Nel caso non sia stato fornito il nome dell'utente lo prendiamo dall'email mettendo la prima lettera maiuscola (anche se in Pofo è comunque tutto maiuscolo).
+
+```
+  <% if current_user.present? == true %>
+    <%= current_user.name.blank? ? current_user.email.split('@')[0].capitalize : current_user.name %>
+  <% else %>
+    nessun utente loggato
+  <% end %>
+```
+
+
+                    <% if current_user.present? == true %>
+                      <%= current_user.name.blank? ? current_user.email.split('@')[0].capitalize : current_user.name %>
+                    <% else %>
+                      nessun utente loggato
+                    <% end %>
+
+
+
+```
+#@post.user.email 
+—> flavio@test.abc
+
+#@post.user.email.split('@') 
+—> [flavio, test.abc]
+
+#@post.user.email.split('@')[0] 
+—> flavio
+
+#@post.user.email.split('@')[0].capitalize 
+—> Flavio
+```
+
+
+
+
+### Refactory
+
+Usiamo un Virtual Attribute (mi sembra si chiami così) che chiamiamo "username_shown" in modo da mantenere più pulito il view.
+
+views/models/user.rb
+```
+def username_shown
+	return self.email.split('@')[0].capitalize
+end
+```
+
+
+```
+  def name_shown
+    if self.present? == true
+      return self.name.blank? ? self.email.split('@')[0].capitalize : self.name
+    else
+      return "nessun utente loggato"
+    end
+  end
+```
+
+
+views/posts/show
+```
+<%= @post.user.username_shown %>
+```
+
+Nella nostra app questo codice è inutile perché abbiamo messo nel model la "validation" che il nome deve essere presente. Quindi avremo sempre il nome per ogni utente e non c'è necessità di usare l'email.
+
+
+
+
+
+## Nel caso utente non loggato
+
+Al momento visualizziamo "utente non loggato".
+Nei prossimi capitoli metteremo "non autorizzato" tramite Pundit.
+Nei prossimi capitoli metteremo direttamente pagina/view di Login tramite Devise.
+
+
+
+
+## Implementiamo la gestione della lingua
+
+Adesso attiviamo dinamicamente il cambio della lingua tra Italiano e Inglese.
+
+
+
+## Elenco di link per la scelta della lingua
+
+Questo elenco imposta il "locale" con la lingua scelta: "en", "it", "pt", "es", ...
+Nel nostro caso al momento è un elenco di solo due voci "en" e "it".
+
+
+Nel nostro link_to:
+
+* usiamo l'url della stessa pagina: se non indichiamo un path è automaticamente usato l'url attualmente presente.
+* Passiamo tutti i parametri: "params"
+* Aggiungiamo all'URL il parametro "?locale=en": ".merge(locale: 'en')"
+* Per un discorso di sicurezza (problemi sul mass-assignment) dobbiamo indicare a Rails che questo parametro è permesso: ".permit(:locale)"
+
+Abbiamo quindi: <%= link_to params.permit(:locale).merge(locale: 'en') %>
+
+Nella nostra pagina lasciamo anche la parte di stylesheet
+
+{caption: ".../views/pages/home.html.erb -- codice 02", format: HTML+Mako, line-numbers: true, number-from: 3}
+```
+  <%= link_to params.permit(:locale).merge(locale: 'it'), class: "btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom", 'data-wow-delay': "0.6s" do %>
+    <%= image_tag "elis/icons/language_it.png", alt: "italiano" %> Italiano &nbsp&nbsp&nbsp&nbsp
+  <% end %>
+  <%= link_to params.permit(:locale).merge(locale: 'en'), class: "btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom", 'data-wow-delay': "0.6s" do %>
+    <%= image_tag "elis/icons/language_us.png", alt: "english" %> Inglese &nbsp&nbsp&nbsp&nbsp
+  <% end %>
+```
+
+
+
+
+## Nell'elenco delle lingue evidenziamo la lingua attiva
+
+Per evidenziare la voce attiva in un elenco di links lavoriamo sull'attributo "class:", per il quale possiamo impostare i seguenti parametri:
+
+* "active": 
+  <%= link_to ..., class: "#{'active' if (params[:locale] == 'en' or params[:locale] == '')}" %>
+
+* "btn_primary" or "btn_secondary":
+  <%= link_to ..., class: "#{(params[:locale] == 'en' or params[:locale] == '') ? "btn_primary" : "btn_secondary" }" %>
+
+* in Pofo abbiamo "btn-transparent-dark-gray" or "btn-dark-gray":
+  class: "btn btn-medium btn-rounded #{params[:locale] == 'en' ? 'btn-dark-gray' : 'btn-transparent-dark-gray'} margin-10px-bottom"
+
+* possiamo aggiungere 'disabled' per non renderlo cliccabile:
+  class: "btn btn-medium btn-rounded #{params[:locale] == 'en' ? 'btn-dark-gray disabled' : 'btn-transparent-dark-gray'} margin-10px-bottom"
+
+
+Implementiamo nella nostra applicazione
+
+{caption: ".../views/pages/home.html.erb -- codice 03", format: HTML+Mako, line-numbers: true, number-from: 83}
+```
+  <%= link_to params.permit(:locale).merge(locale: 'it'), class: "btn btn-medium btn-rounded #{params[:locale] == 'it' ? 'btn-dark-gray disabled' : 'btn-transparent-dark-gray'} margin-10px-bottom", 'data-wow-delay': "0.6s" do %>
+    <%= image_tag "elis/icons/language_it.png", alt: "italiano" %> Italiano &nbsp&nbsp&nbsp&nbsp
+  <% end %>
+  <%= link_to params.permit(:locale).merge(locale: 'en'), class: "btn btn-medium btn-rounded #{params[:locale] == 'en' ? 'btn-dark-gray disabled' : 'btn-transparent-dark-gray'} margin-10px-bottom", 'data-wow-delay': "0.6s" do %>
+    <%= image_tag "elis/icons/language_us.png", alt: "english" %> Inglese &nbsp&nbsp&nbsp&nbsp
+  <% end %>
+```
+
+
+
+## Aggiungiamo un valore di default per la lingua
+
+Se la lingua di default della nostra applicazione è l'italiano possiamo aggiungere solo per il link_to della voce "italiano" che sia "evidenziato e disabilitato" anche quando nell'URL non c'è nessun "locale". In questo caso le varie condizioni le raccogliamo in parantesi tonde: "(params[:locale] == 'it' or params[:locale] == nil)"
+
+{id: "01-03-01_01", caption: ".../views/pages/home.html.erb -- codice 04", format: HTML+Mako, line-numbers: true, number-from: 83}
+```
+  <%= link_to params.permit(:locale).merge(locale: 'it'), class: "btn btn-medium btn-rounded #{(params[:locale] == 'it' or params[:locale] == nil) ? 'btn-dark-gray disabled' : 'btn-transparent-dark-gray'} margin-10px-bottom", 'data-wow-delay': "0.6s" do %>
+    <%= image_tag "elis/icons/language_it.png", alt: "italiano" %> Italiano &nbsp&nbsp&nbsp&nbsp
+  <% end %>
+  <%= link_to params.permit(:locale).merge(locale: 'en'), class: "btn btn-medium btn-rounded #{params[:locale] == 'en' ? 'btn-dark-gray disabled' : 'btn-transparent-dark-gray'} margin-10px-bottom", 'data-wow-delay': "0.6s" do %>
+    <%= image_tag "elis/icons/language_us.png", alt: "english" %> Inglese &nbsp&nbsp&nbsp&nbsp
+  <% end %>
+```
+
+[tutto il codice](#01-03-01_01all)
+
+
+
+## Menu Lingua attuale
+
+Cambiamo la bandiera del pulsante nella barra del menu con quella della lingua attualmente selezionata.
+
+{id: "01-03-01_01", caption: ".../views/pages/home.html.erb -- codice 04", format: HTML+Mako, line-numbers: true, number-from: 83}
+```
+                <a href="#modal-popup1" class="header-search-form popup-with-zoom-anim ">
+                  <% case params[:locale] %>
+                  <% when nil %>
+                    <%= image_tag "elis/icons/language_it.png", alt: "language" %>
+                  <% when "it" %>
+                    <%= image_tag "elis/icons/language_it.png", alt: "language" %>
+                  <% when "en" %>
+                    <%= image_tag "elis/icons/language_us.png", alt: "language" %>
+                  <% else %>
+                    <% raise "ERRORE: Lingua non riconosciuta" %>
+                  <% end %>
+                </a>
+```
+
+
+
+
+
+## Internazionalizazione (i18n)
+
+Per internazionalizzazione si intende la traduzione dell'applicazione nelle varie lingue.
+(Vedi: 99-rails_references/ruby_methods and i18n/i18n and data_types/02-format_date_time_i18n)
+
+Convertiamo nelle due lingue itailano e inglese.
+Partiamo con la traduzione statica (quella che non traduce il contenuto nel database) e nei prossimi capitoli implementiamo quella dinamica (quella che lavora sul contenuto del database).
+
+
+
+
+
+
+## I18n statico con YAML
+
+Usiamo l'helper "t" per tutte le stringhe che dobbiamo internazionalizzare.
+la stringa che viene passata all'helper "t" è un segnaposto che si usa nel file yaml associandogli la stringa corretta nella lingua scelta.
+
+{caption: ".../app/views/mockups/page_a.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+                          <li class="dropdown-header"><%= t("pages.home.role") %></li>
+                          ...
+                          <li class="dropdown-header"><%= t("pages.home.last_access") %></li>
+                          ...
+                  <%= link_to params.permit(:locale).merge(locale: 'it'), class: "btn btn-medium btn-rounded #{(params[:locale] == 'it' or params[:locale] == nil) ? 'btn-dark-gray disabled' : 'btn-transparent-dark-gray'} margin-10px-bottom", 'data-wow-delay': "0.6s" do %>
+                    <%= image_tag "elis/icons/language_it.png", alt: "italian" %> <%= t("pages.home.italian") %> &nbsp&nbsp&nbsp&nbsp
+                  <% end %>
+                  <%= link_to params.permit(:locale).merge(locale: 'en'), class: "btn btn-medium btn-rounded #{params[:locale] == 'en' ? 'btn-dark-gray disabled' : 'btn-transparent-dark-gray'} margin-10px-bottom", 'data-wow-delay': "0.6s" do %>
+                    <%= image_tag "elis/icons/language_us.png", alt: "english" %>  <%= t("pages.home.english") %> &nbsp&nbsp&nbsp&nbsp
+                  <% end %>
+                  ...
+              <a class="btn btn-medium btn-rounded btn-transparent-dark-gray popup-with-zoom-anim wow fadeInUp" data-wow-delay="0.6s" href="#modal-popup2"><%= image_tag "elis/icons/home.png", alt: "home" %> <%= t("pages.home.select_item") %> &nbsp&nbsp&nbsp&nbsp</a>
+              ...
+                <input type="text" name="first_name" id="first_name" placeholder="<%= t("pages.home.find") %>" class="medium-input">
+                ...
+                  <%= image_tag "elis/icons/company.png", alt: "company" %> <%= t("pages.home.company") %> &nbsp&nbsp&nbsp&nbsp
+                  ...
+                <a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom" data-wow-delay="0.6s" href="#"><%= image_tag "elis/icons/person.png", alt: "person" %> <%= t("pages.home.person") %> &nbsp&nbsp&nbsp&nbsp</a>
+                ...
+                <a href="#"><i class="fas fa-long-arrow-alt-left margin-5px-right d-none d-md-inline-block"></i> <%= t("pages.home.previous") %></a>
+                22 <%= t("pages.home.of") %> 99
+                <a href="#"><%= t("pages.home.next") %> <i class="fas fa-long-arrow-alt-right margin-5px-left d-none d-md-inline-block"></i></a>
+                ...
+            <p><%= t("pages.home.more_used_items") %>:</p>
+            ...
+
+```
+
+Puliamo il footer
+
+{caption: ".../app/views/mockups/page_a.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+    <!-- start footer --> 
+    <footer class="footer-classic-dark bg-extra-dark-gray sm-padding-30px-bottom">
+      <div class="container">
+        <div class="footer-bottom border-top border-color-medium-dark-gray padding-30px-top">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 text-small text-center">
+              <p>Elisinfo. --- Copyright 2020</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- end footer -->
+```
+
+
+
+## Login e Logout
+
+
+
+
+## Gli instradamenti
+
+li aggiorniamo nei prossimi capitoli a mano a mano che creiamo Person e Company.
+
+
+
+
+
+
+verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s -b $IP -p $PORT
+~~~~~~~~
+
+eseguiamo un git commit
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add global_settings logout"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku gsl:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge gsl
+$ git branch -d gsl
+~~~~~~~~
+
+
+
+
+
+## Chiudiamo il branch
+
+lo chiudiamo nel prossimo capitolo. 

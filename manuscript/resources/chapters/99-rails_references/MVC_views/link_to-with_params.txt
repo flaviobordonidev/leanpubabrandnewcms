@@ -6,6 +6,12 @@ Risorse web:
 * [Go Rail link_to current page with params - link alternativo](https://www.youtube.com/watch?v=FT-yVFiq9ZQ)
 
 
+## Esempio sul cambio lingua
+
+<%= link_to params.permit(:locale).merge(locale: 'en') %>
+
+
+
 ## Esempio hard coded
 
 <%= link_to "Customers", root_path %>

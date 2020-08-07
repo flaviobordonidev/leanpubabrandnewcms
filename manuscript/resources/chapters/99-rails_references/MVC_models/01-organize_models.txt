@@ -11,6 +11,82 @@ Risorse web:
 *[Organizing Ruby on Rails Models](https://www.zmwolski.com/Organizing-Ruby-on-Rails-Models)
 
 
+---
+Organizzare i models
+https://www.zmwolski.com/Organizing-Ruby-on-Rails-Models
+
+  # == Constants ============================================================
+
+  # == Attributes ===========================================================
+  
+  # == Extensions ===========================================================
+
+  # == Relationships ========================================================
+
+  # == Validations ==========================================================
+
+  # == Scopes ===============================================================
+
+  # == Callbacks ============================================================
+
+  # == Class Methods ========================================================
+
+  # == Instance Methods =====================================================
+
+Esempio:
+
+  # == Constants ============================================================
+  
+  GENDERS = [[‘Male’, ‘m’], [‘Female’, ’f’]].freeze
+
+  # == Attributes ===========================================================
+  
+  # ATTRIBUTES NOT MAPPED IN DATABASE (getter and setter methods)
+
+  # paperclip ------------------------------------------------------------------
+  attr_accessor :remove_logo
+  #-----------------------------------------------------------------------------
+
+  # globalize required ---------------------------------------------------------
+  translates :sector, :memo, :fallbacks_for_empty_translations => true
+  #-----------------------------------------------------------------------------
+
+  # == Extensions ===========================================================
+
+  # paperclip required ---------------------------------------------------------
+  has_attached_file :logo, styles: { thumb: ["64x64!", :png] }
+  #-----------------------------------------------------------------------------
+
+  has_attached_file :avatar, styles: {
+    square_100: ‘100x100#’,
+    square_300: ‘300x300#’
+  }
+
+  # == Relationships ========================================================
+    # associations
+    
+  has_many :documents
+
+  # == Validations ==========================================================
+  
+  validates: email, presence:     true,
+                    uniqueness:   true,
+                    email_format: true
+
+  # == Scopes ===============================================================
+
+  # == Callbacks ============================================================
+
+  # == Class Methods ========================================================
+  
+  def self.for_select
+    all.collect{|u| [“#{u.name} (#{u.email})”, u.id]}
+  end
+
+  # == Instance Methods =====================================================
+
+
+
 
 
 ## Ho fatto una domanda nel post e la risposta è un po' diversa da quanto ho riportato in 01-base/20-organize_models/01-the_method

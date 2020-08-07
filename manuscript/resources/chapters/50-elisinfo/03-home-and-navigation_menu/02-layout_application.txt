@@ -1,0 +1,196 @@
+# Il layer per l'applicazione
+
+Spostiamo il codice "<html> ... <head> ..." dalla pagina/view "pages/home" al layout "application" che è quello di default per l'applicazione.
+
+
+## I vari layouts utilizzati 
+
+DA RIVEDERE
+
+Facciamo una breve ricapitolazione dei layouts utilizzati nella nostra applicazione finora:
+
+* layouts/entrance.html.erb     : per le pagine di login con devise.
+* layouts/yield.html.erb        : ha la sola chiamata "yield". E' usato nei mockups per facilitare il copia incolla di tutto il codice da pagine html esterne.
+* layouts/mockup.html.erb       : DA ELIMINARE!!!
+* layouts/mockup_pofo.html.erb  : DA ELIMINARE!!! se su tutte le pagine di mockups usiamo il layout "yield" allora si può eliminare. ATTENZIONE però alle chiamate di stylesheets e javascript che saranno solo all'interno delle views e non nel layout + controller. (forse è meglio.)
+* layouts/dashboard.html.erb    : è il tema per le pagine "interne" ad esempio l'amministratore degli utenti/users. Lo stile è sviluppato su bootstrap, senza l'uso di un tema specifico.
+* layouts/application.html.erb  : è il tema principale della nostra applicazione nel nostro caso abbiamo scelto il tema "Pofo".
+
+***
+  ATTENZIONE RIVEDERE IL MOCKUP
+  Adesso il controller "mockups_controller" richiama le varie pagine assegnandogli di volta in volta il layer più adatto. Quindi la pagina mockup di login avrà il layout "entrance", la pagina di mockup delle storie di elisinfo avrà il layout "pofo", ...
+  PERò è MEGLIO usare sempre yield ed inserire le chiamate "stylesheet_pack_tag" o "stylesheet_tag" direttamente in ogni pagina/view di mockup.
+
+vedi anche 01-base/22-style-login_form/01-mockup_login
+***
+
+I layout "entrance" e "dashboard" hanno anche delle chiamate personalizzate di stylesheets e javascript lato webpack.
+
+```
+    <%= stylesheet_pack_tag 'application_mockup_pofo', media: 'all', 'data-turbolinks-track': 'reload' %><!-- serve per heroku. In locale non serve perché indichiamo lo stile direttamente da "packs/application.js"-->
+    <%= javascript_pack_tag 'application_mockup_pofo', 'data-turbolinks-track': 'reload' %>
+```
+
+```
+    <%= stylesheet_pack_tag 'application_dashboard', media: 'all', 'data-turbolinks-track': 'reload' %><!-- serve per heroku. In locale non serve perché indichiamo lo stile direttamente da "packs/application.js"-->
+    <%= javascript_pack_tag 'application_dashboard', 'data-turbolinks-track': 'reload' %>
+```
+
+
+
+
+## Prepariamo il layout application
+
+Questo è il layout inizialmente precaricato quando creiamo la nuova app (il comando "rails new").
+Spostiamo su questo layout la parte di codice <html> <head> dalla view "pages/home".
+
+{id: "01-03-01_01", caption: ".../views/layouts/application.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <!-- title -->
+```
+
+[tutto il codice](#01-03-01_01all)
+
+Per il momento abbiamo lasciato attive le chiamate stylesheet_pack_tag javascript_pack_tag ad 'application_mockup_pofo'.
+Più avanti le passiamo ad "application".
+
+La view pages/home è quindi più "compatta" avendo solo il codice all'interno dei tags <body></body>.
+
+{id: "01-03-01_01", caption: ".../views/pages/home.html.erb -- codice 02", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+    <!-- start header -->
+    <header>
+```
+
+[tutto il codice](#01-03-01_01all)
+
+
+
+
+## Le chiamate a webpack
+
+Attiviamo le chiamate stylesheet_pack_tag javascript_pack_tag ad "application" ed aggiorniamo il codice collegato.
+
+{id: "01-03-01_01", caption: ".../app/views/layouts/application.html.erb -- codice 03", format: HTML+Mako, line-numbers: true, number-from: 9}
+```
+    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %><!-- serve per heroku. In locale non serve perché indichiamo lo stile direttamente da "packs/application.js"-->
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    
+    <%#= stylesheet_pack_tag 'application_mockup_pofo', media: 'all', 'data-turbolinks-track': 'reload' %><!-- serve per heroku. In locale non serve perché indichiamo lo stile direttamente da "packs/application.js"-->
+    <%#= javascript_pack_tag 'application_mockup_pofo', 'data-turbolinks-track': 'reload' %>
+```
+
+[tutto il codice](#01-03-01_01all)
+
+
+Aggiorniamo:
+
+* .../app/javascript/packs/application.js
+* .../app/javascript/stylesheets/application.scss
+
+
+
+
+## Aggiorniamo javascript/packs/application
+
+Al momento l'unica differenza con "application_mockup_pofo" è la riga per importare i fonts di fontawesome:
+
+{id: "01-03-01_01", caption: ".../app/javascript/packs/application.js -- codice 04", format: ruby, line-numbers: true, number-from: 24}
+```
+import "@fortawesome/fontawesome-free/js/all";
+```
+
+[tutto il codice](#01-03-01_01all)
+
+
+
+
+
+## Aggiorniamo javascript/stylesheets/application
+
+Anche in questo caso la differenza sostanziale con "application_mockup_pofo" è la riga per importare i fonts di fontawesome:
+
+{id: "01-03-01_01", caption: ".../app/javascript/stylesheets/application.scss -- codice 05", format: ruby, line-numbers: true, number-from: 7}
+```
+@import '@fortawesome/fontawesome-free';
+```
+
+[tutto il codice](#01-03-01_01all)
+
+
+
+
+## Verifichiamo preview
+
+Vediamo la nostra applicazione rails funzionante. Attiviamo il webserver
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails s
+```
+
+e vediamo sul nostro browser:
+
+* https://mycloud9path.amazonaws.com
+* https://mycloud9path.amazonaws.com/pages/home
+
+Funziona tutto come funzionava sul mockup. 
+
+
+
+
+## Salviamo su git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "Update layouts/application"
+```
+
+
+
+
+## Pubblichiamo su Heroku
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push heroku hp:master
+```
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout master
+$ git merge hp
+$ git branch -d hp
+```
+
+
+
+
+## Facciamo un backup su Github
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push origin master
+```
+
+
+
+
+## Il codice del capitolo
+
+
+
+
+[Codice 01](#02-01-03_01)

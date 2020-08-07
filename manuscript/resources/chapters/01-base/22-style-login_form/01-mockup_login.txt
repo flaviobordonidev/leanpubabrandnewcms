@@ -13,6 +13,26 @@ Riferimenti interni:
 
 
 
+REVISIONE
+***
+  ATTENZIONE RIVEDERE IL MOCKUP
+  Adesso il controller "mockups_controller" richiama le varie pagine assegnandogli di volta in volta il layer più adatto. Quindi la pagina mockup di login avrà il layout "entrance", la pagina di mockup delle storie di elisinfo avrà il layout "pofo", ...
+  PERò è MEGLIO usare sempre yield ed inserire le chiamate "stylesheet_pack_tag" o "stylesheet_tag" direttamente in ogni pagina/view di mockup.
+
+  * layouts/entrance.html.erb     : per le pagine di login con devise.
+  * layouts/yield.html.erb        : ha la sola chiamata "yield". E' usato nei mockups per facilitare il copia incolla di tutto il codice da pagine html esterne.
+  * layouts/mockup.html.erb       : DA ELIMINARE!!!
+  * layouts/mockup_pofo.html.erb  : DA ELIMINARE!!! se su tutte le pagine di mockups usiamo il layout "yield" allora si può eliminare. ATTENZIONE però alle chiamate di stylesheets e javascript che saranno solo all'interno delle views e non nel layout + controller. (forse è meglio.)
+  * layouts/dashboard.html.erb    : è il tema per le pagine "interne" ad esempio l'amministratore degli utenti/users. Lo stile è sviluppato su bootstrap, senza l'uso di un tema specifico.
+  * layouts/application.html.erb  : è il tema principale della nostra applicazione nel nostro caso abbiamo scelto il tema "Pofo".
+
+L'utilità del layer "yield" per i mockup ha senso quando importiamo un tema esterno. In questo momento si capisce poco ma acquisterà grande importanza e aiuto nelle sezioni del libro che trattano l'implementazione di un tema terze parti (ad esempio Pofo o Canvas)
+***
+
+
+
+
+
 ## Apriamo il branch "Mockup Login"
 
 {title="terminal", lang=bash, line-numbers=off}
@@ -103,6 +123,11 @@ Riportiamo il codice dello snippet nel nostro mockup. Prima però prepariamo un 
 
 ## Il layout mockup
 
+***
+  REVISIONE
+  Il layout "mockup" è da eliminare. Usiamo il layout "yield"
+***
+
 Creiamo il nuovo file "mockup.html.erb" nella cartella layouts.
 
 {id="01-22-01_06", title=".../app/views/layouts/mockup.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
@@ -125,6 +150,11 @@ Creiamo il nuovo file "mockup.html.erb" nella cartella layouts.
 
 Questo layout ha gli elementi essenziali. Nei tags "<body></body>" c'è la sola chiamata <%= yield %> che importa tutto il codice della view. Nei tags "<head></head>" cè il titolo, due chiamate per la sicurezza informatica, e la chiamata al webpack "javascript_pack_tag 'mockup'" che, come fatto anche precedentemente, si occuperà anche dello stylesheets.
 
+***
+  REVISIONE
+  gli elementi descritti nella frase in alto li mettiamo direttamente nelle views e non nel layout.
+***
+
 
 
 
@@ -142,9 +172,25 @@ Diciamo all'azione "login" del controller mockups di utilizzare il layout "mocku
 [tutto il codice](#01-22-01_07all)
 
 
+***
+  REVISIONE
+  render layout: 'yield'
+***
+
+
 
 
 ## Creiamo i due files "application_mockup" per webpack
+
+***
+  REVISIONE
+  il nome "application_mockup" può rimanere. l'eventuale "application_yield" non ha senso.
+  "application_mockup" identifica il fatto che questo file è in alternativa al file "application" di default.
+***
+
+* application_mockup    -> stylesheets e javascripts per le views di mockup. Crescerà inglobando una marea di funzioni e ci permette di verificare eventuali conflitti.
+* application           -> stylesheets e javascripts per le views della nostra applicazione principale che in genere importa un tema esterno (normalmente basato su bootstrap).
+* application_dashboard -> stylesheets e javascripts con bootstrap "puro" a cui aggiungiamo le nostre personalizzazioni.
 
 Creiamo i due files "application_mockup" per webpack; uno per la parte javascript e l'altro per la pare stylesheets. 
 

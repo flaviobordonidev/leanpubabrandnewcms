@@ -1,0 +1,100 @@
+{id: 50-elisinfo-03-home-and-navigation_menu-01-homepage}
+# Cap 3.1 -- La homepage
+
+La nostra homepage sarà la pagina/view "home" all'interno del controller "pages_controller".
+
+
+Risorse web:
+* [Come nominare la homepage](https://stackoverflow.com/questions/349743/welcome-home-page-in-ruby-on-rails-best-practice)
+
+
+
+
+## Apriamo il branch "Home Page"
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout -b hp
+```
+
+
+
+## Come nominare la homepage da un punto di vista Rails?
+
+La soluzione migliore è di inserirla all'interno del controller "pages_controller" da dove richiamiamo pagine "statiche" ossia pagine che non sono direttamente legate ad un "model" e quindi ad una tabella del database.
+
+Nota: la parola "statiche" è tra virgolette perché il contenuto della pagina non è totalmente statico. C'è del codice, ci sono delle variabili, ... 
+
+
+
+
+## Il controller Pages
+
+Non usiamo né il "generate scaffold" né il "generate model" perché non abbiamo una corrispettiva tabella nel database, quindi evitiamo la tabella ed i models.
+Usiamo invece il " generate controller " e gli associamo l'azione "home". 
+(non gli associamo le classiche azioni restful: index, show, edit, new, ...)
+
+I> ATTENZIONE: con "rails generate controller ..." -> usiamo il PLURALE ed otteniamo un controller al plurale.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ rails g controller Pages home
+```
+
+non abbiamo nessun migrate perché non ci interfacciamo con il database.
+
+
+
+
+## Verifichiamo preview
+
+Vediamo la nostra applicazione rails funzionante. Attiviamo il webserver
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails s
+```
+
+e vediamo i vari URLs sul nostro browser:
+
+* https://mycloud9path.amazonaws.com/pages/home
+
+
+
+
+## Sistemiamo gli instradamenti/routes
+
+Aggiorniamo il file routes mettendo l'homepage come pagina principale (root)
+
+{id: "01-03-01_01", caption: ".../config/routes.rb -- codice 01", format: ruby, line-numbers: true, number-from: 3}
+```
+  root 'pages#home'
+```
+
+[tutto il codice](#01-03-01_01all)
+
+
+
+
+## Passiamo il codice del mockups
+
+Ci passiamo tutto il codice del mockup "s1p1_home" (da -> a):
+
+* .../app/views/mockups/s1p1_home.html.erb -> .../app/views/pages/home.html.erb
+
+
+{id: "01-03-01_01", caption: ".../views/pages/home.html.erb -- codice 02", format: ruby, line-numbers: true, number-from: 1}
+```
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <!-- title -->
+```
+
+[tutto il codice](#01-03-01_01all)
+
+![Fig. 01](chapters/01-base/03-mockups/01_fig01-views-mockups-page_a.png)
+
+Adesso potrebbe anche funzionare ma il codice HTML che mandiamo al browser è sbagliato perché stiamo utilizzando il layout "application" e non "yield".
+Nel prossimo capitolo aggiustiamo il codice distribuendolo in maniera corretta tra il layout "application" e la pagina/view "home". 

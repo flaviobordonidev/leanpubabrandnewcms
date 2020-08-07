@@ -1,0 +1,202 @@
+    <!-- start header -->
+    <header>
+      <!-- start navigation -->
+      <nav class="navbar navbar-default bootsnav background-white header-light navbar-top navbar-expand-lg">
+        <div class="container nav-header-container">
+          <!-- start logo -->
+          <div class="col-auto pl-lg-0">
+            <a href="index.html" title="Pofo" class="logo"><%= image_tag "elis/icons/arrow_left.png", 'data-rjs': image_path('elis/icons/arrow_left@2x.png'), class: "logo-dark", alt: "Pofo" %><%= image_tag "elis/icons/arrow_left.png", 'data-rjs': image_path('elis/icons/arrow_left@2x.png'), alt: "Pofo", class: "logo-light default" %></a>
+          </div>
+          <!-- end logo -->
+          <div class="col accordion-menu pr-0 pr-md-3">
+            <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#navbar-collapse-toggle-1">
+              <span class="sr-only">toggle navigation</span>
+              <%= image_tag "elis/icons/global_settings.png", alt: "menu" %>
+              <!--<span class="icon-bar"></span>-->
+              <!--<span class="icon-bar"></span>-->
+              <!--<span class="icon-bar"></span>-->
+            </button>
+            <div class="navbar-collapse collapse justify-content-end" id="navbar-collapse-toggle-1">
+              <ul id="accordion" class="nav navbar-nav navbar-left no-margin alt-font text-normal" data-in="fadeIn" data-out="fadeOut">
+                <!-- start menu item -->
+                <li class="dropdown megamenu-fw">
+                  <!--<a href="#">Flavio Bordoni</a><i class="fas fa-angle-down dropdown-toggle" data-toggle="dropdown" aria-hidden="true"></i>-->
+                  <a href="#" data-toggle="dropdown">Flavio Bordoni</a>
+                  <!-- start sub menu -->
+                  <div class="menu-back-div dropdown-menu megamenu-content mega-menu collapse mega-menu-full">
+                    <ul>
+                      <!-- start sub menu column  -->
+                      <li class="mega-menu-column col-lg-3">
+                        <!-- start sub menu item  -->
+                        <ul>
+                        </ul>
+                        <!-- end sub menu item  -->
+                      </li>
+                      <!-- end sub menu column -->
+                      <!-- start sub menu column  -->
+                      <li class="mega-menu-column col-lg-3">
+                        <!-- start sub menu item  -->
+                        <ul>
+                        </ul>
+                        <!-- end sub menu item  -->
+                      </li>
+                      <!-- end sub menu column -->
+                      <!-- start sub menu column  -->
+                      <li class="mega-menu-column col-lg-3">
+                        <!-- start sub menu item  -->
+                        <ul>
+                          <li class="dropdown-header">Ultimo accesso</li>
+                          <li><a href="home-classic-corporate.html">27/07/2020 15:24</a></li>
+                        </ul>
+                        <!-- end sub menu item  -->
+                      </li>
+                      <!-- end sub menu column -->
+                      <!-- start sub menu column -->
+                      <li class="mega-menu-column col-lg-3">
+                          <!-- start sub menu item  -->
+                          <ul>
+                              <li class="dropdown-header">Account</li>
+                              <li><a href="home-creative-studio.html">Logout</a></li>
+                          </ul>
+                          <!-- end sub menu item  -->
+                      </li>
+                      <!-- end sub menu column  -->
+                    </ul>
+                    <!-- end sub menu -->
+                  </div>
+                </li>
+                <!-- end menu item -->
+                </ul>
+            </div>
+          </div>
+          <div class="col-auto pr-lg-0">
+
+            <div class="header-languagebar">
+              <form id="search-language" action="search-result.html" method="post">
+                <a href="#modal-popup1" class="header-search-form popup-with-zoom-anim "><%= image_tag "elis/icons/language_it.png", alt: "language" %></a>
+                <!--<a class="btn btn-medium btn-rounded btn-transparent-dark-gray popup-with-zoom-anim wow fadeInUp" data-wow-delay="0.6s" href="#modal-popup2"><%= image_tag "elis/icons/home.png", alt: "home" %> Seleziona voce... &nbsp&nbsp&nbsp&nbsp</a>-->
+                <!-- start modal pop-up -->
+                <div id="modal-popup1" class="zoom-anim-dialog mfp-hide col-xl-3 col-lg-6 col-md-7 col-11 mx-auto bg-white text-center modal-popup-main padding-50px-all">
+
+                  <input type="text" name="first_name" id="first_name" placeholder="Cerca ..." class="medium-input">
+
+                  <%= link_to params.permit(:locale).merge(locale: 'it'), class: "btn btn-medium btn-rounded #{params[:locale] == 'it' ? 'btn-dark-gray disabled' : 'btn-transparent-dark-gray'} margin-10px-bottom", 'data-wow-delay': "0.6s" do %>
+                    <%= image_tag "elis/icons/language_it.png", alt: "italiano" %> Italiano &nbsp&nbsp&nbsp&nbsp
+                  <% end %>
+                  <%= link_to params.permit(:locale).merge(locale: 'en'), class: "btn btn-medium btn-rounded #{params[:locale] == 'en' ? 'btn-dark-gray disabled' : 'btn-transparent-dark-gray'} margin-10px-bottom", 'data-wow-delay': "0.6s" do %>
+                    <%= image_tag "elis/icons/language_us.png", alt: "english" %> Inglese &nbsp&nbsp&nbsp&nbsp
+                  <% end %>
+
+                  <p class="margin-four">
+                  <a href="#" class="btn btn-small disabled no-margin"><i class="fas fa-long-arrow-alt-left d-none d-md-inline-block"></i> Prev</a>
+                  1 di 1
+                  <a href="#" class="btn btn-small disabled no-margin">Next <i class="fas fa-long-arrow-alt-right d-none d-md-inline-block"></i></a>
+                  </p>
+
+                  <a class="btn btn-medium btn-rounded btn-dark-gray popup-modal-dismiss" href="#">Dismiss</a>
+
+                </div>
+                <!-- end modal pop-up -->
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </nav>
+      <!-- end navigation --> 
+    </header>
+    <!-- end header -->
+
+
+
+
+    <!-- start form style 01 section -->
+    <section class="wow fadeIn padding-one-all" id="start-your-project">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-7 text-center margin-100px-bottom sm-margin-40px-bottom">
+            <div class="position-relative overflow-hidden w-100">
+              <!--<span class="text-small text-outside-line-full alt-font font-weight-600 text-uppercase">Contact Form Style 01</span>-->
+            </div>
+          </div>
+        </div>
+        <form id="project-contact-form" action="project-contact.php" method="post">
+          <div class="row">
+            <!--<div class="col-12">-->
+            <!--  <div id="success-project-contact-form" class="mx-0"></div>-->
+            <!--</div>-->
+            <div class="col-12 col-sm-2 col-lg-2">
+              <a class="btn btn-medium btn-rounded btn-transparent-dark-gray popup-with-zoom-anim wow fadeInUp" data-wow-delay="0.6s" href="#modal-popup2"><%= image_tag "elis/icons/home.png", alt: "home" %> Seleziona voce... &nbsp&nbsp&nbsp&nbsp</a>
+              <!-- start modal pop-up -->
+              <div id="modal-popup2" class="zoom-anim-dialog mfp-hide col-xl-3 col-lg-6 col-md-7 col-11 mx-auto bg-white text-center modal-popup-main padding-50px-all">
+                <input type="text" name="first_name" id="first_name" placeholder="Cerca ..." class="medium-input">
+                <!--<a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom" data-wow-delay="0.6s" href="#"><%#= image_tag "elis/icons/company.png", alt: "company" %> Azienda &nbsp&nbsp&nbsp&nbsp</a>-->
+                <%= link_to mockups_s1p2_company_index_path, class: "btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom", 'data-wow-delay': "0.6s" do %>
+                  <%= image_tag "elis/icons/company.png", alt: "company" %> Azienda &nbsp&nbsp&nbsp&nbsp
+                <% end %>
+                <a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom" data-wow-delay="0.6s" href="#"><%= image_tag "elis/icons/person.png", alt: "person" %> Persona &nbsp&nbsp&nbsp&nbsp</a>
+                <p class="margin-four">
+                <a href="#"><i class="fas fa-long-arrow-alt-left margin-5px-right d-none d-md-inline-block"></i> Prev</a>
+                22 di 99
+                <a href="#">Next <i class="fas fa-long-arrow-alt-right margin-5px-left d-none d-md-inline-block"></i></a>
+                </p>
+                <a class="btn btn-medium btn-rounded btn-dark-gray popup-modal-dismiss" href="#">Dismiss</a>
+              </div>
+              <!-- end modal pop-up -->
+            </div>
+            <div class="col-12 col-sm-10 col-lg-10">
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+    <!-- end form style 01 section -->
+
+
+    <!-- start section entries more used -->
+    <section class="wow fadeIn padding-one-all" id="start-your-project">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <p>Le voci più usate:</p>
+          </div>  
+          <div class="col-12 col-sm-2 col-lg-2">
+              <%= link_to mockups_s1p2_company_index_path, class: "btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom", 'data-wow-delay': "0.6s" do %>
+                <%= image_tag "elis/icons/company.png", alt: "company" %> Azienda &nbsp&nbsp&nbsp&nbsp
+              <% end %>
+              <a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom" data-wow-delay="0.6s" href="#"><%= image_tag "elis/icons/person.png", alt: "person" %> Persona &nbsp&nbsp&nbsp&nbsp</a>
+          </div>
+          <div class="col-12 col-sm-10 col-lg-10">
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- end  section entries more used -->
+
+
+    <!-- start footer --> 
+    <footer class="footer-classic-dark bg-extra-dark-gray padding-five-bottom sm-padding-30px-bottom">
+      <div class="container">
+        <div class="footer-bottom border-top border-color-medium-dark-gray padding-30px-top">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 text-small text-center">
+              <p>Benvenuti alla prima storia. In questa storia inseriamo un nuovo contatto da un biglietto da visita.</p>
+              <p>Partiamo da una situazione ex novo con DB vuoto.</p>
+              <p>Siamo nella pagina di home. Premiamo il pulsante "SELEZIONA VOCE...". Si apre un popup con l'elenco delle possibili voci. Selezioniamo "AZIENDA".</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 col-md-12 text-small text-center">
+              <a href="#" class="btn btn-small btn-transparent-white lg-margin-15px-bottom d-table d-lg-inline-block md-margin-lr-auto disabled"><i class="fas fa-long-arrow-alt-left margin-5px-right d-none d-md-inline-block"></i> Prev</a>
+              <span>&nbsp&nbsp&nbsp Story 1 - Page 1 &nbsp&nbsp&nbsp</span>
+              <%#= link_to "Next", mockups_s1p2_company_index_path, class: "btn btn-small btn-transparent-white lg-margin-15px-bottom d-table d-lg-inline-block md-margin-lr-auto" %>
+              <!--<a href="#" class="btn btn-small btn-transparent-white lg-margin-15px-bottom d-table d-lg-inline-block md-margin-lr-auto">Next <i class="fas fa-long-arrow-alt-right margin-5px-left d-none d-md-inline-block"></i></a>-->
+              <%= link_to mockups_s1p2_company_index_path, class: "btn btn-small btn-transparent-white lg-margin-15px-bottom d-table d-lg-inline-block md-margin-lr-auto" do %>
+                Next <i class="fas fa-long-arrow-alt-right margin-5px-left d-none d-md-inline-block"></i>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- end footer -->

@@ -403,6 +403,7 @@ $ heroku run rails c
 -> u = User.last
 -> u.role = :admin
 -> u.save(validate: false)
+-> exit
 ~~~~~~~~
 
 Per colpa delle validazioni nel model User, non possiamo usare il comodo comando "User.last.admin!"

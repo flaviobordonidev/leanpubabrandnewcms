@@ -6,9 +6,17 @@ Risorse web:
 * https://michaelsoolee.com/rails-activerecord-data-types/
 
 
+Capitoli in cui abbiamo usato i18n:
+
+* capitolo 01-base/05-mockups_i18n/01-mockups_i18n
+* capitolo 01-base/10-users_i18n/02-users_validations_i18n
+* capitolo 01-base/10-users_i18n/03-users_form_i18n
+* capitolo 01-base/10-users_i18n/04-browser_tab_title_users_i18n
+* capitolo 01-base/12-format_i18n/01-format_date_time_i18n
 
 
-## in ordine alfabetico
+
+## I vari "tipi di dato" (data type) in ordine alfabetico
 
 :binary
 :boolean

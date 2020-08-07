@@ -1,3 +1,0 @@
--# Mockup
-
-Nello stesso workspace di Cloud9 creiamo una nuova applicazione di mockup. Quindi ripetiamo quasi tutti i passaggi di beginning per l'applicazione mockup_elisinfo

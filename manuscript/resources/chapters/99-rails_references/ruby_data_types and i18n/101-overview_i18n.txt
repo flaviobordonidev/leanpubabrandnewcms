@@ -28,6 +28,25 @@ usiamo questo articolo * [Set-up for Using Locales from URL Params and Basic I18
 
 
 
+## I formati di default
+
+Nella guida ufficiale di Rails https://guides.rubyonrails.org/i18n.html (questo link è anche indicato nel file iniziale locale/en.yml) al Capitolo "9 Contributing to Rails I18n" si rimanda al seguente link:
+
+* https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale
+
+Qui ci sono già tante traduzioni in moltissime lingue.
+
+Nella nostra applicazione partiamo dai seguenti formati:
+
+* 01_01-config-locale-en-base.yml
+* 01_02-config-locale-it-base.yml
+  a cui abbiamo aggiunto le seguenti due linee che erano presenti solo in inglese:
+  126 --> model_invalid: 'Validazione fallita: %{errors}'
+  193 --> eb: EB
+
+
+
+
 ## Input Placeholders
 
 You can tell Rails to use the i18n placeholder by passing " placeholder: true " into the inputs options.
@@ -209,3 +228,73 @@ Alternatively if you start without a dot, it'll look from the start of the i18n 
 en:
   pricing_information: "That'll cost %{price}"
 ~~~~~~~~
+
+
+
+---
+---
+
+
+---
+i18n statica con "locales"
+
+# app/views/messages/_form.html.erb
+-----------------------------------
+<%= form_for :message do "f| %>
+  <%= f.label :title %>
+  <%= f.text_field :title %>
+  <%= f.label :name %>
+  <%= f.input :name, placeholder: true %>
+  <%= f.submit %>
+<% end %>
+
+
+# app/views/posts/_form.html.erb
+-----------------------------------
+<%= form_for :post do "f| %>
+  <%= f.label :title %>
+  <%= f.text_field :title %>
+  <%= f.label :name %>
+  <%= f.input :name, placeholder: true %>
+  <%= f.submit %>
+<% end %>
+
+en:
+  helpers:
+    label:
+      message:
+        name: "Name label"
+      post:
+        name: "Name label of post"
+    placeholder:
+      message:
+        name: "Your placeholder text here"
+      post:
+        name: "Your placeholder text here"
+    submit:
+      message:
+        create: "Create a new great messagge!"
+        update: "Save changes to this message."
+      post:
+        create: "Create a new lovelly post!"
+        update: "Yes, save changes to this post."  
+  messages:
+    update:
+      notice: "Message was successfully updated."
+      alert: "Unable to update message."
+  posts:
+    update:
+      notice: "Post was successfully updated."
+      alert: "Unable to update post."
+
+
+If the helpers: path is not available, i18n will fallback to the activerecord: path. Very clear when using the excellent ** i18n-debug ** gem.
+https://github.com/fphilipe/i18n-debug
+
+https://mikerogers.io/2016/01/10/i18n-rails-internationalisation-i18n-cheatsheet.html
+
+https://webuild.envato.com/blog/how-to-organise-i18n-without-losing-your-translation-not-found/
+
+https://stackoverflow.com/questions/16977371/submit-button-helper-with-i18n-t
+
+https://stackoverflow.com/questions/36810203/list-of-available-i18n-translations-for-helpers-in-ruby-on-rails-4-and-simple

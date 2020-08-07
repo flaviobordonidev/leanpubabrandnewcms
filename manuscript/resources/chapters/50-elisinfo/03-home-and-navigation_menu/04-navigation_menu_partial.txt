@@ -1,0 +1,7 @@
+
+
+
+## Sganciamo il navigation_menu
+
+Portiamo il codice del navigation_menu in un partial.
+
