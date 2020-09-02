@@ -1,6 +1,6 @@
 ## Il menu a cascata internazionalizzato
 
-Nella generazione della tabella abbiamo indicato il campo :type per la scelta del tipo di articolo visualizzato; se è immagine, video, audio...
+Nella generazione della tabella abbiamo indicato il campo :content_type per la scelta del tipo di articolo visualizzato; se è immagine, video, audio...
 Lo abbiamo definito semplicemente come :integer perché lo avremmo poi trattato con ENUM.
 In questo capitolo implementiamo il tutto fino a visualizzare il menu a cascata (drop-down list) nella view di modifica dell'articolo.
 Rendere il menu a cascada multilingua (Enum with i18n)
@@ -16,35 +16,36 @@ Risorse web:
 
 ## Apriamo il branch "Type Enum I18n"
 
-{title="terminale", lang=bash, line-numbers=off}
-~~~~~~~~
+{caption: "terminal", format: bash, line-numbers: false}
+```
 $ git checkout -b tei
-~~~~~~~~
+```
 
 
 
 
 ## Implementiamo nel Model
 
-Attiviamo il campo ENUM nel Model Post per il campo :type
+Attiviamo il campo ENUM nel Model Post per il campo :content_type
 Nel model nella sezione " # == Attributes "
 
-{id="02-05-01_01", title=".../models/post.rb", lang=ruby, line-numbers=on, starting-line-number=3}
-~~~~~~~~
+{id: "01-08-01_02", caption: ".../app/models/post.rb -- codice 01", format: ruby, line-numbers: true, number-from: 7}
+```
   enum content_type: {image: 0, video_youtube: 1, video_vimeo: 2, audio: 3}
-~~~~~~~~
+```
 
-[Codice 01](#02-05-01_01all)
+[tutto il codice](#01-08-01_01all)
+
 
 il campo "content_type" è già presente nella whitelist del controller perché lo abbiamo inserito durante il "generate scaffold"
 
 
 
 
-### Miglioriamo la colonna "type" per ENUM
+## Miglioriamo la colonna "content_type" per ENUM
 
-Però nella generazione iniziale non abbiamo impostato al meglio la colonna "type" per ENUM. Recuperiamo.
-Creiamo un migrate di modifica per mettere un valore di "default" ed un indice per velocizzare queries che usano "type"
+Però nella generazione iniziale non abbiamo impostato al meglio la colonna "content_type" per ENUM. Recuperiamo.
+Creiamo un migrate di modifica per mettere un valore di "default" ed un indice per velocizzare queries che usano "content_type"
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
@@ -127,7 +128,7 @@ a
 
 
 
-### Aggiorniamo la view
+## Aggiorniamo la view
 
 Implementiamo il menu a cascata per permettere di selezionare un tipo di articolo
 
@@ -144,7 +145,7 @@ Implementiamo il menu a cascata per permettere di selezionare un tipo di articol
 
 
 
-### Rendiamo il menu a cascada multilingua (Enum with i18n)
+## Rendiamo il menu a cascada multilingua (Enum with i18n)
 
 Per impostare la lingua italiana lavoriamo nei files yaml. Istintivamente ci verrebbe da inserirli in questo modo:
 
@@ -184,7 +185,7 @@ Ma in questo caso è necessario definirlo nella stessa gerarchia del modello nel
 
 
 
-### Completiamo la traduzione anche in inglese
+## Completiamo la traduzione anche in inglese
 
 Per completezza manteniamo allineato anche il file per la traduzione in inglese.
 

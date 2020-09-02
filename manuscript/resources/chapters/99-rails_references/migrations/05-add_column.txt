@@ -33,7 +33,7 @@ end
 
 {caption: "terminal", format: bash, line-numbers: false}
 ```
-$ rails g migration AddCorporateToCompany corporate:string
+$ rails g migration AddCorporateToCompanies corporate:string
 ```
 
 {caption: ".../db/migrate/xxx_add_corporate_to_company.rb", format: ruby, line-numbers: true, number-from: 1}

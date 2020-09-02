@@ -1,4 +1,4 @@
-## Il menu principale - La lingua
+# Il menu principale - La lingua
 
 Adesso iniziamo a rendere dinamiche le varie parti a partire dal menu di navigazione.
 Lavoriamo sul menu di navigazione. Quello che pofo chiama header.
@@ -100,6 +100,7 @@ def username_shown
 end
 ```
 
+gestiamo se l'utente non è presente
 
 ```
   def name_shown
@@ -109,6 +110,11 @@ end
       return "nessun utente loggato"
     end
   end
+```
+
+views/pages/home
+```
+                    <%= current_user.name_shown %>
 ```
 
 
@@ -122,12 +128,59 @@ Nella nostra app questo codice è inutile perché abbiamo messo nel model la "va
 
 
 
+## Debug refactoring
+
+Per semplificare la view abbiamo inserito un bug.
+
+views/pages/home
+```
+                    <%= current_user.name_shown %>
+```
+
+Quando l'utente non ha fatto login abbiamo un errore perché "current_user" è "nil" e non possiamo chiamare il metodo ".name_shown" per un oggetto "nil".
+Correggiamo riscrivendo:
+
+views/pages/home
+```
+                    <%= current_user.present? == true ? current_user.name_shown : t("pages.home.no_user_logged") %>
+```
+
+Abbiamo anche aggiunto la traduzione per "Nessun utente loggato" / "No user logged in".
+
+Quindi semplifichiamo anche il Virtual Attribute
+
+```
+  def username_shown
+    return self.name.blank? ? self.email.split('@')[0].capitalize : self.name
+  end
+```
+
+Se vogliamo tenere la view più pulita è meglio impostare un helper.
+
+
+
 
 ## Nel caso utente non loggato
 
 Al momento visualizziamo "utente non loggato".
 Nei prossimi capitoli metteremo "non autorizzato" tramite Pundit.
 Nei prossimi capitoli metteremo direttamente pagina/view di Login tramite Devise.
+
+
+
+
+## Implementiamo link di Logout
+
+views/pages/home
+```
+               <li>
+                  <% if current_user.present? %>
+                    <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
+                  <% else %>
+                    <%= link_to "Login", new_user_session_path %>
+                  <% end %>
+                </li>
+```
 
 
 
@@ -324,15 +377,18 @@ li aggiorniamo nei prossimi capitoli a mano a mano che creiamo Person e Company.
 
 
 
-verifichiamo che funziona tutto
+## verifichiamo che funziona tutto
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ sudo service postgresql start
-$ rails s -b $IP -p $PORT
+$ rails s
 ~~~~~~~~
 
-eseguiamo un git commit
+
+
+
+## Archiviamo su git
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
@@ -347,23 +403,8 @@ $ git commit -m "add global_settings logout"
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
-$ git push heroku gsl:master
+$ git push heroku nm:master
 ~~~~~~~~
-
-
-
-
-## Chiudiamo il branch
-
-se abbiamo finito le modifiche e va tutto bene:
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ git checkout master
-$ git merge gsl
-$ git branch -d gsl
-~~~~~~~~
-
 
 
 

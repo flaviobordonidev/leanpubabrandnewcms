@@ -71,11 +71,12 @@ $ rake db:migrate
 
 ## Internazionalizzazione I18n !!!
 
+**********
+   TODO
+**********
+
 la facciamo per title : Sede Operativa (Operative Headquarters), Sede legale (Registered Office), Sede Amministrativa (Administrative Headquarters), Magazzino (Warehouse), Casa privata (private house), filiale (branch office), ...
 
-#TODO
-
-non so se dovrei farla anche per full_address ma al momento non la facciamo.
 
 
 

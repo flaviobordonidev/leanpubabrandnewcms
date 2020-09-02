@@ -1,0 +1,229 @@
+
+    <!-- start form style 01 section -->
+    <section class="wow fadeIn padding-one-all" id="start-your-project2">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-7 text-center margin-100px-bottom sm-margin-40px-bottom">
+            <div class="position-relative overflow-hidden w-100">
+              <!--<span class="text-small text-outside-line-full alt-font font-weight-600 text-uppercase">Contact Form Style 01</span>-->
+            </div>
+          </div>
+        </div>
+        <form id="project-contact-form2" action="project-contact.php" method="post">
+          <div class="row">
+            <!--<div class="col-12">-->
+            <!--  <div id="success-project-contact-form" class="mx-0"></div>-->
+            <!--</div>-->
+
+            <div class="col-12 col-md-6">
+              <label name="name" >Ragione Sociale</label>
+              <input type="text" name="name" id="name" placeholder="Peroni" class="medium-input">
+            </div>
+            <div class="col-12 col-md-6">
+              <label name="department" >Edificio / Dipartimento</label>
+              <input type="text" name="department" id="department" placeholder="Stabilimento di RM" class="medium-input">
+            </div>
+            
+            <div class="col-12">
+              <label name="address" >Indirizzo</label>
+              <textarea name="address" id="address" placeholder="Via vattelapesca 14 - &#10;00121 Roma &#10;Italia" rows="3" class="medium-textarea"></textarea>
+            </div>
+
+            <div class="col-12">
+              <label name="additional_notes_address" >Note Aggiuntive</label>
+              <textarea name="additional_notes_address" id="additional_notes_address" placeholder="Normalmente un indirizzo aggiuntivo, &#10;ma possono essere anche notizie sull'azienda" rows="3" class="medium-textarea"></textarea>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label name="client_status" >Cliente</label>
+              <div class="select-style medium-select">
+                <select name="client_status" id="client_status" class="bg-transparent mb-0">
+                  <option value="">Seleziona la tipologia</option>
+                  <option value="0">no</option>
+                  <option value="1">beni</option>
+                  <option value="2">servizi</option>
+                  <option value="3">beni e servizi</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <label name="client_rating" >Punteggio</label>
+              <input type="text" name="client_rating" id="client_rating" placeholder="5 stelle" class="medium-input">
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label name="supplier_status" >Fornitore</label>
+              <div class="select-style medium-select">
+                <select name="supplier_status" id="supplier_status" class="bg-transparent mb-0">
+                  <option value="">Seleziona la tipologia</option>
+                  <option value="0">no</option>
+                  <option value="1">beni</option>
+                  <option value="2">servizi</option>
+                  <option value="3">beni e servizi</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <label name="supplier_rating" >Punteggio</label>
+              <input type="text" name="supplier_rating" id="supplier_rating" placeholder="3 stelle" class="medium-input">
+            </div>
+
+            <div class="col-12">
+              <label name="additional_notes_status" >Note Aggiuntive</label>
+              <textarea name="additional_notes_status" id="additional_notes_status" placeholder="Normalmente spiegazione sul punteggio, &#10;ma possono essere anche notizie sul tipo di beni e servizi" rows="3" class="medium-textarea"></textarea>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <input type="text" name="phone_label" id="phone_label" placeholder="Centralino" class="medium-input">
+            </div>
+            <div class="col-12 col-md-6">
+              <input type="text" name="phone" id="phone" placeholder="+44 1234 56789" class="medium-input">
+            </div>
+
+            <div class="col-12">
+              <a href="#" class="btn btn-transparent-dark-gray btn-medium margin-20px-bottom">+ Aggiungi numero di telefono</a>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <input type="text" name="email_label" id="email_label" placeholder="Generico" class="medium-input">
+            </div>
+            <div class="col-12 col-md-6">
+              <input type="text" name="email" id="email" placeholder="info@peroni.it" class="medium-input">
+            </div>
+
+            <div class="col-12">
+              <a href="#" class="btn btn-transparent-dark-gray btn-medium margin-20px-bottom">+ Aggiungi indirizzo email</a>
+            </div>
+
+            <div class="col-12">
+              <a href="#" class="btn btn-transparent-dark-gray btn-medium margin-20px-bottom">+ Aggiungi indirizzo web o social network</a>
+            </div>
+
+            <div class="col-12 text-center">
+                <button id="project-contact-us-button" type="submit" class="btn btn-transparent-dark-gray btn-large margin-20px-top">Salva</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+    <!-- end form style 01 section -->
+
+
+
+<!-- start form style 01 section -->
+<section class="wow fadeIn padding-one-all" id="start-your-project2">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-7 text-center margin-100px-bottom sm-margin-40px-bottom">
+        <div class="position-relative overflow-hidden w-100">
+          <!--<span class="text-small text-outside-line-full alt-font font-weight-600 text-uppercase">Contact Form Style 01</span>-->
+        </div>
+      </div>
+    </div>
+    <!--<form id="project-contact-form2" action="project-contact.php" method="post">-->
+    <%= form_with(model: company, local: true) do |form| %>
+      <% if company.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(company.errors.count, "error") %> prohibited this company from being saved:</h2>
+    
+          <ul>
+            <% company.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+    
+      <div class="field">
+        <%= form.label :name %>
+        <%= form.text_field :name %>
+      </div>
+    
+      <div class="field">
+        <%= form.label :building %>
+        <%= form.text_field :building %>
+      </div>
+    
+      <div class="field">
+        <%= form.label :address %>
+        <%= form.text_field :address %>
+      </div>
+    
+      <div class="field">    
+        <%= form.label :client_type %>
+        <%#= form.select(:client_type, Company.client_types.keys.map {|client_type| [client_type.titleize,client_type]}) %>
+        <%= form.select(:client_type, Company.client_types.keys.map {|client_type| [Company.human_attribute_name("client_type.#{client_type}"), client_type]}) %>
+      </div>
+    
+      <div class="field">
+        <%= form.label :client_rate %>
+        <%= form.number_field :client_rate %>
+      </div>
+    
+      <div class="field">    
+        <%= form.label :supplier_type %>
+        <%= form.select(:supplier_type, Company.supplier_types.keys.map {|supplier_type| [Company.human_attribute_name("supplier_type.#{supplier_type}"), supplier_type]}) %>
+        <%#= form.collection_radio_buttons :supplier_type, Hash[Company.supplier_types.map { |k,v| [k, Company.human_attribute_name("supplier_type.#{k}")] }], :first, :second %>
+      </div>
+    
+      <div class="field">
+        <%= form.label :supplier_rate %>
+        <%= form.number_field :supplier_rate %>
+      </div>
+    
+      <div class="field">
+        <%= form.label :note %>
+        <%= form.text_area :note %>
+      </div>
+    
+      <div class="field">
+        <%= form.label :sector %>
+        <%= form.text_field :sector %>
+      </div>
+    
+      <div class="field">
+        <%= form.label :tax_number_1 %>
+        <%= form.text_field :tax_number_1 %>
+      </div>
+    
+      <div class="field">
+        <%= form.label :tax_number_2 %>
+        <%= form.text_field :tax_number_2 %>
+      </div>
+    
+    
+      <div data-controller="hello" class="field">
+        <input data-target="hello.name" type="text">
+        <button data-action="click->hello#log">Log</button>
+      </div>
+    
+    
+      <div data-controller="nested-form">
+        <!-- Creiamo nuovo Record -->
+        <template data-target="nested-form.template">
+          <%= form.fields_for :telephones, Telephone.new, child_index: "TEMPLATE_RECORD" do |telephone| %>
+            <%= render "telephone_fields", form: telephone %>
+          <% end %>
+        </template>
+    
+        <!-- Visualizziamo i Records esistenti -->
+        <%= form.fields_for :telephones do |telephone| %>
+          <%= render "telephone_fields", form: telephone %>
+        <% end %>
+        
+        <!-- Il pulsante per aggiungere i tasks -->
+        <div data-target="nested-form.add_item">
+            <%= link_to "Add Telephone", "#", data: { action: "nested-form#add_association" } %>
+            <%#= link_to "Add Telephone", "#", 'data-action': "nested-form#add_association" %>
+        </div>
+      </div>
+    
+    
+      <div class="actions">
+        <%= form.submit %>
+      </div>
+    <% end %>
+    <!--</form>-->
+  </div>
+</section>
+<!-- end form style 01 section -->

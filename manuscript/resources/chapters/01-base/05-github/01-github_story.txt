@@ -1,0 +1,13 @@
+{id: 01-base-05-github-01-github_story}
+# Cap 5.1 -- La storia di Github 
+
+repository esterna per Git
+
+## Cos'è e perché lo usiamo.
+
+Alcuni usi di GitHub:
+
+* Github rende disponibile a livello web i progetti gestiti da git.
+* Github è un repository remoto di git.
+
+Noi lo utilizziamo per avere un backup del nostro applicativo e per predisporre la possibilità di uno sviluppo multiutenti.

@@ -1,0 +1,357 @@
+# https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/it.yml
+it:
+  activerecord:
+    errors:
+      messages:
+        record_invalid: 'Validazione fallita: %{errors}'
+        restrict_dependent_destroy:
+          has_one: Il record non può essere cancellato perchè esiste un %{record} dipendente
+          has_many: Il record non può essere cancellato perchè esistono %{record} dipendenti
+      models:
+        user:
+          attributes:
+            name:
+              blank: ": campo obbligatorio"
+            email:
+              blank: ": campo obbligatorio"
+              invalid: ": non valida"
+            password:
+              blank: ": campo obbligatorio"
+              too_short: ": troppo corta"
+            password_confirmation:
+              confirmation: ": non corrisponde con password"
+    attributes:
+      company:
+        client_type: "tipologia cliente"
+        supplier_type: "tipologia fornitore"
+      company/client_type:
+        c_none: "nessuno" 
+        c_goods: "beni" 
+        c_services: "servizi"
+        c_goods_and_services: "beni e servizi"
+      company/supplier_type:
+        s_none: "nessuno" 
+        s_goods: "beni" 
+        s_services: "servizi"
+        s_goods_and_services: "beni e servizi"
+      user:
+        name: "Nome utente" # fallback for when label is nil
+        email: "email"
+        password: "password"
+        password_confirmation: "conferma password"
+
+    models:
+      company: "azienda"
+      eg_company: "azienda esempio"
+      user: "utente"
+
+  form_errors_message:
+    one: "1 errore ha impedito il salvataggio"
+    other: "%{count} errori hanno impedito il salvataggio"
+
+  date:
+    abbr_day_names:
+    - dom
+    - lun
+    - mar
+    - mer
+    - gio
+    - ven
+    - sab
+    abbr_month_names:
+    - 
+    - gen
+    - feb
+    - mar
+    - apr
+    - mag
+    - giu
+    - lug
+    - ago
+    - set
+    - ott
+    - nov
+    - dic
+    day_names:
+    - domenica
+    - lunedì
+    - martedì
+    - mercoledì
+    - giovedì
+    - venerdì
+    - sabato
+    formats:
+      default: "%d/%m/%Y"
+      long: "%d %B %Y"
+      short: "%d %b"
+    month_names:
+    - 
+    - gennaio
+    - febbraio
+    - marzo
+    - aprile
+    - maggio
+    - giugno
+    - luglio
+    - agosto
+    - settembre
+    - ottobre
+    - novembre
+    - dicembre
+    order:
+    - :day
+    - :month
+    - :year
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: circa un'ora
+        other: circa %{count} ore
+      about_x_months:
+        one: circa un mese
+        other: circa %{count} mesi
+      about_x_years:
+        one: circa un anno
+        other: circa %{count} anni
+      almost_x_years:
+        one: circa 1 anno
+        other: circa %{count} anni
+      half_a_minute: mezzo minuto
+      less_than_x_seconds:
+        one: meno di un secondo
+        other: meno di %{count} secondi
+      less_than_x_minutes:
+        one: meno di un minuto
+        other: meno di %{count} minuti
+      over_x_years:
+        one: oltre un anno
+        other: oltre %{count} anni
+      x_seconds:
+        one: 1 secondo
+        other: "%{count} secondi"
+      x_minutes:
+        one: 1 minuto
+        other: "%{count} minuti"
+      x_days:
+        one: 1 giorno
+        other: "%{count} giorni"
+      x_months:
+        one: 1 mese
+        other: "%{count} mesi"
+      x_years:
+        one: 1 anno
+        other: "%{count} anni"
+    prompts:
+      second: Secondi
+      minute: Minuto
+      hour: Ora
+      day: Giorno
+      month: Mese
+      year: Anno
+
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      accepted: deve essere accettata
+      blank: non può essere lasciato in bianco
+      confirmation: non coincide con %{attribute}
+      empty: non può essere vuoto
+      equal_to: deve essere uguale a %{count}
+      even: deve essere pari
+      exclusion: è riservato
+      greater_than: deve essere maggiore di %{count}
+      greater_than_or_equal_to: deve essere maggiore o uguale a %{count}
+      inclusion: non è compreso tra le opzioni disponibili
+      invalid: non è valido
+      less_than: deve essere minore di %{count}
+      less_than_or_equal_to: deve essere minore o uguale a %{count}
+      model_invalid: 'Validazione fallita: %{errors}'
+      not_a_number: non è un numero
+      not_an_integer: non è un numero intero
+      odd: deve essere dispari
+      other_than: devono essere di numero diverso da %{count}
+      present: deve essere lasciato in bianco
+      required: deve esistere
+      taken: è già presente
+      too_long:
+        one: è troppo lungo (il massimo è 1 carattere)
+        other: è troppo lungo (il massimo è %{count} caratteri)
+      too_short:
+        one: è troppo corto (il minimo è 1 carattere)
+        other: è troppo corto (il minimo è %{count} caratteri)
+      wrong_length:
+        one: è della lunghezza sbagliata (deve essere di 1 carattere)
+        other: è della lunghezza sbagliata (deve essere di %{count} caratteri)
+    template:
+      body: 'Ricontrolla i seguenti campi:'
+      header:
+        one: 'Non posso salvare questo %{model}: 1 errore'
+        other: 'Non posso salvare questo %{model}: %{count} errori.'
+
+  helpers:
+    select:
+      prompt: Seleziona...
+    submit:
+      create: Crea %{model}
+      submit: Invia %{model}
+      update: Aggiorna %{model}
+      # user:
+      #   create: "Crea %{model}"
+      #   update: "Aggiorna %{model}"
+      # eg_company:
+      #   create: "Crea %{model}"
+      #   update: "Aggiorna %{model}"
+    label:
+      user:
+        name: "Nome utente"
+        email: "email"
+        password: "password"
+        password_confirmation: "conferma password"
+    placeholder:
+      user:
+        name: "nome utente"
+        email: "email"
+        password: "password"
+        password_confirmation: "conferma password"
+  
+  number:
+    currency:
+      format:
+        delimiter: "."
+        format: "%n %u"
+        precision: 2
+        separator: ","
+        significant: false
+        strip_insignificant_zeros: false
+        unit: "€"
+        #unit: "" #Customized
+    format:
+      delimiter: "."
+      precision: 2
+      separator: ","
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: "%n %u"
+        units:
+          billion: Miliardi
+          million: Milioni
+          quadrillion: Biliardi
+          thousand: Mila
+          trillion: Bilioni
+          unit: ''
+      format:
+        delimiter: ''
+        precision: 3
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: "%n %u"
+        units:
+          byte:
+            one: Byte
+            other: Byte
+          eb: EB
+          gb: GB
+          kb: KB
+          mb: MB
+          pb: PB
+          tb: TB
+    percentage:
+      format:
+        delimiter: ''
+        format: "%n%"
+    precision:
+      format:
+        delimiter: ''
+  support:
+    array:
+      last_word_connector: " e "
+      two_words_connector: " e "
+      words_connector: ", "
+  time:
+    am: am
+    formats:
+      default: "%a %d %b %Y, %H:%M:%S %z"
+      long: "%d %B %Y %H:%M"
+      long_phrase: "%A %d %^B %Y alle %H:%M e %S secondi" #customized
+      short: "%d %b %H:%M"
+      short_phrase: "il giorno %d %^B %Y" #customized
+    pm: pm
+
+  # Controllers ----------------------------------------------------------------
+  
+  eg_companies:
+    index:
+      html_head_title: "Tutte le aziende"
+    show:
+      html_head_title: "Az."
+    edit:
+      html_head_title: "Modifica"
+    new:
+      html_head_title: "Nuova azienda"
+
+  eg_components:
+    index:
+      html_head_title: "Tutti i componenti"
+    show:
+      html_head_title: "Comp."
+    edit:
+      html_head_title: "Modifica"
+    new:
+      html_head_title: "Nuovo componente"
+
+  eg_posts:
+    not_published: "non è stato ancora pubblicato"
+    index:
+      html_head_title: "Tutti gli articoli"
+    show:
+      welcome: "Benvenuto, %{name}"
+      html_head_title: "Art."
+      price_fomatted: "Questo costa %{price} di soldini"
+    edit:
+      html_head_title: "Modifica"
+    new:
+      html_head_title: "Nuovo articolo"
+
+  mockups:
+    page_a:
+      headline: "Questa è l'homepage"
+      first_paragraph: "il testo mostrato è o passato da un 'file di traduzione' e questo significa che la nostra applicazione è pronta a supportare più lingue."
+      link_to_page_B: "Andiamo alla pagina B"
+
+  pages:
+    home:
+      html_head_title: "pagina home"
+      last_access: "Ultimo Accesso"
+      role: "Ruolo"
+      italian: "Italiano"
+      english: "Inglese"
+      select_item: "Seleziona voce..."
+      company: "Azienda"
+      person: "Persona"
+      previous: "Prec."
+      of: "di"
+      next: "Pros."
+      dismiss: "Rimuovi"
+      find: "Cerca..."
+      more_used_items: "Le voci più usate"
+      no_user_logged: "Nessun utente loggato"
+
+  users:
+    index:
+      html_head_title: "Tutti gli utenti"
+    new:
+      html_head_title: "Nuovo utente"
+    edit:
+      html_head_title: "Modifica"
+    create:
+      notice: "L'utente è stato creato con successo."
+    update:
+      notice: "L'utente è stato aggiornato con successo."
+
+  # Here various generic words
+  vocabolary:
+    ball: "palla"
+    dog: "cane"

@@ -1,7 +1,124 @@
+# Separiamo il menu principale
+
+Creiamo un partial per il menu principale e lo separiamo dalla homepage (pages/home)
+
+
+
+
+## Apriamo il branch "Navigation Menu"
+
+Continuiamo con il branch aperto nel capitolo precedente
 
 
 
 ## Sganciamo il navigation_menu
 
 Portiamo il codice del navigation_menu in un partial.
+
+
+{id: "01-03-01_01", caption: ".../views/pages/home.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+    <%= render 'layouts/navbar' %>
+```
+
+[tutto il codice](#01-03-01_01all)
+
+
+{id: "01-03-01_01", caption: ".../views/layouts/navbar.html.erb -- codice 02", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<!-- start header -->
+<header>
+```
+
+[tutto il codice](#01-03-01_01all)
+
+
+
+
+## Inseriamo i metadati
+
+Attiviamo solo il "title", quello che appare sul tab del browser.
+Lasciamo commentato il link attivo perché non abbiamo al momento una voce di menu con il link per la homepage.
+
+
+{id: "01-03-01_01", caption: ".../views/pages/home.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<%# == Meta_data ============================================================ %>
+
+<% provide(:html_head_title, "#{t '.html_head_title'}") %>
+<%# provide(:menu_nav_link_home, "active") %>
+
+<%# == Meta_data - end ====================================================== %>
+```
+
+[tutto il codice](#01-03-01_01all)
+
+
+Inseriamo le due traduzioni
+
+
+{id: "01-03-01_01", caption: ".../config/locales/it.yml -- codice 01", format: yaml, line-numbers: true, number-from: 1}
+```
+  pages:
+    home:
+      html_head_title: "pagina home"
+```
+
+
+{id: "01-03-01_01", caption: ".../config/locales/en.yml -- codice 01", format: yaml, line-numbers: true, number-from: 1}
+```
+  pages:
+    home:
+      html_head_title: "homepage"
+```
+
+
+
+
+
+
+
+
+## verifichiamo che funziona tutto
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ sudo service postgresql start
+$ rails s
+~~~~~~~~
+
+
+
+
+## Archiviamo su git
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git add -A
+$ git commit -m "add global_settings logout"
+~~~~~~~~
+
+
+
+
+## Publichiamo su heroku
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git push heroku nm:master
+~~~~~~~~
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ git checkout master
+$ git merge nm
+$ git branch -d nm
+~~~~~~~~
 

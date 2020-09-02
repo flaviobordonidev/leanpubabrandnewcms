@@ -1,0 +1,79 @@
+<%= form_with(model: company, local: true) do |form| %>
+  <% if company.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(company.errors.count, "error") %> prohibited this company from being saved:</h2>
+
+      <ul>
+        <% company.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :building %>
+    <%= form.text_field :building %>
+  </div>
+
+  <div class="field">
+    <%= form.label :address %>
+    <%= form.text_field :address %>
+  </div>
+
+  <div class="field">    
+    <%= form.label :client_type %>
+    <%#= form.select(:client_type, Company.client_types.keys.map {|client_type| [client_type.titleize,client_type]}) %>
+    <%= form.select(:client_type, Company.client_types.keys.map {|client_type| [Company.human_attribute_name("client_type.#{client_type}"), client_type]}) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :client_rate %>
+    <%= form.number_field :client_rate %>
+  </div>
+
+  <div class="field">    
+    <%= form.label :supplier_type %>
+    <%= form.select(:supplier_type, Company.supplier_types.keys.map {|supplier_type| [Company.human_attribute_name("supplier_type.#{supplier_type}"), supplier_type]}) %>
+    <%#= form.collection_radio_buttons :supplier_type, Hash[Company.supplier_types.map { |k,v| [k, Company.human_attribute_name("supplier_type.#{k}")] }], :first, :second %>
+  </div>
+
+  <div class="field">
+    <%= form.label :supplier_rate %>
+    <%= form.number_field :supplier_rate %>
+  </div>
+
+  <div class="field">
+    <%= form.label :note %>
+    <%= form.text_area :note %>
+  </div>
+
+  <div class="field">
+    <%= form.label :sector %>
+    <%= form.text_field :sector %>
+  </div>
+
+  <div class="field">
+    <%= form.label :tax_number_1 %>
+    <%= form.text_field :tax_number_1 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :tax_number_2 %>
+    <%= form.text_field :tax_number_2 %>
+  </div>
+
+  <div data-controller="hello" class="field">
+    <input data-target="hello.name" type="text">
+    <button data-action="click->hello#log">Log</button>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

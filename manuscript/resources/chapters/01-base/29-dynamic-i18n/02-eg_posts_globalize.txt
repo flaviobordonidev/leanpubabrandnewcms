@@ -233,9 +233,6 @@ $ rake db:setup
 Le modifiche sono già presenti anche nel preview. Anche la modifica. Possiamo verificarlo cambiando la lingua nella barra di navigazione in alto.
 Se creiamo un articolo in italiano possiamo mettere la versione inglese cambiando prima la lingua e poi sovrascriviamo la parte italiana. Questo farà sì che quando siamo in inglese vediamo l'inglese e se torniamo all'italiano lo rivediamo in italiano.
 
-
-
-
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~
 $ git add -A

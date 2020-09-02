@@ -84,7 +84,7 @@ Ci passiamo tutto il codice del mockup "s1p1_home" (da -> a):
 * .../app/views/mockups/s1p1_home.html.erb -> .../app/views/pages/home.html.erb
 
 
-{id: "01-03-01_01", caption: ".../views/pages/home.html.erb -- codice 02", format: ruby, line-numbers: true, number-from: 1}
+{id: "01-03-01_01", caption: ".../views/pages/home.html.erb -- codice 02", format: HTML+Mako, line-numbers: true, number-from: 1}
 ```
 <!doctype html>
 <html class="no-js" lang="en">
