@@ -1,0 +1,154 @@
+<section class="wow fadeIn padding-one-all" id="start-your-project2">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-7 text-center margin-100px-bottom sm-margin-40px-bottom">
+        <div class="position-relative overflow-hidden w-100">
+          <!--<span class="text-small text-outside-line-full alt-font font-weight-600 text-uppercase">Contact Form Style 01</span>-->
+        </div>
+      </div>
+    </div>
+    <!--<form id="project-contact-form2" action="project-contact.php" method="post">-->
+    <%= form_with(model: company, local: true) do |form| %>
+      <% if company.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(company.errors.count, "error") %> prohibited this company from being saved:</h2>
+    
+          <ul>
+            <% company.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      
+      <div class="row"> <!-- start row -->
+  
+        <div class="col-12 col-md-6">
+          <%= form.label :name %>
+          <%= form.text_field :name, class: "medium-input" %>
+        </div>
+      
+  
+        <div class="col-12 col-md-6">
+          <%= form.label :building %>
+          <%= form.text_field :building, class: "medium-input" %>
+        </div>
+  
+        <div class="col-12">
+          <%= form.label :address %>
+          <%= form.text_area :address, rows: 3, class: "medium-textarea" %>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <%= form.label :client_type %>
+          <div class="select-style medium-select">
+            <%= form.select(:client_type, Company.client_types.keys.map {|client_type| [Company.human_attribute_name("client_type.#{client_type}"), client_type]}, {}, { class: 'bg-transparent mb-0' }) %>
+          </div>
+        </div>
+      
+        <div class="col-12 col-md-6">
+          <%= form.label :client_rate %>
+          <%= form.number_field :client_rate, class: "medium-input" %>
+        </div>
+      
+        <div class="col-12 col-md-6">
+          <%= form.label :supplier_type %>
+          <div class="select-style medium-select">
+            <%= form.select(:supplier_type, Company.supplier_types.keys.map {|supplier_type| [Company.human_attribute_name("supplier_type.#{supplier_type}"), supplier_type]}, {}, { class: 'bg-transparent mb-0' }) %>
+          </div>
+        </div>
+      
+        <div class="col-12 col-md-6">
+          <%= form.label :supplier_rate %>
+          <%= form.number_field :supplier_rate, class: "medium-input" %>
+        </div>
+
+        <div class="col-12">
+          <%= form.label :note %>
+          <%= form.text_area :note, rows: 5, class: "medium-textarea" %>
+        </div>
+      
+        <div class="col-12">
+          <%= form.label :sector %>
+          <%= form.text_field :sector, class: "medium-input" %>
+        </div>
+      
+        <div class="col-12">
+          <%= form.label :tax_number_1 %>
+          <%= form.text_field :tax_number_1, class: "medium-input" %>
+        </div>
+      
+        <div class="col-12">
+          <%= form.label :tax_number_2 %>
+          <%= form.text_field :tax_number_2, class: "medium-input" %>
+        </div>
+
+        <div data-controller="nested-form" class="col-12"> <!-- Nested Form Telephones start -->
+          <!-- Creiamo nuovo Record -->
+          <template data-target="nested-form.template">
+            <%= form.fields_for :telephones, Telephone.new, child_index: "TEMPLATE_RECORD" do |telephone| %>
+              <%= render "telephone_fields", form: telephone %>
+            <% end %>
+          </template>
+      
+          <!-- Visualizziamo i Records esistenti -->
+          <%= form.fields_for :telephones do |telephone| %>
+            <%= render "telephone_fields", form: telephone %>
+          <% end %>
+
+          <!-- Il pulsante per aggiungere i tasks -->
+          <div data-target="nested-form.add_item">
+              <%= link_to "+ Aggiungi numero di telefono", "#", data: { action: "nested-form#add_association" }, class: "btn btn-transparent-dark-gray btn-medium margin-20px-bottom" %>
+              <%#= link_to "Add Telephone", "#", 'data-action': "nested-form#add_association" %>
+          </div>
+        </div> <!-- Nested Form Telephones end -->
+
+        <div data-controller="nested-form" class="col-12"> <!-- Nested Form Emails start -->
+          <!-- Creiamo nuovo Record -->
+          <template data-target="nested-form.template">
+            <%= form.fields_for :emails, Email.new, child_index: "TEMPLATE_RECORD" do |email| %>
+              <%= render "email_fields", form: email %>
+            <% end %>
+          </template>
+      
+          <!-- Visualizziamo i Records esistenti -->
+          <%= form.fields_for :emails do |email| %>
+            <%= render "email_fields", form: email %>
+          <% end %>
+
+          <!-- Il pulsante per aggiungere i tasks -->
+          <div data-target="nested-form.add_item">
+              <%= link_to "+ Aggiungi indirizzo email", "#", data: { action: "nested-form#add_association" }, class: "btn btn-transparent-dark-gray btn-medium margin-20px-bottom" %>
+              <%#= link_to "Add Telephone", "#", 'data-action': "nested-form#add_association" %>
+          </div>
+        </div> <!-- Nested Form Emails end -->
+      
+        <div class="col-12 text-center">
+          <%= form.submit class: "btn btn-transparent-dark-gray btn-large margin-20px-top" %> <!-- <-- Note: there is no comma! -->
+        </div>
+
+        <!--<div data-controller="hello" class="col-12"> <!-- Debug JavaScript Console start -->
+        <!--  <div class="form-row">-->
+        <!--    <div class="form-group col-auto">-->
+        <!--      <label name="debug">Debug</label>-->
+        <!--    </div>-->
+        <!--    <div class="form-group col">-->
+        <!--      <input data-target="hello.name" type="text" name="debug" placeholder="inserisci testo da visualizzare in JavaScript Console" class="medium-input">-->
+        <!--    </div>-->
+        <!--    <div class="form-group col-auto">-->
+        <!--      <button data-action="click->hello#log">Log</button>-->
+        <!--    </div>-->
+        <!--  </div>-->
+        <!--</div> <!-- Debug JavaScript Console end -->
+
+
+            <div class="col-12">
+              <a href="#" class="btn btn-transparent-dark-gray btn-medium margin-20px-bottom">+ Aggiungi indirizzo web o social network</a>
+            </div>
+
+
+      </div> <!-- end row -->
+    <% end %>
+    <!--</form>-->
+  </div>
+</section>

@@ -1,0 +1,16 @@
+<div class="nested-fields">
+  <div class="form-row">
+    <%= form.hidden_field :_destroy %>
+    <div class="form-group col-auto">
+      <%= form.text_field :name, placeholder: "email", class: "medium-input" %>
+    </div>
+    <div class="form-group col">
+      <%= form.text_field :address, placeholder: "info@...", class: "medium-input" %>
+    </div>
+    <div class="form-group col-auto">
+      <small>
+        <%= link_to "X", "#", data: { action: "click->nested-form#remove_association" }, class: "btn btn-transparent-dark-gray btn-medium margin-20px-bottom" %>
+      </small>
+    </div>
+  </div>
+</div>

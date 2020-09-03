@@ -1,0 +1,265 @@
+# Polimorphic emails
+
+Creiamo la tabella "emails" con relazione polimorfica.
+
+
+
+
+## Apriamo il branch "Polimorphic Emails"
+
+{title="terminal", lang=bash, line-numbers=off}
+```
+$ git checkout -b pe
+```
+
+
+
+
+
+## Creiamo la tabella emails
+
+Generiamo la tabella emails a cui associamo una relazione polimorfica e che useremo per le form annidate (nested-form).
+Usiamo "generate model" perché ci interessa la tabella; per le views usiamo quelle delle tabelle collegate uno-a-molti, ossia quelle che hanno il form principale in cui annideremo le forms per le emails.
+
+Definiamo la tabella:
+
+* name:string     -> che email è (generica, ufficio, personale,  per le spedizioni, per pagamenti fatture, ...)
+* address:string  -> l'effettivo indirizzo email.
+* emailable_id:integer per la chiave esterna (lato molti della relazione uno-a-molti)
+* emailable_type:string per identificare la tabella esterna 
+
+
+{title="terminal", lang=bash, line-numbers=off}
+```
+$ rails g model email name:string address:string emailable_id:integer emailable_type:string
+```
+
+
+Aggiorniamo il migrate creato inserendo dei valori di default.
+
+{id: "01-08-01_04", caption: ".../db/migrate/xxx_create_emails.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
+```
+class CreateEmails < ActiveRecord::Migration[6.0]
+  def change
+    create_table :emails do |t|
+      t.string :name
+      t.string :address
+      t.integer :emailable_id
+      t.string :emailable_type
+
+      t.timestamps
+    end
+  end
+end
+```
+
+[tutto il codice](#01-08-01_01all)
+
+
+Effettuiamo il migrate
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails db:migrate
+```
+
+
+
+
+## Aggiorniamo i models
+
+Nel model Email su "# == Relationships", aggiungiamo la relazione polimorfica.
+
+{id: "01-08-01_02", caption: ".../app/models/email.rb -- codice 02", format: ruby, line-numbers: true, number-from: 13}
+```
+  ## polymorphic
+  belongs_to :emailable, polymorphic: true
+```
+
+
+Nel model Company su "# == Relationships", aggiungiamo la relazione per form annidate indicando anche la relazione polimorfica (", as: :emailable").
+
+{id: "01-08-01_02", caption: ".../app/models/company.rb -- codice 03", format: ruby, line-numbers: true, number-from: 13}
+```
+  ## nested-form + polymorphic
+  has_many :emails, dependent: :destroy, as: :emailable
+  accepts_nested_attributes_for :emails, allow_destroy: true, reject_if: proc{ |attr| attr['address'].blank? }
+```
+
+Analizziamo il codice:
+
+* dependent: :destroy -> questa opzione fa in modo che quando eliminiamo un'azienda in automatico vengono cancellati anche tutti i suoi numeri telefonici.
+* , as: :emailable -> questa opzione indica che è una relazione polimorfica
+* allow_destroy: true -> permette di cancellare le form annidate
+* reject_if: proc{ |attr| attr['address'].blank? } -> evita che vengano salvate form annidate in cui non è stato messo l'indirizzo email
+
+
+
+
+## Aggiorniamo il controller
+
+Permettiamo che siano passati i parametri del form annidato per le emails.
+
+{id: "01-03-01_07", caption: ".../app/controllers/companies_controller.rb -- codice 04", format: ruby, line-numbers: true, number-from: 70}
+```
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def company_params
+      params.require(:company).permit(:name, :building, :address, :client_type, :client_rate, :supplier_type, :supplier_rate, :note, :sector, :tax_number_1, :tax_number_2, telephones_attributes: [:_destroy, :id, :name, :prefix, :number], emails_attributes: [:_destroy, :id, :name, :address])
+    end
+```
+
+[tutto il codice](#01-03-01_07all)
+
+
+Analizziamo il codice:
+
+* , emails_attributes: [:_destroy, :id, :name, :address] -> permette il passaggio dei parametri delle emails su form annidati.
+
+
+Lato server / back-end abbiamo terminato.
+
+
+
+
+## Aggiorniamo la view
+
+Adesso lavoriamo lato front-end. 
+La view su cui operiamo è il partial "_form" di companies (quello per le views edit e new).
+Prima del pulsante di submit del form inseriremo la possibilità di aggiungere vari indirizzi emails.
+Inseriamo il codice html con convenzione stimulus per i form annidati.
+
+{id: "01-03-01_08", caption: ".../views/companies/_form.html.erb -- codice 05", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+        <div data-controller="nested-form" class="col-12"> <!-- Nested Form Emails start -->
+          <!-- Creiamo nuovo Record -->
+          <template data-target="nested-form.template">
+            <%= form.fields_for :emails, Email.new, child_index: "TEMPLATE_RECORD" do |email| %>
+              <%= render "email_fields", form: email %>
+            <% end %>
+          </template>
+      
+          <!-- Visualizziamo i Records esistenti -->
+          <%= form.fields_for :emails do |email| %>
+            <%= render "email_fields", form: email %>
+          <% end %>
+
+          <!-- Il pulsante per aggiungere i tasks -->
+          <div data-target="nested-form.add_item">
+              <%= link_to "+ Aggiungi indirizzo email", "#", data: { action: "nested-form#add_association" }, class: "btn btn-transparent-dark-gray btn-medium margin-20px-bottom" %>
+              <%#= link_to "Add Telephone", "#", 'data-action': "nested-form#add_association" %>
+          </div>
+        </div> <!-- Nested Form Emails end -->
+```
+
+[tutto il codice](#01-03-01_04all)
+
+Per l'analisi del codice vedi capitolo precedente "05-telephones_nested_forms"
+
+
+Creiamo il partial "email_fields".
+
+{id: "01-03-01_07", caption: ".../views/companies/_email_fields.html.erb -- codice 06", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<div class="nested-fields">
+  <div class="form-group">
+    <%= form.hidden_field :_destroy %>
+    <%= form.text_field :name, placeholder: "centralino", class: "form-control" %>
+    <%= form.text_field :prefix, class: "form-control" %>
+    <%= form.text_field :number, class: "form-control" %>
+    <small>
+      <%= link_to "Remove", "#", data: { action: "click->nested-form#remove_association" } %>
+      <%#= link_to "Remove", "#", 'data-action': "click->nested-form#remove_association" %>
+    </small>
+  </div>
+</div>
+```
+
+[tutto il codice](#01-03-01_06all)
+
+Per l'analisi del codice vedi capitolo precedente "05-telephones_nested_forms"
+
+
+
+
+## Verifichiamo lo stimulus controller per nested-forms
+
+Nella cartella javascript/packs/controllers/ abbiamo già creato il file nested_form_controller.js in cui abbiamo inseriamo il codice javascript per gestire le form annidate.
+Il codice è già sufficientemente generico e non dobbiamo fare nessun aggiornamento.
+Per il codice e la relativa spiegazione fare riferimento al capitolo precedente "06-polymorfic_telephonable"
+
+
+
+
+## Verifichiamo preview
+
+Vediamo la nostra applicazione rails funzionante. Attiviamo il webserver
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails s
+```
+
+e vediamo sul nostro browser:
+
+* https://mycloud9path.amazonaws.com/companies
+
+Andiamo su edit di un'azienda ed inseriamo/modifichiamo/eliminiamo gli indirizzi emails. 
+Funziona tutto.
+
+
+
+
+## Salviamo su Git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "Implement nested_form email on companies"
+```
+
+
+
+
+## Pubblichiamo su Heroku
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push heroku pe:master
+$ heroku run rails db:migrate
+```
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout master
+$ git merge pe
+$ git branch -d pe
+```
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push origin master
+```
+
+
+
+
+## Il codice del capitolo
+
+
+

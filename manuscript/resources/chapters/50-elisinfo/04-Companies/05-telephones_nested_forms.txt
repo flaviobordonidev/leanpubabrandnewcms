@@ -106,7 +106,7 @@ $ rails g model telephone company:belongs_to name:string prefix:string number:st
 
 Nota: "company:belongs_to" crea la chiave esterna company_id, mette l'indice ed imposta la relazione 1-a-molti nei models.
 
-Nota: Questa tabella la elimineremo più avanti a favore di una tabella polimorfica. Questo perché quando dovremo fare i telefoni per le persone, con questo modello dovremo aggiungere una nuova colonna con chiave esterna person_id ed ogni nuova tabella che aggiungiamo dobbiamo inserire una nuova colonna. Inoltre le colonne delle chiavi esterne saranno tutte riempite parzialmente. Questo lo evitiamo con la tabella polimorfica.
+Nota: Questo campo lo elimineremo più avanti a favore di due cambi per la relazione polimorfica. Questo perché quando dovremo fare i telefoni per le persone, con questo modello dovremo aggiungere una nuova colonna con chiave esterna person_id ed ogni nuova tabella che aggiungiamo dobbiamo inserire una nuova colonna. Inoltre le colonne delle chiavi esterne saranno tutte riempite parzialmente. Questo lo evitiamo con la relazione polimorfica.
 
 Aggiorniamo il migrate creato inserendo dei valori di default.
 
@@ -143,9 +143,19 @@ $ rails db:migrate
 
 ## Aggiorniamo i models
 
-Nel model Telephone aggiungiamo la relazione 1-a-molti con nested_form.
+Nel model Telephone verifichiamo solo che il "belongs_to" è già stato impostato.
 
-{id: "01-03-01_01", caption: ".../app/models/company.rb -- codice 05", format: ruby, line-numbers: true, number-from: 2}
+{id: "01-03-01_01", caption: ".../app/models/telephone.rb -- codice 05", format: ruby, line-numbers: true, number-from: 2}
+```
+  belongs_to :company
+```
+
+[tutto il codice](#01-03-01_02all)
+
+
+Nel model Company aggiungiamo la relazione 1-a-molti con nested_form.
+
+{id: "01-03-01_01", caption: ".../app/models/company.rb -- codice 06", format: ruby, line-numbers: true, number-from: 2}
 ```
   has_many :telephones, dependent: :destroy
   accepts_nested_attributes_for :telephones, allow_destroy: true, reject_if: proc{ |attr| attr['number'].blank? }
@@ -153,18 +163,11 @@ Nel model Telephone aggiungiamo la relazione 1-a-molti con nested_form.
 
 [tutto il codice](#01-03-01_01all)
 
-L'opzione "dependent: :destroy" fa in modo che quando eliminiamo un'azienda in automatico vengono cancellati anche tutti i suoi numeri telefonici.
+Analizziamo il codice:
 
-
-Nel model Telephone verifichiamo solo che il "belongs_to" è già stato impostato.
-
-{id: "01-03-01_01", caption: ".../app/models/telephone.rb -- codice 06", format: ruby, line-numbers: true, number-from: 2}
-```
-  belongs_to :company
-```
-
-[tutto il codice](#01-03-01_02all)
-
+* dependent: :destroy -> questa opzione fa in modo che quando eliminiamo un'azienda in automatico vengono cancellati anche tutti i suoi numeri telefonici.
+* allow_destroy: true -> permette di cancellare le form annidate
+* reject_if: proc{ |attr| attr['number'].blank? } -> evita che vengano salvate form annidate in cui non è stato messo il numero di telefono
 
 
 
@@ -234,7 +237,7 @@ Analizziamo il codice:
 
 Vediamo adesso il partial "telephone_fields".
 
-{id: "01-03-01_07", caption: ".../views/todo_list/_telephone_fields.html.erb -- codice 07", format: HTML+Mako, line-numbers: true, number-from: 1}
+{id: "01-03-01_07", caption: ".../views/companies/_telephone_fields.html.erb -- codice 07", format: HTML+Mako, line-numbers: true, number-from: 1}
 ```
 <div class="nested-fields">
   <div class="form-group">

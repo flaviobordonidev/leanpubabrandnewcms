@@ -1,0 +1,11 @@
+# Companies index
+
+Lavoriamo sul view index in modo da visualizzare l'elenco di aziende.
+Il mockup mi sembra vada su Index...   Iniziamo con index.
+
+
+
+## Apriamo il branch
+
+Ho intanto aperto il branch CSOI Companies Show Or Index ^_^
+Perché ero indeciso su quale iniziare.

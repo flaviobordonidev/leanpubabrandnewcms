@@ -3,14 +3,28 @@
 rendiamo polimorfica la tabella "telephone".
 
 
+
+## Branch
+
+continuiamo con il branch aperto precedentemente
+
+
+
+
 ## Cos'è la tabella polimorfica e che vantaggi da
+
+Il termine di "tabella polimorfica" è improprio. Si dovrebbe parlare di tabella con relazione polimorfica.
+La tabella con relazione polimorfica è una tabella che "adatta" la sua relazione uno-a-molti in modo da andar bene per varie tabelle collegate.
+
+- "poli"    : molte
+- "morphos" : cambia forma, si adatta
 
 La tabella polimorfica è una struttura implementata in Rails che tiene in automatico traccia delle chiavi esterne alle varie tabelle attraverso la definizione nel Model.
 La tabella polimorfica ci permette di essere usata con relazioni uno-a-molti da molte altre tabelle senza dover aggiungere ogni volta una nuova chiave esterna e ci evita di avere una tabella piena di campi vuoti.
 
 Per capire meglio i vantaggi della tabella polimorfica facciamo un esempio.
 
-La tabella "telephone" collegata ad Aziende, Persone, Offerte, Ordini e Banche
+La tabella "telephone" con relazioni uno-a-molit ad Aziende, Persone, Offerte, Ordini e Banche
 
 Nome        | numero        | company_id | person_id | offer_id | order_id | bank_id |
 --------------------------------------------------------------------------------------
@@ -24,7 +38,7 @@ ufficio     | 02976337652   | 7283       |           |          |          |    
 
 
 
-La tabella "telephonable" collegata ad Aziende, Persone, Offerte, Ordini e Banche
+La tabella "telephone" con relazione polimorfica ad Aziende, Persone, Offerte, Ordini e Banche
 
 Nome        | numero        | record_id | table_name |
 ------------------------------------------------------
@@ -35,6 +49,9 @@ ufficio     | 02976337652   | 3918      | offer      |
 ufficio     | 02976337652   | 1517      | bank       |
 ufficio     | 02976337652   | 5182      | order      |
 ufficio     | 02976337652   | 7283      | company    |
+
+
+Come si può vedere da queste due tabelle, la relazione polimorfica ci evita di dover aggiungere una nuova colonna con chiave esterna per ogni nuova tabella uno-a-molti che aggiungiamo. Inoltre le colonne delle chiavi esterne della tabella senza relazione polimorfica, sono tutte riempite parzialmente. Questo lo evitiamo con la relazione polimorfica.
 
 
 
@@ -160,7 +177,7 @@ $ rails db:migrate
 
 ## Creiamo le associazioni polimorfiche ed aggiungiamo il nested models per i forms annidati
 
-Andiamo sul model Telephone su "# == Relationships", togliamo la relazione "belongs_to :company" ed aggiungiamo la relazione polimorfica.
+Nel model Telephone su "# == Relationships", togliamo la relazione "belongs_to :company" ed aggiungiamo la relazione polimorfica.
 
 {id: "01-08-01_02", caption: ".../app/models/telephone.rb -- codice 03", format: ruby, line-numbers: true, number-from: 13}
 ```
@@ -171,7 +188,7 @@ Andiamo sul model Telephone su "# == Relationships", togliamo la relazione "belo
 [tutto il codice](#01-08-01_01all)
 
 
-Andiamo sul model Company su "# == Relationships", togliamo la relazione diretta a "telephones" ed aggiungiamo la relazione polimorfica.
+Nel model Company su "# == Relationships", togliamo la relazione diretta a "telephones" ed aggiungiamo la relazione polimorfica.
 
 La relazione polimorfica semplice sarebbe
 
@@ -187,9 +204,9 @@ Siccome noi abbiamo una relazione per nested forms la relazione diventa
 
 {id: "01-08-01_02", caption: ".../app/models/company.rb -- codice 04", format: ruby, line-numbers: true, number-from: 13}
 ```
-  ## polymorphic
+  ## nested-forms + polymorphic
   has_many :telephones, dependent: :destroy, as: :telephoneable
-  accepts_nested_attributes_for :telephoneable, allow_destroy: true, reject_if: proc{ |attr| attr['number'].blank? }
+  accepts_nested_attributes_for :telephones, allow_destroy: true, reject_if: proc{ |attr| attr['number'].blank? }
 ```
 
 In pratica abbiamo semplicemente aggiunto il parametro ", as: :telephoneable".
