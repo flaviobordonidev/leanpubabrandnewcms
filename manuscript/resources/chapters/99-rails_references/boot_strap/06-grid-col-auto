@@ -1,6 +1,33 @@
 # Gestione della griglia
 
 
+
+
+## Le basi
+
+
+* https://www.w3schools.com/bootstrap4/bootstrap_grid_basic.asp
+
+
+Grid Classes
+The Bootstrap 4 grid system has five classes:
+
+.col- (extra small devices - screen width less than 576px)
+.col-sm- (small devices - screen width equal to or greater than 576px)
+.col-md- (medium devices - screen width equal to or greater than 768px)
+.col-lg- (large devices - screen width equal to or greater than 992px)
+.col-xl- (xlarge devices - screen width equal to or greater than 1200px)
+
+The classes above can be combined to create more dynamic and flexible layouts.
+
+Tip: Each class **scales up**, so if you wish to set the **same widths for sm and md, you only need to specify sm**.
+
+
+
+
+
+## Gestiamo le colonne in modo più responsive possibile
+
 Le colonne lavorano in maniera molto responsive se non diamo indicazioni rigide.
 
 * se mettiamo "-auto" lei si mette il più piccolo possibile in funzione del contenuto
@@ -85,3 +112,90 @@ enter image description here
 Play here
 
 Show code snippet
+
+
+
+
+## Esempio con le colonne del telefono
+
+In questo primo esempio le colonne si adattano e si presentano bene sul cellulare (mobile-first) ma non sono molto belle sul monitor del PC.
+
+---
+<!-- This works OK on mobile and so-so in PC -->
+<div class="nested-fields">
+  <div class="form-row">
+    <%= form.hidden_field :_destroy %>
+    <div class="form-group col-auto">
+      <%= form.text_field :name, placeholder: "centralino", class: "medium-input" %>
+    </div>
+    <div class="form-group col">
+      <%= form.text_field :prefix, placeholder: "prefisso", class: "medium-input" %>
+    </div>
+    <div class="form-group col-auto">
+      <%= form.text_field :number, placeholder: "numero telefonico", class: "medium-input" %>
+    </div>
+    <div class="form-group col">
+      <small>
+        <%= link_to "X", "#", data: { action: "click->nested-form#remove_association" }, class: "btn btn-transparent-dark-gray btn-medium margin-20px-bottom" %>
+      </small>
+    </div>
+  </div>
+</div>
+---
+
+
+In questo primo esempio le colonne si adattano e si presentano bene sul monitor del PC ma non nel cellulare.
+
+---
+<!-- This works so-so on mobile and OK in PC -->
+<div class="nested-fields">
+  <div class="form-row">
+    <%= form.hidden_field :_destroy %>
+    <div class="form-group col-auto">
+      <%= form.text_field :name, placeholder: "centralino", class: "medium-input" %>
+    </div>
+    <div class="form-group col-auto">
+      <%= form.text_field :prefix, placeholder: "prefisso", class: "medium-input" %>
+    </div>
+    <div class="form-group col">
+      <%= form.text_field :number, placeholder: "numero telefonico", class: "medium-input" %>
+    </div>
+    <div class="form-group col-auto">
+      <small>
+        <%= link_to "X", "#", data: { action: "click->nested-form#remove_association" }, class: "btn btn-transparent-dark-gray btn-medium margin-20px-bottom" %>
+      </small>
+    </div>
+  </div>
+</div>
+---
+
+
+Uniamo i due esempi in modo che:
+
+- da colonna "extra-small" (che è col) fino a colonna "small" (che è col-sm) abbiamo le 4 colonne : "-auto", "none", "-auto", "-auto"
+- da colonna "medium" (che è col-md) fino a colonna "xlarge" (che è col-xl) abbiamo le 4 colonne  : "-auto", "-auto", "none", "-auto"
+
+In questo modo ho una buona visualizzazione sia su mobile che su PC
+
+---
+<!-- This works OK both on mobile and PC -->
+<div class="nested-fields">
+  <div class="form-row">
+    <%= form.hidden_field :_destroy %>
+    <div class="form-group col-auto col-md-auto">
+      <%= form.text_field :name, placeholder: "centralino", class: "medium-input" %>
+    </div>
+    <div class="form-group col col-md-auto">
+      <%= form.text_field :prefix, placeholder: "prefisso", class: "medium-input" %>
+    </div>
+    <div class="form-group col-auto col-md">
+      <%= form.text_field :number, placeholder: "numero telefonico", class: "medium-input" %>
+    </div>
+    <div class="form-group col-auto col-md-auto">
+      <small>
+        <%= link_to "X", "#", data: { action: "click->nested-form#remove_association" }, class: "btn btn-transparent-dark-gray btn-medium margin-20px-bottom" %>
+      </small>
+    </div>
+  </div>
+</div>
+---

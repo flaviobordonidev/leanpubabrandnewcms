@@ -1,0 +1,358 @@
+{id: 50-elisinfo-05-people-01-people_seeds}
+# Cap 5.1 -- Tabella persone
+
+
+In questo capitolo lavoreremo principalmente lato database. Creeremo la tabella persone e metteremo i seed iniziali ed alcuni dati di prova. Non avremo nessuna interazione lato views e quindi non apriremo il browser per usare la web gui.
+Eseguendo gli scaffolds la web gui è creata in automatico ma in questo capitolo non la utilizzeremo. Utilizzeremo invece la console di rails "$ rails c".
+
+Per le traduzioni:
+
+* per le traduzioni i18n statiche usiamo i files yaml di config/locale
+* per le traduzioni i18n dinamiche usiamo globalize
+
+
+
+
+## Apriamo il branch "People Seeds"
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout -b ps
+```
+
+
+
+
+## Progettiamo la tabela people
+
+Abbiamo diviso le varie colonne della tabella in principali e secondarie perché non implementeremo tutte le colonne da subito ma iniziamo con le principali e poi aggiungiamo le altre di volta in volta facendo dei migrate di aggiunta ed aggiornando controller, model e views.
+
+Colonne principali:
+
+
+* title:string            -> (50 caratteri) Titolo es: Sig., Sig.ra, Gen.le Capo di Stato Magg., Dottoressa, Egr. Ill.str. Figl. de Cn. in Baronetto di Corn. 
+* first_name:string       -> (100 caratteri) Nome proprio, inclusi eventuali altri nomi es: Elisa Mariane junior
+* last_name:string        -> (100 caratteri) Il cognome, inclusi cognomi composti es: Ferreira Candido da Silva Bordoni
+* homonym:string          -> (100 caratteri) Gestiamo un'omonimia spiegando chi è uno e chi è l'altro (es: "quello che ha la moglie Brasiliana")
+* note:text               -> (molti caratteri) Note Aggiuntive
+
+
+Colonne secondarie:
+
+* meta_title:string       -> Per il SEO
+* meta_description:string -> Per il SEO
+* image                   -> La inseriamo attraverso rails files upload
+
+
+Possibili colonne che però non usiamo:
+
+* politically_exposed:string  -> Se politicamente esposto. La metto nel campo note.
+* tax_code:string             -> il codice fiscale della persona. Lo metto nel campo note.
+* sex:integer                 -> (lista ENUM) Sesso considerando il fluidgender, perché oltre maschio e femmina esiste transgend/transex/...
+* nationality_id:integer      -> Nazionalità
+* born_date:date              -> Data di nascita. Comoda per fargli gli auguri nel compleanno.
+* born_city_id:integer        -> Luogo di nascita.
+
+
+Tabelle nested_form:
+
+* Telefono [nested_form]
+* Email [nested_form]
+* Social [nested_form]
+
+
+Per le traduzioni:
+
+* il campo "title" è importante tradurlo perché sarà visualizzato sui documenti. Esempi di titoli in italiano ed inglese:
+  - IT: Sig. Sig.ra Sig.rina ... 
+  - EN: Mr.  Mrs.   Mss. ...
+* i campi "omonimia" e "note" possiamo non tradurli perché sono informazioni che restano all'interno dell'azienda che usa elisinfo.
+
+
+
+
+## Impementiamo tabella people
+
+Creiamo la tabella iniziale con le sole colonne principali.
+
+Usiamo lo Scaffold che mi imposta già l'applicazione in stile restful con le ultime convenzioni Rails.
+
+I> ATTENZIONE: con "rails generate scaffold ..." -> usiamo il SINGOLARE
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ rails g scaffold Person title:string first_name:string last_name:string homonym:string note:text
+```
+
+
+vediamo il migrate generato
+
+{id: "50-05-01_01", caption: ".../db/migrate/xxx_create_people.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
+```
+class CreatePeople < ActiveRecord::Migration[6.0]
+  def change
+    create_table :people do |t|
+      t.string :title
+      t.string :first_name
+      t.string :last_name
+      t.string :homonym
+      t.text :note
+
+      t.timestamps
+    end
+  end
+end
+```
+
+[tutto il codice](#50-05-01_01all)
+
+
+Effettuiamo il migrate del database per creare la tabella sul database
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails db:migrate
+```
+
+
+
+
+## Salviamo su git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "add scaffold Person"
+```
+
+
+
+
+## Usiamo globalize - i18n - dynamic
+
+prima ancora di iniziare i semi mi attivo per l'internazionalizzazione sul database (i18n dynamic).
+
+Attiviamo l'internazionalizzazione sul database usando la gemma globalize che abbiamo già installato nei capitoli precedenti. (vedi: 01-base/29-dynamic-i18n/01-install_i18n_globalize)
+Indichiamo sul modello i campi della tabella che vogliamo tradurre. 
+
+{id: "50-05-01_02", caption: ".../app/models/person.rb -- codice 02", format: ruby, line-numbers: true, number-from: 7}
+```
+  ## globalize required
+  translates :title, :fallbacks_for_empty_translations => true
+```
+
+[tutto il codice](#50-05-01_02all)
+
+I> il "translates" dentro il model va messo prima di fare il db:migrate altrimenti ci da errore!
+
+adesso creiamo un migration vuoto perché useremo il metodo di globalize ".create_translation_table"
+
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ rails g migration create_people_translations
+```
+
+Lavoriamo sulla migration usando il metodo .create_translation_table sul model "Person" e passando i nomi dei campi che devono avere la traduzione.
+
+
+{id: "01-08-01_01", caption: ".../db/migrate/xxx_create_people_translations.rb -- codice 03", format: ruby, line-numbers: true, number-from: 1}
+```
+class CreatePeopleTranslations < ActiveRecord::Migration[6.0]
+  def change
+    reversible do |dir|
+      
+      dir.up do
+        Person.create_translation_table!({
+          title: :string
+        },{
+          migrate_data: true,
+          remove_source_columns: true
+        })
+      end
+
+      dir.down do 
+        Person.drop_translation_table! migrate_data: true
+      end
+      
+    end
+  end
+end
+```
+
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rake db:migrate
+```
+
+E' fondamentale cancellare dalla tabella principale "people" i campi con traduzione, nel nostro caso solo "title".
+L'opzione "remove_source_columns: true" ci risparmia di farlo manualmente.
+
+
+
+
+## Salviamo su git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "add People I18n globalize"
+```
+
+
+
+
+
+## seed 
+
+Popolare la tabella in automatico con un solo record. Nel prossimo paragrafo aggiungiamo altri records manualmente.
+
+{id: "01-08-01_01", caption: ".../db/seeds.rb -- codice 03", format: ruby, line-numbers: true, number-from: 29}
+```
+puts "setting the Person data with I18n :en :it"
+Person.new(title: "Sig.", first_name: "Flavio", last_name: "Bordoni", locale: :it).save
+Person.last.update(title: "Mr.", locale: :en)
+```
+
+
+Per aggiungere il seme/record alla tabella potremmo usare "$ rails db:seed" o "$ rails db:setup".
+
+I> Nota: "$ rails db:setup" avrebbe svuotato la tabella prima di inserire il record.
+
+Ma noi li inseriamo manualmente.
+
+
+
+
+## Salviamo su git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "add seed people"
+```
+
+
+
+
+## Popoliamo manualmente la tabella
+
+Usiamo la console di rails per popolare la tabella del database.
+
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails c
+> Person.all
+> I18n.locale
+
+> Person.new(title: "Sig.", first_name: "Flavio", last_name: "Bordoni", locale: :it).save
+> Person.last.update(title: "Mr.", locale: :en)
+
+> Person.all
+> p1 = Person.first
+> p1.title
+> I18n.locale
+> I18n.locale = :en
+> p1.title
+> I18n.locale
+
+> Person.new(title: "Sig.ra", first_name: "Elisa Mariane", last_name: "Candido da Silva Bordoni", locale: :it).save
+> p2 = Person.last
+> p2.title
+# otteniamo il fallback in italiano perché non c'è la versione inglese.
+
+> p2.title = "Mrs."
+> p2.title
+> p2.save
+
+> I18n.locale = :it
+> p2.title
+# il valore in italiano non è stato sovrascritto perché eravamo in I18n.locale = :en
+
+> Person.find 2
+> exit
+```
+
+
+
+
+## Salviamo su git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "add people Manually"
+```
+
+I> Nota: Questo git commit è solo per lasciare un commento perché le modifiche fatte sul database non sono passate tramite git.
+
+
+
+
+## Publichiamo su heroku
+
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push heroku ps:master
+$ heroku run rake db:migrate
+```
+I> Lato produzione su heroku c'è un database indipendente da quello di sviluppo quindi risulta vuoto.
+
+Possiamo popolarlo attraverso i semi
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ heroku run rails db:seed
+```
+
+Oppure per popolare il database di heroku basta aprire la console con il comando:
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ heroku run rails c
+```
+E rieseguire i passi già fatti nel paragrafo precedentemente
+
+
+
+
+## Verifichiamo preview su heroku.
+
+Andiamo all'url:
+
+* https://elisinfo.herokuapp.com/people
+
+E verifichiamo che l'elenco delle aziende è popolato.
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout master
+$ git merge ps
+$ git branch -d ps
+```
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push origin master
+```

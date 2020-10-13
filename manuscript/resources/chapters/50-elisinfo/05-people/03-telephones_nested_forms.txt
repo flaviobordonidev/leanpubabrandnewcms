@@ -1,0 +1,333 @@
+{id: 50-elisinfo-05-people-03-telephones_nested_forms}
+# Cap 5.3 -- Form annidate di telefoni su persone.
+
+Su companies ci sono più capitoli con varie spiegazioni didattiche qui andiamo direttamente al pratico.
+Usiamo direttamente le tabelle polimorfiche che abbiamo già creato.
+
+
+
+
+
+## Apriamo il branch "Telephonable People"
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout -b tp
+```
+
+
+
+
+## Verifichiamo stimulus per nostra applicazione
+
+Verifichiamo che sul "layouts" che usiamo ci sia "javascript_pack_tag".
+
+{id: "50-05-03_01", caption: ".../app/views/layouts/application.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 10}
+```
+    <%#= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+```
+
+
+verifichiamo che nel file "application" di webpack abbiamo inizializzato stimulus.
+
+{id: "50-05-03_02", caption: ".../app/javascript/packs/application.js -- codice 02", format: JavaScript, line-numbers: true, number-from: 19}
+```
+// Stimulus - start
+import { Application } from "stimulus"
+import { definitionsFromContext } from "stimulus/webpack-helpers"
+
+const application = Application.start()
+const context = require.context("./controllers", true, /\.js$/)
+application.load(definitionsFromContext(context))
+// Stimulus - end
+```
+
+
+Andiamo sul partial _form di people e aggiungiamo:
+
+{id: "50-05-03_01", caption: ".../views/people/_form.html.erb -- codice 03", format: HTML+Mako, line-numbers: true, number-from: 44}
+```
+<div data-controller="hello" class="field">
+  <input data-target="hello.name" type="text">
+  <button data-action="click->hello#log">Log</button>
+</div>
+```
+
+
+
+
+## Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+```
+$ sudo service postgresql start
+$ rails s
+```
+
+apriamolo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/mockups/page_b
+
+Apriamo nel browser google chrome "view->developer->JavaScript Console", scriviamo qualcosa nel nuovo campo input e premiamo il pulsante "Log". Vedremo apparire nella "JavaScript Console" il testo che abbiamo inserito nel campo input.
+Funziona! ^_^
+(anche se la javascript console mi dice che ci sono degli errori, ma funziona!)
+
+
+
+
+## Usiamo la tabella telephones con relazione polimorfica
+
+Abbiamo già creato la tabella telephones con i campi per essere polimorfica e la abbiamo usata per le aziende. Adesso la usiamo per le persone.
+
+
+
+
+## Creiamo le associazioni polimorfiche ed aggiungiamo il nested models per i forms annidati
+
+Verifichiamo la relazione polimorfica nel model Telephone su "# == Relationships".
+
+{id: "50-05-03_04", caption: ".../app/models/telephone.rb -- codice 04", format: ruby, line-numbers: true, number-from: 11}
+```
+  ## polymorphic
+  belongs_to :telephoneable, polymorphic: true
+```
+
+[tutto il codice](#50-05-03_04all)
+
+
+Nel model Person su "# == Relationships", aggiungiamo la relazione polimorfica con nested forms.
+
+{id: "50-05-03_05", caption: ".../app/models/person.rb -- codice 05", format: ruby, line-numbers: true, number-from: 13}
+```
+  ## nested-forms + polymorphic
+  has_many :telephones, dependent: :destroy, as: :telephoneable
+  accepts_nested_attributes_for :telephones, allow_destroy: true, reject_if: proc{ |attr| attr['number'].blank? }
+```
+
+[tutto il codice](#50-05-03_05all)
+
+
+
+
+## Proviamo l'associazione polimorfica
+
+Usiamo la tabella emails per dare due indirizzi emails alla prima persona. 
+
+- Inseriamo email personale flavio.bordoni@gmail.it alla prima persona.
+- Inseriamo email personale2 fla.bord88@hotmail.it alla prima persona.
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+$ rails c
+> Person.all
+> Email.all
+> p1 = Person.first
+> p1.emails
+> p1.emails.new(name: "personale", address: "flavio.bordoni@gmail.it").save
+> p1.emails
+> p1e1 = p1.emails.last
+> Email.all
+
+> p1e2 = p1.emails.new(name: "personale2", address: "fla.bord88@hotmail.it")
+> p1.emails
+> Email.all
+> p1e2.save
+> p1.emails
+> p1.emails.last
+> Email.all
+~~~~~~~~
+
+Vediamo l'altro lato dell'associazione:
+
+{title="terminal", lang=bash, line-numbers=off}
+~~~~~~~~
+> p1e1.person --> ERROR
+> p1e1.emailable
+> p1e2.emailable
+
+> e3 = Email.find 3
+> e3.emailable
+~~~~~~~~
+
+Dal punto di vista del polimorfismo abbiamo finito.
+
+
+
+
+## Aggiorniamo il controller
+
+Permettiamo che siano passati i parametri relativi ai telefoni
+
+{id: "50-05-03_06", caption: ".../app/controllers/people_controller.rb -- codice 06", format: ruby, line-numbers: true, number-from: 70}
+```
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def person_params
+      params.require(:person).permit(:title, :first_name, :last_name, :homonym, :note, telephones_attributes: [:_destroy, :id, :name, :prefix, :number])
+    end
+```
+
+[tutto il codice](#50-05-03_06all)
+
+Lato server / back-end abbiamo terminato.
+
+
+
+
+## Aggiorniamo la view
+
+Adesso lavoriamo lato front-end. La view su cui operiamo è il partial "_form" in cui abbiamo le view edit ed new delle varie persone.
+Prima del pulsante di submit del form inseriremo la possibilità di aggiungere vari numeri di telefono.
+Implementiamo nel view l'html per i forms annidati con convenzione stimulus.
+
+{id: "50-05-03_07", caption: ".../views/people/_form.html.erb -- codice 07", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+  <div data-controller="nested-form">
+    <!-- Creiamo nuovo Record -->
+    <template data-target="nested-form.template">
+      <%= form.fields_for :telephones, Telephone.new, child_index: "TEMPLATE_RECORD" do |telephone| %>
+        <%= render "telephone_fields", form: telephone %>
+      <% end %>
+    </template>
+
+    <!-- Visualizziamo i Records esistenti -->
+    <%= form.fields_for :telephones do |telephone| %>
+      <%= render "telephone_fields", form: telephone %>
+    <% end %>
+    
+    <!-- Il pulsante per aggiungere i tasks -->
+    <div data-target="nested-form.add_item">
+        <%= link_to "Add Telephone", "#", data: { action: "nested-form#add_association" } %>
+        <%#= link_to "Add Telephone", "#", 'data-action': "nested-form#add_association" %>
+    </div>
+  </div>
+```
+
+[tutto il codice](#50-05-03_07all)
+
+
+Faccciamo copia/incolla del partial "_telephone_fields" da views/companies a views/people.
+
+{id: "50-05-03_08", caption: ".../views/people/_telephone_fields.html.erb -- codice 08", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<div class="nested-fields">
+  <div class="form-row">
+    <%= form.hidden_field :_destroy %>
+    <div class="form-group col-auto col-md-auto">
+      <%= form.text_field :name, placeholder: "centralino", class: "medium-input" %>
+    </div>
+    <div class="form-group col col-md-auto">
+      <%= form.text_field :prefix, placeholder: "prefisso", class: "medium-input" %>
+    </div>
+    <div class="form-group col-auto col-md">
+      <%= form.text_field :number, placeholder: "numero telefonico", class: "medium-input" %>
+    </div>
+    <div class="form-group col-auto col-md-auto">
+      <small>
+        <%= link_to "X", "#", data: { action: "click->nested-form#remove_association" }, class: "btn btn-transparent-dark-gray btn-medium margin-20px-bottom" %>
+      </small>
+    </div>
+  </div>
+</div>
+```
+
+[tutto il codice](#01-03-01_08all)
+
+
+
+
+## Verifichiamo lo stimulus controller per nested-forms
+
+Nella cartella javascript/packs/controllers/ abbiamo già creato il file nested_form_controller.js in cui abbiamo inseriamo il codice javascript per gestire le form annidate.
+Il codice è già sufficientemente generico e non dobbiamo fare nessun aggiornamento.
+
+{id: "50-05-03_09", caption: ".../javascript/packs/controllers/nested_form_controller.js -- codice 09", format: JavaScript, line-numbers: true, number-from: 1}
+```
+import { Controller } from "stimulus"
+
+export default class extends Controller {
+  static targets = ["add_item", "template"]
+  
+  add_association(event){
+    event.preventDefault()
+    var content = this.templateTarget.innerHTML.replace(/TEMPLATE_RECORD/g, Math.floor(Math.random() * 20))
+    this.add_itemTarget.insertAdjacentHTML('beforebegin', content)
+  }
+
+  remove_association(event){
+    event.preventDefault()
+    let item = event.target.closest(".nested-fields")
+    item.querySelector("input[name*='_destroy']").value = 1
+    item.style.display = "none"
+  }
+}
+```
+
+
+
+
+## Verifichiamo preview
+
+Vediamo la nostra applicazione rails funzionante. Attiviamo il webserver
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails s
+```
+
+e vediamo sul nostro browser:
+
+* https://mycloud9path.amazonaws.com
+* https://mycloud9path.amazonaws.com/companies
+
+Andiamo su edit dell'azienda con id 1 e vediamo che ha i due numeri di telefono. Possiamo inserirne di nuovi e cancellarne di esistenti.
+Funziona tutto.
+
+
+
+
+## Salviamo su Git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "Implement nested_form telephone on people"
+```
+
+
+
+
+## Pubblichiamo su Heroku
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push heroku tp:master
+```
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout master
+$ git merge tp
+$ git branch -d tp
+```
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push origin master
+```
+

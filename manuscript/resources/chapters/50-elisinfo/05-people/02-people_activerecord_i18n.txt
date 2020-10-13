@@ -1,0 +1,44 @@
+{id: 50-elisinfo-05-people-02-people_activerecord_i18n}
+# Cap 5.2 -- Internazionalizziamo i campi di person
+
+I nomi delle lables sulle views sono prese in automatico dai nomi del database e possiamo tradurli.
+
+
+
+
+## Le labels di People
+
+Sotto 
+
+  activerecord:
+    attributes:
+
+Per le persone abbiamo le seguenti labels:
+
+{id: "50-05-02_01", caption: ".../config/locales/it.yml -- codice 01", format: yaml, line-numbers: true, number-from: 1}
+```
+      person:
+        title: "Titolo"
+        first_name: "Nome"
+        last_name: "Cognome"
+        homonym: "Omonimia"
+        note: "Note"
+```
+
+[tutto il codice](#50-05-02_01all)
+
+
+
+
+{id: "50-05-02_02", caption: ".../config/locales/en.yml -- codice 02", format: yaml, line-numbers: true, number-from: 1}
+```
+      person:
+        title: "Title"
+        first_name: "Name"
+        last_name: "Surname"
+        homonym: "Homonym"
+        note: "Note"
+```
+
+[tutto il codice](#50-05-02_02all)
+

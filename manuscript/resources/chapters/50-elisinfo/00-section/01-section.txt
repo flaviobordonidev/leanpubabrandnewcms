@@ -15,3 +15,10 @@ Questo volume continua a partire da quanto già fatto nei seguenti volumi:
 in questo volume: 
 
 * Blabla
+
+L'origine del nome.
+Lo sviluppatore sostiene che ELIS in latino sia l'acronimo della frase: "finalmente è tornata la luce" (est lux in fundus).
+Oppure la frase "è la luce in fondo al tunnel".
+E che ci sia un riferimento al sole ("elios"). Il suffisso INFO indica invece che si tratta di gestione di informazione.
+Quindi Elisinfo porta il significato di: "Finalmente è tornata la luce sulla gestione delle informazioni".
+Si ha comunque il forte sospetto che il nome derivi da un omaggio fatto alla moglie Elisa. ^_^

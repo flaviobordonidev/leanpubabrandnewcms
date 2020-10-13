@@ -1,0 +1,83 @@
+# Rendiamo la view con stile
+
+Inseriamo al partial _form di people lo stylesheet che abbiamo utilizzato nei mockups.
+
+
+
+## Sovrapponiamo una parte del mockup
+
+Prendiamo la parte che visualizza il form in mockups/s2p3_people_new.html.erb e la mettiamo nel nostro _form.
+
+{id: "50-04-01_01", caption: ".../views/people/_form.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+    <!-- start form style 01 section -->
+    <section class="wow fadeIn padding-one-all" id="start-your-project2">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-7 text-center margin-100px-bottom sm-margin-40px-bottom">
+            <div class="position-relative overflow-hidden w-100">
+              <!--<span class="text-small text-outside-line-full alt-font font-weight-600 text-uppercase">Contact Form Style 01</span>-->
+            </div>
+          </div>
+        </div>
+        <form id="project-contact-form2" action="project-contact.php" method="post">
+```
+
+[tutto il codice](#50-04-01_01all)
+
+
+
+
+## Aggiorniamo la parte dinamica di _form
+
+Iniziamo ad implementare le parti di codice che riguardano lo stile.
+
+{id: "50-04-01_02", caption: ".../views/people/_form.html.erb -- codice 02", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+    <!-- start form style 01 section -->
+    <section class="wow fadeIn padding-one-all" id="start-your-project2">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-7 text-center margin-100px-bottom sm-margin-40px-bottom">
+            <div class="position-relative overflow-hidden w-100">
+              <!--<span class="text-small text-outside-line-full alt-font font-weight-600 text-uppercase">Contact Form Style 01</span>-->
+            </div>
+          </div>
+        </div>
+        <form id="project-contact-form2" action="project-contact.php" method="post">
+        
+        ...
+
+        </form>
+      </div>
+    </section>
+    <!-- end form style 01 section -->
+```
+
+
+{caption: ".../views/companies/_form.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<!-- start form style 01 section -->
+<section class="wow fadeIn padding-one-all" id="start-your-project2">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-7 text-center margin-100px-bottom sm-margin-40px-bottom">
+        <div class="position-relative overflow-hidden w-100">
+          <!--<span class="text-small text-outside-line-full alt-font font-weight-600 text-uppercase">Contact Form Style 01</span>-->
+        </div>
+      </div>
+    </div>
+    <!--<form id="project-contact-form2" action="project-contact.php" method="post">-->
+    <%= form_with(model: company, local: true) do |form| %>
+        
+        ...
+
+    <% end %>
+    <!--</form>-->
+  </div>
+</section>
+<!-- end form style 01 section -->
+```
+
+[tutto il codice](#50-04-01_02all)
+

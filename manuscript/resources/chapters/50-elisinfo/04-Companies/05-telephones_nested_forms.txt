@@ -3,7 +3,7 @@
 Vedi anche: Nested form con stimulus
 
 Nota: per essere più didattici e rendere facile l'apprendimento la creazione delle form annidate per i telefoni la facciamo con una prima tabella non polimorfica che renderemo polimorfica successivamente.
-Per una creazione delle form annidate direttamente con tabella polimorfica vedere capitolo XY "polimorphic_emailable".
+Per una creazione delle form annidate direttamente con tabella polimorfica vedere capitolo 08 "polimorphic_emailable".
 
 
 Risorse web:
@@ -12,6 +12,11 @@ Risorse web:
 * https://stackoverflow.com/questions/58205387/rails-nesteds-forms-with-dynamic-fields
 * https://gorails.com/episodes?q=stimulus
 * https://github.com/gorails-screencasts/dynamic-nested-forms-with-stimulusjs
+
+olds:
+* [Molto interessante!](https://github.com/plataformatec/simple_form/wiki/Nested-Models)
+* [non usa .erb](https://www.pluralsight.com/guides/ruby-on-rails-nested-attributes)
+
 
 
 

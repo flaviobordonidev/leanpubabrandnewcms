@@ -1,11 +1,111 @@
 # Companies index
 
 Lavoriamo sul view index in modo da visualizzare l'elenco di aziende.
-Il mockup mi sembra vada su Index...   Iniziamo con index.
+Al momento NON INSERIAMO LE PERSONE ANNIDATE perché quelle faranno parte di company_person_maps index.
+
+Qui puliamo e creiamo la visualizzazione a Livello 1 delle aziende (non implementiamo il secondo livello perché quando ho attivo il secondo livello vado su un'altra view/pagina model1_model2_maps; ad esempio: company_person_maps.
+Quindi abbiamo la possibilità di:
+
+* Creare nuova azienda
+* Vedere indice aziende
+* Vedere il dettaglio dell'azienda, ossia lo show. (questa è un'azione che in elisinfo non usiamo. mettiamo tutto su index)
+* Vedere la traduzione in più lingue
 
 
 
-## Apriamo il branch
+## Apriamo il branch "Companies Index"
 
-Ho intanto aperto il branch CSOI Companies Show Or Index ^_^
-Perché ero indeciso su quale iniziare.
+{title="terminal", lang=bash, line-numbers=off}
+```
+$ git checkout -b ci
+```
+
+
+
+
+## Aggiorniamo la view
+
+Adesso lavoriamo lato front-end. La view su cui operiamo è "index" in cui abbiamo la lista di tutte le aziende.
+
+
+
+
+## Passiamo il codice del mockups
+
+Ci passiamo tutto il codice del mockup "s1p4_company_index" (da -> a):
+
+* .../app/views/mockups/s1p4_company_index.html.erb -> .../app/views/companies/index.html.erb
+
+
+{id: "01-03-01_01", caption: ".../views/companies/index.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <!-- title -->
+```
+
+[tutto il codice](#01-03-01_01all)
+
+![Fig. 01](chapters/01-base/03-mockups/01_fig01-views-mockups-page_a.png)
+
+Adesso potrebbe anche funzionare ma il codice HTML che mandiamo al browser è sbagliato perché stiamo utilizzando il layout "application" e non "yield".
+Funziona tutto perché, nei precedenti capitoli, abbiamo già attiato le chiamate stylesheet_pack_tag javascript_pack_tag ad "application" ed aggiornato il codice collegato.
+Nel prossimo capitolo aggiustiamo il codice distribuendolo in maniera corretta tra il layout "application" e la pagina/view "home". 
+
+
+
+
+## Puliamo il codice
+
+Verifichiamo che il codice "<html> ... <head> ..." della pagina/view "companies/index" corrisponde a quello nel layout "application" in cui abbiamo già spostato nei precedeti capitoli il codice creando la view "pages/home".
+Il codice coincide e quindi semplicemente lo eliminiamo dalla pagina "companies/index" se fosse stato differente avremmo utilizzato lo "yield content" come abbiamo fatto per il "title" che si presenta nel tab del browser.
+Togliamo anche tutto il codice relativo al menu di navigazione.
+
+
+{id: "01-03-01_01", caption: ".../views/companies/index.html.erb -- codice 02", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+    <!-- start form style 01 section -->
+    <section class="wow fadeIn padding-one-all" id="start-your-project">
+      <div class="container">
+        <div class="row justify-content-center">
+```
+
+[tutto il codice](#01-03-01_01all)
+
+
+
+
+## Incorporiamo la parte dinamica
+
+Adesso è arrivato il momento di incorporare la parte dinamica all'interno del codice del mockup.
+
+
+{id: "01-03-01_01", caption: ".../views/companies/index.html.erb -- codice 03", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+    <!-- start companies section -->
+    <section class="wow fadeIn padding-one-all">
+      <div class="container">
+        <div class="row">
+          <!--<div class="col-md-10 col-sm-12 col-xs-12 center-col">-->
+          <div class="col-12">
+            <ul class="blog-comment">
+
+              <% @companies.each do |company| %>
+                <li>
+
+...
+                      <%= link_to edit_company_path(company), class: "text-extra-dark-gray text-uppercase alt-font font-weight-600 text-small" do %>
+                        <%= company.name %> - <%= company.building %> - <%= company.id %> (Cliente)
+                      <% end %>
+
+...
+                    <%= link_to new_company_path, class: "btn btn-small btn-transparent-white lg-margin-15px-bottom d-table d-lg-inline-block md-margin-lr-auto" do %>
+                      <%= image_tag "pofo/icon_new.png", class: "img-circle width-85 xs-width-100", alt: "" %>
+                    <% end %>
+```
+
+[tutto il codice](#01-03-01_01all)
+
+
+Al momento NON INSERIAMO LE PERSONE ANNIDATE perché quelle faranno parte di company_person_maps index.

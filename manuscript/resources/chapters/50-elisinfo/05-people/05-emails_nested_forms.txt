@@ -1,0 +1,280 @@
+# Emails nested forms Polimorphic 
+
+Usiamo la tabella "emails" con relazione polimorfica che abbiamo già creato nei capitoli precedenti.
+
+
+
+
+## Apriamo il branch "Emails Nested Forms"
+
+{title="terminal", lang=bash, line-numbers=off}
+```
+$ git checkout -b enf
+```
+
+
+
+
+
+
+
+
+## Verifichiamo stimulus per nostra applicazione
+
+Verifichiamo che sul "layouts" che usiamo ci sia "javascript_pack_tag".
+
+{id: "50-05-03_01", caption: ".../app/views/layouts/application.html.erb -- codice n/a", format: HTML+Mako, line-numbers: true, number-from: 10}
+```
+    <%#= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+```
+
+
+verifichiamo che nel file "application" di webpack abbiamo inizializzato stimulus.
+
+{id: "50-05-03_02", caption: ".../app/javascript/packs/application.js -- codice n/a", format: JavaScript, line-numbers: true, number-from: 19}
+```
+// Stimulus - start
+import { Application } from "stimulus"
+import { definitionsFromContext } from "stimulus/webpack-helpers"
+
+const application = Application.start()
+const context = require.context("./controllers", true, /\.js$/)
+application.load(definitionsFromContext(context))
+// Stimulus - end
+```
+
+
+Andiamo sul partial _form di people e aggiungiamo:
+
+{id: "50-05-03_01", caption: ".../views/people/_form.html.erb -- codice n/a", format: HTML+Mako, line-numbers: true, number-from: 44}
+```
+<div data-controller="hello" class="field">
+  <input data-target="hello.name" type="text">
+  <button data-action="click->hello#log">Log</button>
+</div>
+```
+
+
+
+
+## Verifichiamo preview
+
+{title="terminal", lang=bash, line-numbers=off}
+```
+$ sudo service postgresql start
+$ rails s
+```
+
+apriamolo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/mockups/page_b
+
+Apriamo nel browser google chrome "view->developer->JavaScript Console", scriviamo qualcosa nel nuovo campo input e premiamo il pulsante "Log". Vedremo apparire nella "JavaScript Console" il testo che abbiamo inserito nel campo input.
+Funziona! ^_^
+(anche se la javascript console mi dice che ci sono degli errori, ma funziona!)
+
+
+
+
+## Usiamo la tabella emails con relazione polimorfica
+
+Abbiamo già creato la tabella emails con i campi per essere polimorfica e la abbiamo usata per le aziende. Adesso la usiamo per le persone.
+
+
+
+
+## Aggiorniamo i models
+
+Verifichiamo nel model Email su "# == Relationships", la relazione polimorfica.
+
+{id: "50-05-05_01", caption: ".../app/models/email.rb -- codice 01", format: ruby, line-numbers: true, number-from: 13}
+```
+  ## polymorphic
+  belongs_to :emailable, polymorphic: true
+```
+
+[tutto il codice](#50-05-05_01all)
+
+
+Nel model Person su "# == Relationships", aggiungiamo la relazione per form annidate indicando anche la relazione polimorfica (", as: :emailable").
+
+{id: "50-05-05_02", caption: ".../app/models/person.rb -- codice 02", format: ruby, line-numbers: true, number-from: 13}
+```
+  ## nested-form + polymorphic
+  has_many :emails, dependent: :destroy, as: :emailable
+  accepts_nested_attributes_for :emails, allow_destroy: true, reject_if: proc{ |attr| attr['address'].blank? }
+```
+
+[tutto il codice](#50-05-05_02all)
+
+
+
+
+## Aggiorniamo il controller
+
+Permettiamo che siano passati i parametri del form annidato per le emails.
+
+{id: "50-05-05_03", caption: ".../app/controllers/people_controller.rb -- codice 03", format: ruby, line-numbers: true, number-from: 70}
+```
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def person_params
+      params.require(:person).permit(:title, :first_name, :last_name, :homonym, :note, telephones_attributes: [:_destroy, :id, :name, :prefix, :number], emails_attributes: [:_destroy, :id, :name, :address])
+    end
+```
+
+[tutto il codice](#50-05-05_03all)
+
+
+Lato server / back-end abbiamo terminato.
+
+
+
+
+
+
+
+
+## Aggiorniamo la view
+
+Adesso lavoriamo lato front-end. 
+La view su cui operiamo è il partial "_form" di people (quello per le views edit e new).
+Prima del pulsante di submit del form inseriremo la possibilità di aggiungere vari indirizzi emails.
+Inseriamo il codice html con convenzione stimulus per i form annidati.
+
+{id: "50-05-05_04", caption: ".../views/people/_form.html.erb -- codice 04", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+        <div data-controller="nested-form" class="col-12"> <!-- Nested Form Emails start -->
+          <!-- Creiamo nuovo Record -->
+          <template data-target="nested-form.template">
+            <%= form.fields_for :emails, Email.new, child_index: "TEMPLATE_RECORD" do |email| %>
+              <%= render "email_fields", form: email %>
+            <% end %>
+          </template>
+      
+          <!-- Visualizziamo i Records esistenti -->
+          <%= form.fields_for :emails do |email| %>
+            <%= render "email_fields", form: email %>
+          <% end %>
+
+          <!-- Il pulsante per aggiungere i tasks -->
+          <div data-target="nested-form.add_item">
+              <%= link_to "+ Aggiungi indirizzo email", "#", data: { action: "nested-form#add_association" }, class: "btn btn-transparent-dark-gray btn-medium margin-20px-bottom" %>
+              <%#= link_to "Add Telephone", "#", 'data-action': "nested-form#add_association" %>
+          </div>
+        </div> <!-- Nested Form Emails end -->
+```
+
+[tutto il codice](#50-05-05_04all)
+
+Per l'analisi del codice vedi capitoli precedenti
+
+
+Copiamo il partial "email_fields" (da->a):
+
+* views/companies/_email_fields.html.erb -> views/people/_email_fields.html.erb
+
+{id: "50-05-05_05", caption: ".../views/people/_email_fields.html.erb -- codice 05", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<div class="nested-fields">
+  <div class="form-group">
+    <%= form.hidden_field :_destroy %>
+    <%= form.text_field :name, placeholder: "centralino", class: "form-control" %>
+    <%= form.text_field :prefix, class: "form-control" %>
+    <%= form.text_field :number, class: "form-control" %>
+    <small>
+      <%= link_to "Remove", "#", data: { action: "click->nested-form#remove_association" } %>
+      <%#= link_to "Remove", "#", 'data-action': "click->nested-form#remove_association" %>
+    </small>
+  </div>
+</div>
+```
+
+[tutto il codice](#50-05-05_05all)
+
+Per l'analisi del codice vedi capitoli precedenti
+
+
+
+
+## Verifichiamo lo stimulus controller per nested-forms
+
+Nella cartella javascript/packs/controllers/ abbiamo già creato il file nested_form_controller.js in cui abbiamo inseriamo il codice javascript per gestire le form annidate.
+Il codice è già sufficientemente generico e non dobbiamo fare nessun aggiornamento.
+Per il codice e la relativa spiegazione fare riferimento al capitolo precedente "06-polymorfic_telephonable"
+
+
+
+
+## Verifichiamo preview
+
+Vediamo la nostra applicazione rails funzionante. Attiviamo il webserver
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails s
+```
+
+e vediamo sul nostro browser:
+
+* https://mycloud9path.amazonaws.com/people
+
+Andiamo su edit di una persona ed inseriamo/modifichiamo/eliminiamo gli indirizzi emails. 
+Funziona tutto.
+
+
+
+
+## Salviamo su Git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "Implement nested_form email on people"
+```
+
+
+
+
+## Pubblichiamo su Heroku
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push heroku enf:master
+$ heroku run rails db:migrate
+```
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout master
+$ git merge enf
+$ git branch -d enf
+```
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push origin master
+```
+
+
+
+
+## Il codice del capitolo
+
+
+

@@ -1,0 +1,130 @@
+    <!-- start form style 01 section -->
+    <section class="wow fadeIn padding-one-all" id="start-your-project">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-7 text-center margin-100px-bottom sm-margin-40px-bottom">
+            <div class="position-relative overflow-hidden w-100">
+              <!--<span class="text-small text-outside-line-full alt-font font-weight-600 text-uppercase">Contact Form Style 01</span>-->
+            </div>
+          </div>
+        </div>
+        <form id="project-contact-form" action="project-contact.php" method="post">
+          <div class="row">
+            <div class="col-12 col-sm-auto">
+              <a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom" data-wow-delay="0.6s" href="#"><%= image_tag "elis/icons/person.png", alt: "person" %> Persona &nbsp&nbsp&nbsp&nbsp</a>
+            </div>
+            <div class="col-12 col-sm">
+              <input type="text" name="find_person" id="find_person" placeholder="Cerca Persona..." class="medium-input">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-sm-auto">
+              <%= image_tag "elis/icons/arrow_right_nested.png", alt: "arrow_right_nested", class: " margin-10px-bottom margin-5px-right" %><a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom disabled" data-wow-delay="0.6s" href="#"> Secondo livello &nbsp&nbsp&nbsp&nbsp</a>
+            </div>
+            <div class="col-12 col-sm">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 text-center">
+              <button id="project-contact-us-button" type="submit" class="btn btn-transparent-dark-gray btn-large margin-20px-top">Search</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+    <!-- end form style 01 section -->
+
+
+
+    <!-- start comments section -->
+    <section class="wow fadeIn padding-one-all">
+      <div class="container">
+        <div class="row">
+          <!--<div class="col-md-10 col-sm-12 col-xs-12 center-col">-->
+          <div class="col-12">
+            <ul class="blog-comment">
+              <li>
+                <div class="display-table width-100">
+                  <div class="display-table-cell width-100px xs-width-50px text-center vertical-align-top xs-display-block xs-margin-10px-bottom">
+                    <a href="#" class="btn disabled"><%= image_tag "elis/icons/nil.png", class: "img-circle width-85 xs-width-100", alt: "" %></a>
+                  </div>
+                  <div class="padding-40px-left display-table-cell vertical-align-top last-paragraph-no-margin xs-no-padding-left xs-display-block">
+                    <a href="#" class="btn text-extra-dark-gray text-uppercase alt-font font-weight-600 text-small disabled margin-20px-top">Nessuna Persona presente</a>
+                  </div>
+                </div>
+              </li>
+
+              <li>
+                <div class="display-table width-100">
+                  <div class="display-table-cell width-100px xs-width-50px text-center vertical-align-top xs-display-block xs-margin-10px-bottom">
+                    <%= link_to mockups_s1p3_company_new_path, class: "btn btn-small btn-transparent-white lg-margin-15px-bottom d-table d-lg-inline-block md-margin-lr-auto" do %>
+                      <%= image_tag "pofo/icon_new.png", class: "img-circle width-85 xs-width-100", alt: "" %>
+                    <% end %>
+                    <!--<img src="images/avtar-04.jpg" class="img-circle width-85 xs-width-100" alt="" />-->
+                  </div>
+                  <div class="padding-40px-left display-table-cell vertical-align-top last-paragraph-no-margin xs-no-padding-left xs-display-block">
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- start pagination -->
+          <!--https://stackoverflow.com/questions/35163164/how-to-center-content-in-a-bootstrap-column/35163389#:~:text=Bootstrap%204,center%20everything%20inside%20that%20column.&text=If%20you%20have%20text%20inside,center%20to%20the%20same%20class.-->
+          <div class="col-12 d-flex justify-content-center">
+            <div class="row">
+            <!--<div class="text-center margin-60px-top md-margin-50px-top wow fadeInUp">-->
+            <div class="col-auto">
+              <a href="#" class="btn btn-medium btn-transparent-black lg-margin-15px-bottom d-table d-lg-inline-block md-margin-lr-auto disabled"><i class="fas fa-long-arrow-alt-left margin-5px-right d-none d-md-inline-block"></i> Prev</a>
+            </div>
+            <div class="col-auto">
+              <span class="margin-5px-top d-table d-lg-inline-block">Pagina 1 di 1</span>
+            </div>
+            <div class="col-auto">
+              <a href="#" class="btn btn-medium btn-transparent-black lg-margin-15px-bottom d-table d-lg-inline-block md-margin-lr-auto disabled">Next <i class="fas fa-long-arrow-alt-right margin-5px-left d-none d-md-inline-block"></i></a>
+            </div>
+            </div>
+          </div>
+          <!-- end pagination -->
+        </div>
+      </div>
+    </section>
+    <!-- end comments section -->
+
+
+
+<p id="notice"><%= notice %></p>
+
+<h1>People</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>First name</th>
+      <th>Last name</th>
+      <th>Homonym</th>
+      <th>Note</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @people.each do |person| %>
+      <tr>
+        <td><%= person.title %></td>
+        <td><%= person.first_name %></td>
+        <td><%= person.last_name %></td>
+        <td><%= person.homonym %></td>
+        <td><%= person.note %></td>
+        <td><%= link_to 'Show', person %></td>
+        <td><%= link_to 'Edit', edit_person_path(person) %></td>
+        <td><%= link_to 'Destroy', person, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Person', new_person_path %>

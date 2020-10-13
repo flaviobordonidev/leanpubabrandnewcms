@@ -4,8 +4,7 @@
 Risorse web
 
 * https://n2ws.com/blog/how-to-guides/how-to-increase-the-size-of-an-aws-ebs-cloud-volume-attached-to-a-linux-machine
-
-
+* https://docs.aws.amazon.com/cloud9/latest/user-guide/move-environment.html#move-environment-resize
 
 
 ## How to Increase the Size of an EBS Volume Attached to a Linux Machine
@@ -38,6 +37,48 @@ Vediamo come fare.
 
 
 
+## Verifichiamo quanto spazio abbiamo
+
+* https://www.cyberciti.biz/faq/linux-check-disk-space-command/
+
+I comandi principali da terminale/console di ubuntu per vedere lo spazio disco sono:
+
+* df command – Shows the amount of disk space used and available on Linux file systems.
+* du command – Display the amount of disk space used by the specified files and for each subdirectory.
+* btrfs fi df /device/ – Show disk space usage information for a btrfs based mount point/file system.
+
+
+Vediamo un esempio di "df" con l'opzione "-h" che rappresenta i valori in un modo facile da capire (human readable).
+
+{title="terminal", lang=bash, line-numbers=off}
+```
+$ df -h
+
+
+user_fb:~/environment/elisinfo (ci) $ df -h
+Filesystem      Size  Used Avail Use% Mounted on
+udev            476M     0  476M   0% /dev
+tmpfs            98M  848K   98M   1% /run
+/dev/xvda1      9.7G  9.6G   81M 100% /
+tmpfs           490M  8.0K  490M   1% /dev/shm
+tmpfs           5.0M     0  5.0M   0% /run/lock
+tmpfs           490M     0  490M   0% /sys/fs/cgroup
+/dev/loop0       29M   29M     0 100% /snap/amazon-ssm-agent/2012
+/dev/loop2       13M   13M     0 100% /snap/amazon-ssm-agent/495
+/dev/loop1       97M   97M     0 100% /snap/core/9804
+/dev/loop3       98M   98M     0 100% /snap/core/9993
+tmpfs            98M     0   98M   0% /run/user/1000
+```
+
+In questo esempio vediamo che abbiamo il disco praticamente pieno:
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/xvda1      9.7G  9.6G   81M 100% /
+
+Ci restano 85M liberi. Ed infatti la EC2 su Cloud9 ci da il messaggio di disco pieno!
+
+
+
+
 ## Ampliamo dai 10G di default a 12G - Metodo facile
 
 Questa procedura è la più semplice ed immediata ma richiede del tempo prima che le modifiche diventino effettive e questo può trarre in inganno e far pensare che non abbia funzionato. Se ci riproviamo riceviamo un messaggio di errore che ci depista e ci fa pensare che non sia possibile fare in questo modo. Ma se si ha la pazienza di aspettare, a volte anche qualche ora, allora si vedrà che funziona.
@@ -59,6 +100,74 @@ Nel campo di ricerca inseriamo l'"instance id" e sul volume trovato eseguiamo:
 Action -> Modify Volume
 
 E cambiamo la dimensione da "10" a "12".
+
+
+
+
+## Esempio
+
+Uso il comando df con opzione -h (human readable) e -T (che mostra il tipo di partizione)
+
+{title="terminal", lang=bash, line-numbers=off}
+```
+$ df -hT
+
+
+user_fb:~/environment $ df -hT
+Filesystem     Type      Size  Used Avail Use% Mounted on
+udev           devtmpfs  476M     0  476M   0% /dev
+tmpfs          tmpfs      98M  852K   98M   1% /run
+/dev/xvda1     ext4      9.7G  9.6G   80M 100% /
+tmpfs          tmpfs     490M  8.0K  490M   1% /dev/shm
+tmpfs          tmpfs     5.0M     0  5.0M   0% /run/lock
+tmpfs          tmpfs     490M     0  490M   0% /sys/fs/cgroup
+/dev/loop0     squashfs   97M   97M     0 100% /snap/core/9804
+/dev/loop1     squashfs   13M   13M     0 100% /snap/amazon-ssm-agent/495
+/dev/loop2     squashfs   29M   29M     0 100% /snap/amazon-ssm-agent/2012
+/dev/loop3     squashfs   98M   98M     0 100% /snap/core/9993
+tmpfs          tmpfs      98M     0   98M   0% /run/user/1000
+```
+
+Vediamo che il disco è di 10G ed è usato al 100% (abbiamo solo 80M liberi):
+
+```
+/dev/xvda1     ext4      9.7G  9.6G   80M 100% /
+```
+
+* Effettuiamo l'azione di ingrandimento da 10G a 12G.
+* Stoppiamo la macchina EC2 
+* Riavviamo la sessione cloud9
+
+Adesso il disco è di 12G ed è usato al 83% (abbiamo 2.1G liberi):
+
+```
+/dev/xvda1     ext4       12G  9.6G  2.1G  83% /
+```
+
+
+{title="terminal", lang=bash, line-numbers=off}
+```
+$ df -hT
+
+
+user_fb:~/environment $ df -hT
+Filesystem     Type      Size  Used Avail Use% Mounted on
+udev           devtmpfs  476M     0  476M   0% /dev
+tmpfs          tmpfs      98M  808K   98M   1% /run
+/dev/xvda1     ext4       12G  9.6G  2.1G  83% /
+tmpfs          tmpfs     490M  8.0K  490M   1% /dev/shm
+tmpfs          tmpfs     5.0M     0  5.0M   0% /run/lock
+tmpfs          tmpfs     490M     0  490M   0% /sys/fs/cgroup
+/dev/loop0     squashfs   98M   98M     0 100% /snap/core/9993
+/dev/loop1     squashfs   13M   13M     0 100% /snap/amazon-ssm-agent/495
+/dev/loop2     squashfs   97M   97M     0 100% /snap/core/9804
+/dev/loop3     squashfs   29M   29M     0 100% /snap/amazon-ssm-agent/2012
+tmpfs          tmpfs      98M     0   98M   0% /run/user/1000
+```
+
+
+
+
 
 
 
@@ -87,12 +196,19 @@ Eseguiamo da console il comando "df -h" per mostrare i dettagli del disco prima 
 ```
 $ df -hT /dev/xvda1
 
-
 user_fb:~/environment $ df -hT /dev/xvda1
 Filesystem     Type  Size  Used Avail Use% Mounted on
 /dev/xvda1     ext4  9.7G  7.7G  2.0G  80% /
 user_fb:~/environment $ 
+
+dopo qualche mese:
+
+user_fb:~/environment/elisinfo (ci) $ df -hT /dev/xvda1
+Filesystem     Type  Size  Used Avail Use% Mounted on
+/dev/xvda1     ext4  9.7G  9.6G   81M 100% /
 ```
+
+
 
 
 ## Stop the istance
