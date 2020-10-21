@@ -1,0 +1,11 @@
+# Master search
+
+Attiviamo il form per la ricerca (search o find) nell'elenco master
+
+
+
+## Attiviamo un form per le ricerche nell'elenco master
+
+Nel nostro caso l'elenco master è la lista di azienda. (l'elenco annidato è quello delle persone che lavorano in ogni azienda)
+
+lo mettiamo nel prossimo capitolo

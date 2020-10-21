@@ -1,0 +1,23 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Company Person Maps</h1>
+
+    <%# @company_person_maps.each do |company_person_map| %>
+    <% @company_person_maps.group_by(&:company_id).each do |company_id, company_person_maps| %>
+    <%# @company_person_maps.group_by{|company_person_map| company_person_map.company_id}.each do |company_id, company_person_maps| %>
+      <p>Company: <%= company_id %> - <%= Company.find(company_id).name %></p>
+      <% company_person_maps.each do |company_person_map| %>
+        <p>
+          <%= company_person_map.company_id %> - <%= company_person_map.company.name %>
+          <%= company_person_map.person_id %> - <%= "#{company_person_map.person.first_name} #{company_person_map.person.last_name}" %>
+          <%= company_person_map.summary %>
+          <%= link_to 'Show', company_person_map %>
+          <%= link_to 'Edit', edit_company_person_map_path(company_person_map) %>
+          <%= link_to 'Destroy', company_person_map, method: :delete, data: { confirm: 'Are you sure?' } %>
+        </p>
+      <% end %>
+    <% end %>
+
+<br>
+
+<%= link_to 'New Company Person Map', new_company_person_map_path %>

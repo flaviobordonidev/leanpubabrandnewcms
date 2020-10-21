@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Company Person Maps</h1>
+
+    <% @companies.each do |company| %>
+      <p>Company: <%= company.id %> - <%= company.name %></p>
+      <% company.company_person_maps.each do |company_person_map| %>
+        <p>
+          <%= company_person_map.person.id %> - <%= "#{company_person_map.person.first_name} #{company_person_map.person.last_name}" %>
+          <%= company_person_map.summary %>
+          <%= link_to 'Show', company_person_map %>
+          <%= link_to 'Edit', edit_company_person_map_path(company_person_map) %>
+          <%= link_to 'Destroy', company_person_map, method: :delete, data: { confirm: 'Are you sure?' } %>
+        </p>
+      <% end %>
+    <% end %>
+
+<br>
+
+<%= link_to 'New Company Person Map', new_company_person_map_path %>

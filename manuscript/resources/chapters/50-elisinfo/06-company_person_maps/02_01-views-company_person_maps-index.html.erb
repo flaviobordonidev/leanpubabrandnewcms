@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Company Person Maps</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Company</th>
+      <th>Person</th>
+      <th>Summary</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @company_person_maps.each do |company_person_map| %>
+      <tr>
+        <td><%= company_person_map.company_id %> - <%= company_person_map.company.name %></td>
+        <td><%= company_person_map.person_id %> - <%= "#{company_person_map.person.first_name} #{company_person_map.person.last_name}" %> </td>
+        <td><%= company_person_map.summary %></td>
+        <td><%= link_to 'Show', company_person_map %></td>
+        <td><%= link_to 'Edit', edit_company_person_map_path(company_person_map) %></td>
+        <td><%= link_to 'Destroy', company_person_map, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Company Person Map', new_company_person_map_path %>
