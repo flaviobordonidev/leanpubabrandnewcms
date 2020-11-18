@@ -1,0 +1,25 @@
+<!-- start pagination -->
+<%# link = pagy_link_proc(pagy, 'class="page-link"') %> <!-- inizializzo "link" con pagy e attivo già l'opzione class="page-link". Questo mi impedisce di riusarlo -->
+<% link = pagy_link_proc(pagy) %>
+<div class="col-12 d-flex justify-content-center">
+  <div class="row">
+    <div class="col-auto">
+      <% if pagy.prev %>
+        <%== link.call(pagy.prev, '<i class="fas fa-long-arrow-alt-left margin-5px-right d-none d-md-inline-block"></i> Prev', 'class="btn btn-medium btn-transparent-black lg-margin-15px-bottom d-table d-lg-inline-block md-margin-lr-auto"') %>
+        <% else %>    
+        <a href="#" class="btn btn-medium btn-transparent-black lg-margin-15px-bottom d-table d-lg-inline-block md-margin-lr-auto disabled"><i class="fas fa-long-arrow-alt-left margin-5px-right d-none d-md-inline-block"></i> Prev</a>
+      <% end %>
+    </div>
+    <div class="col-auto">
+      <span class="margin-5px-top d-table d-lg-inline-block">Pagina <%= params[:page] %> ( <%= pagy.page %> ) di <%= pagy.pages %> (totale items = <%= pagy.count %>)</span>
+    </div>
+    <div class="col-auto">
+      <% if pagy.next %>
+        <%== link.call(pagy.next, 'Next <i class="fas fa-long-arrow-alt-right margin-5px-left d-none d-md-inline-block"></i>', 'class="btn btn-medium btn-transparent-black lg-margin-15px-bottom d-table d-lg-inline-block md-margin-lr-auto"') %>
+      <% else %>    
+        <a href="#" class="btn btn-medium btn-transparent-black lg-margin-15px-bottom d-table d-lg-inline-block md-margin-lr-auto disabled">Next <i class="fas fa-long-arrow-alt-right margin-5px-left d-none d-md-inline-block"></i></a>
+      <% end %>
+    </div>
+  </div>
+</div>
+<!-- end pagination -->

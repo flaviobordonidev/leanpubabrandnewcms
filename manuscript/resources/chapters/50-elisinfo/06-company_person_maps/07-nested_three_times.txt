@@ -1,0 +1,218 @@
+# Andiamo in modifica della persona collegata ad una azienda
+
+Questo capitolo resta a scopo didattico e ci evidenzia come annidare 3 volte i forms.
+
+Infatti sul partial "_form" di edit di company_person_maps visualizziamo:
+ * i campi della persona annidata collegata (CompanyPersonMap.firts.person) e
+ * i campi delle tabelle polimorfiche telphonable e emailable della persona.
+
+Per aggiornare il tutto con il semplice "@company_person_map.update(company_person_map_params)", che è quello creato di default con lo scaffold, dobbiamo:
+* Aggiornare il model company_person_map inserendo:
+    accepts_nested_attributes_for :person
+  Il nested per le tabelle polimorfiche per le persone lo abbiamo già implementato nel model person:
+      accepts_nested_attributes_for :telephones, allow_destroy: true, reject_if: proc{ |attr| attr['number'].blank? }
+      accepts_nested_attributes_for :emails, allow_destroy: true, reject_if: proc{ |attr| attr['address'].blank? }
+
+In questo caso aggiorniamo i telefoni e le email "personali", ossia quelle legate alla sola persona.
+Se volessimo aggiungere anche dei telefoni ed email "aziendali" dovremmo aggiungere al model company_person_map gli accepts_nested_attributes_for di :telephones ed :emails così come sono nel model person.
+
+
+Per passare i dati che sono nei vari campi del form di edit di company_person_maps aggiorniamo il metodo privato nel controller di company_person_maps_controller:
+
+---
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def company_person_map_params
+      params.require(:company_person_map).permit(:company_id, :person_id, :summary, person_attributes: [:id, :title, :first_name, :last_name, :homonym, :note, telephones_attributes: [:_destroy, :id, :name, :prefix, :number], emails_attributes: [:_destroy, :id, :name, :address]])
+    end
+---
+
+Come possiamo vedere abbiamo params.require(...).permit(..., person_attributes[...,telephones_attributes[...]...])
+Doppio annidamento dentro ":company_person_map":
+  -> person_attributes[...
+    -> telephones_attributes[... and emails_attributes[...
+
+
+Risorse web:
+
+* https://makandracards.com/alexander-m/45252-form-objects-and-transactions-multiple-models
+* https://stackoverflow.com/questions/17131395/ruby-on-rails-two-models-in-one-form
+* https://learn.co/lessons/has-many-through-forms-rails
+* [Triple Nested Forms in Rails](https://medium.com/@mindovermiles262/triple-nested-forms-in-rails-dedbcccb5799)
+
+
+Usiamo il company_person_maps _form che ci permette di modificare sia lato persone che aziende...
+
+- questo form ingloba quanto già visto nei rispettivi form di Company e People.
+
+Se siamo con "master = company" avremo:
+
+
+_form
+----
+Azienda Pinco Pallo - Sede legale di Milano ufficio bustarelle (123456)
+
+job_title/incarico/mansione [.Export Area Manager.]
+
+titolo [.Sig..] nome [.Pippo.] cognome [.Neri.]
+
+
+polimorfa telefono [+]
+polimorfa email [+]
+polimorfa social [+]
+----
+
+Pippo Neri lavora anche per l'azienda Pillo Punco e lì è "External Consulent"
+
+
+
+
+## Cambiamo la persona annidata
+
+Al momento stiamo visualizzando Aziende come master e Persone come nested.
+
+Per modificare la persona quando è collegata all'azienda lavoriamo su company_person_maps.
+Inizialmente abbiamo solo gli id esterni che collegano alle tabelle companies e people.
+
+Iniziamo visualizzando il nome dell'azienda e quello della persona.
+
+{caption: ".../views/company_person_maps/_form.html.erb -- codice n/a", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<div class="field">
+    <%= form.label :company_id %>
+    <br><%= company_person_map.company.name %>
+    <%= form.text_field :company_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :person_id %>
+    <br><%= company_person_map.person.first_name %> <%= company_person_map.person.last_name %>
+    <%= form.text_field :person_id %>
+  </div>
+```
+
+
+Poi inseriamo il pulsante per cambiare la persona collegata. Ci apre un popup con tutte le persone tra cui scegliere.
+
+{id: "50-06-07_01", caption: ".../views/company_person_maps/_form.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+  <div class="field">
+    <%= form.label :person_id %>
+    <%= form.text_field :person_id %>
+    <br><%= company_person_map.person.first_name %> <%= company_person_map.person.last_name %>
+    <a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom popup-with-zoom-anim wow fadeInUp" data-wow-delay="0.6s" href="#modal-popup-selections-nested">  Secondo livello &nbsp&nbsp&nbsp&nbsp</a>
+    <%= render 'popup_selections_nested' %>
+  </div>
+```
+
+[tutto il codice](#50-06-07_01all)
+
+
+{id: "50-06-07_02", caption: ".../views/company_person_maps/_popup_selections_nested.html.erb -- codice 02", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+  <% @people.each do |person| %>
+    <%= link_to request.params.merge(nested_id: person.id), class: "btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom", 'data-wow-delay': "0.6s" do %>
+```
+
+[tutto il codice](#50-06-07_02all)
+
+
+Aggiorniamo view company_person_maps_controller - edit
+
+Usiamo il parametro "nested_id" per cambiare il valore sul campo person_id.
+
+{id: "50-05-05_03", caption: ".../app/controllers/company_person_maps_controller.rb -- codice 03", format: ruby, line-numbers: true, number-from: 70}
+```
+  # GET /company_person_maps/1/edit
+  def edit
+    @people = Person.all
+    @company_person_map.person_id = params[:nested_id] unless params[:nested_id].blank?
+  end
+```
+
+[tutto il codice](#50-05-05_03all)
+
+Analizziamo il codice:
+
+* @people = Person.all  # Per elenco nel popup
+* @company_person_map.person_id = params[:nested_id] unless params[:nested_id].blank?   # Se scelgo persona nel popup
+* @company_person_map.person_id   # la variabile di istanza @company_person_map è definita nel metodo privato "set_company_person_map" e chiamata da "before_action"
+* unless params[:nested_id].blank?  # gli assegnamo il valore solo se nested_id è presente. (Manca la gestione dell'errore nel caso in cui mettiamo manualmente sull'url un valore sbagliato)
+
+* https://gorails.com/episodes/rails-link-to-current-page-with-params
+
+
+
+
+## Permettiamo di modificare i dati della persona annidata
+
+Adesso facciamo praticamente un clone della procedura mer modificare la persona da views/people/edit.
+
+Aggiorniamo il controller in modo da avere l'istanza @person con la persona annidata.
+
+Sull'azione "edit", NON cambiamo nulla 
+
+Sull'azione "update", NON cambiamo nulla
+
+Sul metodo privato "company_person_map_params", inseriamo annidato sotto "person_attributes:[...]" tutto quello impostato nel controller people_controller nel metodo privato "person_params".
+
+{id: "50-05-05_04", caption: ".../app/controllers/company_person_maps_controller.rb -- codice 04", format: ruby, line-numbers: true, number-from: 70}
+```
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def company_person_map_params
+      params.require(:company_person_map).permit(:company_id, :person_id, :summary, person_attributes: [:title, :first_name, :last_name, :homonym, :note, telephones_attributes: [:_destroy, :id, :name, :prefix, :number], emails_attributes: [:_destroy, :id, :name, :address]])
+    end
+```
+
+[tutto il codice](#50-05-05_04all)
+
+
+Per funzionare dobbiamo inserire "accepts_nested_attributes_for" nel model CompanyPersonMap
+
+{id: "50-05-05_05", caption: ".../app/models/company_person_map.rb -- codice 05", format: ruby, line-numbers: true, number-from: 70}
+```
+  belongs_to :person
+  accepts_nested_attributes_for :person
+```
+
+[tutto il codice](#50-05-05_05all)
+
+
+Aggiorniamo la view 
+
+{id: "50-06-07_06", caption: ".../views/company_person_maps/_form.html.erb -- codice 06", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+  <%= form.fields_for :person do |nested_form| %>
+
+    <div class="field">
+      <%= nested_form.label :title %>
+      <%= nested_form.text_field :title, class: "medium-input" %>
+```
+
+[tutto il codice](#50-06-07_06all)
+
+
+
+Analizziamo il codice:
+
+* @person = Person.find(@company_person_map.person_id)  # Impostiamo la variabile d'istanza per il form per cambiare i dati della persona; è praticamente una copia di views/people/_form
+* params.require(:company_person_map).permit(..., person_attributes: [:title, :first_name, ..., telephones_attributes: [:_destroy, :id, :name, :prefix, :number],...])  # Abbiamo un doppio annidamento. 
+* person_attributes: [...   # è singolare ("person" e non "people") perché da company_person_map ho una unica persona. (e questo è configurato nei models)
+* telephones_attributes: [...   # è plurale perché una persona può avere molti telefoni. (e questo è configurato nei models)
+
+
+
+
+ATTENZIONE! Su "person_attributes:" dobbiamo passare anche l'"id"  "[:id, ...]" altrimenti su ".update" prende errore indicando proprio che "id telefono = 11" ma "id person = """ non lo trova perché non glielo abbiamo passato!!!
+
+---
+      params.require(:company_person_map).permit(:company_id, :person_id, :summary, person_attributes: [:id, :title, :first_name, :last_name, :homonym, :note, telephones_attributes: [:_destroy, :id, :name, :prefix, :number], emails_attributes: [:_destroy, :id, :name, :address]])
+---
+
+YEAAAAAPPP! ^__^
+
+
+Adesso che abbiamo visto che funziona lo lasciamo come materiale didattico perché a livello di usabilità è preferibile abilitare il paramms[:go_back_to] che viene gestito dall'azione "update" (o "create") di people e torna su company_person_maps/edit inserendo l'id della persona (o della nuova persona).
+
+
+
+

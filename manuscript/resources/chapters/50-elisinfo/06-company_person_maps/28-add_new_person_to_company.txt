@@ -1,0 +1,14 @@
+# Aggiunge persona all'azienda
+
+Aggiungiamo una persona già esistente nel database.
+In pratica creiamo un nuovo record sulla tabella company_person_maps.
+
+I passi sono
+
+1. Siamo su views/company_person_maps/index e params[:master] == companies
+2. clic sul "+" per aggiungere persona a company_id == x
+2. Apriamo views/company_person_maps/new e popoliamo già company_id = x
+3. presentiamo il aperto il popup per selezionare una persona.
+
+
+

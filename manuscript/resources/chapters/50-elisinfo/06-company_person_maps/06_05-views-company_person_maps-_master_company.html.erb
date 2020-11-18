@@ -1,0 +1,72 @@
+<section class="wow fadeIn padding-one-all"> <!-- start companies section -->
+  <div class="container"> <!-- start container -->
+
+    <div class="row"> <!-- start row -->
+      <div class="col-12"> <!-- start col -->
+        <ul class="blog-comment">
+
+          <% companies.each do |company| %>
+            <li>
+              <div class="display-table width-100">
+                <div class="display-table-cell width-100px xs-width-50px text-center vertical-align-top xs-display-block xs-margin-10px-bottom">
+                  <%= image_tag "pofo/logo_peroni.png", class: "img-circle width-85 xs-width-100", alt: "" %>
+                </div>
+                <div class="padding-40px-left display-table-cell vertical-align-top last-paragraph-no-margin xs-no-padding-left xs-display-block">
+                  <%= link_to edit_company_path(company), class: "text-extra-dark-gray text-uppercase alt-font font-weight-600 text-small" do %>
+                    <%= company.name %> - <%= company.building %> - <%= company.id %> (Cliente)
+                  <% end %>
+                  <p><%= company.address %> Centralino: 1234567899  Email: info@peroni.it</p>
+                  <div><%= company.note %></div>
+                  <div class="text-small text-medium-gray text-uppercase margin-10px-bottom">17 july 2020, 6:05 pm</div>
+                </div>
+              </div>
+            </li>
+          <% end %>
+
+          <li>
+            <div class="display-table width-100">
+              <div class="display-table-cell width-100px xs-width-50px text-center vertical-align-top xs-display-block xs-margin-10px-bottom">
+                <%= link_to new_company_path, class: "btn btn-small btn-transparent-white lg-margin-15px-bottom d-table d-lg-inline-block md-margin-lr-auto" do %>
+                  <%= image_tag "pofo/icon_new.png", class: "img-circle width-85 xs-width-100", alt: "" %>
+                <% end %>
+                <!--<img src="images/avtar-04.jpg" class="img-circle width-85 xs-width-100" alt="" />-->
+              </div>
+              <div class="padding-40px-left display-table-cell vertical-align-top last-paragraph-no-margin xs-no-padding-left xs-display-block">
+              </div>
+            </div>
+          </li>
+        </ul>
+        
+      </div> <!-- end col -->
+    </div>  <!-- end row -->
+
+    <div class="row"> <!-- start row -->
+      <div class="col-12"> <!-- start col -->
+
+      <!-- start pagination -->
+      <%= render 'pagy/nav_pofo', pagy: @pagy %>
+      <!-- end pagination -->
+
+      </div> <!-- end col -->
+    </div>  <!-- end row -->
+
+  </div> <!-- end container -->
+</section> <!-- end companies section -->
+
+<br>
+<h2>Codice senza stile</h2>
+
+    <% companies.each do |company| %>
+      <p>Company: <%= company.id %> - <%= company.name %></p>
+      <% company.company_person_maps.each do |company_person_map| %>
+        <% if company_person_map.person.title.downcase.include? params[:search_nested].downcase or company_person_map.person.first_name.downcase.include? params[:search_nested].downcase or company_person_map.person.last_name.downcase.include? params[:search_nested].downcase %>
+        <p>
+          <%= company_person_map.person.id %> - <%= "#{company_person_map.person.title} #{company_person_map.person.first_name} #{company_person_map.person.last_name}" %>
+          <%= company_person_map.summary %>
+          <%= link_to 'Show', company_person_map %>
+          <%= link_to 'Edit', edit_company_person_map_path(company_person_map) %>
+          <%= link_to 'Destroy', company_person_map, method: :delete, data: { confirm: 'Are you sure?' } %>
+        </p>
+        <% end %>
+      <% end %>
+    <% end %>

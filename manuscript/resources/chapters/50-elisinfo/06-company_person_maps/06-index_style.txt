@@ -1,0 +1,192 @@
+ATTENZIONE SPOSTIAMO QUESTO CAPITOLO NELLA SEZIONE "07-style"
+
+
+# Diamo lo stile lato index.
+
+Lavoriamo sul view index in modo da visualizzare l'elenco delle aziende e delle persone annidate.
+è arrivato il momento di inserire le persone annidate.
+
+
+****
+APPUNTO:
+oggi 30/10/2020 mi è venuta l'idea di mettere i pop-up modali non solo per la selezione del livello master e del livello annidato ma di usarla anche nei records visualizzati.
+Nei records visualizzati il link è solo nelle icone rotonde. Questo permette di non fare click per errore quando si usa il cellulare, inoltre permette di selezionare i testi.
+Cliccando sull'icona rotonda si apre il pop-up modale che presente più informazioni (come farebbe la view show) ed inoltre ha i due pulsanti "vai a..." e "modifica".
+Quando rivedrò il libro questa modifica la aggiungerò ai mockup.
+****
+
+
+
+
+## Apriamo il branch "CompanyPersonMaps Index Style"
+
+{title="terminal", lang=bash, line-numbers=off}
+```
+$ git checkout -b cpmis
+```
+
+
+
+
+## Passiamo il codice del mockups per index
+
+Invece di passare il codice del mokup, visto che company_person_maps è la combinazione di Companies e People, prendiamo da ognuna i vari pezzi di codice e li adattiamo.
+
+
+
+
+## Il Menu di navigazione
+
+Aggiungiamo la sezione dei "Meta_data" ed il menu di navigazione.
+
+{id: "50-06-06_01", caption: ".../views/company_person_maps/index.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<%# == Meta_data ============================================================ %>
+
+<% provide(:html_head_title, "#{t '.html_head_title'}") %>
+<%# provide(:menu_nav_link_home, "active") %>
+
+<%# == Meta_data - end ====================================================== %>
+
+<%= render 'layouts/navbar' %>
+
+<br>
+```
+
+[tutto il codice](#50-06-06_01all)
+
+
+
+
+## Il partial _form_search
+
+Aggiungiamo il codice nel partial "_form_search" ed adattiamo le variabili passate dal render su "index".
+
+{id: "50-06-06_02", caption: ".../views/company_person_maps/_form_search.html.erb -- codice 02", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<section class="wow fadeIn padding-one-bottom" id="start-your-project"> <!-- start form search section -->
+  <div class="container"> <!-- start container -->
+    <%= form_with url: "", method: "get", local:true, role: "search", class: 'bottom-pad' do %>
+
+      <!-- Manteniamo sull'url alcuni params - start --> 
+      <%= hidden_field_tag(:master_page, params[:master_page]) %><!-- utile quando master_page = people -->
+      <!-- Manteniamo sull'url alcuni params - end --> 
+    
+      <div class="row">
+        <div class="col-12 col-sm-auto">
+          <% if params[:master_page] == "companies" %>
+            <a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom popup-with-zoom-anim wow fadeInUp" data-wow-delay="0.6s" href="#modal-popup-selections-master"><%= image_tag "elis/icons/company.png", alt: "company" %> Azienda &nbsp&nbsp&nbsp&nbsp</a>
+          <% else %>
+            <a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom popup-with-zoom-anim wow fadeInUp" data-wow-delay="0.6s" href="#modal-popup-selections-master"><%= image_tag "elis/icons/person.png", alt: "person" %> Persona &nbsp&nbsp&nbsp&nbsp</a>
+          <% end %>
+```
+
+[tutto il codice](#50-06-06_02all)
+
+
+
+
+## Internazionalizzazione per form_search
+
+{caption: ".../views/company_person_maps/_form_search.html.erb -- codice n/a", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+            <a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom popup-with-zoom-anim wow fadeInUp" data-wow-delay="0.6s" href="#modal-popup-selections-master"><%= image_tag "elis/icons/company.png", alt: "company" %> <%= t(".company") %> &nbsp&nbsp&nbsp&nbsp</a>
+          <% else %>
+            <a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom popup-with-zoom-anim wow fadeInUp" data-wow-delay="0.6s" href="#modal-popup-selections-master"><%= image_tag "elis/icons/person.png", alt: "person" %> <%= t(".person") %> &nbsp&nbsp&nbsp&nbsp</a>
+  ...
+            <%= image_tag "elis/icons/arrow_right_nested.png", alt: "arrow_right_nested", class: " margin-10px-bottom margin-5px-right" %><a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom popup-with-zoom-anim wow fadeInUp" data-wow-delay="0.6s" href="#modal-popup-selections-nested"><%= image_tag "elis/icons/person.png", alt: "person" %> <%= t(".person") %> &nbsp&nbsp&nbsp&nbsp</a>
+          <% else %>
+            <%= image_tag "elis/icons/arrow_right_nested.png", alt: "arrow_right_nested", class: " margin-10px-bottom margin-5px-right" %><a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom popup-with-zoom-anim wow fadeInUp" data-wow-delay="0.6s" href="#modal-popup-selections-nested"><%= image_tag "elis/icons/company.png", alt: "company" %> <%= t(".company") %> &nbsp&nbsp&nbsp&nbsp</a>
+  ...
+          <%= text_field_tag :search_master, params[:search_master], class: "medium-input", placeholder: t(".form_search_placeholder") %>
+  ...
+          <%= text_field_tag :search_nested, params[:search_nested], class: "medium-input", placeholder: t(".form_search_placeholder") %>
+  ...
+          <%= submit_tag t(".submit"), class: "btn btn-transparent-dark-gray btn-large margin-20px-top" %>
+```
+
+
+{id: "50-06-06_03", caption: ".../config/locales/it.yml -- codice 03", format: yaml, line-numbers: true, number-from: 1}
+```
+  company_person_maps:
+    index:
+      html_head_title: "Aziende -> Persone"
+    form_search:
+      company: "Azienda"
+      person: "Persona"
+      form_search_placeholder: "cerca ..."
+      submit: "trova"
+```
+
+[tutto il codice](#50-06-06_03all)
+
+
+{id: "50-06-06_04", caption: ".../config/locales/en.yml -- codice 04", format: yaml, line-numbers: true, number-from: 1}
+```
+  company_person_maps:
+    index:
+      html_head_title: "Companies -> People"
+    form_search:
+      company: "Company"
+      person: "Person"
+      form_search_placeholder: "find ..."
+      submit: "search"
+```
+
+[tutto il codice](#50-06-06_04all)
+
+
+
+
+## Il partial _master_company
+
+Copiamo il codice da companies/index dentro il partial _master_company e lo adattiamo.
+
+{id: "50-06-06_05", caption: ".../views/company_person_maps/_master_company.html.erb -- codice 05", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<section class="wow fadeIn padding-one-all"> <!-- start companies section -->
+  <div class="container"> <!-- start container -->
+
+    <div class="row"> <!-- start row -->
+      <div class="col-12"> <!-- start col -->
+        <ul class="blog-comment">
+
+          <% companies.each do |company| %>
+```
+
+[tutto il codice](#50-06-06_05all)
+
+
+Adesso aggiungiamo la parte delle persone annidate adattando il codice di people/index.
+all'interno del <li></li> di company creiamo un elenco annidato <ul></ul> di people
+
+{id: "50-06-06_06", caption: ".../views/company_person_maps/_master_company.html.erb -- codice 06", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+        <ul class="blog-comment">
+          <% companies.each do |company| %>
+            <li>
+              ...
+
+              <ul class="child-comment">
+                <% company.company_person_maps.each do |company_person_map| %>
+                  <% if company_person_map.person.title.downcase.include? params[:search_nested].downcase or company_person_map.person.first_name.downcase.include? params[:search_nested].downcase or company_person_map.person.last_name.downcase.include? params[:search_nested].downcase %>
+                    <li>
+                      ...
+                    </li>
+                  <% end %>
+                <% end %>
+              </ul>
+
+            </li>
+          <% end %>
+```
+
+[tutto il codice](#50-06-06_06all)
+
+
+
+****
+APPUNTO:
+Abbiamo aggiunto anche un "if" per visualizzare nuova azienda solo sull'ultima pagina del pagination.
+Questo lo avremmo dovuto fare già nel capitolo di companies.
+****

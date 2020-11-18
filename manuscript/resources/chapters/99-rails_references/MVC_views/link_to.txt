@@ -77,3 +77,27 @@ You might need to point to a specific section (anchor) in the page which you can
   [Codice 03](#02-03-02_03all)
   
   Così possiamo andare nella stessa pagina sia con il percorso di default mydomain.com/example_pages/page_c sia con mydomain.com/signatures
+
+
+
+## Esempio Stack Overflow 1
+
+* https://stackoverflow.com/questions/28099203/link-to-post-edit-view-in-rails
+
+Really basic question about link_to that I'm having trouble finding a straight answer to.
+
+So I have an index view that simply lists posts according to user email address.
+
+```
+<% @post.each do |post| %>
+  <tr>
+    <td class="email"><%= link_to post.user.email, post %></td>
+  </tr>
+<% end %>
+```
+
+As it stands, this links to the show view for the given post. How might I make it link to the edit view instead?
+
+Pretty simple:
+
+<%= link_to post.user.email, edit_post_path(post) %>

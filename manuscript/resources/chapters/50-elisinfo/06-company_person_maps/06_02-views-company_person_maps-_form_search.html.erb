@@ -1,0 +1,51 @@
+<section class="wow fadeIn padding-one-bottom" id="start-your-project"> <!-- start form search section -->
+  <div class="container"> <!-- start container -->
+    <%= form_with url: "", method: "get", local:true, role: "search", class: 'bottom-pad' do %>
+
+      <!-- Manteniamo sull'url alcuni params - start --> 
+      <%= hidden_field_tag(:master_page, params[:master_page]) %><!-- utile quando master_page = people -->
+      <!-- Manteniamo sull'url alcuni params - end --> 
+    
+      <div class="row">
+        <div class="col-12 col-sm-auto">
+          <% if params[:master_page] == "companies" %>
+            <a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom popup-with-zoom-anim wow fadeInUp" data-wow-delay="0.6s" href="#modal-popup-selections-master"><%= image_tag "elis/icons/company.png", alt: "company" %> Azienda &nbsp&nbsp&nbsp&nbsp</a>
+          <% else %>
+            <a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom popup-with-zoom-anim wow fadeInUp" data-wow-delay="0.6s" href="#modal-popup-selections-master"><%= image_tag "elis/icons/person.png", alt: "person" %> Persona &nbsp&nbsp&nbsp&nbsp</a>
+          <% end %>
+          <%#= render 'popup_selections_master' %>
+        </div>
+        <div class="col-12 col-sm">
+          <!--<input type="text" name="find_company" id="find_company" placeholder="Cerca azienda..." class="medium-input">-->
+          <%= text_field_tag :search_master, params[:search_master], class: "medium-input", placeholder: t(".form_search_placeholder") %>
+          <%#= label_tag label_master %>
+          <%#= text_field_tag :search_master, params[:search_master], class: "form-control", placeholder: "cerca..." %>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12 col-sm-auto">
+          <% if params[:master_page] == "companies" %>
+            <%= image_tag "elis/icons/arrow_right_nested.png", alt: "arrow_right_nested", class: " margin-10px-bottom margin-5px-right" %><a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom popup-with-zoom-anim wow fadeInUp" data-wow-delay="0.6s" href="#modal-popup-selections-nested"><%= image_tag "elis/icons/person.png", alt: "person" %> Persona &nbsp&nbsp&nbsp&nbsp</a>
+          <% else %>
+            <%= image_tag "elis/icons/arrow_right_nested.png", alt: "arrow_right_nested", class: " margin-10px-bottom margin-5px-right" %><a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom popup-with-zoom-anim wow fadeInUp" data-wow-delay="0.6s" href="#modal-popup-selections-nested"><%= image_tag "elis/icons/company.png", alt: "company" %> Azienda &nbsp&nbsp&nbsp&nbsp</a>
+          <% end %>
+          <%#= render 'popup_selections_nested' %>
+        </div>
+        <div class="col-12 col-sm">
+          <%= text_field_tag :search_nested, params[:search_nested], class: "medium-input", placeholder: t(".form_search_placeholder") %>
+          <%#= label_tag label_nested %>
+          <%#= text_field_tag :search_nested, params[:search_nested], class: "form-control", placeholder: "cerca..." %>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12 text-center">
+          <button id="project-contact-us-button" type="submit" class="btn btn-transparent-dark-gray btn-large margin-20px-top">Search</button>
+          <%#= submit_tag "Cerca" %>
+        </div>
+      </div>
+      
+    <% end %> <!-- end form search -->
+  </div> <!-- end container -->
+</section> <!-- end form search section -->

@@ -1,0 +1,327 @@
+# Andiamo in modifica della persona collegata ad una azienda
+
+Stiamo approcciando company_person_maps con Company come Master (e Person come nested).
+
+- Company A
+  - Person 1
+  - Person 2
+  - Person 3
+  ...
+...
+
+Una volta che siamo in edit abbiamo il master sopra ed il nested in basso ma non indentato perché stiamo trattando una sola persona ed una sola azienda associata.
+
+
+
+La tabella company_person_maps potevamo chiamarla "employment" perché definisce la "figura professionale" che la persona acquisisce in una determinata azienda.
+Questa "figura professionale" ha già delle caratteristiche definite e può essere assegnata a varie persone, ma viene data alla persona scelta dall'ufficio risorse umane. Questa persona diventa il "dipendente" assunto dall'azienda per occuparsi di quel "ruolo professionale".
+è come una parte di un personaggio teatrale che viene interpretata da un attore. O è come se fosse un vestito che viene acquistato da una persona specifica che può vestire quella taglia e quello stile di vestito.
+
+In questo "_form" modifichiamo i dati che la persona ha quando assume una determinata "posizione"/"funzione"/"ruolo" in azienda.
+Quindi non modifichiamo i dati personali che la persona ha a prescindere dell'azienda in cui lavora (es: indirizzo di casa, telefono personale, ...).
+
+
+
+
+### Su company_person_maps/edit abbiamo i seguenti campi:
+
+Company_id        --> - Azienda Pinco Pallo - Sede legale di Milano ufficio bustarelle (123456)
+Person_id         -->  - Sig Pippo Neri
+job_title         --> [ Export Area Manager ]
+job_title_tag     --> [ logistica ]
+important_notes   --> [ note importanti. questo testo è visualizzato anche su index ]
+Note aggiuntive   --> [ note aggiuntive. questo testo è visualizzato sul popup (che rimpiazza show) ]
+telephonable [+]  --> [ telefono aziendale. Da tabella polimorfica associata a company_person_map ]
+emailable [+]     --> [ email aziendale. Da tabella polimorfica associata a company_person_map ]
+socialable [+]    --> [ accounts social aziendali. (Linkedin, Facebook, Whatsapp, Skype, ...) Da tabella polimorfica associata a company_person_map ]
+
+
+
+
+## Su view company_person_maps/edit visualiziamo nome azienda e persona
+
+Nella tabella company_person_maps abbiamo solo le external key:
+
+* person_id
+* company_id
+
+Ma grazie alla relazione uno-a-molti prendiamo i dati dalle tabelle "people" e "companies"
+
+Iniziamo visualizzando il nome dell'azienda e quello della persona.
+
+{caption: ".../views/company_person_maps/_form.html.erb -- codice n/a", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<div class="field">
+    <%= form.label :company_id %>
+    <br><%= company_person_map.company.name %>
+    <%= form.text_field :company_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :person_id %>
+    <br><%= company_person_map.person.first_name %> <%= company_person_map.person.last_name %>
+    <%= form.text_field :person_id %>
+  </div>
+```
+
+
+
+
+## Cambiamo la persona annidata
+
+Nota: non abbiamo un controllo che verifica l'unicità della persona annidata. (Si può implementare come ho fatto per Donamat sulle transactions per evitare duplicati. Va implementata nella tablela inserendo un indice univoco tra due campi. -- vedi donamat --)
+
+Inseriamo il link "change" per cambiare la persona collegata. Ci apre un popup con tutte le persone tra cui scegliere.
+
+{id: "50-06-07_01", caption: ".../views/company_person_maps/_form.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+  <div class="field">
+    <%= form.label :person_id %>
+    <%= form.text_field :person_id %>
+    <br>
+    <a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom popup-with-zoom-anim wow fadeInUp" data-wow-delay="0.6s" href="#modal-popup-selections-nested"> change &nbsp&nbsp&nbsp&nbsp</a>
+    <%= link_to people_path.params.merge(back_to: "company_person_maps_edit"), class: "btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom", 'data-wow-delay': "0.6s" do %>
+    <%= company_person_map.person.first_name %> <%= company_person_map.person.last_name %>
+    <%= render 'popup_selections_nested' %>
+  </div>
+```
+
+[tutto il codice](#50-06-07_01all)
+
+
+{id: "50-06-07_02", caption: ".../views/company_person_maps/_popup_selections_nested.html.erb -- codice 02", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+  <% @people.each do |person| %>
+    <%= link_to request.params.merge(nested_id: person.id), class: "btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom", 'data-wow-delay': "0.6s" do %>
+```
+
+[tutto il codice](#50-06-07_02all)
+
+
+Aggiorniamo view company_person_maps_controller - edit
+
+Usiamo il parametro "nested_id" per cambiare il valore sul campo person_id.
+
+{id: "50-05-05_03", caption: ".../app/controllers/company_person_maps_controller.rb -- codice 03", format: ruby, line-numbers: true, number-from: 70}
+```
+  # GET /company_person_maps/1/edit
+  def edit
+    @people = Person.all
+    @company_person_map.person_id = params[:nested_id] unless params[:nested_id].blank?
+  end
+```
+
+[tutto il codice](#50-05-05_03all)
+
+Analizziamo il codice:
+
+* @people = Person.all  # Per elenco nel popup
+* @company_person_map.person_id = params[:nested_id] unless params[:nested_id].blank?   # Se scelgo persona nel popup
+* @company_person_map.person_id   # la variabile di istanza @company_person_map è definita nel metodo privato "set_company_person_map" e chiamata da "before_action"
+* unless params[:nested_id].blank?  # gli assegnamo il valore solo se nested_id è presente. (Manca la gestione dell'errore nel caso in cui mettiamo manualmente sull'url un valore sbagliato)
+
+* https://gorails.com/episodes/rails-link-to-current-page-with-params
+
+
+
+
+## Permettiamo di modificare i dati della persona annidata
+
+I dati legati alla sola persona li cambiamo in people/edit. 
+Lo facciamo tramite questi passaggi:
+
+* creiamo un pulsante sul campo person_id di company_person_maps/edit che va su people/edit
+* per usare il parametro dal submit del form di modifica persona creiamo dei campi nascosti
+* aggiorniamo il controller people_controller azione update
+
+Iniziamo quindi, aggiungendo un pulsante per andare direttamente su people/edit. Inoltre passiamo sull'url il parametro "params[:go_back_to]" che useremo nel controller "people_controller" nell'azione "update" per indicare di tornare su company_person_maps/edit.
+
+
+{id: "50-06-08_04", caption: ".../views/company_person_maps/_form.html.erb -- codice 04", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+    <%= link_to edit_person_path(company_person_map.person.id, back_to: "company_person_maps_edit", back_to_id: company_person_map.id), class: "btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom", 'data-wow-delay': "0.6s" do %>
+      <%= image_tag "elis/icons/person.png", alt: "company" %> modifica &nbsp&nbsp&nbsp&nbsp
+    <% end %>
+```
+
+Analizziamo il codice:
+
+* link_to edit_person_path(company_person_map.person.id,...   -> vado su views/pepole/edit 
+* ...back_to: "company_person_maps_edit", back_to_id: company_person_map.id -> passo due parametri sull'url per tornare indietro
+
+
+Premendo il pulsante attiviamo l'azione "edit" del controller "people_controller" e lasciamo il codice così com'è.
+Cambiamo invece il partial "_form" su people aggiungendo due campi nascosti su cui immagazziniamo i valori passati sull'url.
+
+{id: "50-06-08_05", caption: ".../views/people/_form.html.erb -- codice 05", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+    <%= form_with(model: person, local: true) do |form| %>
+
+      <!-- Manteniamo sull'url alcuni params - start --> 
+      <%= hidden_field_tag(:back_to, params[:back_to]) %><!-- creato per tornare a company_person_maps_edit -->
+      <%= hidden_field_tag(:back_to_id, params[:back_to_id]) %><!-- creato per tornare a company_person_maps_edit -->
+      <!-- Manteniamo sull'url alcuni params - end -->
+```
+
+[tutto il codice](#50-06-08_05all)
+
+Premendo il submit attiviamo l'azione "update" del controller "people_controller" e qui facciamo le modifiche gestendo i parametri params[:back_to] e params[:back_to_id] che sono passati tramite gli hidden_fields messi nel form.
+
+{id: "50-06-08_06", caption: ".../app/controllers/people_controller.rb -- codice 06", format: ruby, line-numbers: true, number-from: 70}
+```
+    params[:back_to] = "" if params[:back_to].blank?
+    respond_to do |format|
+      if @person.update(person_params)
+        format.html do
+          if params[:back_to] == "company_person_maps_edit"
+            redirect_to edit_company_person_map_path(params[:back_to_id]), notice: 'Person was successfully updated.' 
+          else
+            redirect_to @person, notice: 'Person was successfully updated.' 
+          end
+        end
+```
+
+[tutto il codice](#50-06-08_06all)
+
+
+
+
+
+## Eliminiamo persona e records collegati su company_person_maps
+
+Eliminando la persona eliminiamo i records in company_person_maps su cui è collegata
+Al momento non è permesso eliminare una persona se ha un collegamento a company_person_maps, perché i dati di company_person_map possono essere considerati "generici".
+In altra parole se l'azienda ABC ha Mario che lavora come "Capo magazzino", nel momento che Mario va via ed entra Angelo, il telefono dell'ufficio, il cel. aziendale, ecc. passano ad Angelo.
+La realtà è che molti dati sono cancellati e se ne creano di nuovi (es: email, cellulare, ...)
+Quindi permettiamo di cancellare il record collegato a company_person_maps inserendo ", dependent: :destroy" nel model Person nella relazione "has_many :company_person_maps"
+
+{id: "50-05-05_07", caption: ".../app/models/person.rb -- codice 07", format: ruby, line-numbers: true, number-from: 17}
+```
+  has_many :company_person_maps, dependent: :destroy
+```
+
+[tutto il codice](#50-05-05_07all)
+
+
+
+
+
+## Cambiamo la azienda master
+
+sono in dubbio se è utile permettere di cambiare anche il record master.
+Mi sembra più corretto da company_person_maps/index cliccare sulla persona e cliccare su "vai a..."
+A quel punto torno su company_person_maps/index ma con params[:master]="people" e vedo tutte le aziende annidate della persona master. Clicco sull'azienda annidata che volevo cambiare e su company_person_maps/edit adesso posso cambiare l'azienda.
+
+
+
+
+## Implementiamo le polimorfiche telephonable ed emailable
+
+Così come abbiamo già fatto per la persona a cui abbiamo implementato telefono ed email personali, qui implementiamo telefono ed emails aziendali.
+
+Aggiorniamo il model
+
+{id: "50-05-05_08", caption: ".../app/models/company_person_map.rb -- codice 08", format: ruby, line-numbers: true, number-from: 17}
+```
+  ## nested-forms + polymorphic
+  has_many :telephones, dependent: :destroy, as: :telephoneable
+  accepts_nested_attributes_for :telephones, allow_destroy: true, reject_if: proc{ |attr| attr['number'].blank? }
+
+  ## nested-form + polymorphic
+  has_many :emails, dependent: :destroy, as: :emailable
+  accepts_nested_attributes_for :emails, allow_destroy: true, reject_if: proc{ |attr| attr['address'].blank? }
+```
+
+[tutto il codice](#50-05-05_08all)
+
+
+
+Aggiorniamo il partial "_form"
+
+{id: "50-06-08_09", caption: ".../views/company_person_maps/_form.html.erb -- codice 09", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+  <div data-controller="nested-form" class="col-12"> <!-- Nested Form Telephones start -->
+    <%= form.label :telephones %>
+
+    <!-- Creiamo nuovo Record -->
+    <template data-target="nested-form.template">
+      <%= form.fields_for :telephones, Telephone.new, child_index: "TEMPLATE_RECORD" do |telephone| %>
+        <%= render "telephone_fields", form: telephone %>
+      <% end %>
+    </template>
+
+    <!-- Visualizziamo i Records esistenti -->
+    <%= form.fields_for :telephones do |telephone| %>
+      <%= render "telephone_fields", form: telephone %>
+    <% end %>
+
+    <!-- Il pulsante per aggiungere i tasks -->
+    <div data-target="nested-form.add_item">
+        <%= link_to "+ Aggiungi numero di telefono", "#", data: { action: "nested-form#add_association" }, class: "btn btn-transparent-dark-gray btn-medium margin-20px-bottom" %>
+        <%#= link_to "Add Telephone", "#", 'data-action': "nested-form#add_association" %>
+    </div>
+  </div> <!-- Nested Form Telephones end -->
+```
+
+[tutto il codice](#50-05-05_09all)
+
+
+Manca l'ultimo pezzetto per farlo funzionare...
+Aggiorniamo il controller.
+
+{id: "50-05-05_08", caption: ".../app/controllers/company_person_maps_controller.rb -- codice 08", format: ruby, line-numbers: true, number-from: 17}
+```
+    def company_person_map_params
+      params.require(:company_person_map).permit(:company_id, :person_id, :summary, telephones_attributes: [:_destroy, :id, :name, :prefix, :number], emails_attributes: [:_destroy, :id, :name, :address])
+    end
+```
+
+Ok adesso funziona! YEAP!
+
+
+
+
+## Visualizziamo il telefono su index
+
+DA METTERE SU COMPANY
+
+views/company_person_maps/_master_company
+```
+<p><%= company.address %> | <%= "#{company.telephones.first.name}: #{company.telephones.first.prefix} #{company.telephones.first.number} " if company.telephones.first.present? %> | Email: info@peroni.it</p>
+```
+
+creiamo un helper
+
+views/company_person_maps/_master_company
+```
+<p><%= company.address %> | <%= h_company_telefones_first(company.telephones) %> | Email: info@peroni.it</p>
+```
+
+creiamo l'helper
+
+helpers/company_person_maps_helper
+```
+module CompanyPersonMapsHelper
+  
+  def h_company_telefones_first(telephones)
+    "#{telephones.first.name}: #{telephones.first.prefix} #{telephones.first.number} " if telephones.first.present?
+  end
+
+  def h_company_telefones_all(telephones)
+    telephones_all = ""
+    telephones.each do |telephone|
+     telephones_all = telephones_all + "#{telephone.name}: #{telephone.prefix} #{telephone.number} " if telephone.present?
+    end
+    return telephones_all
+  end
+end
+```
+
+
+
+Volendo visualizzare tutti i numeri archiviati usiamo il metodo "h_company_telefones_all"
+
+views/company_person_maps/_master_company
+```
+<p><%= company.address %> | <%= h_company_telefones_all(company.telephones) %> | Email: info@peroni.it</p>
+```

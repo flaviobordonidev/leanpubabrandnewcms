@@ -1,0 +1,147 @@
+{id: 50-elisinfo-05-People-06-people_index_search}
+# Cap 5.6 -- Implementiamo il search
+
+Inseriamo un form per la ricerca delle persone composto da un campo di imput ed un pulsante di search.
+
+
+External references:
+
+
+
+
+## Apriamo il branch "People Index Search"
+
+{title="terminal", lang=bash, line-numbers=off}
+```
+$ git checkout -b pis
+```
+
+
+
+
+## Inseriamo il form di ricerca sul view people/index
+
+Non essendo il form direttamente legato ad una tabella in passato avremmo usato "form_tag" ma oggi c'è "form_with".
+
+{id: "50-05-06_01", caption: ".../views/people/index.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+  <%= form_with(url: "", method: "get", local:true) do %>
+    <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "cerca..." %>
+    <%= submit_tag "Cerca" %>
+  <% end %>
+```
+
+Per l'analisi del codice vedi capitolo 04-Companies/09-companies_index_search
+
+
+
+
+## Aggiorniamo il controller
+
+Intercettiamo la variabile "search", che è passata nell'url dal metodo "get" di invio del form, e la usiamo per effettuare la nostra ricerca.
+
+Nell'azione "index"
+
+{id: "50-05-06_02", caption: ".../app/controllers/people_controller.rb -- codice 02", format: ruby, line-numbers: true, number-from: 1}
+```
+  def index
+    params[:search] = "" if params[:search].blank?
+    @people = Person.search(params[:search])
+```
+
+Per l'analisi del codice vedi capitolo 04-Companies/09-companies_index_search
+
+
+
+
+
+## Aggiorniamo il model
+
+Definiamo il filtro "search()" che abbiamo dichiarato sul controller. 
+
+Nella sezione "# == Scopes"
+
+{id: "50-05-06_03", caption: ".../app/models/person.rb -- codice 03", format: ruby, line-numbers: true, number-from: 1}
+```
+  #scope :search, -> (query) {with_translations(I18n.locale).where("title ILIKE ? OR last_name ILIKE ? OR first_name ILIKE ?", "%#{query.strip}%", "%#{query.strip}%", "%#{query.strip}%")}
+  #scope :search, -> (query) {with_translations.where("title ILIKE ? OR last_name ILIKE ? OR first_name ILIKE ?", "%#{query.strip}%", "%#{query.strip}%", "%#{query.strip}%")}
+  #scope :search, -> (query) {with_translations.where("CONCAT_WS(' ', first_name, last_name) ILIKE ?", "%#{query.strip}%")}
+  scope :search, -> (query) {with_translations.where("first_name || ' ' || last_name ILIKE ?", "%#{query.strip}%")}
+```
+
+
+
+
+## Verifichiamo preview
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails s
+```
+
+e vediamo sul nostro browser:
+
+* https://mycloud9path.amazonaws.com/companies
+
+Andiamo sul campo "cerca..." digitiamo "AB" e clicchiamo il bottone "search" per fare la ricerca.
+vediamo che le aziende sono filtrate e l'url diventa:
+
+* https://mycloud9path.amazonaws.com/companies?search=AB
+
+Funziona tutto.
+
+
+
+
+## Salviamo su Git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "Implement search form on companies"
+```
+
+
+
+
+## Pubblichiamo su Heroku
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push heroku cis:master
+```
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout master
+$ git merge cis
+$ git branch -d cis
+```
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push origin master
+```
+
+
+
+
+## Il codice del capitolo
+
+
+

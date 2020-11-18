@@ -150,7 +150,7 @@ Indichiamo sul modello i campi della tabella che vogliamo tradurre.
 {id: "01-08-01_02", caption: ".../app/models/company.rb -- codice 02", format: ruby, line-numbers: true, number-from: 7}
 ```
   ## globalize required
-  translates :note, :sector, :fallbacks_for_empty_translations => true
+  translates :building, :note, :sector, :fallbacks_for_empty_translations => true
 ```
 
 [tutto il codice](#01-08-01_02all)
@@ -176,6 +176,7 @@ class CreateCompaniesTranslations < ActiveRecord::Migration[6.0]
       
       dir.up do
         Company.create_translation_table!({
+          building: string,
           note: :text,
           sector: :string
         },{
@@ -225,8 +226,8 @@ Popolare la tabella in automatico con un solo record. Nel prossimo paragrafo agg
 {id: "01-08-01_01", caption: ".../db/seeds.rb -- codice 03", format: ruby, line-numbers: true, number-from: 29}
 ```
 puts "setting the Company data with I18n :en :it"
-Company.new(name: "ABC srl", sector: "Chemical", locale: :en).save
-Company.last.update(sector: "Chimico", locale: :it)
+Company.new(name: "ABC srl", building: "Roma's office", sector: "Chemical", locale: :en).save
+Company.last.update(building: "Ufficio di Roma", sector: "Chimico", locale: :it)
 ```
 
 

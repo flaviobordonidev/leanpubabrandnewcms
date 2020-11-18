@@ -1,9 +1,0 @@
-# Master Pagination
-
-
-
-## Attiviamo il pagination nell'elenco master
-
-Nel nostro caso l'elenco master è la lista di azienda. (l'elenco annidato è quello delle persone che lavorano in ogni azienda)
-
-lo mettiamo nel prossimo capitolo

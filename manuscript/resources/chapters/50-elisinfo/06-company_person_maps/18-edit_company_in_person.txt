@@ -1,0 +1,28 @@
+# blabla
+
+Essendo una relazione molti a molti con tabella intermedia abbiamo il campo company_person_maps.summary da riempire.
+Dove lo facciamo riempire?
+
+
+Usiamo il company_person_maps _form che ci permette di modificare sia lato persone che aziende...
+
+- questo form ingloba quanto già visto nei rispettivi form di Company e People.
+
+Se siamo con "master = company" avremo:
+
+
+_form
+----
+Azienda Pinco Pallo - Sede legale di Milano ufficio bustarelle (123456)
+
+job_title/incarico/mansione [.Export Area Manager.]
+
+titolo [.Sig..] nome [.Pippo.] cognome [.Neri.]
+
+
+polimorfa telefono [+]
+polimorfa email [+]
+polimorfa social [+]
+----
+
+Pippo Neri lavora anche per l'azienda Pillo Punco e lì è "External Consulent"

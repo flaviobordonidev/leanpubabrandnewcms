@@ -1,0 +1,255 @@
+* if params[:search_master].blank?  : evita errore se nell'url non c'è "&search_master="
+# Master search
+
+Attiviamo il form per la ricerca (search o find) nell'elenco master
+
+
+
+## Attiviamo un form per le ricerche nell'elenco master
+
+Nel nostro caso l'elenco master è la lista di azienda. (l'elenco annidato è quello delle persone che lavorano in ogni azienda)
+
+{id: "50-04-09_01", caption: ".../views/company_person_maps/index.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+  <%= form_with(url: "", method: "get", local:true) do %>
+    <%= text_field_tag :search_master, params[:search_master], class: "form-control", placeholder: "cerca..." %>
+    <%= text_field_tag :search_nested, params[:search_nested], class: "form-control", placeholder: "cerca..." %>
+    <%= submit_tag "Cerca" %>
+  <% end %>
+```
+
+Come già visto nei capitoli precedenti usiamo il nuovo "form_with" al posto di "form_tag"
+
+
+
+
+
+
+## Aggiorniamo il model CompanyPersonMap
+
+oltre a sfruttare le relazioni molti-a-molti tra i model Company, Person e CompanyPersonMap, sfruttiamo gli scopes per le ricerche.
+
+Abbiamo già lo scope :search sul model Company
+nella sezione "# == Scopes" 
+
+{caption: ".../app/models/company.rb -- codice n/a", format: ruby, line-numbers: true, number-from: 1}
+```
+  scope :search, -> (query) {with_translations(I18n.locale).where("name ILIKE ?", "%#{query.strip}%")}
+```
+
+
+E abbiamo già lo scope :search sul model Person
+nella sezione "# == Scopes" 
+
+
+{caption: ".../app/models/person.rb -- codice n/a", format: ruby, line-numbers: true, number-from: 1}
+```
+  scope :search, -> (query) {with_translations.where("title || ' ' || first_name || ' ' || last_name ILIKE ?", "%#{query.strip}%")}
+```
+
+
+Per il nostro model CompanyPersonMap abbiamo due tipi di ricerca.
+
+Dal lato Companies come master ci serve un search_nested_people del tipo:
+
+{caption: ".../app/models/company_person_map.rb -- codice n/a", format: ruby, line-numbers: true, number-from: 1}
+```
+  scope :search_nested_people, -> (query_master, query_nested) {Company.search(query_master).people.search(query_nested)}
+```
+
+Dal lato People come master ci serve un search_nested_companies del tipo:
+
+{caption: ".../app/models/company_person_map.rb -- codice n/a", format: ruby, line-numbers: true, number-from: 1}
+```
+  scope :search_nested_companies, -> (query_master, query_nested) {Person.search(query_master).companies.search(query_nested)}
+```
+
+Ma il metodo ".joins()" che Rails presenta come il metodo principale per collegare più tabelle ci porta in una direzione differente: 
+
+* https://guides.rubyonrails.org/active_record_querying.html#joining-tables 
+
+In the case of a belongs_to relationship, an association key can be used to specify the model if an Active Record object is used as the value. This method works with polymorphic relationships as well.
+
+Article.where(author: author)
+Author.joins(:articles).where(articles: { author: author })
+
+
+Alla luce di questo giochiamo con la console per avere delle ricerche che funzionino sul "master" e sul "nested":
+
+
+{title="terminal", lang=bash, line-numbers=off}
+```
+$ rails c
+> Company.all
+> Company.where(id: 1)
+> Company.where(name: "ABC srl")   # Dobbiamo mettere TUTTO il nome. altrimenti dobbiamo usare ILIKE.
+> Company.search("ABC")   # sfruttiamo lo scope :search del model Company
+
+> Person.all
+> Person.where(id: 1)
+> Person.where(first_name: "Flavio")
+> Person.search("Fla")   # sfruttiamo lo scope :search del model Person
+
+> CompanyPersonMap.all
+> CompanyPersonMap.joins(:company).where(companies: {name: "ABC srl"})
+> CompanyPersonMap.joins(:company, :person).where(companies: {name: "ABC srl"}, people: {first_name: "Flavio"})
+
+> CompanyPersonMap.joins(:company).merge(Company.search("ABC"))
+> CompanyPersonMap.joins(:person).merge(Person.search("Fla"))
+
+> CompanyPersonMap.joins(:company, :person).merge(Company.search("ABC")).merge(Person.search("Fla"))
+
+> cs =  Company.search("ABC")
+> cs[0].people
+> cs[0].people.search("Fla")
+
+> cs.each do |c|
+>   c.people.search("Fla")
+> end
+```
+
+FUNZIONAAAA! ^_^
+
+Se vogliamo usare l'approccio senza ".joins" dobbiamo usare un ciclo ".each" di tutti i master trovati nella ricerca del master e fare tante ricerche annidate.
+
+Usando ".joins" possiamo usare invece "GROUP_BY" per la visualizzazione nella view, gestendo entrambe le situazioni:
+
+* Company master e Person nested
+* Person master e Company nested
+
+
+Attenzione: queso filtro che è eccellente purtroppo esclude le Aziende e/o le Persone che non hanno un riferimento sulla tabella CompanyPersonMap; ossia:
+
+* Quando Company è master non vedo le aziende che non hanno una persona associata.
+* Quando Person è master non vedo le persone che non hanno una azienda associata.
+
+Esistono aziende senza persona e viceversa?
+Tendenzialmente sì ma quelle le gestiamo da companies/index e da people/index... Non è detto che sia così facile, perché potrei essere su Companies+People e voglio aggiungere una nuova azienda e non è carino tornare su Companies+NoNested.
+Mi serve di visualizzare TUTTO il lato MASTER, incluse quelle che non hanno NESTED.
+Per il lato Master mi serve un LEFT OUTER JOIN e non l'INNER-JOIN. CAZZO!
+
+Active Record provides two finder methods for specifying JOIN clauses on the resulting SQL: joins and left_outer_joins. While joins should be used for INNER JOIN or custom queries, left_outer_joins is used for queries using LEFT OUTER JOIN.
+
+Possiamo impazzirci con queries più complesse del tipo:
+
+{title="terminal", lang=bash, line-numbers=off}
+```
+$ rails c
+> Company.left_outer_joins(:people)
+> Company.left_outer_joins(:people).merge(Company.search("ABC"))
+
+> Company.search("ABC").left_outer_joins(:people)
+> Company.search("").left_outer_joins(:people).merge(Person.search("Fla"))
+
+> Company.search("Sola").left_outer_joins(:people).merge(Person.search("Fla"))
+> Company.search("").includes(:people)
+> Company.search("").includes(:people).where(people: {first_name: "Flavio"})
+
+
+Article.includes(:comments).where(comments: { visible: true })
+
+> CompanyPersonMap.left_outer_joins(:company, :person).merge(Company.search("ABC")).merge(Person.search("Fla"))
+```
+
+Oppure gestire tutto da Controller intercettando params[:master_search] e params[:mested_search].
+
+Se params[:nested_search] è vuoto/null allora uso params[:master_search] sulle semplici query:
+
+* Company.search(params[:master_search])
+* Person.search(params[:master_search])
+
+Altrimenti usiamo la query più complessa:
+
+* Company.search(params[:master_search]).joins(:people).merge(Person.search(params[:nested_search]))
+* Person.search(params[:master_search]).joins(:companies).merge(Company.search(params[:nested_search]))
+
+
+Avrebbe più senso usare ".left_outer_joins" in modo da includere anche i "masters" (es: Companies) senza "nesteds" (es: People)
+
+* Company.search(params[:master_search]).left_outer_joins(:people).merge(Person.search(params[:nested_search]))
+
+Ma possiamo usare ".joins" perché aggiungendo ".merge(Person.search(..." il ".left_outer_joins" da lo stesso risultato.
+
+* Company.search(params[:master_search]).joins(:people).merge(Person.search(params[:nested_search]))
+
+
+A questo punto gli scopes aggiuntivi li mettiamo su Company e Person e niente su CompanyPersonMap.
+
+Su CompanyPersonMap avrebbe senso quello per cui saremmo costretti ad usare GROUP_BY.
+
+
+Nella sorpassata versione di Elisinfo 6 avevamo creato il seguente scope sul Model CompanyPersonMap:
+
+Questo era un filtro che usavamo sul model CompanyPersonMap
+
+```
+  # == Scopes ===============================================================
+  
+  # sfrutto lo scope: search del model person 
+  scope :search_people, -> (query) {joins(:person).merge(Person.search(query))}
+
+  # sfrutto lo scope: search del model Company 
+  scope :search_companies, -> (query) {joins(:company).merge(Company.search(query))}
+```
+
+Queste due search fanno la ricerca delle sole persone o delle sole aziende che sono presenti all'interno della tabella company_person_maps.
+Quindi "search_companies" non mi mostra a prescindere le aziende che non hanno persone anche se il loro nome rientrerebbe nella "search(query)".
+Questo è utile didatticamente ma a noi non ci è utile.
+
+Ci sarebbe potuto essere utile questo:
+
+{caption: ".../app/models/company_person_map.rb -- codice n/a", format: ruby, line-numbers: true, number-from: 1}
+```
+  scope :search_companies_people, -> (query_master, query_nested) {joins(:company, :person).merge(Company.search(query_master)).merge(Person.search(query_nested))}
+  scope :search_people_companies, -> (query_master, query_nested) {joins(:person, :company).merge(Person.search(query_master)).merge(Company.search(query_nested))}
+```
+
+Ci sarebbero da fare più test ma ho la sensazione che i due scope in realtà diano lo stesso risultato. Quindi bastava farne uno e chiamarlo "scope :search".
+Comunque non abbiamo scelto questa strada e quindi questo resta a scopo didattico.
+Abbiamo scelto di non mettere nessuno "scope" sul model CompanyPersonMap.
+Continuiamo invece con la strada che abbiamo scelto.
+
+
+
+
+## Aggiorniamo CompanyPersonMap controller
+
+Alla luce delle ultime considerazioni usiamo gli "scope :search" già implementati nei models Company e Person.
+
+{id: "01-08-01_01", caption: ".../app/controllers/company_person_maps_controller.rb -- codice 02", format: ruby, line-numbers: true, number-from: 1}
+```
+  def index
+    params[:search_master] = "" if params[:search_master].blank?
+    params[:search_nested] = "" if params[:search_nested].blank?
+    if params[:search_nested] == ""
+      @companies = Company.search(params[:search_master])
+    else
+      @companies = Company.search(params[:search_master]).joins(:people).merge(Person.search(params[:search_nested]))
+    end
+```
+
+Analizziamo il codice:
+
+* if params[:search_master].blank?  : evita errore se nell'url non c'è "&search_master="
+* if params[:search_nested].blank?  : evita errore se nell'url non c'è "&search_nested="
+* if params[:search_nested] == ""   : Se non filtro nessuna persona... (quindi le visualizzo tutte)
+* else                              : altrimenti
+* ....joins(:people).merge(...      : Ottengo le Aziende con filtro sia sul nome che sulle persone. (Ma il filtro mi restituisce solo le aziende e non il "set di persone filtrate".)
+
+
+Con questo codice sulla variabile di istanza @companies ottengo un elenco di aziende che rispetta i criteri di ricerca.
+Nota: Il "with_translations.where" effettua la ricerca anche nei campi tradotti nelle varie lingue. Se volessi limitare alla sola lingua scelta dovrei usare "with_translations(I18n.locale).where" ma questo ha un "bug" e mi crea dei records duplicati.
+
+```
+Si potrebbe provare ad usare ".distinct.select"... per eliminare i duplicati di "with_translations(I18n.locale).where"
+
+* https://guides.rubyonrails.org/active_record_querying.html#joining-tables
+
+Author.left_outer_joins(:posts).distinct.select('authors.*, COUNT(posts.*) AS posts_count').group('authors.id')
+
+Which produces:
+
+SELECT DISTINCT authors.*, COUNT(posts.*) AS posts_count FROM "authors"
+LEFT OUTER JOIN posts ON posts.author_id = authors.id GROUP BY authors.id
+Which means: "return all authors with their count of posts, whether or not they have any posts at all"
+```

@@ -1,0 +1,28 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Company Person Maps</h1>
+
+<%= form_with(url: "", method: "get", local:true) do %>
+
+  <!-- Manteniamo sull'url alcuni params - start --> 
+  <%= hidden_field_tag(:master_page, params[:master_page]) %><!-- utile quando master_page = people -->
+  <!-- Manteniamo sull'url alcuni params - end --> 
+
+  <%= label_tag "Master" %>
+  <%= text_field_tag :search_master, params[:search_master], class: "form-control", placeholder: "cerca..." %>
+  <%= label_tag "Nested" %>
+  <%= text_field_tag :search_nested, params[:search_nested], class: "form-control", placeholder: "cerca..." %>
+  <%= submit_tag "Cerca" %>
+<% end %>
+  
+<% if params[:master_page] == "companies" %>
+  <%= render 'master_company', companies: @companies %>
+<% else %>
+  <%= render 'master_people', people: @people %>
+<% end %>
+
+<%= sanitize pagy_nav(@pagy) %>
+
+<br><br>
+
+<%= link_to 'New Company Person Map', new_company_person_map_path %>

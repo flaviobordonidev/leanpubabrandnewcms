@@ -53,8 +53,21 @@ Colonne principali:
 
 * company:references        -> (integer) crea la chiave esterna company_id
 * person:references         -> (integer) crea la chiave esterna person_id
-* summary:string            -> (250 caratteri) breve descrizione della connessione tra azienda e persona
+* job_title:string          -> (100 caratteri) il titolo aziendale / mansione / incarico. Ad esempio "Export Area Manager", "System Engineer", ...
+* job_title_tag:integer     -> (ENUM) un nostro tag che rappresenta la mansione in modo utile per noi. Ad esempio "logistic", "acquisti", "tecnici", ...
+* important_notes:string    -> (250 caratteri) note importanti relative alla persona nell'azienda. questo testo è visualizzato anche su index.
+* additional_notes:text     -> (molti caratteri) note aggiuntive relative alla persona nell'azienda. questo testo è visualizzato sul popup (che rimpiazza show).
+* DA TOGLIERE: summary:string            -> (250 caratteri) breve descrizione della connessione tra azienda e persona
 
+
+Colonne secondarie:
+
+* business_card_front:image   -> upload con ActiveStorage
+* business_card_rear:image    -> upload con ActiveStorage
+
+* polimorfa telefono aziendale [+]        -> 
+* polimorfa email aziendale [+]           ->
+* polimorfa accounts social aziendali [+] -> (Linkedin, Facebook, Whatsapp, Skype, ...)
 
 
 

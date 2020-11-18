@@ -1,0 +1,65 @@
+{id: 50-elisinfo-05-People-07-people_index_pagination}
+# Cap 5.7 -- La paginazione per le persone
+
+Abbiamo già installato, implementato e usato la gemma "pagy" nella sezione 01-base/17-pagination.
+E la abbiamo già usata in 04-Companies/10-companies_index_pagination
+Adesso la usiamo per people.
+
+
+
+
+## Apriamo il branch "People Index Pagination"
+
+{title="terminal", lang=bash, line-numbers=off}
+```
+$ git checkout -b pip
+```
+
+
+
+
+## Implementiamo la paginazione per people_controller
+
+Abbiamo già inserito la chiamata a pagy in application_controller. Adesso che abbiamo incluso pagy possiamo chiamare la funzione "pagy()" nelle azioni dei nostri controllers. Implementiamo la paginazione nell'azione index di people_controller
+
+{id: "50-05-07_01", caption: ".../app/controllers/people_controller.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
+```
+    @pagy, @people = pagy(Person.search(params[:search]).order(created_at: "DESC"), items: 2)
+```
+
+[tutto il codice](#50-05-07_01all)
+
+Per l'analisi del codice vedi capitolo 04-Companies/10-companies_index_pagination
+
+
+
+
+## Implementiamo la pagina companies/index
+
+Abbiamo già incluso il frontend di pagy a livello di "application_helper" con "include Pagy::Frontend"; adesso lo possiamo usare nelle views.
+
+Usiamo l'helper "pagy_nav()" messo a disposizione da pagy.
+Anche se pagy già evita query-injections, per essere esplicitamente prudenti usiamo "sanitize".
+
+{caption: ".../app/views/people/index.html.erb -- codice 02", format: HTML+Mako, line-numbers: true, number-from: 36}
+```
+<%= sanitize pagy_nav(@pagy) %>
+```
+
+
+
+
+## Verifichiamo preview
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails s
+```
+
+apriamo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/companies
+
+E vediamo la paginazione.
+

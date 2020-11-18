@@ -1,0 +1,12 @@
+<%= form_with(url: "", method: "get", local:true) do %>
+
+  <!-- Manteniamo sull'url alcuni params - start --> 
+  <%= hidden_field_tag(:master_page, params[:master_page]) %><!-- utile quando master_page = people -->
+  <!-- Manteniamo sull'url alcuni params - end --> 
+
+  <%= label_tag label_master %>
+  <%= text_field_tag :search_master, params[:search_master], class: "form-control", placeholder: "cerca..." %>
+  <%= label_tag label_nested %>
+  <%= text_field_tag :search_nested, params[:search_nested], class: "form-control", placeholder: "cerca..." %>
+  <%= submit_tag "Cerca" %>
+<% end %>

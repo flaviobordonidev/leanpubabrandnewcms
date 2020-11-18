@@ -1,0 +1,12 @@
+# Selezioni dinamiche
+
+per "selezioni" indichiamo l'elenco di scelte possibili per le varie entità (aziende, persone, pratiche, prodotti,...)
+
+Finora le abbiamo messe direttamente nel codice (hard-coded) ma adesso le rendiamo dinamiche, ossia le prendiamo da delle tabelle nel database.
+
+---
+vedi: zz-04-select_relateds_seeds_i18n_globalize
+# select_realateds - HomePage Favorites Companies People
+
+ATTENZIONE -> un nome migliore di select_realateds è "selections". Consideriamolo nella prossima versione.
+---

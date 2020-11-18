@@ -1,0 +1,152 @@
+{id: 50-elisinfo-06-company_person_maps-05-master_people}
+# Cap 6.5 -- Su elenco persone attiviamo il livello annidato aziende
+
+Nella stessa view company_person_map dobbiamo visualizzare anche l'annidamento inverso ossia quello in cui people è master e companies è nested.
+Quella che ha una visualizzazione del tipo:
+
+-Persona1
+  -Azienda1
+  -Azienda2
+-Persona2
+  -Azienda1
+-Persona3
+  -Azienda2
+  -Azienda4
+  -Azienda5
+  ...
+...
+
+
+## apriamo branch
+
+
+
+## Aggiorniamo controller
+
+Partiamo dal controller e definiamo la variabile ":master_pag"e che messa nell'url ci permetta di discriminare se master=companies o master=people.
+Inseriamo quindi la condizione "if" per discriminare i due scenari.
+
+
+{id: "50-04-10_01", caption: ".../app/controllers/companies_controller.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
+```
+  def index
+    params[:master_page] = "companies" if params[:master_page].blank?
+    params[:search_master] = "" if params[:search_master].blank?
+    params[:search_nested] = "" if params[:search_nested].blank?
+    if params[:master_page] == "companies"
+      if params[:search_nested] == ""
+        @pagy, @companies = pagy(Company.search(params[:search_master]).order(created_at: "DESC"), page_param: :page_master, items: 2)
+      else
+        @pagy, @companies = pagy(Company.search(params[:search_master]).order(created_at: "DESC").joins(:people).merge(Person.search(params[:search_nested])), page_param: :page_master, items: 2)
+      end
+    else # l'altra unica alternativa è master_page = people
+      if params[:search_nested] == ""
+        @pagy, @people = pagy(Person.search(params[:search_master]).order(created_at: "DESC"), page_param: :page_master, items: 2)
+      else
+        @pagy, @people = pagy(Person.search(params[:search_master]).order(created_at: "DESC").joins(:companies).merge(Company.search(params[:search_nested])), page_param: :page_master, items: 2)
+      end
+    end
+  end
+```
+
+[tutto il codice](#50-04-10_01all)
+
+Analiziamo il codice:
+
+* params[:master_page] = "companies" if params[:master_page].blank?   -> Mi evita errore se non ho nell'url la varibile "master_page"
+
+
+
+
+## Aggiorniamo view
+
+Adesso che dobbiamo gestire la doppia scelta facciamo un po' di ordine con i partials.
+
+{id: "50-06-02_01", caption: ".../views/company_person_maps/index.html.erb -- codice 02", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<% if params[:master_page] == "companies" %>
+  <%= render 'master_company', companies: @companies %>
+<% else %>
+  <%= render 'master_people', people: @people %>
+<% end %>
+```
+
+
+{id: "50-06-02_01", caption: ".../views/company_person_maps/_master_company.html.erb -- codice 03", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<% companies.each do |company| %>
+  <p>Company: <%= company.id %> - <%= company.name %></p>
+  <% company.company_person_maps.each do |company_person_map| %>
+    <% if company_person_map.person.title.downcase.include? params[:search_nested].downcase or company_person_map.person.first_name.downcase.include? params[:search_nested].downcase or company_person_map.person.last_name.downcase.include? params[:search_nested].downcase %>
+    <p>
+      <%= company_person_map.person.id %> - <%= "#{company_person_map.person.title} #{company_person_map.person.first_name} #{company_person_map.person.last_name}" %>
+      <%= company_person_map.summary %>
+```
+
+
+{id: "50-06-02_01", caption: ".../views/company_person_maps/_master_people.html.erb -- codice 04", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<% people.each do |person| %>
+  <p>Person: <%= person.id %> - <%= "#{person.title} #{person.first_name} #{person.last_name}" %></p>
+
+  <% person.company_person_maps.each do |company_person_map| %>
+    <% if company_person_map.company.name.downcase.include? params[:search_nested].downcase %>
+    <p>
+      <%= company_person_map.company.id %> - <%= "#{company_person_map.company.name} #{company_person_map.company.building}" %>
+      <%= company_person_map.summary %>
+```
+
+
+
+
+
+## Verifichiamo preview
+
+---
+rails s
+---
+
+Andiamo sull'url myapp/company_person_maps ed aggiungiamo nell'url la variabile "master_page"
+(se è la prima usiamo "?master_page=" se ce ne sono altre usiamo "&master_page=")
+
+* myappurl/company_person_maps?master_page=people
+
+In questo modo sono invertite 
+
+
+
+
+## Creiamo anche il parial _form_search
+
+
+{id: "50-06-02_01", caption: ".../views/company_person_maps/index.html.erb -- codice 05", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<% if params[:master_page] == "companies" %>
+  <%= render 'form_search', label_master: "Azienda", label_nested: "Persona" %>
+  <%= render 'master_company', companies: @companies %>
+<% else %>
+  <%= render 'form_search', label_master: "Persona", label_nested: "Azienda" %>
+  <%= render 'master_people', people: @people %>
+<% end %>
+```
+
+
+{id: "50-06-02_01", caption: ".../views/company_person_maps/_form_search.html.erb -- codice 06", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<%= form_with(url: "", method: "get", local:true) do %>
+
+  <!-- Manteniamo sull'url alcuni params - start --> 
+  <%= hidden_field_tag(:master_page, params[:master_page]) %><!-- utile quando master_page = people -->
+  <!-- Manteniamo sull'url alcuni params - end --> 
+
+  <%= label_tag label_master %>
+  <%= text_field_tag :search_master, params[:search_master], class: "form-control", placeholder: "cerca..." %>
+  <%= label_tag label_nested %>
+  <%= text_field_tag :search_nested, params[:search_nested], class: "form-control", placeholder: "cerca..." %>
+  <%= submit_tag "Cerca" %>
+<% end %>
+```
+
+
+
+

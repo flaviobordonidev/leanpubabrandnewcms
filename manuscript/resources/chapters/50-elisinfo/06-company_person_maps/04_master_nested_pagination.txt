@@ -1,0 +1,167 @@
+{id: 50-elisinfo-06-company_person_maps-04_companies_master_pagination}
+# Cap 6.4 -- Master Pagination lato Aziende
+
+Siamo finalmente pronti per attivare il secondo livello nel nostro views/companies/index.
+In questo capitolo attiviamo come secondo livello la relazione delle aziende con le persone.
+
+
+
+
+## Apriamo il branch "Company Master Pagination"
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout -b cmp
+```
+
+
+
+## Paginazione per Companies -> People
+
+Iniziamo avendo master = companies e nested = people.
+(Quindi con l'elenco master che è la lista delle aziende e l'elenco annidato che è quello delle persone che lavorano in ogni azienda)
+
+Nei prossimi capitoli attiveremo la paginazione per lo scenario inverso People -> Companies.
+
+
+
+
+## Attiviamo la paginazione per l'elenco master = companies
+
+In questo capitolo ci concentriamo sulla paginazione solo per l'elenco master della configurazione Companies -> People.
+
+
+
+
+## Aggiorniamo company_person_maps_controller
+
+Nel controller company_person_maps, nell'azione "index"
+
+{id: "50-06-04_01", caption: ".../app/controllers/company_person_maps_controller.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
+```
+    if params[:search_nested] == ""
+      @pagy, @companies = pagy(Company.search(params[:search_master]).order(created_at: "DESC"), items: 2)
+    else
+      @pagy, @companies = pagy(Company.search(params[:search_master]).joins(:people).merge(Person.search(params[:search_nested])), items: 2)
+```
+
+[tutto il codice](#50-06-04_01all)
+
+Analiziamo il codice:
+
+* pagy(...                    : Possiamo usare questa funzione perché abbiamo già inserito la chiamata a pagy in application_controller nei capitoli precedenti.
+* .order(created_at: "DESC")  : Di default l'ordinamento è crescente in base l'ultima modifica fatta, quindi ogni modifica l'utente va in fondo all'elenco. Per lasciare un elenco più "statico" inseriamo l'ordinamento decrescente in base alla creazione.
+* , items: 2                  : Di default sono impostati 20 records ogni pagina; li riduciamo a 2 così avremo attivi i links per la paginazione.
+
+
+
+
+## Implementiamo la pagina companies/index
+
+Abbiamo già incluso il frontend di pagy a livello di "application_helper" con "include Pagy::Frontend"; adesso lo possiamo usare nelle views.
+
+Usiamo l'helper "pagy_nav()" messo a disposizione da pagy.
+Anche se pagy già evita query-injections, per essere esplicitamente prudenti usiamo "sanitize".
+
+{caption: ".../app/views/eg_posts/index.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 36}
+```
+<%= sanitize pagy_nav(@pagy) %>
+```
+
+
+
+## Per il pagination annidato mi arrendo :(
+
+
+Se fosse solo un secondo pagination non ci sarebbero problemi basterebbe usare l'opzione ", page_param:" e fare:
+
+* @pagy, @companies = pagy(Company.search(params[:search_master]).order(created_at: "DESC"), page_param: :page_master, items: 2)
+* @pagy, @people = pagy(People.search(params[:search_nested]).order(created_at: "DESC"), page_param: :page_nested, items: 2)
+
+Ma nel nostro caso abbiamo "N" paginazioni da fare, ossia una per ogni record master.
+
+Questo vorrebbe dire creare nel controller un ciclo for/each e reiterare tanti pagination passando tanti ":page_nested_N"
+Il tutto diventerebbe complesso con basse prestazioni e probabilmente neanche molto utile dal punto di vista dell'usabilità.
+
+Quindi accetto il compromesso che per ogni Master visualizzo TUTTI i suoi nested.
+Per le piccole e medie imprese questo non è un problema.
+Non creiamo un'unica Azienda ma tante Aziende in funzione di dove è l'ufficio ed eventualmente le dividiamo in sotto settori, così che per ogni settore ho al max 20-30 persone.
+es:
+- Azienda ABC sede di Aosta ufficio tecnici
+  - Anna
+  - Bruno
+  - Mario
+- Azienda ABC sede di Aosta ufficio acquisti
+  - Mirco
+  - Daniele
+  - Luca
+- Azienda ABC stabilimento di Bari produzione
+  - Gianni
+  - Elena
+- Azienda ABC stabilimento di Bari imballaggio
+  - Monica
+  ...
+...
+
+
+## Esempio didattico con due paginations
+
+* https://github.com/ddnexus/pagy/issues/161
+
+```
+def show
+  @user                   = User.find(params[:id])
+  @pagy_poems, @poems     = pagy(@user.poems, link_extra: "data-remote='true'", page_param: :page_poems)
+  @pagy_stories, @stories = pagy(@user.stories, link_extra: "data-remote='true'", page_param: :page_stories)
+  return if request.format.js? || request.format.json?
+  # other code that's required for initial page load but not for pagination goes here
+end
+```
+
+show.html.erb:
+
+```
+<div id="paginated-poems-container">
+  <%= render 'paginated_poems', poems: @poems, pagy: @pagy_poems %>
+</div>
+
+<div id="paginated-stories-container">
+  <%= render 'paginated_stories', stories: @stories, pagy: @pagy_stories %>
+</div>
+```
+
+
+show.js.erb:
+
+```
+<% if @poems %>
+  document.getElementById('paginated-poems-container').innerHTML = "<%= j(render 'paginated_poems', poems: @poems, pagy: @pagy_poems) %>";
+  Pagy.init(document.getElementById('paginated-poems-container'));
+<% end %>
+
+<% if @stories %>
+  document.getElementById('paginated-stories-container').innerHTML = "<%= j(render 'paginated_stories', stories: @stories, pagy: @pagy_stories) %>";
+  Pagy.init(document.getElementById('paginated-stories-container'));
+<% end %>
+```
+
+
+_paginated_poems.html.erb:
+
+```
+<%== pagy_combo_nav_js(pagy) %>
+
+<% poems.each do |poem| %>
+  <%= render 'poem', poem: poem %>
+<% end %>
+
+
+_paginated_stories.html.erb:
+
+<%== pagy_combo_nav_js(pagy) %>
+
+<% stories.each do |story| %>
+  <%= render 'story', story: story %>
+<% end %>
+```
+

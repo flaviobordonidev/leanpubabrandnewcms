@@ -1,0 +1,15 @@
+<% people.each do |person| %>
+  <p>Person: <%= person.id %> - <%= "#{person.title} #{person.first_name} #{person.last_name}" %></p>
+
+  <% person.company_person_maps.each do |company_person_map| %>
+    <% if company_person_map.company.name.downcase.include? params[:search_nested].downcase %>
+    <p>
+      <%= company_person_map.company.id %> - <%= "#{company_person_map.company.name} #{company_person_map.company.building}" %>
+      <%= company_person_map.summary %>
+      <%= link_to 'Show', company_person_map %>
+      <%= link_to 'Edit', edit_company_person_map_path(company_person_map) %>
+      <%= link_to 'Destroy', company_person_map, method: :delete, data: { confirm: 'Are you sure?' } %>
+    </p>
+    <% end %>
+  <% end %>
+<% end %>

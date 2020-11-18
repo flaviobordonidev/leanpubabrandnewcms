@@ -1,0 +1,11 @@
+<!-- start modal pop-up selections-nested -->
+<div id="modal-popup-selections-nested" class="zoom-anim-dialog mfp-hide col-xl-3 col-lg-6 col-md-7 col-11 mx-auto bg-white text-center modal-popup-main padding-50px-all">
+  <%# come nested al momento non ho il pulsante persone. Lo attiviamo in futuro gestendo i gruppi di persone / albero genealogico con una relazione molti a molti con "self" perché è sulla stessa tabella %>
+  <%#= link_to people_path(master_page: "people"), class: "btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom", 'data-wow-delay': "0.6s" do %>
+    <%#= image_tag "elis/icons/person.png", alt: "person" %> <!-- Persona &nbsp&nbsp&nbsp&nbsp -->
+  <%# end %>
+  <%= link_to company_person_maps_path(master_page: "people"), class: "btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom", 'data-wow-delay': "0.6s" do %>
+    <%= image_tag "elis/icons/company.png", alt: "company" %> Azienda &nbsp&nbsp&nbsp&nbsp
+  <% end %>
+</div>
+<!-- end modal pop-up selections-nested -->

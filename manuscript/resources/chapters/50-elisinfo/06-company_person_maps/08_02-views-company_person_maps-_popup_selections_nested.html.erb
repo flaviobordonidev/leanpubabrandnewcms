@@ -1,0 +1,23 @@
+<!-- start modal pop-up master-selections -->
+<div id="modal-popup-selections-nested" class="zoom-anim-dialog mfp-hide col-xl-5 col-lg-8 col-md-9 col-11 mx-auto bg-white text-center modal-popup-main padding-50px-all">
+  <input type="text" name="first_name" id="first_name" placeholder="Cerca ..." class="medium-input">
+  <button id="search_master" type="submit" class="btn btn-transparent-dark-gray btn-medium margin-2px-top margin-20px-bottom">Search</button>
+  <!--<a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom" data-wow-delay="0.6s" href="#"><%#= image_tag "elis/icons/company.png", alt: "company" %> Azienda &nbsp&nbsp&nbsp&nbsp</a>-->
+
+  <ul>
+    <% @people.each do |person| %>
+      <li>
+        <%= link_to request.params.merge(nested_id: person.id), class: "btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom", 'data-wow-delay': "0.6s" do %>
+          <%= image_tag "elis/icons/company.png", alt: "company" %> <%= person.first_name %> <%= person.last_name %> &nbsp&nbsp&nbsp&nbsp
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+
+  <p class="margin-four">
+    <a href="#"><i class="fas fa-long-arrow-alt-left margin-5px-right d-none d-md-inline-block"></i> Prev</a>
+    1 di 1
+    <a href="#">Next <i class="fas fa-long-arrow-alt-right margin-5px-left d-none d-md-inline-block"></i></a>
+  </p>
+</div>
+<!-- end modal pop-up -->

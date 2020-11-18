@@ -1,0 +1,23 @@
+# Aggiunge nuova persona all'azienda
+
+Aggiungiamo all'azienda una persona non presente nel database.
+
+In pratica:
+
+* creiamo un nuovo record sulla tabella people
+* creiamo un nuovo record sulla tabella company_person_maps
+
+Questo doppio passaggio è quello che chiamo "magia" ^_^
+Lo chiamo "magia" perché in automatico crea una nuova persona "vuota" (ho solo l'id) e la associa all'azienda.
+Poi apre la maschera di "modifica" della persona "vuota" associata a Peroni.
+
+
+I passi sono
+
+1. Siamo su views/company_person_maps/index e params[:master] == companies
+2. clic sul bottone "+" per aggiungere persona a company_id == x
+2. Apriamo views/company_person_maps/new e popoliamo già company_id = x
+3. presentiamo il aperto il popup per selezionare una persona.
+4. clic sul bottone "*" per creare una nuova persona.
+5. Non si apre view/people/new ma creiamo da company_person_maps_controller(magic_new) una nuova persona "vuota" e poi ricarichiamo views/company_person_maps/new con già popolati company_id e people_id 
+

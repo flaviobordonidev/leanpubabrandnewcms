@@ -1,0 +1,18 @@
+# For lack of a better name
+
+In questo capitolo uniamo Aziende Persone e Aziende-Persone-Maps simulando l'inserimento dei dati presi da un business card.
+
+Partiamo da una situazione in cui sia la persona che l'azienda non sono nel database.
+
+La prima volta lo facciamo iniziando dall'azienda.
+- Azienda: Pernigotti
+- Persona: Daniela Dolce
+
+La seconda volta lo facciamo con un nuovo business card (nuova azienda e persona) e partiamo lato persona.
+- Persona: Lucia Amendola
+- Azienda: Amadori spa
+
+
+Nota: Partendo dal database vuoto quando andremo ad associare la "nested" ci troveremo nella necessità di fare la "magia" ossia quella di creare una nuova persona (o azienda nel caso inverso) e di andare a modificarla da company_person_maps.
+E' una "magia" che abbiamo già fatto in elisinfo 6 o elisinfo 5. Quindi ci possiamo aiutare da lì.
+

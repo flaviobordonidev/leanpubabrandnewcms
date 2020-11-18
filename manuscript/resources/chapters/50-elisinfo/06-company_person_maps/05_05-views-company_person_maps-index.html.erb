@@ -1,0 +1,17 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Company Person Maps</h1>
+
+<% if params[:master_page] == "companies" %>
+  <%= render 'form_search', label_master: "Azienda", label_nested: "Persona" %>
+  <%= render 'master_company', companies: @companies %>
+<% else %>
+  <%= render 'form_search', label_master: "Persona", label_nested: "Azienda" %>
+  <%= render 'master_people', people: @people %>
+<% end %>
+
+<%= sanitize pagy_nav(@pagy) %>
+
+<br><br>
+
+<%= link_to 'New Company Person Map', new_company_person_map_path %>

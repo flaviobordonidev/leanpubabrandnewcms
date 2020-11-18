@@ -1,4 +1,5 @@
-# Polimorphic emails
+{id: 50-elisinfo-04-Companies-08-polymorphic_emailable}
+# Cap 4.8 -- Polimorphic emails
 
 Creiamo la tabella "emails" con relazione polimorfica.
 

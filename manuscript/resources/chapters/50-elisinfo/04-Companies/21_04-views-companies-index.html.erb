@@ -1,0 +1,204 @@
+<!-- start form header section -->
+<section class="wow fadeIn padding-one-all" id="start-your-project">
+  <div class="container">
+
+    <!--<form id="project-contact-form" action="project-contact.php" method="post">-->
+    <%= form_with url: "", method: "get", local:true, role: "search", class: 'bottom-pad' do %>
+    
+      <div class="row">
+
+        <div class="col-12 col-sm-auto">
+          <a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom popup-with-zoom-anim wow fadeInUp" data-wow-delay="0.6s" href="#modal-popup-level1"><%= image_tag "elis/icons/company.png", alt: "company" %> Azienda &nbsp&nbsp&nbsp&nbsp</a>
+          <!-- start modal pop-up level1 -->
+          <div id="modal-popup-level1" class="zoom-anim-dialog mfp-hide col-xl-3 col-lg-6 col-md-7 col-11 mx-auto bg-white text-center modal-popup-main padding-50px-all">
+            <input type="text" name="first_name" id="first_name" placeholder="Cerca ..." class="medium-input">
+            <!--<a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom" data-wow-delay="0.6s" href="#"><%#= image_tag "elis/icons/company.png", alt: "company" %> Azienda &nbsp&nbsp&nbsp&nbsp</a>-->
+            <%= link_to mockups_s1p2_company_index_path, class: "btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom", 'data-wow-delay': "0.6s" do %>
+              <%= image_tag "elis/icons/company.png", alt: "company" %> Azienda &nbsp&nbsp&nbsp&nbsp
+            <% end %>
+            <a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom" data-wow-delay="0.6s" href="#"><%= image_tag "elis/icons/person.png", alt: "person" %> Persona &nbsp&nbsp&nbsp&nbsp</a>
+            <p class="margin-four">
+            <a href="#"><i class="fas fa-long-arrow-alt-left margin-5px-right d-none d-md-inline-block"></i> Prev</a>
+            1 di 1
+            <a href="#">Next <i class="fas fa-long-arrow-alt-right margin-5px-left d-none d-md-inline-block"></i></a>
+            </p>
+            <a class="btn btn-medium btn-rounded btn-dark-gray popup-modal-dismiss" href="#">Dismiss</a>
+          </div>
+          <!-- end modal pop-up -->
+
+        </div>
+        <div class="col-12 col-sm">
+          <!--<input type="text" name="find_company" id="find_company" placeholder="Cerca azienda..." class="medium-input">-->
+
+          <%#= form_with url: "", method: "get", local:true, role: "search", class: 'bottom-pad' do %>
+          
+            <div class="input-group left-pad">
+              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: t(".form_search_placeholder") %>
+              <div class="input-group-btn right-pad">
+                
+                <%#= content_tag :button, type: "submit", class: "btn btn-primary" do %>
+                  <!--<span class= "glyphicon glyphicon-search"></span>CERCAME-->
+                <%# end %>
+
+              </div><!-- /input-group-btn -->
+            </div><!-- /input-group -->
+          
+          <%# end %>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-sm-auto">
+          
+          <!--<a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom" data-wow-delay="0.6s" href="#"> Secondo livello &nbsp&nbsp&nbsp&nbsp</a>-->
+          <%= image_tag "elis/icons/arrow_right_nested.png", alt: "arrow_right_nested", class: " margin-10px-bottom margin-5px-right" %><a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom popup-with-zoom-anim wow fadeInUp" data-wow-delay="0.6s" href="#modal-popup-level2">  Secondo livello &nbsp&nbsp&nbsp&nbsp</a>
+          <!-- start modal pop-up -->
+          <div id="modal-popup-level2" class="zoom-anim-dialog mfp-hide col-xl-3 col-lg-6 col-md-7 col-11 mx-auto bg-white text-center modal-popup-main padding-50px-all">
+            <input type="text" name="first_name" id="first_name" placeholder="Cerca ..." class="medium-input">
+            <!--<a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom" data-wow-delay="0.6s" href="#"><%#= image_tag "elis/icons/company.png", alt: "company" %> Azienda &nbsp&nbsp&nbsp&nbsp</a>-->
+            <%= link_to mockups_s1p2_company_index_path, class: "btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom", 'data-wow-delay': "0.6s" do %>
+              <%= image_tag "elis/icons/company.png", alt: "company" %> Azienda &nbsp&nbsp&nbsp&nbsp
+            <% end %>
+            <a class="btn btn-medium btn-rounded btn-transparent-dark-gray margin-10px-bottom" data-wow-delay="0.6s" href="#"><%= image_tag "elis/icons/person.png", alt: "person" %> Persona &nbsp&nbsp&nbsp&nbsp</a>
+            <p class="margin-four">
+            <a href="#"><i class="fas fa-long-arrow-alt-left margin-5px-right d-none d-md-inline-block"></i> Prev</a>
+            22 di 99
+            <a href="#">Next <i class="fas fa-long-arrow-alt-right margin-5px-left d-none d-md-inline-block"></i></a>
+            </p>
+            <a class="btn btn-medium btn-rounded btn-dark-gray popup-modal-dismiss" href="#">Dismiss</a>
+          </div>
+          <!-- end modal pop-up -->
+
+
+        </div>
+        <div class="col-12 col-sm">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 text-center">
+          <button id="project-contact-us-button" type="submit" class="btn btn-transparent-dark-gray btn-large margin-20px-top">Search</button>
+        </div>
+      </div>
+    <!--</form>-->
+    <% end %>
+  </div>
+</section>
+<!-- end form header section -->
+
+
+
+<!-- start companies section -->
+<section class="wow fadeIn padding-one-all">
+  <div class="container">
+    <div class="row">
+      <!--<div class="col-md-10 col-sm-12 col-xs-12 center-col">-->
+      <div class="col-12">
+        <ul class="blog-comment">
+
+          <% @companies.each do |company| %>
+            <li>
+              <div class="display-table width-100">
+                <div class="display-table-cell width-100px xs-width-50px text-center vertical-align-top xs-display-block xs-margin-10px-bottom">
+                  <%= image_tag "pofo/logo_peroni.png", class: "img-circle width-85 xs-width-100", alt: "" %>
+                </div>
+                <div class="padding-40px-left display-table-cell vertical-align-top last-paragraph-no-margin xs-no-padding-left xs-display-block">
+                  <%= link_to edit_company_path(company), class: "text-extra-dark-gray text-uppercase alt-font font-weight-600 text-small" do %>
+                    <%= company.name %> - <%= company.building %> - <%= company.id %> (Cliente)
+                  <% end %>
+                  <p><%= company.address %> Centralino: 1234567899  Email: info@peroni.it</p>
+                  <div><%= company.note %></div>
+                  <div class="text-small text-medium-gray text-uppercase margin-10px-bottom">17 july 2020, 6:05 pm</div>
+                </div>
+              </div>
+            </li>
+          <% end %>
+
+          <li>
+            <div class="display-table width-100">
+              <div class="display-table-cell width-100px xs-width-50px text-center vertical-align-top xs-display-block xs-margin-10px-bottom">
+                <%= link_to new_company_path, class: "btn btn-small btn-transparent-white lg-margin-15px-bottom d-table d-lg-inline-block md-margin-lr-auto" do %>
+                  <%= image_tag "pofo/icon_new.png", class: "img-circle width-85 xs-width-100", alt: "" %>
+                <% end %>
+                <!--<img src="images/avtar-04.jpg" class="img-circle width-85 xs-width-100" alt="" />-->
+              </div>
+              <div class="padding-40px-left display-table-cell vertical-align-top last-paragraph-no-margin xs-no-padding-left xs-display-block">
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- start pagination -->
+      <!--https://stackoverflow.com/questions/35163164/how-to-center-content-in-a-bootstrap-column/35163389#:~:text=Bootstrap%204,center%20everything%20inside%20that%20column.&text=If%20you%20have%20text%20inside,center%20to%20the%20same%20class.-->
+      <div class="col-12 d-flex justify-content-center">
+        <div class="row">
+        <!--<div class="text-center margin-60px-top md-margin-50px-top wow fadeInUp">-->
+        <div class="col-auto">
+          <a href="#" class="btn btn-medium btn-transparent-black lg-margin-15px-bottom d-table d-lg-inline-block md-margin-lr-auto disabled"><i class="fas fa-long-arrow-alt-left margin-5px-right d-none d-md-inline-block"></i> Prev</a>
+        </div>
+        <div class="col-auto">
+          <span class="margin-5px-top d-table d-lg-inline-block">Pagina 1 di 1</span>
+        </div>
+        <div class="col-auto">
+          <a href="#" class="btn btn-medium btn-transparent-black lg-margin-15px-bottom d-table d-lg-inline-block md-margin-lr-auto disabled">Next <i class="fas fa-long-arrow-alt-right margin-5px-left d-none d-md-inline-block"></i></a>
+        </div>
+        </div>
+      </div>
+      <!-- end pagination -->
+
+      <%#= sanitize pagy_nav(@pagy) %>
+      <%= render 'pagy/nav_pofo', pagy: @pagy %>
+
+    </div>
+  </div>
+</section>
+<!-- end companies section -->
+
+
+<p id="notice"><%= notice %></p>
+
+<h1>Companies</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Building</th>
+      <th>Address</th>
+      <th>Client type</th>
+      <th>Client rate</th>
+      <th>Supplier type</th>
+      <th>Supplier rate</th>
+      <th>Note</th>
+      <th>Sector</th>
+      <th>Tax number 1</th>
+      <th>Tax number 2</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @companies.each do |company| %>
+      <tr>
+        <td><%= company.name %></td>
+        <td><%= company.building %></td>
+        <td><%= company.address %></td>
+        <td><%= company.client_type %></td>
+        <td><%= company.client_rate %></td>
+        <td><%= company.supplier_type %></td>
+        <td><%= company.supplier_rate %></td>
+        <td><%= company.note %></td>
+        <td><%= company.sector %></td>
+        <td><%= company.tax_number_1 %></td>
+        <td><%= company.tax_number_2 %></td>
+        <td><%= link_to 'Show', company %></td>
+        <td><%= link_to 'Edit', edit_company_path(company) %></td>
+        <td><%= link_to 'Destroy', company, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Company', new_company_path %>

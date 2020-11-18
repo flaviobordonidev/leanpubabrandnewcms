@@ -1,0 +1,214 @@
+{id: 50-elisinfo-06-company_person_maps-02-company_index-people}
+# Cap 6.2 -- Su elenco aziende attiviamo il livello persone
+
+Siamo finalmente pronti per attivare il secondo livello nel nostro views/companies/index.
+In questo capitolo attiviamo come secondo livello la relazione delle aziende con le persone.
+- Il secondo livello è chiamato più propriamente livello annidato (nested).
+- Il primo livello, per differenziarlo, lo chiamiamo livello master.
+(Potevamo usare "child" e "parent", ma ci ho pensato dopo.)
+
+master_company : indica che il primo livello è companies e, di conseguenza, il livello annidato è people.
+
+
+
+
+## Apriamo il branch "Master Company"
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout -b mc
+```
+
+
+
+
+## Due approcci al problema
+
+Ci sono due approcci per questa visualizzazione. Il primo approccio è di continuare su company/index lavorando lato controller sulla relazione con le persone.
+Questo approccio che sembra inizialmente più semplice tende presto a complicarsi mano a mano che si aggiungono relazioni di secondo livello.
+
+L'altro approccio è quello di spostarsi su company_person_maps/index.
+Questo ci semplifica tutte le future implementazioni perché basterà spostarsi sulla rispettiva x_y_maps/index.
+
+
+
+
+## company_person_maps/index Azienda -> Persona via group_by
+
+Nella nostra pagina views/company_person_maps/index abbiamo una visualizzazione di questo tipo:
+
+- Azienda1 - Persona1 
+- Azienda1 - Persona2
+- Azienda2 - Persona1 (lavora in entrambe le aziende)
+- Azienda2 - Persona3
+- Azienda3 - Persona4
+- Azienda3 - Persona5
+- Azienda3 - Persona6
+...
+
+{id: "50-06-02_01", caption: ".../views/company_person_maps/index.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+    <% @company_person_maps.each do |company_person_map| %>
+      <tr>
+        <td><%= company_person_map.company_id %> - <%= company_person_map.company.name %></td>
+        <td><%= company_person_map.person_id %> - <%= "#{company_person_map.person.first_name} #{company_person_map.person.last_name}" %> </td>
+```
+
+[tutto il codice](#50-06-02_01all)
+
+A noi interessa visualizzare un elenco di aziende e per ogni azienda visualizzare l'elenco delle persone associate.
+Una visualizzazione di questo tipo:
+
+- Azienda1
+  -Persona1
+  -Persona2
+-Azienda2
+  -Persona1 (lavora in entrambe le aziende)
+  -Persona3
+-Azienda3
+  -Persona4
+  -Persona5
+  -persona6
+  ...
+...
+
+
+Per far queto possimo utilizzare il metodo ".group_by()".
+Riorganizziamo il codice togliendolo dalla tabella ed aggiungendo un doppio ciclo ".each" usando ".group_by".
+
+{id: "50-06-02_01", caption: ".../views/company_person_maps/index.html.erb -- codice 02", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+    <% @company_person_maps.group_by(&:company_id).each do |company_id, company_person_maps| %>
+      <p>Company: <%= company_id %></p>
+      <% company_person_maps.each do |company_person_map| %>
+        <%= company_person_map.person_id %> - <%= "#{company_person_map.person.first_name} #{company_person_map.person.last_name}" %>
+      <% end %>
+    <% end %>
+```
+
+
+Su group_by usiamo il simbolo "&" perché group_by si aspetta un blocco.
+
+```
+@company_person_maps.group_by(&:company_id)
+```
+
+Avremmo potuto esplicitare il blocco in questo modo: 
+
+```
+@company_person_maps.group_by{|company_person_map| company_person_map.company_id}
+```
+
+Quindi avremmo avuto
+
+{id: "50-06-02_01", caption: ".../views/company_person_maps/index.html.erb -- codice n/a", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+    <% @company_person_maps.group_by{|company_person_map| company_person_map.company_id}.each do |company_id, company_person_maps| %>
+```
+
+
+
+
+## Il problema con group_by
+
+Group_by funziona bene ma non mi crea due oggetti distinti. Mi crea un array di oggetti.
+Quindi nel nostro caso "company_id" è un valore. invece company_person_map è un oggetto.
+Per "company_person_map" riesco ad estrarre i vari valori e a navigare tra le associazioni tra tabelle dichiarate nei Models.
+Ma per "company_id" questo non lo posso fare. Quindi non riesco a risalire al nome dell'azienda; devo fare tutte le volte una query tipo "Company.find(company_id).name".
+Questo oltre a non ottimizzare le query mi crea difficoltà nel momento di implementare il form per le ricerche.
+
+Vediamo come si presenta group_by nella rails console:
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ rails c
+> cpms = CompanyPersonMap.all
+> cmpsg = cpms.group_by(&:company_id)
+> cmpsg.each do |company_id, company_person_maps|
+>> company_id
+>>  end
+
+
+2.6.3 :006 > cmpsg.each do |company_id, company_person_maps|
+2.6.3 :007 >     company_id
+2.6.3 :008?>   end
+ => {1=>[#<CompanyPersonMap id: 1, company_id: 1, person_id: 1, created_at: "2020-10-13 10:27:54", updated_at: "2020-10-13 10:28:07", summary: "ufficio acquisti">, #<CompanyPersonMap id: 4, company_id: 1, person_id: 2, created_at: "2020-10-20 10:05:48", updated_at: "2020-10-20 10:05:48", summary: "test">], 2=>[#<CompanyPersonMap id: 2, company_id: 2, person_id: 1, created_at: "2020-10-13 10:29:20", updated_at: "2020-10-13 10:29:43", summary: "consulente">, #<CompanyPersonMap id: 5, company_id: 2, person_id: 4, created_at: "2020-10-20 10:08:26", updated_at: "2020-10-20 10:08:26", summary: "cosmetici">], 3=>[#<CompanyPersonMap id: 3, company_id: 3, person_id: 1, created_at: "2020-10-13 10:51:55", updated_at: "2020-10-13 10:51:55", summary: "ufficio tecnico">, #<CompanyPersonMap id: 6, company_id: 3, person_id: 3, created_at: "2020-10-20 10:08:45", updated_at: "2020-10-20 10:08:45", summary: "tre">, #<CompanyPersonMap id: 7, company_id: 3, person_id: 4, created_at: "2020-10-20 10:09:02", updated_at: "2020-10-20 10:09:02", summary: "secondo lavoro">]} 
+```
+
+
+
+
+## Passiamo ad ottimizzare il company_person_maps_controller
+
+Invece di lavorare con group_by andiamo nel controller ed ottimizziamo lì.
+Definiamo l'elenco delle aziende direttamente nel controller di company_person_maps (come è sul controller di companies).
+Da questo elenco possiamo estrarre le persone associate passando per l'associazione.
+
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ rails c
+> companies = Company.all
+> c1 = companies.first
+> c1.people
+> c1.company_person_maps
+> c1cpm1 = c1.company_person_maps.first
+> c1cpm1.person
+```
+
+
+
+
+## Aggiorniamo il controller
+
+Nell'azione "index"
+
+{id: "01-08-01_01", caption: ".../app/controllers/company_person_maps_controller.rb -- codice 03", format: ruby, line-numbers: true, number-from: 1}
+```
+  def index
+    @companies = Company.all
+    #@company_person_maps = CompanyPersonMap.all
+  end
+```
+
+
+
+
+## Aggiorniamo la view index
+
+Se partiamo dall'elenco delle aziende possiamo trovare o direttamente tutte le persone oppure fare un passaggio intermedio e passare per la tabella ponte company_person_maps in cui abbiamo il campo "summary".
+
+Vediamo la visualizzazione facendo il salto diretto da Azienda alle persone che ci lavorano:
+
+{id: "50-06-02_04", caption: ".../views/company_person_maps/index.html.erb -- codice 04", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+    <% @companies.each do |company| %>
+      <p>Company: <%= company.id %> - <%= company.name %></p>
+      <% company.people.each do |person| %>
+        <p>
+          <%= person.id %> - <%= "#{person.first_name} #{person.last_name}" %>
+```
+
+Vediamo invece la visualizzazione passando per company_person_maps
+
+{id: "50-06-02_05", caption: ".../views/company_person_maps/index.html.erb -- codice 05", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+    <% @companies.each do |company| %>
+      <p>Company: <%= company.id %> - <%= company.name %></p>
+      <% company.company_person_maps.each do |company_person_map| %>
+        <p>
+          <%= company_person_map.person.id %> - <%= "#{company_person_map.person.first_name} #{company_person_map.person.last_name}" %>
+          <%= company_person_map.summary %>
+```
+
+Questa ultima soluzione ci permette di riattivare anche i links. (anche se più avanti li modificheremo)
+
+
+
+## Nei prossimi capitoli
+
+* Attiviamo un form per le ricerche nell'elenco master (nel nostro caso su companies)
+* Attiviamo il pagination nell'elenco master
+* Attiviamo un form per le ricerche nell'elenco annidato (nel nostro caso su people)
+* Attiviamo il pagination nell'elenco annidato (magari indicando di non visualizzare i pulsanti del pagination annidato se sono meno di x records)
+
