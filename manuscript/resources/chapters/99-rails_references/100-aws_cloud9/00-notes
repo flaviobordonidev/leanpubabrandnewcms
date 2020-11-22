@@ -1,0 +1,9 @@
+---
+Quando apri un workspace condiviso il link "Share" in alto a destra non c'è più.
+Allora una volta fatto partire il server con ** $ rails s -b $IP -p $PORT **
+L'url da usare ha la struttura https://<nomeworkspace>-<nomeutentec9>.c9users.io
+es:
+    https://donamat5-bobdesa64.c9users.io
+    https://ang5-donamat-flaviobordonidev.c9users.io
+
+Un modo per prenderlo è lanciare "Preview -> Preview Running Application" e copiarsi l'URL che viene usato in una finestra locale.

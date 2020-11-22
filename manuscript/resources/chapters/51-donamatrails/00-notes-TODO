@@ -1,0 +1,11 @@
+
+---
+TODO per DONAMAT
+-- arrotondamento (così modifico le tabelle ed importo anche la data e l'ora)
+-- non considerare in import i dati duplicati dalla macchina chiosco (perché con aggiornamenti java sta creando randomicamente dei record duplicati)
+-- data e ora (la visualizzo nelle views)
+-- buona punteggiatura (ultima formalità)
+
+-- Gestione utenti più evoluta / Gestione di un numero di utenti superiore a 20.
+-- Esportazione tabella in csv o excel (con finestra temporale)
+

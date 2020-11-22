@@ -1,0 +1,11 @@
+
+---
+https://coderwall.com/p/1dsjoq/quickly-re-run-rails-migrations
+
+rake db:migrate:redo
+
+
+for migration with schema ID 20100421175455 the command would be:
+
+rake db:migrate:redo VERSION=20100421175455
+Reference: http://stackoverflow.com/a/5600310
