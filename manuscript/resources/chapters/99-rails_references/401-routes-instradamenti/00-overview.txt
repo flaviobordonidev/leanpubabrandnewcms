@@ -10,7 +10,9 @@ Risorse interne:
 
 Risorse web:
 
-*
+* https://guides.rubyonrails.org/routing.html
+
+
 
 
 ## Verifichiamo instradamenti da console
@@ -28,3 +30,8 @@ filtriamo per i soli utenti
 ```
 $ rails routes | egrep "user"
 ```
+
+
+
+
+##

@@ -1,4 +1,8 @@
 
+## Se clicco il check_box mi appare il selettore di date.
+
+(lo potrei usare per far apparire le stelline di rating solo se è un cliente o un fornitore)
+
 in default mode the checkbox is unchecked and the datetime field is hidden when the user marks (clicks) the checkbox (so it is checked) the datetime field is shown
 This is what I have in my view (very close to it):
 

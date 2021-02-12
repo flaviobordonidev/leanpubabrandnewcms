@@ -19,11 +19,20 @@ module ApplicationHelper
     # prev_params = prev_params.merge(cane: "zoppo")
     # prev_params = prev_params.merge(cabra: "camba")
 
-    prev_params = {}
+    # prev_params = {}
+    # params.each do |key,value|
+    #   prev_params = prev_params.merge("prev_"+key => value)
+    # end
+    # return prev_params
+
+    #prev_params = {parentA: {child1: "Mario", child2: "Maria"}, parentB: {child1: "Luca", child2: "Lucia"}}
+    #return prev_params
+
+    prev_params = {previous: {}}
     params.each do |key,value|
-      prev_params = prev_params.merge("prev_"+key => value)
+      prev_params[:previous] = prev_params[:previous].merge(key => value)
     end
     return prev_params
-    # esempio di uso su companies/index -- <%= link_to companies_path(h_prev_params) ...
+
   end
 end

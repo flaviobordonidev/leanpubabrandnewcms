@@ -4,6 +4,23 @@ Risorse web:
 
 * http://stackoverflow.com/questions/885414/a-concise-explanation-of-nil-v-empty-v-blank-in-ruby-on-rails
 * http://stackoverflow.com/questions/11029256/difference-between-nil-blank-and-empty
+* https://medium.com/le-wagon/how-to-use-nil-blank-present-exists-in-rails-5-fe03e78ab979
+
+
+--
+I due da usare, e che ha solo Rails e non Ruby, sono: balnk? e present?
+
+        |   nil?    |     empty?      |   blank?  |   present?
+---------------------------------------------------------------
+nil     |   true    | NoMethodError   |   true    |   false
+false   |   false   | NoMethodError   |   true    |   false
+true    |   false   | NoMethodError   |   false   |   true
+""      |   false   | true            |   true    |   false
+" "     |   false   | false           |   true    |   false
+[]      |   false   | true            |   true    |   false
+{}      |   false   | true            |   true    |   false
+"Hello" |   false   | false           |   false   |   true
+25      |   false   | UndefinedMethod |   false   |   true
 
 
 --

@@ -1,0 +1,16 @@
+# CompanyPersonMaps nested new
+
+Questa parte è stata poi risolta in una maniera più semplice e più elegante chiamando direttamente people/new.
+
+Ma tra i vari tentativi avevo pensato di mettere su company_person_maps/new un link che mi chiamava l'azione company_person_maps_controllers -> new_person
+su questa azione facevo creare una nuova persona e poi aprivo la wiew company_person_maps/new/new_person. (mi rendo conto che non fa molto senso ma erano delle prove)
+La cosa interessante che voglio evidenziare è il codice su config/routes
+
+---
+  resources :company_person_maps
+  #2.10.3 Adding Routes for Additional New Actions
+  resources :company_person_maps do
+    get 'new_person', on: :new
+  end
+  # This will enable Rails to recognize paths such as /company_person_maps/new/new_person with GET, and route to the preview action of CompanyPersonMapsController. It will also create the new_person_new_company_person_map_url and new_person_new_company_person_map_path route helpers.
+---
