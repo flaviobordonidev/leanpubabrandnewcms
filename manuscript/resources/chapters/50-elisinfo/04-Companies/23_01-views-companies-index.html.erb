@@ -1,0 +1,173 @@
+<%# == Meta_data ============================================================ %>
+
+<% provide(:html_head_title, "#{t '.html_head_title'}") %>
+<%# provide(:menu_nav_link_home, "active") %>
+
+<%# == Meta_data - end ====================================================== %>
+
+<%= render 'navbar_index' %>
+
+<!-- start form header section -->
+<section class="wow fadeIn padding-one-all" id="start-your-project">
+  <div class="container">
+
+    <!--<form id="project-contact-form" action="project-contact.php" method="post">-->
+    <%= form_with url: "", method: "get", local:true, role: "search", class: 'bottom-pad' do %>
+    
+      <div class="row">
+
+        <div class="col-12 col-sm-auto">
+          <a class="btn btn-medium btn-transparent-dark-gray margin-10px-bottom popup-with-zoom-anim wow" href="#modal-popup-selections-master"><%= image_tag "elis/icons/company.png", alt: "company" %> Azienda &nbsp&nbsp&nbsp&nbsp</a>
+          <%= render 'popup_selections_parents' %>
+        </div>
+        <div class="col-12 col-sm">
+          <!--<input type="text" name="find_company" id="find_company" placeholder="Cerca azienda..." class="medium-input">-->
+          <%= text_field_tag :search, params[:search], class: "medium-input", placeholder: t(".form_search_placeholder") %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-sm-auto">
+          <%= image_tag "elis/icons/arrow_right_nested.png", alt: "arrow_right_nested", class: " margin-10px-bottom margin-5px-right" %><a class="btn btn-medium btn-transparent-dark-gray margin-10px-bottom popup-with-zoom-anim wow" href="#modal-popup-selections-nested">  Secondo livello &nbsp&nbsp&nbsp&nbsp</a>
+          <%= render 'popup_selections_children' %>
+        </div>
+        <div class="col-12 col-sm">
+          <fieldset disabled>
+            <%= text_field_tag :search_nested, "", class: "medium-input" %>
+          </fieldset>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 text-center">
+          <button id="project-contact-us-button" type="submit" class="btn btn-medium btn-transparent-dark-gray margin-10px-bottom wow">Search</button>
+        </div>
+      </div>
+    <!--</form>-->
+    <% end %>
+  </div>
+</section>
+<!-- end form header section -->
+
+<!-- start companies section -->
+<section class="wow fadeIn padding-one-all">
+  <div class="container">
+    <div class="row">
+      <!--<div class="col-md-10 col-sm-12 col-xs-12 center-col">-->
+      <div class="col-12">
+        <ul class="blog-comment">
+
+          <% @companies.each do |company| %>
+            <li>
+              <div class="display-table width-100" id="anchor_<%= company.id %>">
+                <div class="display-table-cell width-100px xs-width-50px text-center vertical-align-top xs-display-block xs-margin-10px-bottom">
+                  <%#= link_to edit_company_path(company), class: "btn image-button btn-rounded btn-transparent-dark-gray margin-10px-bottom wow" do %>
+                    <%#= image_tag "pofo/logo_default.png", alt: "" %> 
+                  <%# end %>
+                  <%= link_to company_path(company), class: "btn btn-medium btn-transparent-dark-gray margin-10px-bottom wow" do %>
+                    <%= image_tag "elis/icons/more.png", class: "img-circle width-85 xs-width-100", alt: "" %>
+                  <% end %>
+                </div>
+                <div class="padding-40px-left display-table-cell vertical-align-top last-paragraph-no-margin xs-no-padding-left xs-display-block">
+                  <%#= link_to edit_company_path(company), class: "text-extra-dark-gray text-uppercase alt-font font-weight-600 text-small" do %>
+                  <% if company.logo_image.attached? %>
+                    <%#= image_tag company.logo_image.variant(resize: "100x100") %>
+                    <%#= link_to edit_company_path(company), class: "btn image-button btn-rounded btn-transparent-dark-gray margin-10px-bottom" do %>
+                      <%#= image_tag company.logo_image.variant(resize: "100x100") %> <!-- &nbsp&nbsp&nbsp&nbsp -->
+                      <%= image_tag company.logo_image.variant(resize_to_fit: [100, 50]) %>
+                    <%# end %>
+                  <% else %>
+                    <!--<a class="btn btn-extra-large btn-rounded btn-transparent-dark-gray margin-10px-bottom popup-with-zoom-anim wow fadeInUp" data-wow-delay="0.6s" href="#modal-popup-selections-master"><%#= image_tag "elis/icons/company.png", alt: "company" %> &nbsp&nbsp&nbsp&nbsp</a>-->
+                    <%#= image_tag "pofo/logo_default.png", class: "img-circle width-85 xs-width-100", alt: "" %>
+                    <%#= link_to edit_company_path(company), class: "btn image-button btn-rounded btn-transparent-dark-gray margin-10px-bottom wow" do %>
+                      <%= image_tag "elis/default/company_default.png", alt: "" %> 
+                    <%# end %>
+                  <% end %>
+                  
+                  <br>
+
+                  <strong>
+                    <%= company.name %> - <%= company.building %> - <%= company.id %> <%= h_client_supplier(company.client_rate, company.supplier_rate) %>
+                  </strong>
+                  <%# end %>
+                  <p>
+                    <%= company.address %>
+
+                    <% company.telephones.each do |telephone| %>
+                      <%= telephone.name + ": " + telephone.number %>
+                    <% end %>
+
+
+                    <% company.emails.each do |email| %>
+                      <%= email.name + ": " + email.address %>
+                    <% end %>
+
+                    <%#= render_stars(2) %>
+                    <br>
+                    Cliente: <%= image_tag "elis/icons/full_star_small.png", class: "", alt: "" %>
+                    <%= image_tag "elis/icons/empty_star_small.png", class: "", alt: "" %>
+                    <%= image_tag "elis/icons/empty_star_small.png", class: "", alt: "" %>
+                    <%= image_tag "elis/icons/empty_star_small.png", class: "", alt: "" %>
+                    <%= image_tag "elis/icons/empty_star_small.png", class: "", alt: "" %>
+                    <%= image_tag "elis/icons/empty_star_small.png", class: "", alt: "" %>
+                     - Fornitore: <%= h_stars_rating(company.supplier_rate) %>
+                  </p>
+                  
+                  
+                  <div><%= company.note %></div>
+                  <div class="text-small text-medium-gray text-uppercase margin-10px-bottom">17 july 2020, 6:05 pm</div>
+                </div>
+              </div>
+            </li>
+          <% end %>
+
+          <li>
+            <div class="display-table width-100">
+              <div class="display-table-cell width-100px xs-width-50px text-center vertical-align-top xs-display-block xs-margin-10px-bottom">
+                <%= link_to new_company_path, class: "btn btn-medium btn-transparent-dark-gray margin-10px-bottom wow" do %>
+                <%#= link_to new_company_path, class: "btn btn-small btn-transparent-white lg-margin-15px-bottom d-table d-lg-inline-block md-margin-lr-auto" do %>
+                  <%= image_tag "elis/icons/new.png", class: "img-circle width-85 xs-width-100", alt: "" %>
+                <% end %>
+                <!--<img src="images/avtar-04.jpg" class="img-circle width-85 xs-width-100" alt="" />-->
+              </div>
+              <div class="padding-40px-left display-table-cell vertical-align-top last-paragraph-no-margin xs-no-padding-left xs-display-block">
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- start pagination -->
+      <!--https://stackoverflow.com/questions/35163164/how-to-center-content-in-a-bootstrap-column/35163389#:~:text=Bootstrap%204,center%20everything%20inside%20that%20column.&text=If%20you%20have%20text%20inside,center%20to%20the%20same%20class.-->
+      <!--<div class="col-12 d-flex justify-content-center">-->
+      <!--  <div class="row">-->
+        <!--<div class="text-center margin-60px-top md-margin-50px-top wow fadeInUp">-->
+      <!--  <div class="col-auto">-->
+      <!--    <a href="#" class="btn btn-medium btn-transparent-black lg-margin-15px-bottom d-table d-lg-inline-block md-margin-lr-auto disabled"><i class="fas fa-long-arrow-alt-left margin-5px-right d-none d-md-inline-block"></i> Prev</a>-->
+      <!--  </div>-->
+      <!--  <div class="col-auto">-->
+      <!--    <span class="margin-5px-top d-table d-lg-inline-block">Pagina 1 di 1</span>-->
+      <!--  </div>-->
+      <!--  <div class="col-auto">-->
+      <!--    <a href="#" class="btn btn-medium btn-transparent-black lg-margin-15px-bottom d-table d-lg-inline-block md-margin-lr-auto disabled">Next <i class="fas fa-long-arrow-alt-right margin-5px-left d-none d-md-inline-block"></i></a>-->
+      <!--  </div>-->
+      <!--  </div>-->
+      <!--</div>-->
+      <!-- end pagination -->
+
+      <%#= sanitize pagy_nav(@pagy) %>
+      <%= render 'pagy/nav_pofo', pagy: @pagy %>
+
+    </div>
+  </div>
+</section>
+<!-- end companies section -->
+
+
+<br>
+<h5>Debug</h5>
+<p> params = <%= params  %> </p>
+<p>--previous--</p>
+<p> params[:previous][:controller] = <%= params[:previous][:controller] if params[:previous].present? %> </p>
+<p> params[:previous][:page] = <%= params[:previous][:page] if params[:previous].present? %> </p>
+<p>--current--</p>
+<p> params[:controller] = <%= params[:controller] %> </p>
+<p> params[:page] = <%= params[:page] %> </p>

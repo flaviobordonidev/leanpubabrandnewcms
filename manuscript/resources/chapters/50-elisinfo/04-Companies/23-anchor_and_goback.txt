@@ -1,0 +1,35 @@
+{id: 50-elisinfo-04-Companies-23-anchor_and_goback}
+# Cap 4.23 -- NavBar pulsante go-back
+
+Implementiamo passo a passo il link per tornare indietro alla finestra precedente.
+
+
+
+
+## Passo 1
+
+Mettiamo dei semplici path assoluti alla view su cui dobbiamo tornare
+
+
+
+## Passo 2
+
+Aggiungiamo un anchor così quando torniamo indietro ci posizioniamo nel punto giusto dell'elenco.
+L'aggiunta di un anchor si fa semplicemente dichiarando un "id" nel nostro caso nel <div>. Lo chiamiamo anchor_... semplicemente per farci capire che quell'id lo usiamo come anchor e deve essere univoco. Lo avremmo potuto chiamare pippo_... e mettere un progressivo o un random o un time.now ecc...
+
+{id: "50-04-23_01", caption: ".../views/companies/index.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 58}
+```
+          <% @companies.each do |company| %>
+            <li>
+              <div class="display-table width-100" id="anchor_<%= company.id %>">
+```
+
+Diciamo al nostro pulsante go_back sul nav_bar di tornare indietro e di usare l'anchor
+
+
+{id: "50-04-23_01", caption: ".../views/companies/_navbar_edit.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 58}
+```
+        <%= link_to companies_path(anchor: "anchor_#{@company.id}"), class: "btn btn-medium btn-transparent-dark-gray margin-10px-bottom wow" do %>
+          <%= image_tag "elis/icons/go_back.png", class: "img-circle width-85 xs-width-100", alt: "" %>
+        <% end %>
+```

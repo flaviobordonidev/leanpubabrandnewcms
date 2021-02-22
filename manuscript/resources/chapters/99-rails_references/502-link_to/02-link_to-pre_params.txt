@@ -1,4 +1,12 @@
-# Passiamo alla nuova pagina i parametri della pagina in cui siamo
+{id: 99-rails_references-502-link_to-02-link_to-pre_params}
+# Ref 502.1 -- Passiamo alla nuova pagina i parametri della pagina in cui siamo
+
+
+Risorse interne:
+
+* views/company_person_map/_parent_company.html.erb 
+  line 43:  <%= link_to person_path(company_person_map.person, h_prev_params.merge(key1: "valore1")), class: "btn image-button btn-rounded btn-transparent-dark-gray margin-10px-bottom" do %>
+
 
 
 Risorse web:
@@ -318,4 +326,38 @@ params[:preprevious][:controller] = companies
 Se non usavo il controllo "if key == :previous" avrei avuto un doppio annidamento:
 params[:previous][:controller] = people
 params[:previous][:preprevious][:controller] = companies
+
+
+
+
+---
+## Esempio su company_person_map che torna a person
+
+Su company_person_map ho il link che mi richiama lo show della persona.
+Sul views/people/show ho il partial _navbar_show che ha il pulsante di chiusura.
+Il pulsante di chiusura di default mi rimanda su people/index, ma, vedendo nel params[:previous] il controller company_person_maps mi fa tornare a company_person_maps.
+
+---
+        <%#= link_to new_person_path, class: "btn btn-small btn-transparent-white lg-margin-15px-bottom d-table d-lg-inline-block md-margin-lr-auto" do %>
+          <%#= image_tag "elis/icons/close.png", class: "img-circle width-85 xs-width-100", alt: "" %>
+        <%# end %>
+        <% if params[:previous].present? %>
+          <% if params[:previous][:controller] == "company_person_maps" %>
+            <%= link_to company_person_maps_path(page: params[:previous][:page], anchor: "anchor_#{@person.id}"), class: "btn btn-medium btn-transparent-dark-gray margin-10px-bottom wow fadeInUp", 'data-wow-delay': "0.6s" do %>
+              <%= image_tag "elis/icons/close.png", class: "img-circle width-85 xs-width-100", alt: "" %>
+            <% end %>
+          <% elsif params[:previous][:controller] == "people" %>
+            <%= link_to people_path(page: params[:previous][:page], anchor: "anchor_#{@person.id}"), class: "btn btn-medium btn-transparent-dark-gray margin-10px-bottom wow fadeInUp", 'data-wow-delay': "0.6s" do %>
+              <%= image_tag "elis/icons/close.png", class: "img-circle width-85 xs-width-100", alt: "" %>
+            <% end %>
+          <% else %>
+            <%= raise "errore" %>
+          <% end %>
+        <% end %>
+---
+
+Questo blocco di codice lo dovrei pulire con un presenter o con un helper ma questo lo faremo più avanti.
+
+
+
 
