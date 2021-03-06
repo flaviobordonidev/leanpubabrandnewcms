@@ -1,0 +1,25 @@
+<%= form_for(address, method: :delete, html: {class: 'form-horizontal left-pad right-pad bottom-pad'}) do |f| %>
+
+  <!-- # simulo l'helper h_params_path -->
+  <%= hidden_field_tag(:locale, params[:locale]) %>
+  <%= hidden_field_tag(:last_front_controller, params[:last_front_controller]) %>
+  <%= hidden_field_tag(:last_front_action, params[:last_front_action]) %>
+  <%= hidden_field_tag(:last_front_id, params[:last_front_id]) %>  
+  <%= hidden_field_tag(:last_front_related, params[:last_front_related]) %>  
+  <%= hidden_field_tag(:last_front_page, params[:last_front_page]) %>  
+  <%= hidden_field_tag(:last_front_search, params[:last_front_search]) %>  
+  <%= hidden_field_tag(:last_rear_controller, params[:last_rear_controller]) %>
+  <%= hidden_field_tag(:last_rear_action, params[:last_rear_action]) %>
+  <%= hidden_field_tag(:last_rear_id, params[:last_rear_id]) %>
+  <%= hidden_field_tag(:last_rear_related, params[:last_rear_related]) %>
+  <%= hidden_field_tag(:last_rear_page, params[:last_rear_page]) %>
+  <%= hidden_field_tag(:last_rear_search, params[:last_rear_search]) %>
+  <%= hidden_field_tag(:related, params[:related]) %>
+  <%= hidden_field_tag(:page, params[:page]) %>
+  <%= hidden_field_tag(:search, params[:search]) %>
+  <%= hidden_field_tag(:tab_active, params[:tab_active]) %>
+
+  <div class="actions">
+    <%= f.submit "#{t "addresses.edit.submit_destroy"}", class: "btn btn-primary btn-block" %>
+  </div>
+<% end %>

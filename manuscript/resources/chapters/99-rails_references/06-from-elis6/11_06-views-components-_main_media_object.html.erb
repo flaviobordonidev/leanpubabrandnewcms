@@ -1,0 +1,23 @@
+<div class="list-group left-pad right-pad">
+  <%= link_to url_for(h_front_params_path(path: "/components/#{@component.id}/edit")), :class => "list-group-item media" do %>
+
+    <%# unless @component.favorite_id.blank? %>
+      <!-- <span class="badge"><span class="glyphicon glyphicon-star"></span></span> -->
+    <%# end %>
+    
+    <div class="list-group-item-heading pull-left" >
+      <% if @component.image.present? %>
+        <%= image_tag @component.image.url(:thumb), class: "media-object" %><br>
+      <% elsif %>
+        <%= image_tag "my_style_images/default/component_default.png", alt: "component image", class: "media-object" %>
+      <% end %>
+    </div>
+
+    <div class="list-group-item-text media-body">
+      <%= content_tag :h4,"#{@component.part_number}", class: "media-heading" %>
+      <%= content_tag :p,"#{@component.name} " %>
+      <%= content_tag :p,"#{@component.factory.name} / #{@component.supplier.name}" %>
+    </div>
+
+  <% end %>
+</div>

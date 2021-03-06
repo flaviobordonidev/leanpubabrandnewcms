@@ -1,0 +1,57 @@
+<% provide(:title, "company_person_map edit") %>
+
+<div class="container-fluid rear_mode">
+  <div class="row"> <!-- row -->
+    <div class="col-xs-9 col-sm-10 col-lg-11">
+      <ul class="nav nav-pills bottom-pad top-pad left-pad">
+        <li class="<%= 'active' if params[:tab_active] == 'default' or params[:tab_active] == 'goto' %>">
+          <%= link_to "#pane_goto", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_goto" %>
+          <% end %>
+        </li>
+        
+        <li class="<%= 'active' if params[:tab_active] == 'edit' %>">
+          <%= link_to "#pane_edit", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_edit" %>
+          <% end %>
+        </li>
+
+        <li class="<%= 'active' if params[:tab_active] == 'delete' %>">
+          <%= link_to "#pane_delete", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_delete" %>
+          <% end %>
+        </li>
+      </ul>
+    </div> <!-- /.col -->
+    <div class="col-xs-3 col-sm-2 col-lg-1">
+      <%= render "button_close" %>
+    </div> <!-- /.col -->
+  </div> <!-- /.row -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="tab-content">
+        <div id="pane_goto" class="tab-pane <%= 'active' if params[:tab_active] == 'default' or params[:tab_active] == 'goto' %>">
+          <div class="text-center bottom-pad">
+            <h4><%= t("contacts.edit.title_pane_goto") %></h4>
+          </div><!-- /.text-center -->
+          <%= render 'pane_goto', company_person_map: @company_person_map %>
+        </div><!-- /.tab-pane -->
+        
+        <div id="pane_edit" class="tab-pane <%= 'active' if params[:tab_active] == 'edit'  %>">
+          <div class="text-center bottom-pad">
+            <h4><%= t("contacts.edit.title_pane_edit") %></h4>
+          </div> <!-- /.text-center -->
+          <%= render 'form', company_person_map: @company_person_map %>
+        </div> <!-- /.tab-pane -->
+        
+        <div id="pane_delete" class="tab-pane <%= 'active' if params[:tab_active] == 'delete'  %>">
+          <div class="text-center bottom-pad">
+            <h4><%= t("contacts.edit.title_pane_delete") %></h4>
+          </div> <!-- /.text-center -->
+          <%= render 'pane_delete', company_person_map: @company_person_map %>
+        </div><!-- /.tab-pane -->
+      </div><!-- /.tab-content -->
+    </div> <!-- /.col -->
+  </div> <!-- /.row -->
+</div> <!-- /.rear_mode -->

@@ -1,0 +1,8 @@
+<div class="list-group left-pad right-pad">
+  <% @relateds.each do |component| %>
+    <%= link_to url_for(h_front_params_path(path: "/components/#{component.id}", related: "descriptions")), :class => "list-group-item" do %>
+      <p><strong> <%= "#{component.part_number}"%> </strong></p>
+      <p><%= "#{component.name} - EUR #{component.supplier_price_list}" %></p>
+    <% end %>
+  <% end %>
+</div>

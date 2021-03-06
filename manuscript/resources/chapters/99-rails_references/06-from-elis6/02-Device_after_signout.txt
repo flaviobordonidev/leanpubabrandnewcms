@@ -1,0 +1,3 @@
+# Devise
+
+cosa fare su sign-out / log-out

@@ -1,0 +1,3 @@
+# Tutti i migrates per prendere spunto
+
+Inoltre metto anche "schema" e "seeds"

@@ -1,0 +1,16 @@
+<ol class="breadcrumb top-pad">
+  <li>
+    <%= render 'button_languages' %>
+    <%= link_to url_for(h_front_params_path(path: "/homepage", related: "components", page: 1)), :class => "btn btn-default" do %>
+      <%= content_tag :span,"", class: "glyphiconmy ico_home" %>
+    <% end %>
+  </li>
+  <li class="active">
+    <%= link_to "#", :class => "btn btn-link disabled" do %>
+      <%= content_tag :span, t("components.show.breadcrumbs"), class: "glyphiconmy ico_component" %>
+    <% end %>
+    <%= link_to url_for(h_front_params_path(path: "/select_relateds")), :class => "btn btn-default" do %>
+      <%= content_tag :span,"", class: "glyphiconmy #{h_ico_name}" %>
+    <% end %>
+  </li>
+</ol>

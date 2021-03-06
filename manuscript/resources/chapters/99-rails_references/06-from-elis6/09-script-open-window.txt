@@ -1,0 +1,19 @@
+# Script Open Window
+Apre un'altra finestra del browser e la posiziona nello spazio.
+
+Attenzione: Sempre di più i browser limitano questo tipo di interazione per motivi di sicurezza.
+
+---
+          <a onclick="myFunction<%= company_person_map.id %>()" class="btn btn-lg">
+            <span class="glyphiconmy ico_goto right-pad"></span> <%= company_person_map.summary %>
+            <!--<div><%#= "#{company_person_map.person.id} #{company_person_map.person.first_name} #{company_person_map.person.last_name}" %></div>-->
+          </a>
+          
+          <script>
+          function myFunction<%= company_person_map.id %>() {
+            var mytop = window.screenTop + 40;
+            var myleft = window.screenLeft + 40;
+            var myWindow = window.open("<%= url_for(h_params_path(path: "/people/#{company_person_map.person.id}", related: "companies")) %>", "_blank", `toolbar=no,scrollbars=yes,resizable=yes,top=${mytop},left=${myleft},width=400,height=600`);
+          }
+          </script>
+---

@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Company:</strong>
+  <%= @company_person_map.company %>
+</p>
+
+<p>
+  <strong>Person:</strong>
+  <%= @company_person_map.person %>
+</p>
+
+<p>
+  <strong>Summary:</strong>
+  <%= @company_person_map.summary %>
+</p>
+
+<%= link_to 'Edit', edit_company_person_map_path(@company_person_map) %> |
+<%= link_to 'Back', company_person_maps_path %>

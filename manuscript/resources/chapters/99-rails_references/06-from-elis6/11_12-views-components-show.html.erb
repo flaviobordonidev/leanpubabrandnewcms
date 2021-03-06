@@ -1,0 +1,215 @@
+<% provide(:title, "#{@component.name}") %>
+
+<div class="container-fluid front_mode"> <!-- front_mode -->
+
+  <!-- menu_bar -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-10 col-sm-11 col-lg-11"> <!-- col -->
+      <%= render 'breadcrumbs' %>
+    </div> <!-- /col -->
+    <div class="col-xs-2 col-sm-1 col-lg-1"> <!-- col -->
+      <%= render 'button_global_settings' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <!-- /menu_bar -->
+
+  <!-- main -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-12"> <!-- col -->
+      <%= render 'main_media_object' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <!-- /main -->
+
+  <!-- related -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-10 col-sm-11 col-lg-11"> <!-- col -->
+      <%#= render 'related_form_search' %>
+    </div> <!-- /col -->
+    <div class="col-xs-2 col-sm-1 col-lg-1"> <!-- col -->
+      <% if @relateds_path == "company_person_maps" %>
+        <%#= render 'related_map_button_new', list_to_add: @relateds, relateds_path: @relateds_path %>
+      <% else %>
+        <%#= render 'related_button_new', list_to_add: @relateds, relateds_path: @relateds_path %>
+      <% end %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-12"> <!-- col -->
+      <!-- <p>related_list_group</p> -->
+      <% if @relateds_path == "descriptions" %>
+        <%= render "components/descriptions", component: @component %>
+      <% elsif @relateds_path == "prices" %>
+        <%= render "components/prices", component: @component %>
+      <% else %>
+        <%= render "#{@relateds_path}/index", related_list: @relateds %>
+      <% end %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-12"> <!-- col -->
+      <div class="text-center">
+          <%#= render 'related_pagination', list_to_paginate: @relateds %>
+      </div> <!-- /text-center -->
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <!-- /related -->
+
+</div> <!-- /front_mode -->
+
+
+<% if Rails.env.development? %>
+  
+  <p id="notice"><%= notice %></p>
+  
+  <p>
+    <strong>Part number:</strong>
+    <%= @component.part_number %>
+  </p>
+  
+  <p>
+    <strong>Name:</strong>
+    <%= @component.name %>
+  </p>
+  
+  <p>
+    <strong>Supplier:</strong>
+    <%= @component.supplier_id %>
+  </p>
+
+  <p>
+    <strong>Factory:</strong>
+    <%= @component.factory_id %>
+  </p>
+  
+  <p>
+    <strong>Homonym:</strong>
+    <%= @component.homonym %>
+  </p>
+  
+  <p>
+    <strong>Memo:</strong>
+    <%= @component.memo %>
+  </p>
+  
+  <p>
+    <strong>Description:</strong>
+    <%= @component.description %>
+  </p>
+  
+  <p>
+    <strong>Supplier price list:</strong>
+    <%= @component.supplier_price_list %>
+  </p>
+  
+  <p>
+    <strong>Currency:</strong>
+    <%= @component.currency %>
+  </p>
+  
+  <p>
+    <strong>Currency exchange:</strong>
+    <%= @component.currency_exchange %>
+  </p>
+  
+  <p>
+    <strong>Currency rounding:</strong>
+    <%= @component.currency_rounding %>
+  </p>
+  
+  <p>
+    <strong>Discount one min quantity:</strong>
+    <%= @component.discount_one_min_quantity %>
+  </p>
+
+  <p>
+    <strong>Discount one percentage:</strong>
+    <%= @component.discount_one_percentage %>
+  </p>
+
+  <p>
+    <strong>Discount one rounding:</strong>
+    <%= @component.discount_one_rounding %>
+  </p>
+  
+  <p>
+    <strong>Discount two min quantity:</strong>
+    <%= @component.discount_two_min_quantity %>
+  </p>
+
+  <p>
+    <strong>Discount two percentage:</strong>
+    <%= @component.discount_two_percentage %>
+  </p>
+
+  <p>
+    <strong>Discount two rounding:</strong>
+    <%= @component.discount_two_rounding %>
+  </p>
+  
+  <p>
+    <strong>Discount three min quantity:</strong>
+    <%= @component.discount_three_min_quantity %>
+  </p>
+
+  <p>
+    <strong>Discount three percentage:</strong>
+    <%= @component.discount_three_percentage %>
+  </p>
+
+  <p>
+    <strong>Discount three rounding:</strong>
+    <%= @component.discount_three_rounding %>
+  </p>
+  
+  <p>
+    <strong>Discount four min quantity:</strong>
+    <%= @component.discount_four_min_quantity %>
+  </p>
+
+  <p>
+    <strong>Discount four percentage:</strong>
+    <%= @component.discount_four_percentage %>
+  </p>
+
+  <p>
+    <strong>Discount four rounding:</strong>
+    <%= @component.discount_four_rounding %>
+  </p>
+
+  <p>
+    <strong>Discount five min quantity:</strong>
+    <%= @component.discount_five_min_quantity %>
+  </p>
+
+  <p>
+    <strong>Discount five percentage:</strong>
+    <%= @component.discount_five_percentage %>
+  </p>
+
+  <p>
+    <strong>Discount five rounding:</strong>
+    <%= @component.discount_five_rounding %>
+  </p>
+
+  <p>
+    <strong>Discount note:</strong>
+    <%= @component.discount_note %>
+  </p>
+
+  <p>
+    <strong>Discount rounding:</strong>
+    <%= @component.discount_rounding %>
+  </p>
+  
+  <%= link_to 'Edit', edit_component_path(@component) %> |
+  <%= link_to 'Back', components_path %>
+<% end %>

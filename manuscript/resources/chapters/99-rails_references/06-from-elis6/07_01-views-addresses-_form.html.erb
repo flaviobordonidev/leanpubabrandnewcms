@@ -1,0 +1,86 @@
+<%= form_for(address, html: {class: 'form-horizontal left-pad right-pad bottom-pad'}) do |f| %>
+
+  <!-- # simulo l'helper h_params_path -->
+  <%= hidden_field_tag(:locale, params[:locale]) %>
+  <%= hidden_field_tag(:last_front_controller, params[:last_front_controller]) %>
+  <%= hidden_field_tag(:last_front_action, params[:last_front_action]) %>
+  <%= hidden_field_tag(:last_front_id, params[:last_front_id]) %>  
+  <%= hidden_field_tag(:last_front_related, params[:last_front_related]) %>  
+  <%= hidden_field_tag(:last_front_page, params[:last_front_page]) %>  
+  <%= hidden_field_tag(:last_front_search, params[:last_front_search]) %>  
+  <%= hidden_field_tag(:last_rear_controller, params[:last_rear_controller]) %>
+  <%= hidden_field_tag(:last_rear_action, params[:last_rear_action]) %>
+  <%= hidden_field_tag(:last_rear_id, params[:last_rear_id]) %>
+  <%= hidden_field_tag(:last_rear_related, params[:last_rear_related]) %>
+  <%= hidden_field_tag(:last_rear_page, params[:last_rear_page]) %>
+  <%= hidden_field_tag(:last_rear_search, params[:last_rear_search]) %>
+  <%= hidden_field_tag(:related, params[:related]) %>
+  <%= hidden_field_tag(:page, params[:page]) %>
+  <%= hidden_field_tag(:search, params[:search]) %>
+  <%= hidden_field_tag(:tab_active, params[:tab_active]) %>
+
+  <div class="form-group">
+
+    <% if Rails.env.development? %>
+      <div class="field">
+        <%= f.label :addressable_id, class: "control-label" %>
+        <%= f.number_field :addressable_id, class: "form-control" %>
+        <span class="help-block"></span>
+      </div> <!-- /.field -->
+
+      <div class="field">
+        <%= f.label :addressable_type, class: "control-label" %>
+        <%= f.text_field :addressable_type, class: "form-control" %>
+        <span class="help-block"></span>
+      </div> <!-- /.field -->
+      
+      <div class="field">
+        <%= f.label :favorite_id, class: "control-label" %><br>
+        <%= f.text_field :favorite_id, class: "form-control" %>
+      </div> <!-- /.field -->
+    <% else %>
+        <%= f.hidden_field :addressable_id %>
+        <%= f.hidden_field :addressable_type %>
+        <%= f.hidden_field :favorite_id %>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :title, class: "control-label" %>
+      <%= f.text_field :title, class: "form-control" %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+
+    <div class="field">
+      <%= f.label :full_address, class: "control-label" %>
+      <%= f.text_area :full_address, class: "form-control" %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+  
+    <div class="field">
+      <%= f.label :latitude, class: "control-label" %>
+      <%= f.text_field :latitude, class: "form-control" %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+  
+    <div class="field">
+      <%= f.label :longitude, class: "control-label" %>
+      <%= f.text_field :longitude, class: "form-control" %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+  
+    <div class="field">
+      <%= f.label :address_tag, class: "control-label" %>
+      <%= f.text_field :address_tag, class: "form-control" %>
+      <span class="help-block"></span>
+    </div> <!-- /.field -->
+  
+    <div class="field">
+      <%= f.label :favorite_cb, class: "control-label" %><br>
+      <%= f.check_box :favorite_cb, class: "form-control", "data-size" => "medium", "data-on-color" => "primary", "data-on-text" => "SI", "data-off-color" => "default", "data-off-text" => "NO" %>
+    </div> <!-- /.field -->
+  </div> <!-- /.form-group -->
+
+  <div class="actions">
+    <%= f.submit "Aggiorna indirizzo", class: "btn btn-primary btn-block" %>
+  </div> <!-- /.actions -->
+<% end %>

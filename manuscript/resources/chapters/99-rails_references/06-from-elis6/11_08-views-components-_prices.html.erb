@@ -1,0 +1,96 @@
+<div class="list-group left-pad right-pad">
+
+  <table class="table">
+    <!--<thead>
+      <tr>
+        <th>Prices labels</th>
+        <th>Values</th>
+      </tr>
+    </thead>-->
+    <tbody>
+      <tr>
+        <td><strong>Valuta</strong><%= " (cambio al 01.01.17: #{component.currency_exchange})" %></td>
+        <td><%= "#{component.currency}" %></td>
+        <td><%= "EUR" %></td>
+      </tr>
+      <tr>
+        <td><strong>Listino Fronitore</strong></td>
+        <td><%= "#{component.supplier_price_list}" %></td>
+        <td><%= "#{(component.supplier_price_list / component.currency_exchange).round(component.currency_rounding)}" %></td>
+      </tr>
+      <!--<tr>
+        <td><strong>Arrotondamento</strong></td>
+        <td><%#= "#{h_options_rounding(component.currency_rounding)}" %></td>
+      </tr> -->
+      <tr class="success">
+        <td><strong>Acquisto</strong><%= " (min #{component.discount_one_min_quantity} pz sconto #{component.discount_one_percentage}%)" %></td>
+        <td><%= "#{((component.supplier_price_list) * (100 - component.discount_one_percentage) / 100).round(component.discount_one_rounding)}" %></td>
+        <td><%= "#{((component.supplier_price_list / component.currency_exchange).round(component.currency_rounding) * (100 - component.discount_one_percentage) / 100).round(component.discount_one_rounding)}" %></td>
+      </tr>
+      <% unless component.discount_two_min_quantity.blank? or component.discount_two_min_quantity == 0 %>
+        <tr class="success">
+          <td><strong>Acquisto</strong><%= " (sconto per qt. min #{component.discount_two_min_quantity} pz = #{component.discount_two_percentage}%)" %></td>
+          <td><%= "#{((component.supplier_price_list) * (100 - component.discount_two_percentage) / 100).round(component.discount_two_rounding)}" %></td>
+          <td><%= "#{((component.supplier_price_list / component.currency_exchange).round(component.currency_rounding) * (100 - component.discount_two_percentage) / 100).round(component.discount_two_rounding)}" %></td>
+        </tr>
+      <% end %>
+      <% unless component.discount_three_min_quantity.blank? or component.discount_three_min_quantity == 0 %>
+        <tr class="success">
+          <td><strong>Acquisto</strong><%= " (sconto per qt. min #{component.discount_three_min_quantity} pz = #{component.discount_three_percentage}%)" %></td>
+          <td><%= "#{((component.supplier_price_list) * (100 - component.discount_three_percentage) / 100).round(component.discount_three_rounding)}" %></td>
+          <td><%= "#{((component.supplier_price_list / component.currency_exchange).round(component.currency_rounding) * (100 - component.discount_three_percentage) / 100).round(component.discount_three_rounding)}" %></td>
+        </tr>
+      <% end %>
+      <% unless component.discount_four_min_quantity.blank? or component.discount_four_min_quantity == 0 %>
+        <tr class="success">
+          <td><strong>Acquisto</strong><%= " (sconto per qt. min #{component.discount_four_min_quantity} pz = #{component.discount_four_percentage}%)" %></td>
+          <td><%= "#{((component.supplier_price_list) * (100 - component.discount_four_percentage) / 100).round(component.discount_four_rounding)}" %></td>
+          <td><%= "#{((component.supplier_price_list / component.currency_exchange).round(component.currency_rounding) * (100 - component.discount_four_percentage) / 100).round(component.discount_four_rounding)}" %></td>
+        </tr>
+      <% end %>
+      <% unless component.discount_five_min_quantity.blank? or component.discount_five_min_quantity == 0 %>
+        <tr class="success">
+          <td><strong>Acquisto</strong><%= " (sconto per qt. min #{component.discount_five_min_quantity} pz = #{component.discount_five_percentage}%)" %></td>
+          <td><%= "#{((component.supplier_price_list) * (100 - component.discount_five_percentage) / 100).round(component.discount_five_rounding)}" %></td>
+          <td><%= "#{((component.supplier_price_list / component.currency_exchange).round(component.currency_rounding) * (100 - component.discount_five_percentage) / 100).round(component.discount_five_rounding)}" %></td>
+        </tr>
+      <% end %>
+
+    </tbody>
+  </table>
+
+  <% if Rails.env.development? %>
+    <div class="field">
+        <p class= 'form-control'><%= "supplier_price_list: #{component.supplier_price_list}"%></p>
+    </div> <!-- /.field -->
+
+    <div class="field">
+        <p class= 'form-control'><%= "currency: #{component.currency}"%></p>
+    </div> <!-- /.field -->
+
+    <div class="field">
+        <p class= 'form-control'><%= "currency_exchange: #{component.currency_exchange}"%></p>
+    </div> <!-- /.field -->
+
+    <div class="field">
+        <p class= 'form-control'><%= "currency_rounding: #{component.currency_rounding}"%></p>
+    </div> <!-- /.field -->
+
+    <div class="field">
+        <p class= 'form-control'><%= "supplier_discount: #{component.discount_one_min_quantity}"%></p>
+    </div> <!-- /.field -->
+
+    <div class="field">
+        <p class= 'form-control'><%= "supplier_discount: #{component.discount_one_percentage}"%></p>
+    </div> <!-- /.field -->
+
+    <div class="field">
+        <p class= 'form-control'><%= "discount_rounding: #{component.discount_one_rounding}"%></p>
+    </div> <!-- /.field -->
+
+    <div class="field">
+        <p class= 'form-control'><%= "campo calcolato: #{component.supplier_price_list}"%></p>
+    </div> <!-- /.field -->
+  <% end %>
+
+</div>

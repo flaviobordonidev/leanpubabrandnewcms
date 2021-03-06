@@ -1,0 +1,93 @@
+<% provide(:title, "#{@person.first_name} #{@person.last_name}") %>
+
+<div class="container-fluid front_mode"> <!-- front_mode -->
+
+  <!-- menu_bar -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-10 col-sm-11 col-lg-11"> <!-- col -->
+      <%= render 'breadcrumbs' %>
+    </div> <!-- /col -->
+    <div class="col-xs-2 col-sm-1 col-lg-1"> <!-- col -->
+      <%= render 'button_global_settings' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <!-- /menu_bar -->
+
+  <!-- main -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-12"> <!-- col -->
+      <%= render 'main_media_object' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <!-- /main -->
+
+  <!-- related -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-10 col-sm-11 col-lg-11"> <!-- col -->
+      <%= render 'related_form_search' %>
+    </div> <!-- /col -->
+    <div class="col-xs-2 col-sm-1 col-lg-1"> <!-- col -->
+      <% if @relateds_path == "company_person_maps" %>
+        <%= render 'related_map_button_new', list_to_add: @relateds, relateds_path: @relateds_path %>
+      <% else %>
+        <%= render 'related_button_new', list_to_add: @relateds, relateds_path: @relateds_path %>
+      <% end %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-12"> <!-- col -->
+      <!-- <p>related_list_group</p> -->
+      <%= render "#{@relateds_path}/index", related_list: @relateds %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row"> <!-- row -->
+    <div class="col-xs-12"> <!-- col -->
+      <div class="text-center">
+          <%= render 'related_pagination', list_to_paginate: @relateds %>
+      </div> <!-- /text-center -->
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <!-- /related -->
+
+</div> <!-- /front_mode -->
+
+
+<% if Rails.env.development? %>
+  <p id="notice"><%= notice %></p>
+  
+  <p>
+    <strong>Title:</strong>
+    <%= @person.title %>
+  </p>
+  
+  <p>
+    <strong>First name:</strong>
+    <%= @person.first_name %>
+  </p>
+  
+  <p>
+    <strong>Last name:</strong>
+    <%= @person.last_name %>
+  </p>
+  
+  <p>
+    <strong>Homonym:</strong>
+    <%= @person.homonym %>
+  </p>
+  
+  <p>
+    <strong>Memo:</strong>
+    <%= @person.memo %>
+  </p>
+  
+  <%= link_to 'Edit', edit_person_path(@person) %> |
+  <%= link_to 'Back', people_path %>
+<% end %>

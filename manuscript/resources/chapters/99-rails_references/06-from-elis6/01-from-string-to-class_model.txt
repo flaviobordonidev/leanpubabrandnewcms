@@ -1,0 +1,12 @@
+# Rendiamo una stringa una variabile di classe Model da usare nelle relazioni
+
+params[:last_front_controller].singularize.classify
+
+---
+  # GET /addresses/new
+  def new
+    @address = Address.new
+    @address.addressable_id = params[:last_front_id]
+    @address.addressable_type = params[:last_front_controller].singularize.classify
+  end
+---

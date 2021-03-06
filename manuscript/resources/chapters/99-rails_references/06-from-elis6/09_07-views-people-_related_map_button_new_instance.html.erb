@@ -1,0 +1,21 @@
+<% unless relateds_path == "favorites" %>
+  <% if params[:search].present? or (list_to_add.size < 7)%>
+    <div class="btn-group pull-right right-pad">
+      <button onclick="myFunction()">
+        <span class="glyphiconmy ico_new right-pad"></span>
+      </button>
+      <script>
+      function myFunction() {
+        var myWindow = window.open("<%= url_for(h_params_path(path: "/people/new")) %>", "_blank", "toolbar=no,scrollbars=yes,resizable=yes,top=50,left=50,width=400,height=600");
+      }
+      </script>
+    </div> <!-- /btn-group -->
+
+  <% else %>
+    <div class="btn-group pull-right right-pad">
+      <a href="#" class="btn btn-primary disabled">
+        <span class="glyphiconmy ico_new"></span>
+      </a>
+    </div> <!-- /btn-group -->
+  <% end %>
+<% end %>

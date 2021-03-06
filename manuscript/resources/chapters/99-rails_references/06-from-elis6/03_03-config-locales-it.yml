@@ -1,0 +1,117 @@
+it:
+  addresses:
+    edit:
+      submit_destroy: "Elimina indirizzo"
+  application:
+    related_pagination:
+      of: "di"
+  companies:
+    create:
+      notice: "Azienda creata con successo."
+      alert: "Impossibile creare l'azienda."
+    destroy:
+      notice: "Azienda eliminata con successo."
+    edit:
+      pane_edit_header: "Modifica azienda"
+      submit_destroy: "Elimina azienda"
+    new:
+      pane_edit_header: "Nuova azienda"
+    show:
+      breadcrumbs: "Azienda"
+    update:
+      notice: "Azienda aggiornata con successo."
+      alert: "Impossibile aggiornare azienda."
+  company_person_maps:
+    edit:
+      submit: "Aggiorna collegamento"
+      submit_destroy: "Elimina collegamento"
+  components:
+    create:
+      notice: "Componente creato con successo."
+      alert: "Impossibile creare il componente."
+    destroy:
+      notice: "Componente eliminato con successo."
+    show:
+      breadcrumbs: "Componente"
+  contacts:
+    edit:
+      submit_destroy: "Elimina contatto"
+  dossiers:
+    show:
+      breadcrumbs: "Pratica"
+  global_settings:
+    index:
+      title_pane_language: "lingue"
+      title_pane_logout: "uscita"
+    pane_logout:
+      label_exit_button: "Esci dall'applicazione"
+  h:
+    company_status_one: "cliente"
+    company_status_two: "fornitore"
+    company_status_three: "cliente e fornitore"
+    company_status_four: "cliente pot."
+    company_status_five: "fornitore pot."
+    company_status_six: "cliente pot. e fornitore pot."
+    company_status_seven: "cliente e fornitore pot."
+    company_status_eight: "fornitore e cliente pot."
+    hundredths: "centesimi"
+    tenths: "decimi"
+    ones: "unità"
+    tens: "decine"
+    hundreds: "centinaia"
+  helpers:
+    label:
+      company:
+        logo: "logo"
+        memo: "note"
+        name: "nome"
+        sector: "settore"
+        status: "stato"
+        taxation_number_first: "P.IVA"
+        taxation_number_second: "C.F."
+      person:
+        name: "Name label of post"
+    submit:
+      company:
+        create: "Crea una nuova azienda"
+        update: "Salva le modifiche all'azienda"
+      person:
+        create: "Crea una nuova persona"
+        update: "Salva le modifiche alla persona"
+  histories:
+    edit:
+      submit_destroy: "Elimina la nota"
+  homepage:
+    index:
+      first_header: "Questa è l'homepage"
+      first_paragraph: "il testo verrà preso dal database ma alcuni messaggi sono passati dall'applicazione ed è quindi bene che vengano tradotti per essere pronti a supportare più lingue."
+      link_goto_page_B: "andiamo alla pagina B"
+    show:
+      breadcrumbs: "Pagina iniziale"
+      administrator: "AMMINISTRATORE"
+      label_last_login: "Ultimo accesso:"
+  people:
+    create:
+      notice: "Persona creata con successo."
+      alert: "Impossibile creare la persona."
+    default:
+      title: "Sig."
+    destroy:
+      notice: "Persona eliminata con successo."
+    edit:
+      pane_edit_header: "Modifica persona"
+      submit_destroy: "Elimina persona"
+    new:
+      pane_edit_header: "Nuova persona"
+    show:
+      breadcrumbs: "Persona"
+    update:
+      notice: "Persona aggiornata con successo."
+      alert: "Impossibile aggiornare la persona."
+  select_relateds:
+    index:
+      search: "cerca"
+  select_relateds:
+    index:
+      search: "cerca"
+      pane_list_header: "Scelte per homepage"

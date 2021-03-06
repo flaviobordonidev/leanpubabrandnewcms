@@ -1,0 +1,77 @@
+<div class="list-group left-pad right-pad">
+  <% related_list.each do |company_person_map| %>
+    <%#= link_to url_for(h_front_params_path(path: "/company_person_maps/#{company_person_map.id}/edit")), :class => "list-group-item" do %>
+    <%= link_to "#collapseExample#{company_person_map.id}",'data-toggle': "collapse", class: "list-group-item" do %>
+
+      <% if params[:related] == "people" %>
+        <% unless company_person_map.favorite_id_person.blank? %>
+          <span class="badge"><span class="glyphicon glyphicon-star"></span></span>
+        <% end %>
+        <p><strong> <%= "#{company_person_map.person.first_name}  #{company_person_map.person.last_name}"%> </strong></p>
+        <p> <%= "#{company_person_map.job_title_useful}" %> </p>
+        <% if company_person_map.mobile.present? %>
+          <p> <%= "cel: #{company_person_map.mobile}" %> </p>
+        <% end %>
+        <% if company_person_map.phone.present? %>
+          <p> <%= "tel: #{company_person_map.phone}" %> </p>
+        <% end %>
+        <% if company_person_map.email.present? %>
+          <p> <%= "email: #{company_person_map.email}" %> </p>
+        <% end %>
+
+      <% elsif params[:related] == "companies" %>
+        <% unless company_person_map.favorite_id_company.blank? %>
+          <span class="badge"><span class="glyphicon glyphicon-star"></span></span>
+        <% end %>
+        <p><strong> <%= "#{company_person_map.company.name} - #{company_person_map.company.building}"%> </strong></p>
+        <p> <%= "#{company_person_map.job_title_useful}" %> </p>
+        <% if company_person_map.mobile.present? %>
+          <p> <%= "cel: #{company_person_map.mobile}" %> </p>
+        <% end %>
+        <% if company_person_map.phone.present? %>
+          <p> <%= "tel: #{company_person_map.phone}" %> </p>
+        <% end %>
+        <% if company_person_map.email.present? %>
+          <p> <%= "email: #{company_person_map.email}" %> </p>
+        <% end %>
+      <% end %>
+      
+    <% end %><!-- link_to -->
+
+    <div class="collapse" id="collapseExample<%= company_person_map.id %>">
+      <div class="card card-body">
+
+        <% if params[:last_front_controller] == "people" %>
+          <%= link_to url_for(h_params_path(path: "/companies/#{company_person_map.company.id}", related: "people")), :class => "btn btn-lg" do %>
+            <span class="glyphiconmy ico_company right-pad"></span> <%= company_person_map.summary %>
+            <div><%= "#{company_person_map.company.name} - #{company_person_map.company.building}" %></div>
+          <% end %>
+        <% elsif params[:last_front_controller] == "companies" %>
+          <%#= link_to url_for(h_params_path(path: "/people/#{@company_person_map.person.id}", related: "companies")), :class => "list-group-item" do %>
+            <!-- <span class="glyphiconmy ico_person right-pad"></span>--> <%#= @company_person_map.summary %>
+            <!-- <div><%#= "#{@company_person_map.person.title} #{@company_person_map.person.first_name} #{@company_person_map.person.last_name}" %></div> -->
+          <%# end %>
+          
+          <a onclick="myFunction<%= company_person_map.id %>()" class="btn btn-lg">
+            <span class="glyphiconmy ico_goto right-pad"></span> <%= company_person_map.summary %>
+            <!--<div><%#= "#{company_person_map.person.id} #{company_person_map.person.first_name} #{company_person_map.person.last_name}" %></div>-->
+          </a>
+          
+          <script>
+          function myFunction<%= company_person_map.id %>() {
+            var mytop = window.screenTop + 40;
+            var myleft = window.screenLeft + 40;
+            var myWindow = window.open("<%= url_for(h_params_path(path: "/people/#{company_person_map.person.id}", related: "companies")) %>", "_blank", `toolbar=no,scrollbars=yes,resizable=yes,top=${mytop},left=${myleft},width=400,height=600`);
+          }
+          </script>
+        <% end %>
+
+
+        <%= link_to url_for(h_front_params_path(path: "/company_person_maps/#{company_person_map.id}/edit")), :class => "btn btn-lg" do %>
+          <%= content_tag :span,"", class: "glyphiconmy ico_edit" %>
+        <% end %>    
+      </div>
+    </div>
+    
+  <% end %><!-- related_list.each -->
+</div>

@@ -1,0 +1,48 @@
+<% provide(:title, "startpage") %>
+
+<div class="container-fluid front_mode">
+
+  <h1> Elisinfo </h1>
+
+  <div class="row">
+    <div class="col-xs-12">
+
+
+    <div class="list-group left-pad right-pad bottom-pad">
+      <!-- parte dedicata alle finestre multiple -->
+      <!-- http://www.w3schools.com/jsref/met_win_open.asp -->
+      <!-- https://developer.mozilla.org/en-US/docs/Web/API/Window/open -->
+      <!-- http://stackoverflow.com/questions/6213807/open-a-new-tab-with-javascript-but-stay-on-current-tab -->
+      <button onclick="myFunction()">
+        <span class="glyphiconmy ico_instance right-pad"></span> Nuova istanza
+      </button>
+      
+      <script>
+      function myFunction() {
+        var mytop = window.screenTop + 40;
+        var myleft = window.screenLeft + 40;
+        //console.log(`mytop is ${mytop}.`);
+        var myWindow = window.open("/homepage", "_blank", `toolbar=no,scrollbars=yes,resizable=yes,top=${mytop},left=${myleft},width=400,height=600`);
+        //var myWindow = window.open("/homepage", "_blank", `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no, width=900,height=300,left=100,top=100`);
+      }
+      </script>
+    </div>
+
+
+    <div class="list-group left-pad right-pad bottom-pad">
+      <button onclick="myFunction2()">
+        <span class="glyphiconmy ico_instance right-pad"></span> Nuova istanza Sviluppatore
+      </button>
+      
+      <script>
+      function myFunction2() {
+        window.open("/homepage", "_blank");
+      }
+      </script>
+    </div>
+
+
+    </div> <!-- end - col -->
+  </div> <!-- end - row -->
+
+</div> <!-- end - front_mode -->

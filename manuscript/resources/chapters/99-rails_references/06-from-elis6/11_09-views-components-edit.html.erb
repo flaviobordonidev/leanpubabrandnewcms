@@ -1,0 +1,57 @@
+<% provide(:title, "#{@component.part_number}") %>
+
+<div class="container-fluid rear_mode">
+  <div class="row"> <!-- row -->
+    <div class="col-xs-9 col-sm-10 col-lg-11">
+      <ul class="nav nav-pills bottom-pad top-pad left-pad">
+        <li class="<%= 'active' if params[:tab_active] == 'default' or params[:tab_active] == 'edit' %>">
+          <%= link_to "#pane_edit", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_edit" %>
+          <% end %>
+        </li>
+
+        <li class="<%= 'active' if params[:tab_active] == 'edit_prices' %>">
+          <%= link_to "#pane_edit_prices", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_price" %>
+          <% end %>
+        </li>
+        
+        <li class="<%= 'active' if params[:tab_active] == 'delete' %>">
+          <%= link_to "#pane_delete", "data-toggle" => "tab" do %>
+            <%= content_tag :span,"", class: "glyphiconmy ico_delete" %>
+          <% end %>
+        </li>
+      </ul>
+    </div> <!-- /.col -->
+    <div class="col-xs-3 col-sm-2 col-lg-1">
+      <%= render "button_close" %>
+    </div> <!-- /.col -->
+  </div> <!-- /.row -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="tab-content">
+        <div id="pane_edit" class="tab-pane <%= 'active' if params[:tab_active] == 'default' or params[:tab_active] == 'edit'  %>">
+          <div class="text-center bottom-pad">
+            <h4><%= t(".pane_edit_header") %></h4>
+          </div> <!-- /.text-center -->
+          <%= render 'form', component: @component %>
+        </div> <!-- /.tab-pane -->
+
+        <div id="pane_edit_prices" class="tab-pane <%= 'active' if params[:tab_active] == 'edit_prices'  %>">
+          <div class="text-center bottom-pad">
+            <h4><%= t(".pane_edit_prices_header") %></h4>
+          </div> <!-- /.text-center -->
+          <%= render 'form_prices', component: @component %>
+        </div> <!-- /.tab-pane -->
+        
+        <div id="pane_delete" class="tab-pane <%= 'active' if params[:tab_active] == 'delete'  %>">
+          <div class="text-center bottom-pad">
+            <h4><%= t(".pane_delete_header") %></h4>
+          </div> <!-- /.text-center -->
+          <%= render 'pane_delete', component: @component %>
+        </div><!-- /.tab-pane -->
+      </div><!-- /.tab-content -->
+    </div> <!-- /.col -->
+  </div> <!-- /.row -->
+</div> <!-- /.rear_mode -->

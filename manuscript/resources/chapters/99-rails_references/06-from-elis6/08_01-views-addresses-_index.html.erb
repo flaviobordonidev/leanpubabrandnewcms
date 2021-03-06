@@ -1,0 +1,11 @@
+<div class="list-group left-pad right-pad">
+  <% related_list.each do |address| %>
+    <%= link_to url_for(h_front_params_path(path: "/addresses/#{address.id}/edit")), :class => "list-group-item" do %>
+      <% unless address.favorite_id.blank? %>
+        <span class="badge"><span class="glyphicon glyphicon-star"></span></span>
+      <% end %>
+      <p><strong> <%= address.full_address %> </strong></p>
+      <p> <%= "#{address.title} - #{address.address_tag}" %> </p>
+    <% end %> <!-- /link_to -->
+  <% end %> <!-- /related_list.each -->
+</div> <!-- /.list-group -->

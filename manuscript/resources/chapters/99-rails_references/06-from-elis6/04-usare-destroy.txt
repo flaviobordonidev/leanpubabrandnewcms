@@ -1,0 +1,29 @@
+# Per eliminare un record è semplicemente trovarlo e aggiungere ".destroy"
+
+
+---
+  # DELETE /companies/1
+  # DELETE /companies/1.json
+  def destroy
+    manage_favorite_destroy # private action
+    @company.destroy
+    respond_to do |format|
+      format.html { redirect_to url_for(view_context.h_params_path(path: "/homepage/", related: "companies", page: 1, search: "")), notice: t(".notice") }
+      #format.html { redirect_to companies_url, notice: 'Company was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+---
+
+
+---
+    def manage_favorite_destroy
+      # se il record @company ha un favorito lo elimino prima di eliminare il record.
+      Favorite.find(@company.favorite_id).destroy unless @company.favorite_id.blank?
+      #@company.favoritable.destroy unless @company.favorite_id.blank?
+    end
+---
+
+
+"@company.destroy" è un modo compatto di scrivere "Company.find(@company.id).destroy"
+

@@ -1,0 +1,7 @@
+# Usare helpers su controller
+
+Si può fare usando "view_context." ma personalmente sconsiglio di farlo
+
+---
+      format.html { redirect_to url_for(view_context.h_params_path(path: "/homepage/", related: "companies", page: 1, search: "")), notice: t(".notice") }
+---

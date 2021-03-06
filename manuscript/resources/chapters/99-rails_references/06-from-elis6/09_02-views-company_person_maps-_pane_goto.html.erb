@@ -1,0 +1,25 @@
+<% if params[:last_front_controller] == "people" %>
+  <%= link_to url_for(h_params_path(path: "/companies/#{@company_person_map.company.id}", related: "people")), :class => "list-group-item" do %>
+    <span class="glyphiconmy ico_company right-pad"></span> <%= @company_person_map.summary %>
+    <div><%= "#{@company_person_map.company.name} - #{@company_person_map.company.building}" %></div>
+  <% end %>
+<% elsif params[:last_front_controller] == "companies" %>
+  <%#= link_to url_for(h_params_path(path: "/people/#{@company_person_map.person.id}", related: "companies")), :class => "list-group-item" do %>
+    <!-- <span class="glyphiconmy ico_person right-pad"></span>--> <%#= @company_person_map.summary %>
+    <!-- <div><%#= "#{@company_person_map.person.title} #{@company_person_map.person.first_name} #{@company_person_map.person.last_name}" %></div> -->
+  <%# end %>
+  
+  <a onclick="myFunction()" class="list-group-item">
+    <span class="glyphiconmy ico_person right-pad"></span> <%= @company_person_map.summary %>
+    <div><%= "#{@company_person_map.person.title} #{@company_person_map.person.first_name} #{@company_person_map.person.last_name}" %></div>
+  </a>
+  
+  <script>
+  function myFunction() {
+    var mytop = window.screenTop + 40;
+    var myleft = window.screenLeft + 40;
+    var myWindow = window.open("<%= url_for(h_params_path(path: "/people/#{@company_person_map.person.id}", related: "companies")) %>", "_blank", `toolbar=no,scrollbars=yes,resizable=yes,top=${mytop},left=${myleft},width=400,height=600`);
+  }
+  </script>
+
+<% end %>

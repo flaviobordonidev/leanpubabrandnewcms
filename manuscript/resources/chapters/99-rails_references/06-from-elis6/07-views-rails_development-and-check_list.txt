@@ -1,0 +1,47 @@
+# Views addresses _form
+
+si vede il codice per visualizzare solo in development
+
+    <% if Rails.env.development? %>
+
+as esempio usato per visualizzare gli hidden forms che passano i dati:
+
+---
+    <% if Rails.env.development? %>
+      <div class="field">
+        <%= f.label :addressable_id, class: "control-label" %>
+        <%= f.number_field :addressable_id, class: "form-control" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :addressable_type, class: "control-label" %>
+        <%= f.text_field :addressable_type, class: "form-control" %>
+      </div>
+      
+      <div class="field">
+        <%= f.label :favorite_id, class: "control-label" %><br>
+        <%= f.text_field :favorite_id, class: "form-control" %>
+      </div>
+
+    <% else %>
+        <%= f.hidden_field :addressable_id %>
+        <%= f.hidden_field :addressable_type %>
+        <%= f.hidden_field :favorite_id %>
+    <% end %>
+---
+
+
+
+## Il check_box
+
+questo si visualizza come gli interruttori/switches che usa iphone 
+
+---
+      <%= f.check_box :favorite_cb, class: "form-control", "data-size" => "medium", "data-on-color" => "primary", "data-on-text" => "SI", "data-off-color" => "default", "data-off-text" => "NO" %>
+---
+
+ma per usarli serve la gemma:
+
+# bootstrap-switch-rails – Twitter Bootstrap Switch
+gem 'bootstrap-switch-rails', '>= 3.3.3'
+
