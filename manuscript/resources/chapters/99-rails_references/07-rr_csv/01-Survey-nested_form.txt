@@ -1,0 +1,5 @@
+# Survey nested_form
+
+Questa parte non riguarda il csv ma è il vecchio modo di fare nested_form.
+Adesso ne sappiamo uno migliore usato in elisinfo con le telephonable, emailable,...
+

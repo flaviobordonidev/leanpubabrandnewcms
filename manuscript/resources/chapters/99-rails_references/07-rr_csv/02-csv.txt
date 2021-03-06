@@ -1,0 +1,12 @@
+# Ecco la parte del CSV
+
+come fare upload di un file .csv (command separated virgula)
+
+Dichiaro nel mio config-application.rb che uso 
+
+---
+require 'net/ftp'
+require 'csv'
+---
+
+sono nativi in rails. Non ho bisogno di gemme aggiuntive

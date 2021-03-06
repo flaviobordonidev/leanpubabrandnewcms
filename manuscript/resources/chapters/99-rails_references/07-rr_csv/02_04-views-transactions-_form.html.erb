@@ -1,0 +1,72 @@
+<%= form_for(transaction) do |f| %>
+  <% if transaction.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(transaction.errors.count, "error") %> prohibited this transaction from being saved:</h2>
+
+      <ul>
+      <% transaction.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :csvfilename %>
+    <%= f.text_field :csvfilename %>
+  </div>
+
+  <div class="field">
+    <%= f.label :timestamp %>
+    <%= f.date_select :timestamp %>
+  </div>
+
+  <div class="field">
+    <%= f.label :id_check %>
+    <%= f.number_field :id_check %>
+  </div>
+
+  <div class="field">
+    <%= f.label :onlus %>
+    <%= f.text_field :onlus %>
+  </div>
+
+  <div class="field">
+    <%= f.label :project %>
+    <%= f.text_field :project %>
+  </div>
+
+  <div class="field">
+    <%= f.label :kind %>
+    <%= f.text_field :kind %>
+  </div>
+
+  <div class="field">
+    <%= f.label :verify %>
+    <%= f.text_field :verify %>
+  </div>
+
+  <div class="field">
+    <%= f.label :cents %>
+    <%= f.number_field :cents %>
+  </div>
+
+  <div class="field">
+    <%= f.label :people_name %>
+    <%= f.text_field :people_name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :people_email %>
+    <%= f.text_field :people_email %>
+  </div>
+
+  <div class="field">
+    <%= f.label :extra %>
+    <%= f.text_field :extra %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
