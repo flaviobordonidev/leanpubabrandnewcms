@@ -1,0 +1,27 @@
+
+
+https://rubygems.org/gems/acts_as_votable
+https://github.com/ryanto/acts_as_votable
+
+
+Sembra una buona gemma per permettere agli utenti di votare.
+
+
+TOTAL DOWNLOADS
+1,508,310
+
+VERSIONS:
+0.13.2 - November 08, 2021 
+
+
+Acts As Votable is a Ruby Gem specifically written for Rails/ActiveRecord models. The main goals of this gem are:
+
+Allow any model to be voted on, like/dislike, upvote/downvote, etc.
+Allow any model to be voted under arbitrary scopes.
+Allow any model to vote. In other words, votes do not have to come from a user, they can come from any model (such as a Group or Team).
+Provide an easy to write/read syntax.
+
+---
+
+https://coderedirect.com/questions/214320/acts-as-votable-thumbs-up-down-buttons
+

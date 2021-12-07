@@ -1,0 +1,231 @@
+{id: 56-ubuntudream-03-lessons-steps-02-lessons_next}
+# Cap 03.2 -- Da show con la prima lezione andiamo avanti alla prossima
+
+In questo capitolo facciamo in modo che pardendo da lessons/1/steps/1 passiamo al successivo step (lessons/1/steps/2) sul submit del form.
+Inseriamo anche un link "next" per saltare il submit del form ed andare direttamente al successivo step.
+
+Risorse esterne:
+
+* 
+
+
+
+
+## Apriamo il branch "Lessons Next"
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout -b ln
+```
+
+
+
+
+## Inseriamo link next 
+
+
+{id: "56-03-02_1", caption: ".../views/steps/show.html.erb -- codice 11", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<br>
+<%= link_to 'Prev', lesson_step_path(@lesson, @step.id-1) if @step.id > @lesson.steps.first.id %>
+<%= link_to 'Next', lesson_step_path(@lesson, @step.id+1) if @step.id < @lesson.steps.last.id %>
+```
+
+[tutto il codice](#56-03-02_1all)
+
+
+
+
+## Altre soluzioni proposte sul web per Post
+
+Cercando su internet sono proposte delle soluzioni pensate per Posts che passano per il model, visto che c'è un solo model principale.
+(non vanno bene per lessons - Steps, perché sono annidate)
+
+lato model
+
+Prepariamo nel model i riferimenti a next e previous.
+
+```
+def previous_post
+  Post.where(["id < ?", id]).last
+  #self.class.where(["id < ?", id]).last
+end
+
+def next_post
+  Post.where(["id > ?", id]).first
+  #self.class.where(["id > ?", id]).first
+end
+```
+
+
+oppure possiamo usare quest'altra versione:
+
+```
+def previous_post
+  self.class.first(:conditions => ["id < ?", id], :order => "id desc")
+end
+
+def next_post
+  self.class.first(:conditions => ["id > ?", id], :order => "id asc")
+end
+```
+
+
+
+Volendo organizzare in ordine alfabetico di titolo, potremmo usare questa:
+
+```
+def previous_post
+  self.class.first(:conditions => ["title < ?", title], :order => "title desc")
+end
+
+def next_post
+  self.class.first(:conditions => ["title > ?", title], :order => "title asc")
+end
+```
+
+You can change title to any unique attribute (created_at, id, etc.) if you need a different sort order.
+
+
+- Lato view
+
+
+```
+<%= link_to("Previous Post", @post.previous_post) if @post.previous_post %>
+<%= link_to("Next Post", @post.next_post) if @post.next_post %>
+```
+
+
+
+
+## Inseriamo il FORM
+
+Inseriamo il form nello show in modo da permettere agli utenti di dare la risposta.
+A differenza di Edit che ci permette di editare anche la domanda, su show avremo solo la possibilità di inserire la risposta.
+Essendo un solo form, perché non c'è "new", non usiamo un partial "_form_answer" ma mettiamo tutto il codice direttamente su show.
+
+
+
+
+
+
+
+
+
+
+
+
+## Salviamo su git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "add seed companies"
+```
+
+
+
+
+## Popoliamo manualmente la tabella
+
+Usiamo la console di rails per popolare la tabella del database.
+
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails c
+> Company.new(name: "DEF srl", sector: "Pharmaceutical", locale: :en).save
+> Company.last.update(sector: "Farmaceutico", locale: :it)
+
+> Company.all
+> c1 = Company.first
+> c1.sector
+> I18n.locale
+> I18n.locale = :en
+> c1.sector
+
+> Company.new(name:"GHI SpA", sector:"Breweries").save
+> c3 = Company.last
+> c3.sector
+> I18n.locale = :it
+> c3.sector
+> c3.sector = "Birrerie"
+> c3.sector
+> c3.save
+
+> c2 = Company.find 2
+
+> exit
+```
+
+
+
+
+## Salviamo su git
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git add -A
+$ git commit -m "add companies Manually"
+```
+
+I> Nota: Questo git commit è solo per lasciare un commento perché le modifiche fatte sul database non sono passate tramite git.
+
+
+
+
+## Publichiamo su heroku
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push heroku cs:master
+$ heroku run rake db:migrate
+```
+
+I> Lato produzione su heroku c'è un database indipendente da quello di sviluppo quindi risulta vuoto.
+
+per popolare il database di heroku basta aprire la console con il comando:
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ heroku run rails db:seed
+$ heroku run rails c
+```
+
+E rieseguire i passi già fatti nel paragrafo precedentemente
+
+
+Verifichiamo preview su heroku.
+
+Andiamo all'url:
+
+* https://elisinfo.herokuapp.com/companies
+
+E verifichiamo che l'elenco delle aziende è popolato.
+
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout master
+$ git merge cs
+$ git branch -d cs
+```
+
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git push origin master
+```

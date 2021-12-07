@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Question:</strong>
+  <%= @step.question %>
+</p>
+
+<p>
+  <strong>Answer:</strong>
+  <%= @step.answer %>
+</p>
+
+<p>
+  <strong>Lesson:</strong>
+  <%= @step.lesson_id %>
+</p>
+
+<%= link_to 'Edit', edit_lesson_step_path(@lesson, @step) %> |
+<%= link_to 'Back', lesson_steps_path(@lesson) %>
