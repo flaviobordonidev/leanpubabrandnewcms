@@ -24,7 +24,7 @@ $ git checkout -b ln
 ## Inseriamo link next 
 
 
-{id: "56-03-02_1", caption: ".../views/steps/show.html.erb -- codice 11", format: HTML+Mako, line-numbers: true, number-from: 1}
+{id: "56-03-02_1", caption: ".../views/steps/show.html.erb -- codice 1", format: HTML+Mako, line-numbers: true, number-from: 1}
 ```
 <br>
 <%= link_to 'Prev', lesson_step_path(@lesson, @step.id-1) if @step.id > @lesson.steps.first.id %>
@@ -104,11 +104,80 @@ Inseriamo il form nello show in modo da permettere agli utenti di dare la rispos
 A differenza di Edit che ci permette di editare anche la domanda, su show avremo solo la possibilità di inserire la risposta.
 Essendo un solo form, perché non c'è "new", non usiamo un partial "_form_answer" ma mettiamo tutto il codice direttamente su show.
 
+{id: "56-03-02_2", caption: ".../views/steps/show.html.erb -- codice 2", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<%= form_with(model: [@lesson, @step], local: true) do |form| %>
+  <% if @step.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@step.errors.count, "error") %> prohibited this step from being saved:</h2>
+
+      <ul>
+        <% @step.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :answer %>
+    <%= form.text_area :answer %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+```
+
+[tutto il codice](#56-03-02_2all)
+
+Il codice aggiunto è praticamente lo stesso del partial steps/_form con qualche piccola modifica.
+è importante far notare che invece della variabile *step* dobbiamo usare la variabile di istanza *@step*.
+Questo perché quando chiamiamo il partial steps/_form usiamo questa linea di codice:
+
+```
+<%= render 'form', step: @step %>
+```
+
+Ossia passiamo la variabile di istanza *@step* alla variabile locale *step* che usiamo nel partial.
+Invece su show non usiamo il partial e quindi ci riferiamo direttamente alla variabile di istanza *@step*.
 
 
 
 
+## Aggiustiamo alcuni links
 
+Riadattiamo alcuni links per muoverci agevolmente tra lezioni e steps.
+
+{id: "56-03-02_3", caption: ".../views/steps/index.html.erb -- codice 3", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+        <td><%= link_to 'Show Lesson', [@lesson] %></td>
+        <td><%= link_to 'Show Step', [@lesson, step] %></td>
+        <td><%= link_to 'Edit Step', edit_lesson_step_path(@lesson, step) %></td>
+        <td><%= link_to 'Destroy Step', [@lesson, step], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+```
+
+[tutto il codice](#56-03-02_3all)
+
+da notare che avendo aggiunto un altro link abbiamo portato a 4 il colspan dell'header della tabella.
+
+```
+<th colspan="4"></th>
+```
+
+
+Adattiamo anche i links della view *steps/edit*
+
+{id: "56-03-02_4", caption: ".../views/steps/edit.html.erb -- codice 4", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<%#= link_to 'Show', @step %>
+<%= link_to 'Back to Show', lesson_step_path(@lesson, @step) %> |
+<%#= link_to 'Back', steps_path %>
+<%= link_to 'Back to steps index', lesson_steps_path(@lesson) %>
+```
+
+[tutto il codice](#56-03-02_4all)
 
 
 
@@ -125,56 +194,6 @@ $ git commit -m "add seed companies"
 
 
 
-
-## Popoliamo manualmente la tabella
-
-Usiamo la console di rails per popolare la tabella del database.
-
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ sudo service postgresql start
-$ rails c
-> Company.new(name: "DEF srl", sector: "Pharmaceutical", locale: :en).save
-> Company.last.update(sector: "Farmaceutico", locale: :it)
-
-> Company.all
-> c1 = Company.first
-> c1.sector
-> I18n.locale
-> I18n.locale = :en
-> c1.sector
-
-> Company.new(name:"GHI SpA", sector:"Breweries").save
-> c3 = Company.last
-> c3.sector
-> I18n.locale = :it
-> c3.sector
-> c3.sector = "Birrerie"
-> c3.sector
-> c3.save
-
-> c2 = Company.find 2
-
-> exit
-```
-
-
-
-
-## Salviamo su git
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git add -A
-$ git commit -m "add companies Manually"
-```
-
-I> Nota: Questo git commit è solo per lasciare un commento perché le modifiche fatte sul database non sono passate tramite git.
-
-
-
-
 ## Publichiamo su heroku
 
 {caption: "terminal", format: bash, line-numbers: false}
@@ -183,26 +202,14 @@ $ git push heroku cs:master
 $ heroku run rake db:migrate
 ```
 
-I> Lato produzione su heroku c'è un database indipendente da quello di sviluppo quindi risulta vuoto.
-
-per popolare il database di heroku basta aprire la console con il comando:
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ heroku run rails db:seed
-$ heroku run rails c
-```
-
-E rieseguire i passi già fatti nel paragrafo precedentemente
-
 
 Verifichiamo preview su heroku.
 
 Andiamo all'url:
 
-* https://elisinfo.herokuapp.com/companies
+* https://elisinfo.herokuapp.com/lessons/1/steps/1
 
-E verifichiamo che l'elenco delle aziende è popolato.
+E verifichiamo di arrivare al primo step della prima lezione.
 
 
 
@@ -214,8 +221,8 @@ se abbiamo finito le modifiche e va tutto bene:
 {caption: "terminal", format: bash, line-numbers: false}
 ```
 $ git checkout master
-$ git merge cs
-$ git branch -d cs
+$ git merge ln
+$ git branch -d ln
 ```
 
 

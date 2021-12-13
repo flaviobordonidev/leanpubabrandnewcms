@@ -1,0 +1,454 @@
+{id: 56-ubuntudream-03-lessons-steps-03-users_answers}
+# Cap 3.3 -- Le risposte per ogni utente
+
+In questo capitolo usiamo gli utenti ed il login già sviluppato per elisinfo e creiamo una tabella di risposte in modo che alle varie domande di ogni lezione associamo una risposta differente per ogni utente.
+Ogni utente avrà quindi un suo registro degli esercizi svolti e delle risposte date. Anche se per gli esercizi di allenamento contano poco, diventano invece importanti nel percorso coaching.
+Più avanti, nel percorso coaching, inseriremo anche un campo boolean per le domande importanti, ossia quelle che utilizzeremo nei giornali di viaggio dell'utente. 
+
+Attenzione:
+
+* NON stiamo parlando di tabella polimorfica. (Vedi 50-elisinfo/04-Companies/06-polymorfic_telephonable)
+  quindi niente tabella "userable".
+  
+* NON stiamo parlando di tabella "ponte" molti-a-molti (Vedi 50-elisinfo/06-company_person_maps/01-company_person_maps_seeds)
+  quindi niente tabella "post_user_maps".
+
+
+Risorse esterne:
+
+* https://thinkster.io/tutorials/angular-rails/associating-users-with-posts-and-comments
+* https://www.learneroo.com/modules/145/nodes/782
+
+
+
+
+## Apriamo il branch "Users Answers"
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout -b ua
+```
+
+
+
+
+## Progettiamo la tabela answers
+
+Siccome ogni utente darà la sua personale risposta dobbiamo creare una tabella answers che avrà una relazione molti-a-uno con steps.
+Ogni step c'è una tranche di video e una domanda. A quella domanda ci sono molte risposte; una risposta per ogni utente.
+
+Abbiamo diviso le varie colonne della tabella in principali e secondarie perché non implementeremo tutte le colonne da subito ma iniziamo con le principali e poi aggiungiamo le altre di volta in volta facendo dei migrate di aggiunta ed aggiornando controller, model e views.
+
+Colonne principali:
+
+* value:string           -> (255 caratteri) Le risposte sono brevi, un po' alla twitter, per non perdere la concentrazione sulla visualizzazione.
+
+
+Colonne secondarie:
+
+* nessuna
+
+
+Tabelle collegate 1-a-molti (chiavi esterne)
+
+* steps:ref
+* users:ref
+
+
+Tabelle collegate molti-a-1 (non ho campi di chiave esterna perché saranno sull'altra tabella)
+
+* nessuna
+
+
+
+## Impementiamo la tabella
+
+Creiamo la tabella iniziale con le colonne principali e la colonna della chiave primaria esterna "step_id".
+A scopo didattico, la colonna con la chiave esterna "user_id" la inseriamo più avanti.
+
+Quando creiamo una nuova tabella ci conviene SEMPRE usare lo scaffold ed eventualmente eliminare il contrller e le views se non ci servono.
+
+I> ATTENZIONE: con "rails generate scaffold ..." -> usiamo il SINGOLARE
+    -> lui in automatico genera correttamente la tabella, il controller e le views al plurale.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ rails g scaffold Answer value:string step:references
+```
+
+Volendo al posto di *:references* si può usare l'alias *:belongs_to* ma noi preferiamo *:references*. 
+
+Nota: "step:references" crea la chiave esterna step_id, mette l'indice ed imposta la relazione 1-a-molti nei models.
+
+vediamo il migrate generato
+
+{id: "56-03-01_01", caption: ".../db/migrate/xxx_create_answers.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
+```
+class CreateAnswers < ActiveRecord::Migration[6.0]
+  def change
+    create_table :answers do |t|
+      t.string :value
+      t.references :step, null: false, foreign_key: true
+
+      t.timestamps
+    end
+  end
+end
+```
+
+[tutto il codice](#56-03-01_01all)
+
+
+Effettuiamo il migrate del database per creare la tabella sul database
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails db:migrate
+```
+
+Da Rails 5 il ".references ..., foreign_key: true" aggiunge già le chiavi esterne e l'indice (come si può vedere su .../db/schema.rb dopo il migrate del database).
+
+{id: "56-03-01_02", caption: ".../db/schema.rb -- codice 02", format: ruby, line-numbers: true, number-from: 1}
+```
+  create_table "answers", force: :cascade do |t|
+    t.string "value"
+    t.bigint "step_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["step_id"], name: "index_answers_on_step_id"
+  end
+```
+
+[tutto il codice](#56-03-01_02all)
+
+
+
+
+## Completiamo la relazione 1-a-molti nei models
+
+Lato model Answer il *belongs_to :step* lo troviamo già inserito grazie al ":references" usato prima. Quello che inseriamo è la struttura di commenti per organizzare il crescimento del model.
+
+{id: "56-03-01_03", caption: ".../app/models/answer.rb -- codice 03", format: ruby, line-numbers: true, number-from: 11}
+```
+class Answer < ApplicationRecord
+  # == Constants ============================================================
+  
+  # == Extensions ===========================================================
+
+  # == Attributes ===========================================================
+
+  # == Relationships ========================================================
+
+  ## many-to-one
+  belongs_to :step
+
+  # == Validations ==========================================================
+
+  # == Scopes ===============================================================
+
+  # == Callbacks ============================================================
+
+  # == Class Methods ========================================================
+
+  # == Instance Methods =====================================================
+
+end
+```
+
+[tutto il codice](#56-03-01_03all)
+
+
+Lato model Step il *has_many :answers* lo inseriamo noi.
+
+{id: "56-03-01_04", caption: ".../app/models/step.rb -- codice 04", format: ruby, line-numbers: true, number-from: 11}
+```
+class Step < ApplicationRecord
+  # == Constants ============================================================
+  
+  # == Extensions ===========================================================
+
+  # == Attributes ===========================================================
+
+  # == Relationships ========================================================
+
+  ## many-to-one
+  belongs_to :lesson
+  has_many :answers
+
+  # == Validations ==========================================================
+
+  # == Scopes ===============================================================
+
+  # == Callbacks ============================================================
+
+  # == Class Methods ========================================================
+
+  # == Instance Methods =====================================================
+
+end
+```
+
+[tutto il codice](#56-03-01_04all)
+
+
+
+## Inseriamo delle risposte da console
+
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ rails c
+
+> l1 = Lesson.first
+> l1.steps
+> l1.steps[1]
+> l1.steps[1].answers
+> l1.steps[1].answers.new(value: "piume").save
+> a1 = l1.steps[1].answers.first
+> a2 = l1.steps[1].answers.new(value: "cartone")
+> a2.save
+
+```
+
+Curiosità:
+il comando 
+> a2 = l1.steps[1].answers.new(value: "cartone").save
+avrebbe associato alla variabile a2 il valore True, ossia il risultato del salvataggio.
+Non avrebbe associato l'oggetto answers[2].
+
+
+
+
+
+## Implementiamo sulle views
+
+Sulla pagina views/steps/show cambio il form di edit dello step con un nuovo form che invece va in new della answer.
+Ossia ogni ogni step presento sempre UNA NUOVA RISPOSTA. Quindi eseguo il create del controller answers, che non c'è :(. 
+Posso risolvere lavorando sul create di steps? Mi sa di no, che fa casino. 
+Era meglio fare il "rails g scaffold..." invece del "rails g model...".
+Ma possiamo sempre creare il controller manualmente.
+Oppure possiamo usare "rails g controller" con gli stessi campi usati in "rails g model". Questa combinazione mi da un risultato equivalente a "rails g scaffold".
+
+I> ATTENZIONE: con "rails generate controller ..." -> usiamo il PLURALE
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ rails g controller Answers value:string step:references
+```
+
+
+
+
+
+
+## Adesso associamo ad ogni risposta l'utente loggato
+
+Al momento, le risposte non appartengono a nessuno. Creiamo un migration per associare ogni risposta ad un utente.
+Per far questo dobbiamo solo aggiungere una chiave esterna user alla tabella answers.
+Each answer will belong to one User, so each answer should have a user_id to identify the User:
+
+```
+rails g migration AddUserIdToPosts user_id:integer
+```
+```
+rails g migration AddUserRefToPosts user:references
+```
+
+Ciascuna risposta (answer) appartiene ad un utente (user), quindi ogni answer deve avere un user_id che identifichi l'utente:
+
+```
+rails g migration AddUserRefToAnswers user:references
+```
+
+
+vediamo il migrate generato
+
+{id: "50-05-06_01", caption: ".../db/migrate/xxx_create_company_person_maps.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
+```
+class CreateCompanyPersonMaps < ActiveRecord::Migration[6.0]
+  def change
+    create_table :company_person_maps do |t|
+      t.references :company, null: false, foreign_key: true
+      t.references :person, null: false, foreign_key: true
+      t.string :summary
+
+      t.timestamps
+    end
+  end
+end
+```
+
+Da Rails 5 il ".references ..., foreign_key: true" aggiunge già le chiavi esterne e l'indice (come si può vedere su .../db/schema.rb dopo il migrate del database)  e mi risparmia di fare:
+
+
+{caption: ".../db/migrate/xxx_create_company_person_maps.rb -- codice n/a", format: ruby, line-numbers: true, number-from: 1}
+```
+def change
+  create_table :company_person_maps do |t|
+    t.integer :company_id, null: false
+    t.integer :person_id, null: false
+    t.string :summary
+
+    t.timestamps null: false
+  end
+  add_index :company_person_maps, [:company_id, :person_id]
+end
+```
+
+Before running the migration, let's make one edit to the migration file. To quickly find posts for a specific user, add an index to the user_id column to make lookups much faster. Open up the migration file you just generated and add one more line:
+
+[timestamp]_add_user_id_to_posts.rb
+
+```
+class AddUserIdToPosts < ActiveRecord::Migration
+  def change
+    add_column :posts, :user_id, :integer
+    add_index :posts, :user_id   #adds index
+  end
+end
+```
+
+Now you can run:
+
+
+Effettuiamo il migrate del database per creare la tabella
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails db:migrate
+```
+
+
+...which will add the user_id column and index to the Posts table.
+
+Next, can you add the association to the User and Post models so they're correctly associated with each other?
+
+ASSOCIATION
+Add the following line to your post model:
+
+```
+belongs_to :user
+```
+
+Add the following line to your User model:
+
+```
+has_many :posts
+```
+
+Editing the Controller
+Now let's modify post_controller's create action so it associates each post with a user.
+
+Q: How do we know who the user is, should we pass in a user ID from the form?
+A: No, that would be terrible security practice! Malicious users could pass in user_id's of other users to create posts for them. That's why we used strong params, so the user_id can't be modified in that manner. Instead, we'll use Devise's current_user method, which return the current signed in user.
+
+Can you set the user in the create action?
+
+POST'S CREATE
+Just add one line to set the user:
+
+```
+  def create
+    @post = Post.new(post_params)
+    @post.user = current_user
+
+    #remaining code... 
+  end
+```
+
+Trying it Out
+You've only added a few lines of code, but you can now associate every Post with a User. Try it out by creating a couple of posts, and then use the console to get your user's posts.
+
+user = Post.last.user
+user.posts
+Q: What happens if you create a post when not signed in?
+A: Currently, the site allows that, so let's go ahead and fix that next.
+
+
+
+------
+------
+
+
+
+Associating Users with Posts and Comments
+Join our newsletter!
+
+Outline
+Currently only authenticated users are able to write to the database, however, we haven't been keeping track of which posts or comments were posted by which user. To do so, we'll need to make an association between users and their posts and comments.
+
+Generate the migration to associate posts with users in the database: 
+```
+rails g migration AddUserRefToPosts user:references
+```
+
+Generate the migration to associate comments with users in the database: 
+
+```
+rails g migration AddUserRefToComments user:references
+```
+
+Run rake db:migrate
+
+Add a belongs_to :user association to the Post model
+Add a belongs_to :user association to the Comment model
+Our Post and Comment models are now associated with User. Now we need to update our controllers so that newly created comments are automatically associated with users.
+
+Update the create action in PostsController:
+
+```
+  def create
+    respond_with Post.create(post_params.merge(user_id: current_user.id))
+  end
+```
+
+Update the create action in CommentsController:
+
+```
+  def create
+    comment = post.comments.create(comment_params.merge(user_id: current_user.id))
+    respond_with post, comment
+  end
+```
+
+Finally, we'll need to update our as_json methods on our models to include user in our JSON responses.
+
+Override the as_json method in Comment to include the user:
+
+```
+  def as_json(options = {})
+    super(options.merge(include: :user))
+  end
+```
+
+Update the as_json method in Post to include the post and comments' users:
+
+```
+  def as_json(options = {})
+    super(options.merge(include: [:user, comments: {include: :user}]))
+  end
+```
+
+Let's update the views to display the username of the user associated with each post and comment
+
+Update _home.html to show the poster's username:
+
+```
+    posted by <a ng-href="#/users/{{post.user.username}}">{{post.user.username}}</a>
+```
+
+Update _posts.html to show the commenter's username:
+
+```
+  {{comment.upvotes}} - by {{comment.user.username}}
+```
+
+Now when we create new posts and comments, we should be able to see who created the post or comment!
+
+
+
+
+
+

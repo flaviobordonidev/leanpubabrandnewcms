@@ -1,0 +1,110 @@
+in questo capitolo ho fatto un errore ed in fondo ho fatto il ROLLBACK.
+Il capitolo è stato riscritto usando "rails g scaffold" e non più "rails g model"
+Questa versione è utile per tener traccia di come sono tornato indietro.
+Le parti non legate all'errore e al tornare indietro sono state tagliate.
+
+{id: 56-ubuntudream-03-lessons-steps-03-users_answers}
+# Cap 3.3 -- Le risposte per ogni utente
+
+
+[...]
+
+
+Non ci serve usare lo scaffold perché non siamo interessati a controller e views di answers, ma ci è sufficiente la tabella ed il model.
+Quindi usiamo "generate model":
+
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ rails g model Answer value:string step:references
+```
+
+
+[...]
+
+
+Effettuiamo il migrate del database per creare la tabella sul database
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails db:migrate
+```
+
+
+[...]
+
+
+## Inseriamo delle risposte da console
+
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ rails c
+
+> l1 = Lesson.first
+> l1.steps
+> l1.steps[1]
+> l1.steps[1].answers
+> l1.steps[1].answers.new(value: "piume").save
+> a1 = l1.steps[1].answers.first
+> a2 = l1.steps[1].answers.new(value: "cartone")
+> a2.save
+
+```
+
+
+
+## Implementiamo sulle views
+
+Sulla pagina views/steps/show cambio il form di edit dello step con un nuovo form che invece va in new della answer.
+Ossia ogni ogni step presento sempre UNA NUOVA RISPOSTA. Quindi eseguo il create del controller answers, che non c'è :(. 
+Posso risolvere lavorando sul create di steps? Mi sa di no, che fa casino. 
+
+Era meglio fare il "rails g scaffold..." invece del "rails g model...".
+Ma possiamo sempre creare il controller manualmente.
+
+Oppure possiamo usare "rails g controller" con gli stessi campi usati in "rails g model". Questa combinazione mi da un risultato equivalente a "rails g scaffold". (nota: NOOOO! NON è così!!)
+
+I> ATTENZIONE: con "rails generate controller ..." -> usiamo il PLURALE
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ rails g controller Answers value:string step:references
+```
+
+ERRORE!!!!
+
+Si è creata una situazione differente che va riadattata tutta manualmente.
+
+RIMUOVIAMO IL MIGRATION
+
+~~~~~~~~
+$ rails db:rollback
+~~~~~~~~
+
+Mi da ERRORE. Dice:
+
+rake aborted!
+ArgumentError: Missing :controller key on routes definition, please check your routes.
+
+
+Allora apro il file config/routes.rb ed aggiungo la riga "resources :answers"
+
+config/routes
+~~~~~~~~
+resources :answers
+~~~~~~~~
+
+poi riprovo il comando "rails db:rollback" e questa volta lo esegue correttamente ed elimina la tabella answers.
+
+Manualmente ELIMINO il file "xxx_create_answers.rb"
+
+Poi eseguo
+
+~~~~~~~~
+$ rails destroy scaffold Answer
+~~~~~~~~
+
+e lo esegue correttamente eliminando i vari files. Resta solo la riga di associazione sul model Step.
+

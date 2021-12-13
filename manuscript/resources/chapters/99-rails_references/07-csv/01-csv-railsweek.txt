@@ -1,0 +1,10 @@
+Articoli su CSV da rubyweekly
+
+Risorse esterne:
+
+* https://rubyweekly.com/issues/562
+* https://blog.thegnar.co/active-model-validations-csv
+* https://rubyweekly.com/issues/539
+* https://github.com/premailer/css_parser
+* https://rubygems.org/gems/css_parser
+

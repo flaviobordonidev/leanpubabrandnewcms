@@ -112,7 +112,7 @@ Abbiamo diviso le varie colonne della tabella in principali e secondarie perché
 Colonne principali:
 
 * question:string         -> (100 caratteri) Le domande per aiutarti a immaginare
-* answer:text             -> (molti caratteri) Le risposte scritte dall'utente
+* answer:text             -> (molti caratteri) Le risposte scritte dall'utente (Attenzione! più avanti si toglierà da qui e si creerà una tabella answers da associare a users perché ogni utente avrà le sue personali risposte.)
 
 
 Colonne secondarie:

@@ -1,0 +1,10 @@
+<h1>Editing Step</h1>
+
+<%= render 'form', step: @step %>
+
+
+<%#= link_to 'Show', @step %>
+<%= link_to 'Back to Show', lesson_step_path(@lesson, @step) %> |
+<%#= link_to 'Back', steps_path %>
+<%= link_to 'Back to steps index', lesson_steps_path(@lesson) %>
+

@@ -1,7 +1,46 @@
+{id: 56-ubuntudream-03-lessons-steps-03-users_answers}
+# Cap 3.3 -- Implementiamo il video
 
-https://developers.google.com/youtube/iframe_api_reference
+Ogni step si apre inizialmente solo con il player di un video che possiamo mettere a schermo intero. 
+Alla fine del video il player scompare ed appare scritta la domanda fatta nel video ed il form per scrivere la risposta.
+Su submit del form si va al secondo step con la seconda parte del video; e così via fino alla fine della lezione.
 
+Attenzione:
+Purtroppo sul browser Chrome, per motivi di sicurezza, il video può partire in automatico solo se è in mute.
+Fare dei test di usabilità per capire se è meglio far togliere il mute all'utente da un video che parte in automatico o se mettere il video senza mute e far premere play all'utente per far partire il video con l'audio.
+
+
+Risorse esterne:
+
+* https://developers.google.com/youtube/iframe_api_reference
+* https://developers.google.com/youtube/player_parameters
+* https://developers.google.com/youtube/youtube_player_demo
+* https://jsfiddle.net/jeffposnick/WhLH5/1/
+* https://blogs.perficient.com/2021/01/07/implementing-custom-play-pause-button-for-embedded-youtube-videos-using-iframe-player-api/
+
+
+
+
+## Apriamo il branch "Implementiamo il Video"
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout -b iv
+```
+
+
+
+
+
+
+## youtube embedded video - events
+
+Di seguito gli eventi che si possono prendere dal player dei video su youtube.
+
+```
 player.getPlayerState():Number
+```
+
 Returns the state of the player. Possible values are:
 -1 – unstarted
 0 – ended
@@ -9,10 +48,191 @@ Returns the state of the player. Possible values are:
 2 – paused
 3 – buffering
 5 – video cued
+
+```
 player.getCurrentTime():Number
+```
+
 Returns the elapsed time in seconds since the video started playing.
 
-https://blogs.perficient.com/2021/01/07/implementing-custom-play-pause-button-for-embedded-youtube-videos-using-iframe-player-api/
+
+
+## Lo scritto base dalla documentazione di Youtube del suo player 
+
+Mettiamo il codice preso direttamente dalla documentazione di Youtube in un view di mockups.
+
+* (YouTube Player API Reference for iframe Embeds)[https://developers.google.com/youtube/iframe_api_reference]
+
+
+{id: "56-04-01_1", caption: ".../views/mockups/youtube_player.html.erb -- codice 1", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<!DOCTYPE html>
+<html>
+  <body>
+    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+    <div id="player"></div>
+
+    <script>
+      // 2. This code loads the IFrame Player API code asynchronously.
+      var tag = document.createElement('script');
+
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      // 3. This function creates an <iframe> (and YouTube player)
+      //    after the API code downloads.
+      var player;
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          height: '390',
+          width: '640',
+          videoId: 'M7lc1UVf-VE',
+          playerVars: {
+            'playsinline': 1
+          },
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+      }
+
+      // 4. The API will call this function when the video player is ready.
+      function onPlayerReady(event) {
+        event.target.playVideo();
+      }
+
+      // 5. The API calls this function when the player's state changes.
+      //    The function indicates that when playing a video (state=1),
+      //    the player should play for six seconds and then stop.
+      var done = false;
+      function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.PLAYING && !done) {
+          setTimeout(stopVideo, 6000);
+          done = true;
+        }
+      }
+      function stopVideo() {
+        player.stopVideo();
+      }
+    </script>
+  </body>
+</html>
+```
+
+[tutto il codice](#56-04-01_1all)
+
+
+
+
+## Aggiungiamo nel controller
+
+mettiamo la chiamata a questa view specificando il layout di tipo "mockup" che è quello che ha una struttura vuota, non ha un html preimpostato.
+
+{id: "56-04-01_2", caption: ".../controllers/mockups_controller.rb -- codice 02", format: ruby, line-numbers: true, number-from: 1}
+```
+  # youtube-video
+  def youtube_video
+    render layout: 'mockup'
+  end
+```
+
+[tutto il codice](#56-04-01_2all)
+
+
+
+
+## Aggiungiamo instradamento
+
+mettiamo adesso nella routes la chiamata alla view.
+
+
+{id: "56-04-01_3", caption: ".../config/routes.rb -- codice 03", format: ruby, line-numbers: true, number-from: 1}
+```
+  get 'mockups/youtube_player'
+```
+
+[tutto il codice](#56-04-01_2all)
+
+
+
+
+## Andiamo a vedere il risultato
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ rails s
+```
+
+e sul browser andiamo all'url:
+
+https://my_cloud9_app.us-east-1.amazonaws.com/mockups/youtube_player
+
+Se siamo sul browser google chrome non parte in automatico perché è stata implementata una misura per la privacy che prevede che i video possano partire in automatico solo se sono su mute, e quindi senza audio.
+Inoltre la prima volta dopo 6 secondi si interrompe perché su javascript -> setTimeout(stopVideo, 6000);
+La seconda volta continua senza interruzione perché su javascript -> done = true;
+
+
+
+
+## Facciamo delle modifiche
+
+Innanzi tutto noi vogliamo che il comportamento si ripeta tutte le volte e non solo la prima volta quindi potremmo commentare "done = true;"
+
+```
+        if (event.data == YT.PlayerState.PLAYING && !done) {
+          setTimeout(stopVideo, 6000);
+          //done = true;
+        }
+
+```
+
+Ma è più pulito togliere proprio la variabile "done".
+
+Inoltre non siamo interessati ad interrompere il video ma a intercettare quando il video finisce quindi rimpiazziamo anche quella parte di codice con il seguente.
+
+{id: "56-04-01_4", caption: ".../views/mockups/youtube_player.html.erb -- codice 4", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+        if (event.data == YT.PlayerState.PLAYING) {
+          console.log("PLAYING");
+        }
+        if (event.data == YT.PlayerState.PAUSED) {          
+          console.log("PAUSED");
+        }
+        if (event.data == YT.PlayerState.ENDED) {          
+          console.log("ENDED - Evviva ^_^");
+        }
+```
+
+[tutto il codice](#56-04-01_4all)
+
+Aprendo sul browser la javascript console, ad esempio nel menu di Chrome è su view/Developer/JavaScript Console, vediamo loggate tutte le azioni di pausa, start e fine del video.
+
+
+
+
+## Interagiamo con JavaScript nel DOM HTML
+
+Adesso invece di scrivere a console quando parte o si interrompe un video inseriamo dei tag <li> all'interno di un <ul> che preimpostiamo.
+
+
+[TODO]
+
+
+
+
+## Nascondiamo il video quando termina e visualizziamo il form per la risposta
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -108,6 +328,7 @@ https://blogs.perficient.com/2021/01/07/implementing-custom-play-pause-button-fo
         player.stopVideo();
       }
     </script>
+```
 
 
 ———
@@ -263,3 +484,4 @@ scriptEl.src = 'https://consent.cookiebot.com/uc.js'
 scriptEl.setAttribute("data-cbit", "some-numbers")
 scriptEl.setAttribute("blockingmode", "auto")
 firstScript.parentNode.insertBefore(scriptEl, firstScript);
+

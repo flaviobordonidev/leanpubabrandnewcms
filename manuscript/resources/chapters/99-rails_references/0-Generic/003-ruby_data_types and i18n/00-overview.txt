@@ -16,22 +16,26 @@ Capitoli in cui abbiamo usato i18n:
 
 
 
-## I vari "tipi di dato" (data type) in ordine alfabetico
+## I vari "tipi di dato" (data type) di Rails in ordine alfabetico
 
-:binary
-:boolean
-:date
-:datetime
-:decimal
-:float
-:integer
-:bigint
-:primary_key
-:references
-:string
-:text
-:time
-:timestamp
+Come sono mappati con i data types dei vari databases:
+
+              | postgresql  | sqlite        | sqlserver     |sybase
+---------------------------------------------------------------------------
+:binary       | bytea       | blob          | image         | image
+:boolean      | boolean     | boolean       | bit           | bit
+:date         | date        | date          | date          | datetime
+:datetime     | timestamp   | datetime      | datetime      | datetime
+:decimal      | decimal     | decimal       | decimal       | decimal
+:float        | float       | float         | float(8)      | float(8)
+:integer      | integer     | integer       | int           | int
+:bigint       |
+:primary_key  |
+:references   |
+:string       | (note 1)    | varchar(255)  | varchar(255)  | varchar(255)
+:text         | text        | text          | text          | text
+:time         | time        | datetime      | time          | time
+:timestamp    | timestamp   | datetime      | datetime      | timestamp
 
 
 
