@@ -41,7 +41,8 @@ Abbiamo diviso le varie colonne della tabella in principali e secondarie perché
 
 Colonne principali:
 
-* value:string           -> (255 caratteri) Le risposte sono brevi, un po' alla twitter, per non perdere la concentrazione sulla visualizzazione.
+* content:string           -> (255 caratteri) Le risposte sono brevi, un po' alla twitter, per non perdere la concentrazione sulla visualizzazione.
+  (un'alternativa poteva essere: "value:string")
 
 
 Colonne secondarie:
@@ -73,7 +74,7 @@ I> ATTENZIONE: con "rails generate scaffold ..." -> usiamo il SINGOLARE
 
 {caption: "terminal", format: bash, line-numbers: false}
 ```
-$ rails g scaffold Answer value:string step:references
+$ rails g scaffold Answer content:string step:references
 ```
 
 Volendo al posto di *:references* si può usare l'alias *:belongs_to* ma noi preferiamo *:references*. 
