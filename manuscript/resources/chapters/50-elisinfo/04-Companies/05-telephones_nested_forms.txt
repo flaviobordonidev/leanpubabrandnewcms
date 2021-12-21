@@ -148,7 +148,7 @@ $ rails db:migrate
 
 ## Aggiorniamo i models
 
-Nel model Telephone verifichiamo solo che il "belongs_to" è già stato impostato.
+Nel model Telephone verifichiamo solo che il "belongs_to" sia già stato impostato.
 
 {id: "01-03-01_01", caption: ".../app/models/telephone.rb -- codice 05", format: ruby, line-numbers: true, number-from: 2}
 ```
@@ -158,7 +158,7 @@ Nel model Telephone verifichiamo solo che il "belongs_to" è già stato impostat
 [tutto il codice](#01-03-01_02all)
 
 
-Nel model Company aggiungiamo la relazione 1-a-molti con nested_form.
+Nel model Company aggiungiamo la relazione 1-a-molti per nested_form.
 
 {id: "01-03-01_01", caption: ".../app/models/company.rb -- codice 06", format: ruby, line-numbers: true, number-from: 2}
 ```

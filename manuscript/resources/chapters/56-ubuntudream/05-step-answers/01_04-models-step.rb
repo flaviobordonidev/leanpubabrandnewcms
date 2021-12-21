@@ -9,7 +9,8 @@ class Step < ApplicationRecord
 
   ## many-to-one
   belongs_to :lesson
-  has_many :answers
+  has_many :answers, dependent: :destroy
+  accepts_nested_attributes_for :answers, allow_destroy: true, reject_if: proc{ |attr| attr['content'].blank? }
 
   # == Validations ==========================================================
 

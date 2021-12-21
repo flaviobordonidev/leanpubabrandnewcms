@@ -233,7 +233,7 @@ class Lesson < ApplicationRecord
   # == Relationships ========================================================
 
   ## many-to-one
-  has_many :steps
+  has_many :steps, dependent: :destroy
 
   # == Validations ==========================================================
 
@@ -250,16 +250,10 @@ end
 
 [tutto il codice](#56-03-01_04all)
 
-Add the following code to the file to ensure that the destroy action on a given lesson deletes any associated steps:
 
-{id: "56-03-01_05", caption: ".../app/models/lesson.rb -- codice 05", format: ruby, line-numbers: true, number-from: 11}
-```
-  ## many-to-one
-  has_many :steps, dependent: :destroy
-```
+Analizziamo il codice:
 
-[tutto il codice](#56-03-01_05all)
-
+* dependent: :destroy -> questa opzione fa in modo che quando eliminiamo una lezione in automatico vengano eliminati anche tutti i suoi steps.
 
 
 
@@ -317,7 +311,6 @@ class StepsController < ApplicationController
   def index
     @steps = Step.all
   end
-...
 ```
 
 [tutto il codice](#56-03-01_08all)
@@ -347,7 +340,7 @@ class StepsController < ApplicationController
   before_action :get_lesson
 ```
 
-This will ensure that get_shark runs before each action defined in the file.
+This will ensure that get_lesson runs before each action defined in the file.
 
 Next, you can use this @lesson instance to rewrite the index method. Instead of grabbing all instances of the Step class, we want this method to return all step instances associated with a particular lesson instance.
 
@@ -378,14 +371,14 @@ Update the create method to look like this:
 ```
 def create
   @step = @lesson.steps.build(step_params)
-
-      respond_to do |format|
-       if @step.save
-          format.html { redirect_to lesson_steps_path(@lesson), notice: 'Step was successfully created.' }
-          format.json { render :show, status: :created, location: @step }
-       else
-          format.html { render :new }
-          format.json { render json: @step.errors, status: :unprocessable_entity }
+    respond_to do |format|
+      if @step.save
+        format.html { redirect_to lesson_steps_path(@lesson), notice: 'Step was successfully created.' }
+        format.json { render :show, status: :created, location: @step }
+      else
+        format.html { render :new }
+        format.json { render json: @step.errors, status: :unprocessable_entity }
+      end
     end
   end
 end

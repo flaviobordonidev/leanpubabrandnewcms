@@ -77,18 +77,20 @@ I> ATTENZIONE: con "rails generate scaffold ..." -> usiamo il SINGOLARE
 $ rails g scaffold Answer content:string step:references
 ```
 
+[Si poteva usare anche "g model" perché il controller e le view non le usiamo. Ma è più facile cancellarle che crearle manualmente se vediamo che servino in futuro]
+
 Volendo al posto di *:references* si può usare l'alias *:belongs_to* ma noi preferiamo *:references*. 
 
 Nota: "step:references" crea la chiave esterna step_id, mette l'indice ed imposta la relazione 1-a-molti nei models.
 
 vediamo il migrate generato
 
-{id: "56-03-01_01", caption: ".../db/migrate/xxx_create_answers.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
+{id: "56-05-01_01", caption: ".../db/migrate/xxx_create_answers.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
 ```
 class CreateAnswers < ActiveRecord::Migration[6.0]
   def change
     create_table :answers do |t|
-      t.string :value
+      t.string :content
       t.references :step, null: false, foreign_key: true
 
       t.timestamps
@@ -97,7 +99,7 @@ class CreateAnswers < ActiveRecord::Migration[6.0]
 end
 ```
 
-[tutto il codice](#56-03-01_01all)
+[tutto il codice](#56-05-01_01all)
 
 
 Effettuiamo il migrate del database per creare la tabella sul database
@@ -110,10 +112,10 @@ $ rails db:migrate
 
 Da Rails 5 il ".references ..., foreign_key: true" aggiunge già le chiavi esterne e l'indice (come si può vedere su .../db/schema.rb dopo il migrate del database).
 
-{id: "56-03-01_02", caption: ".../db/schema.rb -- codice 02", format: ruby, line-numbers: true, number-from: 1}
+{id: "56-05-01_02", caption: ".../db/schema.rb -- codice 02", format: ruby, line-numbers: true, number-from: 1}
 ```
   create_table "answers", force: :cascade do |t|
-    t.string "value"
+    t.string "content"
     t.bigint "step_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -121,7 +123,7 @@ Da Rails 5 il ".references ..., foreign_key: true" aggiunge già le chiavi ester
   end
 ```
 
-[tutto il codice](#56-03-01_02all)
+[tutto il codice](#56-05-01_02all)
 
 
 
@@ -130,7 +132,7 @@ Da Rails 5 il ".references ..., foreign_key: true" aggiunge già le chiavi ester
 
 Lato model Answer il *belongs_to :step* lo troviamo già inserito grazie al ":references" usato prima. Quello che inseriamo è la struttura di commenti per organizzare il crescimento del model.
 
-{id: "56-03-01_03", caption: ".../app/models/answer.rb -- codice 03", format: ruby, line-numbers: true, number-from: 11}
+{id: "56-05-01_03", caption: ".../app/models/answer.rb -- codice 03", format: ruby, line-numbers: true, number-from: 11}
 ```
 class Answer < ApplicationRecord
   # == Constants ============================================================
@@ -157,40 +159,26 @@ class Answer < ApplicationRecord
 end
 ```
 
-[tutto il codice](#56-03-01_03all)
+[tutto il codice](#56-05-01_03all)
 
 
 Lato model Step il *has_many :answers* lo inseriamo noi.
+Su # == Relationships nel sottogruppo ## many-to-one
 
-{id: "56-03-01_04", caption: ".../app/models/step.rb -- codice 04", format: ruby, line-numbers: true, number-from: 11}
+{id: "56-05-01_04", caption: ".../app/models/step.rb -- codice 04", format: ruby, line-numbers: true, number-from: 11}
 ```
-class Step < ApplicationRecord
-  # == Constants ============================================================
-  
-  # == Extensions ===========================================================
-
-  # == Attributes ===========================================================
-
-  # == Relationships ========================================================
-
-  ## many-to-one
-  belongs_to :lesson
-  has_many :answers
-
-  # == Validations ==========================================================
-
-  # == Scopes ===============================================================
-
-  # == Callbacks ============================================================
-
-  # == Class Methods ========================================================
-
-  # == Instance Methods =====================================================
-
-end
+  has_many :answers, dependent: :destroy
+  accepts_nested_attributes_for :answers, allow_destroy: true, reject_if: proc{ |attr| attr['content'].blank? }
 ```
 
-[tutto il codice](#56-03-01_04all)
+[tutto il codice](#56-05-01_04all)
+
+
+Analizziamo il codice:
+
+* dependent: :destroy -> questa opzione fa in modo che quando eliminiamo uno step in automatico vengono cancellati anche tutte le sue risposte.
+* allow_destroy: true -> permette di cancellare le form annidate
+* reject_if: proc{ |attr| attr['number'].blank? } -> evita che vengano salvate form annidate in cui non è stato messo il numero di telefono
 
 
 
@@ -203,18 +191,25 @@ $ rails c
 
 > l1 = Lesson.first
 > l1.steps
-> l1.steps[1]
-> l1.steps[1].answers
-> l1.steps[1].answers.new(value: "piume").save
-> a1 = l1.steps[1].answers.first
-> a2 = l1.steps[1].answers.new(value: "cartone")
+> l1.steps[0]
+> l1.steps[0].answers
+> l1.steps[0].answers.new(content: "mattoni").save
+> a1 = l1.steps[0].answers.first
+> a2 = l1.steps[0].answers.new(content: "cartone")
 > a2.save
+
+> l1 = Lesson.first
+> step1 = l1.steps.first
+> step1.answers.new(content: "vino").save
+> step1.answers.new(content: "birra").save
+> step1.answers.new(content: "rock and roll").save
+> exit
 
 ```
 
 Curiosità:
 il comando 
-> a2 = l1.steps[1].answers.new(value: "cartone").save
+> a2 = l1.steps[1].answers.new(content: "cartone").save
 avrebbe associato alla variabile a2 il valore True, ossia il risultato del salvataggio.
 Non avrebbe associato l'oggetto answers[2].
 
@@ -225,18 +220,74 @@ Non avrebbe associato l'oggetto answers[2].
 ## Implementiamo sulle views
 
 Sulla pagina views/steps/show cambio il form di edit dello step con un nuovo form che invece va in new della answer.
-Ossia ogni ogni step presento sempre UNA NUOVA RISPOSTA. Quindi eseguo il create del controller answers, che non c'è :(. 
-Posso risolvere lavorando sul create di steps? Mi sa di no, che fa casino. 
-Era meglio fare il "rails g scaffold..." invece del "rails g model...".
-Ma possiamo sempre creare il controller manualmente.
-Oppure possiamo usare "rails g controller" con gli stessi campi usati in "rails g model". Questa combinazione mi da un risultato equivalente a "rails g scaffold".
+Ossia ogni step presento sempre UNA NUOVA RISPOSTA. 
 
-I> ATTENZIONE: con "rails generate controller ..." -> usiamo il PLURALE
+Iniziamo mostrando le risposte caricate da console.
 
-{caption: "terminal", format: bash, line-numbers: false}
+{id: "56-05-01_05", caption: ".../views/steps/show.html.erb -- codice 5", format: HTML+Mako, line-numbers: true, number-from: 1}
 ```
-$ rails g controller Answers value:string step:references
+<p>
+  <strong>Answers</strong>
+  <ul>
+    <% @step.answers.each do |answer| %>
+      <li>
+        <%= answer.content %>
+      </li>
+    <% end %>
+  </ul>
+</p>
 ```
+
+[tutto il codice](#56-05-01_05all)
+
+
+Adesso impostiamo il form per inserire una nuova risposta.
+Per questo mi appoggio ad answers_controller.
+
+
+
+
+## Aggiorniamo il controller
+
+Permettiamo che siano passati i parametri relativi alle risposte (answers).
+Per farlo aggiungiamo "answers_attributes[]" al "params.require(:step).permit". Questo lo possiamo fare perché abbiamo inserito nel model Step la voce "accepts_nested_attributes_for :answers". 
+
+{id: "56-05-01_06", caption: ".../app/controllers/steps_controller.rb -- codice 06", format: ruby, line-numbers: true, number-from: 70}
+```
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def step_params
+      params.require(:step).permit(:question, :answer, :lesson_id, answers_attributes: [:_destroy, :id, :content])
+    end
+```
+
+[tutto il codice](#56-05-01_06all)
+
+Lato server / back-end abbiamo terminato.
+
+
+
+## Aggiorniamo la view
+
+All'interno del form_with che interagisce con il controller steps_controller, che nel nostro caso ha una route annidata a lessons, inseriamo un form annidato attraverso il codice "form.fields_for".
+Il form annidato è quello che aggiorna la parte answers, sfruttando le impostazioni fatte precedentemente sul controller e il model di Step.
+
+{id: "56-05-01_07", caption: ".../views/steps/show.html.erb -- codice 7", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+<%= form_with(model: [@lesson, @step], local: true) do |form| %>
+  <!-- Creiamo nuovo Record -->
+  <%= form.fields_for :answers, Answer.new do |answer| %>
+    <%= render "answer_fields", form: answer %>
+  <% end %>
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+
+```
+
+[tutto il codice](#56-05-01_07all)
+
+
 
 
 
