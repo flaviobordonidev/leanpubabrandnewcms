@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Steps</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Question</th>
+      <th>Answer</th>
+      <th>Lesson</th>
+      <th colspan="4"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @steps.each do |step| %>
+      <tr>
+        <td><%= step.question %></td>
+        <td><%= step.answer %></td>
+        <td><%= step.lesson.name %></td>
+        <td><%= link_to 'Show Lesson', [@lesson] %></td>
+        <td><%= link_to 'Show Step', [@lesson, step] %></td>
+        <td><%= link_to 'Edit Step', edit_lesson_step_path(@lesson, step) %></td>
+        <td><%= link_to 'Destroy Step', [@lesson, step], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Step', new_lesson_step_path(@lesson) %>
+<%= link_to 'Google', 'https://www.google.it/', :target => '_blank' %>

@@ -1,0 +1,11 @@
+<div class="nested-fields">
+  <div class="form-group">
+    <%= form.hidden_field :_destroy %>
+    <%= form.text_field :content, placeholder: "rispondi", class: "form-control" %>
+    <% if current_user %>
+        <%= form.text_field :user_id, required: true, class: 'form-control', value:current_user.id  %>
+    <% else %>
+        <%= form.text_field :user_id, required: true, class: 'form-control', value:2 %>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,196 @@
+{id: 56-ubuntudream-03-lessons-steps-03-users_answers}
+# Cap 5.2 -- Associamo le risposte all'utente che le ha date
+
+
+
+## Adesso associamo ad ogni risposta l'utente loggato
+
+Al momento, le risposte non appartengono a nessuno. Creiamo un migration per associare ogni risposta all'utente loggato.
+Per far questo dobbiamo solo aggiungere una chiave esterna user alla tabella answers.
+Ogni risposta (answer) appartiene a un utente (user), quindi ogni risposta deve avere un user_id che identifichi l'utente:
+Per tenere traccia di quale risposta (answer) è data da ogni utente, dobbiamo fare un'associazione tra gli utenti (users) e le loro risposte (answers).
+ 
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ rails g migration AddUserRefToAnswers user:references
+```
+
+Si poteva anche usare "rails g migration AddUserIdToAnswers user_id:integer" ma è meglio usare "references" perché ottimizza meglio gli indici.
+
+vediamo il migrate generato
+
+{id: "56-05-02_01", caption: ".../db/migrate/xxx_add_user_ref_to_answers.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
+```
+class AddUserRefToAnswers < ActiveRecord::Migration[6.0]
+  def change
+    add_reference :answers, :user, null: false, foreign_key: true
+  end
+end
+```
+
+[tutto il codice](#56-05-02_01all)
+
+Da Rails 5 il ".references ..., foreign_key: true" aggiunge già le chiavi esterne e l'indice (come si può vedere su .../db/schema.rb dopo il migrate del database)  e mi risparmia di fare:
+
+Effettuiamo il migrate del database che aggiungerà la colonna user_id e l'indice alla tabella answers.
+
+Attenzione!
+Prima di fare il migrate dobbiamo svuotare la tabella answers altrimenti il "null: false" ci darà errore impedendo di applicare la colonna user_id.
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ rails c
+$ Answer.destroy_all
+```
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ sudo service postgresql start
+$ rails db:migrate
+```
+
+Se guardiamo in db/schema vedremo il risultato:
+
+```
+  create_table "answers", force: :cascade do |t|
+    t.string "content"
+    t.bigint "step_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id", null: false
+    t.index ["step_id"], name: "index_answers_on_step_id"
+    t.index ["user_id"], name: "index_answers_on_user_id"
+  end
+```
+  
+  
+
+
+## Implementiamo la relazione 1-a-molti nei models
+
+Questa volta non abbiamo nessun aiuto dal ":references" e quindi dobbiamo inserire entrambi i lati dell'associazione 1-a-molti.
+Lato model Answer inseriamo che appartiene ad user, ossia che ogni risposta ha 1 utente associato tramite la chiave esterna (user_id).
+Su # == Relationships nel sottogruppo ## many-to-one
+
+{id: "56-05-02_02", caption: ".../app/models/answer.rb -- codice 02", format: ruby, line-numbers: true, number-from: 11}
+```
+  belongs_to :user
+```
+
+[tutto il codice](#56-05-02_02all)
+
+
+Lato model User inseriamo che ha molte risposte, ossia che ogni utente può avere molte risposte associate.
+Su # == Relationships nel sottogruppo ## many-to-one
+
+{id: "56-05-02_03", caption: ".../app/models/user.rb -- codice 03", format: ruby, line-numbers: true, number-from: 11}
+```
+  has_many :answers
+```
+
+[tutto il codice](#56-05-02_03all)
+
+
+
+
+## Aggiorniamo il controller? No, la view.
+
+Il controller che dobbiamo aggiornare non è answers_controller, ti ricordo che potevamo non crearlo per niente usando "rails g model ...", ma invece è steps_controller perché stiamo usando la sua azione update per creare delle nuove risposte.
+Aggiorniamo il controller in modo che l'azione che eseguiamo con il submit del form, nel nostro caso update, associ l'utente loggato ad ogni risposta.
+
+
+Attenzione:
+Se fossimo direttamente sul controller Answers potremmo aggiungere una semplice linea di codice nell'azione create.
+
+```
+  def create
+    @answer = Answer.new(answer_params)
+    @answer.user = current_user
+    #@answer.user_id = current_user.id
+```
+
+Analizziamo il codice:
+
+* il metodo current_user di Devise restituisce l'utente che ha eseguito l'accesso.
+
+Questo sarebbe anche più sicuro rispetto a passare la user_id attraverso il form. Ma nel nostro caso stiamo lavorando su un nested form che è passato da steps_controller.
+Il tutto è predisposto per poter creare più campi risposta attraverso javascript/stimulus e passarli tutti insieme. Quindi è più facile inserire l'utente loggato direttamente come valore di default nel field user_id del form annidato.
+
+{id: "56-05-02_04", caption: ".../views/steps/_answer_fields.html.erb -- codice 04", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+    <% if current_user %>
+        <%= form.text_field :user_id, required: true, class: 'form-control', value:current_user.id  %>
+    <% else %>
+        <%= form.text_field :user_id, required: true, class: 'form-control', value:2 %>
+    <% end %>
+```
+
+[tutto il codice](#56-05-02_04all)
+
+
+ATTENZIONE un modo più sicuro e più elegante è sul model Answer.
+sulla home di https://rubyonrails.org/ che ora ha RAILS 7 abbiamo:
+
+model Article
+
+class Article < ApplicationRecord
+  belongs_to :author, default: -> { Current.user }
+  has_many   :comments
+
+  has_one_attached :avatar
+  has_rich_text :content, encrypted: true
+  enum status: [ :drafted, :published ]
+
+  scope :recent, -> { order(created_at: :desc).limit(25) }
+
+  after_save_commit :deliver_later, if: :published?
+
+  def byline
+    "Written by #{author.name} on #{created_at.to_s(:short)}"
+  end
+
+  def deliver_later
+    Article::DeliveryJob.perform_later self
+  end
+end
+
+
+Mooolto interessante questa riga:
+  belongs_to :author, default: -> { Current.user }
+
+che per noi potrebbe diventare sul model Answer:
+
+  belongs_to :step, default: -> { Current.user }
+
+oppure
+
+  belongs_to :step, default: -> { current_user }
+
+* current_user ci viene da Devise.
+
+
+
+
+## Verifichiamo da console
+
+Effettuiamo il login ed inseriamo alcune risposte. Poi andiamo sulla console e verifichiamo le risposte date dall'utente loggato.
+
+```
+> u1 = User.first
+> u1.answers
+> u1.answers[1]
+> u1.answers[1].step
+> u1.answers[1].step.lesson
+```
+
+
+
+
+## Mostriamo il nome dell'utente affianco alla risposta
+
+{id: "56-05-02_05", caption: ".../views/steps/_answer_fields.html.erb -- codice 05", format: HTML+Mako, line-numbers: true, number-from: 1}
+```
+        <%= answer.content %> - by <%= answer.user.name %>
+```
+
+[tutto il codice](#56-05-02_05all)
