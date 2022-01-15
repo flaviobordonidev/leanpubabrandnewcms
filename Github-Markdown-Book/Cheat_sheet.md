@@ -1,8 +1,4 @@
-# Markdown Cheatsheet {#TOP}
-
-# Markdown CheatsheetOLD<a name="TOPOLD"></a> #
-
-### My Great Heading {#custom-id}
+# Markdown Cheatsheet<a name="TOP"></a>
 
 Indentando di 4 spazi (o 1 TAB) diventa codice.
 
@@ -79,9 +75,14 @@ ___Strong emphasized text___
 > Blockquote
 >> Nested blockquote
 
-    Markup :  > Blockquote
-              >> Nested Blockquote
+    > Blockquote
+    >> Nested blockquote
 
+
+Il termine HTML
+: Hyper Text Markup Language. è il nome dato dal genio
+: non quello della lampada ma il genio Luis The Mole
+: (Sto inventando ^_^)
 
 
 
