@@ -1,4 +1,8 @@
-# Markdown Cheatsheet<a name="TOP"></a> #
+# Markdown Cheatsheet {#TOP}
+
+# Markdown CheatsheetOLD<a name="TOPOLD"></a> #
+
+### My Great Heading {#custom-id}
 
 Indentando di 4 spazi (o 1 TAB) diventa codice.
 
@@ -14,13 +18,20 @@ come in questo caso
 ```
 
 
-_Horizontal line :_
+Con 4 trattini distanziati ottendo una linea di separazione orizzontale:
+
 - - - -
 
-    Markup :  - - - -
+```
+- - - -
+```
 
 
-- - - - 
+Lo stesso lo ottengo con 3 trattini tutti attaccati:
+
+---
+
+    ---
 
 
 Vediamo i Titoli e il testo comune
