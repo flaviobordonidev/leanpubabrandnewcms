@@ -47,7 +47,7 @@ https://console.aws.amazon.com/
 
 Scegliamo il link: "Sign-in using root account credentials"
 
-![sign in as root](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/01_fig01-aws_sign_in_as_root.png)
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/02_fig01-aws_sign_in_as_root.png)
 
 
 
@@ -70,7 +70,7 @@ AWS -> Service -> IAM -> Users -> Add user
 - Una volta fatto login dalla ConsoleHome AWS faccaimo click sul service "IAM". 
 - Andiamo sul link Users e ne creiamo uno nuovo cliccando "Add user".
 
-![add new user](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/01_fig02-aws_new_user.png)
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/02_fig02-aws_new_user.png)
 
 
 - Step1
@@ -91,6 +91,9 @@ AWS -> Service -> IAM -> Users -> Add user
     Visualizza il riepilogo delle scelte fatte.
 - Step5
     L'utente IAM è stato creato e possiamo scaricarci il file ".csv" o inviarci un'email.
+
+
+![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/02_fig03-new_user_step1.png)
 
 ![Fig. 01](chapters/01-base/01-new_app/02_fig01-aws_IAM_user_new_step1.png)
 
@@ -130,3 +133,7 @@ Una volta effettuato il login possiamo andare su Service Cloud9 e questa volta n
 ![Fig. 08](chapters/01-base/01-new_app/02_fig08-aws_c9_dashboard_IAM_root.png)
 
 Ma questo lo vedremo nel prossimo capitolo.
+
+---
+
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/03-aws_cloud9_new_environment.md)

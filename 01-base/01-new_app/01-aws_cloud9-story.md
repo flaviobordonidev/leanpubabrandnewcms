@@ -15,3 +15,7 @@ Cloud9 consente agli sviluppatori di collaborare tra loro in team con caratteris
 Inoltre garantisce la possibilità di verificare l’andamento dello sviluppo con anteprime  in tempo reale e test di compatibilità dei browser. 
 
 Cloud9 usa per i suoi workspaces Docker ed è osteggiato su Google Compute Engine. Docker è un progetto open-source che automatizza lo sviluppo di applicazioni all’interno di contenitori software. I contenitori di Docker hanno parti di software in un completo filesystem che prevedono l’uso di tutto ciò che occorre per lo sviluppo e il deployment di una web application: codice, runtime, tools di sistema, librerie di sistema. Docker fornisce un addizionale layer astratto dall’hardware del sistema operativo virtualizzato su Linux.
+
+---
+
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/02-aws_IAM_user_for_cloud9.md)
