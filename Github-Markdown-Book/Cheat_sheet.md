@@ -1,8 +1,8 @@
 # Markdown Cheatsheet<a name="TOP"></a> #
 
-Indentando di 4 spazi (o TAB) diventa codice.
+Indentando di 4 spazi (o 1 TAB) diventa codice.
 
-    Indentando di 4 spazi (o TAB) diventa codice.
+    Indentando di 4 spazi (o 1 TAB) diventa codice.
 
 oppure un blocco tra 3 tilde iniziali e 3 tilde finali.
 
@@ -13,7 +13,15 @@ come in questo caso
 ^_^
 ```
 
+
+_Horizontal line :_
+- - - -
+
+    Markup :  - - - -
+
+
 - - - - 
+
 
 Vediamo i Titoli e il testo comune
 
@@ -52,6 +60,70 @@ __Strong text__
 ___Strong emphasized text___
 
     ___Strong emphasized text___ or ***Strong emphasized text***
+
+
+---
+
+
+> Blockquote
+>> Nested blockquote
+
+    Markup :  > Blockquote
+              >> Nested Blockquote
+
+
+
+
+* Bullet list
+    * Nested bullet
+        * Sub-nested bullet etc
+* Bullet list item 2
+
+~~~
+* Bullet list
+    * Nested bullet
+        * Sub-nested bullet etc
+* Bullet list item 2
+
+-OR-
+
+- Bullet list
+    - Nested bullet
+        - Sub-nested bullet etc
+- Bullet list item 2 
+~~~
+
+
+1. A numbered list
+    1. A nested numbered list
+    2. Which is numbered
+2. Which is numbered
+
+~~~
+1. A numbered list
+    1. A nested numbered list
+    2. Which is numbered
+2. Which is numbered
+~~~
+
+
+- [ ] An uncompleted task
+- [x] A completed task
+
+~~~
+- [ ] An uncompleted task
+- [x] A completed task
+~~~
+
+- [ ] An uncompleted task
+    - [ ] An uncompleted subtask
+
+~~~
+- [ ] An uncompleted task
+    - [ ] An uncompleted subtask
+~~~
+
+
 
 
 Adesso vediamo le immagini
@@ -160,63 +232,8 @@ Content Cell  | Content Cell | Content Cell
     Markup : ```javascript
              ```
 
-* Bullet list
-    * Nested bullet
-        * Sub-nested bullet etc
-* Bullet list item 2
 
-~~~
- Markup : * Bullet list
-              * Nested bullet
-                  * Sub-nested bullet etc
-          * Bullet list item 2
 
--OR-
-
- Markup : - Bullet list
-              - Nested bullet
-                  - Sub-nested bullet etc
-          - Bullet list item 2 
-~~~
-
-1. A numbered list
-    1. A nested numbered list
-    2. Which is numbered
-2. Which is numbered
-
-~~~
- Markup : 1. A numbered list
-              1. A nested numbered list
-              2. Which is numbered
-          2. Which is numbered
-~~~
-
-- [ ] An uncompleted task
-- [x] A completed task
-
-~~~
- Markup : - [ ] An uncompleted task
-          - [x] A completed task
-~~~
-
-- [ ] An uncompleted task
-    - [ ] A subtask
-
-~~~
- Markup : - [ ] An uncompleted task
-              - [ ] A subtask
-~~~
-
-> Blockquote
->> Nested blockquote
-
-    Markup :  > Blockquote
-              >> Nested Blockquote
-
-_Horizontal line :_
-- - - -
-
-    Markup :  - - - -
 
 _Image with alt :_
 
