@@ -31,7 +31,8 @@ Lo stesso lo ottengo con 3 trattini tutti attaccati:
 
 
 ---
-Vediamo i Titoli e il testo comune
+Vediamo i Titoli e il testo comune.
+(I titoli possono anche non avere le "#" in fondo alla linea.)
 
 # Heading 1 #
 
@@ -68,10 +69,6 @@ __Strong text__
 ___Strong emphasized text___
 
     ___Strong emphasized text___ or ***Strong emphasized text***
-
-==highlight very important words==
-
-    ==highlight very important words==
 
 
 ---
