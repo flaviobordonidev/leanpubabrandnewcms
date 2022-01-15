@@ -84,32 +84,34 @@ AWS -> Service -> IAM -> Users -> Add user
 ![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/02_fig03-new_user_step1.png)
 
 
+### Step2
 
-- Step2
-    Permissions 
-    -> policy : AdministratorAccess
-    -> policy : AWSCloud9Administrator
-    -> policy : AWSCloud9EnvironmentMember
-    -> policy : AWSCloud9User
-- Step3
-    Non aggiungiamo nessun tag.
-- Step4
-    Visualizza il riepilogo delle scelte fatte.
-- Step5
-    L'utente IAM è stato creato e possiamo scaricarci il file ".csv" o inviarci un'email.
+- Permissions 
+    - policy : AdministratorAccess
+    - policy : AWSCloud9Administrator
+    - policy : AWSCloud9EnvironmentMember
+    - policy : AWSCloud9User
+
+![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/02_fig04-new_user_step2.png)
 
 
-![Fig. 01](chapters/01-base/01-new_app/02_fig01-aws_IAM_user_new_step1.png)
+### Step3
 
-![Fig. 02](chapters/01-base/01-new_app/02_fig02-aws_IAM_user_new_step2a.png)
+Non aggiungiamo nessun tag.
 
-![Fig. 03](chapters/01-base/01-new_app/02_fig03-aws_IAM_user_new_step2b.png)
+![fig05](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/02_fig05-new_user_step3.png)
 
-![Fig. 04](chapters/01-base/01-new_app/02_fig04-aws_IAM_user_new_step3.png)
+## Step4
 
-![Fig. 05](chapters/01-base/01-new_app/02_fig05-aws_IAM_user_new_step4.png)
+Visualizza il riepilogo delle scelte fatte.
 
-![Fig. 06](chapters/01-base/01-new_app/02_fig06-aws_IAM_user_new_step5.png)
+![fig06](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/02_fig06-new_user_step4.png)
+
+## Step5
+
+L'utente IAM è stato creato e possiamo scaricarci il file ".csv" o inviarci un'email.
+
+![fig07](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/02_fig07-new_user_step5.png)
 
 
 Facciamo riferimento alla storia di Cloud9 [Volume 1 - Cap 1.1](#01-base-01-new_app-01-aws_cloud9-story)
