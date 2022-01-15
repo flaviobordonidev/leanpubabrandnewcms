@@ -1,5 +1,4 @@
-{id: 01-base-01-new_app-01-aws_cloud9-story}
-# Cap 1.1 -- L'ambiente di sviluppo AWS
+# <a name="01-01"></a> Cap 1.1 -- L'ambiente di sviluppo AWS
 
 Il nostro ambiente di sviluppo è Amazon Web Server Cloud9
 
