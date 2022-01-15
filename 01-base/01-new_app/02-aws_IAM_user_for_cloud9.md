@@ -1,5 +1,4 @@
-{id: 01-base-01-new_app-02-aws_IAM_user_for_cloud9}
-# Cap 1.2 -- Creiamo utente IAM per Cloud9
+# <a name="01-01-02"></a> Cap 1.2 -- Creiamo utente IAM per Cloud9
 
 Non è una buona idea lavorara su cloud9 come root. Lo stesso Amazon Web Server consiglia di creare un utente IAM per gestire cloud9.
 
@@ -15,16 +14,14 @@ Risorse interne:
 
 Su cloud9 ci sono tre raggruppamenti di ambiente:
 
-* Your environments
+- Your environments
     gli ambienti creati da uno specifico utente IAM. Ad esempio:
     - user_FB@870054134107 vede i suoi ambienti
     - user_AB@870054134107 vede i suoi ambienti
-* Shared with you
+- Shared with you
     gli ambienti in cui l'utente è stato invitato
-* Account environments
+- Account environments
     gli ambienti di tutti gli utenti IAM di uno specifico account (Ad esempio: 870054134107)
-
-
 
 
 Se decidiamo di creare un utente IAM facciamo ATTENZIONE:
@@ -34,8 +31,8 @@ Le app create come "root" o come un altro utente IAM non saranno visibili in "Yo
 
 E' quindi importante scegliere con cura l'utente:
 
-* se vogliamo raggruppare le app fatte per i vari clienti possiamo usare IAM users con il nome dei nostri clienti.
-* se vogliamo vedere tutte le app in un unico punto usiamo un unico IAM user. 
+- se vogliamo raggruppare le app fatte per i vari clienti possiamo usare IAM users con il nome dei nostri clienti.
+- se vogliamo vedere tutte le app in un unico punto usiamo un unico IAM user. 
 
 Per questo tutorial creiamo l'utente " user_fb ", ossia " utente Flavio Bordoni ", con il diritto di accesso alla console di aws e tutti i diritti di utilizzo di Cloud9
 
@@ -50,6 +47,8 @@ https://console.aws.amazon.com/
 
 Scegliamo il link: "Sign-in using root account credentials"
 
+![sign in as root](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/01_fig01-aws_sign_in_as_root.png)
+
 
 
 
@@ -62,33 +61,36 @@ Usiamo il prefisso " user_ " per differenziare gli utenti IAM che identificano d
 
 Abbiamo due tipi di prefissi per gli utenti IAM:
 
-* user_ : identifica persone fisiche che accedono ai vari servizi di aws.
-* bot_  : identifica applicativi che accedono ai vari servizi di aws.
+- user_ : identifica persone fisiche che accedono ai vari servizi di aws.
+- bot_  : identifica applicativi che accedono ai vari servizi di aws.
 
 
 AWS -> Service -> IAM -> Users -> Add user
 
-* Una volta fatto login dalla ConsoleHome AWS faccaimo click sul service "IAM". 
-* Andiamo sul link Users e ne creiamo uno nuovo cliccando "Add user".
+- Una volta fatto login dalla ConsoleHome AWS faccaimo click sul service "IAM". 
+- Andiamo sul link Users e ne creiamo uno nuovo cliccando "Add user".
 
 
-* Step1
+![add new user](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/01_fig02-aws_new_user.png)
+
+
+- Step1
     User name   : user_fb
     Access type : AWS Management Console access
     Console password 
     -> Custom password : mypassword
     Require password reset : no
-* Step2
+- Step2
     Permissions 
     -> policy : AdministratorAccess
     -> policy : AWSCloud9Administrator
     -> policy : AWSCloud9EnvironmentMember
     -> policy : AWSCloud9User
-* Step3
+- Step3
     Non aggiungiamo nessun tag.
-* Step4
+- Step4
     Visualizza il riepilogo delle scelte fatte.
-* Step5
+- Step5
     L'utente IAM è stato creato e possiamo scaricarci il file ".csv" o inviarci un'email.
 
 ![Fig. 01](chapters/01-base/01-new_app/02_fig01-aws_IAM_user_new_step1.png)

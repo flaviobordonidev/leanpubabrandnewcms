@@ -58,10 +58,6 @@ _Emphasized text_
 
     _Emphasized text_ or *Emphasized text*
 
-~~Strikethrough text~~
-
-    ~~Strikethrough text~~
-
 __Strong text__
 
     __Strong text__ or **Strong text**
@@ -69,6 +65,14 @@ __Strong text__
 ___Strong emphasized text___
 
     ___Strong emphasized text___ or ***Strong emphasized text***
+
+~~Strikethrough text~~
+
+    ~~Strikethrough text~~
+
+~~___Strong emphasized strikethrough text___~~
+
+    ~~___Strong emphasized strikethrough text___~~
 
 
 ---
