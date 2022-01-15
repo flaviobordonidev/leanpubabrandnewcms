@@ -248,7 +248,7 @@ Emoji:
     
 ---
 
-![picture alt](Github-Markdown-Book/powered_by_n_solid.png "Title is optional")
+![picture alt](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/Github-Markdown-Book/powered_by_n_solid.png "Title is optional")
 
 [![N|Solid](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
 
