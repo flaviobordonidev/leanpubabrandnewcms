@@ -1,0 +1,4 @@
+# Trademarks
+
+* Cloud9 and the Cloud9 logo are trademarks or registered trademarks of Cloud9, Inc. in the United States and/or other countries.
+* Docker and the Docker logo are trademarks or registered trademarks of Docker, Inc. in the United States and/or other countries.
