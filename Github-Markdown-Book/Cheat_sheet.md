@@ -2,6 +2,17 @@
 
 Indentando di 4 spazi (o TAB) diventa codice.
 
+    Indentando di 4 spazi (o TAB) diventa codice.
+
+oppure un blocco tra 3 tilde iniziali e 3 tilde finali.
+
+```
+oppure un blocco tra 3 tilde iniziali e 3 tilde finali.
+quindi anche su più righe
+come in questo caso
+^_^
+```
+
 - - - - 
 
 Vediamo i Titoli e il testo comune
@@ -63,6 +74,14 @@ Adesso vediamo i links
 [heading-1](#heading-1 "Goto heading-1")
     
     [heading-1](#heading-1 "Goto heading-1")
+
+
+Link to a specific part of the page:
+
+[Go To TOP](#TOP)
+   
+    Markup : [text goes here](#section_name)
+              section_title<a name="section_name"></a>    
 
 [![picture alt](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/Github-Markdown-Book/powered_by_n_solid.png "Title is optional")](http://www.google.fr/ "Named link title")
 
@@ -225,13 +244,6 @@ Foldable text:
 <h3>HTML</h3>
 <p> Some HTML code here </p>
 ```
-
-Link to a specific part of the page:
-
-[Go To TOP](#TOP)
-   
-    Markup : [text goes here](#section_name)
-              section_title<a name="section_name"></a>    
 
 Hotkey:
 
