@@ -1,4 +1,4 @@
-Markdown Cheatsheet<a name="TOP"></a>
+Markdown Cheatsheet
 ===================
 
 - - - - 
@@ -288,3 +288,78 @@ As for images, you can place an image in the root directory and path the images 
 Building on GitHub's subtle yet powerful README feature, you can create a hierarchy of posts using folders with the text for each folder saved as a README.md file in that folder's directory. If you are familiar with the behavior of index.html on web servers, you will feel right at home with this technique.  In this case, File A would not live in the root directory as file-a.md but instead lives in a folder named file-a with a text document README.md (file-a/README.md).  To link to File A from the root README.md file you would path a link like \[File A](file-a) which would then forward the user to the folder folder-a with GitHub displaying the current file-a/README.md file on the page.
 
 This technique also has the advantage of keeping the images of each document close to the text of each document.  Do this by placing the images for each folder's README.md in the same folder as its corresponding README.md file. 
+
+
+
+---
+
+
+# Syntax highlighting
+
+You can create fenced code blocks by placing triple backticks ``` before and after the code block. We recommend placing a blank line before and after code blocks to make the raw formatting easier to read.
+
+```
+function test() {
+  console.log("notice the blank line before this function?");
+}
+```
+
+Tip: To preserve your formatting within a list, make sure to indent non-fenced code blocks by eight spaces.
+
+
+To display triple backticks in a fenced code block, wrap them inside quadruple backticks.
+
+```` 
+```
+Look! You can see my backticks.
+```
+````
+
+You can add an optional language identifier to enable syntax highlighting in your fenced code block.
+
+For example, to syntax highlight Ruby code:
+
+```ruby
+require 'redcarpet'
+markdown = Redcarpet.new("Hello World!")
+puts markdown.to_html
+```
+
+We use Linguist to perform language detection and to select third-party grammars for syntax highlighting. You can find out which keywords are valid in the languages YAML file.
+
+[L'elenco dei linguaggi Ufficiale](https://github.com/github/linguist/blob/master/vendor/README.md)
+[L'elenco dei linguaggi help list](https://github.com/github/linguist/blob/master/lib/linguist/languages.yml)
+[L'elenco dei linguaggi samples](https://github.com/github/linguist/tree/master/samples)
+
+Noi usiamo:
+
+* ActionScript (forse)
+* Batchfile (forse)
+* CoffeeScript (forse)
+* CSS
+* CSV (non c'è nell'elenco ufficiale)
+* cURL Config (forse)
+* Diff (forse)
+* Gemfile.lock (forse)
+* Git Attributes (non c'è nell'elenco samples)
+* Git Config (forse)
+* HTML (forse)
+* HTML+ERB
+* JSON (forse)
+* JavaScript
+* JavaScript+ERB
+* Lean (forse)
+* Less (forse)
+* Linux Kernel Module (forse. non c'è nell'elenco ufficiale)
+* Markdown (forse)
+* PLpgSQL (forse)
+* PowerShell (forse)
+* ruby
+* SAS (forse)
+* Sass (forse)
+* SCSS (forse)
+* Shell (forse)
+* SQL (forse)
+* Vue (forse)
+* YAML
+* 
