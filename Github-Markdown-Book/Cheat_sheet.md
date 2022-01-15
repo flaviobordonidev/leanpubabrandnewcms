@@ -1,65 +1,69 @@
-# La prima riga è sempre titolo?<a name="TOP"></a> #
+# Markdown Cheatsheet<a name="TOP"></a> #
 
-La seconda no?
-
-
-
-Markdown Cheatsheet 
-===================
+Indentando di 4 spazi (o TAB) diventa codice.
 
 - - - - 
+
+Vediamo i Titoli e il testo comune
+
 # Heading 1 #
 
-    Markup :  # Heading 1 #
-
-    -OR-
-
-    Markup :  ============= (below H1 text)
+    # Heading 1 #
 
 ## Heading 2 ##
 
-    Markup :  ## Heading 2 ##
-
-    -OR-
-
-    Markup: --------------- (below H2 text)
+    ## Heading 2 ##
 
 ### Heading 3 ###
 
-    Markup :  ### Heading 3 ###
+    ### Heading 3 ###
 
 #### Heading 4 ####
 
-    Markup :  #### Heading 4 ####
-
+    #### Heading 4 ####
 
 Common text
 
-    Markup :  Common text
+    Common text
 
 _Emphasized text_
 
-    Markup :  _Emphasized text_ or *Emphasized text*
+    _Emphasized text_ or *Emphasized text*
 
 ~~Strikethrough text~~
 
-    Markup :  ~~Strikethrough text~~
+    ~~Strikethrough text~~
 
 __Strong text__
 
-    Markup :  __Strong text__ or **Strong text**
+    __Strong text__ or **Strong text**
 
 ___Strong emphasized text___
 
-    Markup :  ___Strong emphasized text___ or ***Strong emphasized text***
+    ___Strong emphasized text___ or ***Strong emphasized text***
+
+
+Adesso vediamo i links
+
 
 [Named Link](http://www.google.fr/ "Named link title") and http://www.google.fr/ or <http://example.com/>
 
-    Markup :  [Named Link](http://www.google.fr/ "Named link title") and http://www.google.fr/ or <http://example.com/>
+    [Named Link](http://www.google.fr/ "Named link title") and http://www.google.fr/ or <http://example.com/>
 
 [heading-1](#heading-1 "Goto heading-1")
     
-    Markup: [heading-1](#heading-1 "Goto heading-1")
+    [heading-1](#heading-1 "Goto heading-1")
+
+![picture alt](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/Github-Markdown-Book/powered_by_n_solid.png "Title is optional")
+
+    ![picture alt](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/Github-Markdown-Book/powered_by_n_solid.png "Title is optional")
+
+[![N|Solid](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
+
+    [![N|Solid](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
+
+
+Adesso vediamo le tabelle
 
 Table, like this one :
 
@@ -253,10 +257,6 @@ Emoji:
     Markup : Code appears between colons :EMOJICODE:
     
 ---
-
-![picture alt](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/Github-Markdown-Book/powered_by_n_solid.png "Title is optional")
-
-[![N|Solid](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
 
 - ✨Magic ✨
 
