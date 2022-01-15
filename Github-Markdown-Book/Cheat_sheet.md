@@ -43,6 +43,16 @@ ___Strong emphasized text___
     ___Strong emphasized text___ or ***Strong emphasized text***
 
 
+Adesso vediamo le immagini
+
+
+![picture alt](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/Github-Markdown-Book/powered_by_n_solid.png "Title is optional")
+
+    ![picture alt](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/Github-Markdown-Book/powered_by_n_solid.png "Title is optional")
+
+
+
+
 Adesso vediamo i links
 
 
@@ -54,9 +64,9 @@ Adesso vediamo i links
     
     [heading-1](#heading-1 "Goto heading-1")
 
-![picture alt](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/Github-Markdown-Book/powered_by_n_solid.png "Title is optional")
+[![picture alt](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/Github-Markdown-Book/powered_by_n_solid.png "Title is optional")](http://www.google.fr/ "Named link title")
 
-    ![picture alt](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/Github-Markdown-Book/powered_by_n_solid.png "Title is optional")
+    [![picture alt](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/Github-Markdown-Book/powered_by_n_solid.png "Title is optional")](http://www.google.fr/ "Named link title")
 
 [![N|Solid](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
 
