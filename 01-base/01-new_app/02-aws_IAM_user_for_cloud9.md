@@ -51,7 +51,7 @@ Scegliamo il link: "Sign-in using root account credentials"
 
 
 
-
+---
 ## Creiamo un nuovo utente dedicato all'uso di Cloud9
 
 Creiamo un nuovo utente IAM, da assegnare a Flavio Bordoni, con il permesso di effettuare il login sulla console aws.
@@ -73,12 +73,18 @@ AWS -> Service -> IAM -> Users -> Add user
 ![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/02_fig02-aws_new_user.png)
 
 
-- Step1
-    User name   : user_fb
-    Access type : AWS Management Console access
-    Console password 
-    -> Custom password : mypassword
-    Require password reset : no
+### Step1
+
+- User name   : user_fb
+- Access type : AWS Management Console access
+- Console password 
+    - Custom password : mypassword
+- Require password reset : no
+
+![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/02_fig03-new_user_step1.png)
+
+
+
 - Step2
     Permissions 
     -> policy : AdministratorAccess
@@ -92,8 +98,6 @@ AWS -> Service -> IAM -> Users -> Add user
 - Step5
     L'utente IAM è stato creato e possiamo scaricarci il file ".csv" o inviarci un'email.
 
-
-![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/02_fig03-new_user_step1.png)
 
 ![Fig. 01](chapters/01-base/01-new_app/02_fig01-aws_IAM_user_new_step1.png)
 
