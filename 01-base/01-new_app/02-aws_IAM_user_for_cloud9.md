@@ -70,7 +70,6 @@ AWS -> Service -> IAM -> Users -> Add user
 - Una volta fatto login dalla ConsoleHome AWS faccaimo click sul service "IAM". 
 - Andiamo sul link Users e ne creiamo uno nuovo cliccando "Add user".
 
-
 ![add new user](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/01_fig02-aws_new_user.png)
 
 
