@@ -30,6 +30,7 @@ Lo stesso lo ottengo con 3 trattini tutti attaccati:
     ---
 
 
+---
 Vediamo i Titoli e il testo comune
 
 # Heading 1 #
@@ -75,15 +76,10 @@ ___Strong emphasized text___
 > Blockquote
 >> Nested blockquote
 
-    > Blockquote
-    >> Nested blockquote
-
-
-Il termine HTML
-: Hyper Text Markup Language. è il nome dato dal genio
-: non quello della lampada ma il genio Luis The Mole
-: (Sto inventando ^_^)
-
+```
+> Blockquote
+>> Nested blockquote
+```
 
 
 * Bullet list
@@ -91,7 +87,7 @@ Il termine HTML
         * Sub-nested bullet etc
 * Bullet list item 2
 
-~~~
+```
 * Bullet list
     * Nested bullet
         * Sub-nested bullet etc
@@ -103,7 +99,7 @@ Il termine HTML
     - Nested bullet
         - Sub-nested bullet etc
 - Bullet list item 2 
-~~~
+```
 
 
 1. A numbered list
@@ -111,33 +107,33 @@ Il termine HTML
     2. Which is numbered
 2. Which is numbered
 
-~~~
+```
 1. A numbered list
     1. A nested numbered list
     2. Which is numbered
 2. Which is numbered
-~~~
+```
 
 
 - [ ] An uncompleted task
 - [x] A completed task
 
-~~~
+```
 - [ ] An uncompleted task
 - [x] A completed task
-~~~
+```
+
 
 - [ ] An uncompleted task
     - [ ] An uncompleted subtask
 
-~~~
+```
 - [ ] An uncompleted task
     - [ ] An uncompleted subtask
-~~~
+```
 
 
-
-
+---
 Adesso vediamo le immagini
 
 
