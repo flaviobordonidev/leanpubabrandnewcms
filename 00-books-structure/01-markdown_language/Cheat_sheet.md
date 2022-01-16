@@ -388,6 +388,7 @@ We use Linguist to perform language detection and to select third-party grammars
 [L'elenco dei linguaggi Ufficiale](https://github.com/github/linguist/blob/master/vendor/README.md)
 [L'elenco dei linguaggi help list](https://github.com/github/linguist/blob/master/lib/linguist/languages.yml)
 [L'elenco dei linguaggi samples](https://github.com/github/linguist/tree/master/samples)
+[Demo delle varie colorazioni per i vari linguaggi](https://highlightjs.org/static/demo/)
 
 Noi usiamo:
 
@@ -421,3 +422,53 @@ Noi usiamo:
 * Vue (forse)
 * YAML
 * 
+
+
+---
+
+## ESEMPI
+
+Bash
+
+```Bash
+#!/bin/bash
+
+###### CONFIG
+ACCEPTED_HOSTS="/root/.hag_accepted.conf"
+BE_VERBOSE=false
+
+if [ "$UID" -ne 0 ]
+then
+ echo "Superuser rights required"
+ exit 2
+fi
+
+genApacheConf(){
+ echo -e "# Host ${HOME_DIR}$1/$2 :"
+}
+
+echo '"quoted"' | tr -d \" > text.txt
+```
+
+
+Shell
+
+```Shell
+#!/bin/bash
+
+###### CONFIG
+ACCEPTED_HOSTS="/root/.hag_accepted.conf"
+BE_VERBOSE=false
+
+if [ "$UID" -ne 0 ]
+then
+ echo "Superuser rights required"
+ exit 2
+fi
+
+genApacheConf(){
+ echo -e "# Host ${HOME_DIR}$1/$2 :"
+}
+
+echo '"quoted"' | tr -d \" > text.txt
+```
