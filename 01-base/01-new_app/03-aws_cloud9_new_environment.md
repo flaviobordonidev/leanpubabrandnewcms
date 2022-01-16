@@ -46,36 +46,35 @@ ATTENZIONE! Gli ambienti visualizzati sono in funzione della AWS Region selezion
 
 Creare un nuovo ambiente è un processo in 3 passi.
 
-Il nuovo ambiente lo chiamiamo " bl6_0 " ad indicare che è l'applicazione " baseline " creata con Rails 6.0.
+Il nuovo ambiente lo chiamiamo *bl7_0* ad indicare che è l'applicazione " baseline " creata con Rails 7.0.1 - Released January 6, 2022.
 Per applicazione baseline intendiamo che ha il 90% di tutto quello che ci serve per sviluppare e quindi un ottimo punto di partanza da clonare per tutte le altre applicazioni.
 
 
-* Step1
-    Name: bl6_0
-    Description : App base con Rails 6.0
-* Step2
-    Environment type      : Create a new instance for environment (EC2)
-    Instance type         : t2.micro (1 GiB RAM + 1 vCPU)
-    Platform              : Ubuntu Server 18.04 LTS
-    Cost-saving setting   : After 30 minutes (default)
-* Step 3
-    Review
+### Step1
+
+- Name: bl7_0
+- Description : App base con Rails 7.0.1
+
+![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/03_fig03-aws_c9_new_environment_step1.png)
 
 
-![Fig. 03](chapters/01-base/01-new_app/03_fig03-aws_c9_new_environment_step1.png)
+### Step2
 
-Click su "Create environment"
-
-
-![Fig. 04](chapters/01-base/01-new_app/03_fig04-aws_c9_new_environment_step2.png)
+- Environment type      : Create a new instance for environment (EC2)
+- Instance type         : t2.micro (1 GiB RAM + 1 vCPU)
+- Platform              : Ubuntu Server 18.04 LTS
+- Cost-saving setting   : After 30 minutes (default)
 
 Lasciamo il server virtuale di default che è sufficiente per iniziare. Possiamo potenziarlo in seguito. Più potenza diamo più ci costa.
 
+![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/03_fig04-aws_c9_new_environment_step2.png)
 
-![Fig. 05](chapters/01-base/01-new_app/03_fig05-aws_c9_new_environment_step3.png)
 
-Click "Create environment"
+### Step 3
 
+Review
+
+![fig05](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/03_fig05-aws_c9_new_environment_step3.png)
 
 Ci sono presentati i seguenti consigli che è interessante implementare successivamente con calma:
 
@@ -85,6 +84,8 @@ Raccomandiamo le seguenti migliori pratiche per l'utilizzo dell'ambiente AWS Clo
 * Eseguire aggiornamenti regolari del software sul proprio ambiente. AWS Cloud9 non esegue aggiornamenti automatici per tuo conto.
 * Attivare AWS CloudTrail nel tuo account AWS per tenere traccia delle attività nel tuo ambiente. Ulteriori informazioni (https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html)
 * Condividere il proprio ambiente solo con utenti fidati. La condivisione del tuo ambiente potrebbe mettere a rischio le tue credenziali di accesso AWS. Ulteriori informazioni (https://docs.aws.amazon.com/console/cloud9/share-environment-best-practices)
+
+Click su "Create environment"
 
 
 

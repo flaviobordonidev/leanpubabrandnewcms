@@ -54,25 +54,25 @@ Common text
 
     Common text
 
-_Emphasized text_
+*Emphasized text*
 
-    _Emphasized text_ or *Emphasized text*
+    *Emphasized text* or _Emphasized text_
 
-__Strong text__
+**Strong text**
 
-    __Strong text__ or **Strong text**
+    **Strong text** or __Strong text__
 
-___Strong emphasized text___
+***Strong emphasized text***
 
-    ___Strong emphasized text___ or ***Strong emphasized text***
+    ***Strong emphasized text*** or ___Strong emphasized text___
 
 ~~Strikethrough text~~
 
     ~~Strikethrough text~~
 
-~~___Strong emphasized strikethrough text___~~
+~~***Strong emphasized strikethrough text***~~
 
-    ~~___Strong emphasized strikethrough text___~~
+    ~~***Strong emphasized strikethrough text***~~
 
 
 ---
