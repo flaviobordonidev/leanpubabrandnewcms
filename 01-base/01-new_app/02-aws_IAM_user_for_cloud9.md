@@ -138,7 +138,6 @@ Una volta effettuato il login possiamo andare su Service Cloud9 e questa volta n
 
 ![Fig. 08](chapters/01-base/01-new_app/02_fig08-aws_c9_dashboard_IAM_root.png)
 
-Ma questo lo vedremo nel prossimo capitolo.
 
 ---
 

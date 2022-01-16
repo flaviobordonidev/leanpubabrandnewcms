@@ -103,3 +103,7 @@ Su *More Settings...* -> Project Settings -> **Soft tabs: 2**
 ![fig07](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/03_fig07-aws_c9_soft_tabs.png)
 
 L'ambiente è impostato. Adesso possiamo creare una nuova applicazione Rails.
+
+---
+
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/04-install_postgresql.md)

@@ -1,16 +1,15 @@
-{id: 01-base-01-new_app-04-install_postgresql}
-# Cap 1.4 -- Installiamo PostgreSQL
+# <a name="01-01-04"></a> Cap 1.4 -- Installiamo PostgreSQL
 
-***
-Questa procedura è per ambienti di Cloud9 (istanze EC2) con sistema operativo Ubuntu
-***
+> Questa procedura è per ambienti di Cloud9 (istanze EC2) con sistema operativo **Ubuntu**
 
 Il database postgreSQL non è installato di default su AWS Cloud9
 Di default Rails ha attivo il database sqlite3 ma noi sin da subito nella nostra nuova applicazione useremo PostgreSQL, quindi è bene installarlo.
 Usiamo PostgreSQL perché è lo stesso database che usa Heroku; e noi useremo Heroku per mettere la nostra app in produzione.
 
 
-Risorse interne:
+
+
+## Risorse interne:
 
 * 99-rails_references/postgresql/01-install
 
