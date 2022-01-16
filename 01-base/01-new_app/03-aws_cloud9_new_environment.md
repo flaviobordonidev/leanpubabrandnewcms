@@ -1,12 +1,13 @@
-{id: 01-base-01-new_app-03-aws_cloud9_new_environment}
-# Cap 1.3 -- Creiamo nuovo ambiente Cloud9
+# <a name="01-01-03"></a> Cap 1.3 -- Creiamo nuovo ambiente Cloud9
 
 Creiamo l'ambiente per la nostra applicazione Rails.
 
 
-Risorse interne:
 
-* 99-rails_references-aws_cloud9
+
+## Risorse interne
+
+- 99-rails_references-aws_cloud9
 
 
 
@@ -24,7 +25,7 @@ Services -> Developer Tools -> Cloud9
 
 Per aumentare le prestazioni dovremmo selezionare la "AWS Region" più vicina a noi, o meglio ai nostri clienti. Ad esempio "Ireland".
 
-![Fig. 01](chapters/01-base/01-new_app/03_fig01-aws-iam_user-console-region.png)
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/03_fig01-aws_region.png)
 
 Ma c'è da tenere anche presente ceh ogni Region ha dei costi di fatturazione differenti. Ad esempio: 
 
@@ -32,7 +33,7 @@ Ma c'è da tenere anche presente ceh ogni Region ha dei costi di fatturazione di
 * EU (Ireland)          : $0.11 per GB-month of General Purpose SSD (gp2) 
 * US East (N. Virginia) : $0.10 per GB-month of General Purpose SSD (gp2) 
 
-![Fig. 02](chapters/01-base/01-new_app/03_fig02-aws-region_billing.png)
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/03_fig02-aws_billing.png)
 
 Un consiglio è quello di lasciare inizialmente la AWS Region di default perché normalmente è quella più economica ed intervenire in un secondo momento nel cambio della Region; una volta valutate le prestazioni.
 
