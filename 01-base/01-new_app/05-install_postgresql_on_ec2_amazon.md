@@ -1,16 +1,20 @@
+# <a name="01-01-04"></a> Cap 1.5 -- Installiamo PostgreSQL su Amazon Linux
+
+> Possiamo **saltare** questo capitolo.
+> Questa procedura è per ambienti di Cloud9 (istanze EC2) con sistema operativo **Amazon Linux**
+
+
 # Installiamo PostgreSQL
 
-***
-Questa procedura è per ambienti di Cloud9 (istanze EC2) con sistema operativo Amazon Linux 
-***
-
-Se avessimo utilizzato l'istanza con OS Amazon Linux avremmo dovuto installare PostgreSQL come descritto in questo capitolo.
-Questa parte non fa parte della nostra applicazione quindi la saltiamo.
+Se avessimo utilizzato l'istanza con **OS Amazon Linux** avremmo dovuto installare PostgreSQL come descritto in questo capitolo.
+Questa parte non fa parte della nostra applicazione e quindi la saltiamo.
 
 
-Risorse web:
 
-* [Setting up Postgres on Cloud9 IDE](https://medium.com/@floodfx/setting-up-postgres-on-cloud9-ide-720e5b879154)
+
+## Risorse web:
+
+- [Setting up Postgres on Cloud9 IDE](https://medium.com/@floodfx/setting-up-postgres-on-cloud9-ide-720e5b879154)
 
 
 
