@@ -46,7 +46,7 @@ ATTENZIONE! Gli ambienti visualizzati sono in funzione della AWS Region selezion
 
 Creare un nuovo ambiente è un processo in 3 passi.
 
-Il nuovo ambiente lo chiamiamo *bl7_0* ad indicare che è l'applicazione " baseline " creata con Rails 7.0.1 - Released January 6, 2022.
+Il nuovo ambiente lo chiamiamo *bl7_0* ad indicare che è l'applicazione *baseline* creata con *Rails 7.0.1* - Released January 6, 2022.
 Per applicazione baseline intendiamo che ha il 90% di tutto quello che ci serve per sviluppare e quindi un ottimo punto di partanza da clonare per tutte le altre applicazioni.
 
 
@@ -96,12 +96,10 @@ Click su "Create environment"
 * Editor theme  : Cloud9 Night Low-Color
 * Keyboard Mode : Default
 
-![Fig. 06](chapters/01-base/01-new_app/03_fig06-dark_theme.png)
+![fig06](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/03_fig06-aws_c9_dark_theme.png)
 
+Su *More Settings...* -> Project Settings -> **Soft tabs: 2**
 
-Su preferences -> Soft tabs: 2
-
-![Fig. 07](chapters/01-base/01-new_app/03_fig07-soft_tabs.png)
-
+![fig07](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/03_fig07-aws_c9_soft_tabs.png)
 
 L'ambiente è impostato. Adesso possiamo creare una nuova applicazione Rails.
