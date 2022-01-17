@@ -1,4 +1,4 @@
-# <a name="01-01-04"></a> Cap 1.4 -- Installiamo PostgreSQL
+# <a name="top"></a> Cap 1.4 -- Installiamo PostgreSQL
 
 > Questa procedura è per ambienti di Cloud9 (istanze EC2) con sistema operativo **Ubuntu**
 
