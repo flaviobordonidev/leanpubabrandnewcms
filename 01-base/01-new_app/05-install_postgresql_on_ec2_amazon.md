@@ -1,4 +1,4 @@
-# <a name="01-01-04"></a> Cap 1.5 -- Installiamo PostgreSQL su Amazon Linux
+# <a name="top"></a> Cap 1.5 -- Installiamo PostgreSQL su Amazon Linux
 
 > Possiamo **saltare** questo capitolo.
 > Questa procedura è per ambienti di Cloud9 (istanze EC2) con sistema operativo **Amazon Linux**
@@ -181,3 +181,9 @@ $ psql postgres
 Una volta entrati possiamo creare il nostro proprio database e lavorare sulle tabelle.
 
 Ma per quanto riguarda il nostro tutorial abbiamo già tutto quello che ci serve per continuare.
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/04-install_postgresql.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/06-new_app.md)
