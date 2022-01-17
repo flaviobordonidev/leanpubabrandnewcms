@@ -1,4 +1,4 @@
-# VOLUME 1
+# <a name="top"></a> VOLUME 1
 
 Iniziamo una nuova app su Rails
 
@@ -39,3 +39,10 @@ in questo volume:
 * Prepariamo anche una "bozza" di quello che è il Blog visibile da tutti.
 * Successivamente su questa bozza si potranno caricare diversi temi.
 * Il primo tema che utilizzeremo in un'altra sezione sarà Canvas. (vedi cms_canvas)
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/00-frontmatter/02-preface.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/01-aws_cloud9-story.md)

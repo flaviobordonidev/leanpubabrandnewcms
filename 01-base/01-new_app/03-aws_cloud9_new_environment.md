@@ -1,4 +1,4 @@
-# <a name="01-01-03"></a> Cap 1.3 -- Creiamo nuovo ambiente Cloud9
+# <a name="top"></a> Cap 1.3 -- Creiamo nuovo ambiente Cloud9
 
 Creiamo l'ambiente per la nostra applicazione Rails.
 
@@ -106,5 +106,6 @@ L'ambiente è impostato. Adesso possiamo creare una nuova applicazione Rails.
 
 ---
 
-[<- back  ](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/02-aws_IAM_user_for_cloud9.md)
-[  next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/04-install_postgresql.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/02-aws_IAM_user_for_cloud9.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/04-install_postgresql.md)

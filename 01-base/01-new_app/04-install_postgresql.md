@@ -40,6 +40,7 @@ user_fb:~/environment $
 ## Installiamo PostgreSQL
 
 Siamo su instance EC2 con OS Ubuntu che usa "apt" come packet manager.
+Da terminal eseguiamo i comandi:
 
 ```bash
 $ sudo apt update
@@ -47,7 +48,7 @@ $ sudo apt install postgresql postgresql-contrib libpq-dev
 -> y
 ```
 
-Esecuzione su terminal
+Esempio:
 
 ```bash
 user_fb:~/environment $ sudo apt update
@@ -320,8 +321,11 @@ $ sudo su - postgres
 --> ALTER USER "ubuntu" WITH PASSWORD 'myPassword456';
 --> \q
 -> exit
+```
 
+Esempio:
 
+```bash
 user_fb:~/environment $ sudo su - postgres
 postgres@ip-172-31-24-105:~$ psql -U postgres
 psql (10.19 (Ubuntu 10.19-0ubuntu0.18.04.1))
@@ -358,5 +362,6 @@ Ma per quanto riguarda il nostro tutorial abbiamo già tutto quello che ci serve
 
 ---
 
-[<- back  ](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/03-aws_cloud9_new_environment.md)
-[  next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/05-install_postgresql_on_ec2_amazon.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/03-aws_cloud9_new_environment.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/05-install_postgresql_on_ec2_amazon.md)

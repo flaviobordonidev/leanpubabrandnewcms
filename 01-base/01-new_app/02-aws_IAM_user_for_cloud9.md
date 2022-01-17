@@ -1,4 +1,4 @@
-# <a name="01-01-02"></a> Cap 1.2 -- Creiamo utente IAM per Cloud9
+# <a name="top"></a> Cap 1.2 -- Creiamo utente IAM per Cloud9
 
 Non è una buona idea lavorara su cloud9 come root. Lo stesso Amazon Web Server consiglia di creare un utente IAM per gestire cloud9.
 
@@ -142,5 +142,5 @@ Una volta effettuato il login possiamo andare su Service Cloud9 e questa volta n
 ---
 
 [<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/01-aws_cloud9-story.md)
- | [TOP](#top) |
+ | [top](#top) |
 [next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/03-aws_cloud9_new_environment.md)
