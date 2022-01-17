@@ -187,6 +187,17 @@ Impostiamo il collegamento di rails a postgresql con l'indirizzo "localhost" e l
 $ sudo vim /etc/postgresql/10/main/postgresql.conf
 ```
 
+Per fare delle modifiche con VIM:
+
+- muoversi con le frecce sulla tastiera. 
+- premere [i] per entrare in modalità modifica. 
+- premere [canc] per cancellare.
+- premere [ESC] per uscire dalla modalità modifica.
+- Quando si è fuori dalla modalità modifica digitare " :w " e premere [ENTER] per salvare.
+- Quando si è fuori dalla modalità modifica digitare " :q " e premere [ENTER] per uscire.
+- Quando si è fuori dalla modalità modifica digitare " :wq " e premere [ENTER] per salvare ed uscire.
+
+
 Troviamo le due righe:
 
 ```bash
@@ -204,16 +215,6 @@ port = 5432
 ```
 
 (la seconda riga potrebbe già essere decommentata)
-
-Per fare delle modifiche con VIM:
-
-- muoversi con le frecce sulla tastiera. 
-- premere [i] per entrare in modalità modifica. 
-- premere [canc] per cancellare.
-- premere [ESC] per uscire dalla modalità modifica.
-- Quando si è fuori dalla modalità modifica digitare " :w " e premere [ENTER] per salvare.
-- Quando si è fuori dalla modalità modifica digitare " :q " e premere [ENTER] per uscire.
-- Quando si è fuori dalla modalità modifica digitare " :wq " e premere [ENTER] per salvare ed uscire.
 
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/04_fig01-postgresql_conf-uncomment-addresses_and_port.png)
 
@@ -354,3 +355,8 @@ $ psql postgres
 Una volta entrati potremmo creare il nostro proprio database e lavorare sulle tabelle.
 
 Ma per quanto riguarda il nostro tutorial abbiamo già tutto quello che ci serve per continuare.
+
+---
+
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/05-install_postgresql_on_ec2_amazon.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/03-aws_cloud9_new_environment.md)
