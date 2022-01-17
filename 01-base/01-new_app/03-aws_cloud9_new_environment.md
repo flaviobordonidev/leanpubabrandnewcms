@@ -106,4 +106,5 @@ L'ambiente è impostato. Adesso possiamo creare una nuova applicazione Rails.
 
 ---
 
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/04-install_postgresql.md)
+[<- back  ](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/02-aws_IAM_user_for_cloud9.md)
+[  next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/04-install_postgresql.md)

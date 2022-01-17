@@ -181,7 +181,7 @@ user_fb:~/environment $
 
 ## Impostiamo il file di configurazione di postgreSQL per collegarsi via localhost:5432
 
-Impostiamo il collegamento di rails a postgresql con l'indirizzo "localhost" e la porta "5432"
+Impostiamo il collegamento di rails a postgresql con l'indirizzo **localhost** e la porta **5432**
 
 ```bash
 $ sudo vim /etc/postgresql/10/main/postgresql.conf
@@ -221,7 +221,7 @@ port = 5432
 
 
 
-## Aggiorniamo il file **pg_hba.conf** per l'autenticazione
+## Aggiorniamo il file *pg_hba.conf* per l'autenticazione
 
 Nel seguente file di configurazione impostiamo la connessione locale IPv4 sull'indirizzo di "localhost" (127.0.0.1) e l'id dell'utente registrato nel sistema operativo.
 
@@ -308,8 +308,8 @@ $ sudo service postgresql restart
 
 
 
-## Cambiamo la password per l'utente di default di postgreSQL ed aggiungiamo utente " ubuntu "
-
+## Agiorniamo gli utenti di postgreSQL
+Cambiamo la password per l'utente di default di postgreSQL ed aggiungiamo l'utente *ubuntu*
 Logghiamoci su PostgreSQL come utente **postgres** che è l'utente di default, e gli cambiamo la password. Inoltre aggiungiamo l'utente **ubuntu**.
 
 ```bash
@@ -358,5 +358,5 @@ Ma per quanto riguarda il nostro tutorial abbiamo già tutto quello che ci serve
 
 ---
 
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/05-install_postgresql_on_ec2_amazon.md)
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/03-aws_cloud9_new_environment.md)
+[<- back  ](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/03-aws_cloud9_new_environment.md)
+[  next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/05-install_postgresql_on_ec2_amazon.md)
