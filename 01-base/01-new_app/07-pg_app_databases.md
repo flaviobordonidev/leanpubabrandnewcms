@@ -10,17 +10,55 @@ Creiamo i databases su postgreSQL in modo da attivare la connessione con la nost
 
 
 
-## Gestiamo l'errore
+## Verifichiamo connessione
 
-L'errore è perché PostgreSQL non trova i databases di svilluppo e di test. Questi sono definiti sul file "/config/database.yml". 
+Anche se lo abbiamo già visto nel preview, verifichiamo anche da terminale che non c'è comunicazione con il database.
 
+```bash
+$ rails db:migrate
+```
+
+Esempio:
+
+```bash
+user_fb:~/environment $ cd bl7_0/
+user_fb:~/environment/bl7_0 (main) $ rails db:migrate
+rails aborted!
+ActiveRecord::NoDatabaseError: We could not find your database: bl7_0_development. Which can be found in the database configuration file located at config/database.yml.
+
+To resolve this issue:
+
+- Did you create the database for this app, or delete it? You may need to create your database.
+- Has the database name changed? Check your database.yml config has the correct database name.
+
+To create your database, run:
+
+        bin/rails db:create
+
+
+Caused by:
+PG::ConnectionBad: FATAL:  database "bl7_0_development" does not exist
+
+Tasks: TOP => db:migrate
+(See full trace by running task with --trace)
+user_fb:~/environment/bl7_0 (main) $ 
+```
+
+Prende errore perché non esistono ancora i databases.
+
+
+
+## Vediamo il nome dei databases
+
+L'errore è perché PostgreSQL non trova i databases di svilluppo e di test. 
+Questi sono definiti sul file **/config/database.yml**.
 
 ***codice 01 - .../config/database.yml - line:24***
 
 ```yaml
 development:
   <<: *default
-  database: bl6_0_development
+  database: bl7_0_development
 ```
 
 ***- line:58***
@@ -28,7 +66,7 @@ development:
 ```yaml
 test:
   <<: *default
-  database: bl6_0_test
+  database: bl7_0_test
 ```
 
 ***- line:81***
@@ -36,9 +74,9 @@ test:
 ```yaml
 production:
   <<: *default
-  database: bl6_0_production
-  username: bl6_0
-  password: <%= ENV['BL6_0_DATABASE_PASSWORD'] %>
+  database: bl7_0_production
+  username: bl7_0
+  password: <%= ENV['BL7_0_DATABASE_PASSWORD'] %>
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/07_01-config-database.yml)
@@ -46,65 +84,44 @@ production:
 
 Come si vede il nome dei database è dato con la seguente convenzione:
 
-* sviluppo    : "nome applicazione" più suffisso "_development"
-* test        : "nome applicazione" più suffisso "_test"
-* produzione  : si usa il nome dato sul server remoto. Nel nostro caso sul server di Heroku.
-
-
-
-
-## Verifichiamo connessione
-
-Anche se già visto nel preview, verifichiamo da terminale che non c'è comunicazione con il database.
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ rails db:migrate
-
-
-user_fb:~/environment/bl6_0 (master) $ rails db:migrate
-rails aborted!
-ActiveRecord::NoDatabaseError: FATAL:  database "bl6_0_development" does not exist
-...
-```
-
-Prende errore perché non esistono ancora i databases.
+- sviluppo    : "nome applicazione" più suffisso "_development"
+- test        : "nome applicazione" più suffisso "_test"
+- produzione  : si usa il nome dato sul server remoto. Nel nostro caso sul server di Heroku.
 
 
 
 
 ## Creiamo i databases
 
-Creiamo i databases per development e test usando il comando "createdb" di postgreSQL.
+Creiamo i databases per development e test usando il comando *createdb* di postgreSQL.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
-$ createdb bl6_0_development
-$ createdb bl6_0_test
-
-
-user_fb:~/environment/myapp (master) $ sudo service postgresql start
-Starting postgresql service:                               [  OK  ]
-user_fb:~/environment/myapp (master) $ createdb bl6_0_development
-user_fb:~/environment/myapp (master) $ createdb bl6_0_test
-user_fb:~/environment/myapp (master) $ 
+$ createdb bl7_0_development
+$ createdb bl7_0_test
 ```
 
-Nella creazione dei databases non ho messaggi di creazione effettuata sul terminale. 
+Esempio:
 
-verifichiamo che adesso c'è comunicazione eseguendo
-
-{caption: "terminal", format: bash, line-numbers: false}
+```bash
+user_fb:~/environment/bl7_0 (main) $ sudo service postgresql start
+user_fb:~/environment/bl7_0 (main) $ createdb bl7_0_development
+user_fb:~/environment/bl7_0 (main) $ createdb bl7_0_test
+user_fb:~/environment/bl7_0 (main) $ 
 ```
+
+Nella creazione dei databases non ho dei messaggi di conferma sul terminale. Possiamo però verificare che adesso c'è comunicazione.
+
+```bash
 $ rails db:migrate
+```
 
-user_fb:~/environment/myapp (master) $ rails db:migrate
-user_fb:~/environment/myapp (master) $ 
+```bash
+user_fb:~/environment/bl7_0 (main) $ rails db:migrate
+user_fb:~/environment/bl7_0 (main) $ 
 ```
 
 Come per la creazione dei databases, anche per il db:migrate non ho messaggi di conferma sul terminale. Sappiamo che c'è comunicazione perché il comando adesso non da nessun errore.
-
 
 
 
@@ -112,23 +129,25 @@ Come per la creazione dei databases, anche per il db:migrate non ho messaggi di 
 
 Per verificare i databases dalla linea di comando di PostgreSQL:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ psql postgres
 -> \list
 -> \q
+```
 
+Esempio:
 
-user_fb:~/environment/bl6_0 (master) $ psql postgres
-psql (10.10 (Ubuntu 10.10-0ubuntu0.18.04.1))
+```bash
+user_fb:~/environment/bl7_0 (main) $ psql postgres
+psql (10.19 (Ubuntu 10.19-0ubuntu0.18.04.1))
 Type "help" for help.
 
 postgres=# \list
                                   List of databases
        Name        |  Owner   | Encoding | Collate |  Ctype  |   Access privileges   
 -------------------+----------+----------+---------+---------+-----------------------
- bl6_0_development | ubuntu   | UTF8     | C.UTF-8 | C.UTF-8 | 
- bl6_0_test        | ubuntu   | UTF8     | C.UTF-8 | C.UTF-8 | 
+ bl7_0_development | ubuntu   | UTF8     | C.UTF-8 | C.UTF-8 | 
+ bl7_0_test        | ubuntu   | UTF8     | C.UTF-8 | C.UTF-8 | 
  postgres          | postgres | UTF8     | C.UTF-8 | C.UTF-8 | 
  template0         | postgres | UTF8     | C.UTF-8 | C.UTF-8 | =c/postgres          +
                    |          |          |         |         | postgres=CTc/postgres
@@ -137,23 +156,26 @@ postgres=# \list
 (5 rows)
 
 postgres=# \q
-user_fb:~/environment/bl6_0 (master) $ 
+user_fb:~/environment/bl7_0 (main) $ 
 ```
+
 
 oppure
 
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ psql --list
+```
 
+Esempio:
 
-user_fb:~/environment/bl6_0 (master) $ psql --list
+```bash
+user_fb:~/environment/bl7_0 (main) $ psql --list
                                   List of databases
        Name        |  Owner   | Encoding | Collate |  Ctype  |   Access privileges   
 -------------------+----------+----------+---------+---------+-----------------------
- bl6_0_development | ubuntu   | UTF8     | C.UTF-8 | C.UTF-8 | 
- bl6_0_test        | ubuntu   | UTF8     | C.UTF-8 | C.UTF-8 | 
+ bl7_0_development | ubuntu   | UTF8     | C.UTF-8 | C.UTF-8 | 
+ bl7_0_test        | ubuntu   | UTF8     | C.UTF-8 | C.UTF-8 | 
  postgres          | postgres | UTF8     | C.UTF-8 | C.UTF-8 | 
  template0         | postgres | UTF8     | C.UTF-8 | C.UTF-8 | =c/postgres          +
                    |          |          |         |         | postgres=CTc/postgres
@@ -161,16 +183,15 @@ user_fb:~/environment/bl6_0 (master) $ psql --list
                    |          |          |         |         | postgres=CTc/postgres
 (5 rows)
 
-user_fb:~/environment/bl6_0 (master) $ 
+user_fb:~/environment/bl7_0 (main) $ 
 ```
 
-Avremmo potuto creare i databases anche da dentro la linea di comando di postgreSQL:
+Avremmo potuto anche creare i databases da linea di comando di postgreSQL:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ psql
--> CREATE DATABASE "bl6_0_development";
--> CREATE DATABASE "bl6_0_test";
+-> CREATE DATABASE "bl7_0_development";
+-> CREATE DATABASE "bl7_0_test";
 -> \list
 -> \q
 ```
@@ -180,17 +201,18 @@ $ psql
 
 ## Verifichiamo preview
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+Adesso proviamo di nuovo il preview
+
+```bash
 $ sudo service postgresql start
 $ rails s
 ```
 
-![Fig. 01](chapters/01-base/01-new_app/06_fig01-preview_working.png)
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/07_fig01-preview_working.png)
 
 Anche se non riceviamo errore sembra non stia funzionando ma è un problema di preview dentro aws Cloud9. Basta aprirlo su una nuovo tab del browser e vediamo che funziona tutto!
 
-![Fig. 02](chapters/01-base/01-new_app/06_fig02-preview_working_new_tab.png)
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/07_fig02-preview_working_new_tab.png)
 
 si apre un nuovo tab del browser sull'URL del root_path:
 
