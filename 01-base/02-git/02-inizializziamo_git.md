@@ -163,7 +163,7 @@ $ git tag v0.1.0
 ```
 
 Il tag ci permette di distingure delle "pietre miliari" durante lo sviluppo. Tappe che vengono identificate da un cambio del numero della versione.
-Il numero di versione segue le convenzioni del [semantic versioning](https://semver.org/).
+Per il numero della versione seguiamo le convenzioni del [semantic versioning](https://semver.org/).
 
 Esempio:
 
@@ -259,6 +259,6 @@ user_fb:~/environment/bl7_0 (main) $
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/06-new_app.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/02-git/01-git_story.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/02-git/02-inizializziamo_git.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/02-git/03-daily_routine.md)
