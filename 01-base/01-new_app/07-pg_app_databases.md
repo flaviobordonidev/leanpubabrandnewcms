@@ -15,26 +15,24 @@ Creiamo i databases su postgreSQL in modo da attivare la connessione con la nost
 L'errore è perché PostgreSQL non trova i databases di svilluppo e di test. Questi sono definiti sul file "/config/database.yml". 
 
 
-
-
-
-{id: "01-01-06_01", caption: ".../config/database.yml -- codice 01", format: yaml, line-numbers: true, number-from: 24}
-
 ***codice 01 - .../config/database.yml - line:24***
+
 ```yaml
 development:
   <<: *default
   database: bl6_0_development
 ```
 
-{caption: ".../config/database.yml -- codice 01", format: yaml, line-numbers: true, number-from: 58}
+***codice 01 - .../config/database.yml - line:58***
+
 ```
 test:
   <<: *default
   database: bl6_0_test
 ```
 
-{caption: ".../config/database.yml -- codice 01", format: yaml, line-numbers: true, number-from: 81}
+***codice 01 - .../config/database.yml - line:81***
+
 ```
 production:
   <<: *default
@@ -43,7 +41,8 @@ production:
   password: <%= ENV['BL6_0_DATABASE_PASSWORD'] %>
 ```
 
-[tutto il codice](#01-01-06_01all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/07_01-config-database.yml)
+
 
 Come si vede il nome dei database è dato con la seguente convenzione:
 
