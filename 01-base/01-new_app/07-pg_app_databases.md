@@ -1,13 +1,12 @@
-{id: 01-base-01-new_app-06-pg_app_databases}
-# Cap 1.6 -- PostgreSQL Databases per myapp
+# <a name="top"></a> Cap 1.7 - PostgreSQL Databases per myapp
 
 Creiamo i databases su postgreSQL in modo da attivare la connessione con la nostra applicazione Rails.
 
 
-Risorse interne:
 
-* 99-rails_references/Leanpub markua/01-from_lfm_to_markua
+## Risorse interne:
 
+- 99-rails_references/Leanpub markua/01-from_lfm_to_markua
 
 
 
@@ -20,7 +19,8 @@ L'errore è perché PostgreSQL non trova i databases di svilluppo e di test. Que
 
 
 {id: "01-01-06_01", caption: ".../config/database.yml -- codice 01", format: yaml, line-numbers: true, number-from: 24}
-```
+
+```yaml
 development:
   <<: *default
   database: bl6_0_development
@@ -293,5 +293,10 @@ production:
   password: <%= ENV['BL6_0_DATABASE_PASSWORD'] %>
 ```
 
-[indietro](#01-01-06_01)
 
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/06-new_app.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/08-ruby_version.md)
