@@ -153,7 +153,7 @@ Al momento lasciamo il gitignore di default.
 
 ## Versione iniziale v0.1.0
 
-Effettuiamo il primo commit ed eseguiamo anche il tag v.0.1.0 in accordo con la convenzione del [semantic versioning](http://semver.org)
+Effettuiamo il primo commit ed il primo tag.
 
 ```bash
 $ git add -A
@@ -162,8 +162,8 @@ $ git commit -m "new rails app"
 $ git tag v0.1.0
 ```
 
-> Il tag ci permette di distingure delle "pietre miliari" durante lo sviluppo. Tappe che vengono identificate da un cambio del numero della versione.
-> Il numero di versione segue le convenzioni del [semantic versioning](https://semver.org/).
+Il tag ci permette di distingure delle "pietre miliari" durante lo sviluppo. Tappe che vengono identificate da un cambio del numero della versione.
+Il numero di versione segue le convenzioni del [semantic versioning](https://semver.org/).
 
 Esempio:
 
