@@ -1,8 +1,6 @@
-{id: 01-base-02-git-01-git_story}
-# Cap 2.1 -- La storia di Git
+# <a name="top"></a> Cap 2.1 -- La storia di Git
 
 Version Control System. Un gestore che controlla le versioni del software in fase di sviluppo.
-
 
 
 
@@ -12,10 +10,9 @@ Un gestore che controlla le versioni del software in fase di sviluppo.
 
 Il version control system Git è utile per:
 
-1. tener traccia dell'andamento dei lavori. 
-2. avere tranquillità di poter tornare indietro con i branches
-3. pubblicare la nostra applicazione su Heroku
-
+- tener traccia dell'andamento dei lavori. 
+- avere tranquillità di poter tornare indietro con i branches
+- pubblicare la nostra applicazione su Heroku
 
 
 
@@ -38,3 +35,11 @@ Il progetto di Git è la sintesi dell'esperienza di Torvalds nel mantenere un gr
 git è fondamentale per andare in produzione su Heroku.
 
 Altro pregio è quello di permetterci di fare dei backups su Github
+
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/06-new_app.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/02-git/01-git_story.md)
