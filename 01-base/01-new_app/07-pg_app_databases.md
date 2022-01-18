@@ -23,17 +23,17 @@ development:
   database: bl6_0_development
 ```
 
-***codice 01 - .../config/database.yml - line:58***
+***- line:58***
 
-```
+```yaml
 test:
   <<: *default
   database: bl6_0_test
 ```
 
-***codice 01 - .../config/database.yml - line:81***
+***- line:81***
 
-```
+```yaml
 production:
   <<: *default
   database: bl6_0_production
