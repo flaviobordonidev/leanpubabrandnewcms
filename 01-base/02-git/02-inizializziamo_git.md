@@ -1,106 +1,107 @@
-{id: 01-base-02-git-02-inizializziamo_git}
-# Cap 2.2 -- Inizializziamo Git
+# <a name="top"></a> Cap 2.2 -- Inizializziamo Git
 
 Version Control System. Un gestore che controlla le versioni del software in fase di sviluppo.
 
 
-Risorse interne:
 
-* 99-rails_references-git_github-git
+## Risorse interne:
 
+- 99-rails_references-git_github-git
 
 
 
 ## Inizializziamo
 
-Entriamo nella directory del nostro nuovo applicativo
+Da rails 7.0 git è inizializzato in automatico. Se entriamo nella directory del nostro nuovo applicativo.
 
-{caption: "terminal", format: bash, line-numbers: false}
+```bash
+$ cd bl7_0
 ```
-$ cd myapp
-```
 
+Vediamo che c'è la cartella **nascosta** *.git*.
 
-Vediamo che non c'è le cartelle nascoste **.git**
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ ls -a
 ```
 
-inizializziamo git.  
+> Per vedere possiamo visualizzare i files nascosti dalla ruota dentata al lato del nome del workspace scegliendo dal menu a discesa la voce "show hidden files"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git init
-```
-
-I> Ricordiamoci di entrare nella directory del nostro nuovo applicativo "myapp" altrimenti si inizializza git per tutto il workspace e questo è un problema per quando si fa il push su heroku.
-
-Questo genera anche la cartella nascosta git ed i vari files tra cui gitignore per vedere possiamo visualizzare i files nascosti dalla ruota dentata al lato del nome del workspace scegliendo dal menu a discesa la voce "show hidden files"
-
-![Fig. 01](chapters/01-base/02-git/02_fig01-show_hidden_files.png)
-
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/02-git/02_fig01-show_hidden_files.png)
 
 Oppure da terminale
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ ls -a
-
-
-user_fb:~/environment/bl6_0 (master) $ ls -a
-.   .browserslistrc  .gitignore     Gemfile       README.md  app              bin     config.ru  lib  node_modules  postcss.config.js  storage  tmp     yarn.lock
-..  .git             .ruby-version  Gemfile.lock  Rakefile   babel.config.js  config  db         log  package.json  public             test     vendor
 ```
 
+Esempio:
+
+```bash
+user_fb:~/environment/bl7_0 (main) $ ls -a
+.   .git            .gitignore     Gemfile       README.md  app  config     db   log     storage  tmp
+..  .gitattributes  .ruby-version  Gemfile.lock  Rakefile   bin  config.ru  lib  public  test     vendor
+user_fb:~/environment/bl7_0 (main) $ 
+```
+
+Altrimenti avremmo dovuto inizializzare git con il comando **$ git init**
+
+> **ATTENZIONE:** 
+> Per l'inizializzazione ricordiamoci di entrare nella directory del nostro nuovo applicativo **bl7_0** altrimenti si inizializza git per tutto il workspace e questo è un problema per quando si fa il push su heroku.
+> Questo genera anche la cartella nascosta git ed i vari files tra cui gitignore.
 
 
 
 ## La configurazione globale 
 
 Verifichiamo la configurazione globale di git che è utilizzata per i repository esterni quali Github, Heroku, Gitbuchet, ...
-Per verificare le impostazioni di git eseguiamo
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git config -l
+```
 
-
-user_fb:~/environment/bl6_0 (master) $ git config -l
-core.editor=/usr/bin/nano
+Esempio:
+  
+```bash
+user_fb:~/environment/bl7_0 (main) $ git config -l
+credential.helper=!aws codecommit credential-helper $@
+credential.usehttppath=true
+core.editor=nano
 core.repositoryformatversion=0
 core.filemode=true
 core.bare=false
 core.logallrefupdates=true
+user_fb:~/environment/bl7_0 (main) $ 
 ```
-
 
 Essendo la prima configurazione del sistema, prima di usare Git, dobbiamo eseguire un paio di passaggi di configurazione una tantum.
-Queste sono le impostazioni di sistema, il che significa che dobbiamo eseguirle una sola volta per computer:
+Queste sono le impostazioni di sistema, il che significa che dobbiamo eseguirle una sola volta per computer.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git config --global user.name "My Name"
 $ git config --global user.email "my@email.com"
-$ git config -l
+```
 
+Esempio:
 
-user_fb:~/environment/myapp (master) $ git config --global user.name "My Name"
-user_fb:~/environment/myapp (master) $ git config --global user.email "my@email.com"
-user_fb:~/environment/bl6_0 (master) $ git config -l
-core.editor=/usr/bin/nano
+```bash
+user_fb:~/environment/bl7_0 (main) $ git config --global user.name "My Name"
+user_fb:~/environment/bl7_0 (main) $ git config --global user.email "my@email.com"
+user_fb:~/environment/bl7_0 (main) $ git config -l
+credential.helper=!aws codecommit credential-helper $@
+credential.usehttppath=true
+core.editor=nano
 user.name=My Name
 user.email=my@email.com
 core.repositoryformatversion=0
 core.filemode=true
 core.bare=false
 core.logallrefupdates=true
+user_fb:~/environment/bl7_0 (main) $ 
 ```
 
-Più avanti quando attiveremo GitHub useremo la stessa email usata qui.
-Tieni presente che il nome e l'indirizzo email che utilizzi nella configurazione di Git saranno disponibili in tutti i repository che rendi pubblici.
-
+> Più avanti quando attiveremo GitHub useremo la stessa email usata qui.
+>
+> Tieni presente che il nome e l'indirizzo email che utilizzi nella configurazione di Git saranno disponibili in tutti i repository che rendi pubblici.
 
 
 
