@@ -9,7 +9,7 @@ Risorse esterne:
 * [Altro bell'esmpio di Github Markdown Cheatsheet](https://github.com/tchapi/markdown-cheatsheet/blob/master/README.md)
 * [GitHub Flavored Markdown Spec](https://github.github.com/gfm/)
 * [Syntax highlighting](https://docs.github.com/en/github/writing-on-github/working-with-advanced-formatting/creating-and-highlighting-code-blocks)
-
+* [Bel cheatsheet molto lungo e completo](https://gist.github.com/ChrisTollefson/a3af6d902a74a0afd1c2d79aadc9bb3f)
 
 * [Per convertire in PDF](https://pandoc.org/installing.html)
 
