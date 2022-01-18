@@ -216,7 +216,7 @@ Clicchiamo sull'icona in alto a destra nel riquadro del preview per aprirlo su u
 
 Si apre un nuovo tab del browser sull'URL del root_path:
 
-- *https://<mycloud9path>.amazonaws.com*
+- *https://[mycloud9path].amazonaws.com*
 
 ![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/07_fig02-preview_working_new_tab.png)
 
