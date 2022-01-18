@@ -20,7 +20,7 @@ L'errore è perché PostgreSQL non trova i databases di svilluppo e di test. Que
 
 {id: "01-01-06_01", caption: ".../config/database.yml -- codice 01", format: yaml, line-numbers: true, number-from: 24}
 
-*.../config/database.yml - codice 01 - line:24*
+***codice 01 - .../config/database.yml - line:24***
 ```yaml
 development:
   <<: *default
