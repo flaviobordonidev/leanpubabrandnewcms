@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
+  root 'mockups#page_a'
 
-  root 'example_static_pages#page_a'
-  
-  get 'example_static_pages/page_a'
-  get 'example_static_pages/page_b'
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  get 'mockups/page_a'
+  get 'mockups/page_b'
+  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+
+  # Defines the root path route ("/")
+  # root "articles#index"
 end
