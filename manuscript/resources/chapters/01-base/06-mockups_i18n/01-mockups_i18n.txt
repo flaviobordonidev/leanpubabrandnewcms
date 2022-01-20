@@ -9,6 +9,9 @@ Il nome dei "segnaposto" li mettiamo in inglese per dare un'impronta world-wide 
 
 
 
+<p> Il testo verrà preso dal database ma alcuni messaggi sono passati dall'applicazione ed è quindi bene che vengano tradotti per essere pronti a supportare più lingue. </p>
+
+
 
 ## Apriamo il branch "Mockups Internazionalizazione"
 

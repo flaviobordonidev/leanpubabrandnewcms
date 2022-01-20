@@ -203,25 +203,32 @@ Esempi:
 
 ## Implementiamo le due pagine di mockups
 
-{caption: ".../views/mockups/page_a.html.erb -- codice 02", format: ruby, line-numbers: true, number-from: 1}
-```
-<h1> Benvenuti nella pagina  A </h1>
+***codice 02 - .../views/mockups/page_a.html.erb - line: 1***
+
+```html+erb
+<h1> Pagina A </h1>
+<p> Benvenuti nella pagina  A </p>
 <br>
-<p>  <%= link_to 'andiamo alla pagina B', mockups_page_b_path %> </p>
+<%= link_to 'andiamo alla pagina B', mockups_page_b_path %>
 ```
 
-![Fig. 01](chapters/01-base/03-mockups/01_fig01-views-mockups-page_a.png)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/03-mockups/01_02-views-mockups-page_a.html.erb)
+
+![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/03-mockups/01_fig04-views-mockups-page_a.png)
 
 
-{caption: ".../views/mockups/page_b.html.erb -- codice 03", format: ruby, line-numbers: true, number-from: 1}
+***codice 03 - .../views/mockups/page_b.html.erb - line: 1***
+
+```html
+<h1> Pagina B </h1>
+<p> Benvenuti nella pagina  B </p>
+<p> <%= link_to 'Torniamo alla pagina A',mockups_page_a_path %> </p>
+<p> <%= link_to 'Torniamo alla homepage', root_path %> </p>
 ```
-<h1> Benvenuti nella pagina B </h1>
-<p>  <%= link_to 'Torniamo alla pagina A', mockups_page_a_path %> </p>
-<p>  <%= link_to 'Torniamo alla homepage', root_path %> </p>
-```
 
-![Fig. 02](chapters/01-base/03-mockups/01_fig02-views-mockups-page_b.png)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/03-mockups/01_03-views-mockups-page_b.html.erb)
 
+![fig05](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/03-mockups/01_fig05-views-mockups-page_b.png)
 
 
 
@@ -229,27 +236,24 @@ Esempi:
 
 Attiviamo il webserver
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails s
 ```
 
 e vediamo i vari URLs sul nostro browser:
 
-* https://mycloud9path.amazonaws.com
-* https://mycloud9path.amazonaws.com/mockups/page_a
-* https://mycloud9path.amazonaws.com/mockups/page_b
+- https://mycloud9path.amazonaws.com
+- https://mycloud9path.amazonaws.com/mockups/page_a
+- https://mycloud9path.amazonaws.com/mockups/page_b
 
 adesso invece di scrivere sull'URL, per spostarsi tra le pagine, possiamo cliccare sui links.
 
 
 
-
 ## Salviamo su git
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git add -A
 $ git commit -m "implement mockups"
 ```
@@ -259,37 +263,21 @@ $ git commit -m "implement mockups"
 
 ## Chiudiamo il branch
 
-se abbiamo finito le modifiche e va tutto bene:
+Se abbiamo finito le modifiche e va tutto bene:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout master
 $ git merge msp
 $ git branch -d msp
 ```
 
+Esempio:
 
-
-
-## Il codice del capitolo
-
-
-
-
-{id: "01-03-01_01all", caption: ".../config/routes.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
+```bash
+$ git checkout master
+$ git merge msp
+$ git branch -d msp
 ```
-Rails.application.routes.draw do
-
-  root 'mockups#page_a'
-
-  get 'mockups/page_a'
-  get 'mockups/page_b'
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-end
-```
-
-[indietro](#01-03-01_01)
-
 
 
 
