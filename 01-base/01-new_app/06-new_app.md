@@ -1,4 +1,5 @@
 # <a name="top"></a> Cap 1.6 -- Nuova app Rails su ambiente aws Cloud9
+
 Abbiamo preparato l'ambiente c9 e adesso creaimo una nuova app Rails
 
 Before you install Rails, you should check to make sure that your system has the proper prerequisites installed. These include:

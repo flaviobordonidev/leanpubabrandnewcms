@@ -1,20 +1,32 @@
-{id: 01-base-03-mockups-01-mockups}
-# Cap 3.1 -- Mockups
+# <a name="top"></a> Cap 3.1 - Mockups
 
 I mockups sono delle pagine statiche di esempio usate per verificare la GUI (Graphic User Interface).
 Servono principalmente in fase di sviluppo e sono un buon modo di interfacciamento tra Graphic Designer e Code Developper.
 
 
-
  
 ## Verifichiamo dove eravamo rimasti
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git status
 $ git log
 ```
 
+Esempio:
+
+```bash
+user_fb:~/environment $ cd bl7_0/
+user_fb:~/environment/bl7_0 (main) $ git status
+On branch main
+nothing to commit, working tree clean
+user_fb:~/environment/bl7_0 (main) $ git log
+commit d64bcf1dfc29ecacc5652754eae6a40b1ad5b579 (HEAD -> main, tag: v0.1.0)
+Author: Flavio Bordoni Dev <flavio.bordoni.dev@gmail.com>
+Date:   Tue Jan 18 14:37:49 2022 +0000
+
+    new rails app
+user_fb:~/environment/bl7_0 (main) $ 
+```
 
 
 
@@ -22,41 +34,44 @@ $ git log
 
 Assicuriamoci di essere nella directory della nostra applicazione Rails e creiamo il ramo con git.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ cd ~/environment/bl6_0
+```bash
+$ cd ~/environment/bl7_0
 $ git checkout -b msp
-
-
-user_fb:~/environment/bl6_0 (master) $ cd ~/environment/bl6_0
-user_fb:~/environment/bl6_0 (master) $ git checkout -b msp
-Switched to a new branch 'msp'
-user_fb:~/environment/bl6_0 (msp) $ 
 ```
 
+Esempio:
+
+```bash
+user_fb:~/environment/bl7_0 (main) $ pwd
+/home/ubuntu/environment/bl7_0
+user_fb:~/environment/bl7_0 (main) $ git checkout -b msp
+Switched to a new branch 'msp'
+user_fb:~/environment/bl7_0 (msp) $ 
+```
+
+> Nell'esempio non eseguiamo il comando *cd ...* perché siamo già nella directory giusta come vediamo con il comando *pwd* (present working directory).
 
 
 
 ## Creiamo il controller e le views per i mockups
 
-non usiamo né il " generate scaffold " né il " generate model " perché le pagine di mockups non usano dati archiviati nel database.
-Usiamo il " generate controller " e gli associamo le azioni " page_a " e " page_b". 
+Non usiamo né il **generate scaffold** né il **generate model** perché le pagine di mockups non usano dati archiviati nel database.
+Invece usiamo il **generate controller** e gli associamo le azioni **page_a** e **page_b**. 
 (non gli associamo le classiche azioni restful: index, show, edit, new, ...)
 
-I> ATTENZIONE: con "rails generate controller ..." -> usiamo il PLURALE ed otteniamo un controller al plurale.
+> ATTENZIONE: con "rails generate controller ..." -> usiamo il PLURALE ed otteniamo un controller al plurale.
 
 Poiché sono più pagine statiche usiamo il nome del controller al plurale anche se non abbiamo un elenco di elementi da visualizzare
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails g controller Mockups page_a page_b
+```
 
-
-user_fb:~/environment/bl6_0 (msp) $ rails g controller Mockups page_a page_b
-Running via Spring preloader in process 28147
+```bash
+user_fb:~/environment/bl7_0 (msp) $ rails g controller Mockups page_a page_b
       create  app/controllers/mockups_controller.rb
        route  get 'mockups/page_a'
-get 'mockups/page_b'
+              get 'mockups/page_b'
       invoke  erb
       create    app/views/mockups
       create    app/views/mockups/page_a.html.erb
@@ -66,13 +81,10 @@ get 'mockups/page_b'
       invoke  helper
       create    app/helpers/mockups_helper.rb
       invoke    test_unit
-      invoke  assets
-      invoke    scss
-      create      app/assets/stylesheets/mockups.scss
+user_fb:~/environment/bl7_0 (msp) $ 
 ```
 
-non abbiamo nessun migrate perché non ci interfacciamo con il database.
-
+> Non abbiamo nessun migrate perché non ci interfacciamo con il database.
 
 
 
@@ -80,18 +92,19 @@ non abbiamo nessun migrate perché non ci interfacciamo con il database.
 
 Vediamo la nostra applicazione rails funzionante. Attiviamo il webserver
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails s
 ```
 
 e vediamo i vari URLs sul nostro browser:
 
-* https://mycloud9path.amazonaws.com
-* https://mycloud9path.amazonaws.com/mockups/page_a
-* https://mycloud9path.amazonaws.com/mockups/page_b
+- https://mycloud9path.amazonaws.com
+- https://mycloud9path.amazonaws.com/mockups/page_a
+- https://mycloud9path.amazonaws.com/mockups/page_b
 
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/03-mockups/01_fig01-views-mockups-page_a.png)
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/03-mockups/01_fig02-views-mockups-page_b)
 
 
 
