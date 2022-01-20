@@ -219,7 +219,7 @@ Esempi:
 
 ***codice 03 - .../views/mockups/page_b.html.erb - line: 1***
 
-```html
+```html+erb
 <h1> Pagina B </h1>
 <p> Benvenuti nella pagina  B </p>
 <p> <%= link_to 'Torniamo alla pagina A',mockups_page_a_path %> </p>
