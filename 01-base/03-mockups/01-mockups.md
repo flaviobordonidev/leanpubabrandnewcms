@@ -214,8 +214,6 @@ Esempi:
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/03-mockups/01_02-views-mockups-page_a.html.erb)
 
-![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/03-mockups/01_fig04-views-mockups-page_a.png)
-
 
 ***codice 03 - .../views/mockups/page_b.html.erb - line: 1***
 
@@ -227,8 +225,6 @@ Esempi:
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/03-mockups/01_03-views-mockups-page_b.html.erb)
-
-![fig05](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/03-mockups/01_fig05-views-mockups-page_b.png)
 
 
 
@@ -248,6 +244,10 @@ e vediamo i vari URLs sul nostro browser:
 - https://mycloud9path.amazonaws.com/mockups/page_b
 
 adesso invece di scrivere sull'URL, per spostarsi tra le pagine, possiamo cliccare sui links.
+
+![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/03-mockups/01_fig04-views-mockups-page_a.png)
+
+![fig05](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/03-mockups/01_fig05-views-mockups-page_b.png)
 
 
 
