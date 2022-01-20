@@ -104,7 +104,7 @@ e vediamo i vari URLs sul nostro browser:
 - https://mycloud9path.amazonaws.com/mockups/page_b
 
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/03-mockups/01_fig01-views-mockups-page_a.png)
-![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/03-mockups/01_fig02-views-mockups-page_b)
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/03-mockups/01_fig02-views-mockups-page_b.png)
 
 
 
@@ -113,8 +113,9 @@ e vediamo i vari URLs sul nostro browser:
 
 Aggiorniamo il file routes per mettere l'homepage come pagina principale (root)
 
-{id: "01-03-01_01", caption: ".../config/routes.rb -- codice 01", format: ruby, line-numbers: true, number-from: 3}
-```
+***codice 01 - .../config/routes.rb - line: 3***
+
+```ruby
   root 'mockups#page_a'
 ```
 
