@@ -258,6 +258,20 @@ $ git add -A
 $ git commit -m "implement mockups"
 ```
 
+Esempio:
+
+```bash
+user_fb:~/environment/bl7_0 (msp) $ git add -A
+user_fb:~/environment/bl7_0 (msp) $ git commit -m "implement mockups"
+[msp 92f76c7] implement mockups
+ 6 files changed, 34 insertions(+)
+ create mode 100644 app/controllers/mockups_controller.rb
+ create mode 100644 app/helpers/mockups_helper.rb
+ create mode 100644 app/views/mockups/page_a.html.erb
+ create mode 100644 app/views/mockups/page_b.html.erb
+ create mode 100644 test/controllers/mockups_controller_test.rb
+user_fb:~/environment/bl7_0 (msp) $ 
+```
 
 
 
@@ -266,17 +280,42 @@ $ git commit -m "implement mockups"
 Se abbiamo finito le modifiche e va tutto bene:
 
 ```bash
-$ git checkout master
+$ git checkout main
 $ git merge msp
 $ git branch -d msp
 ```
 
+> Prima git andava inizializzato a parte ed il ramo principale era chiamato **master**.
+> Da Rails 7 lo hanno integrato nell'installazione ed il ramo principale lo hanno chiamato **main**.
+
 Esempio:
 
 ```bash
-$ git checkout master
-$ git merge msp
-$ git branch -d msp
+user_fb:~/environment/bl7_0 (msp) $ git checkout main
+Switched to branch 'main'
+user_fb:~/environment/bl7_0 (main) $ git merge msp
+Updating d64bcf1..92f76c7
+Fast-forward
+ app/controllers/mockups_controller.rb       |  7 +++++++
+ app/helpers/mockups_helper.rb               |  2 ++
+ app/views/mockups/page_a.html.erb           |  4 ++++
+ app/views/mockups/page_b.html.erb           |  4 ++++
+ config/routes.rb                            |  4 ++++
+ test/controllers/mockups_controller_test.rb | 13 +++++++++++++
+ 6 files changed, 34 insertions(+)
+ create mode 100644 app/controllers/mockups_controller.rb
+ create mode 100644 app/helpers/mockups_helper.rb
+ create mode 100644 app/views/mockups/page_a.html.erb
+ create mode 100644 app/views/mockups/page_b.html.erb
+ create mode 100644 test/controllers/mockups_controller_test.rb
+user_fb:~/environment/bl7_0 (main) $ git branch
+* main
+  msp
+user_fb:~/environment/bl7_0 (main) $ git branch -d msp
+Deleted branch msp (was 92f76c7).
+user_fb:~/environment/bl7_0 (main) $ git branch
+* main
+user_fb:~/environment/bl7_0 (main) $ 
 ```
 
 
@@ -285,4 +324,4 @@ $ git branch -d msp
 
 [<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/02-git/03-daily_routine.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/03-mockups/01-mockups.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/04-heroku/01-heroku_story.md)

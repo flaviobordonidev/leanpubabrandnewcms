@@ -34,7 +34,10 @@ Il progetto di Git è la sintesi dell'esperienza di Torvalds nel mantenere un gr
 
 git è fondamentale per andare in produzione su Heroku.
 
-Altro pregio è quello di permetterci di fare dei backups su Github.
+Altro pregio è quello di permetterci di fare dei backups su Github (o su qualsiasi altro repository remoto che supporta git).
+
+> git lavora in maniera indipendente. Infatti più avanti andremo in produzione su Heroku senza usare Github.
+> Spesso lavorano insieme perché Github oltre a fare un backup ha un'interfaccia web user friendly per vedere le archiviazioni fatte con git.
 
 
 
