@@ -264,3 +264,11 @@ end
 
 [indietro](#01-03-01_01)
 
+
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/02-git/03-daily_routine.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/03-mockups/01-mockups.md)
