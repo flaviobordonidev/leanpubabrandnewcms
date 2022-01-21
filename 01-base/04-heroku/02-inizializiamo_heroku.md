@@ -1,88 +1,121 @@
-{id: 01-base-04-heroku-02-inizializiamo_heroku}
-# Cap 4.2 -- Andiamo in produzione su Heroku
+# <a name="top"></a> Cap 4.2 - Andiamo in produzione su Heroku
 
 Pubblichiamo la nostra applicazionie sull'ambiente di produzione Heroku.
 
 Andiamo subito in produzione così risolviamo di volta in volta gli eventuali problemi che si presentano senza essere costretti a fare un troubleshooting su tutto l'applicativo.
 
-Risorse interne:
 
-* 99-rails_references/Heroku/
 
+## Risorse interne:
+
+- 99-rails_references/Heroku/
 
 
  
 ## Verifichiamo dove eravamo rimasti
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+Vediamo dove eravamo rimasti con la programmazione.
+
+```bash
 $ git status
 $ git log
 ```
 
+Esempio:
+
+```bash
+user_fb:~/environment $ cd bl7_0/
+user_fb:~/environment/bl7_0 (main) $ git status
+On branch main
+nothing to commit, working tree clean
+user_fb:~/environment/bl7_0 (main) $ git log
+commit 92f76c76c69a9ffd3381c34bdca46ba184b3c802 (HEAD -> main)
+Author: Flavio Bordoni Dev <flavio.bordoni.dev@gmail.com>
+Date:   Thu Jan 20 22:43:39 2022 +0000
+
+    implement mockups
+
+commit d64bcf1dfc29ecacc5652754eae6a40b1ad5b579 (tag: v0.1.0)
+Author: Flavio Bordoni Dev <flavio.bordoni.dev@gmail.com>
+Date:   Tue Jan 18 14:37:49 2022 +0000
+
+    new rails app
+user_fb:~/environment/bl7_0 (main) $ 
+```
+
+Siamo sul branch principale ed abbiamo già inviato tutto il codice su git con il commit *implement mockups*.
 
 
 
 ## Apriamo il branch "Pubblichiamo in Produzione"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+Siamo pronti ad inserire nuovo codice e lo facciamo su un nuovo ramo (branch) di git.
+
+```bash
 $ git checkout -b pp
 ```
 
 
 
-
 ## Verifichiamo se abbiamo Heroku installato su aws Cloud9  
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ heroku --version
+```
 
+Esempio:
 
-user_fb:~/environment/bl6_0 (master) $ heroku --version
+```bash
+user_fb:~/environment/bl7_0 (pp) $ heroku --version
+
 Command 'heroku' not found, but can be installed with:
+
 sudo snap install heroku
+
+user_fb:~/environment/bl7_0 (pp) $ 
 ```
 
 Nel nostro caso non è installato.
 
 
 
-
-
 ## Creiamoci un account Heroku  
 
-Per prima cosa creiamoci un account su www.heroku.com
+Per prima cosa creiamoci un account su **www.heroku.com**.
 
-![fig. 01](chapters/01-base/04-heroku/02_fig01-heroku_signup.png)
-
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/04-heroku/02_fig01-heroku_signup.png)
 
 
 
 ## Installiamo Heroku CLI
 
+Come abbiamo già fatto per PostgreSQL, anche Heroku lo installiamo sulla cartella principale di aws Cloud9: **/environment**.
 
-Come abbiamo già fatto per PostgreSQL, anche Heroku lo installiamo sulla cartella principale di aws Cloud9: "/environment".
 Assicuriamoci di essere sulla cartella principale
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ cd ~/environment
+```
 
+Esempio:
 
-user_fb:~/environment/bl6_0 (pp) $ cd ~/environment
+```bash
+user_fb:~/environment/bl7_0 (pp) $ cd ~/environment
 user_fb:~/environment $ 
 ```
 
 Per installare Heroku dobbiamo scaricare ed installare la "heroku CLI" (ex heroku-toolbelt).
 Seguendo le indicazioni di [Heroku](https://devcenter.heroku.com/articles/heroku-cli) il comando che dobbiamo usare da aws cloud9, che è un "docker container" è questo:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo su -
 -> curl https://cli-assets.heroku.com/install.sh | sh
 -> exit
+```
+
+Esempio:
+
+```bash
 
 
 user_fb:~/environment $ sudo su -
