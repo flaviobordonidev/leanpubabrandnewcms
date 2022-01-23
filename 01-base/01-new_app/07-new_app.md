@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 1.6 -- Nuova app Rails su ambiente aws Cloud9
+# <a name="top"></a> Cap 1.7 -- Nuova app Rails su ambiente aws Cloud9
 
 Abbiamo preparato l'ambiente c9 e adesso creaimo una nuova app Rails
 

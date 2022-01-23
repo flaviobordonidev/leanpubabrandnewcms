@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 1.5 -- Installiamo PostgreSQL su Amazon Linux
+# <a name="top"></a> Cap 1.6 -- Installiamo PostgreSQL su Amazon Linux
 
 > Possiamo **saltare** questo capitolo.
 > Questa procedura è per ambienti di Cloud9 (istanze EC2) con sistema operativo **Amazon Linux**

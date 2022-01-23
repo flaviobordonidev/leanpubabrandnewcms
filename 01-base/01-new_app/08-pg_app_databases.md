@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 1.7 - PostgreSQL Databases per myapp
+# <a name="top"></a> Cap 1.8 - PostgreSQL Databases per myapp
 
 Creiamo i databases su postgreSQL in modo da attivare la connessione con la nostra applicazione Rails.
 

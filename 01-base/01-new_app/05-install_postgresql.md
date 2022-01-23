@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 1.4 - Installiamo PostgreSQL
+# <a name="top"></a> Cap 1.5 - Installiamo PostgreSQL
 
 > Questa procedura è per ambienti di Cloud9 (istanze EC2) con sistema operativo **Ubuntu**
 
@@ -10,23 +10,27 @@ Usiamo PostgreSQL perché è lo stesso database che usa Heroku; e noi useremo He
 
 
 
-
 ## Risorse interne:
 
-* 99-rails_references/postgresql/01-install
+- [99-rails_references/postgresql/01-install]
 
+
+
+## Risorse esterne
+
+- [non me la ricordo](#)
 
 
 
 ## Verifichiamo che postgreSQL non è installato
 
-Comando per avviare postgres server
+Proviamo ad avviare postgres server da terminale.
 
 ```bash
 $ sudo service postgresql start
 ```
 
-Risultato su finestra terminal:
+Esempio:
 
 ```bash
 user_fb:~/environment $ sudo service postgresql start
@@ -36,11 +40,9 @@ user_fb:~/environment $
 
 
 
-
 ## Installiamo PostgreSQL
 
-Siamo su instance EC2 con OS Ubuntu che usa "apt" come packet manager.
-Da terminal eseguiamo i comandi:
+Poiche la nostra *istanza EC2* ha *OS Ubuntu* usiamo il suo packet manager *apt* per installare PostgreSQL.
 
 ```bash
 $ sudo apt update
@@ -53,16 +55,15 @@ Esempio:
 ```bash
 user_fb:~/environment $ sudo apt update
 Hit:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic InRelease
-Get:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic-updates InRelease [88.7 kB]
-Get:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic-backports InRelease [74.6 kB]
-Get:4 http://security.ubuntu.com/ubuntu bionic-security InRelease [88.7 kB]                         
-Hit:5 https://download.docker.com/linux/ubuntu bionic InRelease                                                 
-Fetched 252 kB in 1s (502 kB/s)                                                                                 
+Get:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic-updates InRelease [88.7 kB]                
+Get:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic-backports InRelease [74.6 kB]              
+Hit:4 https://download.docker.com/linux/ubuntu bionic InRelease                                                                  
+Get:5 http://security.ubuntu.com/ubuntu bionic-security InRelease [88.7 kB]                                                      
+Fetched 252 kB in 1s (457 kB/s)                                                 
 Reading package lists... Done
 Building dependency tree       
 Reading state information... Done
 8 packages can be upgraded. Run 'apt list --upgradable' to see them.
-
 user_fb:~/environment $ sudo apt install postgresql postgresql-contrib libpq-dev
 Reading package lists... Done
 Building dependency tree       
@@ -76,7 +77,7 @@ The following NEW packages will be installed:
 0 upgraded, 10 newly installed, 0 to remove and 8 not upgraded.
 Need to get 5563 kB of archives.
 After this operation, 22.1 MB of additional disk space will be used.
-Do you want to continue? [Y/n] y
+Do you want to continue? [Y/n] y 
 Get:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpq5 amd64 10.19-0ubuntu0.18.04.1 [108 kB]
 Get:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpq-dev amd64 10.19-0ubuntu0.18.04.1 [219 kB]
 Get:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 libsensors4 amd64 1:3.4.0-4 [28.8 kB]
@@ -87,10 +88,10 @@ Get:7 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic-updates/main amd64 p
 Get:8 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic-updates/main amd64 postgresql all 10+190ubuntu0.1 [5884 B]
 Get:9 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic-updates/main amd64 postgresql-contrib all 10+190ubuntu0.1 [5896 B]
 Get:10 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic-updates/main amd64 sysstat amd64 11.6.1-1ubuntu0.1 [295 kB]
-Fetched 5563 kB in 0s (33.6 MB/s)
+Fetched 5563 kB in 0s (33.9 MB/s)
 Preconfiguring packages ...
 Selecting previously unselected package libpq5:amd64.
-(Reading database ... 104693 files and directories currently installed.)
+(Reading database ... 132799 files and directories currently installed.)
 Preparing to unpack .../0-libpq5_10.19-0ubuntu0.18.04.1_amd64.deb ...
 Unpacking libpq5:amd64 (10.19-0ubuntu0.18.04.1) ...
 Selecting previously unselected package libpq-dev.
@@ -180,9 +181,28 @@ user_fb:~/environment $
 
 
 
+## Verifichiamo quanto spazio disco ci resta
+
+```bash
+$ df -hT /dev/xvda1
+```
+
+Esempio:
+
+```bash
+user_fb:~/environment $ df -hT /dev/xvda1
+Filesystem     Type  Size  Used Avail Use% Mounted on
+/dev/xvda1     ext4   12G  8.6G  3.0G  75% /
+user_fb:~/environment $ 
+```
+
+Abbiamo ancora **3.0GB** disponibili.
+
+
+
 ## Impostiamo il file di configurazione di postgreSQL per collegarsi via localhost:5432
 
-Impostiamo il collegamento di rails a postgresql con l'indirizzo **localhost** e la porta **5432**
+Impostiamo il collegamento di rails a postgresql con l'indirizzo **localhost** e la porta **5432**.
 
 ```bash
 $ sudo vim /etc/postgresql/10/main/postgresql.conf
@@ -241,14 +261,18 @@ Invece se ci logghiamo su AWS come utente IAM *user_fb* nel prompt del terminal 
 user_fb:~/environment $
 ```
 
-Ma in **entrambi** i casi l'*id* dell'utente registrato è ***ubuntu*** e questo lo verifichiamo con il seguente comando: 
+Ma in **entrambi** i casi l'*id* dell'utente registrato è ***ubuntu*** e questo lo verifichiamo il comando ***whoami***. 
 
-{caption: "terminal", format: bash, line-numbers: false}
 ```bash
 $ whoami
+```
 
+Esempio:
+
+```bash
 user_fb:~/environment $ whoami
 ubuntu
+user_fb:~/environment $ 
 ```
 
 
@@ -294,7 +318,7 @@ host    all             ubuntu          127.0.0.1/0             trust
 
 ## Riavviamo il servizio postgreSQL
 
-Start / Restart postgres server
+Facciamo partire/ripartire il server postgres
 
 ```bash
 $ sudo service postgresql start
@@ -308,10 +332,11 @@ $ sudo service postgresql restart
 
 
 
-
 ## Agiorniamo gli utenti di postgreSQL
-Cambiamo la password per l'utente di default di postgreSQL ed aggiungiamo l'utente *ubuntu*
-Logghiamoci su PostgreSQL come utente **postgres** che è l'utente di default, e gli cambiamo la password. Inoltre aggiungiamo l'utente **ubuntu**.
+Cambiamo la password per l'utente di default di postgreSQL ed aggiungiamo l'utente *ubuntu*.
+
+- Logghiamoci su PostgreSQL come utente **postgres** che è l'utente di default, e gli cambiamo la password. 
+- Inoltre aggiungiamo l'utente **ubuntu**.
 
 ```bash
 $ sudo su - postgres
@@ -360,8 +385,10 @@ Una volta entrati potremmo creare il nostro proprio database e lavorare sulle ta
 
 Ma per quanto riguarda il nostro tutorial abbiamo già tutto quello che ci serve per continuare.
 
+
+
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/03-aws_cloud9_new_environment.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/04-aws_c9_more_disk_space.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/05-install_postgresql_on_ec2_amazon.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/06-install_postgresql_on_ec2_amazon.md)
