@@ -89,11 +89,11 @@ Selezioniamo la nostra istanza
 
 Tramite la colonna "name" identifichiamo l'istanza EC2 relativa alla nostra istanza Cloud9.
 
-Tutti i nomi delle istanze cloud9 hanno la struttura: ***aws-cloud9-***+***<nome istanza cloud9>***+***<id>***
+Tutti i nomi delle istanze cloud9 hanno la struttura: ***aws-cloud9-<nome istanza cloud9>-<id istanza>***
 
 Ad esempio: ***aws-cloud9-bl7-0-9ddf2588f4aa43569b656b87dd5ff771***
 
-Trovata la "riga" che ci interessa copiamoci il suo **instance id**, normalmente è la colonna a fianco.
+Trovata la "riga" che ci interessa copiamoci il suo **id istanza**, normalmente è la colonna a fianco.
 
 Ad esempio: **i-01e49aba1661a2ef4**
 
@@ -105,7 +105,7 @@ Dal menu *Instance State* selezioniamo la voce *Stop istance*
 
 Andiamo su service -> EC2 -> ELASTIC BLOCK STORE -> Volumes
 
-Nel campo di ricerca inseriamo l'*instance id* 
+Nel campo di ricerca inseriamo l'*id istanza* 
 
 ![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/09_fig03-aws_EC2_elastic_block_store_volumes.png)
 
