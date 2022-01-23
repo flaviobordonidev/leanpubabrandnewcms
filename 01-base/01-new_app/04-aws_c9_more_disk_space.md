@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 1.8 - Più spazio disco su sessione c9
+# <a name="top"></a> Cap 1.4 - Più spazio disco su sessione c9
 
 Lo spazio disco allocato inizialmente è poco per avere un ambiente di sviluppo locale Rails.
 Quindi lo aumentiamo.
@@ -55,8 +55,9 @@ Filesystem     Type  Size  Used Avail Use% Mounted on
 user_fb:~/environment $ 
 ```
 
-Vediamo che dei 10GB di volume totale abbiamo 9.7GB nella partizione *root* (Mounted on **/**).
-E che ci restano 1.2GB di spazio disponibile (Avail).
+Dei **10GB** di volume totale abbiamo **9.7GB** nella partizione *root* ossia quella *Mounted on* **/**.
+
+E ci restano **1.2GB** di spazio disponibile (colonna *Avail*).
 
 Sono pochi perché installeremo diverse applicazioni per preparare il nostro ambiente di sviluppo.
 Quindi ingrandiamo il nostro volume portandolo a 12GB.
@@ -65,16 +66,14 @@ Quindi ingrandiamo il nostro volume portandolo a 12GB.
 
 ## Errore di spazio disco
 
-Se non aumentiamo lo spazio disco arriviamo presto al seguente messaggio di avvertimento.
-Dall'interfaccia aws cloud9 riceviamo il messaggio di avviso che stiamo per terminare lo spazio disponibile.
+Se non aumentiamo lo spazio disco arriveremo al seguente messaggio di avvertimento che stiamo per terminare lo spazio disponibile.
 
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/04_fig01-aws_c9_running_out_of_space.png)
 
 Se non interveniamo **SUBITO** rischiamo di arrivare a non avere più spazio disponibile.
 E quando non abbiamo più spazio la procedura di aumentare il volume rischia di non andare a buon fine.
 
-Siccome mi è successo ho deciso di inserire sin da subito l'aumento dello spazio disco. ^_^
-
+> Siccome mi è successo ho deciso di inserire sin da subito l'aumento dello spazio disco. ^_^
 
 
 
@@ -84,9 +83,9 @@ Dalla sessione aws c9 che stiamo usando (bl7-0), facciamo clic sulla *U* in alto
 
 ![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/04_fig02-aws_c9_manage_ec2.png)
 
-Siamo portati direttamente su *services -> EC2 -> INSTANCES -> instances*
+Siamo portati direttamente su: ***Services -> EC2 -> INSTANCES -> instances***
 
-![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/09_fig03-aws_EC2_instance.png)
+![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/04_fig03-aws_EC2_instance.png)
 
 
 Vediamo qual è la *macchina virtuale* aws EC2 su cui sta girando la sessione *aws cloud9* che stiamo usando per **bl7-0**. 
