@@ -85,7 +85,7 @@ Dalla sessione aws c9 che stiamo usando (bl7-0), facciamo clic sulla *U* in alto
 
 Siamo portati direttamente su: ***Services -> EC2 -> INSTANCES -> instances***
 
-![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/04_fig03-aws_EC2_instance.png)
+![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/04_fig03-aws_ec2_instance.png)
 
 
 Vediamo qual è la *macchina virtuale* aws EC2 su cui sta girando la sessione *aws cloud9* che stiamo usando per **bl7-0**. 
@@ -115,7 +115,7 @@ Andiamo su service -> EC2 -> ELASTIC BLOCK STORE -> Volumes
 
 Nel campo di ricerca inseriamo l'*id istanza* 
 
-![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/09_fig03-aws_EC2_elastic_block_store_volumes.png)
+![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/09_fig03-aws_ec2_elastic_block_store_volumes.png)
 
 Sul volume trovato eseguiamo:
 
@@ -123,7 +123,7 @@ Action -> Modify Volume
 
 E cambiamo la dimensione da "10" a "12". In questo modo ampliamo dai 10G di default a 12G.
 
-![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/09_fig04-aws_EC2_resize_volume.png)
+![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/09_fig04-aws_ec2_resize_volume.png)
 
 > Attenzione:
 > Questa procedura a volte richiede del tempo prima che le modifiche diventino effettive e questo può trarre in inganno e far pensare che non abbia funzionato. 
