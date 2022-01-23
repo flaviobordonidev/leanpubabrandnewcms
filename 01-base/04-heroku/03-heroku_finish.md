@@ -1,20 +1,27 @@
-{id: 01-base-04-heroku-03-heroku_finish}
-# Cap 4.3 -- Perfezioniamo la configurazione di Heroku
+# <a name="top"></a> Cap 4.3 - Perfezioniamo la configurazione di Heroku
 
 Ottimizziamo la nostra app per l'ambiente di produzione Heroku.
 
 
-Risorse interne:
 
-* 99-rails_references/Heroku/
+## Risorse interne
 
+- 99-rails_references/Heroku/
+
+
+
+## Risorse esterne
+
+Questo capitolo segue quanto riportato nella documentazione di Heroku:
+
+- [Heroku: getting started with rails7](https://devcenter.heroku.com/articles/getting-started-with-rails7)
 
 
  
 ## Verifichiamo dove eravamo rimasti
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+
+```bash
 $ git status
 $ git log
 ```
@@ -31,19 +38,23 @@ Continuiamo con il branch aperto nel capitolo precedente
 
 ## Vediamo i warnings
 
-Pubblicando su heroku abbiamo ricevuto diversi avvisi di miglioramenti da fare. Per molti di questi sono anche riportate le pagine web di tutorial di heroku.
+Pubblicando su heroku abbiamo ricevuto diversi avvisi di miglioramenti da fare. Molti di questi sono anche riportate le pagine web di tutorial di heroku.
+Rivediamo qui i messaggi di miglioramenti.
+In realtà è solo UNO ^_^:
 
-{id: "01-04-03_01", caption: "terminal -- codice 01", format: bash, line-numbers: false}
-```
-remote: Building source:
+```bash
+remote: ###### WARNING:
 remote: 
-remote:  !     Warning: Multiple default buildpacks reported the ability to handle this app. The first buildpack in the list below will be used.
-remote:                         Detected buildpacks: Ruby,Node.js
-remote:                         See https://devcenter.heroku.com/articles/buildpacks#buildpack-detect-order
+remote:        No Procfile detected, using the default web server.
+remote:        We recommend explicitly declaring how to boot your server process via a Procfile.
+remote:        https://devcenter.heroku.com/articles/ruby-default-web-server
+remote: 
 ```
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+
+Invece nell'installazione di Rails 6 ne avevamo ricevuti altri:
+
+```bash
 remote:        Ruby Sass is deprecated and will be unmaintained as of 26 March 2019.
 remote:        
 remote:        * If you use Sass as a command-line tool, we recommend using Dart Sass, the new
@@ -56,15 +67,13 @@ remote:        * For more details, please refer to the Sass blog:
 remote:          http://sass.logdown.com/posts/7081811
 ```
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 remote:        Warning: the running version of Bundler (1.15.2) is older than the version that created the lockfile (1.17.1). We suggest you upgrade to the latest version of Bundler by running `gem install bundler`.
 remote:        The latest bundler is 2.0.0.pre.2, but you are currently running 1.15.2.
 remote:        To update, run `gem install bundler --pre`
 ```
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 remote: -----> Detecting rails configuration
 remote: 
 remote: ###### WARNING:
@@ -97,61 +106,78 @@ remote:        We recommend explicitly declaring how to boot your server process
 remote:        https://devcenter.heroku.com/articles/ruby-default-web-server
 ```
 
-[tutto il codice](#01-04-03_01all)
 
 Di questi ultimi tre WARNING: 
 Il primo ed il secondo relativi ad active_storage li risolviamo più avanti quando implementiamo l'upload dei files.
+Ma su Rails 7. Non ci sono proprio arrivati questi messaggi d'errore perché è integrato meglio come ci accorgeremo più avanti.
+
 Il terzo relativo al Procfile lo risolviamo fra poco in questo capitolo.
+(E questo è effettivamente l'unico avviso che abbiamo avuto con Rails 7.)
 
 
 
 ## Vediamo la log
 
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ heroku logs
 ```
 
 Se vogliamo più dettagli
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ heroku logs --tail
 ```
 
+in realtà l'opzione *--tail* lascia la log attiva e mostra nuove voci in tempo reale.
 
 
 
 ## Il webserver puma
 
-Siamo arrivati a gestire il terzo warning; quello relativo al Procfile. Questo è il file con la configurazione per il webserver Puma.
+Ok, finalmente ci prendiamo cura del warning relativo al Procfile. Questo è il file con la configurazione per il webserver Puma.
 
-Rails 5.2 ha di default nel Gemfile il webserver puma che quindi abbiamo già installato con il precedente " $ bundle install ".
+Rails 7 ha di default nel Gemfile il webserver puma che quindi abbiamo già installato con il precedente ***$ bundle install***.
 
+***codice 01 - .../Gemfile - line: 15***
 
-{id: "01-04-03_02", caption: ".../Gemfile -- codice 02", format: ruby, line-numbers: true, number-from: 10}
+```ruby
+# Use the Puma web server [https://github.com/puma/puma]
+gem "puma", "~> 5.0"
 ```
-# Use Puma as the app server
-gem 'puma', '~> 3.11'
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/04-heroku/03_01-Gemfile.rb)
+
+
+Non ci resta che creare il nuovo file **Procfile** nella cartella principale della nostra applicazione.
+(Da notare che questo file non ha nessuna estenzione. Non ha alla fine il punto "***.***" con delle altre lettere dopo.)
+
+Ed inseriamo la stringa suggerita dalla documentazione di Heroku.
+
+***codice 02 - .../Procfile - line:1***
+
+```ruby
+web: bundle exec puma -t 5:5 -p ${PORT:-3000} -e ${RACK_ENV:-development}
 ```
 
-[tutto il codice](#01-04-03_02all)
 
 
-Non ci resta che creare il nuovo file Procfile nella cartella principale della nostra applicazione
+## Alternativa per configurare il Procfile
 
-{id: "01-04-03_03", caption: ".../Procfile -- codice 03", format: ruby, line-numbers: true, number-from: 1}
-```
+Un metodo alternativo interessante è quello di puntare al file *config/puma.rb* che è creato in automatico da Rails.
+
+***codice 03 - .../Procfile - line:1***
+
+```ruby
 web: bundle exec puma -C config/puma.rb
 ```
 
-[tutto il codice](#01-04-03_03all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/04-heroku/03_01-Gemfile.rb)
 
 
 Questo Procfile rimanda la lettura della configurazione al file config/puma.rb che è già creato di default da Rails. Vediamolo senza i commenti.
 
-{caption: ".../config/puma.rb", format: ruby, line-numbers: true, number-from: 1}
+***codice 04 - .../config/puma.rb - line:1***
+
 ```
 threads_count = ENV.fetch("RAILS_MAX_THREADS") { 5 }
 threads threads_count, threads_count
@@ -163,10 +189,14 @@ environment ENV.fetch("RAILS_ENV") { "development" }
 plugin :tmp_restart
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/04-heroku/03_01-Gemfile.rb)
+
+
 Ma noi usiamo quest'altra configurazione che è suggerita da heroku 
 
-{id: "01-04-03_04", caption: ".../config/puma.rb -- codice 04", format: ruby, line-numbers: true, number-from: 1}
-```
+***codice 05 - .../config/puma.rb - line:1***
+
+```ruby
 workers Integer(ENV['WEB_CONCURRENCY'] || 2)
 threads_count = Integer(ENV['RAILS_MAX_THREADS'] || 5)
 threads threads_count, threads_count
@@ -184,16 +214,16 @@ on_worker_boot do
 end
 ```
 
-[tutto il codice](#01-04-03_04all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/04-heroku/03_01-Gemfile.rb)
 
-Entrambi i " workers " ed i " threads " forniscono più sessioni contemporanee (more concurrency) però:
 
-* i " workers " consumano più RAM
-* i " threads " consumano più CPU
+Entrambi i *workers* ed i *threads* forniscono più sessioni contemporanee (more concurrency) però:
 
-Noi abbiamo impostato 5 Puma-threads e 2 Puma-workers.
-Con un tipico footprint di memoria di Rails, possiamo aspettarci di eseguire 2-4 processi "Puma-workers" su un dyno free, hobby o standard 1x.
+- i *workers* consumano più RAM
+- i *threads* consumano più CPU
 
+Noi abbiamo impostato *5 Puma-threads* e *2 Puma-workers*.
+Con un tipico footprint di memoria di Rails, possiamo aspettarci di eseguire 2-4 processi *Puma-workers* su un dyno free, hobby o standard 1x.
 
 
 
@@ -201,8 +231,7 @@ Con un tipico footprint di memoria di Rails, possiamo aspettarci di eseguire 2-4
 
 If your app is not thread safe, you will only be able to use workers. Set your min and max threads to 1
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ heroku config:set MIN_THREADS=1 RAILS_MAX_THREADS=1
 
 
@@ -215,8 +244,7 @@ RAILS_MAX_THREADS: 1
 You can still gain concurrency by adding workers. Since a worker runs in a different process and does not share memory, code that is not thread safe can be run across multiple worker processes.
 Once you have your application running on workers, you can try increasing the number of threads on staging and in development to 2
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ heroku config:set MIN_THREADS=2 RAILS_MAX_THREADS=2
 ```
 
@@ -225,11 +253,10 @@ Concurrency bugs can be difficult to detect and fix, so make sure to test your a
 
 
 
-
 ## salviamo su git
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+
+```bash
 $ git add -A
 $ git commit -m "Add Puma webserver Procfile and config"
 ```
@@ -239,18 +266,16 @@ $ git commit -m "Add Puma webserver Procfile and config"
 
 ## Pubblichiamo su Heroku
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git push heroku pp:master
 $ heroku run rails db:migrate
 ```
 
-Adesso non ho più il terzo warning. Per il momento è tutto su Heroku
+Adesso non ho più il warning. Per il momento è tutto su Heroku
 
 Inoltre il web dyno sta lavorando sul web server puma
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ heroku ps
 
 cloud9:~/environment/rigenerabatterie (pubprod) $ heroku ps                                                                                                                                                 
@@ -272,8 +297,7 @@ In questo caso abbiamo "=== web (Free): bundle exec puma -C config/puma.rb" ment
 
 se abbiamo finito le modifiche e va tutto bene:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout master
 $ git merge pp
 $ git branch -d pp
@@ -281,334 +305,8 @@ $ git branch -d pp
 
 
 
+---
 
-## Il codice del capitolo
-
-
-
-
-
-{id: "01-04-03_01all", caption: "terminal -- codice 01", format: bash, line-numbers: false}
-```
-cloud9:~/environment/bl6_0 (pp) $ git push heroku pp:master
-Counting objects: 112, done.
-Compressing objects: 100% (97/97), done.
-Writing objects: 100% (112/112), 25.90 KiB | 1.44 MiB/s, done.
-Total 112 (delta 11), reused 0 (delta 0)
-remote: Compressing source files... done.
-remote: Building source:
-remote: 
-remote:  !     Warning: Multiple default buildpacks reported the ability to handle this app. The first buildpack in the list below will be used.
-remote:                         Detected buildpacks: Ruby,Node.js
-remote:                         See https://devcenter.heroku.com/articles/buildpacks#buildpack-detect-order
-remote: -----> Ruby app detected
-remote: -----> Compiling Ruby/Rails
-remote: -----> Using Ruby version: ruby-2.4.1
-remote: -----> Installing dependencies using bundler 1.15.2
-remote:        Running: bundle install --without development:test --path vendor/bundle --binstubs vendor/bundle/bin -j4 --deployment
-remote:        Warning: the running version of Bundler (1.15.2) is older than the version that created the lockfile (1.17.1). We suggest you upgrade to the latest version of Bundler by running `gem install bundler`.
-remote:        Fetching gem metadata from https://rubygems.org/.........
-remote:        Fetching version metadata from https://rubygems.org/..
-remote:        Fetching dependency metadata from https://rubygems.org/.
-remote:        Fetching rake 12.3.2
-remote:        Fetching concurrent-ruby 1.1.3
-remote:        Fetching minitest 5.11.3
-remote:        Installing minitest 5.11.3
-remote:        Installing rake 12.3.2
-remote:        Installing concurrent-ruby 1.1.3
-remote:        Fetching thread_safe 0.3.6
-remote:        Fetching builder 3.2.3
-remote:        Installing thread_safe 0.3.6
-remote:        Installing builder 3.2.3
-remote:        Fetching erubi 1.7.1
-remote:        Installing erubi 1.7.1
-remote:        Fetching mini_portile2 2.3.0
-remote:        Fetching crass 1.0.4
-remote:        Installing mini_portile2 2.3.0
-remote:        Installing crass 1.0.4
-remote:        Fetching rack 2.0.6
-remote:        Fetching nio4r 2.3.1
-remote:        Fetching websocket-extensions 0.1.3
-remote:        Installing rack 2.0.6
-remote:        Installing nio4r 2.3.1 with native extensions
-remote:        Installing websocket-extensions 0.1.3
-remote:        Fetching mini_mime 1.0.1
-remote:        Installing mini_mime 1.0.1
-remote:        Fetching arel 9.0.0
-remote:        Installing arel 9.0.0
-remote:        Fetching mimemagic 0.3.2
-remote:        Fetching msgpack 1.2.4
-remote:        Installing mimemagic 0.3.2
-remote:        Installing msgpack 1.2.4 with native extensions
-remote:        Using bundler 1.15.2
-remote:        Fetching coffee-script-source 1.12.2
-remote:        Installing coffee-script-source 1.12.2
-remote:        Fetching execjs 2.7.0
-remote:        Installing execjs 2.7.0
-remote:        Fetching method_source 0.9.2
-remote:        Installing method_source 0.9.2
-remote:        Fetching thor 0.20.3
-remote:        Installing thor 0.20.3
-remote:        Fetching ffi 1.9.25
-remote:        Installing ffi 1.9.25 with native extensions
-remote:        Fetching multi_json 1.13.1
-remote:        Installing multi_json 1.13.1
-remote:        Fetching pg 1.1.3
-remote:        Installing pg 1.1.3 with native extensions
-remote:        Fetching puma 3.12.0
-remote:        Installing puma 3.12.0 with native extensions
-remote:        Fetching rb-fsevent 0.10.3
-remote:        Installing rb-fsevent 0.10.3
-remote:        Fetching tilt 2.0.9
-remote:        Installing tilt 2.0.9
-remote:        Fetching turbolinks-source 5.2.0
-remote:        Installing turbolinks-source 5.2.0
-remote:        Fetching tzinfo 1.2.5
-remote:        Installing tzinfo 1.2.5
-remote:        Fetching nokogiri 1.8.5
-remote:        Installing nokogiri 1.8.5 with native extensions
-remote:        Fetching i18n 1.1.1
-remote:        Installing i18n 1.1.1
-remote:        Fetching websocket-driver 0.7.0
-remote:        Installing websocket-driver 0.7.0 with native extensions
-remote:        Fetching mail 2.7.1
-remote:        Installing mail 2.7.1
-remote:        Fetching rack-test 1.1.0
-remote:        Installing rack-test 1.1.0
-remote:        Fetching sprockets 3.7.2
-remote:        Installing sprockets 3.7.2
-remote:        Fetching marcel 0.3.3
-remote:        Installing marcel 0.3.3
-remote:        Fetching coffee-script 2.4.1
-remote:        Installing coffee-script 2.4.1
-remote:        Fetching uglifier 4.1.20
-remote:        Installing uglifier 4.1.20
-remote:        Fetching bootsnap 1.3.2
-remote:        Installing bootsnap 1.3.2 with native extensions
-remote:        Fetching rb-inotify 0.9.10
-remote:        Installing rb-inotify 0.9.10
-remote:        Fetching turbolinks 5.2.0
-remote:        Installing turbolinks 5.2.0
-remote:        Fetching activesupport 5.2.2
-remote:        Installing activesupport 5.2.2
-remote:        Fetching loofah 2.2.3
-remote:        Installing loofah 2.2.3
-remote:        Fetching sass-listen 4.0.0
-remote:        Installing sass-listen 4.0.0
-remote:        Fetching rails-dom-testing 2.0.3
-remote:        Fetching globalid 0.4.1
-remote:        Installing rails-dom-testing 2.0.3
-remote:        Installing globalid 0.4.1
-remote:        Fetching activemodel 5.2.2
-remote:        Fetching jbuilder 2.8.0
-remote:        Installing activemodel 5.2.2
-remote:        Installing jbuilder 2.8.0
-remote:        Fetching rails-html-sanitizer 1.0.4
-remote:        Fetching sass 3.7.2
-remote:        Installing rails-html-sanitizer 1.0.4
-remote:        Fetching activejob 5.2.2
-remote:        Installing sass 3.7.2
-remote:        Installing activejob 5.2.2
-remote:        Fetching activerecord 5.2.2
-remote:        Fetching actionview 5.2.2
-remote:        Installing activerecord 5.2.2
-remote:        Installing actionview 5.2.2
-remote:        Fetching actionpack 5.2.2
-remote:        Installing actionpack 5.2.2
-remote:        Fetching actioncable 5.2.2
-remote:        Fetching actionmailer 5.2.2
-remote:        Fetching activestorage 5.2.2
-remote:        Installing actionmailer 5.2.2
-remote:        Installing activestorage 5.2.2
-remote:        Installing actioncable 5.2.2
-remote:        Fetching railties 5.2.2
-remote:        Fetching sprockets-rails 3.2.1
-remote:        Installing sprockets-rails 3.2.1
-remote:        Installing railties 5.2.2
-remote:        Fetching rails 5.2.2
-remote:        Fetching coffee-rails 4.2.2
-remote:        Fetching sass-rails 5.0.7
-remote:        Installing rails 5.2.2
-remote:        Installing coffee-rails 4.2.2
-remote:        Installing sass-rails 5.0.7
-remote:        Bundle complete! 18 Gemfile dependencies, 61 gems now installed.
-remote:        Gems in the groups development and test were not installed.
-remote:        Bundled gems are installed into ./vendor/bundle.
-remote:        Post-install message from sass:
-remote:        
-remote:        Ruby Sass is deprecated and will be unmaintained as of 26 March 2019.
-remote:        
-remote:        * If you use Sass as a command-line tool, we recommend using Dart Sass, the new
-remote:          primary implementation: https://sass-lang.com/install
-remote:        
-remote:        * If you use Sass as a plug-in for a Ruby web framework, we recommend using the
-remote:          sassc gem: https://github.com/sass/sassc-ruby#readme
-remote:        
-remote:        * For more details, please refer to the Sass blog:
-remote:          http://sass.logdown.com/posts/7081811
-remote:        
-remote:        Bundle completed (42.71s)
-remote:        Cleaning up the bundler cache.
-remote:        Warning: the running version of Bundler (1.15.2) is older than the version that created the lockfile (1.17.1). We suggest you upgrade to the latest version of Bundler by running `gem install bundler`.
-remote:        The latest bundler is 2.0.0.pre.2, but you are currently running 1.15.2.
-remote:        To update, run `gem install bundler --pre`
-remote: -----> Installing node-v8.10.0-linux-x64
-remote: -----> Detecting rake tasks
-remote: -----> Preparing app for Rails asset pipeline
-remote:        Running: rake assets:precompile
-remote:        Yarn executable was not detected in the system.
-remote:        Download Yarn at https://yarnpkg.com/en/docs/install
-remote:        I, [2018-12-10T00:11:25.055626 #1409]  INFO -- : Writing /tmp/build_c241f365e2251b15599ee34c58de5a38/public/assets/application-9622f0fe63bfad91bdeaa3a771e86262263840678fd66849b311b6cfb3f7cc85.js
-remote:        I, [2018-12-10T00:11:25.056238 #1409]  INFO -- : Writing /tmp/build_c241f365e2251b15599ee34c58de5a38/public/assets/application-9622f0fe63bfad91bdeaa3a771e86262263840678fd66849b311b6cfb3f7cc85.js.gz
-remote:        I, [2018-12-10T00:11:25.065817 #1409]  INFO -- : Writing /tmp/build_c241f365e2251b15599ee34c58de5a38/public/assets/application-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css
-remote:        I, [2018-12-10T00:11:25.066268 #1409]  INFO -- : Writing /tmp/build_c241f365e2251b15599ee34c58de5a38/public/assets/application-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css.gz
-remote:        Asset precompilation completed (3.57s)
-remote:        Cleaning assets
-remote:        Running: rake assets:clean
-remote: -----> Detecting rails configuration
-remote: 
-remote: ###### WARNING:
-remote: 
-remote:        You set your `config.active_storage.service` to :local in production.
-remote:        If you are uploading files to this app, they will not persist after the app
-remote:        is restarted, on one-off dynos, or if the app has multiple dynos.
-remote:        Heroku applications have an ephemeral file system. To
-remote:        persist uploaded files, please use a service such as S3 and update your Rails
-remote:        configuration.
-remote:        
-remote:        For more information can be found in this article:
-remote:          https://devcenter.heroku.com/articles/active-storage-on-heroku
-remote:        
-remote: 
-remote: ###### WARNING:
-remote: 
-remote:        We detected that some binary dependencies required to
-remote:        use all the preview features of Active Storage are not
-remote:        present on this system.
-remote:        
-remote:        For more information please see:
-remote:          https://devcenter.heroku.com/articles/active-storage-on-heroku
-remote:        
-remote: 
-remote: ###### WARNING:
-remote: 
-remote:        No Procfile detected, using the default web server.
-remote:        We recommend explicitly declaring how to boot your server process via a Procfile.
-remote:        https://devcenter.heroku.com/articles/ruby-default-web-server
-remote: 
-remote: 
-remote: -----> Discovering process types
-remote:        Procfile declares types     -> (none)
-remote:        Default types for buildpack -> console, rake, web
-remote: 
-remote: -----> Compressing...
-remote:        Done: 46.9M
-remote: -----> Launching...
-remote:        Released v6
-remote:        https://rigenerabatterie1.herokuapp.com/ deployed to Heroku
-remote: 
-remote: Verifying deploy... done.
-To https://git.heroku.com/rigenerabatterie1.git
- * [new branch]      pubprod -> master
-cloud9:~/environment/rigenerabatterie (pubprod) $ 
-```
-
-[indietro](#01-04-03_01)
-
-
-
-
-
-{id: "01-04-03_02all", caption: ".../Gemfile -- codice 02", format: ruby, line-numbers: true, number-from: 1}
-```
-source 'https://rubygems.org'
-git_source(:github) { |repo| "https://github.com/#{repo}.git" }
-
-ruby '2.6.3'
-
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.0'
-# Use postgresql as the database for Active Record
-gem 'pg', '>= 0.18', '< 2.0'
-# Use Puma as the app server
-gem 'puma', '~> 3.11'
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 5'
-# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem 'webpacker', '~> 4.0'
-# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
-gem 'turbolinks', '~> 5'
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.7'
-# Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 4.0'
-# Use Active Model has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
-
-# Use Active Storage variant
-# gem 'image_processing', '~> 1.2'
-
-# Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '>= 1.4.2', require: false
-
-group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-end
-
-group :development do
-  # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
-  gem 'web-console', '>= 3.3.0'
-  gem 'listen', '>= 3.0.5', '< 3.2'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
-end
-
-group :test do
-  # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '>= 2.15'
-  gem 'selenium-webdriver'
-  # Easy installation and use of web drivers to run system tests with browsers
-  gem 'webdrivers'
-end
-
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-```
-
-[indietro](#01-04-03_02)
-
-
-
-
-{id: "01-04-03_03all", caption: ".../Procfile -- codice 03", format: ruby, line-numbers: true, number-from: 1}
-```
-web: bundle exec puma -C config/puma.rb
-```
-
-[indietro](#01-04-03_03)
-
-
-
-
-{id: "01-04-03_04all", caption: ".../config/puma.rb -- codice 04", format: ruby, line-numbers: true, number-from: 1}
-```
-workers Integer(ENV['WEB_CONCURRENCY'] || 2)
-threads_count = Integer(ENV['RAILS_MAX_THREADS'] || 5)
-threads threads_count, threads_count
-
-preload_app!
-
-rackup      DefaultRackup
-port        ENV['PORT']     || 3000
-environment ENV['RACK_ENV'] || 'development'
-
-on_worker_boot do
-  # Worker specific setup for Rails 4.1+
-  # See: https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server#on-worker-boot
-  ActiveRecord::Base.establish_connection
-end
-```
-
-[indietro](#01-04-03_04)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/04-heroku/02-inizializiamo_heroku.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/01-github_story.md)

@@ -1,10 +1,18 @@
-# Resize disk space (storage size)
+# <a name="top"></a> Vol. 0 Cap 15.4 - Più spazio disco su sessione c9 - Resize disk space (storage size)
 
 
-Risorse web
 
-* https://n2ws.com/blog/how-to-guides/how-to-increase-the-size-of-an-aws-ebs-cloud-volume-attached-to-a-linux-machine
-* https://docs.aws.amazon.com/cloud9/latest/user-guide/move-environment.html#move-environment-resize
+## Capitoli dei libri dove è usato
+
+- [01-base / 01-new-app / 09-aws_c9_more_disk_space ](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/09-aws_c9_more_disk_space.md)
+
+
+
+## Risorse web
+
+- [how-to-increase-the-size-of-an-aws](https://n2ws.com/blog/how-to-guides/how-to-increase-the-size-of-an-aws-ebs-cloud-volume-attached-to-a-linux-machine)
+- [move-environment-resize](https://docs.aws.amazon.com/cloud9/latest/user-guide/move-environment.html#move-environment-resize)
+
 
 
 ## How to Increase the Size of an EBS Volume Attached to a Linux Machine
@@ -39,21 +47,23 @@ Vediamo come fare.
 
 ## Verifichiamo quanto spazio abbiamo
 
-* https://www.cyberciti.biz/faq/linux-check-disk-space-command/
+- [linux check disk space](https://www.cyberciti.biz/faq/linux-check-disk-space-command/)
 
 I comandi principali da terminale/console di ubuntu per vedere lo spazio disco sono:
 
-* df command – Shows the amount of disk space used and available on Linux file systems.
-* du command – Display the amount of disk space used by the specified files and for each subdirectory.
-* btrfs fi df /device/ – Show disk space usage information for a btrfs based mount point/file system.
+- df command – Shows the amount of disk space used and available on Linux file systems.
+- du command – Display the amount of disk space used by the specified files and for each subdirectory.
+- btrfs fi df /device/ – Show disk space usage information for a btrfs based mount point/file system.
 
 
 Vediamo un esempio di "df" con l'opzione "-h" che rappresenta i valori in un modo facile da capire (human readable).
 
-{title="terminal", lang=bash, line-numbers=off}
-```
+```bash
 $ df -h
 
+Esempio:
+
+```bash
 
 user_fb:~/environment/elisinfo (ci) $ df -h
 Filesystem      Size  Used Avail Use% Mounted on
@@ -71,26 +81,34 @@ tmpfs            98M     0   98M   0% /run/user/1000
 ```
 
 In questo esempio vediamo che abbiamo il disco praticamente pieno:
+
+```bash
 Filesystem      Size  Used Avail Use% Mounted on
 /dev/xvda1      9.7G  9.6G   81M 100% /
+```
 
-Ci restano 85M liberi. Ed infatti la EC2 su Cloud9 ci da il messaggio di disco pieno!
+Ci restano 81M liberi. Ed infatti la EC2 su Cloud9 ci da il messaggio di disco pieno!
 
 
 
 
 ## Ampliamo dai 10G di default a 12G - Metodo facile
 
-Questa procedura è la più semplice ed immediata ma richiede del tempo prima che le modifiche diventino effettive e questo può trarre in inganno e far pensare che non abbia funzionato. Se ci riproviamo riceviamo un messaggio di errore che ci depista e ci fa pensare che non sia possibile fare in questo modo. Ma se si ha la pazienza di aspettare, a volte anche qualche ora, allora si vedrà che funziona.
+Questa procedura è la più semplice ed immediata ma richiede del tempo prima che le modifiche diventino effettive e questo può trarre in inganno e far pensare che non abbia funzionato. 
+Se ci riproviamo riceviamo un messaggio di errore che ci depista e ci fa pensare che non sia possibile fare in questo modo. 
+Ma se si ha la pazienza di aspettare, a volte anche qualche ora, allora si vedrà che funziona.
 
 Andiamo su services -> EC2 -> INSTANCES -> instances
 
 Tramite la colonna "name" identifichiamo l'istanza EC2 relativa alla nostra istanza Cloud9.
-Tutti i nomi delle istanze cloud9 hanno la struttura: "aws-cloud9-"+<nome istanza cloud9>+<id>
-Ad esempio: aws-cloud9-bl6-0-344675c50cee4a70168f22b38a509d5c
 
-Trovata la "riga" che ci interessa copiamoci il suo "instance id", normalmente è la colonna a fianco.
-Ad esempio: i-0746cbf70a73f6db0
+Tutti i nomi delle istanze cloud9 hanno la struttura: ***aws-cloud9-***+***<nome istanza cloud9>***+***<id>***
+
+Ad esempio: ***aws-cloud9-bl6-0-344675c50cee4a70168f22b38a509d5c***
+
+Trovata la "riga" che ci interessa copiamoci il suo **instance id**, normalmente è la colonna a fianco.
+
+Ad esempio: **i-0746cbf70a73f6db0**
 
 
 Andiamo su service -> EC2 -> ELASTIC BLOCK STORE -> Volumes
@@ -176,11 +194,11 @@ tmpfs          tmpfs      98M     0   98M   0% /run/user/1000
 
 Aumentiamo il "volume EBS principale" (root EBS volume) dai 10GB di default a 16GB.
 
-* Partiamo da un'istanza EC2 basata su Linux Ubuntu.
-* Aumentiamo le dimensioni del nostro volume EBS usando gli "snapshot".
-* Sganciamo il volume dalla nostra istanza Cloud9
-* Facciamo lo snapshot del volume.
-* Creiamo un nuovo volume più grande 
+- Partiamo da un'istanza EC2 basata su Linux Ubuntu.
+- Aumentiamo le dimensioni del nostro volume EBS usando gli "snapshot".
+- Sganciamo il volume dalla nostra istanza Cloud9
+- Facciamo lo snapshot del volume.
+- Creiamo un nuovo volume più grande 
 
 
 

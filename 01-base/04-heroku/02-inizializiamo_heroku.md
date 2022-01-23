@@ -14,6 +14,7 @@ Andiamo subito in produzione così risolviamo di volta in volta gli eventuali pr
 
 ## Risorse esterne:
 
+- [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
 - [Heroku MFA - Multi Factor Access](https://help.heroku.com/AVOHZTFH/heroku-cli-login-interactive-option-no-longer-supported-with-salesforce-mfa)
 - [Heroku API_KEY](https://help.heroku.com/PBGP6IDE/how-should-i-generate-an-api-key-that-allows-me-to-use-the-heroku-platform-api)
 - [Solve ip-address-mismatch on signing](https://stackoverflow.com/questions/63363085/ip-address-mismatch-on-signing-into-heroku-cli)
@@ -323,7 +324,6 @@ l'app viene creata dinamnicamente. In questo caso è stato creato **desolate-pla
 
 Per verficarlo si può usare il comando
 
-{caption: "terminal", format: bash, line-numbers: false}
 ```bash
 $ heroku domains
 ```
@@ -363,7 +363,6 @@ user_fb:~/environment/bl7_0 (pp) $
 
 Possiamo verificare che abbiamo la configurazione git corretta con
 
-{caption: "terminal", format: bash, line-numbers: false}
 ```bash
 $ git config --list | grep heroku
 ```
