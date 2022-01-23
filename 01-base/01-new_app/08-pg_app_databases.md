@@ -79,7 +79,7 @@ production:
   password: <%= ENV['BL7_0_DATABASE_PASSWORD'] %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/07_01-config-database.yml)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/08_01-config-database.yml)
 
 
 Come si vede il nome dei database è dato con la seguente convenzione:
@@ -208,7 +208,7 @@ $ sudo service postgresql start
 $ rails s
 ```
 
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/07_fig01-preview_working.png)
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/08_fig01-preview_working.png)
 
 Anche se non riceviamo errore sembra non stia funzionando ma è un problema di preview dentro aws Cloud9. 
 Basta aprirlo su un nuovo tab del browser e vediamo che funziona tutto!
@@ -218,7 +218,7 @@ Si apre un nuovo tab del browser sull'URL del root_path:
 
 - *https://[mycloud9path].amazonaws.com*
 
-![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/07_fig02-preview_working_new_tab.png)
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/08_fig02-preview_working_new_tab.png)
 
 
 ---

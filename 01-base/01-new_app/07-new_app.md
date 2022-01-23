@@ -828,7 +828,7 @@ Use Ctrl-C to stop
 su cloud9 clicchiamo sul link di "Preview" in alto e scegliamo "Preview Running Application"
 In basso a destra si apre la finestra di preview con un messaggio di errore " Blocked host: ... " perché manca il permesso di connettersi al web server locale.
 
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/06_fig01-preview-web_server_connection_error.png)
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/07_fig01-preview-web_server_connection_error.png)
 
 
 
@@ -838,19 +838,19 @@ Before running rails server, it’s necessary on some systems (including the clo
 
 Permettiamo le connessioni al web server locale.
 
-{id: "01-01-05_01", caption: ".../config/environments/development.rb -- codice 01", format: ruby, line-numbers: true, number-from: 63}
+***codice 01 - .../config/environments/development.rb - line: 63***
 
 ```ruby
   # Allow connections to local server.
   config.hosts.clear
 ```
 
-[tutto il codice](#01-01-05_01all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/07_01-config-environments-development.png)
 
 Adesso se clicchiamo sul link di "Preview" in alto e scegliamo "Preview Running Application"
 In basso a destra si apre la finestra di preview con un altro messaggio di errore perché manca la connessione al database PostgreSQL.
 
-![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/06_fig02-preview-db_error.png)
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/07_fig02-preview-db_error.png)
 
 Per vedere il preview su un tab separato del browser fare click sull'icona di espansione. Quella che quando vai sopra con il cursore apre tip "Pop Out into new windows"
 

@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 1.4 -- Installiamo PostgreSQL
+# <a name="top"></a> Cap 1.4 - Installiamo PostgreSQL
 
 > Questa procedura è per ambienti di Cloud9 (istanze EC2) con sistema operativo **Ubuntu**
 
@@ -217,7 +217,7 @@ port = 5432
 
 (la seconda riga potrebbe già essere decommentata)
 
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/04_fig01-postgresql_conf-uncomment-addresses_and_port.png)
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/05_fig01-postgresql_conf-uncomment-addresses_and_port.png)
 
 
 
@@ -276,7 +276,7 @@ host    replication     all             127.0.0.1/32            md5
 host    replication     all             ::1/128                 md5
 ```
 
-![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/04_fig02-postgresql_conf-default-addresses_and_port.png)
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/05_fig02-postgresql_conf-default-addresses_and_port.png)
 
 e modifichiamo le seguenti due righe:
 
@@ -287,7 +287,7 @@ local   all             all                                     trust
 host    all             ubuntu          127.0.0.1/0             trust
 ```
 
-![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/04_fig03-postgresql_conf-updated-addresses_and_port.png)
+![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/05_fig03-postgresql_conf-updated-addresses_and_port.png)
 
 
 

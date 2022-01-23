@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 1.3 -- Creiamo nuovo ambiente Cloud9
+# <a name="top"></a> Cap 1.3 - Creiamo nuovo ambiente Cloud9
 
 Creiamo l'ambiente per la nostra applicazione Rails.
 
@@ -102,7 +102,8 @@ Su *More Settings...* -> Project Settings -> **Soft tabs: 2**
 
 ![fig07](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/03_fig07-aws_c9_soft_tabs.png)
 
-L'ambiente è impostato. Adesso possiamo creare una nuova applicazione Rails.
+L'ambiente è impostato.
+
 
 ---
 

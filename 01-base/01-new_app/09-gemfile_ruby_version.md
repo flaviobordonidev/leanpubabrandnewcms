@@ -29,7 +29,7 @@ Verifichiamo la versione di ruby **scritta sul gemfile**.
 ruby "3.1.0"
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/08_01-gemfile.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/09_01-gemfile.rb)
 
 
 > La versione viene riportata senza il numero di patch ('3.1.0' e non '3.1.0p0').
