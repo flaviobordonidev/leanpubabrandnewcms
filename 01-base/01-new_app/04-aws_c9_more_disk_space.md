@@ -143,6 +143,9 @@ Se torniamo alla nostra istanza cloud9 non vediamo da subito il volume più gran
 - Torniamo su: ***Services -> EC2 -> Instances -> Instances***
 - Chiudiamo il tab del browser con l'istanza aws cloud9 attiva. (facoltativo)
 - Selezioniamo la nostra istanza EC2 e la stoppiamo dal menu: ***Instance state -> Stop instance***
+
+![fig08](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/04_fig08-aws_ec2_stop_instance.png)
+
 - Aspettiamo che sia effettivamente stoppata
 - Torniamo su aws cloud9 e facciamo ripartire l'istanza **bl7-0**
 - Alla ripartenza avremo lo spazio disco aumentato a 12GB
