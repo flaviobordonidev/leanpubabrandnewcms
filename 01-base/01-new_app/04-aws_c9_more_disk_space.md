@@ -83,47 +83,51 @@ Dalla sessione aws c9 che stiamo usando (bl7-0), facciamo clic sulla *U* in alto
 
 ![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/04_fig02-aws_c9_manage_ec2.png)
 
-Siamo portati direttamente su: ***Services -> EC2 -> INSTANCES -> instances***
+Siamo portati direttamente su: ***Services -> EC2 -> Instances -> Instances***
 
-![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/04_fig03-aws_ec2_instance.png)
+![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/04_fig03-aws_ec2_instances.png)
 
+Ed abbiamo già filtrata dall'elenco la sola *macchina virtuale* aws EC2 su cui sta girando la sessione *aws cloud9* che stiamo usando (**bl7-0**). 
 
-Vediamo qual è la *macchina virtuale* aws EC2 su cui sta girando la sessione *aws cloud9* che stiamo usando per **bl7-0**. 
-
-Andiamo su 
-
-Selezioniamo la nostra istanza
-
-Tramite la colonna "name" identifichiamo l'istanza EC2 relativa alla nostra istanza Cloud9.
+Nella colonna ***name*** identifichiamo l'istanza EC2 (la *macchina virtuale*) relativa alla nostra istanza *aws cloud9*.
 
 Tutti i nomi delle istanze cloud9 hanno la struttura: ***aws-cloud9-[nome istanza cloud9]-[resto del codice univoco]***
 
-Ad esempio: ***aws-cloud9-bl7-0-9ddf2588f4aa43569b656b87dd5ff771***
+Esempio: ***aws-cloud9-bl7-0-9ddf2588f4aa43569b656b87dd5ff771***
 
-Trovata la "riga" che ci interessa copiamoci il suo **id istanza**, normalmente è la colonna a fianco.
+Nella colonna ***Instance ID*** abbiamo il suo **identificativo di istanza**.
 
-Ad esempio: **i-01e49aba1661a2ef4**
+Esempio: **i-01e49aba1661a2ef4**
 
-
-Dal menu *Instance State* selezioniamo la voce *Stop istance*
 
 
 ## Troviamo il volume da ingrandire
 
+Facciamo clic sul tab **STORAGE** e scendiamo fino al **Volume ID**.
 
-Andiamo su service -> EC2 -> ELASTIC BLOCK STORE -> Volumes
+![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/04_fig04-aws_ec2_instances_storage1.png)
 
-Nel campo di ricerca inseriamo l'*id istanza* 
+![fig05](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/04_fig05-aws_ec2_instances_storage2.png)
 
-![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/09_fig03-aws_ec2_elastic_block_store_volumes.png)
+Facciamo clic sul link del **Volume ID**.
+
+Siamo portati direttamente su: ***Services -> EC2 -> ELASTIC BLOCK STORE -> Volumes***
+
+Ed abbiamo già filtrata dall'elenco la nostra **Instance ID**.
+
+Esempio: ***vol-0e3c9591fece92f81***
+
+![fig06](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/04_fig06-aws_ec2_elastic_block_store_volumes.png)
+
+> Possiamo vedere in basso a destra che questo volume è effettivamente associato alla nostra istanza di aws cloud9.
 
 Sul volume trovato eseguiamo:
 
-Action -> Modify Volume
+***Action -> Modify Volume***
 
 E cambiamo la dimensione da "10" a "12". In questo modo ampliamo dai 10G di default a 12G.
 
-![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/09_fig04-aws_ec2_resize_volume.png)
+![fig07](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/04_fig07-aws_ec2_resize_volume.png)
 
 > Attenzione:
 > Questa procedura a volte richiede del tempo prima che le modifiche diventino effettive e questo può trarre in inganno e far pensare che non abbia funzionato. 
@@ -134,44 +138,26 @@ E cambiamo la dimensione da "10" a "12". In questo modo ampliamo dai 10G di defa
 
 ## Verifichiamo le nuove dimensioni dall'istanza c9
 
-Aspettiamo qualche minuto ed entriamo di nuovo nell'istanza cloud9
+Se torniamo alla nostra istanza cloud9 non vediamo da subito il volume più grande. Dobbiamo chiudere la sezione e stoppare la relativa istanza EC2.
+
+- Torniamo su: ***Services -> EC2 -> Instances -> Instances***
+- Chiudiamo il tab del browser con l'istanza aws cloud9 attiva. (facoltativo)
+- Selezioniamo la nostra istanza EC2 e la stoppiamo dal menu: ***Instance state -> Stop instance***
+- Aspettiamo che sia effettivamente stoppata
+- Torniamo su aws cloud9 e facciamo ripartire l'istanza **bl7-0**
+- Alla ripartenza avremo lo spazio disco aumentato a 12GB
 
 
+Esempio:
 
-## Esempio
-
-* Effettuiamo l'azione di ingrandimento da 10G a 12G.
-* Stoppiamo la macchina EC2 
-* Riavviamo la sessione cloud9
-
-Adesso il disco è di 12G ed è usato al 83% (abbiamo 2.1G liberi):
-
-```
-/dev/xvda1     ext4       12G  9.6G  2.1G  83% /
-```
-
-
-{title="terminal", lang=bash, line-numbers=off}
-```
-$ df -hT
-
-
-user_fb:~/environment $ df -hT
-Filesystem     Type      Size  Used Avail Use% Mounted on
-udev           devtmpfs  476M     0  476M   0% /dev
-tmpfs          tmpfs      98M  808K   98M   1% /run
-/dev/xvda1     ext4       12G  9.6G  2.1G  83% /
-tmpfs          tmpfs     490M  8.0K  490M   1% /dev/shm
-tmpfs          tmpfs     5.0M     0  5.0M   0% /run/lock
-tmpfs          tmpfs     490M     0  490M   0% /sys/fs/cgroup
-/dev/loop0     squashfs   98M   98M     0 100% /snap/core/9993
-/dev/loop1     squashfs   13M   13M     0 100% /snap/amazon-ssm-agent/495
-/dev/loop2     squashfs   97M   97M     0 100% /snap/core/9804
-/dev/loop3     squashfs   29M   29M     0 100% /snap/amazon-ssm-agent/2012
-tmpfs          tmpfs      98M     0   98M   0% /run/user/1000
+```bash
+user_fb:~/environment $ df -hT /dev/xvda1
+Filesystem     Type  Size  Used Avail Use% Mounted on
+/dev/xvda1     ext4   12G  8.6G  3.1G  74% /
+user_fb:~/environment $ 
 ```
 
-
+Adesso il disco è di 12G ed è usato al 74% (abbiamo 3.1GB liberi).
 
 
 
