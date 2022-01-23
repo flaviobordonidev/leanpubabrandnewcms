@@ -85,35 +85,44 @@ Andiamo su services -> EC2 -> INSTANCES -> instances
 
 ![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/09_fig02-aws_EC2_instance.png)
 
-
-
-
-## Ampliamo dai 10G di default a 12G - Metodo facile
-
-Questa procedura è la più semplice ed immediata ma richiede del tempo prima che le modifiche diventino effettive e questo può trarre in inganno e far pensare che non abbia funzionato. 
-Se ci riproviamo riceviamo un messaggio di errore che ci depista e ci fa pensare che non sia possibile fare in questo modo. 
-Ma se si ha la pazienza di aspettare, a volte anche qualche ora, allora si vedrà che funziona.
-
-Andiamo su services -> EC2 -> INSTANCES -> instances
+Selezioniamo la nostra istanza
 
 Tramite la colonna "name" identifichiamo l'istanza EC2 relativa alla nostra istanza Cloud9.
 
 Tutti i nomi delle istanze cloud9 hanno la struttura: ***aws-cloud9-***+***<nome istanza cloud9>***+***<id>***
 
-Ad esempio: ***aws-cloud9-bl6-0-344675c50cee4a70168f22b38a509d5c***
+Ad esempio: ***aws-cloud9-bl7-0-9ddf2588f4aa43569b656b87dd5ff771***
 
 Trovata la "riga" che ci interessa copiamoci il suo **instance id**, normalmente è la colonna a fianco.
 
-Ad esempio: **i-0746cbf70a73f6db0**
+Ad esempio: **i-01e49aba1661a2ef4**
+
+Dal menu *Instance State* selezioniamo la voce *Stop istance*
+
+
+## Troviamo il volume da ingrandire
 
 
 Andiamo su service -> EC2 -> ELASTIC BLOCK STORE -> Volumes
 
-Nel campo di ricerca inseriamo l'"instance id" e sul volume trovato eseguiamo:
+Nel campo di ricerca inseriamo l'*instance id* 
+
+![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/09_fig03-aws_EC2_elastic_block_store_volumes.png)
+
+Sul volume trovato eseguiamo:
 
 Action -> Modify Volume
 
-E cambiamo la dimensione da "10" a "12".
+E cambiamo la dimensione da "10" a "12". In questo modo ampliamo dai 10G di default a 12G.
+
+![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/09_fig04-aws_EC2_resize_volume.png)
+
+> Attenzione:
+> Questa procedura a volte richiede del tempo prima che le modifiche diventino effettive e questo può trarre in inganno e far pensare che non abbia funzionato. 
+> Se ci riproviamo riceviamo un messaggio di errore che ci depista e ci fa pensare che non sia possibile fare in questo modo. 
+> Ma se si ha la pazienza di aspettare, a volte anche parecchi minuti, allora si vedrà che funziona.
+
+
 
 
 
