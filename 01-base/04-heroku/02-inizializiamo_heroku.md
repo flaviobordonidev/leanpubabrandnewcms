@@ -11,7 +11,15 @@ Andiamo subito in produzione così risolviamo di volta in volta gli eventuali pr
 - 99-rails_references/Heroku/
 
 
+
+## Risorse esterne:
+
+- [Heroku MFA - Multi Factor Access](https://help.heroku.com/AVOHZTFH/heroku-cli-login-interactive-option-no-longer-supported-with-salesforce-mfa)
+- [Heroku API_KEY](https://help.heroku.com/PBGP6IDE/how-should-i-generate-an-api-key-that-allows-me-to-use-the-heroku-platform-api)
+- [Solve ip-address-mismatch on signing](https://stackoverflow.com/questions/63363085/ip-address-mismatch-on-signing-into-heroku-cli)
  
+
+
 ## Verifichiamo dove eravamo rimasti
 
 Vediamo dove eravamo rimasti con la programmazione.
@@ -169,28 +177,23 @@ Esempio:
  
 ```bash
 
-user_fb:~/environment/bl6_0 (pp) $ heroku login
+user_fb:~/environment/bl7_0 (pp) $ heroku login
 heroku: Press any key to open up the browser to login or q to exit: 
 Opening browser to https://cli-auth.heroku.com/auth/browser/fbca295d-9ffd-46ba-9bf5-2b13698871c1
  ›   Warning: Cannot open browser.
-Logging in... done
+
+[lo apro cliccando sul link ma appare una pagina web con: ip-address-mismatch]
 ```
 
 Questa procedura ti fa fare il login sulla pagina web. Basta cliccare sul link, scegliere "open" ed eseguire il login.
+Purtroppo con aws cloud9 non funziona per qualche errore di autorizzazione o di reinstradamanento.
+Appare una pagina web con l'errore: ip-address-mismatch
 
-![fig. 02](chapters/01-base/04-heroku/02_fig02-heroku-login-via_aws_cloud9.png)
-
-
-
-> ERRORE di autorizzazione.
-> Mi apre la pagina web per fare il login ma una volta fatto mi da errore per motivi di autorizzazione.
-> ricordo di averlo già avuto in passato! Credo ci sia da abilitare heroku su aws c9 o qualcosa di simile.
-> Cazzo! ^_^
-> Inoltre Heroku mi ha chiesto anche la doppia autenticazione!
-> Doppio Cazzo!! ^_^
 
 
 ## IP address mismatch
+
+Risolviamo il problema dell'IP address mismatch.
 
 * https://stackoverflow.com/questions/63363085/ip-address-mismatch-on-signing-into-heroku-cli
 
@@ -221,39 +224,44 @@ user_fb:~/environment/bl7_0 (pp) $
 
 Purtroppo avendo attivato l'autenticazione MFA non è più sufficiente solo email e password.
 
-[vedi articolo MFA su heroku.](https://help.heroku.com/AVOHZTFH/heroku-cli-login-interactive-option-no-longer-supported-with-salesforce-mfa)
+- [vedi articolo MFA su heroku.](https://help.heroku.com/AVOHZTFH/heroku-cli-login-interactive-option-no-longer-supported-with-salesforce-mfa)
+- [vedi](https://stackoverflow.com/questions/63363085/ip-address-mismatch-on-signing-into-heroku-cli)
 
 
+Riusciamo a risolvere usando come password una chiave creata sulla piattaforma Heroku.
+
+> If you are using Multi-Factor Authentication you could generate an Authorization token in settings page: https://dashboard.heroku.com/account/applications
+> Run heroku login -i and use the generated token as password.
 
 
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/04-heroku/02_fig02-heroku_MFA_authorization.png)
+
+
+```bash
 user_fb:~/environment/bl7_0 (pp) $ heroku login -i
 heroku: Enter your login credentials
 Email: flavio.bordoni.dev@gmail.com
 Password: ************************************
 Logged in as flavio.bordoni.dev@gmail.com
 user_fb:~/environment/bl7_0 (pp) $ 
+```
 
+Una soluzione alternativa da provare è questa:
+The accepted answer (run heroku login -i) doesn't work for accounts with MFA enabled. 
+What I did instead was to reveal my account's API key and put it into ~/.netrc like so:
 
-[vedi](https://stackoverflow.com/questions/63363085/ip-address-mismatch-on-signing-into-heroku-cli)
-
-
-The accepted answer (run heroku login -i) doesn't work for accounts with MFA enabled. What I did instead was to reveal my account's API key and put it into ~/.netrc like so:
-
+```bash
 machine api.heroku.com
   login <MY_EMAIL>
   password <API_KEY>
 machine git.heroku.com
   login <MY_EMAIL>
   password <API_KEY>
+```
+
 And voila! I can now use the CLI. This worked for me with Google CloudShell.
-
-P.S. -- I added my machine's SSH key but could not understand how to use that to configure the CLI's access. It seems hard-coded to look for API keys in ~/.netrc.
-
----
-
-> If you are using Multi-Factor Authentication you could generate an Authorization token in settings page: https://dashboard.heroku.com/account/applications
-> Run heroku login -i and use the generated token as password.
-
+P.S. -- I added my machine's SSH key but could not understand how to use that to configure the CLI's access. 
+It seems hard-coded to look for API keys in ~/.netrc.
 
 
 
@@ -697,64 +705,75 @@ $ heroku run rake db:migrate
 Per visualizzare la nostra app sul web stiamo usando un dyno di tipo web.
 Vediamo quanti dynos abbiamo associato alla nostra app in produzione su heroku 
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ heroku ps
+```
 
-
-user_fb:~/environment/bl6_0 (pp) $ heroku ps
-Free dyno hours quota remaining this month: 813h 27m (81%)
-Free dyno usage for this app: 0h 0m (0%)
+Esempio:
+  
+```bash
+user_fb:~/environment/bl7_0 (pp) $ heroku ps
+Free dyno hours quota remaining this month: 995h 11m (99%)
+Free dyno usage for this app: 0h 36m (0%)
 For more information on dyno sleeping and how to upgrade, see:
 https://devcenter.heroku.com/articles/dyno-sleeping
 
-=== web (Free): bin/rails server -p $PORT -e $RAILS_ENV (1)
-web.1: up 2019/10/25 12:01:25 +0000 (~ 3m ago)
+=== web (Free): bin/rails server -p ${PORT:-5000} -e $RAILS_ENV (1)
+web.1: idle 2022/01/21 15:43:03 +0000
+
+user_fb:~/environment/bl7_0 (pp) $ 
 ```
 
-abbiamo 1 dyno attivo " web.1: up ".
+abbiamo 1 dyno assegnato ed in attesa *web.1: idle* pronto a diventare attivo *web.1: up*.
 
-Se vogliamo assegnare più dynos usiamo il comando " ps:scale ". Ad esempio assicuriamoci di avere 1 dyno attivo per il web.
+Se vogliamo assegnare più dynos usiamo il comando **ps:scale**. Ad esempio assicuriamoci di avere 1 dyno attivo per il web.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ heroku ps:scale web=1
+```
 
+Esempio:
 
-user_fb:~/environment/bl6_0 (pp) $ heroku ps:scale web=1
+```bash
+user_fb:~/environment/bl7_0 (pp) $ heroku ps:scale web=1
 Scaling dynos... done, now running web at 1:Free
+user_fb:~/environment/bl7_0 (pp) $ 
 ```
 
 Possiamo verificare che non è cambiato nulla perché era già attivo di default 1 dyno.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ heroku ps
-
-
-user_fb:~/environment/bl6_0 (pp) $ heroku ps
-Free dyno hours quota remaining this month: 813h 27m (81%)
-Free dyno usage for this app: 0h 0m (0%)
+```bash
+user_fb:~/environment/bl7_0 (pp) $ heroku ps
+Free dyno hours quota remaining this month: 995h 11m (99%)
+Free dyno usage for this app: 0h 36m (0%)
 For more information on dyno sleeping and how to upgrade, see:
 https://devcenter.heroku.com/articles/dyno-sleeping
 
-=== web (Free): bin/rails server -p $PORT -e $RAILS_ENV (1)
-web.1: up 2019/10/25 12:01:25 +0000 (~ 10m ago)
+=== web (Free): bin/rails server -p ${PORT:-5000} -e $RAILS_ENV (1)
+web.1: idle 2022/01/21 15:43:03 +0000
+
+user_fb:~/environment/bl7_0 (pp) $ 
 ```
 
 Se proviamo a scalare a 2 dynos riceviamo un messaggio di errore perché possiamo avere solo 1 dyno gratuito ogni applicazione. 
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ heroku ps:scale web=2
-
-
-user_fb:~/environment/bl6_0 (pp) $ heroku ps:scale web=2
+```bash
+user_fb:~/environment/bl7_0 (pp) $ heroku ps:scale web=2
 Scaling dynos... !
  ▸    Cannot update to more than 1 Free size dynos per process type.
+user_fb:~/environment/bl7_0 (pp) $ 
 ```
+
 
 
 ## Chiudiamo il branch
 
 Lo chiudiamo nel prossimo capitolo
+
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/04-heroku/01-heroku_story.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/04-heroku/03-heroku_finish.md)
