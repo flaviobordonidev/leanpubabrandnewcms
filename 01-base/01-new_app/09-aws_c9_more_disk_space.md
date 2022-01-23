@@ -89,7 +89,7 @@ Selezioniamo la nostra istanza
 
 Tramite la colonna "name" identifichiamo l'istanza EC2 relativa alla nostra istanza Cloud9.
 
-Tutti i nomi delle istanze cloud9 hanno la struttura: ***aws-cloud9-<nome istanza cloud9>-<id istanza>***
+Tutti i nomi delle istanze cloud9 hanno la struttura: ***aws-cloud9-[nome istanza cloud9]-[id istanza]***
 
 Ad esempio: ***aws-cloud9-bl7-0-9ddf2588f4aa43569b656b87dd5ff771***
 
