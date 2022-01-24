@@ -128,8 +128,7 @@ Aggiorniamo il file routes per mettere l'homepage come pagina principale (root)
 
 Attiviamo il webserver
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails s
 ```
