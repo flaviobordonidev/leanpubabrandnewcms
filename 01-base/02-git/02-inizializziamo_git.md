@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 2.2 -- Inizializziamo Git
+# <a name="top"></a> Cap 2.2 - Inizializziamo Git
 
 Version Control System. Un gestore che controlla le versioni del software in fase di sviluppo.
 
