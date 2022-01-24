@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 2.1 -- La storia di Git
+# <a name="top"></a> Cap 2.1 - La storia di Git
 
 Version Control System. Un gestore che controlla le versioni del software in fase di sviluppo.
 
@@ -43,6 +43,6 @@ Altro pregio è quello di permetterci di fare dei backups su Github (o su qualsi
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/06-new_app.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/09-gemfile_ruby_version.md)
  | [top](#top) |
 [next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/02-git/02-inizializziamo_git.md)
