@@ -844,9 +844,6 @@ Abbiamo ancora **2.4GB** disponibili.
 
 
 
-
-
-
 ## Apriamo l'applicazione localmente
 
 Per aprire la nuova applicazione entriamo nella cartella e facciamo partire il web server
@@ -884,11 +881,12 @@ In basso a destra si apre la finestra di preview con un messaggio di errore " Bl
 
 ## Risolviamo problema di connessione
 
-Before running rails server, it’s necessary on some systems (including the cloud IDE) to allow connections to the local web server. To enable this, you should navigate to the file config/environments/development.rb and paste in the two extra lines shown in Listing 1.7 and Figure 1.13.
+Before running rails server, it’s necessary on some systems (including the cloud IDE) to allow connections to the local web server. 
+To enable this, you should navigate to the file config/environments/development.rb and paste in the two extra lines.
 
-Permettiamo le connessioni al web server locale.
+Permettiamo le connessioni al web server locale aggiungendo in fondo il permesso di connessione al server locale.
 
-***codice 01 - .../config/environments/development.rb - line: 63***
+***codice 01 - .../config/environments/development.rb - line: 71***
 
 ```ruby
   # Allow connections to local server.
@@ -908,6 +906,6 @@ Questo errore lo risolviamo nel prossimo capitolo.
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/05-install_postgresql_on_ec2_amazon.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/06-install_postgresql_on_ec2_amazon.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/07-pg_app_databases.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/08-pg_app_databases.md)
