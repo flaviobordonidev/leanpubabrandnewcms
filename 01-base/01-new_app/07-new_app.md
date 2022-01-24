@@ -893,7 +893,7 @@ Permettiamo le connessioni al web server locale aggiungendo in fondo il permesso
   config.hosts.clear
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/07_01-config-environments-development.png)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/07_01-config-environments-development.rb)
 
 Adesso se clicchiamo sul link di "Preview" in alto e scegliamo "Preview Running Application"
 In basso a destra si apre la finestra di preview con un altro messaggio di errore perché manca la connessione al database PostgreSQL.
