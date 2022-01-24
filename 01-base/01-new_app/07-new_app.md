@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 1.7 -- Nuova app Rails su ambiente aws Cloud9
+# <a name="top"></a> Cap 1.7 - Nuova app Rails su ambiente aws Cloud9
 
 Abbiamo preparato l'ambiente c9 e adesso creaimo una nuova app Rails
 
@@ -13,21 +13,22 @@ Before you install Rails, you should check to make sure that your system has the
 
 ## Risorse interne:
 
-- 99-rails_references/gems/rails
-- 99-rails_references/yarn/01-yarn
+- [99-rails_references/gems/rails]
+- [99-rails_references/yarn/01-yarn]
 
 
 
 ## Risorse esterne:
 
-- https://guides.rubyonrails.org/getting_started.html
-- https://cloudsoftfi.com/rails/setup-up-ruby-on-rails-development-on-aws-cloud-9-quick-easy/
-- https://www.ruby-lang.org/en/downloads/
-- https://devcenter.heroku.com/articles/getting-started-with-rails7
+- [rubyonrails.org - getting_started](https://guides.rubyonrails.org/getting_started.html)
+- [rails-development-on-aws-cloud-9](https://cloudsoftfi.com/rails/setup-up-ruby-on-rails-development-on-aws-cloud-9-quick-easy/)
+- [ruby-lang.org](https://www.ruby-lang.org/en/downloads/)
+- [Heroku - getting-started-with-rails7](https://devcenter.heroku.com/articles/getting-started-with-rails7)
 
 
 
 ## Aggiorniamo Ruby
+
 Verifichiamo la versione di Ruby
 Rails requires Ruby version 2.7.0 or later. It is preferred to use latest Ruby version.
 
@@ -186,20 +187,48 @@ added 1 package, and audited 2 packages in 2s
 
 found 0 vulnerabilities
 npm notice 
-npm notice New minor version of npm available! 8.1.2 -> 8.3.1
-npm notice Changelog: https://github.com/npm/cli/releases/tag/v8.3.1
-npm notice Run npm install -g npm@8.3.1 to update!
+npm notice New minor version of npm available! 8.1.2 -> 8.3.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v8.3.2
+npm notice Run npm install -g npm@8.3.2 to update!
 npm notice 
+user_fb:~/environment $ 
+```
+
+Adesso Yarn è installato.
+
+Eseguiamo anche l'aggiornamento che ci è stato scritto nel messaggio
+
+```bash
+user_fb:~/environment $ npm install -g npm@8.3.2
+
+removed 8 packages, changed 41 packages, and audited 215 packages in 4s
+
+11 packages are looking for funding
+  run `npm fund` for details
+
+3 moderate severity vulnerabilities
+
+To address all issues, run:
+  npm audit fix
+
+Run `npm audit` for details.
+user_fb:~/environment $ npm audit fix
+
+up to date, audited 4 packages in 645ms
+
+found 0 vulnerabilities
 user_fb:~/environment $ yarn --version
 1.22.17
 user_fb:~/environment $ 
 ```
 
-Adesso anche Yarn è installato.
+Adesso Yarn è anche aggiornato.
 
 
 
 ### Altro modo di installare Yarn
+
+> Possiamo **saltare** questo paragrafo.
 
 In passato, quando abbiamo installato Yarn per Rails 6, abbiamo usato *curl*.
 Per evitare problemi di autorizzazione lo abbiamo installiato con i diritti di root, usando *sudo su -*.
@@ -453,7 +482,6 @@ user_fb:~/environment $ rails --version
 Rails 7.0.1
 user_fb:~/environment $ 
 ```
-
 
 
 
@@ -794,6 +822,28 @@ Pin Stimulus
       append  config/importmap.rb
 user_fb:~/environment $ 
 ```
+
+
+
+## Verifichiamo quanto spazio disco ci resta
+
+```bash
+$ df -hT /dev/xvda1
+```
+
+Esempio:
+
+```bash
+user_fb:~/environment $ df -hT /dev/xvda1
+Filesystem     Type  Size  Used Avail Use% Mounted on
+/dev/xvda1     ext4   12G  9.3G  2.4G  80% /
+user_fb:~/environment $ 
+```
+
+Abbiamo ancora **2.4GB** disponibili.
+
+
+
 
 
 
