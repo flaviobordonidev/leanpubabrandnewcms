@@ -18,8 +18,8 @@ Andiamo subito in produzione così risolviamo di volta in volta gli eventuali pr
 - [Heroku MFA - Multi Factor Access](https://help.heroku.com/AVOHZTFH/heroku-cli-login-interactive-option-no-longer-supported-with-salesforce-mfa)
 - [Heroku API_KEY](https://help.heroku.com/PBGP6IDE/how-should-i-generate-an-api-key-that-allows-me-to-use-the-heroku-platform-api)
 - [Solve ip-address-mismatch on signing](https://stackoverflow.com/questions/63363085/ip-address-mismatch-on-signing-into-heroku-cli)
- 
 
+ 
 
 ## Verifichiamo dove eravamo rimasti
 
@@ -160,6 +160,25 @@ user_fb:~/environment $
 
 
 
+## Verifichiamo quanto spazio disco ci resta
+
+```bash
+$ df -hT /dev/xvda1
+```
+
+Esempio:
+
+```bash
+user_fb:~/environment $ df -hT /dev/xvda1
+Filesystem     Type  Size  Used Avail Use% Mounted on
+/dev/xvda1     ext4   12G  9.5G  2.1G  82% /
+user_fb:~/environment $ 
+```
+
+Abbiamo ancora **2.1GB** disponibili.
+
+
+
 ## Creiamo l'app su heroku
 
 Torniamo nella cartella della nostra applicazione Rails
@@ -224,10 +243,6 @@ user_fb:~/environment/bl7_0 (pp) $
 ```
 
 Purtroppo avendo attivato l'autenticazione MFA non è più sufficiente solo email e password.
-
-- [vedi articolo MFA su heroku.](https://help.heroku.com/AVOHZTFH/heroku-cli-login-interactive-option-no-longer-supported-with-salesforce-mfa)
-- [vedi](https://stackoverflow.com/questions/63363085/ip-address-mismatch-on-signing-into-heroku-cli)
-
 
 Riusciamo a risolvere usando come password una chiave creata sulla piattaforma Heroku.
 
@@ -453,7 +468,6 @@ Adesso è tutto pronto. Possiamo fare il commit finale in locale e uploadare tut
 $ git add -A
 $ git commit -m "ready to public in production on heroku"
 ```
-
 
 
 

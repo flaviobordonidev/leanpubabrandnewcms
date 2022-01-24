@@ -159,6 +159,8 @@ Ed inseriamo la stringa suggerita dalla documentazione di Heroku.
 web: bundle exec puma -t 5:5 -p ${PORT:-3000} -e ${RACK_ENV:-development}
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/04-heroku/03_02-Procfile)
+
 
 
 ## Alternativa per configurare il Procfile
@@ -171,7 +173,7 @@ Un metodo alternativo interessante è quello di puntare al file *config/puma.rb*
 web: bundle exec puma -C config/puma.rb
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/04-heroku/03_01-Gemfile.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/04-heroku/03_03-Procfile)
 
 
 Questo Procfile rimanda la lettura della configurazione al file config/puma.rb che è già creato di default da Rails. Vediamolo senza i commenti.
@@ -179,17 +181,52 @@ Questo Procfile rimanda la lettura della configurazione al file config/puma.rb c
 ***codice 04 - .../config/puma.rb - line:1***
 
 ```
-threads_count = ENV.fetch("RAILS_MAX_THREADS") { 5 }
-threads threads_count, threads_count
+# Puma can serve each request in a thread from an internal thread pool.
+# The `threads` method setting takes two numbers: a minimum and maximum.
+# Any libraries that use thread pools should be configured to match
+# the maximum value specified for Puma. Default is set to 5 threads for minimum
+# and maximum; this matches the default thread size of Active Record.
+#
+max_threads_count = ENV.fetch("RAILS_MAX_THREADS") { 5 }
+min_threads_count = ENV.fetch("RAILS_MIN_THREADS") { max_threads_count }
+threads min_threads_count, max_threads_count
 
-port        ENV.fetch("PORT") { 3000 }
+# Specifies the `worker_timeout` threshold that Puma will use to wait before
+# terminating a worker in development environments.
+#
+worker_timeout 3600 if ENV.fetch("RAILS_ENV", "development") == "development"
 
+# Specifies the `port` that Puma will listen on to receive requests; default is 3000.
+#
+port ENV.fetch("PORT") { 3000 }
+
+# Specifies the `environment` that Puma will run in.
+#
 environment ENV.fetch("RAILS_ENV") { "development" }
 
+# Specifies the `pidfile` that Puma will use.
+pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
+
+# Specifies the number of `workers` to boot in clustered mode.
+# Workers are forked web server processes. If using threads and workers together
+# the concurrency of the application would be max `threads` * `workers`.
+# Workers do not work on JRuby or Windows (both of which do not support
+# processes).
+#
+# workers ENV.fetch("WEB_CONCURRENCY") { 2 }
+
+# Use the `preload_app!` method when specifying a `workers` number.
+# This directive tells Puma to first boot the application and load code
+# before forking the application. This takes advantage of Copy On Write
+# process behavior so workers use less memory.
+#
+# preload_app!
+
+# Allow puma to be restarted by `bin/rails restart` command.
 plugin :tmp_restart
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/04-heroku/03_01-Gemfile.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/04-heroku/03_04-config-puma.rb)
 
 
 Ma noi usiamo quest'altra configurazione che è suggerita da heroku 
@@ -276,16 +313,16 @@ Adesso non ho più il warning. Per il momento è tutto su Heroku
 Inoltre il web dyno sta lavorando sul web server puma
 
 ```bash
-$ heroku ps
-
-cloud9:~/environment/rigenerabatterie (pubprod) $ heroku ps                                                                                                                                                 
-Free dyno hours quota remaining this month: 937h 44m (93%)
+user_fb:~/environment/bl7_0 (pp) $ heroku ps
+Free dyno hours quota remaining this month: 993h 48m (99%)
 Free dyno usage for this app: 0h 0m (0%)
 For more information on dyno sleeping and how to upgrade, see:
 https://devcenter.heroku.com/articles/dyno-sleeping
 
-=== web (Free): bundle exec puma -C config/puma.rb (1)
-web.1: up 2018/12/10 10:36:12 +0000 (~ 39s ago)
+=== web (Free): bundle exec puma -t 5:5 -p ${PORT:-3000} -e ${RACK_ENV:-development} (1)
+web.1: up 2022/01/24 11:56:24 +0000 (~ 12s ago)
+
+user_fb:~/environment/bl7_0 (pp) $ 
 ```
 
 In questo caso abbiamo "=== web (Free): bundle exec puma -C config/puma.rb" mentre nel capitolo precedente, prima di creare il Procfile, avevamo "=== web (Free): bin/rails server -p $PORT -e $RAILS_ENV"
@@ -298,7 +335,7 @@ In questo caso abbiamo "=== web (Free): bundle exec puma -C config/puma.rb" ment
 se abbiamo finito le modifiche e va tutto bene:
 
 ```bash
-$ git checkout master
+$ git checkout main
 $ git merge pp
 $ git branch -d pp
 ```
