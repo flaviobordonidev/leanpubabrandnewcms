@@ -19,12 +19,11 @@ non serve perché è rimasto aperto dal capitolo precedente
 
 Per prima cosa creiamoci un account su Github. Andiamo su www.github.com e clicchiamo "Sign up"
 
-![Fig. 01](chapters/01-base/06-github/03_fig01-github_signup.png)
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/03_fig01-github_signup.png)
 
 Se lo abbiamo già logghiamoci.
 
-![Fig. 02](chapters/01-base/06-github/03_fig02-github_signin.png)
-
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/03_fig02-github_signin.png)
 
 
 
@@ -34,14 +33,12 @@ Inizializziamo GitHub che useremo principalmente come repositroy remoto di backu
 
 
 
-
 ## Condividiamo la chiave pubblica
 
 Per far comunicare Github con aws Cloud9 dobbiamo fargli condividere la chiave pubblica.
 Andiamo sul terminale di aws Cloud9 e visualizziamo e copiamoci la chiave pubblica (public key) di aws Cloud9.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ cat ~/.ssh/id_rsa.pub
 
 ec2-user:~/environment/myapp (espi) $ cat ~/.ssh/id_rsa.pub
@@ -53,8 +50,7 @@ Copiare tutta la chiave pubblica, compreso 'ssh-rsa', e passarla su Github -> Se
 Title: awsC9-cmspofo
 Key: ssh-rsa AAAAB3...[...]...MmDRyKWg5 ec2-user@ip-172-56-27-218
 
-![Fig. 03](chapters/01-base/06-github/03_fig03-github_ssh_public_key.png)
-
+![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/03_fig03-github_ssh_public_key.png)
 
 
 
@@ -62,19 +58,18 @@ Key: ssh-rsa AAAAB3...[...]...MmDRyKWg5 ec2-user@ip-172-56-27-218
 
 Creiamo un nuovo repository:
 
-* nome        : bl6_0
-* descrizione : mia applicazione Rails
+- nome        : bl6_0
+- descrizione : mia applicazione Rails
 
-![Fig. 04](chapters/01-base/06-github/03_fig04-github_new_repository.png)
+![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/03_fig04-github_new_repository.png)
 
 Appena creato il nuovo repository ci viene presentato un "Quick setup"
 
-![Fig. 05](chapters/01-base/06-github/03_fig05-github_quick_setup.png)
+![fig05](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/03_fig05-github_quick_setup.png)
 
 Aggiungiamo sul nostro git il repository remoto "bl6_0.git" creato sul nostro account github "flaviobordonidev" usando SSH.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git remote add origin git@github.com:flaviobordonidev/bl6_0.git
 ```
 
@@ -92,8 +87,7 @@ Prima di spostare il nostro git locale sul repository remoto Github dobbiamo chi
 
 se abbiamo finito le modifiche e va tutto bene:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout master
 $ git merge gh
 $ git branch -d gh
@@ -106,8 +100,7 @@ $ git branch -d gh
 
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git push origin master
 -> yes
 
@@ -130,8 +123,7 @@ il comando "git push" sposta sul branch remoto "origin" il branch locale "master
 
 Spostiamo in remoto anche la parte dei tag in cui abbiamo messo la versione v.0.1.0
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git push origin master --tag
 
 
@@ -144,12 +136,20 @@ To github.com:flaviobordonidev/bl6_0.git
 
 Se adesso facciamo un refresh alla pagina di Github vedremo il nostro nuovo repository con la nostra myapp-01
 
-![Fig. 06](chapters/01-base/06-github/03_fig06-github_repository_overview.png)
+![fig06](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/03_fig06-github_repository_overview.png)
 
 possiamo vedere tutti i nostri commits
 
-![Fig. 07](chapters/01-base/06-github/03_fig07-github_commits.png)
+![fig07](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/03_fig07-github_commits.png)
 
 ed i tags delle varie versioni
 
-![Fig. 08](chapters/01-base/06-github/03_fig08-github_tags.png)
+![fig08](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/03_fig08-github_tags.png)
+
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/02-github_readme-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/04-github-multi-users-it.md)
