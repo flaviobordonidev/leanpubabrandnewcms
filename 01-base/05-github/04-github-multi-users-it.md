@@ -1,24 +1,23 @@
-{id: 01-base-05-github-04-github-multi-users}
-# Cap 5.4 -- Git and GitHub in ambiente multiutente
+# <a name="top"></a> Cap 5.4 - Git and GitHub in ambiente multiutente
 
 Nella vita di tutti i giorni, collaborando con più sviluppatori sulla stessa applicazione, le attività di Git e Gihub richiedono anche dei "pull" oltre i "push".
 In questo capitolo approfondiamo l'uso di Git e Git.
 Ai fini di questo tutorial questo capitolo si può saltare.
 
 
-Risorse web
 
-  * https://git-scm.com/book/en/v2/Git-Basics-Tagging
-  * http://stackoverflow.com/questions/7813194/how-do-i-edit-an-existing-tag-message-in-git
-  * https://allenan.com/git-branch-naming-conventions/
-  * http://www.pivotaltracker.com/help/gettingstarted
-  * http://nvie.com/posts/a-successful-git-branching-model/
-  * [Github Tutorial For Beginners - Github Basics for Mac or Windows & Source Control Basics](https://www.youtube.com/watch?v=0fKg7e37bQE)
-  * [GITHUB PULL REQUEST, Branching, Merging & Team Workflow](https://www.youtube.com/watch?v=oFYyTZwMyAg&list=PLoYCgNOIyGAB_8_iq1cL8MVeun7cB6eNc&index=10&feature=iv&src_vid=0fKg7e37bQE&annotation_id=annotation_3593094967)
-  * [Are git forks actually git clones?](http://stackoverflow.com/questions/6286571/are-git-forks-actually-git-clones)
-  * [git - the simple guide](http://rogerdudler.github.io/git-guide/)
-  * http://www.gitguys.com/topics/adding-and-removing-remote-branches/
+## Risorse web
 
+- https://git-scm.com/book/en/v2/Git-Basics-Tagging
+- http://stackoverflow.com/questions/7813194/how-do-i-edit-an-existing-tag-message-in-git
+- https://allenan.com/git-branch-naming-conventions/
+- http://www.pivotaltracker.com/help/gettingstarted
+- http://nvie.com/posts/a-successful-git-branching-model/
+- [Github Tutorial For Beginners - Github Basics for Mac or Windows & Source Control Basics](https://www.youtube.com/watch?v=0fKg7e37bQE)
+- [GITHUB PULL REQUEST, Branching, Merging & Team Workflow](https://www.youtube.com/watch?v=oFYyTZwMyAg&list=PLoYCgNOIyGAB_8_iq1cL8MVeun7cB6eNc&index=10&feature=iv&src_vid=0fKg7e37bQE&annotation_id=annotation_3593094967)
+- [Are git forks actually git clones?](http://stackoverflow.com/questions/6286571/are-git-forks-actually-git-clones)
+- [git - the simple guide](http://rogerdudler.github.io/git-guide/)
+- http://www.gitguys.com/topics/adding-and-removing-remote-branches/
 
 
 
@@ -26,49 +25,49 @@ Risorse web
 
 Ogni volta che voglio contribuire ad un progetto che ho già clonato: entro nella directory del progetto; prendo le ultime modifiche da github con un "pull"; mi apro un branch diverso dal master e ci entro; lavoro un poco; faccio il mio "snapshot" sul mio git locale; chiudo lo "snapshot" con un commento scritto all'imperativo PRESENTE; verifico che le modifiche funzionano anche su heroku (opzionale); invio le mie nuove modifiche su github con un "push".
 
-A> $ git pull origin master
-A>
-A> $ git checkout -b my_branch_name
-A>
-A> $ git push origin my_branch_name
-A>
-A> ... faccio questo e quello... (lavoro un poco)
-A>
-A> $ git add -A
-A>
-A> $ git commit -m "fai questo e quello"
-A>
-A> $ git push heroku my_branch_name:master
-A>
-A> $ git push origin my_branch_name
+> $ git pull origin master
+>
+> $ git checkout -b my_branch_name
+>
+> $ git push origin my_branch_name
+>
+> ... faccio questo e quello... (lavoro un poco)
+>
+> $ git add -A
+>
+> $ git commit -m "fai questo e quello"
+>
+> $ git push heroku my_branch_name:master
+>
+> $ git push origin my_branch_name
 
 Se non ho finito di completare la "story" del mio nuovo branch continuo: prendo le ultime modifiche da github con un "pull" dal nuovo ramo (branch_name); lavoro un poco; faccio il mio "snapshot" sul mio git locale; chiudo lo "snapshot" con un commento scritto all'imperativo PRESENTE; verifico che le modifiche funzionano anche su heroku (opzionale); invio le mie nuove modifiche su github con un "push".
 
-A> $ git pull origin my_branch_name
-A>
-A> ... faccio questo e quello... (lavoro un poco)
-A>
-A> $ git add -A
-A>
-A> $ git commit -m "fai questo e quello"
-A>
-A> $ git push heroku my_branch_name:master
-A>
-A> $ git push origin my_branch_name
+> $ git pull origin my_branch_name
+>
+> ... faccio questo e quello... (lavoro un poco)
+>
+> $ git add -A
+>
+> $ git commit -m "fai questo e quello"
+>
+> $ git push heroku my_branch_name:master
+>
+> $ git push origin my_branch_name
 
 Una volta finito con la "story" esco dal branch e richiedo su github un merge (Faccio una "pull request"). Una volta accordata procedo a fare il merge (oppure lo fa chi ne ha i diritti):
 
-A> $ git checkout master
-A>
-A> $ git merge my_branch_name
-A>
-A> $ git push origin master
+> $ git checkout master
+>
+> $ git merge my_branch_name
+>
+> $ git push origin master
 
 Poi elimino il branch sia in locale che in remoto (su github)
 
-A> $ git branch -d my_branch_name
-A>
-A> $ git push origin :my_branch_name
+> $ git branch -d my_branch_name
+>
+> $ git push origin :my_branch_name
 
 Fine della mia routine.
 
@@ -78,13 +77,13 @@ Fine della mia routine.
 
 Per vedere l'elenco dei tag (in questo caso solo uno) e per vedere l'elenco dei commit
 
-A> $ git tag
-A> 
-A> $ git log
+> $ git tag
+> 
+> $ git log
 
 Visualizzo la lista dei branches 
 
-A> git branches
+> git branches
 
 
 
