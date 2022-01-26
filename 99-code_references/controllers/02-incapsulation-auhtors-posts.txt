@@ -3,7 +3,7 @@
 Incapsuliamo una copia di posts dentro il modulo "Authors" in modo da avere tutta la parte di gestione degli articoli protetta da login con devise e con un suo specifico layout tutto dentro uno stesso modulo.
 
 
-Risorse interne
+## Risorse interne
 
 * 01-base/27-authors-eg_posts/01-authors-posts
 
