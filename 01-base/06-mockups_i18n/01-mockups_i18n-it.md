@@ -1,25 +1,18 @@
-{id: 01-base-06-mockups_i18n-01-mockups_i18n}
-# Cap 6.1 -- Internazionalizzazione della pagina di mockups
+# <a name="top"></a> Cap 6.1 - Internazionalizzazione della pagina di mockups
 
 Attiviamo l'internazionalizzazione statica
 
 Invece di scrivere i contenuti statici (quelli non presi dal database) già tradotti è più elegante mettere dei "segnaposto" che saranno poi usati dai vari files di traduzione nelle varie lingue. Questo permette di avere un'applicazione già pronta per essere tradotta in più lingue.
 
-Il nome dei "segnaposto" li mettiamo in inglese per dare un'impronta world-wide al nostro applicativo che ci permetterà in futuro di assumere sviluppatori da tutto il mondo.
-
-
-
-<p> Il testo verrà preso dal database ma alcuni messaggi sono passati dall'applicazione ed è quindi bene che vengano tradotti per essere pronti a supportare più lingue. </p>
+Il nome dei "segnaposto" li mettiamo in inglese per dare un'impronta world-wide al nostro applicativo che ci permetterà in futuro di collaborare con sviluppatori da tutto il mondo.
 
 
 
 ## Apriamo il branch "Mockups Internazionalizazione"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout -b mi
 ```
-
 
 
 
@@ -29,29 +22,28 @@ Per internazionalizzazione si intende la traduzione dell'applicazione nelle vari
 
 L'internazionalizzazione si divide in due parti:
 
-* Statica = traduzione delle stringhe usate nell'applicazione. Non traduce i dati del database.
-* Dinamica = traduzione dei dati del database.
+- Statica = traduzione delle stringhe usate nell'applicazione. Non traduce i dati del database.
+- Dinamica = traduzione dei dati del database.
 
 Al momento noi ci occupiamo solo di quella statica.
 
 
 
-
 ## I18n statico con YAML
 
-Per tradurre in varie lingue il contenuto statico della nostra applicazione (quello che non è contenuto nel database) utilizziamo il file yaml che è disponibile di default su Rails. Non c'è necessità di installare una nuova gemma. Rimane comunque la possibilità di cambiare successivamente solo il backend ed usarne uno differente invece dei files yaml. Tutto il resto dell'internazionalizzazione resta invariato.
+Per tradurre in varie lingue il contenuto statico della nostra applicazione (quello che non è contenuto nel database) utilizziamo il file *yaml* che è disponibile di default su Rails. Non c'è necessità di installare una nuova gemma. Rimane comunque la possibilità di cambiare successivamente solo il backend ed usarne uno differente invece dei files *yaml*. Tutto il resto dell'internazionalizzazione resta invariato.
 
-Usiamo l'helper "t" per tutte le stringhe che dobbiamo internazionalizzare.
-la stringa che viene passata all'helper "t" è un segnaposto che si usa nel file yaml associandogli la stringa corretta nella lingua scelta.
+Usiamo l'helper "***t***" per tutte le stringhe che dobbiamo internazionalizzare.
+la stringa che viene passata all'helper "***t***" è un segnaposto che si usa nel file yaml associandogli la stringa corretta nella lingua scelta.
 
-{caption: ".../app/views/mockups/page_a.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 1}
-```
+***codice 01 - .../app/views/mockups/page_a.html.erb - line: 1***
+
+```html+erb
 <h1> <%= t ".headline" %> </h1>
 <p> <%= t ".first_paragraph" %> </p>
 <br>
 <p>  <%= link_to t(".link_to_page_B"), mockups_page_b_path %> </p>
 ```
-
 
 
 
