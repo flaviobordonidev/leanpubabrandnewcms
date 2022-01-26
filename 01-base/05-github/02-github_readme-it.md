@@ -23,7 +23,7 @@ Il file README che ci interessa è quello dentro la cartella della nostra applic
 ***codice 01 - .../README.md - line: 1***
 
 ```Markdown
-# bl6_0
+# bl7_0
 ==
 Questa applicazione Rails è una base comune per poter poi sviluppare varie altre applicazioni.
 E' sufficiente fare un fork su github ed effettuare un git clone su una nuova applicazione.
@@ -31,19 +31,19 @@ E' sufficiente fare un fork su github ed effettuare un git clone su una nuova ap
 
 dopo tutta la descrizione del progetto mettiamo la storia delle varie releases
 
-***codice 01 - .../README.md - line: 10***
+***codice 01 - .../README.md - line: 22***
 
 ```Markdown
 history:
 
-* v0.1.0  04.09.19  creazione dell'applicazione su rails 6.0.0
+- v0.1.0  26.01.22  creazione dell'applicazione su rails 7.0.1
 ==
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/02_01-readme.md)
 
 
-Mano a mano che sviluppiamo l'applicazione aggiorniamo anche il readme. Nello specifico la versione e l'history delle versioni.
+Mano a mano che sviluppiamo l'applicazione aggiorniamo anche il *README.md*. Nello specifico la versione e l'history delle versioni.
 
 
 

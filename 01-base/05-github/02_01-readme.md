@@ -1,4 +1,4 @@
-# bl6_0
+# bl7_0
 ==
 Questa applicazione Rails è una base comune per poter poi sviluppare varie altre applicazioni.
 E' sufficiente fare un fork su github ed effettuare un git clone su una nuova applicazione.
@@ -15,12 +15,10 @@ lorem ipsum dolet amen.
 Esempi di utilizzo
 lorem ipsum dolet amen.
 
-
 Per approfondimenti
-[*www.bl6.com*](http://www.bl6.com/)
-by [Integram-web](http://www.integram-web.com/).
-
+[*www.mywebsite.com*](http://www.mywebsite.com/)
+by [mycompany_name](http://www.mycompany_name.com/).
 
 history:
 
-* v0.1.0  04.09.19  creazione dell'applicazione su rails 6.0.0
+- v0.1.0  26.01.22  creazione dell'applicazione su rails 7.0.1
