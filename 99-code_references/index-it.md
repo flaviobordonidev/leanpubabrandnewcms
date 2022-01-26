@@ -1,5 +1,55 @@
 # <a name="top"></a> Indice
 
+
+- action_text
+- asset_pipeline (sproket, webpack)
+- authentication_authorization_roles
+- autoresponder-email_marketing
+- aws_cloud9
+- boot_strap
+- check_box-select_menu
+- console_commands
+- controllers
+- csv
+- Custom Helpers
+- date-picker
+- debug
+- facebook-plugins
+- fonts_icons
+- form_with
+- ftp
+- gems
+- git_github
+- google_maps
+- heroku
+- layouts-and-meta_data
+- leanpub_markua
+- link_to
+- models
+- models-active_records
+- models-active_storage
+- models-migrations
+- pagination
+- performances
+- postgresql
+- routes-instradamenti
+- ruby_data_types and i18n
+- ruby_methods
+- schedule
+- sqlite_to_pg
+- start_page
+- tests-user_stories
+- ubuntu
+- views
+- webpack
+- yarn
+
+
+
+---
+
+## Archiviamo i files in ordine alfabetico
+
 Se invece di avere dei raggruppamenti fosse un elenco enorme in ordine alfabetico?
 Per qualche cosa funziona ma per altre no, perché dei raggruppamenti su alcune cose aiutano.
 Ad esempio per le migration è bene che stiano dentro il model?
@@ -25,37 +75,3 @@ sarà importante capire come nominare la cartella. Esempio:
 
 - Creazione nuovo utente
 - Utente - Creazione nuovo (va tolto dalle notes and Best Practice)
-
-
----
-
-- 0-Generic
-  - 000-notes-and-best_practice
-  - 001-gems
-  - 002-rails-console_commands
-  - 003-ruby_data_types and i18n
-  - 004-ruby_methods
-  - 005-postgresql
-  - 006-sqlite_to_pg
-  - 007-yarn
-  - 008-debug
-  - 009-tests-user_stories
-  - 010-performances
-  - 011-ftp
-  - 012-csv
-  - 013-schedule
-  - 014-ubuntu
-  - 015-aws_cloud9
-  - 016-git_github
-  - 017-Heroku
-  - 018-autoresponder-email_marketing
-  - 019-Facebook-plugins
-  - 020-google_maps
-  - 021-Leanpub markua
-  - 201-authentication_authorization_roles
-  - 556-start_page
-- 01-controllers
-- 03-models
-- 04-views
-- 05-config
-- 06-from-elis6
