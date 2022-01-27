@@ -1,4 +1,4 @@
-[Libreria](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/readme.md)
+[Libreria](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/README.md)
 
 # <a name="top"></a> Indice
 
