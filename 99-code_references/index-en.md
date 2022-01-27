@@ -2,7 +2,7 @@
 [IT](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/99-code_references/index-it.md) |
 [EN](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/99-code_references/index-en.md)
 
-# <a name="top"></a> Indice
+# <a name="top"></a> Index
 
 - action_text
     - 01-overview

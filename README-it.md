@@ -2,7 +2,7 @@
 [IT](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/README-it.md) |
 [EN](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/README.md)
 
-# Library
+# Libreria
 
 L'insieme di libri su questa "libreria digitale"
 

@@ -1,7 +1,6 @@
+[home](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/README.md) |
 [IT](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/index-it.md) |
 [EN](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/index-en.md)
-
-[Libreria](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/readme.md)
 
 # <a name="top"></a> Indice
 
