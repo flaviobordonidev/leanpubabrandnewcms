@@ -2,6 +2,9 @@
 
 * https://medium.com/podiihq/understanding-rails-routes-and-restful-design-a192d64cbbb5
 
+Routes
+https://richonrails.com/articles/understanding-rails-routing
+
 
 A router in Rails is a directing module that recognizes browser URLs and dispatches them to the controller actions requested. To make it simple, when you enter a url in your domain, the rails router will know which controller and action to handle your url.
 

@@ -253,3 +253,70 @@ Non indicando il "path" viene utilizzato lo stesso path/URL e vengono passati i 
 ### Includiamo qualche parametro
 
 <%= link_to "Customers Date Range", request.params.merge(paid: true) %>
+
+
+
+## Link to multiple params
+
+<%= link_to "game " + g.game_number.to_s, :action => "gametemplate", :id => 1, :season => 'winter', :year => 2007 %>
+
+These will be accessible from the controller as 
+  params[:id], params[:year] etc...
+
+
+
+## Pass custom variables to the link_to
+
+I basically want to pass my own custom variables to the link_to function
+so I don't need to set up a bunch of actions within my controller.
+
+So here's more of the details:
+
+link_to example:
+
+Code:
+
+<% for g in @games %>
+   <%= link_to "game " + g.game_number.to_s, :action => "gametemplate"%>
+<% end %>
+
+
+controller example code:
+Code:
+
+  def gametemplate
+    b = Batter.new()
+    @batter_stats = b.find_game_stats 1, 2007, "winter"
+  end
+
+
+I can then pass the @batter_stats to my view. However, how do I get the:
+Code:
+ 1, 2007, "winter"
+arguments from my link_to function?
+
+I can't find an answer anywhere I feel this would be something easy to
+do in rails. I got around this by setting up a separate action and
+resulting view rhtml file to for each game. This is obviously not a very
+good solution especially if I have 50 games. I'm a newbie @ rails and
+any help would be appreciated.
+
+Thanks.
+
+---
+On 9 Oct 2007, at 16:25, Jonathon Eastman wrote:
+
+>
+> I can then pass the @batter_stats to my view. However, how do I get  
+> the:
+> Code:
+>  1, 2007, "winter"
+> arguments from my link_to function?
+>
+You can pass as many arguments as you want:
+<%= link_to "game " + g.game_number.to_s, :action =>
+"gametemplate", :id => 1, :season => 'winter', :year => 2007 %>
+These will be accessible from the controller as params[:id], params
+[:year] etc...
+
+Fred
