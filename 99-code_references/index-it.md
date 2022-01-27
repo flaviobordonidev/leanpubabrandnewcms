@@ -1,5 +1,5 @@
-# <a name="top"></a> Indice
 
+# <a name="top"></a> Indice
 
 - action_text
     - 01-overview
@@ -63,35 +63,3 @@
 - views
 - webpack
 - yarn
-
-
-
----
-
-## Archiviamo i files in ordine alfabetico
-
-Se invece di avere dei raggruppamenti fosse un elenco enorme in ordine alfabetico?
-Per qualche cosa funziona ma per altre no, perché dei raggruppamenti su alcune cose aiutano.
-Ad esempio per le migration è bene che stiano dentro il model?
-
----
-
-Dentro Generic c'è un solo livello di cartelle. è un elenco di cartelle ma dentro ognuna di queste ci sono solo files e non altre cartelle annidate.
-
-Dentro Controllers ci sono solo files
-
-Dentro models c'è un solo livello di cartelle.
-
-Dentro views c'è un solo livello di cartelle.
-
-Dentro config c'è un solo livello di cartelle. (in realtà ce n'è una sola)
-
-> Quindi mi sembra abbastanza ovvio che possiamo rivedere questo raggruppamento in favore di un unico lungo elenco di cartelle ad un solo livello (dentro ogni cartella sono permessi solo files. l'eccezione è una cartella OLD)
-
-
-## Toglierei anche i numeri a questo primo elenco lasciandoli in ordine alfabetico.
-
-sarà importante capire come nominare la cartella. Esempio:
-
-- Creazione nuovo utente
-- Utente - Creazione nuovo (va tolto dalle notes and Best Practice)
