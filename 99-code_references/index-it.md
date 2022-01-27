@@ -2,6 +2,28 @@
 
 
 - action_text
+    - 01-overview
+    - 02-Story
+- active_records
+    - 00-section
+    - 01-set_attributes
+    - 02-show_like_yaml
+    - 03-postgre_like_ilike
+    - 04-new_save_create_build
+    - 05-find-records
+    - 06-many_to_one
+    - 07-many_to_many
+    - 08-scope_and_lambda
+    - 09-include_vs_join
+    - 10-devise-add_update-user
+    - 11-destroy-records
+    - 11b-svuotare_tabella
+    - 11c-destroy-with-many_to_many
+    - 12-enum
+    - 13-preload_scopes
+    - 14-group_by
+    - 15-each-vs-each_pair
+- active_storage
 - asset_pipeline (sproket, webpack)
 - authentication_authorization_roles
 - autoresponder-email_marketing
@@ -25,20 +47,18 @@
 - layouts-and-meta_data
 - leanpub_markua
 - link_to
+- migrations
 - models
-- models-active_records
-- models-active_storage
-- models-migrations
 - pagination
 - performances
 - postgresql
 - routes-instradamenti
-- ruby_data_types and i18n
+- ruby_data_types_and_i18n
 - ruby_methods
 - schedule
-- sqlite_to_pg
 - start_page
 - tests-user_stories
+- themes
 - ubuntu
 - views
 - webpack
