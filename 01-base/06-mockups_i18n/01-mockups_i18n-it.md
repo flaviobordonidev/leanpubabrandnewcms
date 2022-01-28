@@ -45,6 +45,8 @@ la stringa che viene passata all'helper "***t***" è un segnaposto che si usa ne
 <p>  <%= link_to t(".link_to_page_B"), mockups_page_b_path %> </p>
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/01-mockups_i18n-it.md)
+
 
 
 ### Verifichiamo preview
@@ -56,10 +58,9 @@ $ rails s
 
 Se visualizziamo sul browser vediamo che si visualizzano i segnaposto.  
 
-* https://mycloud9path.amazonaws.com/mockups/page_a
+- https://mycloud9path.amazonaws.com/mockups/page_a
 
-![Fig. 01](chapters/01-base/05-mockups_i18n/01_fig01-i18n_page_a_placeholds.png)
-
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/01_fig01-i18n_page_a_placeholds.png)
 
 
 
