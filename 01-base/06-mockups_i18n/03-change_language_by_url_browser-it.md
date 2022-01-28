@@ -75,7 +75,7 @@ Impostiamo il cambio della lingua dal parametro *locale* nell'url.
     end
 ```
 
-> Su rails 6 era utile impostare anche la condizione di "or" (*||*) per impostare il default_locale in caso non fosse passato il parametro *locale=* sull'url.
+> Su rails 6 era utile impostare anche la condizione di *or*, data dal doppio *pipe* "||", per impostare il *default_locale* in caso non fosse passato il parametro *locale=* sull'url.
 > `I18n.locale = params[:locale] || I18n.default_locale`
 
 
