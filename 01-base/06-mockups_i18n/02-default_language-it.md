@@ -97,6 +97,6 @@ Lo chiudiamo nel prossimo capitolo
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/04-github-multi-users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/01-mockups_i18n-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/02-default_language-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03-change_language_by_url_browser-it.md)
