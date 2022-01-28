@@ -1,6 +1,6 @@
 # <a name="top"></a> Cap 6.3 - Cambio lingua tramite parametro su URL o da lingua browser
 
-Cambiomo la lingua della nostra applicazione nei seguenti due modi:
+Cambiamo la lingua della nostra applicazione nei seguenti due modi:
 
 - tramite "params" dell'URL
 - tramite impostazione del browser
@@ -26,7 +26,10 @@ non serve perché è rimasto aperto dal capitolo precedente
 
 ## Cambio fisso da codice (hard-coded)
 
-Per impostare la lingua nella nosta applicazione, la guida di Rails consiglia di usare “around_action” per impostare il "locale" ma noi usiamo il before_action perché "around_action" non funziona per le traduzioni di “devise”. “around_action” da un livello di sicurezza maggiore e questo era importante fino a qualche anno fa perché “I18n.locale =“ non era tread-safe, ma oggi lo è e quindi possiamo usare tranquillamente un “before_action”.
+Per impostare la lingua nella nosta applicazione, la guida di Rails consiglia di usare *around_action* per impostare il *locale* ma noi usiamo il *before_action* perché *around_action* non funziona per le traduzioni di *devise*. 
+
+> *around_action* da un livello di sicurezza maggiore e questo era importante fino a qualche anno fa perché *I18n.locale =* non era *tread-safe*, ma oggi lo è e quindi possiamo usare tranquillamente un *before_action*.
+
 Avendo impostato il default in italiano adesso impostiamo la visualizzazione in inglese.
 
 ***codice 01 - .../app/controllers/appllication_controller.rb - line: 19***
