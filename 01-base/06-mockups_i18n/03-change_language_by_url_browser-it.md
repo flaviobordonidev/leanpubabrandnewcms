@@ -177,6 +177,13 @@ Aggiungiamo quindi questo metodo come alternativa al "params" già impostato
 
 
 
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_fig01-use_browser_language.png)
+
+
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_fig02-use_browser_language.png)
+
+
+
 ## Salviamo su Git
 
 ```bash
