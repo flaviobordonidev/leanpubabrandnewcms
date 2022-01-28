@@ -85,7 +85,7 @@ $ git push heroku mi:master
 
 - https://myapp-1-blabla.herokuapp.com/
 
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/02_02-config-initializers-i18n.png)
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/02_fig02-heroku_i18n_page_a.png)
 
 
 
