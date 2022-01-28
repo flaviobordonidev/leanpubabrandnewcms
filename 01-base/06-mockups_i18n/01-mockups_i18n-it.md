@@ -106,11 +106,11 @@ Se visualizziamo sul browser vediamo che, al posto dei segnoposto, si presenta i
 
 > Attenzione! C'è un bug e sui partials non mi funziona il "." come previsto quando uso i partials. Ho quindi scelto di usare tutto il percorso.
 
+Esiamo la notazione completa per identificare i segnapoto.
 
-{caption: ".../app/views/mockups/page_a.html.erb -- codice 03", format: HTML+Mako, line-numbers: true, number-from: 1}
+***codice 03 - .../app/views/mockups/page_a.html.erb - line: 1***
 
-
-```
+```html+erb
 <h1> <%= t "mockups.page_a.headline" %> </h1>
 <p> <%= t "mockups.page_a.first_paragraph" %> </p>
 <br>
@@ -119,13 +119,13 @@ Se visualizziamo sul browser vediamo che, al posto dei segnoposto, si presenta i
 
 
 
-
 ## Backend it.yml
 
 Adesso creiamo il file it.yml per implementare la lingua italiana (it).
 
-{caption: ".../config/locales/it.yml -- codice 04", format: yaml, line-numbers: true, number-from: 32}
-```
+***codice 04 - .../config/locales/it.yml - line: 32***
+
+```yaml
 it:
   mockups:
     page_a:
@@ -134,46 +134,41 @@ it:
       link_to_page_B: "Andiamo alla pagina B"
 ```
 
-Questa traduzione è pronta ma non è ancora utilizzata nella nostra applicazione. La implementeremo nel prossimo capitolo. 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/01_04-config-locales-it.yml)
 
+Questa traduzione è pronta ma non è ancora utilizzata nella nostra applicazione. La implementeremo nel prossimo capitolo. 
 
 
 
 ### Verifichiamo preview
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails s
 ```
 
 Se visualizziamo sul browser vediamo che, al posto dei segnoposto, la lingua che si presenta è quella inglese di en.yml perché è quella di default.
 
-* https://mycloud9path.amazonaws.com/mockups/page_a
+- https://mycloud9path.amazonaws.com/mockups/page_a
 
-![Fig. 02](chapters/01-base/05-mockups_i18n/01_fig02-i18n_page_a.png)
-
+![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/01_fig03-i18n_page_a.png)
 
 
 
 ## Salviamo su Git
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git add -A
 $ git commit -m "set i18n static"
 ```
 
 
 
-
 ## pubblichiamo su heroku
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git push heroku mi:master
 ```
-
 
 
 
@@ -183,129 +178,8 @@ Lo chiudiamo nel prossimo capitolo
 
 
 
+---
 
-## Il codice del capitolo
-
-
-
-
-{id: "01-05-01_02all", caption: ".../config/locales/en.yml -- codice 02", format: yaml, line-numbers: true, number-from: 1}
-```
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t 'hello'
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t('hello') %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# The following keys must be escaped otherwise they will not be retrieved by
-# the default I18n backend:
-#
-# true, false, on, off, yes, no
-#
-# Instead, surround them with single quotes.
-#
-# en:
-#   'true': 'foo'
-#
-# To learn more, please read the Rails Internationalization guide
-# available at https://guides.rubyonrails.org/i18n.html.
-
-en:
-  mockups:
-    page_a:
-      headline: "This is the homepage"
-      first_paragraph: "the text showed here is passed via a 'translation file' and this means that our application is ready to support more languages."
-      link_to_page_B: "Let's go to page B."
-```
-
-[indietro](#01-05-01_02)
-
-
-
-
-## Passiamo dei parametri alla traduzione
-
-Se vogliamo dare il benvenuto ad inizio pagina possiamo impostare un parametro per il nome ad esempio.
-
-
-{caption: ".../app/views/mockups/page_a.html.erb -- codice 03", format: HTML+Mako, line-numbers: true, number-from: 1}
-```
-<p> 
-  <%= t("mockups.page_a.welcome", name: "Flavio") %>
-  <%= t(".welcome", name: "Flavio") %>
-</p>
-<h1> <%= t "mockups.page_a.headline" %> </h1>
-<p> <%= t "mockups.page_a.first_paragraph" %> </p>
-<br>
-<p>  <%= link_to t("mockups.page_a.link_to_page_B"), mockups_page_b_path %> </p>
-```
-
-
-{id: "01-05-01_02all", caption: ".../config/locales/en.yml -- codice 02", format: yaml, line-numbers: true, number-from: 1}
-```
-en:
-  mockups:
-    page_a:
-      welcome: "Welcome, %{name}"
-      headline: "This is the homepage"
-      first_paragraph: "the text showed here is passed via a 'translation file' and this means that our application is ready to support more languages."
-      link_to_page_B: "Let's go to page B."
-```
-
-
-{caption: ".../config/locales/it.yml -- codice 04", format: yaml, line-numbers: true, number-from: 32}
-```
-it:
-  mockups:
-    page_a:
-      welcome: "Benvenuto, %{name}"
-      headline: "Questa è l'homepage"
-      first_paragraph: "il testo mostrato è o passato da un 'file di traduzione' e questo significa che la nostra applicazione è pronta a supportare più lingue."
-      link_to_page_B: "Andiamo alla pagina B"
-```
-
-
-
-## Passiamo una stringa HTML
-
-Se mettiamo alla fine della parola il suffisso "_html" abilitiamo il passaggio di codice HTML.
-
-ad esempio:
-
-{caption: ".../app/views/mockups/page_a.html.erb -- codice 03", format: HTML+Mako, line-numbers: true, number-from: 1}
-```
-  <%= t(".welcome_html", name: "Flavio") %>
-```
-
-
-{id: "01-05-01_02all", caption: ".../config/locales/en.yml -- codice 02", format: yaml, line-numbers: true, number-from: 1}
-```
-en:
-  mockups:
-    page_a:
-      welcome: "Welcome, <strong>%{name}</strong>"
-```
-
-Questo mette il nome in grassetto.
-
-Attenzione: Se passiamo un parametro in questo caso è bene fare il "sanitize." altrimenti abbiamo una vulnerabilità.
-
-{caption: ".../app/views/mockups/page_a.html.erb -- codice 03", format: HTML+Mako, line-numbers: true, number-from: 1}
-```
-  <%= t(".welcome_html", name: sanitize.params[:locale]) %>
-```
-
-Personalmente preferisco non usare il suffisso "_html".
-
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/04-github-multi-users-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/02-default_language-it.md)
