@@ -73,7 +73,7 @@ Avendo usato il "." davanti al nome del segnaposto, per convenzione Rails cerca 
 
 ***codice 02 - .../config/locales/en.yml - line: 32***
 
-```YAML
+```yaml
 en:
   mockups:
     page_a:
