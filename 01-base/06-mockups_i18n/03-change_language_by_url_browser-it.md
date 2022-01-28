@@ -46,7 +46,7 @@ Avendo impostato il default in italiano adesso impostiamo la visualizzazione in 
     end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_01-controllers-appllication_controller.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_01-controllers-application_controller.rb)
 
 
 
