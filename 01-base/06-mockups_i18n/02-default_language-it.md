@@ -46,9 +46,7 @@ Se visualizziamo sul browser vediamo che, al posto dei segnoposto, ora c'è la l
 
 ## Refactoring lingua di default
 
-Spostiamo le linee di codice all'interno di *config/initializers* come richiesto dalle convenzioni rails.
-
-Creiamo un nuovo file con estensione ".rb" che possiamo chiamare come vogliamo; scegliamo "i18n.rb".
+Spostiamo le linee di codice all'interno di *config/initializers*. Creiamo un nuovo file con estensione *.rb* che possiamo chiamare come vogliamo; scegliamo *i18n.rb*.
 
 ***codice 02 - .../config/initializers/i18n.rb - line: 1***
 
