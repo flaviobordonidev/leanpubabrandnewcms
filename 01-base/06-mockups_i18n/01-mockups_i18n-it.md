@@ -45,14 +45,13 @@ la stringa che viene passata all'helper "***t***" è un segnaposto che si usa ne
 <p>  <%= link_to t(".link_to_page_B"), mockups_page_b_path %> </p>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/01-mockups_i18n-it.md)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/01_01-views-mockups-page_a.html.erb)
 
 
 
 ### Verifichiamo preview
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails s
 ```
 
@@ -82,16 +81,35 @@ en:
       link_to_page_B: "Let's go to page B."
 ```
 
-[tutto il codice](#01-05-01_02all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/01_02-config-locales-en.yml)
+
+> ATTENZIONE! i files YAML (.yml) sono sensibili all'indentatura. Per indentare usate gli "spazi" e non i "tabs".
 
 
 
-I> ATTENZIONE! i files YAML (.yml) sono sensibili all'indentatura. Per indentare usate gli "spazi" e non i "tabs".
+## Verifichiamo preview
 
-I> Attenzione! C'è un bug e sui partials non mi funziona il "." come previsto quando uso i partials. Ho quindi scelto di usare tutto il percorso:
+```bash
+$ sudo service postgresql start
+$ rails s
+```
+
+Se visualizziamo sul browser vediamo che, al posto dei segnoposto, si presenta il contenuto.
+
+* https://mycloud9path.amazonaws.com/mockups/page_a
+
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/01_fig02-i18n_page_a.png)
+
+
+
+## Problema con uso dei partials e notazione corta su yaml
+
+> Attenzione! C'è un bug e sui partials non mi funziona il "." come previsto quando uso i partials. Ho quindi scelto di usare tutto il percorso.
 
 
 {caption: ".../app/views/mockups/page_a.html.erb -- codice 03", format: HTML+Mako, line-numbers: true, number-from: 1}
+
+
 ```
 <h1> <%= t "mockups.page_a.headline" %> </h1>
 <p> <%= t "mockups.page_a.first_paragraph" %> </p>
