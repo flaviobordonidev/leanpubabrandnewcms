@@ -24,13 +24,13 @@ non serve perché è rimasto aperto dal capitolo precedente
 
 
 
-## Cambio fisso da codice (hard-coded)
+## Passo 1 - Cambio fisso da codice (hard-coded)
 
-Per impostare la lingua nella nosta applicazione, la guida di Rails consiglia di usare *around_action* per impostare il *locale* ma noi usiamo il *before_action* perché *around_action* non funziona per le traduzioni di *devise*. 
+Per il cambio dinamico della lingua useremo *application_controller.rb*. Facciamo un primo passo impostando in modo rigido da codice la visualizzazione in inglese che sovrascrive la lingua di *default_locale* che abbiamo impostato essere quella in italiano.
+
+Per impostare la lingua a livello di *application_controller*, la guida di Rails consiglia di usare *around_action* per impostare il *locale* ma noi usiamo il *before_action* perché *around_action* non funziona per le traduzioni di *devise*.
 
 > *around_action* da un livello di sicurezza maggiore e questo era importante fino a qualche anno fa perché *I18n.locale =* non era *tread-safe*, ma oggi lo è e quindi possiamo usare tranquillamente un *before_action*.
-
-Avendo impostato il default in italiano adesso impostiamo la visualizzazione in inglese.
 
 ***codice 01 - .../app/controllers/application_controller.rb - line: 2***
 
@@ -50,34 +50,65 @@ Avendo impostato il default in italiano adesso impostiamo la visualizzazione in 
 
 
 
-## Cambio da params dell'url
+## Verifichiamo preview
 
-Impostiamo il cambio della lingua dal parametro "locale" nell'url.
+```bash
+$ sudo service postgresql start
+$ rails s
+```
 
-***codice 02 - .../app/controllers/appllication_controller.rb - line: 19***
+Sul browser vediamo che, al posto dei segnoposto, ora c'è la lingua inglese.
+
+- https://mycloud9path.amazonaws.com/mockups/page_a
+
+
+
+## Passo 2 - Cambio da params dell'url
+
+Impostiamo il cambio della lingua dal parametro *locale* nell'url.
+
+***codice 02 - .../app/controllers/application_controller.rb - line: 8***
 
 ```ruby
+    def set_locale
       I18n.locale = params[:locale]
+    end
 ```
 
-verifichiamo
-
-- www.miodominio.com?locale=en
-
-Se diamo un valore differente abbiamo un errore, per ovviare impostiamo il default_locale come alternativa.
+> Su rails 6 era utile impostare anche la condizione di "or" (*||*) per impostare il default_locale in caso non fosse passato il parametro *locale=* sull'url.
+> `I18n.locale = params[:locale] || I18n.default_locale`
 
 
-***codice 02 - ...continua - line: 29***
 
+## Verifichiamo preview
+
+```bash
+$ sudo service postgresql start
+$ rails s
 ```
-      I18n.locale = params[:locale] || I18n.default_locale
+
+Adesso, sul browser, per la lingua inglese dobbiamo passare nell'URL il parametro *locale=en*.
+
+- https://mycloud9path.amazonaws.com/mockups/page_a
+- https://mycloud9path.amazonaws.com/mockups/page_a?locale=en 
+
+
+## Debug
+
+Se diamo un valore differente da *it* o *en* abbiamo un errore, per ovviare impostiamo il *default_locale* come alternativa.
+
+***codice 03 - .../app/controllers/application_controller.rb - line: 8***
+
+```ruby
+    def set_locale
+    end
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_02-controllers-appllication_controller.rb)
 
 
 
-## Cambio da impostazione browser
+## Cambiamo da impostazione browser
 
 Cambiamo la lingua a seconda di come è impostato il nostro browser. 
 Per far questo si usa il parametro "Accept-Language" del "HTTP headers".
@@ -117,6 +148,40 @@ Aggiungiamo quindi questo metodo come alternativa al "params" già impostato
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_02-controllers-appllication_controller.rb)
+
+
+
+## Salviamo su Git
+
+```bash
+$ git add -A
+$ git commit -m "set locale via url"
+```
+
+
+
+## publichiamo su heroku
+
+```bash
+$ git push heroku mi:main
+```
+
+
+
+## Verifichiamo in produzione
+
+- https://myapp-1-blabla.herokuapp.com/
+
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/02_fig02-heroku_i18n_page_a.png)
+
+
+
+## Chiudiamo il branch
+
+Lo chiudiamo nel prossimo capitolo
+
+
+
 
 
 
