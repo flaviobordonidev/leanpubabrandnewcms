@@ -51,13 +51,12 @@ Spostiamo le linee di codice all'interno di *config/initializers*. Creiamo un nu
 ***codice 02 - .../config/initializers/i18n.rb - line: 1***
 
 ```ruby
-# Be sure to restart your server when you modify this file.
-
-# Set the default language.
 Rails.application.config.i18n.available_locales = [:en, :it]
 Rails.application.config.i18n.default_locale = :it
 Rails.application.config.i18n.fallbacks = true
 ```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/02_02-config-initializers-i18n.rb)
 
 Come si può vedere in questo caso abbiamo dovuto mettere tutto il percorso a partire da *Rails.appplication.* mentre quando eravamo su *application.rb* questo non era necessario perché ci trovavamo già all'interno della classe application che ereditava da *Rails::Application*.
 
