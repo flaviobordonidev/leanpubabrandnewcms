@@ -15,14 +15,15 @@ non serve perché è rimasto aperto dal capitolo precedente
 
 sulla configurazione dell'applicazione dichiariamo quale sono le lingue a disposizione ed impostiamo la lingua di default cambiando il "locale" di default:
 
-{id: "01-05-02_01", caption: ".../config/application.rb -- codice 01", format: ruby, line-numbers: true, number-from: 19}
-```
+***codice 01 - .../config/application.rb - line: 19***
+
+```ruby
     config.i18n.available_locales = [:en, :it]
     config.i18n.default_locale = :it
     config.i18n.fallbacks = true
 ```
 
-[tutto il codice](#01-05-02_01all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/02_01-config-application.rb)
 
 
 

@@ -420,7 +420,7 @@ Noi usiamo:
 * Shell (forse)
 * SQL (forse)
 * Vue (forse)
-* YAML
+* yaml
 * 
 
 
