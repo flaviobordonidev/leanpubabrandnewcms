@@ -69,11 +69,11 @@ Se visualizziamo sul browser vediamo che si visualizzano i segnaposto.
 Per far apparire le descrizioni invece dei segnaposti implementiamo il backend Yaml. 
 
 Iniziamo con il file en.yml perché l'inglese (en) è la lingua che viene selezionata di default.
-Avendo usato il "." davanti al nome del segnaposto, per convenzione Rails cerca il segnaposto catalogato nella rispettiva view. In questo caso sotto en -> mockups -> page_a.
+Avendo usato il "." davanti al nome del segnaposto, per convenzione Rails cerca il segnaposto catalogato nella rispettiva view. In questo caso sotto *en -> mockups -> page_a*.
 
+***codice 02 - .../config/locales/en.yml - line: 32***
 
-{id: "01-05-01_02", caption: ".../config/locales/en.yml -- codice 02", format: yaml, line-numbers: true, number-from: 32}
-```
+```YAML
 en:
   mockups:
     page_a:
