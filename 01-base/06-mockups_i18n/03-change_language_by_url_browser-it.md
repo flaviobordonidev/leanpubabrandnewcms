@@ -75,7 +75,7 @@ Impostiamo il cambio della lingua dal parametro *locale* nell'url.
     end
 ```
 
-> Su rails 6 era utile impostare anche la condizione di *or*, data dal doppio *pipe* "||", per impostare il *default_locale* in caso non fosse passato il parametro *locale=* sull'url.
+> Su rails 6 era utile impostare anche la condizione di *or*, data dal doppio *pipe* "||", per impostare il *default_locale* in caso non fosse passato il parametro *:locale*.
 > `I18n.locale = params[:locale] || I18n.default_locale`
 
 
@@ -93,18 +93,41 @@ Adesso, sul browser, per la lingua inglese dobbiamo passare nell'URL il parametr
 - https://mycloud9path.amazonaws.com/mockups/page_a?locale=en 
 
 
+
 ## Debug
 
-Se diamo un valore differente da *it* o *en* abbiamo un errore, per ovviare impostiamo il *default_locale* come alternativa.
+Facciamo in modo di non avere errore se viene passato un parametro locale non presente tra le lingue che abbiamo. Nel nostro caso diverso da *it* o *en*.
+
+Invece di avere l'errore passiamo il *default_locale*.
 
 ***codice 03 - .../app/controllers/application_controller.rb - line: 8***
 
 ```ruby
     def set_locale
+      case params[:locale]
+      when "it", "en"
+        I18n.locale = params[:locale]
+      else
+        I18n.locale = I18n.default_locale
+      end
     end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_02-controllers-appllication_controller.rb)
+
+
+## Verifichiamo preview
+
+```bash
+$ sudo service postgresql start
+$ rails s
+```
+
+Adesso, sul browser, per la lingua inglese dobbiamo passare nell'URL il parametro *locale=en*.
+Qualsiasi altro valore diamo a *locale* ci viene data la lingua italiana, che è quella impostata di default.
+
+- https://mycloud9path.amazonaws.com/mockups/page_a
+- https://mycloud9path.amazonaws.com/mockups/page_a?locale=en 
+- https://mycloud9path.amazonaws.com/mockups/page_a?locale=es
 
 
 
@@ -112,7 +135,8 @@ Se diamo un valore differente da *it* o *en* abbiamo un errore, per ovviare impo
 
 Cambiamo la lingua a seconda di come è impostato il nostro browser. 
 Per far questo si usa il parametro "Accept-Language" del "HTTP headers".
-Per approfondimenti vedi [Mozilla Accept-Language](developer.mozzilla.org/en-US/docs/Web/Headers/Accept-Language)
+
+> Per approfondimenti vedi [Mozilla Accept-Language](developer.mozzilla.org/en-US/docs/Web/Headers/Accept-Language)
 
 La stringa che è passata ha la lingua principale con due caratteri minuscoli e poi eventuali sotto-gruppi ed anche una variabile per dare un "peso" che indica le preferenze delle varie lingue.
 Ad esempio la stringa:
@@ -123,7 +147,7 @@ Noi applichiamo una semplice funzione di regex per prendere solo le lingue princ
 
 - [a-z]{2}
 
-Per testare la funzione regex si può usare rubular.com
+Per testare la funzione regex si può usare **rubular.com**
 
 Prepariamo quindi il metodo "locale_from_header" che ci restituisce una stringa con le due lettere minuscole da passare a I18n.locale.
 
@@ -135,7 +159,9 @@ Prepariamo quindi il metodo "locale_from_header" che ci restituisce una stringa 
   end
 ```
 
-fetch('A', 'B') prende il 'A' se presente altrimenti prende 'B', nel nostro caso se non è presente HTTP_ACCEPT_LANGUAGE è passatta una stringa vuota ''.
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_02-controllers-appllication_controller.rb)
+
+fetch('A', 'B') prende 'A' se presente altrimenti prende 'B', nel nostro caso se non è presente HTTP_ACCEPT_LANGUAGE è passatta una stringa vuota ''.
 
 Se è impostato il francese otterremo "fr", se è l'inglese otterremo "en", se italiano otterremo "it", ecc...
 
