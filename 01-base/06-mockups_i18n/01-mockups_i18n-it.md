@@ -60,7 +60,7 @@ Se visualizziamo sul browser vediamo che si visualizzano i segnaposto.
 
 - https://mycloud9path.amazonaws.com/mockups/page_a
 
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/01_fig01-i18n_page_a_placeholds_bla.png)
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/01_fig01-i18n_page_a_placeholds.png)
 
 
 
