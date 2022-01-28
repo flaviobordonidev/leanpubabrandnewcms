@@ -32,15 +32,11 @@ Per impostare la lingua nella nosta applicazione, la guida di Rails consiglia di
 
 Avendo impostato il default in italiano adesso impostiamo la visualizzazione in inglese.
 
-***codice 01 - .../app/controllers/appllication_controller.rb - line: 19***
+***codice 01 - .../app/controllers/application_controller.rb - line: 2***
 
 ```ruby
-before_action :set_locale
-```
+  before_action :set_locale
 
-***codice 01 - ...continua - line: 29***
-
-```ruby
   #-----------------------------------------------------------------------------
   private
   
