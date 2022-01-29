@@ -158,7 +158,7 @@ Inseriamo quindi la linea di codice che assegna a *params[:locale]* la stringa c
       params[:locale] = request.env.fetch('HTTP_ACCEPT_LANGUAGE', '').scan(/[a-z]{2}/).first if params[:locale].blank?
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_03-controllers-appllication_controller.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_03-controllers-application_controller.rb)
 
 la funzione *fetch('A', 'B')* prende *'A'* se presente altrimenti prende *'B'*, nel nostro caso se non è presente *HTTP_ACCEPT_LANGUAGE* è passatta una stringa vuota *''*.
 
