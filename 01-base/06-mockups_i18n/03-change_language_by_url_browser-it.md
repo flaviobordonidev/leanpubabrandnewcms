@@ -134,53 +134,57 @@ Qualsiasi altro valore diamo a *locale* ci viene data la lingua italiana, che è
 ## Cambiamo da impostazione browser
 
 Cambiamo la lingua a seconda di come è impostato il nostro browser. 
-Per far questo si usa il parametro "Accept-Language" del "HTTP headers".
+Per far questo usiamo il parametro "Accept-Language" del "HTTP headers".
 
 > Per approfondimenti vedi [Mozilla Accept-Language](developer.mozzilla.org/en-US/docs/Web/Headers/Accept-Language)
 
 La stringa che è passata ha la lingua principale con due caratteri minuscoli e poi eventuali sotto-gruppi ed anche una variabile per dare un "peso" che indica le preferenze delle varie lingue.
+
 Ad esempio la stringa:
 
 - Accept-Language : fr-CH, fr;q=0.9, en;q=0.8, de;q=0.7, *;q=0.5
 
-Noi applichiamo una semplice funzione di regex per prendere solo le lingue principali; quelle con i due caratteri in minuscolo:
+Noi applichiamo una semplice funzione di regex `[a-z]{2}` per prendere solo le lingue principali; quelle con i due caratteri in minuscolo:
 
-- [a-z]{2}
+Per testare la funzione regex si possiamo usare **[rubular.com](https://rubular.com/)**.
 
-Per testare la funzione regex si può usare **rubular.com**
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_fig01-rubular_regex_verifier.png)
 
-Prepariamo quindi il metodo "locale_from_header" che ci restituisce una stringa con le due lettere minuscole da passare a I18n.locale.
+Inseriamo quindi la linea di codice che assegna a *params[:locale]* la stringa con le due lettere minuscole della lingua del browser, se *params[:locale]* non è presente nell'url.
 
 ***codice 03 - .../app/controllers/appllication_controller.rb - line: 1***
 
 ```ruby
-  def locale_from_header
-    request.env.fetch('HTTP_ACCEPT_LANGUAGE', '').scan(/[a-z]{2}/).first
-  end
+      params[:locale] = request.env.fetch('HTTP_ACCEPT_LANGUAGE', '').scan(/[a-z]{2}/).first if params[:locale].blank?
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_02-controllers-appllication_controller.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_03-controllers-appllication_controller.rb)
 
-fetch('A', 'B') prende 'A' se presente altrimenti prende 'B', nel nostro caso se non è presente HTTP_ACCEPT_LANGUAGE è passatta una stringa vuota ''.
+la funzione *fetch('A', 'B')* prende *'A'* se presente altrimenti prende *'B'*, nel nostro caso se non è presente *HTTP_ACCEPT_LANGUAGE* è passatta una stringa vuota *''*.
 
-Se è impostato il francese otterremo "fr", se è l'inglese otterremo "en", se italiano otterremo "it", ecc...
+> Se è impostato il francese otterremo "fr", se è l'inglese otterremo "en", se italiano otterremo "it", ecc...
 
-Aggiungiamo quindi questo metodo come alternativa al "params" già impostato
 
-***codice 03 - .../app/controllers/appllication_controller.rb - line: 1***
 
+## Verifichiamo preview
+
+```bash
+$ sudo service postgresql start
+$ rails s
 ```
-      I18n.locale = params[:locale] || locale_from_header || I18n.default_locale
-```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_02-controllers-appllication_controller.rb)
+Adesso, sul browser, per la lingua inglese dobbiamo passare nell'URL il parametro *locale=en*.
+Qualsiasi altro valore diamo a *locale* ci viene data la lingua italiana, che è quella impostata di default.
 
+- https://mycloud9path.amazonaws.com/mockups/page_a
+- https://mycloud9path.amazonaws.com/mockups/page_a?locale=en 
+- https://mycloud9path.amazonaws.com/mockups/page_a?locale=es
 
-
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_fig01-use_browser_language.png)
-
+Cambiamo anche dinamicamente la lingua del browser con la Google chrome Extension: *Locale Switcher*.
 
 ![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_fig02-use_browser_language.png)
+
+![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_fig03-use_browser_language.png)
 
 
 
