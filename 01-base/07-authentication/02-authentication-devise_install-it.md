@@ -1,34 +1,31 @@
-{id: 01-base-07-authentication-02-authentication-devise_install}
-# Cap 7.2 -- Login con Devise - installazione
+# <a name="top"></a> Cap 7.2 - Login con Devise - installazione
 
-Implementiamo la parte di autenticazione, ossia la parte di login, con la gemma "devise".
-Aggiungiamo la gemma **devise** alla nostra applicazione per implementare la parte di autenticazione.
+Implementiamo la parte di autenticazione, ossia la parte di login, con la gemma ***devise***.
+Aggiungiamo la gemma ***devise*** alla nostra applicazione per implementare la parte di autenticazione.
 Devise permette di autenticare l'utente per mezzo di un login con user e password. 
-Un utente si logga per avere il SUO ambiente di lavoro personalizzato.
+Un utente si logga per avere il *SUO* ambiente di lavoro personalizzato.
 
 
-Risorse interne:
 
-* 99-rails_references/authentication/02-devise
+## Risorse interne:
 
+- 99-rails_references/authentication/02-devise
 
 
 
 ## Apriamo il branch "Login Devise Install"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout -b ldi
 ```
 
 
 
-
 ## Installiamo la gemma devise
 
-I> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/devise)
-I>
-I> facciamo riferimento al [tutorial github della gemma](https://github.com/plataformatec/devise)
+> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/devise)
+>
+> facciamo riferimento al [tutorial github della gemma](https://github.com/plataformatec/devise)
 
 {id: "01-07-02_01", caption: ".../Gemfile -- codice 01", format: ruby, line-numbers: true, number-from: 31}
 ```
@@ -45,7 +42,6 @@ Eseguiamo l'installazione della gemma con bundle
 ```
 $ bundle install
 ```
-
 
 
 
@@ -97,7 +93,6 @@ Completiamo i 4 punti riportati sul testo che appare dopo devise:install.
 
 
 
-
 ### Punto 1
 
 relativo alla parte di settaggio sia in sviluppo che in produzione.
@@ -143,7 +138,6 @@ I> (https://devcenter.heroku.com/articles/using-the-cli).
 
 
 
-
 ### punto 2.
 
 Abbiamo già impostato la root sul root file e per il momento lo lasciamo così.
@@ -154,7 +148,6 @@ Abbiamo già impostato la root sul root file e per il momento lo lasciamo così.
 ```
 
 [tutto il codice](#01-07-02_04all)
-
 
 
 
@@ -192,13 +185,10 @@ Successivamente implementeremo un partial più completo **<%= render 'layouts/fl
 
 
 
-
 ### punto 4.
 
 Copiamo le views di devise sulla app per permettere la personalizzazione.
 Questa operazione la posticipiamo a dopo la creazione della tabella " users ".
-
-
 
 
 
@@ -212,11 +202,9 @@ $ git commit -m "Install gem devise"
 
 
 
-
 ## Chiudiamo il branch
 
 Lo chiudiamo in seguito
-
 
 
 
@@ -226,10 +214,7 @@ Lo facciamo in seguito. Dopo la chiusura del branch.
 
 
 
-
 ## Il codice del capitolo
-
-
 
 
 {id: "01-07-02_01all", caption: ".../Gemfile -- codice 01", format: ruby, line-numbers: true, number-from: 1}
@@ -620,3 +605,11 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
 ```
+
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/01-devise_story-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/03-devise-users-seeds-it.md)

@@ -218,7 +218,23 @@ $ git push heroku mi:main
 
 ## Chiudiamo il branch
 
-Lo chiudiamo nel prossimo capitolo
+se abbiamo finito le modifiche e va tutto bene:
+
+```bash
+$ git checkout main
+$ git merge mi
+$ git branch -d mi
+```
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch main di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+```bash
+$ git push origin main
+```
 
 
 
