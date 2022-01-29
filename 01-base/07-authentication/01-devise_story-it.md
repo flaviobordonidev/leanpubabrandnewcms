@@ -1,15 +1,14 @@
-{id: 01-base-07-authentication-01-devise_story}
-# Cap 7.1 -- Storia di devise
+# <a name="top"></a> Cap 7.1 - Storia di devise
 
-Questo capitolo è solo teorico. Non andiamo avanti con il codice.
+> Questo capitolo è solo teorico. Non andiamo avanti con il codice.
 
 Questa sezione è una parte importante per la gestione dell'applicazione in quanto permette l'accesso ed identifica chi può fare cosa a seconda del suo ruolo.
 
 
-Risorse interne:
 
-* 99-rails_references/authentication/01-story
+## Risorse interne
 
+- 99-rails_references/authentication/01-story
 
 
 
@@ -28,44 +27,49 @@ Per la ruolificazione scelgo Rolify.
 
 
 
-
-## Un po' di storia per i nostalgici - Figaro
+## Un po' di storia per i nostalgici: Figaro
 
 Un problema di sicurezza.
-Le password e le chiavi di criptatura non sono state escluse da git e vengono quindi passate sui repositories esterni. Questo non è cosa buona e giusta. Implementiamo la sicurezza con la gemma Figaro.
+Le password e le chiavi di criptatura non sono state escluse da git e vengono quindi passate sui repositories esterni. 
+Questo non è cosa buona e giusta. Implementiamo la sicurezza con la gemma *Figaro*.
 
 
 
-## Perché usavamo figaro?
+## Perché usavamo Figaro?
 
-Figaro è una gemma vecchiotta che però anche per Rails 5 fa egregiamente il suo lavoro.
-Da rails 4.1 è stato introdotto il file secrets.yml che è un'alternativa a figaro.
-Però figaro vale ancora la pena...
+Figaro è una gemma vecchiotta che però fino a Rails 5 ha fatto egregiamente il suo lavoro.
 
-Rails 4.1 ha introdotto il file secrets.yml che potrebbe sostituire figaro ma non al 100%. Il problema è che secrets.yml non setta le variabili d'ambiente (environment variables). Lo stesso secrets.yml di default ne usa una per l'ambiente di produzione.
+Da Rails 4.1 è stato introdotto il file *secrets.yml* che è stata una prima alternativa a Figaro.
+Però Figaro valeva ancora la pena. Il file *secrets.yml* introdotto da Rails 4.1 non sostituiva Figaro al 100%.
+Il problema era che *secrets.yml* non settava le variabili d'ambiente (environment variables). 
+Lo stesso *secrets.yml* di default ne usa una per l'ambiente di produzione.
 
-{title="config/secrets.yml", lang=ruby, line-numbers=on, starting-line-number=47}
-~~~~~~~~
+***codice 01 - ...config/secrets.yml - line: 47***
+
+```ruby
 # Do not keep production secrets in the repository,
 # instead read values from the environment.
 production:
   secret_key_base: <%= ENV["SECRET_KEY_BASE"] %>
-~~~~~~~~
+```
 
-Quindi dove raccolgo tutte le password per la mia applicazione per poi passarle come variabili d'ambiente?
-Al momento conviene ancora usare figaro e raccoglierle sul file a lui dedicato config/application.yml
-All'avvio di rails la gemma figaro carica in variabili d'ambiente tutte le password scritte su config/application.yml
+Quindi dove raccoglievamo tutte le password per la nostra applicazione per poi passarle come variabili d'ambiente?
+Al momento conveniva ancora usare *Figaro* e raccoglierle sul file a lui dedicato *config/application.yml*.
+All'avvio di rails la gemma *figaro* caricava in variabili d'ambiente tutte le password scritte su *config/application.yml*.
 
-A> Evita di usare .bashrc o .bash-profile per le passwords/secrets
-A>
-A> Quando immagazzini passwords/secrets in file come .bashrc, queste sono mandate come variabili d'ambiente ad ogni singolo programma che stai eseguendo come utente. La maggior parte di questi programmi non ha bisogno di conoscere le tue passwords/secrets. Quindi perché passarglieli?
-A> Rivela le tue passwords/secrets solo ai processi che ne hanno bisogno.
-A> Gemme come figaro o detenv ti permettono di aggiungere variabili d'ambiente ai tuoi files che sono caricati all'avvio di Rails. Quest variabili d'ambiente saranno disponibili solo al processo Rails e ai suoi processi figli.
+Questo era un avviso dell'epoca:
 
-I> ATTENZIONE!
-I>
-I> ricordiamoci di mettere config/application.yml su .gitignore per non passare il file delle password su git-hub.
+> Evita di usare *.bashrc* o *.bash-profile* per le *passwords/secrets*.
+>
+> Quando immagazzini *passwords/secrets* in file come *.bashrc*, queste sono mandate come variabili d'ambiente ad ogni singolo programma che stai eseguendo come utente. 
+> La maggior parte di questi programmi non ha bisogno di conoscere le tue *passwords/secrets*. Quindi perché passargliele?
+> Rivela le tue passwords/secrets solo ai processi che ne hanno bisogno.
+> Gemme come *figaro* o *detenv* ti permettono di aggiungere variabili d'ambiente ai tuoi files che sono caricati all'avvio di Rails. 
+> Queste variabili d'ambiente saranno disponibili solo al processo Rails e ai suoi processi figli.
 
+> ATTENZIONE!
+>
+> ricordiamoci di mettere *config/application.yml* su *.gitignore* per non passare il file delle password su Git-hub.
 
 
 
@@ -142,7 +146,6 @@ production:
 
 
 
-
 ## Giochiamo con le variabili d'ambiente (ENV)
 
 Verifichiamo usando la rails console (https://pragmaticstudio.com/blog/2014/3/11/console-shortcuts-tips-tricks)
@@ -179,7 +182,6 @@ I> Per heroku credo si debba usare un'altro comando. Ad esempio " heroku run bas
 
 
 
-
 ## come si implementava Heroku
 
 Per Heroku esisteva la script " figaro heroku:set " che passava i valori
@@ -190,3 +192,11 @@ Adesso passiamo le variabili di 'secrets' creato in figaro direttamente in produ
 ~~~~~~~~
 $ figaro heroku:set -e production
 ~~~~~~~~
+
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03-change_language_by_url_browser-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/01-devise_story-it.md)
