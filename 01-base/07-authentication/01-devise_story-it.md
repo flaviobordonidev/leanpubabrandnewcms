@@ -75,36 +75,37 @@ Questo era un avviso dell'epoca:
 
 ## Come erano messe al sicuro le password
 
-Avendo installato figaro spostiamo tutte le password sul file /config/application.yml
-Iniziamo con il secret_key_base che è usato per verificare l'integrità dei signed cookies e che si trova da rails 4.1 sul file config/secrets.yml. (Nelle precedenti versioni di rails era in config/initializers/secret_token.rb)
+Avendo installato figaro spostiamo tutte le password sul file *.../config/application.yml*.
+Iniziamo con il *secret_key_base* che è usato per verificare l'integrità dei signed cookies e che si trova da rails 4.1 sul file *config/secrets.yml*. 
+Nelle precedenti versioni di rails era in *.../config/initializers/secret_token.rb*.
 
-Questo file ha una "convenzione" con heroku per quanto riguarda la produzione. Infatti heroku crea in automatico la ENV["SECRET_KEY_BASE"] come puoi verificare da terminale.
+Questo file ha una *convenzione* con heroku per quanto riguarda la produzione. 
+Infatti heroku crea in automatico la *ENV["SECRET_KEY_BASE"]* come puoi verificare da terminale.
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```bash
 $ heroku config
-~~~~~~~~
+```
 
-Quindi questa possiamo lasciarla così com'è oppure possiamo prendere quella di heroku ed archiviarla sul file di figaro config/application.yml 
+Quindi questa possiamo lasciarla così com'è oppure possiamo prendere quella di heroku ed archiviarla sul file di figaro *.../config/application.yml*.
 Comunque per le altre due Spostiamo i valori. 
 
-Apriamo il file .../config/secrets e copiamoci i valori dei secret_key_base
+Apriamo il file *.../config/secrets* e copiamoci i valori dei *secret_key_base*.
 
-[codice: beginning figaro 03](#code-beginning-figaro-03)
+*** codice 02 - .../config/secrets.yml - line: 13***
 
-{title=".../config/secrets.yml", lang=yaml, line-numbers=on, starting-line-number=13}
-~~~~~~~~
+```yaml
 development:
   secret_key_base: 2d64e44d814e3fdf518fb7f830e0f656bfcd015c86dfc4c5686d2b671a6e05aeaf67e780beaaa82b5f3be2c58bd28d616ffef2845233ab5dba9fade5067e0c06
 
 test:
   secret_key_base: 2de1ca50ad0877af447c1f414419e3eab1e0d09f612a6d24cd846bfcea38e3750d4965323aa35d39f945bb18b5f1592c1c590ffee3dbec39973ca299bbacb1ca
-~~~~~~~~
+```
 
 Passiamoli sul file di Figaro 
 
-{title=".../config/application.yml", lang=yaml, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+*** codice 03 - .../config/application.yml - line: 1***
+
+```yaml
 development:
   SECRET_KEY_BASE: 2d64e44d814e3fdf518fb7f830e0f656bfcd015c86dfc4c5686d2b671a6e05aeaf67e780beaaa82b5f3be2c58bd28d616ffef2845233ab5dba9fade5067e0c06
 
@@ -113,25 +114,24 @@ test:
 
 production:
   #SECRET_KEY_BASE: already present on heroku. See $ heroku config
-~~~~~~~~
+```
 
-I> ATTENZIONE!
-I>
-I> le variabili d'ambiente sono case-sensitive quindi ENV["secret_key_base"] è DIVERSO da ENV["SECRET_KEY_BASE"]
-I> 
-I> Per convenzione le variabili d'ambiente si scrivono tutte maiuscole.
+> ATTENZIONE!
+>
+> le variabili d'ambiente sono case-sensitive quindi ENV["secret_key_base"] è DIVERSO da ENV["SECRET_KEY_BASE"]
+> 
+> Per convenzione le variabili d'ambiente si scrivono tutte maiuscole.
 
-I> DOPPIA ATTENZIONE!
-I> 
-I> dopo le modifiche al file config/application.yml può essere necessario chiudere TUTTO IL TERMNIALE e non solo uscire dalla rails console e rientrare.
+> DOPPIA ATTENZIONE!
+> 
+> dopo le modifiche al file config/application.yml può essere necessario chiudere TUTTO IL TERMNIALE e non solo uscire dalla rails console e rientrare.
 
 
-quindi il file secret.yml risulta
+quindi il file *secret.yml* risulta
 
-[codice: beginning figaro 04](#code-beginning-figaro-04)
+*** codice 04 - .../config/secrets.yml - line: 13***
 
-{title=".../config/secrets.yml", lang=yaml, line-numbers=on, starting-line-number=13}
-~~~~~~~~
+```yaml
 development:
   secret_key_base: ENV["SECRET_KEY_BASE"]
 
@@ -142,7 +142,7 @@ test:
 # instead read values from the environment.
 production:
   secret_key_base: <%= ENV["SECRET_KEY_BASE"] %>
-~~~~~~~~
+```
 
 
 
@@ -150,53 +150,49 @@ production:
 
 Verifichiamo usando la rails console (https://pragmaticstudio.com/blog/2014/3/11/console-shortcuts-tips-tricks)
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```bash
 $ rails console
 > puts ENV.keys # find out what ENV vars are set
 => (returns a long list of var names)
 > puts ENV['SECRET_KEY_BASE']
 => "067d793e8781fa02aebd36e239c7878bdc1403d6bcb7c380beac53189ff6366be"
-~~~~~~~~
+```
 
 Riproviamolo nell'ambiente di test
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```bash
 $ rails console test
 > puts ENV.keys 
-~~~~~~~~
+```
 
 Riproviamolo nell'ambiente di produzione (con sandbox per rollback delle modifiche)
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```bash
 $ rails console production --sandbox
 > puts ENV.keys 
-~~~~~~~~
+```
 
-I> ATTENZIONE!
-I> l'ambiente di produzione coì chiamato fa riferimento ad un publicazione in locale e NON su Heroku. 
-I>
-I> Per heroku credo si debba usare un'altro comando. Ad esempio " heroku run bash "
+> ATTENZIONE!
+> l'ambiente di produzione coì chiamato fa riferimento ad un publicazione in locale e NON su Heroku. 
+>
+> Per heroku credo si debba usare un'altro comando. Ad esempio " heroku run bash "
 
 
 
-## come si implementava Heroku
+## Come si implementava Heroku
 
-Per Heroku esisteva la script " figaro heroku:set " che passava i valori
+Per Heroku esisteva la script *figaro heroku:set* che passava i valori.
 
 Adesso passiamo le variabili di 'secrets' creato in figaro direttamente in produzione su Heroku.
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```bash
 $ figaro heroku:set -e production
-~~~~~~~~
+```
 
 
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03-change_language_by_url_browser-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/04-change_language_by_subdirectory-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/01-devise_story-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/02-authentication-devise_install-it.md)

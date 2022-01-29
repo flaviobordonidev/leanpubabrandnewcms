@@ -61,8 +61,7 @@ Sul browser vediamo che ...
 
 
 
-{title="terminal", lang=bash, line-numbers=off}
-```
+```bash
 $ git add -A
 $ git commit -m "set i18n static at the end of the URL"
 ```
