@@ -75,6 +75,8 @@ Impostiamo il cambio della lingua dal parametro *locale* nell'url.
     end
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_02-controllers-application_controller.rb)
+
 > Su rails 6 era utile impostare anche la condizione di *or*, data dal doppio *pipe* "||", per impostare il *default_locale* in caso non fosse passato il parametro *:locale*.
 > `I18n.locale = params[:locale] || I18n.default_locale`
 
@@ -113,6 +115,7 @@ Invece di avere l'errore passiamo il *default_locale*.
     end
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_03-controllers-application_controller.rb)
 
 
 ## Verifichiamo preview
@@ -152,13 +155,13 @@ Per testare la funzione regex si possiamo usare **[rubular.com](https://rubular.
 
 Inseriamo quindi la linea di codice che assegna a *params[:locale]* la stringa con le due lettere minuscole della lingua del browser, se *params[:locale]* non è presente nell'url.
 
-***codice 03 - .../app/controllers/appllication_controller.rb - line: 1***
+***codice 03 - .../app/controllers/appllication_controller.rb - line: 14***
 
 ```ruby
       params[:locale] = request.env.fetch('HTTP_ACCEPT_LANGUAGE', '').scan(/[a-z]{2}/).first if params[:locale].blank?
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_03-controllers-application_controller.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_04-controllers-application_controller.rb)
 
 la funzione *fetch('A', 'B')* prende *'A'* se presente altrimenti prende *'B'*, nel nostro caso se non è presente *HTTP_ACCEPT_LANGUAGE* è passatta una stringa vuota *''*.
 
@@ -216,9 +219,6 @@ $ git push heroku mi:main
 ## Chiudiamo il branch
 
 Lo chiudiamo nel prossimo capitolo
-
-
-
 
 
 
