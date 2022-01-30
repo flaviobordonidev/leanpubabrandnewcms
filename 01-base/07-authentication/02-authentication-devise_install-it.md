@@ -245,9 +245,7 @@ Adesso che abbiamo il nome dell'host su heroku lo possiamo usare nel file di con
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/02_03-config-environments-production.rb)
 
 > Attenzione!
->
 > Dobbiamo ricordarci di cambiare questo settaggio quando su Heroku punteremo al dominio definitivo. 
->
 > (https://devcenter.heroku.com/articles/using-the-cli).
 
 
