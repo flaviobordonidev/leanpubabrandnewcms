@@ -1,21 +1,20 @@
-{id: 01-base-07-authentication-03-devise-users-seeds}
-# Cap 7.3 -- Users seeds
+# <a name="top"></a> Cap 7.3 - Users seeds
 
-Creiamo la tabella " users " tramite devise e la popoliamo.
-
-
+Creiamo la tabella *users* tramite devise e la popoliamo.
 
 
 
 ## Creiamo la tabella users con devise
 
-Implementiamo il MODEL di devise " User " ed allo stesso tempo creiamo la tabella " users " usando il comando " rails generate devise MyModel ".
+Implementiamo il *MODEL* di devise, ossia **User** e allo stesso tempo creiamo la tabella *users* usando il comando `rails generate devise MyModel`.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails g devise User
+```
 
-
+Esempio:
+  
+```bash
 user_fb:~/environment/bl6_0 (ldi) $ rails g devise User
 Running via Spring preloader in process 16461
       invoke  active_record
@@ -28,37 +27,43 @@ Running via Spring preloader in process 16461
        route  devise_for :users
 ```
 
-I> La maggior parte delle volte il MyModel usato è " User ", ma esistono situazioni in cui si preferisce dare un nome più esplicito. Ad esempio per gli utenti di un Blog si può usare " Author " invece di " User ". Questo per evidenziare che sono gli autori degli articoli che si loggano. Ma come "best practise" è meglio restare su un generico " User " che più avanti prenderà un "ruolo" a seguito dell'autenticazione.
+> La maggior parte delle volte il *MyModel* usato è **User**, ma esistono situazioni in cui si preferisce dare un nome più esplicito. 
+> Ad esempio per gli utenti di un *Blog* si può usare **Author** invece di **User**. Questo per evidenziare che sono gli autori degli articoli che si loggano. 
+> Ma come *"best practise"* è meglio restare su un generico **User** che più avanti prenderà un *"ruolo"* a seguito dell'**autenticazione**.
 
 
-Aggiungiamo una colonna di tipo string al migrate; aggiungiamogli anche che non può avere un valore "null" e che di default ha una stringa vuota "".
+Aggiungiamo una colonna di tipo string al migrate; aggiungiamogli anche che non può avere un valore *null* e che di default ha una stringa vuota *""*.
 
-{id: "01-07-03_01", caption: ".../db/migrate/xxx_devise_create_users.rb -- codice 01", format: ruby, line-numbers: true, number-from: 6}
-```
+***codice 01 - .../db/migrate/xxx_devise_create_users.rb - line: 6***
+
+```ruby
       t.string :name,               null: false, default: ""
 ```
 
-[tutto il codice](#01-07-03_01all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/03_01-db-migrate-xxx_devise_create_authors.rb)
 
-
-Prima di effettuare il migrate verifichiamo il MODEL per eventuali ulteriori opzioni di configurazione che si potrebbe desiderare di aggiungere, ad esempio "confirmable" o "lockable". Se si aggiunge un'opzione, assicurarsi di ispezionare il file di migrate (creato dal generator) e decommentare la sezione appropriata. Ad esempio, se si aggiunge l'opzione "confirmable" nel modello, è necessario togliere il commento alla sezione Confirmable nel migrate.
+Prima di effettuare il *migrate* verifichiamo il *MODEL* per eventuali ulteriori opzioni di configurazione che potremmo aggiungere.
+Ad esempio *confirmable* o *lockable*. 
+Se aggiungiamo un'opzione, assicuriamoci di ispezionare il file di *migrate* (creato dal *generator*) e *decommentiamo* la sezione appropriata. 
+Ad esempio, se si aggiunge l'opzione *confirmable* nel modello, è necessario togliere il commento alla sezione *Confirmable* nel migrate.
 
 Questa è la lista dei moduli Devise che sono attivi per questo modello:
 
-* database_authenticatable – Gli utenti saranno in grado di autenticarsi con un login e una password che sono memorizzati nel database. La password è memorizzata in forma di "digest" (Digest access authentication).
-* registerable – Gli utenti saranno in grado di registrare, aggiornare e distruggere i loro profili.
-* recoverable – Fornisce un meccanismo per reimpostare le password dimenticate.
-* rememberable – Abilita la funzionalità "ricordami(remember me)" che utilizza i cookie.
-* trackable – Tiene traccia del conteggio dei sign in, dei timestamps, e degli indirizzi IP.
-* validatable – Valida e-mail e password (possono essere usati validatori personalizzati).
-* confirmable – Gli utenti dovranno confermare le loro e-mail dopo la registrazione prima di poter accedere.
-* lockable – Gli account degli utenti verranno bloccati dopo un numero di tentativi di autenticazione non riusciti.
+- *database_authenticatable* – Gli utenti saranno in grado di autenticarsi con un login e una password che sono memorizzati nel database. La password è memorizzata in forma di "digest" (Digest access authentication).
+- *registerable* – Gli utenti saranno in grado di registrare, aggiornare e distruggere i loro profili.
+- *recoverable* – Fornisce un meccanismo per reimpostare le password dimenticate.
+- *rememberable* – Abilita la funzionalità "ricordami(remember me)" che utilizza i cookie.
+- *trackable* – Tiene traccia del conteggio dei sign in, dei timestamps, e degli indirizzi IP.
+- *validatable* – Valida e-mail e password (possono essere usati validatori personalizzati).
+- *confirmable* – Gli utenti dovranno confermare le loro e-mail dopo la registrazione prima di poter accedere.
+- *lockable* – Gli account degli utenti verranno bloccati dopo un numero di tentativi di autenticazione non riusciti.
 
 
-Commentiamo :registerable nel model perché non vogliamo che sia possibile per gli utenti registrarsi come utente.
+Commentiamo *:registerable* nel model perché non vogliamo che sia possibile per gli utenti registrarsi come utente.
 
-{caption: ".../app/models/user.rb -- codice 02", format: ruby, line-numbers: true, number-from: 1}
-```
+***codice 02 - .../app/models/user.rb - line: 1***
+
+```ruby
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :registerable, :timeoutable, :trackable and :omniauthable
@@ -67,15 +72,16 @@ class User < ApplicationRecord
 end
 ```
 
-
 Effettuiamo il migrate.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails db:migrate
+```
 
-
+Esempio:
+  
+```bash
 user_fb:~/environment/bl6_0 (ldi) $ rails db:migrate
 == 20191105135031 DeviseCreateUsers: migrating ================================
 -- create_table(:users)
@@ -89,38 +95,35 @@ user_fb:~/environment/bl6_0 (ldi) $ rails db:migrate
 
 
 
-
 ## lavoriamo sulle routes.
 
 Sistemiamo gli instradamenti per la parte di autenticazione gestita tramite Devise.
-Mettiamo gli instradamenti per tutte le azioni Restful di user aggiungendo "resources :users" dopo "devise_for :users"
+Mettiamo gli instradamenti per tutte le azioni Restful di user aggiungendo *resources :users* dopo *devise_for :users*.
 
+***codice 03 - .../config/routes.rb - line: 5***
 
-{id: "01-07-03_03", caption: ".../config/routes.rb -- codice 03", format: ruby, line-numbers: true, number-from: 5}
-```
+```ruby
   devise_for :users
   resources :users
 ```
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/03_01-db-migrate-xxx_devise_create_authors.rb)
 
-[tutto il codice](#01-07-03_03all)
-
-
-I> Attenzione!
-I>
-I> La route " devise_for :users " deve essere messa prima di " resources :users "
-
+> Attenzione!
+> La route *devise_for :users* deve essere messa prima di *resources :users*.
 
 
 
 ## Verifichiamo instradamenti
 
-verifichiamo gli instradamenti che si sono attivati per "user" a seguto del cambio su routes
+verifichiamo gli instradamenti che si sono attivati per *user* a seguito del cambio su routes.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails routes | egrep "user"
+```
 
+Esempio:
 
+```bash
 user_fb:~/environment/bl6_0 (ldi) $ rails routes | egrep "user"
                      new_user_session GET    /users/sign_in(.:format)                                                                 devise/sessions#new
                          user_session POST   /users/sign_in(.:format)                                                                 devise/sessions#create
@@ -142,16 +145,17 @@ user_fb:~/environment/bl6_0 (ldi) $ rails routes | egrep "user"
 
 
 
-
 ## Se volessimo riattivare registerable
 
 Registerable permette all'utente loggato di cambiare i suoi propri dati (email, password,...). 
-Nella nostra applicazione non lo usiamo. Usiamo invece l'utente con ruolo di amministratore per cambiare i dati di tutti gli utenti. 
 
-Se volessimo riattivare " :registerable " basterebbe aggiornare il model, decommentando " :registerable "
+> Nella nostra applicazione non lo usiamo. Usiamo invece l'utente con ruolo di amministratore per cambiare i dati di tutti gli utenti. 
 
-{caption: ".../app/models/user.rb -- codice 02", format: ruby, line-numbers: true, number-from: 1}
-```
+Se volessimo riattivare *:registerable* basterebbe aggiornare il model, decommentando *:registerable*.
+
+***codice 02 - .../app/models/user.rb - line: 1***
+
+```ruby
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -160,25 +164,29 @@ class User < ApplicationRecord
 end
 ```
 
-e rieseguire il migrate
+e rieseguire il *migrate*.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails db:migrate
+```
 
+Esempio:
 
+```bash
 user_fb:~/environment/bl6_0 (ldi) $ rails db:migrate
 user_fb:~/environment/bl6_0 (ldi) $ 
 ```
 
-Non abbiamo nessuna conferma sul terminale ma se adesso riverifichiamo gli instradamenti vediamo che è presente anche "registerable"
+Non abbiamo nessuna conferma sul terminale ma se adesso riverifichiamo gli instradamenti vediamo che è presente anche *registerable*.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails routes | egrep "user"
+```
 
+Esempio:
 
+```bash
 user_fb:~/environment/bl6_0 (ldi) $ rails routes | egrep "user"
                      new_user_session GET    /users/sign_in(.:format)                                                                 devise/sessions#new
                          user_session POST   /users/sign_in(.:format)                                                                 devise/sessions#create
@@ -205,19 +213,19 @@ user_fb:~/environment/bl6_0 (ldi) $ rails routes | egrep "user"
                                       DELETE /users/:id(.:format)                                                                     users#destroy
 ```
 
-Il link per arrivare sulla view di "registerable" risulta quindi
+Il link per arrivare sulla view di *registerable* risulta quindi
 
-```
+```html+erb
   <%= link_to "Edit #{current_user.email} Profile", edit_user_registration_path %>
 ```
 
 
 
-
 ## Se volessimo disattivare nuovamente registerable
 
-{caption: ".../app/models/user.rb -- codice 02", format: ruby, line-numbers: true, number-from: 1}
-```
+***codice 02 - .../app/models/user.rb - line: 1***
+
+```ruby
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :registerable, :timeoutable, :trackable and :omniauthable
@@ -226,25 +234,23 @@ class User < ApplicationRecord
 end
 ```
 
-e rieseguire il migrate
+e rieseguire il *migrate*.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails db:migrate
+```
 
-
+Esempio:
+  
+```bash
 user_fb:~/environment/bl6_0 (ldi) $ rails db:migrate
 user_fb:~/environment/bl6_0 (ldi) $ 
 ```
 
-Non abbiamo nessuna conferma sul terminale ma se adesso riverifichiamo gli instradamenti vediamo che non è più presente "registerable"
+Non abbiamo nessuna conferma sul terminale ma se adesso riverifichiamo gli instradamenti vediamo che **non** è più presente *registerable*.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ rails routes | egrep "user"
-
-
+```bash
 user_fb:~/environment/bl6_0 (ldi) $ rails routes | egrep "user"
                      new_user_session GET    /users/sign_in(.:format)                                                                 devise/sessions#new
                          user_session POST   /users/sign_in(.:format)                                                                 devise/sessions#create
@@ -266,16 +272,18 @@ user_fb:~/environment/bl6_0 (ldi) $ rails routes | egrep "user"
 
 
 
-
 ## Aggiungiamo un utente da console
 
 {caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails c
 -> User.create(name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda')
 -> exit
+```
 
-
+Esempio:
+  
+```bash
 user_fb:~/environment/bl6_0 (ldi) $ rails c
 Running via Spring preloader in process 20183
 Loading development environment (Rails 6.0.0)
@@ -291,8 +299,7 @@ user_fb:~/environment/bl6_0 (ldi) $
 
 Oppure
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails c
 -> u = User.new({name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda'})
 -> u.save
@@ -301,10 +308,9 @@ $ rails c
 Da notare che, a differenza dei normali inserimenti nel database, questa volta abbiamo anche delle parentesi graffe **{}** da inserire.
 
 
-Se avessimo attivato l'opzione " :confirmable " avremmo dovuto " skippare " la " confirmation "
+Se avessimo attivato l'opzione *:confirmable* avremmo dovuto *skippare* la *confirmation*.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails c
 -> u = User.new({name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda'})
 -> u.skip_confirmation!
@@ -313,20 +319,18 @@ $ rails c
 
 
 
-
 ## Verifichiamo preview
 
 Attiviamo il webserver
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails s
 ```
 
 Per verificarlo dobbiamo andare alla pagina **users/sign_in** quindi all'URL:
 
-* https://mycloud9path.amazonaws.com/users/sign_in
+- https://mycloud9path.amazonaws.com/users/sign_in
 
 ![Fig. 01](chapters/01-base/07-authentication/03_fig01-url-users-sign_in.png)
 
@@ -336,32 +340,27 @@ Con le credenziali giuste ci loggiamo e veniamo portati nella pagina di root.
   user: ann@test.abc
   password: passworda
 
-I> Poiché non abbiamo ancora implementato il pulsante di logout, una volta loggati per provare di nuovo dobbiamo usare una nuova pagina del browser in navigazione privata.
+> Poiché non abbiamo ancora implementato il pulsante di logout, una volta loggati per provare di nuovo dobbiamo usare una nuova pagina del browser in navigazione privata.
 
 
 
+## Archiviamo su git
 
-## archiviamo su git
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git add -A
 $ git commit -m "Implement devise with User model and table"
 ```
 
 
 
-
 ## Pubblichiamo su Heroku
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git push heroku ldi:master
 $ heroku run rails db:migrate
 ```
 
-Se dovesse esserci un errore per "Devise.secret_key was not set." vedi 99-rails_references/authentication_devise/03-devise_error-secret_key
-
+Se dovesse esserci un errore tipo: *Devise.secret_key was not set.* vedi [99-rails_references/authentication_devise/03-devise_error-secret_key].
 
 
 
@@ -369,12 +368,14 @@ Se dovesse esserci un errore per "Devise.secret_key was not set." vedi 99-rails_
 
 Installando devise siamo intervenuti sul database locale e quindi dobbiamo aggiornare anche quello remoto su Heroku
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ heroku run rails c
 -> User.create(name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda')
+```
 
+Esempio:
 
+```bash
 user_fb:~/environment/bl6_0 (ldi) $ heroku run rails c
 Running rails c on ⬢ bl6-0... up, run.5323 (Free)
 Loading production environment (Rails 6.0.0)
@@ -389,22 +390,19 @@ irb(main):002:0> exit
 
 
 
-
 ## Verifichiamo produzione
 
-verifichiamo la nostra applicazione in produzione.
-I servers sono quelli di Heroku e quindi non li dobbiamo attvare.
+Verifichiamo la nostra applicazione in produzione. I servers sono quelli di Heroku e quindi non li dobbiamo attvare.
 andiamo direttametne all'URL:
 
-* https://bl6-0.herokuapp.com/users/sign_in
+- https://bl6-0.herokuapp.com/users/sign_in
 
 Usiamo le credenziali di login appena create su heroku.
 
   user: ann@test.abc
   password: passworda
 
-I> Poiché non abbiamo ancora implementato il pulsante di logout, una volta loggati per provare di nuovo usare una nuova pagina del browser in navigazione privata 
-
+> Poiché non abbiamo ancora implementato il pulsante di logout, una volta loggati per provare di nuovo usare una nuova pagina del browser in navigazione privata 
 
 
 
@@ -412,8 +410,7 @@ I> Poiché non abbiamo ancora implementato il pulsante di logout, una volta logg
 
 se abbiamo finito le modifiche e va tutto bene:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout master
 $ git merge ldi
 $ git branch -d ldi
@@ -421,14 +418,11 @@ $ git branch -d ldi
 
 
 
-
 ## Facciamo un backup su Github
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git push origin master
 ```
-
 
 
 
@@ -508,3 +502,17 @@ end
 ```
 
 [indietro](#01-07-03_03)
+
+
+
+## Facciamo un backup su Github
+
+Lo facciamo in seguito. Dopo la chiusura del branch.
+
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/02-authentication-devise_install-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/04-devise-login_logout-it.md)

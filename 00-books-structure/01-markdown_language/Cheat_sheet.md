@@ -403,7 +403,7 @@ Noi usiamo:
 * Git Attributes (non c'è nell'elenco samples)
 * Git Config (forse)
 * HTML (forse)
-* HTML+ERB
+* html+erb
 * JSON (forse)
 * JavaScript
 * JavaScript+ERB

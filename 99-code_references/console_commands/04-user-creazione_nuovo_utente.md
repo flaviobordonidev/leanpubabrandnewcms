@@ -1,5 +1,14 @@
-Creazione Nuove Utente 
+# Creazione Nuove Utente 
 
+
+
+## Risorse interne
+
+- [01-base/07-authentication/03-devise-users-seeds]()
+
+
+
+## Console di comando
 L'inserimento di un nuovo utente va effettuato tramite rails console con i comandi che effettuarenno l'append del nuovo record direttamente sulla tabella users. Si possono usare entrambi i metodi portati ad esempio qui di seguito: 
 
 $ sudo service postgresql start
