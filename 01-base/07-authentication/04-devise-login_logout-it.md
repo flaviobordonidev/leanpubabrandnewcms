@@ -112,7 +112,7 @@ Andiamo alla pagina principale (*root_path*) quindi all'URL di login */users/sig
 
 La variabile di devise *path_names* seve a rinominare le chiamate sull'URL per il *sign_in*, *sign_out*, *sign_up*, ...
 
-***codice 04 - .../config/routes.rb - line: 9***
+***codice 04 - .../config/routes.rb - line: 2***
 
 ```ruby
   devise_for :users, path_names: {sign_in: 'login'}
@@ -125,32 +125,34 @@ La variabile di devise *path_names* seve a rinominare le chiamate sull'URL per i
 
 ## Verifichiamo gli instradamenti
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails routes | egrep "users"
-
-
-user_fb:~/environment/bl6_0 (siso) $ rails routes | egrep "users"
-                     new_user_session GET    /users/login(.:format)                                                                   devise/sessions#new
-                         user_session POST   /users/login(.:format)                                                                   devise/sessions#create
-                 destroy_user_session DELETE /users/sign_out(.:format)                                                                devise/sessions#destroy
-                    new_user_password GET    /users/password/new(.:format)                                                            devise/passwords#new
-                   edit_user_password GET    /users/password/edit(.:format)                                                           devise/passwords#edit
-                        user_password PATCH  /users/password(.:format)                                                                devise/passwords#update
-                                      PUT    /users/password(.:format)                                                                devise/passwords#update
-                                      POST   /users/password(.:format)                                                                devise/passwords#create
-                                users GET    /users(.:format)                                                                         users#index
-                                      POST   /users(.:format)                                                                         users#create
-                             new_user GET    /users/new(.:format)                                                                     users#new
-                            edit_user GET    /users/:id/edit(.:format)                                                                users#edit
-                                 user GET    /users/:id(.:format)                                                                     users#show
-                                      PATCH  /users/:id(.:format)                                                                     users#update
-                                      PUT    /users/:id(.:format)                                                                     users#update
-                                      DELETE /users/:id(.:format)                                                                     users#destroy
 ```
 
-Possiamo vedere che adesso c'è il percorso "/users/login" al posto del precedente "/users/sign_in".
+Esempio:
+  
+```bash
+user_fb:~/environment/bl7_0 (siso) $ rails routes | egrep "users"
+                        new_user_session GET    /users/login(.:format)                                                                            devise/sessions#new
+                            user_session POST   /users/login(.:format)                                                                            devise/sessions#create
+                    destroy_user_session DELETE /users/sign_out(.:format)                                                                         devise/sessions#destroy
+                       new_user_password GET    /users/password/new(.:format)                                                                     devise/passwords#new
+                      edit_user_password GET    /users/password/edit(.:format)                                                                    devise/passwords#edit
+                           user_password PATCH  /users/password(.:format)                                                                         devise/passwords#update
+                                         PUT    /users/password(.:format)                                                                         devise/passwords#update
+                                         POST   /users/password(.:format)                                                                         devise/passwords#create
+                                   users GET    /users(.:format)                                                                                  users#index
+                                         POST   /users(.:format)                                                                                  users#create
+                                new_user GET    /users/new(.:format)                                                                              users#new
+                               edit_user GET    /users/:id/edit(.:format)                                                                         users#edit
+                                    user GET    /users/:id(.:format)                                                                              users#show
+                                         PATCH  /users/:id(.:format)                                                                              users#update
+                                         PUT    /users/:id(.:format)                                                                              users#update
+                                         DELETE /users/:id(.:format)                                                                              users#destroy
+user_fb:~/environment/bl7_0 (siso) $ 
+```
 
+Possiamo vedere che adesso c'è il percorso */users/login* al posto del precedente */users/sign_in*.
 
 
 
@@ -158,34 +160,32 @@ Possiamo vedere che adesso c'è il percorso "/users/login" al posto del preceden
 
 Attiviamo il webserver
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails s
 ```
 
-verifichiamo gli URLs:
+verifichiamo vecchio e nuovo URL di login.
 
-* https://mycloud9path.amazonaws.com/users/sign_in --> ERRORE
-* https://mycloud9path.amazonaws.com/users/login
-
+- https://mycloud9path.amazonaws.com/users/sign_in --> ERRORE
+- https://mycloud9path.amazonaws.com/users/login
 
 
 
 ## Aggiungiamo il path vuoto ''
 
-Il parametro "path: ''" elimina gli instradamnenti di default di devise per evitare di avere la sottodirectory "users/" nell'url.
+Il parametro *path: ''* elimina gli instradamnenti di default di devise per evitare di avere la sottodirectory *users/* nell'url.
 
-{id: "01-07-04_05", caption: ".../config/routes.rb -- codice 05", format: ruby, line-numbers: true, number-from: 9}
-```
+***codice 05 - .../config/routes.rb - line: 2***
+
+```ruby
   devise_for :users, path_names: {sign_in: 'login'}, path: ''
   resources :users
 ```
 
-[tutto il codice](#01-07-04_05all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/04_05-config-routes.rb)
 
-Così avremo un più pulito "/login" invece di "/users/login"
-
+Così avremo un url più pulito con */login* invece di */users/login*.
 
 
 
