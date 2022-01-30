@@ -338,8 +338,12 @@ Per verificarlo dobbiamo andare alla pagina **users/sign_in** quindi all'URL:
 
 Con le credenziali giuste ci loggiamo e veniamo portati nella pagina di root.
 
-  user: ann@test.abc
-  password: passworda
+------------- | -------------
+email:        | ann@test.abc
+password:     | passworda
+
+   
+   
 
 > Poiché non abbiamo ancora implementato il pulsante di logout, una volta loggati per provare di nuovo dobbiamo usare una nuova pagina del browser in navigazione privata.
 
