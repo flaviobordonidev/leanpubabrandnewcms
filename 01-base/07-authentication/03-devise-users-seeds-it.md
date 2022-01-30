@@ -15,16 +15,16 @@ $ rails g devise User
 Esempio:
   
 ```bash
-user_fb:~/environment/bl6_0 (ldi) $ rails g devise User
-Running via Spring preloader in process 16461
+user_fb:~/environment/bl7_0 (ldi) $ rails g devise User
       invoke  active_record
-      create    db/migrate/20191105135031_devise_create_users.rb
+      create    db/migrate/20220130110553_devise_create_users.rb
       create    app/models/user.rb
       invoke    test_unit
       create      test/models/user_test.rb
       create      test/fixtures/users.yml
       insert    app/models/user.rb
        route  devise_for :users
+user_fb:~/environment/bl7_0 (ldi) $ 
 ```
 
 > La maggior parte delle volte il *MyModel* usato è **User**, ma esistono situazioni in cui si preferisce dare un nome più esplicito. 
@@ -40,7 +40,7 @@ Aggiungiamo una colonna di tipo string al migrate; aggiungiamogli anche che non 
       t.string :name,               null: false, default: ""
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/03_01-db-migrate-xxx_devise_create_authors.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/03_01-db-migrate-xxx_devise_create_users.rb)
 
 Prima di effettuare il *migrate* verifichiamo il *MODEL* per eventuali ulteriori opzioni di configurazione che potremmo aggiungere.
 Ad esempio *confirmable* o *lockable*. 
@@ -67,7 +67,7 @@ Commentiamo *:registerable* nel model perché non vogliamo che sia possibile per
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :registerable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable,
+  devise :database_authenticatable, 
          :recoverable, :rememberable, :validatable
 end
 ```
@@ -82,34 +82,36 @@ $ rails db:migrate
 Esempio:
   
 ```bash
-user_fb:~/environment/bl6_0 (ldi) $ rails db:migrate
-== 20191105135031 DeviseCreateUsers: migrating ================================
+user_fb:~/environment/bl7_0 (ldi) $ rails db:migrate
+== 20220130110553 DeviseCreateUsers: migrating ================================
 -- create_table(:users)
-   -> 0.0590s
+   -> 0.0689s
 -- add_index(:users, :email, {:unique=>true})
-   -> 0.0120s
+   -> 0.0049s
 -- add_index(:users, :reset_password_token, {:unique=>true})
-   -> 0.0098s
-== 20191105135031 DeviseCreateUsers: migrated (0.0835s) =======================
+   -> 0.0036s
+== 20220130110553 DeviseCreateUsers: migrated (0.0793s) =======================
+
+user_fb:~/environment/bl7_0 (ldi) $ 
 ```
 
 
 
-## lavoriamo sulle routes.
+## Lavoriamo sulle routes.
 
 Sistemiamo gli instradamenti per la parte di autenticazione gestita tramite Devise.
 Mettiamo gli instradamenti per tutte le azioni Restful di user aggiungendo *resources :users* dopo *devise_for :users*.
 
-***codice 03 - .../config/routes.rb - line: 5***
+***codice 03 - .../config/routes.rb - line: 2***
 
 ```ruby
   devise_for :users
   resources :users
 ```
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/03_01-db-migrate-xxx_devise_create_authors.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/03_03-config-routes.rb)
 
 > Attenzione!
-> La route *devise_for :users* deve essere messa prima di *resources :users*.
+> La route *devise_for :users* deve essere messa **prima** di *resources :users*.
 
 
 
