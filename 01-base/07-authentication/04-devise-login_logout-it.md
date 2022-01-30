@@ -34,21 +34,21 @@ Esempio: `User.find(current_user.id)`
 
 Se nessun utente è *loggato/autenticato* riceviamo un errore nel codice. Per evitarlo mettiamo il controllo `if current_user.present?`.
 
-***codice 01 - .../app/views/mockups/page_a.html.erb - line: 7***
+***codice 01 - .../app/views/mockups/page_a.html.erb - line: 5***
 
 ```html+erb
 <p> utente attivo: <%= current_user.email if current_user.present? == true %> </p>
 ```
 
-Usiamo l'operatore ternario `condizione ? azione_true : azione_false` per visualizzare la stringa *"nessun utente loggato"* invece di lasciare un vuoto.
+Aggiungiamo subito l'operatore ternario `condizione ? azione_true : azione_false` per visualizzare la stringa *"nessun utente loggato"* invece di lasciare un vuoto.
 
-***codice 01 - .../app/views/mockups/page_a.html.erb - line: 7***
+***codice 01 - .../app/views/mockups/page_a.html.erb - line: 5***
 
 ```html+erb
 <p> utente attivo: <%= current_user.present? == true ? current_user.email : "nessun utente loggato" %> <p> 
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/04_01-views-mockups-page_a.html.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/04_01-views-mockups-page_a.html.erb)
 
 
 
@@ -62,7 +62,7 @@ Aggiungiamo un link per effettuare il logout.
 <%= link_to "Sign Out", destroy_user_session_path, method: :delete %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/04_02-views-mockups-page_a.html.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/04_02-views-mockups-page_a.html.erb)
 
 > Se lo proviamo verrà ricaricata la stessa pagina " mockups/page_a " perché è la pagina di root. La differenza è che apparirà il messaggio di corretto logout.
 

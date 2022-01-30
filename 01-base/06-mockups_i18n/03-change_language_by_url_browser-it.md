@@ -133,11 +133,25 @@ Qualsiasi altro valore diamo a *locale* ci viene data la lingua italiana, che è
 - https://mycloud9path.amazonaws.com/mockups/page_a?locale=es
 
 
+## Passo 3 - Inseriamo links per cambiare params[:locale]
 
-## Cambiamo da impostazione browser
+Aggiungiamo due links per cambiare la lingua assegnando il relativo valore a *params[:locale]*.
 
-Cambiamo la lingua a seconda di come è impostato il nostro browser. 
-Per far questo usiamo il parametro "Accept-Language" del "HTTP headers".
+***codice 04 - .../app/views/mockups/page_a.html.erb - line: 6***
+
+```html+erb
+  <%= link_to "Inglese", params.permit(:locale).merge(locale: 'en') %> |
+  <%= link_to "Italiano", params.permit(:locale).merge(locale: 'it') %> 
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/04_02-views-mockups-page_a.html.erb)
+
+
+
+## Cambiamo da impostazione del browser
+
+Se non passiamo il *params[:locale]*, cambiamo la lingua a seconda di come è impostato il nostro browser.
+Per far questo usiamo il parametro *Accept-Language* del *HTTP headers*.
 
 > Per approfondimenti vedi [Mozilla Accept-Language](developer.mozzilla.org/en-US/docs/Web/Headers/Accept-Language)
 
@@ -155,13 +169,13 @@ Per testare la funzione regex si possiamo usare **[rubular.com](https://rubular.
 
 Inseriamo quindi la linea di codice che assegna a *params[:locale]* la stringa con le due lettere minuscole della lingua del browser, se *params[:locale]* non è presente nell'url.
 
-***codice 03 - .../app/controllers/appllication_controller.rb - line: 14***
+***codice 05 - .../app/controllers/appllication_controller.rb - line: 14***
 
 ```ruby
       params[:locale] = request.env.fetch('HTTP_ACCEPT_LANGUAGE', '').scan(/[a-z]{2}/).first if params[:locale].blank?
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_04-controllers-application_controller.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_05-controllers-application_controller.rb)
 
 la funzione *fetch('A', 'B')* prende *'A'* se presente altrimenti prende *'B'*, nel nostro caso se non è presente *HTTP_ACCEPT_LANGUAGE* è passatta una stringa vuota *''*.
 
