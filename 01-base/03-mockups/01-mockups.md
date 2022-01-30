@@ -114,7 +114,7 @@ e vediamo i vari URLs sul nostro browser:
 
 Aggiorniamo il file routes per mettere l'homepage come pagina principale (root)
 
-***codice 01 - .../config/routes.rb - line: 2***
+***codice 01 - .../config/routes.rb - line: 8***
 
 ```ruby
   root 'mockups#page_a'
@@ -122,6 +122,8 @@ Aggiorniamo il file routes per mettere l'homepage come pagina principale (root)
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/03-mockups/01_01-config-routes.rb)
 
+> Su rails 7 la configurazione di default di *routes* suggerisce di inserire il percorso di *root* come ultima riga del codice.
+> Inizialmente lo usavamo come prima riga ma seguiamo la convenzione e lo mettiamo in fondo. 
 
 
 ## Verifichiamo preview

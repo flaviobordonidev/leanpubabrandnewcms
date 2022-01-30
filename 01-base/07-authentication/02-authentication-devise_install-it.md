@@ -17,6 +17,7 @@ Un utente si logga per avere il *SUO* ambiente di lavoro personalizzato.
 
 - [l'ultima versione della gemma](https://rubygems.org/gems/devise)
 - [tutorial github della gemma](https://github.com/plataformatec/devise)
+- [Heroku: using the cli](https://devcenter.heroku.com/articles/using-the-cli)
 
 
 
@@ -252,9 +253,9 @@ Adesso che abbiamo il nome dell'host su heroku lo possiamo usare nel file di con
 
 ### punto 2.
 
-Abbiamo già impostato la root sul root file e per il momento lo lasciamo così.
+Abbiamo già impostato la *root* sul file *routes* ed al momento la lasciamo così.
 
-***codice 04 - .../config/routes.rb - line: 3***
+***codice 04 - .../config/routes.rb - line: 8***
 
 ```ruby
   root 'mockups#page_a'
@@ -266,7 +267,7 @@ Abbiamo già impostato la root sul root file e per il momento lo lasciamo così.
 
 ### punto 3.
 
-Mettiamo su layouts/application la visualizzazione dei messaggi di avviso
+Mettiamo su *layouts/application* la visualizzazione dei messaggi di avviso.
 
 ***codice 05 - .../app/views/layouts/application.html.erb - line: 13***
 
@@ -275,25 +276,29 @@ Mettiamo su layouts/application la visualizzazione dei messaggi di avviso
     <p class="alert"><%= alert %></p>
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/02_05-views-layouts-application.html.erb)
+
 miglioriamoli un poco, quando installeremo bootstrap saranno ancora meglio.
 
-***codice 05 - .../app/views/layouts/application.html.erb - line: 13***
+***codice 06 - .../app/views/layouts/application.html.erb - line: 13***
 
 ```html+erb
     <p class="alert alert-info"><%= notice %></p>
     <p class="alert alert-warning"><%= alert %></p>
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/02_06-views-layouts-application.html.erb)
+
 visualizziamoli solo quando servono
 
-***codice 05 - .../app/views/layouts/application.html.erb - line: 13***
+***codice 07 - .../app/views/layouts/application.html.erb - line: 13***
 
 ```html+erb
     <% if notice %><p class="alert alert-info"><%= notice %></p><% end %>
     <% if alert %><p class="alert alert-warning"><%= alert %></p><% end %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/02_05-views-layouts-application.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/02_07-views-layouts-application.html.erb)
 
 Successivamente implementeremo un partial più completo **<%= render 'layouts/flash_messages' %>** ma per il momento va bene così.
 
@@ -301,8 +306,10 @@ Successivamente implementeremo un partial più completo **<%= render 'layouts/fl
 
 ### punto 4.
 
-Copiamo le views di devise sulla app per permettere la personalizzazione.
-Questa operazione la posticipiamo a dopo la creazione della tabella *users*.
+Copiamo le *views* di devise sulla app per permettere la personalizzazione.
+
+> Attenzione!
+> Questa operazione la posticipiamo a dopo la creazione della tabella *users*.
 
 
 
