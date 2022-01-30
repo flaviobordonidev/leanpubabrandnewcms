@@ -216,7 +216,7 @@ user_fb:~/environment/bl7_0 (ldi) $
 
 Il link per arrivare sulla view di *registerable* risulta quindi
 
-```html+erb
+```html+Mako
   <%= link_to "Edit #{current_user.email} Profile", edit_user_registration_path %>
 ```
 

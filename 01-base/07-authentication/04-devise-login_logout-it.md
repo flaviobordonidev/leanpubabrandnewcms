@@ -1,41 +1,43 @@
-{id: 01-base-07-authentication-04-devise-login_logout}
-# Cap 7.4 -- devise login logout
+# <a name="top"></a> Cap 7.4 - devise login logout
 
-La struttura base di devise è pronta, adesso implementiamo quelle piccole modifiche per personalizzare l'esperienza dell'autenticazione. Cambiamo l'url, attiviamo il pulsante di logout, implementiamo del css, implementiamo l'internazionalizzazione e molto altro.
+La struttura base di devise è pronta, adesso implementiamo quelle piccole modifiche per personalizzare l'esperienza dell'autenticazione. 
+Cambiamo l'url, attiviamo il pulsante di logout, implementiamo il css, implementiamo l'internazionalizzazione e molto altro.
 
 Rifiniamo la parte di autenticazione con devise:
 
-* Implementiamo i links di login e di logout.
-* Mostriamo utente loggato.
-* Personaliziamo gli URLs: usiamo " .../login ", al posto di " .../users/sign_in ".
-* Personaliziamo il layout per il login.
+- Implementiamo i links di login e di logout.
+- Mostriamo utente loggato.
+- Personaliziamo gli URLs: usiamo *.../login*, al posto di *.../users/sign_in*.
+- Personaliziamo il layout per il login.
 
-Risorse interne:
 
-* 99-rails_references-authentication_devise-02-devise
 
+## Risorse interne
+
+- [99-rails_references-authentication_devise-02-devise](#)
 
 
 
 ## Apriamo il branch "SignIn SignOut"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout -b siso
 ```
 
 
-
 ## Visualizziamo utente loggato
 
-Per visualizzare l'utente loggato usiamo il metodo "current_user" creato da devise.
+Per visualizzare l'utente loggato usiamo il metodo *current_user* creato da devise.
 
-la variabile **current_user** è generata tramite la gemma "devise" e contiene l'utente loggato. esempio: User.find(current_user.id)
+La variabile *current_user* è generata tramite la gemma **devise** e contiene l'utente loggato. 
+Esempio: `User.find(current_user.id)`
 
-Se nessun utente è loggato/autenticato riceviamo un errore nel codice. Per evitarlo mettiamo il controllo "if current_user.present?"
+Se nessun utente è *loggato/autenticato* riceviamo un errore nel codice. Per evitarlo mettiamo il controllo `if current_user.present?`.
 
-{caption: ".../app/views/mockups/page_a.html.erb", format: HTML+Mako, line-numbers: true, number-from: 7}
-```
+{caption: "", format: HTML+Mako, line-numbers: true, number-from: 7}
+***codice 01 - .../app/views/mockups/page_a.html.erb
+
+```html+erb
 <p> utente attivo: <%= current_user.email if current_user.present? == true %> </p>
 ```
 
