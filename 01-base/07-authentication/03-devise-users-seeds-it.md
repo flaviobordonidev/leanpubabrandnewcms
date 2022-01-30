@@ -126,36 +126,40 @@ $ rails routes | egrep "user"
 Esempio:
 
 ```bash
-user_fb:~/environment/bl6_0 (ldi) $ rails routes | egrep "user"
-                     new_user_session GET    /users/sign_in(.:format)                                                                 devise/sessions#new
-                         user_session POST   /users/sign_in(.:format)                                                                 devise/sessions#create
-                 destroy_user_session DELETE /users/sign_out(.:format)                                                                devise/sessions#destroy
-                    new_user_password GET    /users/password/new(.:format)                                                            devise/passwords#new
-                   edit_user_password GET    /users/password/edit(.:format)                                                           devise/passwords#edit
-                        user_password PATCH  /users/password(.:format)                                                                devise/passwords#update
-                                      PUT    /users/password(.:format)                                                                devise/passwords#update
-                                      POST   /users/password(.:format)                                                                devise/passwords#create
-                                users GET    /users(.:format)                                                                         users#index
-                                      POST   /users(.:format)                                                                         users#create
-                             new_user GET    /users/new(.:format)                                                                     users#new
-                            edit_user GET    /users/:id/edit(.:format)                                                                users#edit
-                                 user GET    /users/:id(.:format)                                                                     users#show
-                                      PATCH  /users/:id(.:format)                                                                     users#update
-                                      PUT    /users/:id(.:format)                                                                     users#update
-                                      DELETE /users/:id(.:format)                                                                     users#destroy
+user_fb:~/environment/bl7_0 (ldi) $ rails routes | egrep "user"
+                        new_user_session GET    /users/sign_in(.:format)                                                                          devise/sessions#new
+                            user_session POST   /users/sign_in(.:format)                                                                          devise/sessions#create
+                    destroy_user_session DELETE /users/sign_out(.:format)                                                                         devise/sessions#destroy
+                       new_user_password GET    /users/password/new(.:format)                                                                     devise/passwords#new
+                      edit_user_password GET    /users/password/edit(.:format)                                                                    devise/passwords#edit
+                           user_password PATCH  /users/password(.:format)                                                                         devise/passwords#update
+                                         PUT    /users/password(.:format)                                                                         devise/passwords#update
+                                         POST   /users/password(.:format)                                                                         devise/passwords#create
+                                   users GET    /users(.:format)                                                                                  users#index
+                                         POST   /users(.:format)                                                                                  users#create
+                                new_user GET    /users/new(.:format)                                                                              users#new
+                               edit_user GET    /users/:id/edit(.:format)                                                                         users#edit
+                                    user GET    /users/:id(.:format)                                                                              users#show
+                                         PATCH  /users/:id(.:format)                                                                              users#update
+                                         PUT    /users/:id(.:format)                                                                              users#update
+                                         DELETE /users/:id(.:format)                                                                              users#destroy
+user_fb:~/environment/bl7_0 (ldi) $ 
 ```
 
 
 
-## Se volessimo riattivare registerable
+## Riattiviamo *registerable*
+
+A scopo didattico riattiviamo *registerable* e poi lo disattiviamo di nuovo.
 
 Registerable permette all'utente loggato di cambiare i suoi propri dati (email, password,...). 
 
-> Nella nostra applicazione non lo usiamo. Usiamo invece l'utente con ruolo di amministratore per cambiare i dati di tutti gli utenti. 
+> Nella nostra applicazione non lo usiamo. 
+> Usiamo invece l'utente con ruolo di amministratore per cambiare i dati di tutti gli utenti. 
 
-Se volessimo riattivare *:registerable* basterebbe aggiornare il model, decommentando *:registerable*.
+Per riattivare *:registerable* basta aggiornare il model, decommentando *:registerable*...
 
-***codice 02 - .../app/models/user.rb - line: 1***
+***codice 04 - .../app/models/user.rb - line: 1***
 
 ```ruby
 class User < ApplicationRecord
@@ -166,7 +170,7 @@ class User < ApplicationRecord
 end
 ```
 
-e rieseguire il *migrate*.
+...e rieseguire il *migrate*.
 
 ```bash
 $ sudo service postgresql start
@@ -176,43 +180,38 @@ $ rails db:migrate
 Esempio:
 
 ```bash
-user_fb:~/environment/bl6_0 (ldi) $ rails db:migrate
-user_fb:~/environment/bl6_0 (ldi) $ 
+user_fb:~/environment/bl7_0 (ldi) $ rails db:migrate
+user_fb:~/environment/bl7_0 (ldi) $ 
 ```
 
-Non abbiamo nessuna conferma sul terminale ma se adesso riverifichiamo gli instradamenti vediamo che è presente anche *registerable*.
+Non abbiamo nessuna conferma sul terminale ma se adesso riverifichiamo gli instradamenti e vediamo che è presente anche *registerable*.
 
 ```bash
-$ rails routes | egrep "user"
-```
-
-Esempio:
-
-```bash
-user_fb:~/environment/bl6_0 (ldi) $ rails routes | egrep "user"
-                     new_user_session GET    /users/sign_in(.:format)                                                                 devise/sessions#new
-                         user_session POST   /users/sign_in(.:format)                                                                 devise/sessions#create
-                 destroy_user_session DELETE /users/sign_out(.:format)                                                                devise/sessions#destroy
-                    new_user_password GET    /users/password/new(.:format)                                                            devise/passwords#new
-                   edit_user_password GET    /users/password/edit(.:format)                                                           devise/passwords#edit
-                        user_password PATCH  /users/password(.:format)                                                                devise/passwords#update
-                                      PUT    /users/password(.:format)                                                                devise/passwords#update
-                                      POST   /users/password(.:format)                                                                devise/passwords#create
-             cancel_user_registration GET    /users/cancel(.:format)                                                                  devise/registrations#cancel
-                new_user_registration GET    /users/sign_up(.:format)                                                                 devise/registrations#new
-               edit_user_registration GET    /users/edit(.:format)                                                                    devise/registrations#edit
-                    user_registration PATCH  /users(.:format)                                                                         devise/registrations#update
-                                      PUT    /users(.:format)                                                                         devise/registrations#update
-                                      DELETE /users(.:format)                                                                         devise/registrations#destroy
-                                      POST   /users(.:format)                                                                         devise/registrations#create
-                                users GET    /users(.:format)                                                                         users#index
-                                      POST   /users(.:format)                                                                         users#create
-                             new_user GET    /users/new(.:format)                                                                     users#new
-                            edit_user GET    /users/:id/edit(.:format)                                                                users#edit
-                                 user GET    /users/:id(.:format)                                                                     users#show
-                                      PATCH  /users/:id(.:format)                                                                     users#update
-                                      PUT    /users/:id(.:format)                                                                     users#update
-                                      DELETE /users/:id(.:format)                                                                     users#destroy
+user_fb:~/environment/bl7_0 (ldi) $ rails routes | egrep "user"
+                        new_user_session GET    /users/sign_in(.:format)                                                                          devise/sessions#new
+                            user_session POST   /users/sign_in(.:format)                                                                          devise/sessions#create
+                    destroy_user_session DELETE /users/sign_out(.:format)                                                                         devise/sessions#destroy
+                       new_user_password GET    /users/password/new(.:format)                                                                     devise/passwords#new
+                      edit_user_password GET    /users/password/edit(.:format)                                                                    devise/passwords#edit
+                           user_password PATCH  /users/password(.:format)                                                                         devise/passwords#update
+                                         PUT    /users/password(.:format)                                                                         devise/passwords#update
+                                         POST   /users/password(.:format)                                                                         devise/passwords#create
+                cancel_user_registration GET    /users/cancel(.:format)                                                                           devise/registrations#cancel
+                   new_user_registration GET    /users/sign_up(.:format)                                                                          devise/registrations#new
+                  edit_user_registration GET    /users/edit(.:format)                                                                             devise/registrations#edit
+                       user_registration PATCH  /users(.:format)                                                                                  devise/registrations#update
+                                         PUT    /users(.:format)                                                                                  devise/registrations#update
+                                         DELETE /users(.:format)                                                                                  devise/registrations#destroy
+                                         POST   /users(.:format)                                                                                  devise/registrations#create
+                                   users GET    /users(.:format)                                                                                  users#index
+                                         POST   /users(.:format)                                                                                  users#create
+                                new_user GET    /users/new(.:format)                                                                              users#new
+                               edit_user GET    /users/:id/edit(.:format)                                                                         users#edit
+                                    user GET    /users/:id(.:format)                                                                              users#show
+                                         PATCH  /users/:id(.:format)                                                                              users#update
+                                         PUT    /users/:id(.:format)                                                                              users#update
+                                         DELETE /users/:id(.:format)                                                                              users#destroy
+user_fb:~/environment/bl7_0 (ldi) $
 ```
 
 Il link per arrivare sulla view di *registerable* risulta quindi
@@ -223,20 +222,23 @@ Il link per arrivare sulla view di *registerable* risulta quindi
 
 
 
-## Se volessimo disattivare nuovamente registerable
+## Disattiviamo nuovamente *registerable*
 
-***codice 02 - .../app/models/user.rb - line: 1***
+Torniamo a disattivare *registerable*.
+Per disattivare *:registerable* basta aggiornare il model, commentando *:registerable*...
+
+***codice 05 - .../app/models/user.rb - line: 1***
 
 ```ruby
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :registerable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable,
+  devise :database_authenticatable, 
          :recoverable, :rememberable, :validatable
 end
 ```
 
-e rieseguire il *migrate*.
+...e rieseguire il *migrate*.
 
 ```bash
 $ sudo service postgresql start
@@ -246,37 +248,37 @@ $ rails db:migrate
 Esempio:
   
 ```bash
-user_fb:~/environment/bl6_0 (ldi) $ rails db:migrate
-user_fb:~/environment/bl6_0 (ldi) $ 
+user_fb:~/environment/bl7_0 (ldi) $ rails db:migrate                                                                                                                            
+user_fb:~/environment/bl7_0 (ldi) $ 
 ```
 
 Non abbiamo nessuna conferma sul terminale ma se adesso riverifichiamo gli instradamenti vediamo che **non** è più presente *registerable*.
 
 ```bash
-user_fb:~/environment/bl6_0 (ldi) $ rails routes | egrep "user"
-                     new_user_session GET    /users/sign_in(.:format)                                                                 devise/sessions#new
-                         user_session POST   /users/sign_in(.:format)                                                                 devise/sessions#create
-                 destroy_user_session DELETE /users/sign_out(.:format)                                                                devise/sessions#destroy
-                    new_user_password GET    /users/password/new(.:format)                                                            devise/passwords#new
-                   edit_user_password GET    /users/password/edit(.:format)                                                           devise/passwords#edit
-                        user_password PATCH  /users/password(.:format)                                                                devise/passwords#update
-                                      PUT    /users/password(.:format)                                                                devise/passwords#update
-                                      POST   /users/password(.:format)                                                                devise/passwords#create
-                                users GET    /users(.:format)                                                                         users#index
-                                      POST   /users(.:format)                                                                         users#create
-                             new_user GET    /users/new(.:format)                                                                     users#new
-                            edit_user GET    /users/:id/edit(.:format)                                                                users#edit
-                                 user GET    /users/:id(.:format)                                                                     users#show
-                                      PATCH  /users/:id(.:format)                                                                     users#update
-                                      PUT    /users/:id(.:format)                                                                     users#update
-                                      DELETE /users/:id(.:format)                                                                     users#destroy
+user_fb:~/environment/bl7_0 (ldi) $ rails routes | egrep "user"
+                        new_user_session GET    /users/sign_in(.:format)                                                                          devise/sessions#new
+                            user_session POST   /users/sign_in(.:format)                                                                          devise/sessions#create
+                    destroy_user_session DELETE /users/sign_out(.:format)                                                                         devise/sessions#destroy
+                       new_user_password GET    /users/password/new(.:format)                                                                     devise/passwords#new
+                      edit_user_password GET    /users/password/edit(.:format)                                                                    devise/passwords#edit
+                           user_password PATCH  /users/password(.:format)                                                                         devise/passwords#update
+                                         PUT    /users/password(.:format)                                                                         devise/passwords#update
+                                         POST   /users/password(.:format)                                                                         devise/passwords#create
+                                   users GET    /users(.:format)                                                                                  users#index
+                                         POST   /users(.:format)                                                                                  users#create
+                                new_user GET    /users/new(.:format)                                                                              users#new
+                               edit_user GET    /users/:id/edit(.:format)                                                                         users#edit
+                                    user GET    /users/:id(.:format)                                                                              users#show
+                                         PATCH  /users/:id(.:format)                                                                              users#update
+                                         PUT    /users/:id(.:format)                                                                              users#update
+                                         DELETE /users/:id(.:format)                                                                              users#destroy
+user_fb:~/environment/bl7_0 (ldi) $ 
 ```
 
 
 
 ## Aggiungiamo un utente da console
 
-{caption: "terminal", format: bash, line-numbers: false}
 ```bash
 $ rails c
 -> User.create(name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda')
@@ -286,17 +288,16 @@ $ rails c
 Esempio:
   
 ```bash
-user_fb:~/environment/bl6_0 (ldi) $ rails c
-Running via Spring preloader in process 20183
-Loading development environment (Rails 6.0.0)
-2.6.3 :001 > User.create(name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda')
-   (0.1ms)  BEGIN
+user_fb:~/environment/bl7_0 (ldi) $ rails c
+Loading development environment (Rails 7.0.1)
+3.1.0 :001 > User.create(name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda')
+  TRANSACTION (0.1ms)  BEGIN
   User Exists? (0.8ms)  SELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2  [["email", "ann@test.abc"], ["LIMIT", 1]]
-  User Create (8.5ms)  INSERT INTO "users" ("name", "email", "encrypted_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["name", "Ann"], ["email", "ann@test.abc"], ["encrypted_password", "$2a$11$dA8SYRMwOsURQZyPbMFG4e96M4OCrW2rGucY3uZwW48nbUOZ/sJqC"], ["created_at", "2019-11-05 15:17:00.553680"], ["updated_at", "2019-11-05 15:17:00.553680"]]
-   (0.8ms)  COMMIT
- => #<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2019-11-05 15:17:00", updated_at: "2019-11-05 15:17:00"> 
-2.6.3 :002 > exit
-user_fb:~/environment/bl6_0 (ldi) $
+  User Create (1.6ms)  INSERT INTO "users" ("name", "email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"  [["name", "Ann"], ["email", "ann@test.abc"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["created_at", "2022-01-30 11:50:16.615885"], ["updated_at", "2022-01-30 11:50:16.615885"]]
+  TRANSACTION (2.1ms)  COMMIT
+ => #<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2022-01-30 11:50:16.615885000 +0000", updated_at: "2022-01-30 11:50:16.615885000 +0000"> 
+3.1.0 :002 > exit
+user_fb:~/environment/bl7_0 (ldi) $ 
 ```
 
 Oppure
@@ -308,7 +309,6 @@ $ rails c
 ```
 
 Da notare che, a differenza dei normali inserimenti nel database, questa volta abbiamo anche delle parentesi graffe **{}** da inserire.
-
 
 Se avessimo attivato l'opzione *:confirmable* avremmo dovuto *skippare* la *confirmation*.
 
