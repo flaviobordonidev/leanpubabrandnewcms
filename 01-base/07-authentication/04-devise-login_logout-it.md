@@ -34,7 +34,7 @@ Esempio: `User.find(current_user.id)`
 
 Se nessun utente è *loggato/autenticato* riceviamo un errore nel codice. Per evitarlo mettiamo il controllo `if current_user.present?`.
 
-***codice 01 - .../app/views/mockups/page_a.html.erb - line: 5***
+***codice 01 - .../app/views/mockups/page_a.html.erb - line: 9***
 
 ```html+erb
 <p> utente attivo: <%= current_user.email if current_user.present? == true %> </p>
@@ -42,7 +42,7 @@ Se nessun utente è *loggato/autenticato* riceviamo un errore nel codice. Per ev
 
 Aggiungiamo subito l'operatore ternario `condizione ? azione_true : azione_false` per visualizzare la stringa *"nessun utente loggato"* invece di lasciare un vuoto.
 
-***codice 01 - .../app/views/mockups/page_a.html.erb - line: 5***
+***codice 01 - .../app/views/mockups/page_a.html.erb - line: 9***
 
 ```html+erb
 <p> utente attivo: <%= current_user.present? == true ? current_user.email : "nessun utente loggato" %> <p> 
@@ -56,7 +56,7 @@ Aggiungiamo subito l'operatore ternario `condizione ? azione_true : azione_false
 
 Aggiungiamo un link per effettuare il logout.
 
-***codice 02 - .../app/views/mockups/page_a.html.erb - line: 8***
+***codice 02 - .../app/views/mockups/page_a.html.erb - line: 10***
 
 ```html+erb
 <%= link_to "Sign Out", destroy_user_session_path, method: :delete %>

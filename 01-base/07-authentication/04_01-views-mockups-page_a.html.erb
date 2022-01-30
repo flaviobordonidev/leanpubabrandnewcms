@@ -2,7 +2,8 @@
 <p> <%= t "mockups.page_a.first_paragraph" %> </p>
 <br>
 <p> <%= link_to t("mockups.page_a.link_to_page_B"), mockups_page_b_path %> </p>
+<p> 
+  <%= link_to "Inglese", params.permit(:locale).merge(locale: 'en') %> |
+  <%= link_to "Italiano", params.permit(:locale).merge(locale: 'it') %> 
+</p>
 <p> utente attivo: <%= current_user.present? == true ? current_user.email : "nessun utente loggato" %> <p> 
-
-<p> <%= link_to "Inglese", params.permit(:locale).merge(locale: 'en') %> </p>
-<p> <%= link_to "Italiano", params.permit(:locale).merge(locale: 'it') %> </p>
