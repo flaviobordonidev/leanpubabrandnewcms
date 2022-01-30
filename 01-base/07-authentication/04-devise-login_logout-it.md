@@ -56,6 +56,13 @@ Aggiungiamo subito l'operatore ternario `condizione ? azione_true : azione_false
 
 Aggiungiamo un link per effettuare il logout.
 
+> Attenzione!
+> Non possiamo usare `link_to` perché il *logout* nelle routes è trattato come **DELETE** e non come **GET**.
+
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/04_fig01-route_for_devise_logout.png)
+
+Per farlo funzionare dobbiamo usare `button_to`.
+
 ***codice 02 - .../app/views/mockups/page_a.html.erb - line: 10***
 
 ```html+erb
