@@ -338,11 +338,10 @@ Per verificarlo dobbiamo andare alla pagina **users/sign_in** quindi all'URL:
 
 Con le credenziali giuste ci loggiamo e veniamo portati nella pagina di root.
 
-First Header  | Second Header
-------------- | -------------
-email:        | ann@test.abc
-password:     | passworda
-
+```
+email     : ann@test.abc
+password  : passworda
+```
    
    
 
