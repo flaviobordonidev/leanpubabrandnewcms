@@ -6,5 +6,6 @@
   <%= link_to "Inglese", params.permit(:locale).merge(locale: 'en') %> |
   <%= link_to "Italiano", params.permit(:locale).merge(locale: 'it') %> 
 </p>
+
 <p> utente attivo: <%= current_user.present? == true ? current_user.email : "nessun utente loggato" %> <p> 
-<p> <%= link_to "Sign Out", destroy_user_session_path, method: :delete %></p>
+<p> <%= button_to "logout", destroy_user_session_path, method: :delete  %> </p>

@@ -77,17 +77,18 @@ Per farlo funzionare dobbiamo usare `button_to`.
 
 ## Aggiungiamo login
 
-invece di usare l'url mettiamo un pulsante di login su page_a
+invece di usare l'url mettiamo un pulsante di login su *page_a*.
 
 ***codice 03 - .../app/views/mockups/page_a.html.erb - line: 9***
 
 ```html+erb
-<p> <%= link_to "login", new_user_session_path %> </p>
+<%= link_to "login", new_user_session_path %>
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/04_03-views-mockups-page_a.html.rb)
 
-> Se lo proviamo verrà ricaricata la stessa pagina homepage/show perché è la pagina di root. La differenza è che apparirà il messaggio di corretto login.
+> Se lo proviamo verrà ricaricata la stessa pagina *mockups/page_a* perché è la pagina di root. 
+> La differenza è che apparirà il messaggio di corretto login.
 
 
 
@@ -95,32 +96,30 @@ invece di usare l'url mettiamo un pulsante di login su page_a
 
 Attiviamo il webserver
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails s
 ```
 
-andiamo alla pagina principale (root_path) quindi all'URL:
+Andiamo alla pagina principale (*root_path*) quindi all'URL di login */users/sign_in*.
 
 - https://mycloud9path.amazonaws.com/
 - https://mycloud9path.amazonaws.com/users/sign_in
 
 
 
-
 ## Personalizziamo gli url per login
 
-La variabile di devise " path_names " seve a rinominare le chiamate sull'URL per il sign_in, sign_out, sign_up, ...
+La variabile di devise *path_names* seve a rinominare le chiamate sull'URL per il *sign_in*, *sign_out*, *sign_up*, ...
 
-{id: "01-07-04_04", caption: ".../config/routes.rb -- codice 04", format: ruby, line-numbers: true, number-from: 9}
-```
+***codice 04 - .../config/routes.rb - line: 9***
+
+```ruby
   devise_for :users, path_names: {sign_in: 'login'}
   resources :users
 ```
 
-[tutto il codice](#01-07-04_04all)
-
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/04_04-config-routes.rb)
 
 
 
