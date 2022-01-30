@@ -34,23 +34,21 @@ Esempio: `User.find(current_user.id)`
 
 Se nessun utente è *loggato/autenticato* riceviamo un errore nel codice. Per evitarlo mettiamo il controllo `if current_user.present?`.
 
-{caption: "", format: HTML+Mako, line-numbers: true, number-from: 7}
-***codice 01 - .../app/views/mockups/page_a.html.erb
+***codice 01 - .../app/views/mockups/page_a.html.erb - line: 7***
 
 ```html+erb
 <p> utente attivo: <%= current_user.email if current_user.present? == true %> </p>
 ```
 
-Usiamo l'operatore ternario "condizione ? azione_true : azione_false" per visualizzare la stringa "nessun utente loggato" invece di lasciare un vuoto.
+Usiamo l'operatore ternario `condizione ? azione_true : azione_false` per visualizzare la stringa *"nessun utente loggato"* invece di lasciare un vuoto.
 
-{id: "01-07-04_01", caption: ".../app/views/mockups/page_a.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 7}
-```
+***codice 01 - .../app/views/mockups/page_a.html.erb - line: 7***
+
+```html+erb
 <p> utente attivo: <%= current_user.present? == true ? current_user.email : "nessun utente loggato" %> <p> 
 ```
 
-[tutto il codice](#01-07-04_01all)
-
-
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/04_01-views-mockups-page_a.html.rb)
 
 
 
@@ -58,15 +56,15 @@ Usiamo l'operatore ternario "condizione ? azione_true : azione_false" per visual
 
 Aggiungiamo un link per effettuare il logout.
 
-{id: "01-07-04_02", caption: ".../app/views/mockups/page_a.html.erb -- codice 02", format: HTML+Mako, line-numbers: true, number-from: 8}
-```
+***codice 02 - .../app/views/mockups/page_a.html.erb - line: 8***
+
+```html+erb
 <%= link_to "Sign Out", destroy_user_session_path, method: :delete %>
 ```
 
-[tutto il codice](#01-07-04_02all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/04_02-views-mockups-page_a.html.rb)
 
-Se lo proviamo verrà ricaricata la stessa pagina " mockups/page_a " perché è la pagina di root. La differenza è che apparirà il messaggio di corretto logout.
-
+> Se lo proviamo verrà ricaricata la stessa pagina " mockups/page_a " perché è la pagina di root. La differenza è che apparirà il messaggio di corretto logout.
 
 
 
@@ -74,15 +72,15 @@ Se lo proviamo verrà ricaricata la stessa pagina " mockups/page_a " perché è 
 
 invece di usare l'url mettiamo un pulsante di login su page_a
 
-{id: "01-07-04_03", caption: ".../app/views/mockups/page_a.html.erb -- codice 03", format: HTML+Mako, line-numbers: true, number-from: 9}
-```
+***codice 03 - .../app/views/mockups/page_a.html.erb - line: 9***
+
+```html+erb
 <p> <%= link_to "login", new_user_session_path %> </p>
 ```
 
-[tutto il codice](#01-07-04_03all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/04_03-views-mockups-page_a.html.rb)
 
-Se lo proviamo verrà ricaricata la stessa pagina homepage/show perché è la pagina di root. La differenza è che apparirà il messaggio di corretto login.
-
+> Se lo proviamo verrà ricaricata la stessa pagina homepage/show perché è la pagina di root. La differenza è che apparirà il messaggio di corretto login.
 
 
 
@@ -98,8 +96,8 @@ $ rails s
 
 andiamo alla pagina principale (root_path) quindi all'URL:
 
-* https://mycloud9path.amazonaws.com/
-* https://mycloud9path.amazonaws.com/users/sign_in
+- https://mycloud9path.amazonaws.com/
+- https://mycloud9path.amazonaws.com/users/sign_in
 
 
 
@@ -730,3 +728,51 @@ end
 ```
 
 [indietro](#01-07-04_10)
+
+
+
+
+
+## Verifichiamo produzione
+
+Verifichiamo la nostra applicazione in produzione. I servers sono quelli di Heroku e quindi non li dobbiamo attvare.
+andiamo direttametne all'URL:
+
+- https://bl7-0.herokuapp.com/users/sign_in
+
+Usiamo le credenziali di login appena create su heroku.
+
+```
+email     : ann@test.abc
+password  : passworda
+```
+
+> Poiché non abbiamo ancora implementato il pulsante di logout, una volta loggati se proviamo di nuovo veniamo riportati sulla pagina di *root* con l'avviso: "You are already signed in."
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+```bash
+$ git checkout main
+$ git merge ldi
+$ git branch -d ldi
+```
+
+
+
+## Facciamo un backup su Github
+
+```bash
+$ git push origin main
+```
+
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/03-devise-users-seeds-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/08-authentication_i18n/01-devise_i18n-it.md)
