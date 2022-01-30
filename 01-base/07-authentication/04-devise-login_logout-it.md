@@ -71,7 +71,7 @@ Per farlo funzionare dobbiamo usare `button_to`.
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/04_02-views-mockups-page_a.html.erb)
 
-> Se lo proviamo verrà ricaricata la stessa pagina " mockups/page_a " perché è la pagina di root. La differenza è che apparirà il messaggio di corretto logout.
+> Se lo proviamo verrà ricaricata la stessa pagina *mockups/page_a* perché è la pagina di root. La differenza è che apparirà il messaggio di corretto logout.
 
 
 
@@ -85,7 +85,7 @@ invece di usare l'url mettiamo un pulsante di login su *page_a*.
 <%= link_to "login", new_user_session_path %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/04_03-views-mockups-page_a.html.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/04_03-views-mockups-page_a.html.erb)
 
 > Se lo proviamo verrà ricaricata la stessa pagina *mockups/page_a* perché è la pagina di root. 
 > La differenza è che apparirà il messaggio di corretto login.
