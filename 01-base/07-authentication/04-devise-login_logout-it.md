@@ -233,7 +233,7 @@ verifichiamo gli URLs:
 
 
 
-## Personalizziamo gli url per logout e registration
+## Personalizziamo l'url per logout
 
 Personalizzare l'url alla pagina di *logout/sign_out*.
 
@@ -249,7 +249,12 @@ Personalizzare l'url alla pagina di *logout/sign_out*.
 > Da notare che non dobbiamo cambiare i paths nei *link_to  destroy_user_session_path* e *new_user_session_path*.
 
 
+
+## Come personalizzare l'url per registration
+
 A scopo didattico vediamo anche come personalizzare l'url alla *pagina di registrazione* nuovo utente (signup), che al momento abbiamo disattivato su devise nei capitoli precedenti.
+
+> I seguenti due esempi di codice ***n/a*** non sono utilizzati nella nostra app.
 
 ***codice n/a - .../config/routes.rb - line: 2***
 
@@ -267,7 +272,12 @@ vediamo un url personalizzato con voci in italiano.
   resources :users
 ```
 
-> I due esempi di codice ***n/a*** non sono utilizzati nella nostra app.
+Se avessimo attivato la registrazione avremmo avuto il link per registrare l'utente.
+
+```html+erb
+          <%#= link_to 'Edit Profile', edit_user_registration_path %>
+          <%= link_to current_user.email, edit_user_registration_path %>
+```
 
 
 
@@ -281,8 +291,8 @@ Quindi nascondiamoli quando non servono.
 
 ```html+erb
 <p>
-    <%= link_to "login", new_user_session_path, class: "btn btn-danger" if current_user.present? == false %>
-    <%= link_to "logout", destroy_user_session_path, method: :delete, class: "btn btn-danger" if current_user.present? == true %>
+  <%= link_to "login", new_user_session_path, class: "btn btn-danger" if current_user.present? == false %>
+  <%= button_to "logout", destroy_user_session_path, method: :delete, class: "btn btn-danger" if current_user.present? == true %>
 </p>
 ```
 
@@ -312,37 +322,17 @@ $ heroku run rails db:migrate
 
 ## Chiudiamo il branch
 
-se abbiamo finito le modifiche e va tutto bene:
-
-```bash
-$ git checkout main
-$ git merge siso
-$ git branch -d siso
-```
+Lo chiudiamo nel prossimo capitolo.
 
 
 
 ## Facciamo un backup su Github
 
-Dal nostro branch main di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
-
-```bash
-$ git push origin main
-```
-
-
-
-## Se avessimo attivato la registrazione
-
-```html+erb
-          <%#= link_to 'Edit Profile', edit_user_registration_path %>
-          <%= link_to current_user.email, edit_user_registration_path %>
-```
-
+Lo facciamo nel prossimo capitolo.
 
 
 ---
 
 [<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/03-devise-users-seeds-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/08-authentication_i18n/01-devise_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/05-devise-dedicated_layout-it.md)

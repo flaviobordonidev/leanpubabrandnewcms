@@ -164,34 +164,9 @@ Nella pagina di login il tab del browser ha il nome "Benvenuto"
 
 ## Archiviamo su git
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git add -A
-$ git commit -m "New layout entrance for login"
-```
-
-
-
-
-## Pubblichiamo su Heroku
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git push heroku siso:master
-$ heroku run rails db:migrate
-```
-
-
-
-
-
-
-
-## Archiviamo su git
-
 ```bash
 $ git add -A
-$ git commit -m "Implement Devise SignIn SignOut"
+$ git commit -m "New layout entrance for login"
 ```
 
 
@@ -210,7 +185,7 @@ $ heroku run rails db:migrate
 se abbiamo finito le modifiche e va tutto bene:
 
 ```bash
-$ git checkout master
+$ git checkout main
 $ git merge siso
 $ git branch -d siso
 ```
@@ -219,25 +194,16 @@ $ git branch -d siso
 
 ## Facciamo un backup su Github
 
-Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+Dal nostro branch main di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 ```bash
-$ git push origin master
-```
-
-
-
-## Se avessimo attivato la registrazione
-
-```
-          <%#= link_to 'Edit Profile', edit_user_registration_path %>
-          <%= link_to current_user.email, edit_user_registration_path %>
+$ git push origin main
 ```
 
 
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/03-devise-users-seeds-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/04-devise-login_logout-it.md)
  | [top](#top) |
 [next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/08-authentication_i18n/01-devise_i18n-it.md)

@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users, path_names: {sign_in: 'login'}, path: '', controllers: { sessions: 'users/sessions' }
+  devise_for :users, path: '', path_names: {sign_in: 'login', sign_out: 'logout'}, controllers: { sessions: 'users/sessions' }
   resources :users
 
   get 'mockups/page_a'
