@@ -330,7 +330,7 @@ $ sudo service postgresql start
 $ rails s
 ```
 
-Per verificarlo dobbiamo andare alla pagina **users/sign_in** quindi all'URL:
+Per verificarlo dobbiamo andare alla pagina **/users/sign_in** quindi all'URL:
 
 - https://mycloud9path.amazonaws.com/users/sign_in
 
@@ -342,10 +342,14 @@ Con le credenziali giuste ci loggiamo e veniamo portati nella pagina di root.
 email     : ann@test.abc
 password  : passworda
 ```
-   
-   
 
-> Poiché non abbiamo ancora implementato il pulsante di logout, una volta loggati per provare di nuovo dobbiamo usare una nuova pagina del browser in navigazione privata.
+> Poiché non abbiamo ancora implementato il pulsante di logout, una volta loggati se proviamo di nuovo veniamo riportati sulla pagina di *root* con l'avviso: "You are already signed in."
+>
+> Potremmo usare la navigazione *anonima* (*New Incognito Window*) del browser ma non siamo poi autorizzati da *aws* quindi non funziona.
+>
+> Quello che possiamo fare è cancellare i cookie degli ultimi minuti.
+>
+> Oppure riprovare fra poco, dopo aver aggiunto il pulsante di logout.
 
 
 
@@ -365,7 +369,7 @@ $ git push heroku ldi:master
 $ heroku run rails db:migrate
 ```
 
-Se dovesse esserci un errore tipo: *Devise.secret_key was not set.* vedi [99-rails_references/authentication_devise/03-devise_error-secret_key].
+> Se dovesse esserci un errore tipo: *Devise.secret_key was not set.* vedi [99-rails_references/authentication_devise/03-devise_error-secret_key].
 
 
 
@@ -400,14 +404,16 @@ irb(main):002:0> exit
 Verifichiamo la nostra applicazione in produzione. I servers sono quelli di Heroku e quindi non li dobbiamo attvare.
 andiamo direttametne all'URL:
 
-- https://bl6-0.herokuapp.com/users/sign_in
+- https://bl7-0.herokuapp.com/users/sign_in
 
 Usiamo le credenziali di login appena create su heroku.
 
-  user: ann@test.abc
-  password: passworda
+```
+email     : ann@test.abc
+password  : passworda
+```
 
-> Poiché non abbiamo ancora implementato il pulsante di logout, una volta loggati per provare di nuovo usare una nuova pagina del browser in navigazione privata 
+> Poiché non abbiamo ancora implementato il pulsante di logout, una volta loggati se proviamo di nuovo veniamo riportati sulla pagina di *root* con l'avviso: "You are already signed in."
 
 
 
@@ -416,7 +422,7 @@ Usiamo le credenziali di login appena create su heroku.
 se abbiamo finito le modifiche e va tutto bene:
 
 ```bash
-$ git checkout master
+$ git checkout main
 $ git merge ldi
 $ git branch -d ldi
 ```
@@ -426,93 +432,8 @@ $ git branch -d ldi
 ## Facciamo un backup su Github
 
 ```bash
-$ git push origin master
+$ git push origin main
 ```
-
-
-
-## Il codice del capitolo
-
-
-
-
-{id: "01-07-03_01all", caption: ".../db/migrate/xxx_devise_create_users.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
-```
-# frozen_string_literal: true
-
-class DeviseCreateUsers < ActiveRecord::Migration[6.0]
-  def change
-    create_table :users do |t|
-      t.string :name,               null: false, default: ""
-
-      ## Database authenticatable
-      t.string :email,              null: false, default: ""
-      t.string :encrypted_password, null: false, default: ""
-
-      ## Recoverable
-      t.string   :reset_password_token
-      t.datetime :reset_password_sent_at
-
-      ## Rememberable
-      t.datetime :remember_created_at
-
-      ## Trackable
-      # t.integer  :sign_in_count, default: 0, null: false
-      # t.datetime :current_sign_in_at
-      # t.datetime :last_sign_in_at
-      # t.inet     :current_sign_in_ip
-      # t.inet     :last_sign_in_ip
-
-      ## Confirmable
-      # t.string   :confirmation_token
-      # t.datetime :confirmed_at
-      # t.datetime :confirmation_sent_at
-      # t.string   :unconfirmed_email # Only if using reconfirmable
-
-      ## Lockable
-      # t.integer  :failed_attempts, default: 0, null: false # Only if lock strategy is :failed_attempts
-      # t.string   :unlock_token # Only if unlock strategy is :email or :both
-      # t.datetime :locked_at
-
-
-      t.timestamps null: false
-    end
-
-    add_index :users, :email,                unique: true
-    add_index :users, :reset_password_token, unique: true
-    # add_index :users, :confirmation_token,   unique: true
-    # add_index :users, :unlock_token,         unique: true
-  end
-end
-```
-
-[indietro](#01-07-03_01)
-
-
-
-
-{id: "01-07-03_03all", caption: ".../config/routes.rb -- codice 03", format: ruby, line-numbers: true, number-from: 1}
-```
-Rails.application.routes.draw do
-
-  root 'mockups#page_a'
-
-  devise_for :users
-  resources :users
-
-  get 'mockups/page_a'
-  get 'mockups/page_b'
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-end
-```
-
-[indietro](#01-07-03_03)
-
-
-
-## Facciamo un backup su Github
-
-Lo facciamo in seguito. Dopo la chiusura del branch.
 
 
 
