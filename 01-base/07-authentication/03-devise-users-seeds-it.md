@@ -334,8 +334,7 @@ Per verificarlo dobbiamo andare alla pagina **users/sign_in** quindi all'URL:
 
 - https://mycloud9path.amazonaws.com/users/sign_in
 
-![Fig. 01](chapters/01-base/07-authentication/03_fig01-url-users-sign_in.png)
-
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/03_fig01-url-users-sign_in.png)
 
 Con le credenziali giuste ci loggiamo e veniamo portati nella pagina di root.
 
