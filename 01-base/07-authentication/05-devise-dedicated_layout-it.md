@@ -82,31 +82,32 @@ Questo ci crea le seguenti nuove cartelle e files:
 Aggiungiamo il parametro `controllers: { sessions: 'users/sessions' }` a *devise_for :users*, questo indica a devise di usare i nuovi controllers (e non quelli di default).
 
 
-***codice 07 - .../config/routes.rb - line: 2***
+***codice 01 - .../config/routes.rb - line: 2***
 
 ```ruby
-  devise_for :users, path_names: {sign_in: 'login'}, path: '', controllers: { sessions: 'users/sessions' }
+  devise_for :users, path: '', path_names: {sign_in: 'login', sign_out: 'logout'}, controllers: { sessions: 'users/sessions' }
   resources :users
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/04_05-config-routes.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/05_01-config-routes.rb)
 
 
-Se avessimo attivo il :registerable avremmo dovuto inserire l'instradamento anche per 'users/registrations'. In quel caso avremmo indicato entrambi i nuovi controllers a cui si deve riferire devise:
+## Come sarabbero gli instradamenti anche con *registerable*
+
+Se avessimo attivo il *:registerable* avremmo dovuto inserire l'instradamento anche per *users/registrations*. 
+In quel caso avremmo indicato entrambi i nuovi controllers a cui si deve riferire devise:
 
 - sessions: 'users/sessions'
 - registrations: 'users/registrations'
 
-quidi il parametro sarebbe stato
+quidi il parametro sarebbe stato: `controllers: {sessions: 'users/sessions', registrations: 'users/registrations'}`
 
-- controllers: {sessions: 'users/sessions', registrations: 'users/registrations'}
+***codice n/a - .../config/routes.rb - line: 2***
 
-{caption: ".../config/routes.rb", format: ruby, line-numbers: true, number-from: 9}
 ```ruby
-  devise_for :users, path_names: {sign_in: 'login'}, path: '', controllers: {sessions: 'users/sessions', registrations: 'users/registrations'}
+  devise_for :users, path: '', path_names: {sign_in: 'login', sign_out: 'logout'}, controllers: {sessions: 'users/sessions', registrations: 'users/registrations'}
+  resources :users
 ```
-
-
 
 
 
