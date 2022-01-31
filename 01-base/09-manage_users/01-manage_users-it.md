@@ -7,7 +7,7 @@ Adesso che abbiamo tutto predisposto iniziamo ad incorporare l'autorizzazione ne
 
 ## Risorse interne
 
-* 99-rails_references-authentication_devise-02-devise
+- [99-rails_references-authentication_devise-02-devise]
 
 
 
@@ -43,11 +43,11 @@ $ git checkout -b gu
 ## UsersController
 
 La cartella *users* è stata creata direttamente da Devise.
-Non avendo usato lo scaffold per la creazione della tabella *users* non abbiamo nè le *views* nè il *controller*.
+Non avendo usato il comando *scaffold* per la creazione della tabella *users* non abbiamo nè *users_controller* nè le *views* standard *"restfull"*.
 
-Creiamo il controller per la tabella users.
+Creiamo il *controller* per la tabella *users*.
 
-I> Nota che *users* è plurale quando si crea il controller. (al contrario dello scaffold in cui si usa il singolare)
+> Nota che *users* è plurale quando si crea il controller. (al contrario dello scaffold in cui si usa il singolare)
 
 ```bash
 $ rails g controller users index
@@ -56,8 +56,7 @@ $ rails g controller users index
 Esempio:
   
 ```bash
-user_fb:~/environment/bl6_0 (gu) $ rails g controller users index
-Running via Spring preloader in process 4015
+user_fb:~/environment/bl7_0 (gu) $ rails g controller users index
       create  app/controllers/users_controller.rb
        route  get 'users/index'
       invoke  erb
@@ -68,9 +67,7 @@ Running via Spring preloader in process 4015
       invoke  helper
       create    app/helpers/users_helper.rb
       invoke    test_unit
-      invoke  assets
-      invoke    scss
-      create      app/assets/stylesheets/users.scss
+user_fb:~/environment/bl7_0 (gu) $ 
 ```
 
 Inizializiamo con la sola azione *index* perché le altre le aggiungiamo di volta in volta.
@@ -79,10 +76,10 @@ Inizializiamo con la sola azione *index* perché le altre le aggiungiamo di volt
 
 
 
-## Un controller di esempio
+## Progettiamo la tabela users
 
-Creiamoci anche uno scaffold di esempio per aiutarci ad inserire il codice nel nostro controller rispettando le convenzioni rails.
-Per i campi possiamo rifarci allo schema del database.
+In realtà non la dobbiamo progettare perché l'abbiamo già creata installando *devise*.
+Andiamo semplicemente a vedere le colonne che abbiamo usato. Possiamo riprendere il *migrate* oppure la vediamo sullo schema del database (*db/schema*).
 
 ***codice 01 - .../db/schema.rb - line: 18***
 
@@ -92,14 +89,24 @@ Per i campi possiamo rifarci allo schema del database.
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "reset_password_sent_at", precision: 6
+    t.datetime "remember_created_at", precision: 6
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_01-db-schema.rb)
 
+Queste colonne ci sono utili nel prossimo paragrafo in cui usiamo il comando *scaffold*.
+
+
+
+## Usiamo *scaffold* per un controller di *esempio*
+
+Creiamoci anche uno scaffold di esempio per aiutarci ad inserire il codice nel nostro controller rispettando le convenzioni rails.
 
 ```bash
 $ rails g scaffold EgUser name:string email:string encrypted_password:string
