@@ -1,8 +1,6 @@
-{id: 01-base-07-authentication-05-devise_i18n}
-# Cap 7.5 -- Devise internazionalizzazione
+# <a name="top"></a> Cap 8.1 - Devise internazionalizzazione
 
 Abilitiamo la traduzione i18n per i messaggi generati da devise.
-
 
 
 
