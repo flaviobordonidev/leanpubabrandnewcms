@@ -126,24 +126,27 @@ Nella cartella *views/layouts* creiamo una nuova view che chiamiamo *entrance* e
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/05_02-views-layout-entrance.html.erb)
 
-> Per distinguere le due views di layout abbiamo aggiunto *ENTRANCE* al *<title>*. Ma andando avanti con il tutorial le due view si differenzieranno sensibilmente.
+> Per distinguere le due views di layout abbiamo aggiunto *ENTRANCE TO* al *<title>*. Ma andando avanti con il tutorial le due view si differenzieranno sensibilmente.
 
 
 
 ## Indichiamo a devise di usare il nuovo layout *entrance*
 
-Per indicare di usare il nostro nuovo layout dobbiamo aggiornare il controller. Ed è per questo che abbiamo usato " rails generate devise:controllers users ". Infatti adesso abbiamo in chiaro il controller di devise che gestisce il sign_in/login sign_out/logout. 
+Per indicare a devise di usare il nostro nuovo layout dobbiamo aggiornare il controller. 
+Ed è per questo che precedentemente abbiamo usato `rails generate devise:controllers users`. 
+Infatti adesso abbiamo in chiaro il controller di devise che gestisce il *sign_in/login* e il *sign_out/logout*. 
 
-{id: "01-07-04_10", caption: ".../app/controllers/users/sessions_controller.rb -- codice 10", format: ruby, line-numbers: true, number-from: 6}
+***codice 03 - .../app/controllers/users/sessions_controller.rb - line: 6***
 
 ```ruby
   layout 'entrance'
 ```
 
-[tutto il codice](#01-07-04_10all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/05_03-controllers-users-sessions_controller.rb)
 
-Aggiungendo "layout 'entrance'" indichiamo a tutte le azioni di sessions_controller di usare il nuovo layout. Se lo avessimo voluto usare solo per il sign_in avremmo decommentato l'azione "new" inserendo al suo interno " render layout: 'entrance' ".
+Aggiungendo `layout 'entrance'` indichiamo a tutte le azioni di *sessions_controller* di usare il nuovo layout. 
 
+> Se lo avessimo voluto usare solo per il *sign_in/login* avremmo decommentato l'azione ***new*** inserendo al suo interno `render layout: 'entrance'`.
 
 
 
