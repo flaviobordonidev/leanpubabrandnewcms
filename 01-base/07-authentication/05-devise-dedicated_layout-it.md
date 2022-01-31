@@ -121,12 +121,13 @@ Nella cartella *views/layouts* creiamo una nuova view che chiamiamo *entrance* e
 <!DOCTYPE html>
 <html>
   <head>
-    <title>ENTRANCE Bl70</title>
+    <title>ENTRANCE TO Bl70</title>
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/05_02-views-layout-entrance.html.erb)
 
-> Per distinguere le due views di layout abbiamo aggiunto *ENTRANCE TO* al *<title>*. Ma andando avanti con il tutorial le due view si differenzieranno sensibilmente.
+> Per distinguere le due views di layout abbiamo aggiunto *ENTRANCE TO* al *<title>* e il paragraph `<p>ENTRANCE</p>` subito dopo il *<body>*. 
+> Ma andando avanti con il tutorial le due view si differenzieranno sensibilmente.
 
 
 
@@ -134,7 +135,7 @@ Nella cartella *views/layouts* creiamo una nuova view che chiamiamo *entrance* e
 
 Per indicare a devise di usare il nostro nuovo layout dobbiamo aggiornare il controller. 
 Ed è per questo che precedentemente abbiamo usato `rails generate devise:controllers users`. 
-Infatti adesso abbiamo in chiaro il controller di devise che gestisce il *sign_in/login* e il *sign_out/logout*. 
+Così adesso abbiamo in chiaro il controller di devise che gestisce il *sign_in/login* e il *sign_out/logout*. 
 
 ***codice 03 - .../app/controllers/users/sessions_controller.rb - line: 6***
 
@@ -152,17 +153,15 @@ Aggiungendo `layout 'entrance'` indichiamo a tutte le azioni di *sessions_contro
 
 ## Verifichiamo preview
 
-{caption: "terminal", format: bash, line-numbers: false}
-
 ```bash
 $ sudo service postgresql start
 $ rails s
 ```
 
-* https://mycloud9path.amazonaws.com/
-* https://mycloud9path.amazonaws.com/login
+- https://mycloud9path.amazonaws.com/
+- https://mycloud9path.amazonaws.com/login
 
-Nella pagina di login il tab del browser ha il nome "Benvenuto"
+> Nella pagina di ***login*** il tab del browser ha il nome "ENTRANCE TO Bl70"
 
 
 
@@ -178,7 +177,7 @@ $ git commit -m "New layout entrance for login"
 ## Pubblichiamo su Heroku
 
 ```bash
-$ git push heroku siso:master
+$ git push heroku siso:main
 $ heroku run rails db:migrate
 ```
 
