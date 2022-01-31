@@ -4,10 +4,44 @@ Abilitiamo la traduzione i18n per i messaggi generati da devise.
 
 
 
+## Vediamo dove eravamo rimasti
+
+Diamo un'occhiata alla log di git per vedere l'ultimo commit effettuato.
+
+```bash
+$ git log
+```
+
+Esempio:
+
+```bash
+user_fb:~/environment/bl7_0 (main) $ git log
+commit d138fbe6682bb01ea7cd1a4544b2cde21f59ea94 (HEAD -> main, origin/main, heroku/main)
+Author: Flavio Bordoni <flavio.bordoni.dev@gmail.com>
+Date:   Mon Jan 31 00:46:48 2022 +0000
+
+    New layout entrance for login
+
+commit f3fe49ab40f81a4ab8456f0bb6bb03d262b3e7f1
+Author: Flavio Bordoni <flavio.bordoni.dev@gmail.com>
+Date:   Sun Jan 30 23:20:27 2022 +0000
+
+    devise routes with controllers
+
+commit f4ddfc667a4a6d50436d3c8317a65286d68fe06c (heroku/master)
+Author: Flavio Bordoni <flavio.bordoni.dev@gmail.com>
+Date:   Sun Jan 30 12:15:38 2022 +0000
+
+user_fb:~/environment/bl7_0 (main) $
+```
+
+> L'ultimo fatto riguardava il nuovo layout *entrance* per il login con devise.
+
+
+
 ## Apriamo il branch "Devise I18n"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout -b di
 ```
 
@@ -15,59 +49,63 @@ $ git checkout -b di
 
 ## Il file devise.it.yml
 
-In fase di installazione Devise ha creato il file " ...config/locales/devise.en.yml " con tutte le frasi in inglese. 
+In fase di installazione Devise ha creato il file *...config/locales/devise.en.yml* con tutte le frasi in inglese. 
 
-I> Ricordiamoci che i messaggi sono passati con flash keys :notice and :alert quindi devono essere attivi su views altrimenti non vengono visualizzati.
+> Ricordiamoci che i messaggi sono passati con le flash keys *:notice* and *:alert* quindi devono essere attivi sui views altrimenti non vengono visualizzati.
 
-Noi usiamo il seguente codice a livello di layout così lo abbiamo su tutte le views:
+I messaggi di informazione e avviso di devise li abbiamo messi a livello di layout così li abbiamo su tutte le views.
 
-{id: "01-07-05_01", caption: ".../app/views/layouts/application.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 13}
-~~~~~~~~
+
+***codice 01 - .../config/routes.rb - line: 14***
+
+```html+erb
     <% if notice %><p class="alert alert-info"><%= notice %></p><% end %>
-    <% if alert %><p class="alert alert-warning"><%= alert %></p><% end %>    
-~~~~~~~~
+    <% if alert %><p class="alert alert-warning"><%= alert %></p><% end %>   
+```
 
-[tutto il codice](#01-07-05_01all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/08-authentication_i18n/01_01-views-layouts-application.html.erb)
 
-A titolo esemplificativo abbiamo visualizzato il codice in " views/layouts/application " tanto è lo stesso anche nel layout alternativo " views/layouts/entrance ".
 
+> A titolo esemplificativo abbiamo visualizzato il codice in *views/layouts/application* tanto è lo stesso anche nel layout alternativo *views/layouts/entrance*.
 
 
 
 ## La traduzione fatta riga per riga
 
-Un approccio didattico per la traduzione in italiano potrebbe essere quello di duplicare il file rinominandolo " devise.it.yml ".
+Un approccio didattico per la traduzione in italiano potrebbe essere quello di duplicare il file rinominandolo *devise.it.yml*.
+Andremmo poi a cambiare *:en* con *:it* e a tradurre le varie stringhe.
 
-Andremmo poi a cambiare " :en " con " :it " e a tradurre le varie stringhe:
+***codice n/a - .../config/locales/devise.it.yml - line: 1***
 
-{caption: ".../config/locales/devise.it.yml -- esempio", format: yaml, line-numbers: true, number-from: 1}
-~~~~~~~~
+```yaml
 # Additional translations at https://github.com/plataformatec/devise/wiki/I18n
 
 it:
   devise:
     confirmations:
       confirmed: "Il tuo indirizzo email è stato confermato con successo."
-...
-~~~~~~~~
+```
 
+> il codice con ***n/a*** non lo usiamo nella nostra app.
 
 
 
 ## Usiamo il file già tradotto
 
-Oppure, più semplicemente, andiamo su https://github.com/plataformatec/devise/wiki/I18n e prendiamo il file già tradotto in italiano.
+Oppure, più semplicemente, andiamo su *https://github.com/plataformatec/devise/wiki/I18n* e prendiamo il file già tradotto in italiano.
 
 
-I> verifichiamo le [traduzioni dei messaggi di devise](https://github.com/plataformatec/devise/wiki/I18n)
-I>
-I> scegliamo la [lingua italiana](https://gist.github.com/iwan/91c724774594c8b484c95ff1db5d1a15)
+> verifichiamo le [traduzioni dei messaggi di devise](https://github.com/plataformatec/devise/wiki/I18n)
+>
+> scegliamo la [lingua italiana](https://gist.github.com/iwan/91c724774594c8b484c95ff1db5d1a15)
 
-Scarichiamo il file devise.it.yml dal sito web e lo uploadiamo nella cartella config/locale della nostra applicazione Rails.
-Oppure creiamo il nuovo file devise.it.yml su config/locale e facciamo copia/incolla della traduzione. 
+Scarichiamo il file *devise.it.yml* dal sito web e lo uploadiamo nella cartella *config/locale* della nostra applicazione Rails.
 
-{id: "01-07-05_02", caption: ".../config/locales/devise.it.yml -- codice 02", format: yaml, line-numbers: true, number-from: 1}
-```
+> Oppure creiamo il nuovo file *devise.it.yml* su *config/locale* e facciamo copia/incolla della traduzione. 
+
+***codice 02 - .../config/locales/devise.it.yml - line: 1***
+
+```yaml
 # Italian translation for Devise 4.2
 # Date: 2016-08-01
 # Author: epistrephein, iwan
@@ -80,8 +118,7 @@ it:
       confirmed: "Il tuo account è stato correttamente confermato."
 ```
 
-[tutto il codice](#01-07-05_02all)
-
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/08-authentication_i18n/01_02-config-locale-devise.it.yml)
 
 
 
@@ -89,54 +126,49 @@ it:
 
 confrontando il file con quello inglese generato automaticamente da devise impostiamo le traduzioni mancanti
 
-{id: "01-07-05_03", caption: ".../config/locale/devise.it.yml -- codice 03", format: yaml, line-numbers: true, number-from: 31}
-```
+***codice 03 - .../config/locales/devise.it.yml - line: 31***
+
+```yaml
       email_changed:
         subject: "Email reimpostata"
 ```
 
+***codice 03 - ...continua - line: 52***
+
 {caption: ".../config/locale/devise.it.yml -- segue", format: yaml, line-numbers: true, number-from: 52}
-```
+```yaml
       updated_but_not_signed_in: "Il tuo account è stato aggiornato correttamente, ma poiché la password è stata modificata, è necessario accedere nuovamente"
 ```
 
-[tutto il codice](#01-07-05_03all)
-
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/08-authentication_i18n/01_03-config-locale-devise.it.yml)
 
 Adesso tutti i messaggi di devise sono tradotti in italiano.
 
 
 
-
 ## verifichiamo che funziona tutto
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails s
 ```
 
 
 
-
 ## Archiviamo su git
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git add -A
 $ git commit -m "add login_devise i18n"
 ```
 
 
 
-
 ## Publichiamo su heroku
 
-{caption: "terminal", format: bash, line-numbers: false}
+```bash
+$ git push heroku di:main
 ```
-$ git push heroku di:master
-```
-
 
 
 
@@ -144,180 +176,26 @@ $ git push heroku di:master
 
 se abbiamo finito le modifiche e va tutto bene:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git checkout master
+```bash
+$ git checkout main
 $ git merge di
 $ git branch -d di
 ```
 
 
 
-
 ## Facciamo un backup su Github
 
-Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+Dal nostro branch main di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git push origin master
-```
-
-
-
-
-## Il codice del capitolo
-
-
-
-
-{id: "01-07-05_01all", caption: ".../config/locale/devise.it.yml -- codice 01", format: yaml, line-numbers: true, number-from: 1}
-```
-# Italian translation for Devise 4.2
-# Date: 2016-08-01
-# Author: epistrephein, iwan
-# Note: Thanks to xpepper (https://gist.github.com/xpepper/8052632)
-# Additional translations at https://github.com/plataformatec/devise/wiki/I18n
-
-it:
-  devise:
-    confirmations:
-      confirmed: "Il tuo account è stato correttamente confermato."
-      send_instructions: "Entro qualche minuto riceverai un messaggio email con le istruzioni per confermare il tuo account."
-      send_paranoid_instructions: "Se il tuo indirizzo email esiste nel nostro database, entro qualche minuto riceverai un messaggio email con le istruzioni per confermare il tuo account."
-    failure:
-      already_authenticated: "Hai già effettuato l'accesso."
-      inactive: "Il tuo account non è ancora stato attivato."
-      invalid: "%{authentication_keys} o password non validi."
-      locked: "Il tuo account è bloccato."
-      last_attempt: "Hai un altro tentativo prima che il tuo account venga bloccato."
-      not_found_in_database: "%{authentication_keys} o password non validi."
-      timeout: "La tua sessione è scaduta, accedi nuovamente per continuare."
-      unauthenticated: "Devi accedere o registrarti per continuare."
-      unconfirmed: "Devi confermare il tuo indirizzo email per continuare."
-    mailer:
-      confirmation_instructions:
-        subject: "Istruzioni per la conferma"
-      reset_password_instructions:
-        subject: "Istruzioni per reimpostare la password"
-      unlock_instructions:
-        subject: "Istruzioni per sbloccare l'account"
-      password_change:
-        subject: "Password reimpostata"
-    omniauth_callbacks:
-      failure: 'Non è stato possibile autenticarti come %{kind} perché "%{reason}".'
-      success: "Autenticato con successo dall'account %{kind}."
-    passwords:
-      no_token: "Non è possibile accedere a questa pagina se non provieni da una e-mail di ripristino della password. Se provieni da una e-mail di ripristino della password, assicurarti di utilizzare l'URL completo."
-      send_instructions: "Entro qualche minuto riceverai un messaggio email con le istruzioni per reimpostare la tua password."
-      send_paranoid_instructions: "Se il tuo indirizzo email esiste nel nostro database, entro qualche minuto riceverai un messaggio email con le istruzioni per ripristinare la password."
-      updated: "La tua password è stata cambiata correttamente. Ora sei collegato."
-      updated_not_active: "La tua password è stata cambiata correttamente."
-    registrations:
-      destroyed: "Arrivederci! Il tuo account è stato cancellato. Speriamo di rivederti presto."
-      signed_up: "Benvenuto! Ti sei registrato correttamente."
-      signed_up_but_inactive: "Ti sei registrato correttamente. Tuttavia non puoi effettuare l'accesso perché il tuo account non è stato ancora attivato."
-      signed_up_but_locked: "Ti sei registrato correttamente. Tuttavia non puoi effettuare l'accesso perché il tuo account è bloccato."
-      signed_up_but_unconfirmed: "Ti sei registrato correttamente. Un messaggio con il link per confermare il tuo account è stato inviato al tuo indirizzo email."
-      update_needs_confirmation: "Il tuo account è stato aggiornato, tuttavia è necessario verificare il tuo nuovo indirizzo email. Entro qualche minuto riceverai un messaggio email con le istruzioni per confermare il tuo nuovo indirizzo email."
-      updated: "Il tuo account è stato aggiornato."
-    sessions:
-      signed_in: "Accesso effettuato con successo."
-      signed_out: "Sei uscito correttamente."
-      already_signed_out: "Sei uscito correttamente."
-    unlocks:
-      send_instructions: "Entro qualche minuto riceverai un messaggio email con le istruzioni per sbloccare il tuo account."
-      send_paranoid_instructions: "Se il tuo indirizzo email esiste nel nostro database, entro qualche minuto riceverai un messaggio email con le istruzioni per sbloccare il tuo account."
-      unlocked: "Il tuo account è stato correttamente sbloccato. Accedi per continuare."
-  errors:
-    messages:
-      already_confirmed: "è stato già confermato, prova ad effettuare un nuovo accesso"
-      confirmation_period_expired: "deve essere confermato entro %{period}, si prega di richiederne uno nuovo"
-      expired: "è scaduto, si prega di richiederne uno nuovo"
-      not_found: "non trovato"
-      not_locked: "non era bloccato"
-      not_saved:
-        one: "Un errore ha impedito di salvare questo %{resource}:"
-        other: "%{count} errori hanno impedito di salvare questo %{resource}:"
+```bash
+$ git push origin main
 ```
 
-[indietro](#01-07-05_01)
 
 
+---
 
-
-{id: "01-07-05_02all", caption: ".../config/locale/devise.it.yml -- codice 02", format: yaml, line-numbers: true, number-from: 1}
-```
-# Italian translation for Devise 4.7
-# Date: 2019-11-07
-# Author: epistrephein, iwan, bordoni
-# Note: Thanks to iwan (https://gist.github.com/iwan/91c724774594c8b484c95ff1db5d1a15)
-# Note: Thanks to xpepper (https://gist.github.com/xpepper/8052632)
-# Additional translations at https://github.com/plataformatec/devise/wiki/I18n
-
-it:
-  devise:
-    confirmations:
-      confirmed: "Il tuo account è stato correttamente confermato."
-      send_instructions: "Entro qualche minuto riceverai un messaggio email con le istruzioni per confermare il tuo account."
-      send_paranoid_instructions: "Se il tuo indirizzo email esiste nel nostro database, entro qualche minuto riceverai un messaggio email con le istruzioni per confermare il tuo account."
-    failure:
-      already_authenticated: "Hai già effettuato l'accesso."
-      inactive: "Il tuo account non è ancora stato attivato."
-      invalid: "%{authentication_keys} o password non validi."
-      locked: "Il tuo account è bloccato."
-      last_attempt: "Hai un altro tentativo prima che il tuo account venga bloccato."
-      not_found_in_database: "%{authentication_keys} o password non validi."
-      timeout: "La tua sessione è scaduta, accedi nuovamente per continuare."
-      unauthenticated: "Devi accedere o registrarti per continuare."
-      unconfirmed: "Devi confermare il tuo indirizzo email per continuare."
-    mailer:
-      confirmation_instructions:
-        subject: "Istruzioni per la conferma"
-      reset_password_instructions:
-        subject: "Istruzioni per reimpostare la password"
-      unlock_instructions:
-        subject: "Istruzioni per sbloccare l'account"
-      email_changed:
-        subject: "Email reimpostata"
-      password_change:
-        subject: "Password reimpostata"
-    omniauth_callbacks:
-      failure: 'Non è stato possibile autenticarti come %{kind} perché "%{reason}".'
-      success: "Autenticato con successo dall'account %{kind}."
-    passwords:
-      no_token: "Non è possibile accedere a questa pagina se non provieni da una e-mail di ripristino della password. Se provieni da una e-mail di ripristino della password, assicurarti di utilizzare l'URL completo."
-      send_instructions: "Entro qualche minuto riceverai un messaggio email con le istruzioni per reimpostare la tua password."
-      send_paranoid_instructions: "Se il tuo indirizzo email esiste nel nostro database, entro qualche minuto riceverai un messaggio email con le istruzioni per ripristinare la password."
-      updated: "La tua password è stata cambiata correttamente. Ora sei collegato."
-      updated_not_active: "La tua password è stata cambiata correttamente."
-    registrations:
-      destroyed: "Arrivederci! Il tuo account è stato cancellato. Speriamo di rivederti presto."
-      signed_up: "Benvenuto! Ti sei registrato correttamente."
-      signed_up_but_inactive: "Ti sei registrato correttamente. Tuttavia non puoi effettuare l'accesso perché il tuo account non è stato ancora attivato."
-      signed_up_but_locked: "Ti sei registrato correttamente. Tuttavia non puoi effettuare l'accesso perché il tuo account è bloccato."
-      signed_up_but_unconfirmed: "Ti sei registrato correttamente. Un messaggio con il link per confermare il tuo account è stato inviato al tuo indirizzo email."
-      update_needs_confirmation: "Il tuo account è stato aggiornato, tuttavia è necessario verificare il tuo nuovo indirizzo email. Entro qualche minuto riceverai un messaggio email con le istruzioni per confermare il tuo nuovo indirizzo email."
-      updated: "Il tuo account è stato aggiornato."
-      updated_but_not_signed_in: "Il tuo account è stato aggiornato correttamente, ma poiché la password è stata modificata, è necessario accedere nuovamente"
-    sessions:
-      signed_in: "Accesso effettuato con successo."
-      signed_out: "Sei uscito correttamente."
-      already_signed_out: "Sei uscito correttamente."
-    unlocks:
-      send_instructions: "Entro qualche minuto riceverai un messaggio email con le istruzioni per sbloccare il tuo account."
-      send_paranoid_instructions: "Se il tuo indirizzo email esiste nel nostro database, entro qualche minuto riceverai un messaggio email con le istruzioni per sbloccare il tuo account."
-      unlocked: "Il tuo account è stato correttamente sbloccato. Accedi per continuare."
-  errors:
-    messages:
-      already_confirmed: "è stato già confermato, prova ad effettuare un nuovo accesso"
-      confirmation_period_expired: "deve essere confermato entro %{period}, si prega di richiederne uno nuovo"
-      expired: "è scaduto, si prega di richiederne uno nuovo"
-      not_found: "non trovato"
-      not_locked: "non era bloccato"
-      not_saved:
-        one: "Un errore ha impedito di salvare questo %{resource}:"
-        other: "%{count} errori hanno impedito di salvare questo %{resource}:"
-```
-
-[indietro](#01-07-05_02)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/05-devise-dedicated_layout-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/08-authentication_i18n/01-devise_i18n-it.md)

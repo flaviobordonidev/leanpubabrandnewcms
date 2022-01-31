@@ -155,3 +155,57 @@ end
 </div> <!-- /front_mode -->
 ~~~~~~~~
 
+
+
+
+# login_authentication login_devise_i18n
+
+
+#### 02 {#code-login_authentication-login_devise_i18n-02}
+
+{title=".../app/views/homepage/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+~~~~~~~~
+<div id="front_mode" class="container-fluid front_mode">
+
+  <div class="row">
+    <div class="col-xs-10 col-sm-11 col-lg-11">
+      <%= render 'mockup_homepage/index/breadcrumbs' %>
+    </div> <!-- /col -->
+    <div class="col-xs-2 col-sm-1 col-lg-1">
+      <%= render 'homepage/button_global_settings' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <%= current_user.email if current_user.present? == true %>
+      <%= render 'mockup_homepage/index/main_media_object' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row">
+    <div class="col-xs-10 col-sm-11 col-lg-11">
+      <%= render 'mockup_homepage/index/related_form_search' %>
+    </div> <!-- /col -->
+    <div class="col-xs-2 col-sm-1 col-lg-1">
+      <%= render 'mockup_homepage/index/button_new' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+
+  <div class="row">
+    <div class="col-xs-12">
+      <%= render 'mockup_homepage/index/related_list_group' %>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="text-center">
+        <%= render 'mockup_homepage/index/related_pagination' %>
+      </div>
+    </div> <!-- /col -->
+  </div> <!-- /row -->
+
+</div> <!-- /front_mode -->
+~~~~~~~~
