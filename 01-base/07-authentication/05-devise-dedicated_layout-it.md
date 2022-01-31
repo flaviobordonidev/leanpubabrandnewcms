@@ -100,7 +100,7 @@ In quel caso avremmo indicato entrambi i nuovi controllers a cui si deve riferir
 - sessions: 'users/sessions'
 - registrations: 'users/registrations'
 
-quidi il parametro sarebbe stato: `controllers: {sessions: 'users/sessions', registrations: 'users/registrations'}`
+quindi il parametro sarebbe stato: `controllers: {sessions: 'users/sessions', registrations: 'users/registrations'}`
 
 ***codice n/a - .../config/routes.rb - line: 2***
 
@@ -111,26 +111,26 @@ quidi il parametro sarebbe stato: `controllers: {sessions: 'users/sessions', reg
 
 
 
-## Creiamo nuovo layout
+## Creiamo il nuovo layout *entrance*
 
-Nella cartella views/layouts creiamo una nuova view che chiamiamo "entrance" ed all'interno copiamo tutto il codice che al momento è nella vew "application" (la view del layout di default)
+Nella cartella *views/layouts* creiamo una nuova view che chiamiamo *entrance* e al suo interno copiamo tutto il codice che al momento è sulla view *application* (la view del layout di default).
 
-{id: "01-07-04_08", caption: ".../app/views/layout/entrance.html.erb -- codice 08", format: HTML+Mako, line-numbers: true, number-from: 1}
+***codice 02 - .../app/views/layout/entrance.html.erb - line: 1***
 
 ```html+erb
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Benvenuto</title>
+    <title>ENTRANCE Bl70</title>
 ```
 
-[tutto il codice](#01-07-04_08all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/05_02-views-layout-entrance.html.erb)
 
-Al momento l'unica differenza è nel titolo dove abbiamo scritto "Benvenuto". Ma andando avanti con il tutorial le due view si differenzieranno sensibilmente.
+> Per distinguere le due views di layout abbiamo aggiunto *ENTRANCE* al *<title>*. Ma andando avanti con il tutorial le due view si differenzieranno sensibilmente.
 
 
 
-### Indichiamo a devise di usare il layout "entrance"
+## Indichiamo a devise di usare il nuovo layout *entrance*
 
 Per indicare di usare il nostro nuovo layout dobbiamo aggiornare il controller. Ed è per questo che abbiamo usato " rails generate devise:controllers users ". Infatti adesso abbiamo in chiaro il controller di devise che gestisce il sign_in/login sign_out/logout. 
 
