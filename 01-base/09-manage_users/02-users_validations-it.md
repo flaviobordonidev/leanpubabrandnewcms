@@ -77,17 +77,17 @@ eseguiamo il submit del form.
  
 ```bash
 $ rails console
-> Person.create(name: "John Doe").valid? # => true
-> Person.create(name: nil).valid? # => false
+-> Person.create(name: "John Doe").valid? # => true
+-> Person.create(name: nil).valid? # => false
 
-> p = Person.new(name: "John Doe")
-=> #<Person id: nil, name: "John Doe", created_at: nil, updated_at: nil>
-> p.new_record?
-=> true
-> p.save
-=> true
-> p.new_record?
-=> false
+-> p = Person.new(name: "John Doe")
+   # => <Person id: nil, name: "John Doe", created_at: nil, updated_at: nil>
+-> p.new_record?
+   # => true
+-> p.save
+   # => true
+-> p.new_record?
+   #=> false
 ```
 
 
