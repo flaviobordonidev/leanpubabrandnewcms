@@ -294,16 +294,19 @@ $ rails s
 
 ## Implementiamo l'azione show
 
-Aggiorniamo il controller implementando l'azione show per visualizzare il singolo utente.
-Copiamo ed implementiamo la parte di codice per l'azione show, il before_action lo lasciamo perché ci è utile per le prossime azioni che implementeremo.
+Aggiorniamo il controller implementando l'azione *show* per visualizzare il singolo utente.
+Copiamo ed implementiamo la parte di codice per l'azione *show*, il *before_action* lo lasciamo perché ci è utile per le prossime azioni che implementeremo.
 
-***codice 07 - .../app/controllers/users_controller.rb - line: 2***
+***codice 09 - .../app/controllers/users_controller.rb - line: 2***
 
 ```ruby
-  before_action :set_user, only: [:show]
+  before_action :set_user, only: %i[ show ]
 ```
 
-***codice 07 - ...continua - line: 10***
+> Su rails 6 si usava `before_action :set_user, only: [:show]`
+> Su rails 7 si è scelto `before_action :set_user, only: %i[ show ]`
+
+***codice 09 - ...continua - line: 10***
 
 ```ruby
   # GET /users/1
@@ -318,10 +321,10 @@ Copiamo ed implementiamo la parte di codice per l'azione show, il before_action 
     end
 ```
 
-[tutto il codice](#01-07-06_07all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_08-views-users-_user.html.erb)
 
 
-Per la sola azione user non serviva il *before_action* con il metodo private. Bastava:
+Per la sola azione *show* si poteva fare senza il metodo privato *before_action*.
 
 ***codice n/a - .../app/controllers/users_controller.rb - line: 2***
 
@@ -333,6 +336,8 @@ Per la sola azione user non serviva il *before_action* con il metodo private. Ba
   end
 ```
 
+> Il codice ***n/a*** non lo usiamo nella nostra app.
+
 Ma è utile ed elegante estrarre `@user = User.find(params[:id])` in un metodo private perché questo è chiamato anche da altre azioni (:show, :edit, :update e :destroy).
 
 
@@ -341,7 +346,7 @@ Ma è utile ed elegante estrarre `@user = User.find(params[:id])` in un metodo p
 
 Creiamo il nuovo file *show.html.erb* dentro la cartella *views/users*. Ci copiamo il contenuto di *views/example_users/show.html.erb* e lo riadattiamo.
 
-***codice 08 - .../app/views/users/show.html.erb - line: 1***
+***codice 10 - .../app/views/users/show.html.erb - line: 1***
 
 ```html+erb
 <p id="notice"><%= notice %></p>
@@ -352,7 +357,7 @@ Creiamo il nuovo file *show.html.erb* dentro la cartella *views/users*. Ci copia
 </p>
 ```
 
-[tutto il codice](#01-07-06_08all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_10-views-users-show.html)
 
 
 
