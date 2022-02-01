@@ -106,7 +106,10 @@ Queste colonne ci sono utili nel prossimo paragrafo in cui usiamo il comando *sc
 
 ## Usiamo *scaffold* per un controller di *esempio*
 
-Creiamoci anche uno scaffold di esempio per aiutarci ad inserire il codice nel nostro controller rispettando le convenzioni rails.
+Usiamo il comando `generate scaffold` che non abbiamo potuto usare prima per creare la tabella *users* e lo usiamo per creare la tabella *users di esempio*.
+Il comando *scaffold* oltre alla tabella crea tutta l'infrastruttura *restfull* con controllers e views con già del codice coerente con le convenzioni rails.
+
+> Mettiamo il prefisso *eg_* davanti al nome della tabella per indicare che è un *esempio*.
 
 ```bash
 $ rails g scaffold EgUser name:string email:string encrypted_password:string
@@ -117,7 +120,7 @@ questo crea il migrate:
 ***codice 02 - .../db/migrate/xxx_create_eg_users.rb - line: 1***
 
 ```yaml
-class CreateEgUsers < ActiveRecord::Migration[6.0]
+class CreateEgUsers < ActiveRecord::Migration[7.0]
   def change
     create_table :eg_users do |t|
       t.string :name
@@ -129,6 +132,8 @@ class CreateEgUsers < ActiveRecord::Migration[6.0]
   end
 end
 ```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_02-db-migrate-xxx_create_eg_users.rb)
 
 Effettuiamo il migrate del database per creare la tabella sul database
 
@@ -149,20 +154,20 @@ Vediamo che lo schema del database si è aggiornato
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
-
-  create_table "users", force: :cascade do |t|
-    t.string "name", default: "", null: false
 ```
 
-[tutto il codice](#01-07-06_03all)
-
-Potevamo evitare di fare il migrate ed eliminare il file di migrate (.../db/migrate/xxx_create_eg_users.rb) perché questa tabella non la useremo. Lo abbiamo fatto solo a scopo didattico.
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_03-db-schema.rb)
 
 
+> Potevamo anche evitare di eseguire il *migrate* ed eliminare il file *.../db/migrate/xxx_create_eg_users.rb* perché questa tabella non la useremo. 
 
-### Una furbata
 
-invece di crearci lo scaffold di una tabella example_users avremmo potuto lanciare il comando come se stessimo creando la tabella users senza eseguire il " $ rails db:migrate " e cancellando il file di migrate.
+
+## Una possibile *"furbata"*
+
+Invece di crearci lo scaffold di una tabella *eg_users*, avremmo potuto eseguire lo *scaffold* come se stessimo creando la tabella *users* senza eseguire il *$ rails db:migrate* e cancellando il file di migrate.
+
+> Ma noi non eseguiamo il seguente comando nella nostra app. 
 
 ```bash
 $ rails g scaffold User name:string email:string encrypted_password:string remember_created_at:datetime
@@ -170,35 +175,33 @@ $ rails g scaffold User name:string email:string encrypted_password:string remem
 
 in questo modo avremmo avuto tutto già pronto. :)
 
-> Però per la didattica di questo libro creiamo il controller User da zero aiutandoci con EgUser.
+Però, a scopo didattico, aggiungeremo il codice a *users_controller* aiutandoci con quello di *eg_users_controller*.
 
 
 
 ## Implementiamo l'azione index 
 
-Vediamo l'index nel controller *eg_users_controler* creato con lo scaffold.
+Vediamo l'azione *index* in *eg_users_controler*.
 
 ***codice 04 - .../app/controllers/users_controller.rb - line: 4***
 
 ```ruby
-  # GET /eg_users
-  # GET /eg_users.json
+  # GET /eg_users or /eg_users.json
   def index
     @eg_users = EgUser.all
   end
 ```
 
-[tutto il codice](#01-07-06_04all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_04-controllers-eg_users_controller.rb)
 
-ed aggiorniamo il controller *users_controller* implementando l'azione index per visualizzare l'elenco di tutti gli utenti.
+ed aggiorniamo *users_controller* implementando l'azione *index* per visualizzare l'elenco di tutti gli utenti.
 
 ***codice 05 - .../app/controllers/users_controller.rb - line: 1***
 
 ```ruby
 class UsersController < ApplicationController
 
-  # GET /users
-  # GET /users.json
+  # GET /users or /users.json
   def index
     @users = User.all
   end
@@ -206,29 +209,75 @@ class UsersController < ApplicationController
 end
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_05-controllers-users_controller.rb)
+
 
 
 ## Creiamo la view index
 
 Apriamo il nuovo file *index.html.erb* dentro la cartella *views/users*. Ci copiamo il contenuto di *views/eg_users/index.html.erb* e lo riadattiamo.
 
-***codice 06 - .../app/views/users/index.html.erb - line: 1***
+In Rails 6 avremmo avuto una tabella simile a questa:
+
+***codice n/a - .../app/views/users/index.html.erb - line: 15***
 
 ```html+erb
-<p id="notice"><%= notice %></p>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+        <td><%= user.email %></td>
+        <td><%= user.encrypted_password %></td>
+        <td><%= link_to 'Show', user %></td>
+        <td><%= link_to 'Edit', edit_user_path(user) %></td>
+        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_06-views-users-index.html.erb)
+
+> il codice ***n/a*** non lo usiamo nella nostra app
+
+
+Ma Rails 7 ha introdotto questa nuova struttura che ha anche il partial *_user.html.erb*.
+
+***codice 07 - .../app/views/users/index.html.erb - line: 1***
+
+```html+erb
+<p style="color: green"><%= notice %></p>
 
 <h1>Users</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
+<div id="users">
+  <% @users.each do |user| %>
+    <%= render user %>
+    <p>
+      <%= link_to "Show this eg user", user %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New user", new_user_path %>
 ```
 
-[tutto il codice](#01-07-06_06all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_06-views-users-index.html.erb)
 
-Se avessimo voluto tenere tutto organizzato in una sottocartella tipo *views/users/accounts* avremmo dovuto lavorare sul controller e sulla routes come faremo più avanti per *authors/posts*.
+
+***codice 08 - .../app/views/users/_user.html.erb - line: 1***
+
+```html+erb
+<div id="<%= dom_id user %>">
+  <p>
+    <strong>Name:</strong>
+    <%= user.name %>
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_06-views-users-index.html.erb)
+
+> Il codice rails `dom_id user` permette di dare un *id* per ogni utente: `<div id="user_1">`, `<div id="user_2">`, ...
+
+> Se avessimo voluto tenere tutto organizzato in una sottocartella tipo *views/users/accounts* avremmo dovuto lavorare sul controller e sulla routes come faremo più avanti per *authors/posts*.
 
 
 
