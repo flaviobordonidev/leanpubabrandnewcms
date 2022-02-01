@@ -710,8 +710,7 @@ $ heroku run rails c
 
 Ma visto che abbiamo implementato l'interfaccia grafica lo facciamo a partire dall'URL:
 
-- https://bl6-0.herokuapp.com/users
-
+- https://bl7-0.herokuapp.com/users
 
 
 
@@ -720,7 +719,7 @@ Ma visto che abbiamo implementato l'interfaccia grafica lo facciamo a partire da
 se abbiamo finito le modifiche e va tutto bene:
 
 ```bash
-$ git checkout master
+$ git checkout main
 $ git merge gu
 $ git branch -d gu
 ```
@@ -732,16 +731,8 @@ $ git branch -d gu
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 ```bash
-$ git push origin master
+$ git push origin main
 ```
-
-
-
-{id: "01-07-06_01all", caption: ".../db/schema.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
-```
-```
-
-[tutto il codice](#01-07-06_01)
 
 
 
