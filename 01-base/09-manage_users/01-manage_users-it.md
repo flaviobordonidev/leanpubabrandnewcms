@@ -273,7 +273,7 @@ Ma Rails 7 ha introdotto questa nuova struttura che ha anche il partial *_user.h
     <%= user.name %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_06-views-users-index.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_08-views-users-_user.html.erb)
 
 > Il codice rails `dom_id user` permette di dare un *id* per ogni utente: `<div id="user_1">`, `<div id="user_2">`, ...
 
