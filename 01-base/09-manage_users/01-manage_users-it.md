@@ -477,35 +477,39 @@ O meglio, se cambiamo la password criptata non possiamo più loggarci perché no
 
 ## Implementiamo i campi password e password_confirmation
 
-Devise ci offre la soluzione perché accetta la password passata attraverso i campi " password " e " password_confirmation "
-Quindi usiamo questi campi al posto del campo " encrypted_password "
+Devise ci offre la soluzione perché accetta la password passata attraverso i campi *password* e *password_confirmation*
+Quindi usiamo questi campi al posto del campo *encrypted_password*.
 
-***codice 12 - .../app/views/users/_form.html.erb - line: 24***
+> Non dobbiamo avere questi campi nella tabella *users*. devise la cripta e l'archivia nel campo *encrypted_password*.
+
+***codice 14 - .../app/views/users/_form.html.erb - line: 24***
 
 ```html+erb
-  <div class="field">
-    <%= form.label :password %>
-    <%= form.text_field :password %>
+  <div>
+    <%= form.label :password, style: "display: block" %>
+    <%= form.password_field :password %>
   </div>
 
-  <div class="field">
-    <%= form.label :password_confirmation %>
-    <%= form.text_field :password_confirmation %>
+  <div>
+    <%= form.label :password_confirmation, style: "display: block" %>
+    <%= form.password_field :password_confirmation %>
   </div>
 ```
 
-[tutto il codice](#01-07-06_12all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_14-views-users-_form.html.erb)
 
 Ed aggiorniamo la white-list del controller 
 
-***codice n/a - .../app/controllers/users_controller.rb - line: 40***
+***codice 15 - .../app/controllers/users_controller.rb - line: 36***
 
 ```ruby
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Only allow a list of trusted parameters through.
     def user_params
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
     end
 ```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_15-controllers-users_controller.rb)
 
 Adesso L'update funziona per tutti i campi ma abbiamo un problema di sicurezza perché ogni utente può cambiare nome, email e password a tutti gli utenti.
 Questo problema di sicurezza lo risolveremo nei prossimi capitoli.
@@ -513,10 +517,10 @@ Questo problema di sicurezza lo risolveremo nei prossimi capitoli.
 
 
 ## Implementiamo l'azione new
-Aggiorniamo il controller implementando le azioni new e create per creare un nuovo utente.
-Copiamo ed implementiamo la parte di codice per le azioni new e create.
+Aggiorniamo il controller implementando le azioni *new* e *create* per creare un nuovo utente.
+Copiamo ed implementiamo la parte di codice per le azioni *new* e *create*.
 
-***codice 13 - .../app/controllers/users_controller.rb - line: 15***
+***codice 16 - .../app/controllers/users_controller.rb - line: 13***
 
 ```ruby
   # GET /users/new
@@ -525,27 +529,26 @@ Copiamo ed implementiamo la parte di codice per le azioni new e create.
   end
 ```
 
-***codice 13 - ...continua - line: 24***
+***codice 16 - ...continua - line: 22***
 
 ```ruby
-  # POST /users
-  # POST /users.json
+  # POST /users or /users.json
   def create
     @user = User.new(user_params)
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.html { redirect_to user_url(@user), notice: "User was successfully created." }
         format.json { render :show, status: :created, location: @user }
       else
-        format.html { render :new }
+        format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
   end
 ```
 
-[tutto il codice](#01-07-06_13all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_16-controllers-users_controller.rb)
 
 
 
@@ -553,17 +556,16 @@ Copiamo ed implementiamo la parte di codice per le azioni new e create.
 
 Creiamo il nuovo file "new.html.erb" dentro la cartella "views/users". Ci copiamo il contenuto del file su "views/example_users/..." e lo riadattiamo.
 
-***codice 14 - .../app/views/users/new.html.erb - line: 3***
+***codice 17 - .../app/views/users/new.html.erb - line: 3***
 
 ```html+erb
 <%= render 'form', user: @user %>
 ```
 
-[tutto il codice](#01-07-06_14all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_17-views-users-new.html.erb)
 
-
-Il file "_form.html.erb" lo abbiamo già creato implementando "edit".
-In pratica la differenza tra "edit" e "new" è tutta nelle azioni del controller.
+> Il file *_form.html.erb* lo abbiamo già creato implementando l'azione *edit*.
+> In pratica la differenza tra *edit* e *new* è tutta nelle azioni del controller.
 
 
 
@@ -578,8 +580,14 @@ $ rails s
 
 Oltre Ann creiamo altri cinque utenti in modo da avere 6 utenti come seguente tabella:
 
+First Header  | Second Header
+------------- | -------------
+Content Cell  | Content Cell
+Content Cell  | Content Cell
+
+
 name  | email           | password
-------------------------------------------
+----- | --------------- | ----------------
 Ann	  | ann@test.abc    | passworda
 Bob	  | bob@test.abc    | passwordb
 Carl	| carl@test.abc   | passwordc
