@@ -580,12 +580,6 @@ $ rails s
 
 Oltre Ann creiamo altri cinque utenti in modo da avere 6 utenti come seguente tabella:
 
-First Header  | Second Header
-------------- | -------------
-Content Cell  | Content Cell
-Content Cell  | Content Cell
-
-
 name  | email           | password
 ----- | --------------- | ----------------
 Ann	  | ann@test.abc    | passworda
@@ -593,70 +587,86 @@ Bob	  | bob@test.abc    | passwordb
 Carl	| carl@test.abc   | passwordc
 David	| david@test.abc  | passwordd
 Elvis	| elvis@test.abc  | passworde
-flav  | flav@test.abc   | passwordf
+Flav  | flav@test.abc   | passwordf
 
 
 
 ## Definiamo le autenticazioni
 
 Le autenticazioni con devise sono implementate in fase di creazione degli utenti. 
-Quindi i seguenti utenti che abbiamo già creato hanno tutti il processo di autenticazione con devise:
+Quindi gli utenti che abbiamo già creato hanno tutti il processo di autenticazione con devise.
 
 ```bash
 $ rails c
 -> User.all
-
-
-user_fb:~/environment/bl6_0 (gu) $ rails c
-Running via Spring preloader in process 7552
-Loading development environment (Rails 6.0.0)
-2.6.3 :001 > User.all
-  User Load (0.3ms)  SELECT "users".* FROM "users" LIMIT $1  [["LIMIT", 11]]
- => #<ActiveRecord::Relation [#<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2019-11-05 15:17:00", updated_at: "2019-11-11 12:02:16">, #<User id: 2, name: "Bob", email: "bob@test.abc", created_at: "2019-11-11 14:04:30", updated_at: "2019-11-11 14:04:30">, #<User id: 3, name: "Carl", email: "carl@test.abc", created_at: "2019-11-11 14:04:49", updated_at: "2019-11-11 14:04:49">, #<User id: 4, name: "David", email: "david@test.abc", created_at: "2019-11-11 14:05:11", updated_at: "2019-11-11 14:05:11">, #<User id: 5, name: "Elvis", email: "elvis@test.abc", created_at: "2019-11-11 14:05:36", updated_at: "2019-11-11 14:05:36">, #<User id: 6, name: "Flav", email: "flav@test.abc", created_at: "2019-11-11 14:06:22", updated_at: "2019-11-11 14:06:22">]> 
 ```
 
-Ognuno di questi utenti viene autenticato inserendo la sua user e password nella pagina di login. In altre parole è accettato ad entrare.
+Esempio:
 
-Una volta dentro sarà autorizzato o meno a seconda dei ruoli che gli vengono assegnati.
+```bash
+user_fb:~/environment/bl7_0 (gu) $ rails c
+Loading development environment (Rails 7.0.1)
+3.1.0 :001 > User.all
+  User Load (0.4ms)  SELECT "users".* FROM "users"
+ =>                                                         
+[#<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2022-01-30 11:50:16.615885000 +0000", updated_at: "2022-02-01 13:59:03.823225000 +0000">,
+ #<User id: 2, name: "Bob", email: "bob@test.abc", created_at: "2022-02-01 16:26:18.569214000 +0000", updated_at: "2022-02-01 16:26:18.569214000 +0000">,
+ #<User id: 3, name: "Carl", email: "carl@test.abc", created_at: "2022-02-01 16:27:25.761382000 +0000", updated_at: "2022-02-01 16:27:25.761382000 +0000">,
+ #<User id: 4, name: "David", email: "david@test.abc", created_at: "2022-02-01 16:28:14.397848000 +0000", updated_at: "2022-02-01 16:28:14.397848000 +0000">,
+ #<User id: 5, name: "Elvis", email: "elvis@test.abc", created_at: "2022-02-01 16:29:06.259332000 +0000", updated_at: "2022-02-01 16:29:06.259332000 +0000">,
+ #<User id: 6, name: "Flav", email: "flav@test.abc", created_at: "2022-02-01 16:30:09.311443000 +0000", updated_at: "2022-02-01 16:30:09.311443000 +0000">] 
+3.1.0 :002 > 
+```
+
+Ognuno di questi utenti viene ***autenticato*** inserendo la sua user e password nella pagina di login. 
+In altre parole è accettato ad entrare.
+
+Una volta dentro sarà ***autorizzato*** o meno a seconda dei ruoli che gli vengono assegnati.
+
+> l'autenticazione certifica che sei tu e normalmente ti fa entrare.
+> l'autorizzazione è quello che puoi fare una volta entrato.
 
 
 
 ## Implementiamo l'azione destroy
 
 Aggiorniamo il controller implementando l'azione destroy per eliminare un utente.
-copiamo ed implementiamo la parte di codice per l'azione destroy.
+Copiamo ed implementiamo la parte di codice per l'azione destroy.
 
-***codice 15 - .../app/controllers/users_controller.rb - line: 2***
+
+***codice 18 - .../app/controllers/users_controller.rb - line: 2***
 
 ```ruby
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: %i[ show edit update destroy ]
 ```
 
-***codice 15 - ...continua - line: 15***
+***codice 18 - ...continua - line: 15***
 
 ```ruby
-  # DELETE /users/1
-  # DELETE /users/1.json
+  # DELETE /users/1 or /users/1.json
   def destroy
     @user.destroy
+
     respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
+      format.html { redirect_to users_url, notice: "User was successfully destroyed." }
       format.json { head :no_content }
     end
   end
 ```
 
-[tutto il codice](#01-07-06_15all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_18-controllers-users_controller.rb)
 
+L'azione *destroy* appena aggiunta è attivata dal pulsante che è su *views/users/show*.
 
-
-## Verifichiamo il link "destroy" nella view index
-
-***codice n/a - .../app/views/users/index.html.erb - line: 25***
+***codice n/a - .../app/views/users/show.html.erb - line: 9***
 
 ```
-        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  <%= button_to "Destroy this user", @user, method: :delete %>
 ```
+
+> Su rails 6 si usava `<%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %>`
+> Su rails 7 si è scelto `<%= button_to "Destroy this user", @user, method: :delete %>`
+> Quindi non abbiamo più la richiesta di conferma di eliminazione.
 
 
 
@@ -669,7 +679,8 @@ $ rails s
 
 - https://mycloud9path.amazonaws.com/users
 
-Eliminiamo l'utente "flav" (id: 6)
+- Eliminiamo l'ultimo utente "flav" (id: 6)
+- Ricreiamo di nuovo l'utente "flav" che prenderà id: 7.
 
 
 
