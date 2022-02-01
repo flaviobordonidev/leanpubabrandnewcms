@@ -253,7 +253,7 @@ Ma Rails 7 ha introdotto questa nuova struttura che ha anche il partial *_user.h
   <% @users.each do |user| %>
     <%= render user %>
     <p>
-      <%= link_to "Show this eg user", user %>
+      <%= link_to "Show this user", user %>
     </p>
   <% end %>
 </div>
@@ -261,7 +261,7 @@ Ma Rails 7 ha introdotto questa nuova struttura che ha anche il partial *_user.h
 <%= link_to "New user", new_user_path %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_06-views-users-index.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_07-views-users-index.html.erb)
 
 
 ***codice 08 - .../app/views/users/_user.html.erb - line: 1***
@@ -309,8 +309,7 @@ Copiamo ed implementiamo la parte di codice per l'azione *show*, il *before_acti
 ***codice 09 - ...continua - line: 10***
 
 ```ruby
-  # GET /users/1
-  # GET /users/1.json
+  # GET /eg_users/1 or /eg_users/1.json
   def show
   end
 
@@ -321,7 +320,7 @@ Copiamo ed implementiamo la parte di codice per l'azione *show*, il *before_acti
     end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_08-views-users-_user.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_09-controllers-users_controller.rb)
 
 
 Per la sola azione *show* si poteva fare senza il metodo privato *before_action*.
@@ -329,8 +328,7 @@ Per la sola azione *show* si poteva fare senza il metodo privato *before_action*
 ***codice n/a - .../app/controllers/users_controller.rb - line: 2***
 
 ```ruby
-  # GET /users/1
-  # GET /users/1.json
+  # GET /eg_users/1 or /eg_users/1.json
   def show
       @user = User.find(params[:id])
   end
@@ -338,7 +336,7 @@ Per la sola azione *show* si poteva fare senza il metodo privato *before_action*
 
 > Il codice ***n/a*** non lo usiamo nella nostra app.
 
-Ma è utile ed elegante estrarre `@user = User.find(params[:id])` in un metodo private perché questo è chiamato anche da altre azioni (:show, :edit, :update e :destroy).
+Ma è utile estrarre `@user = User.find(params[:id])` in un metodo private perché questo è chiamato anche da altre azioni (:show, :edit, :update e :destroy).
 
 
 
@@ -357,7 +355,7 @@ Creiamo il nuovo file *show.html.erb* dentro la cartella *views/users*. Ci copia
 </p>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_10-views-users-show.html)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_10-views-users-show.html.erb)
 
 
 
@@ -374,80 +372,92 @@ $ rails s
 
 ## Implementiamo l'azione edit
 
-Aggiorniamo il controller implementando le azioni edit ed update per editare i campi del singolo utente.
-Copiamo ed implementiamo la parte di codice per le azioni edit ed update.
+Aggiorniamo il controller implementando le azioni *edit* ed *update* per editare i campi del singolo utente.
+Copiamo da *eg_users_controller.rb* la parte di codice per le azioni *edit* ed *update* e la implementiamo.
 
-***codice 09 - .../app/controllers/users_controller.rb - line: 2***
+***codice 11 - .../app/controllers/users_controller.rb - line: 2***
 
 ```ruby
-  before_action :set_user, only: [:show, :edit, :update]
+  before_action :set_user, only: %i[ show edit update ]
 ```
 
-***codice 09 - ...continua - line: 15***
+> Su rails 6 si usava `before_action :set_user, only: [:show, :edit, :update]`
+> Su rails 7 si è scelto `before_action :set_user, only: %i[ show edit update ]`
+
+
+***codice 11 - ...continua - line: 13***
 
 ```ruby
   # GET /users/1/edit
   def edit
   end
 
-  # PATCH/PUT /users/1
-  # PATCH/PUT /users/1.json
+  # PATCH/PUT /users/1 or /users/1.json
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.html { redirect_to user_url(@user), notice: "User was successfully updated." }
         format.json { render :show, status: :ok, location: @user }
       else
-        format.html { render :edit }
+        format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
   end
 ```
 
-***codice 09 - ...continua - line: 39***
+> Su rails 6 si usava `redirect_to @user, notice: 'User was successfully updated.'`
+> Su rails 7 si è scelto `redirect_to user_url(@user), notice: "User was successfully updated."`
+
+
+> Su rails 6 si usava `render :edit`
+> Su rails 7 si è scelto `render :edit, status: :unprocessable_entity`
+
+***codice 11 - ...continua - line: 36***
 
 ```ruby
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Only allow a list of trusted parameters through.
     def user_params
       params.require(:user).permit(:name, :email, :encrypted_password)
     end
 ```
 
-[tutto il codice](#01-07-06_09all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_11-controllers-users_controller.rb)
 
 
 
 ## Creiamo la view edit
 
-Creiamo i nuovi files "edit.html.erb" e *_form.html.erb* dentro la cartella *views/users*. 
-Ci copiamo il contenuto dei files su *views/example_users/...* e lo riadattiamo.
+Creiamo i nuovi files *edit.html.erb* e *_form.html.erb* dentro la cartella *views/users*. 
+Ci copiamo il contenuto dei files su *views/eg_users/...* e lo riadattiamo.
 
-***codice 10 - .../app/views/users/edit.html.erb - line: 3***
-
-```html+erb
-<%= render 'form', user: @user %>
-```
-
-[tutto il codice](#01-07-06_10all)
-
-***codice 11 - .../app/views/users/_form.html.erb - line: 1***
+***codice 12 - .../app/views/users/edit.html.erb - line: 3***
 
 ```html+erb
-<%= form_with(model: user, local: true) do |form| %>
+<%= render "form", user: @user %>
+```
 
-  <div class="field">
-    <%= form.label :password %>
-    <%= form.text_field :password %>
-  </div>
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_12-views-users-edit.html.erb)
 
-  <div class="field">
-    <%= form.label :password_confirmation %>
-    <%= form.text_field :password_confirmation %>
+***codice 13 - .../app/views/users/_form.html.erb - line: 1***
+
+```html+erb
+<%= form_with(model: user) do |form| %>
+```
+
+***codice 13 - ...continua - line: 14***
+
+```html+erb
+  <div>
+    <%= form.label :name, style: "display: block" %>
+    <%= form.text_field :name %>
   </div>
 ```
 
-[tutto il codice](#01-07-06_11all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_13-views-users-_form.html.erb)
+
+> Su rails 6 si usava `<%= form_with(model: user, local: true) do |form| %>`
+> Su rails 7 si è scelto `<%= form_with(model: user) do |form| %>`
 
 
 
@@ -460,7 +470,8 @@ $ rails s
 
 - https://mycloud9path.amazonaws.com/users/1/edit
 
-Con questo form possiamo cambiare il nome e l'email ma non possiamo cambiare la password perché è criptata. O meglio, se cambiamo la password criptata non possiamo più loggarci perché non possiamo risalire alla password in chiaro.
+Con questo form possiamo cambiare il nome e l'email ma non possiamo cambiare la password perché è criptata. 
+O meglio, se cambiamo la password criptata non possiamo più loggarci perché non possiamo risalire alla password in chiaro.
 
 
 
