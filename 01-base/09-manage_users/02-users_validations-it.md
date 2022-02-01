@@ -75,7 +75,7 @@ eseguiamo il submit del form.
 
 ## Verifichiamo da console
  
-```irb
+```bash
 $ rails console
 > Person.create(name: "John Doe").valid? # => true
 > Person.create(name: nil).valid? # => false
