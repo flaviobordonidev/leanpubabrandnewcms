@@ -696,7 +696,7 @@ $ git commit -m "Implement views to manage users"
 ## Pubblichiamo su Heroku
 
 ```bash
-$ git push heroku gu:master
+$ git push heroku gu:main
 $ heroku run rails db:migrate
 ```
 

@@ -10,6 +10,13 @@ Implementiamo delle validazioni dei dati che saranno archiviati nel database.
 
 
 
+## Apriamo il branch "Validiamo Utenti"
+
+```bash
+$ git checkout -b vu
+```
+
+
 ## Le validazioni
 
 - Il nome dell'utente deve essere presente (è obbligatorio)
@@ -89,8 +96,11 @@ Proviamo a creare un nuovo utente violando le validazioni (ad esempio non mettia
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/02_fig01-new_user_validation_errors.png)
 
 
+
 ## Verifichiamo da console
- 
+
+Di seguito una validazione che è pensata per le persone che hanno solo la validazione della presenza del nome.
+
 ```bash
 $ rails console
 -> Person.create(name: "John Doe").valid? # => true
@@ -106,24 +116,66 @@ $ rails console
    #=> false
 ```
 
+Esempio:
+
+```bash
+3.1.0 :002 > User.create(name: "John Doe").valid?
+  TRANSACTION (0.1ms)  BEGIN
+  User Exists? (0.8ms)  SELECT 1 AS one FROM "users" WHERE "users"."name" = $1 LIMIT $2  [["name", "John Doe"], ["LIMIT", 1]]
+  User Exists? (0.2ms)  SELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2  [["email", ""], ["LIMIT", 1]]
+  TRANSACTION (0.2ms)  ROLLBACKg for requests to finish
+  User Exists? (0.9ms)  SELECT 1 AS one FROM "users" WHERE "users"."name" = $1 LIMIT $2  [["name", "John Doe"], ["LIMIT", 1]]
+  User Exists? (1.1ms)  SELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2  [["email", ""], ["LIMIT", 1]]
+ => false                      
+3.1.0 :003 > 
 
 
-## git
+
+
+## Salviamo su git
+
+```bash
+$ git add -A
+$ git commit -m "Implement validation users"
+```
 
 
 
+## Pubblichiamo su Heroku
 
-## heroku
+```bash
+$ git push heroku vu:main
+$ heroku run rails db:migrate
+```
+
+- https://bl7-0.herokuapp.com/users
 
 
 
+## Chiudiamo il branch
 
-## close branch
+se abbiamo finito le modifiche e va tutto bene:
+
+```bash
+$ git checkout main
+$ git merge vu
+$ git branch -d vu
+```
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+```bash
+$ git push origin main
+```
 
 
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/08-authentication_i18n/01-devise_i18n-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01-manage_users-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/02-users_validations-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-users_protected-it.md)
