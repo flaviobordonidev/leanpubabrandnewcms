@@ -1,37 +1,42 @@
-<%= form_with(model: user, local: true) do |form| %>
+<%= form_with(model: user) do |form| %>
   <% if user.errors.any? %>
-    <div id="error_explanation">
+    <div style="color: red">
       <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
 
       <ul>
-        <% user.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
+        <% user.errors.each do |error| %>
+          <li><%= error.full_message %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :name %>
+  <div>
+    <%= form.label :name, style: "display: block" %>
     <%= form.text_field :name %>
   </div>
 
-  <div class="field">
-    <%= form.label :email %>
+  <div>
+    <%= form.label :email, style: "display: block" %>
     <%= form.text_field :email %>
   </div>
 
-  <div class="field">
-    <%= form.label :password %>
-    <%= form.text_field :password %>
+  <div>
+    <%= form.label :password, style: "display: block" %>
+    <%= form.password_field :password %>
   </div>
 
-  <div class="field">
-    <%= form.label :password_confirmation %>
-    <%= form.text_field :password_confirmation %>
+  <div>
+    <%= form.label :password_confirmation, style: "display: block" %>
+    <%= form.password_field :password_confirmation %>
   </div>
 
-  <div class="actions">
+  <div>
+    <%= form.label :encrypted_password, style: "display: block" %>
+    <%= form.text_field :encrypted_password %>
+  </div>
+
+  <div>
     <%= form.submit %>
   </div>
 <% end %>
