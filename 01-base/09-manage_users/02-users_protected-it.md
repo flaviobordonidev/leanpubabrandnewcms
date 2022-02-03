@@ -8,7 +8,7 @@ Quando implementeremo la parte di autorizzazione nei prossimi capitoli disattive
 
 ## Risorse interne
 
-- 99-rails_references-authentication_devise-02-devise
+- [99-rails_references-authentication_devise-02-devise]
 
 
 
@@ -17,6 +17,7 @@ Quando implementeremo la parte di autorizzazione nei prossimi capitoli disattive
 ```bash
 $ git checkout -b pwl
 ```
+
 
 
 ## Proteggiamo le views users
@@ -29,7 +30,7 @@ Permettiamo l'accesso alle views users solo a chi ha fatto login, ossia a chi si
   before_action :authenticate_user!
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03_01-controllers-users_controller.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/02_01-controllers-users_controller.rb)
 
 > *before_action* ha sostituito il deprecato *before_filter*
 
@@ -53,7 +54,7 @@ Inseriamo un metodo per tutti i controllers che reinstradi su *users/show* dell'
   end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03_02-controllers-application_controller.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/02_02-controllers-application_controller.rb)
 
 Però questo metodo ci permette di programmare degli instradare su qualsiasi pagina in funzione del ruolo dell'utente loggato.
 Ad esempio: 
@@ -79,24 +80,135 @@ facciamo login e vediamo che siamo reinstradati sulla pagina dell'utente loggato
 
 
 
-## Evitiamo di dover sempre dare una password
+## Evitiamo di dover sempre dare una password su modifica user
 
-Una volta attivata la protezione `before_action :authenticate_user!` si attiva anche la validazione per la presenza della password. 
+Non stiamo parlando di una protezione ma di dover ridare password e password_confirmation anche per una semplice modifica del nome utente. (può essere anche una nuova password)
+Questo perché una volta attivata la protezione `before_action :authenticate_user!` si attiva anche la **validazione** per la presenza della password che è implicida in devise. 
 Questo vuol dire che se si lascia vuoto il campo password si riceve un errore di validazione. 
-In questo caso è utile rimuovere nel controller la chiave "password" dall'hash "params" nel caso in cui il campo password del form è lasciato vuoto. 
-Per farlo aggiungiamo il seguente codice nell'azione di *update*.
 
-***codice 03 - .../app/controllers/users_controller.rb - line: 44***
+Soluzione usata su Rails 6:
+Per ovviare rimuoviamo nel controller la chiave "password" dall'hash "params" nel caso in cui il campo password del form è lasciato vuoto. 
+Per farlo aggiungiamo `params[:user].delete(...)` all'azione *update*.
+
+***codice n/a - .../app/controllers/users_controller.rb - line: 44***
 
 ```ruby
+  def update
     if params[:user][:password].blank?
       params[:user].delete(:password)
       params[:user].delete(:password_confirmation)
     end
+    respond_to do |format|
+      if @user.update(user_params)
+        format.html { redirect_to @user, notice: 'User was successfully updated.' }
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/02_01-models-users.rb)
+Soluzione usata su Rails 7:
+Per ovviare agiamo a livello di metodo **user_params** non includendo *:password* e *:password_confirmation* nel *permit* se il campo *password* nel form è lasciato vuoto.
 
+***codice n/a - .../app/controllers/users_controller.rb - line: 44***
+
+```ruby
+    # Only allow a list of trusted parameters through.
+    def user_params
+      if params[:user][:password].blank?
+        params.require(:user).permit(:name, :email)
+      else
+        params.require(:user).permit(:name, :email, :password, :password_confirmation)
+      end
+    end
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/02_03-controllers-users_controller.rb)
+
+
+
+
+### Working Around Rails 7’s Turbo
+
+> Attenzione:
+> C'è un bug tra Rails 7 e devise per cui una volta cambiata correttamente la password non siamo reinstradati sulla pagina di login
+> a questo link credo ci sia la soluzione: https://betterprogramming.pub/devise-auth-setup-in-rails-7-44240aaed4be
+
+Now, we need to do something a little special for Rails 7. Rails 7 includes Turbo as a cornerstone component. 
+Turbo lets you run asynchronous page updates without writing any Javascript (which is nifty) but it does it by hijacking the normal flow of submitting forms and following links. 
+Devise isn’t (yet) prepared for that and it won’t be able to display flash messages — which it relies heavily on — by default. 
+We need to alter the code that Devise generates for us to deal with Turbo.
+So, once you’ve run rails generate `devise:install` we need to alter the Devise initializer config in several places beyond what the Devise README instructs us to do and add a controller as Devise’s parent controller. 
+Credit where it’s due: these changes are from [Go Rails video](https://gorails.com/episodes/devise-hotwire-turbo) on the topic which also explains why these changes are necessary.
+
+***codice n/a - .../app/controllers/turbo_devise_controller.rb - line: 1***
+
+```ruby
+class TurboDeviseController < ApplicationController
+  class Responder < ActionController::Responder
+    def to_turbo_stream
+      controller.render(options.merge(formats: :html))
+    rescue ActionView::MissingTemplate => error
+      if get?
+        raise error
+      elsif has_errors? && default_action
+        render rendering_options.merge(formats: :html, status: :unprocessable_entity)
+      else
+        redirect_to navigation_location
+      end
+    end
+  end
+
+  self.responder = Responder
+  respond_to :html, :turbo_stream
+end
+```
+
+
+***codice n/a - .../config/initializers/devise.rb - line: x***
+
+```ruby
+# Turbo doesn't work with devise by default.
+# Keep tabs on https://github.com/heartcombo/devise/issues/5446 for a possible fix
+# Fix from https://gorails.com/episodes/devise-hotwire-turbo
+class TurboFailureApp < Devise::FailureApp
+  def respond
+    if request_format == :turbo_stream
+      redirect
+    else
+      super
+    end
+  end
+
+  def skip_format?
+    %w(html turbo_stream */*).include? request_format.to_s
+  end
+end
+
+
+# ...
+Devise.setup do |config|
+  # ...
+  
+  # ==> Controller configuration
+  # Configure the parent class to the devise controllers.
+  config.parent_controller = 'TurboDeviseController'
+  
+  # ...
+
+  # ==> Navigation configuration
+  # ...
+  config.navigational_formats = ['*/*', :html, :turbo_stream]
+
+  # ...
+
+  # ==> Warden configuration
+  # ...
+  config.warden do |manager|
+    manager.failure_app = TurboFailureApp
+  #   manager.intercept_401 = false
+  #   manager.default_strategies(scope: :user).unshift :some_external_strategy
+  end
+  
+  # ...
+end
+```
 
 
 ## Evitiamo che l'amministratore loggato possa eliminare se stesso
@@ -363,6 +475,6 @@ end
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/08-authentication_i18n/01-devise_i18n-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01-manage_users-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/02-users_validations-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
