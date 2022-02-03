@@ -128,7 +128,9 @@ Per ovviare agiamo a livello di metodo **user_params** non includendo *:password
 
 > Attenzione:
 > C'è un bug tra Rails 7 e devise per cui una volta cambiata correttamente la password non siamo reinstradati sulla pagina di login
-> a questo link credo ci sia la soluzione: https://betterprogramming.pub/devise-auth-setup-in-rails-7-44240aaed4be
+> a questo link c'è la soluzione: https://betterprogramming.pub/devise-auth-setup-in-rails-7-44240aaed4be
+>
+> Di seguito il contenuto del link:
 
 Now, we need to do something a little special for Rails 7. Rails 7 includes Turbo as a cornerstone component. 
 Turbo lets you run asynchronous page updates without writing any Javascript (which is nifty) but it does it by hijacking the normal flow of submitting forms and following links. 
