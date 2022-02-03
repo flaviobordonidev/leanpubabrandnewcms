@@ -106,7 +106,7 @@ Per farlo aggiungiamo `params[:user].delete(...)` all'azione *update*.
 Soluzione usata su Rails 7:
 Per ovviare agiamo a livello di metodo **user_params** non includendo *:password* e *:password_confirmation* nel *permit* se il campo *password* nel form è lasciato vuoto.
 
-***codice n/a - .../app/controllers/users_controller.rb - line: 44***
+***codice 03 - .../app/controllers/users_controller.rb - line: 67***
 
 ```ruby
     # Only allow a list of trusted parameters through.
@@ -139,7 +139,7 @@ We need to alter the code that Devise generates for us to deal with Turbo.
 So, once you’ve run rails generate `devise:install` we need to alter the Devise initializer config in several places beyond what the Devise README instructs us to do and add a controller as Devise’s parent controller. 
 Credit where it’s due: these changes are from [Go Rails video](https://gorails.com/episodes/devise-hotwire-turbo) on the topic which also explains why these changes are necessary.
 
-***codice n/a - .../app/controllers/turbo_devise_controller.rb - line: 1***
+***codice 04 - .../app/controllers/turbo_devise_controller.rb - line: 1***
 
 ```ruby
 class TurboDeviseController < ApplicationController
@@ -162,8 +162,29 @@ class TurboDeviseController < ApplicationController
 end
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/02_04-controllers-turbo_devise_controller.rb)
 
-***codice n/a - .../config/initializers/devise.rb - line: x***
+Inoltre dobbiamo aggiungere e attivare alcuni parametri sulla *configurazione di inizializzazione di devise*.
+Vediamo come si presenta la configurazione iniziale:
+
+***codice 05 - .../config/initializers/devise.rb - line: x***
+
+```ruby
+# frozen_string_literal: true
+
+# Assuming you have not yet modified this file, each configuration option below
+# is set to its default value. Note that some are commented out while others
+# are not: uncommented lines are intended to protect your configuration from
+# breaking changes in upgrades (i.e., in the event that future versions of
+# Devise change the default values for those options).
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/02_05-config-initializers-devise.rb)
+
+
+Di seguito facciamo le modifiche:
+
+***codice 06 - .../config/initializers/devise.rb - line: x***
 
 ```ruby
 # Turbo doesn't work with devise by default.
@@ -211,6 +232,9 @@ Devise.setup do |config|
   # ...
 end
 ```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/02_06-config-initializers-devise.rb)
+
 
 
 ## Evitiamo che l'amministratore loggato possa eliminare se stesso
