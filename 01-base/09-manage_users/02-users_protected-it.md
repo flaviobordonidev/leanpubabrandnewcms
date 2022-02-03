@@ -167,7 +167,7 @@ end
 Inoltre dobbiamo aggiungere e attivare alcuni parametri sulla *configurazione di inizializzazione di devise*.
 Vediamo come si presenta la configurazione iniziale:
 
-***codice 05 - .../config/initializers/devise.rb - line: x***
+***codice 05 - .../config/initializers/devise.rb - line: 1***
 
 ```ruby
 # frozen_string_literal: true
@@ -241,24 +241,24 @@ end
 
 Evitiamo di fare come nei film comici e di *tagliarci il ramo su cui stiamo seduti*: `@user.destroy unless @user == current_user` e diamo un messaggio differente se eliminato o non eliminato.
 
-***codice 04 - .../app/controllers/users_controller.rb - line: 60***
+***codice 07 - .../app/controllers/users_controller.rb - line: 60***
 
 ```ruby
-  # DELETE /users/1
-  # DELETE /users/1.json
+  # DELETE /users/1 or /users/1.json
   def destroy
     @user.destroy unless @user == current_user
+
     respond_to do |format|
       format.html do 
-        redirect_to users_url, notice: 'User was successfully destroyed.' unless @user == current_user
-        redirect_to users_url, notice: 'Non posso eliminare utente loggato.' if @user == current_user
+        redirect_to users_url, notice: "User was successfully destroyed." unless @user == current_user
+        redirect_to users_url, notice: "The logged in user cannot be destroyed." if @user == current_user
       end
       format.json { head :no_content }
     end
   end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/02_01-models-users.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/02_07-controllers-users_controller.rb)
 
 Al momento tutti gli utenti hanno autorizzazione a fare tutto. 
 Nei futuri capitoli implementeremo le autorizzazioni restringendo la possibilità di eliminazione degli utenti ai soli utenti con ruolo di amministratore.
@@ -288,13 +288,13 @@ L'utente verrà eliminato e riceveremo il messaggio di eliminazione avvenuta con
 
 Sulla view mostriamo il link di eliminazione solo se non è l'utente loggato `unless user == current_user`.
 
-***codice 05 - .../app/views/users/index.html.erb - line: 23***
+***codice 08 - .../app/views/users/show.html.erb - line: 23***
 
-```
-        <td><%= link_to 'Destroy', user,  method: :delete, data: { confirm: 'Are you sure?' } unless user == current_user %></td>
+```html+erb
+  <%= button_to "Destroy this user", @user, method: :delete unless @user == current_user %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/02_01-models-users.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/02_08-views-users-show.html.erb)
 
 
 
@@ -311,11 +311,15 @@ Andiamo sulla pagina degli utenti.
 
 - https://mycloud9path.amazonaws.com/users
 
-Vedremo che nell'elenco degli utenti l'utente loggato non ha il link di "destroy".
+Vedremo visualizzando l'utente loggato (*Show this user*) non avrà il bottone *"destroy this user"*.
 
 
 
 ## Implementiamo un re-login automatico su cambio password
+
+
+> DA RIVEDERE CON CALMA perché non mi funziona
+
 
 Al momento cambiando la password siamo automaticamente riportati al login, perché adesso è attiva la *protezione di devise* con *before_action :authenticate_user!*.
 Questa protezione permette di entrare solo a chi è stato autenticato tramite login.
@@ -323,38 +327,35 @@ Facciamo in modo di essere **loggati di nuovo automaticamente** col *sign_in/log
 
 Nell'azione *update* del controller scriviamo la logica interrompendo il codice con `raise` che fa sorgere un errore (raise an error).
 
-***codice 06 - .../app/controllers/users_controller.rb - line: 49***
+***codice 09 - .../app/controllers/users_controller.rb - line: 49***
 
 ```ruby
-    respond_to do |format|
-      if current_user.present? and current_user == @user
-        raise "Current_user #{current_user.email} vuole modificare se stesso! (utente #{@user.email})"
-        #qui mettiamo il codice con la modifica di saltare la validazione
-      elsif current_user.present? and current_user != @user
-        raise "Current_user #{current_user.email} vuole modificare utente #{@user.email}"
-        #qui lasciamo il codice così com'era
-      else
-       raise "NON SEI LOGGATO"
-       #qui non dovremmo poter arrivare perché la protezione di devise è attiva
-       #comunque reinstradiamo su homepage perché è bene non lasciare "raise" in produzione
-      end
+  def update
+    if current_user.present? and current_user == @user
+      raise "Current_user #{current_user.email} vuole modificare se stesso! (utente #{@user.email})"
+      #qui mettiamo il codice con la modifica di saltare la validazione
+    elsif current_user.present? and current_user != @user
+      raise "Current_user #{current_user.email} vuole modificare utente #{@user.email}"
+      #qui lasciamo il codice così com'era
+    else
+      raise "NON SEI LOGGATO"
+      #qui non dovremmo poter arrivare perché la protezione di devise è attiva
+      #comunque reinstradiamo su homepage perché è bene non lasciare "raise" in produzione
+    end
 ```
 
 Adesso che abbiamo la logica impostata possiamo associarci il codice:
 
-- se modifichiamo un'altro utente, lasciamo il codice così com'è che già va bene.
 - se modifichiamo l'utente loggato, allora mettiamo del codice che rieffettua un login automatico.
+- se modifichiamo un'altro utente, lasciamo il codice così com'è che già va bene.
+- se non siamo loggati reinstradiamo sull'homepage (root_path).
 
-***codice 07 - .../app/controllers/users_controller.rb - line: 15***
+***codice 10 - .../app/controllers/users_controller.rb - line: 15***
 
 ```ruby
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
-    if params[:user][:password].blank?
-      params[:user].delete(:password)
-      params[:user].delete(:password_confirmation)
-    end
     respond_to do |format|
       if current_user.present? and current_user == @user
         #raise "Current_user #{current_user.email} vuole modificare se stesso! (utente #{@user.email})"
@@ -430,26 +431,34 @@ Adesso è molto meglio ^_^
 
 
 
+## Verifichiamo preview
+
+```bash
+$ sudo service postgresql start
+$ rails s
+```
+
+- https://mycloud9path.amazonaws.com/users
+
+Editiamo la password dell'utente attivo e vediamo che non ci "butta fuori".
+
+
 
 ## Salviamo su git
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git add -A
 $ git commit -m "Implement devise protection to users and more"
 ```
 
 
 
-
 ## Pubblichiamo su Heroku
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git push heroku pwl:master
+```bash
+$ git push heroku pwl:main
 $ heroku run rails db:migrate
 ```
-
 
 
 
@@ -457,13 +466,11 @@ $ heroku run rails db:migrate
 
 se abbiamo finito le modifiche e va tutto bene:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git checkout master
+```bash
+$ git checkout main
 $ git merge pwl
 $ git branch -d pwl
 ```
-
 
 
 
@@ -471,30 +478,8 @@ $ git branch -d pwl
 
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git push origin master
-```
-
-
-
-
-## Permettiamo agli utenti di editare la loro password
-
-QUESTO PARAGRAFO NON L'HO IMPLEMENTATO
-
-Questo non so se mi serve... Mi sa che lo posso eliminare....
-
-ApplicationController.rb:
-```
-class ApplicationController < ActionController::Base
-  before_action :configure_permitted_parameters, if: :devise_controller?
-
-  def configure_permitted_parameters
-    update_attrs = [:password, :password_confirmation, :current_password]
-    devise_parameter_sanitizer.permit :account_update, keys: update_attrs
-  end
-end
+```bash
+$ git push origin main
 ```
 
 

@@ -103,3 +103,23 @@ oppure già predisposto per formattazione BootStrap ed inserimento icone
 ```
 
 [tutto il codice](#01-07-04_07all)
+
+
+
+## Permettiamo agli utenti di editare la loro password
+
+QUESTO PARAGRAFO NON L'HO IMPLEMENTATO
+
+Questo non so se mi serve... Mi sa che lo posso eliminare....
+
+ApplicationController.rb:
+```
+class ApplicationController < ActionController::Base
+  before_action :configure_permitted_parameters, if: :devise_controller?
+
+  def configure_permitted_parameters
+    update_attrs = [:password, :password_confirmation, :current_password]
+    devise_parameter_sanitizer.permit :account_update, keys: update_attrs
+  end
+end
+```
