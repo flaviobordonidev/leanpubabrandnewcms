@@ -82,8 +82,8 @@ facciamo login e vediamo che siamo reinstradati sulla pagina dell'utente loggato
 
 ## Evitiamo di dover sempre dare una password su modifica user
 
-Non stiamo parlando di una protezione ma di dover ridare password e password_confirmation anche per una semplice modifica del nome utente. (può essere anche una nuova password)
-Questo perché una volta attivata la protezione `before_action :authenticate_user!` si attiva anche la **validazione** per la presenza della password che è implicida in devise. 
+Non stiamo parlando di una protezione ma di dover reimpostare la *password* anche per una semplice modifica del nome utente.
+Questo perché una volta attivata la protezione `before_action :authenticate_user!` si attiva anche la **validazione** per la presenza della password che è implicida in devise.
 Questo vuol dire che se si lascia vuoto il campo password si riceve un errore di validazione. 
 
 Soluzione usata su Rails 6:
