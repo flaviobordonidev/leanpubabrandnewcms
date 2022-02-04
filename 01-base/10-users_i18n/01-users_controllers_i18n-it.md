@@ -1,8 +1,6 @@
-{id: 01-base-10-users_i18n-01-users_controllers_i18n}
-# Cap 10.1 -- Internazionalizzazione dei messaggi
+# <a name="top"></a> Cap 10.1 - Internazionalizzazione dei messaggi
 
 Al momento abbiamo lasciato dei messaggi scritti direttamente nel codice ma questo non ci permette di gestire più lingue. Passiamo i messaggi attraverso i files "locales".
-
 
 
 
@@ -15,55 +13,70 @@ $ git checkout -b ui
 
 
 
-
 ## I messaggi nei controllers
 
-Gestiamo i messaggi "notice" ed "alerts" in users_controller
+Gestiamo i messaggi *notice* ed *alerts* in *users_controller*.
 
-azione create
+Internazionalizziamo l'azione *create*.
 
-{id: "01-10-01_01", caption: ".../app/controllers/users_controller.rb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 31}
-```
-        format.html { redirect_to @user, notice: t(".notice") }
-```
+***codice 01 - .../app/controllers/users_controller.rb - line: 31***
 
-azione update
-
-{caption: ".../app/controllers/users_controller.rb -- continua", format: HTML+Mako, line-numbers: true, number-from: 31}
-```
-          redirect_to @user, notice: t(".notice")
+```html+erb
+        format.html { redirect_to user_url(@user), notice: t(".notice") } # notice: "User was successfully created."
 ```
 
+Internazionalizziamo l'azione *update*.
+
+***codice 01 - ...continua - line: 31***
+
+```html+erb
+        format.html { redirect_to user_url(@user), notice: t(".notice") } # notice: "User was successfully updated."
+```
+
+Internazionalizziamo l'azione *destroy*.
+
+***codice 01 - ...continua - line: 31***
+
+```html+erb
+        redirect_to users_url, notice: t(".notice") unless @user == current_user # notice: "User was successfully destroyed."
+        redirect_to users_url, notice: t(".notice_logged_in") if @user == current_user #  notice: "The logged in user cannot be destroyed."
+```
 
 Aggiorniamo i files locales
 
-{id: "01-10-01_02", caption: ".../config/locales/it.yml -- codice 02", format: yaml, line-numbers: true, number-from: 1}
-```
+***codice 02 - .../config/locales/it.yml - line: 1***
+
+```yaml
 it:
   users:
     create:
       notice: "L'utente è stato creato con successo."
     update:
       notice: "L'utente è stato aggiornato con successo."
+    destroy:
+      notice: "L'utente è stato eliminato con successo."
+      notice_logged_in: "L'utente loggato non può essere eliminato."
 ```
 
-{id: "01-10-01_03", caption: ".../config/locales/en.yml -- codice 03", format: yaml, line-numbers: true, number-from: 1}
-```
+***codice 03 - .../config/locales/en.yml - line: 1***
+
+```yaml
 en:
   users:
     create:
       notice: 'User was successfully created.'
     update:
       notice: 'User was successfully updated.'
+    destroy:
+      notice: "User was successfully destroyed."
+      notice_logged_in: "The logged in user cannot be destroyed."
 ```
-
 
 
 
 ## Verifichiamo preview
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails s
 ```
@@ -76,44 +89,37 @@ Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messag
 
 
 
-
 ## salviamo su git
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git add -A
 $ git commit -m "users_controllers notice messages i18n"
 ```
 
 
 
-
 ## Pubblichiamo su Heroku
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git push heroku ui:master
 ```
 
 
 
-
 ## Chiudiamo il branch
 
-lo lasciamo aperto per il prossimo capitolo
+Lo lasciamo aperto per il prossimo capitolo
 
 
 
+## Facciamo un backup su Github
 
-## Il codice del capitolo
+Lo facciamo nel prossimo capitolo.
 
 
 
+---
 
-[Codice 01](#01-08b-01_01)
-
-{id="01-08b-01_01all", title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-```
-
-```
-
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
