@@ -1,22 +1,21 @@
-{id: 01-base-10-users_i18n-03-users_form_i18n}
-# Cap 10.3 -- Internazionalizzazione dei campi nei forms
-
+# <a name="top"></a> Cap 10.2 - Internazionalizzazione dei campi nei forms
 
 
 
 ## Apriamo il branch 
 
-continuiamo con lo stesso branch del capitolo precedente
-
+Continuiamo con lo stesso branch del capitolo precedente
 
 
 
 ## Inseriamo un segnaposto nei campi del form
 
-Inseriamo un segnaposto nei campi del form (Input Placeholders). Possiamo dire a Rails di usare "i18n placeholder" passando il parametro "placeholder: true" nelle opzioni dei campi input del form.
+Inseriamo un segnaposto nei campi del form (Input Placeholders). 
+Possiamo dire a Rails di usare *i18n placeholder* passando il parametro `placeholder: true` nelle opzioni dei campi input del form.
 
-{caption: ".../app/views/users/_form.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 31}
-```
+***codice 01 - .../app/views/users/_form.html.erb - line: 31***
+
+```html+erb
 <%= form_with(model: user, local: true) do |form| %>
   ...
   <div class="field">
@@ -43,8 +42,9 @@ Inseriamo un segnaposto nei campi del form (Input Placeholders). Possiamo dire a
 
 diamo la traduzione al placeholder nei locales
 
-{id: "01-10-01_02", caption: ".../config/locales/it.yml -- codice 02", format: yaml, line-numbers: true, number-from: 1}
-```
+***codice 02 - .../config/locales/it.yml - line: 1***
+
+```yaml
 it:
   helpers:
     placeholder:
@@ -55,8 +55,9 @@ it:
         password_confirmation: "conferma password"
 ```
 
-{id: "01-10-01_03", caption: ".../config/locales/en.yml -- codice 03", format: yaml, line-numbers: true, number-from: 1}
-```
+***codice 02 - .../config/locales/en.yml - line: 1***
+
+```yaml
 en:
   helpers:
     placeholder:
@@ -69,13 +70,13 @@ en:
 
 
 
-
 ## Labels
 
-Lato form non devo fare nulla. L'importante è che ci sia la "label" per ogni campo.
+Lato form non devo fare nulla. L'importante è che ci sia la ***label*** per ogni campo.
 
-{caption: ".../app/views/users/_form.html.erb", format: HTML+Mako, line-numbers: true, number-from: 31}
-```
+***codice n/a - .../app/views/users/_form.html.erb - line: 1***
+
+```htnl+erb
     <%= form.label :name %>
   ...
     <%= form.label :email %>
@@ -85,11 +86,11 @@ Lato form non devo fare nulla. L'importante è che ci sia la "label" per ogni ca
     <%= form.label :password_confirmation %>
 ```
 
-
 mettiamo la traduzione alle labels nei locales
 
-{id: "01-10-01_02", caption: ".../config/locales/it.yml -- codice 02", format: yaml, line-numbers: true, number-from: 1}
-```
+***codice 02 - .../config/locales/it.yml - line: 1***
+
+```yaml
 it:
   ...
   activerecord:
@@ -103,13 +104,13 @@ it:
         name: "Nome utente"
 ```
 
-Se il percorso tramite "helpers:" non è disponibile, i18n userà il percorso alternativo "activerecord:".
+Se il percorso tramite *helpers:* non è disponibile, *i18n* userà il percorso alternativo *activerecord:*.
 
+Lo possiamo verificare commentando nome utente.
 
-Lo possiamo verificare commentando nome utente:
+***codice: n/a - .../config/locales/it.yml - line: 1***
 
-{id: "01-10-01_02", caption: ".../config/locales/it.yml", format: yaml, line-numbers: true, number-from: 1}
-```
+```yaml
 it:
   ...
   activerecord:
@@ -126,27 +127,28 @@ it:
 
 
 
-## I pulsanti di "Submit"
+## I pulsanti di *Submit*
 
-Cambiamo i valori dei pulsanti di "submit" per nuovo o aggiornamento utente.
+Cambiamo i valori dei pulsanti di *Submit* per nuovo o aggiornamento utente.
 
-Verifichiamo che il pulsante sia presente nel form
+Verifichiamo che il pulsante sia presente nel form.
 
-{caption: ".../app/views/users/_form.html.erb", format: HTML+Mako, line-numbers: true, number-from: 56}
-~~~~~~~~
+***codice: n/a - .../app/views/users/_form.html.erb - line: 56***
+
+```html+erb
 <%= form_with(model: user, local: true) do |form| %>
   [...]
   <div class="actions">
     <%= form.submit %>
   </div>
 <% end %>
-~~~~~~~~
-
+```
 
 e traduciamo il suo valore sui locales
 
-{id: "01-10-01_02", caption: ".../config/locales/it.yml", format: yaml, line-numbers: true, number-from: 1}
-```
+***codice: n/a - .../config/locales/it.yml - line: 1***
+
+```yaml
 it:
   [...]
   helpers:
@@ -159,12 +161,11 @@ it:
 
 
 
-
 ## Traduciamo il nome del model
 
+***codice: n/a - .../config/locales/it.yml - line: 1***
 
-{id: "01-10-01_02", caption: ".../config/locales/it.yml", format: yaml, line-numbers: true, number-from: 1}
-```
+```yaml
 it:
   activerecord:
     [...]
@@ -174,41 +175,33 @@ it:
 
 
 
-
 ## Verifichiamo preview
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails s
 ```
 
 apriamolo il browser sull'URL:
 
-* https://mycloud9path.amazonaws.com/users
-
-
+- https://mycloud9path.amazonaws.com/users
 
 
 
 ## salviamo su git
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git add -A
 $ git commit -m "users form fields i18n"
 ```
 
 
 
-
 ## Pubblichiamo su Heroku
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git push heroku ui:master
 ```
-
 
 
 
@@ -216,17 +209,3 @@ $ git push heroku ui:master
 
 lo lasciamo aperto per il prossimo capitolo
 
-
-
-
-## Il codice del capitolo
-
-
-
-
-[Codice 01](#01-08b-01_01)
-
-{id="01-08b-01_01all", title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-```
-
-```
