@@ -1,5 +1,4 @@
-{id: 01-base-09-manage_users-04-browser_tab_title_users}
-# Cap 9.4 -- Titolo dinamico nel tab del browser
+# <a name="top"></a> Cap 9.3 - Titolo dinamico nel tab del browser
 
 Vogliamo rendere dinamico il titolo che appare nel tab del browser. In questo capitolo introduciamo il "contenitore vuoto" yield(:my_variable).
 

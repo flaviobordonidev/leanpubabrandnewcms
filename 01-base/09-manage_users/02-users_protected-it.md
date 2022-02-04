@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 9.3 - Implementiamo la sicurezza e la protezione di Devise
+# <a name="top"></a> Cap 9.2 - Implementiamo la sicurezza e la protezione di Devise
 
 Rendiamo non accessibili le pagine di gestione degli utenti a chi non è autenticato.
 Questa è quasi una forma di autorizzazione ma l'autorizzazione vera è basata su ruoli differenti che hanno i vari utenti che fanno login / che si autenticano.
@@ -318,7 +318,7 @@ Vedremo visualizzando l'utente loggato (*Show this user*) non avrà il bottone *
 ## Implementiamo un re-login automatico su cambio password
 
 
-> DA RIVEDERE CON CALMA perché non mi funziona
+> DA RIVEDERE CON CALMA perché non mi funziona. LA SALTIAMO E LA RIVEDIAMO PIù AVANTI.
 
 
 Al momento cambiando la password siamo automaticamente riportati al login, perché adesso è attiva la *protezione di devise* con *before_action :authenticate_user!*.
