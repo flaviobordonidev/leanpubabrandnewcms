@@ -1,20 +1,19 @@
-{id: 01-base-19-rich_text_editor-02-action_text-install}
-# Cap 19.2 -- Installiamo Action Text
+# <a name="top"></a> Cap 19.2 - Installiamo Action Text
 
 
-* https://blog.saeloun.com/2019/10/01/rails-6-action-text.html
-* https://blog.saeloun.com/2019/11/12/attachments-in-action-text-rails-6
 
+## Risorse esterne
+
+- https://blog.saeloun.com/2019/10/01/rails-6-action-text.html
+- https://blog.saeloun.com/2019/11/12/attachments-in-action-text-rails-6
 
 
 
 ## Apriamo il branch "Action Text Install"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout -b ati
 ```
-
 
 
 
@@ -22,8 +21,7 @@ $ git checkout -b ati
 
 Per impostare Action Text, possiamo eseguire il comando seguente dalla directory principale della nostra app Rails 6:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails action_text:install
 
 
@@ -75,9 +73,9 @@ Aggiunge app/assets/stylesheets/actiontext.scss: possiamo modificare questo file
 
 Vediamo le due migrazioni create
 
+***codice 01 - .../db/migrate/xxx_create_active_storage_tables.active_storage.rb - line: 1***
 
-{id: "01-19-02_01", caption: ".../db/migrate/xxx_create_active_storage_tables.active_storage.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
-```
+```ruby
 # This migration comes from active_storage (originally 20170806125915)
 class CreateActiveStorageTables < ActiveRecord::Migration[5.2]
   def change
@@ -108,8 +106,9 @@ end
 ```
 
 
-{id: "01-19-02_02", caption: ".../db/migrate/xxx_create_action_text_tables.action_text.rb -- codice 02", format: ruby, line-numbers: true, number-from: 1}
-```
+***codice 02 - .../db/migrate/xxx_create_action_text_tables.action_text.rb - line: 1***
+
+```ruby
 # This migration comes from action_text (originally 20180528164100)
 class CreateActionTextTables < ActiveRecord::Migration[6.0]
   def change
@@ -128,11 +127,9 @@ end
 
 Eseguiamo le due migrazioni
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails db:migrate
 ```
-
 
 
 
@@ -140,8 +137,9 @@ $ rails db:migrate
 
 Usiamo un campo Rich Text con il modello EgPost.
 
-{id: "01-19-02_03", caption: ".../app/models/eg_post.rb -- codice 03", format: ruby, line-numbers: true, number-from: 2}
-```
+***codice 03 - .../app/models/eg_post.rb - line: 2***
+
+```ruby
   has_rich_text :content
 ```
 
@@ -156,8 +154,9 @@ Nota: il campo "content" non è un campo effettivo nella tabella eg_posts. I dat
 
 Inseriamo il campo ":content" nella white list
 
-{id: "01-19-02_04", caption: ".../app/controllers/eg_posts_controller.rb -- codice 04", format: ruby, line-numbers: true, number-from: 83}
-```
+***codice 04 - .../app/controllers/eg_posts_controller.rb - line: 83***
+
+```ruby
     # Never trust parameters from the scary internet, only allow the white list through.
     def eg_post_params
       params.require(:eg_post).permit(:meta_title, :meta_description, :headline, :incipit, :user_id, :price, :header_image, :content)
@@ -168,14 +167,14 @@ Inseriamo il campo ":content" nella white list
 
 
 
-
 ## Aggiungiamo il campo ":content" di Active Text nel view _form
 
 Aggiungiamo Trix sul view edit di descrizione dell'articolo.
 Possiamo usare il metodo helper "rich_text_area" per rendere il campo nel form:
 
-{id: "01-19-02_05", caption: ".../app/views/eg_posts/_form.html.erb -- codice 05", format: HTML+Mako, line-numbers: true, number-from: 2}
-```
+***codice 05 - .../app/views/eg_posts/_form.html.erb - line: 2***
+
+```html+erb
   <div class="field">
     <%= form.label :content %>
     <%= form.rich_text_area :content %>
@@ -186,11 +185,11 @@ Possiamo usare il metodo helper "rich_text_area" per rendere il campo nel form:
 
 
 
-
 ## Aggiungiamo il campo ":content" sul view show 
 
-{id: "01-19-02_06", caption: ".../app/views/eg_posts/show.html.erb -- codice 06", format: HTML+Mako, line-numbers: true, number-from: 2}
-```
+***codice 06 - .../app/views/eg_posts/show.html.erb - line: 2***
+
+```html+erb
 <%= @post.content %>
 ```
 
@@ -213,68 +212,6 @@ vedi: * https://blog.saeloun.com/2019/11/12/attachments-in-action-text-rails-6
 
 
 
-
-
-## archiviamo su git
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git add -A
-$ git commit -m "add Action Text :content field to eg_posts"
-```
-
-
-
-
-## Publichiamo su heroku
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git push heroku ati:master
-$ heroku run rails db:migrate
-```
-
-
-
-
-## Chiudiamo il branch
-
-se abbiamo finito le modifiche e va tutto bene:
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git checkout master
-$ git merge ati
-$ git branch -d ati
-```
-
-
-
-
-## Facciamo un backup su Github
-
-Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git push origin master
-```
-
-
-
-
-## Il codice del capitolo
-
-
-
-
-
-
-
----
-
-
-
 ## Verifichiamo preview
 
 ```bash
@@ -290,32 +227,43 @@ Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messag
 
 
 
-## salviamo su git
+## Archiviamo su git
 
 ```bash
 $ git add -A
-$ git commit -m "users_controllers notice messages i18n"
+$ git commit -m "add Action Text :content field to eg_posts"
 ```
 
 
 
-## Pubblichiamo su Heroku
+## Publichiamo su heroku
 
 ```bash
-$ git push heroku ui:master
+$ git push heroku ati:master
+$ heroku run rails db:migrate
 ```
 
 
 
 ## Chiudiamo il branch
 
-Lo lasciamo aperto per il prossimo capitolo
+se abbiamo finito le modifiche e va tutto bene:
+
+```bash
+$ git checkout master
+$ git merge ati
+$ git branch -d ati
+```
 
 
 
 ## Facciamo un backup su Github
 
-Lo facciamo nel prossimo capitolo.
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+```bash
+$ git push origin master
+```
 
 
 

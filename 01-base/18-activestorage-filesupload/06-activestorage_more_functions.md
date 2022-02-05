@@ -1,24 +1,20 @@
-{id: 01-base-18-activestorage-filesupload-06-activestorage_more_functions}
-# Cap 18.6 -- Aggiungiamo più funzionalità e controlli per l'upload delle immagini
+# <a name="top"></a> Cap 18.6 -- Aggiungiamo più funzionalità e controlli per l'upload delle immagini
+
+Implementiamo le funzionalità aggiuntive presenti nel video di gorails. Il caricare più files ed il gestire anche files pdf, suoni, video, svg, ...
 
 
-implementiamo le funzionalità aggiuntive presenti nel video di gorails. Il caricare più files ed il gestire anche files pdf, suoni, video, svg, ...
 
-Risorse interne:
+## Risorse interne
 
-* 99-rails_references/active_storage/aws_s3
-
-
+- [99-rails_references/active_storage/aws_s3]()
 
 
 
 ## Apriamo il branch "ActiveRecord More Functions"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout -b armf
 ```
-
 
 
 
@@ -35,23 +31,21 @@ Creiamo un nuovo access key premendo il pulsante "Create access key" ed aliminia
 Inseriamo "Access key ID" e "Secret access key" nel nostro file criptato 
 ATTENZIONE: per ragioni di sicurezza non copiamole in nessun posto che non sia crittato. Tanto se le dimentichiamo dobbiamo soltanto crearne una nuova ed eliminare la vecchia. 
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ EDITOR=vim rails credentials:edit
 ```
 
 Questo apre il file decrittato sul terminale usando vim. Come potrai vedere il file decrittato assomiglia ad un normale file .yml
 
 Per editarlo:
-* muoviti usando le frecce sulla tastiera
-* quando vuoi inserire del testo premi "i". Quando hai finito premi "ESC"
-* per salvare ":w"
-* per uscire ":q"
+- muoviti usando le frecce sulla tastiera
+- quando vuoi inserire del testo premi "i". Quando hai finito premi "ESC"
+- per salvare ":w"
+- per uscire ":q"
 
 Quando salvi rail automaticamente critta il file usando la master key.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 aws:
  access_key_id: AKI...LWBYA
  secret_access_key: sx1......G2nyKdela
@@ -59,8 +53,7 @@ aws:
 
 Verifichiamo lettura secrets nel file criptato
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails c
 > Rails.application.credentials.dig(:aws, :access_key_id)   # => "AKI...LWBYA"
 > Rails.application.credentials.dig(:aws, :secret_access_key)   # => "sx1......G2nyKdela"
@@ -68,13 +61,13 @@ $ rails c
 
 
 
-
 ## Attiviamo upload di files multipli per post
 
 Implementiamo un campo in cui carichiamo più files per ogni nostro articoli usando **has_many_attached** di active_storage
 
-{title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=4}
-```
+***codice n/a - .../app/models/post.rb - line: 4***
+
+```ruby
   has_many_attached :attached_files
 ```
 
@@ -82,13 +75,13 @@ Ogni volta che facciamo l'upload di un file come "attached_files" questa chiamat
 
 
 
-
 ## Implementiamo il controller
 
 Questa volta, per :attached_files, dobbiamo permettere un intero array. 
 
-{title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=70}
-```
+***codice n/a - .../app/controllers/posts_controller.rb - line: 70***
+
+```ruby
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
       params.require(:post).permit(:title, :incipit, :user_id, :header_image, attached_files: [])
@@ -99,13 +92,13 @@ Questa volta, per :attached_files, dobbiamo permettere un intero array.
 
 
 
-
 ## Implementiamo la view
 
 oltre al **.file_field** implementiamo anche **multiple: true** per permettere di selezionare più files.
 
-{title=".../app/views/example_posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=70}
-```
+***codice n/a - .../app/views/example_posts/_form.html.erb - line: 70***
+
+```html+erb
   <div class="field">
     <%= form.label :attached_files %>
     <%= form.file_field :attached_files, multiple: true,  %>
@@ -114,8 +107,9 @@ oltre al **.file_field** implementiamo anche **multiple: true** per permettere d
 
 Per visualizzare i vari files caricati
 
-{title=".../app/views/example_posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=70}
-```
+***codice n/a - .../app/views/example_posts/show.html.erb - line: 70***
+
+```html+erb
 <div>
   <% @example_post.attached_files.each do |attached_file| %>
    <%= image_tag attached_file %>
@@ -125,11 +119,9 @@ Per visualizzare i vari files caricati
 
 
 
-
 ## Verifichiamo che funziona sul browser
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails s -b $IP -p $PORT
 ```
@@ -142,13 +134,13 @@ https://rebisworldbr1-flaviobordonidev.c9users.io/example_posts/1
 
 
 
-
 ## Modifica immagine e previews
 
 usiamo **.variable?** per identificare se può essere ridimensionato con mini_magick/imagemagick (via variant).
 
-{title=".../app/views/example_posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=70}
-```
+***codice n/a - .../app/views/example_posts/show.html.erb - line: 70***
+
+```html+erb
 <div>
   <% @example_post.attached_files.each do |attached_file| %>
     <% if attached_file.variable? %>
@@ -160,8 +152,9 @@ usiamo **.variable?** per identificare se può essere ridimensionato con mini_ma
 
 usiamo **.previewable?** per identificare se possiamo fare una preview del file; in caso positivo ridimensioniamo il preview.
 
-{title=".../app/views/example_posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=70}
-```
+***codice n/a - .../app/views/example_posts/show.html.erb - line: 70***
+
+```html+erb
 <div>
   <% @example_post.attached_files.each do |attached_file| %>
     <% if attached_file.variable? %>
@@ -175,8 +168,8 @@ usiamo **.previewable?** per identificare se possiamo fare una preview del file;
 
 Per usare i preview dobbiamo installare 
 
-* mupdf-tools : per preview di files pdf
-* ffmpeg      : per preview di files video
+- mupdf-tools : per preview di files pdf
+- ffmpeg      : per preview di files video
 
 brew install mupdf-tools ffmpeg
 
@@ -186,8 +179,9 @@ brew install mupdf-tools ffmpeg
 
 link per vedere l'immagine intera e link per forzare download immediato del file pdf.
 
-{title=".../app/views/example_posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=70}
-```
+***codice n/a - .../app/views/example_posts/show.html.erb - line: 70***
+
+```html+erb
 <div>
   <% @example_post.attached_files.each do |attached_file| %>
     <% if attached_file.variable? %>
@@ -201,11 +195,11 @@ link per vedere l'immagine intera e link per forzare download immediato del file
 
 
 
-
 ## Gestiamo anche altri tipi di files 
 
-{title=".../app/views/example_posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=70}
-```
+***codice n/a - .../app/views/example_posts/show.html.erb - line: 70***
+
+```html+erb
 <div>
   <% @example_post.attached_files.each do |attached_file| %>
     <% if attached_file.variable? %>
@@ -221,15 +215,14 @@ link per vedere l'immagine intera e link per forzare download immediato del file
 
 
 
-
 ## Gestiamo immagini vettoriali
 
 Files come .svg non sono identificati **.variable** perché non possono essere ridimensionati, o lavorati, con mini_magick.
 Però possono essere ridimensionati, anzi scalano senza perdere di qualità. E per ridimensionarli usiamo direttemente HTML
 
+***codice n/a - .../app/views/example_posts/show.html.erb - line: 70***
 
-{title=".../app/views/example_posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=70}
-```
+```html+erb
 <div>
   <% @example_post.attached_files.each do |attached_file| %>
     <% if attached_file.variable? %>
@@ -247,15 +240,13 @@ Però possono essere ridimensionati, anzi scalano senza perdere di qualità. E p
 
 
 
-
 ## Cancelliamo i files 
 
 per eliminare i files esiste il metodo **purge** o **purge_later**.
 Purge_later è migliore perché crea un "background job" e cancella le varie immagini con calma ottimizzando le prestazioni.
 Purge invece è eseguito immediatamente prendendosi subito le risorse che gli servono.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails c
 > post = ExamplePost.last
 > post.header_image.purge_later
@@ -275,17 +266,11 @@ $ rails c
 
 
 
-
-
-
-
 ## Publichiamo su heroku
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git push heroku armf:master
 ```
-
 
 
 
@@ -298,14 +283,11 @@ Verifichiamo l'eliminazione di alcuni dei files caricati.
 
 
 
-
-
 ## Chiudiamo il branch
 
 se abbiamo finito le modifiche e va tutto bene:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout master
 $ git merge armf
 $ git branch -d armf
@@ -313,66 +295,13 @@ $ git branch -d armf
 
 
 
-
 ## Facciamo un backup su Github
 
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git push origin master
 ```
-
-
-
-
-
-
----
-
-
-
-## Verifichiamo preview
-
-```bash
-$ sudo service postgresql start
-$ rails s
-```
-
-apriamolo il browser sull'URL:
-
-* https://mycloud9path.amazonaws.com/users
-
-Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
-
-
-
-## salviamo su git
-
-```bash
-$ git add -A
-$ git commit -m "users_controllers notice messages i18n"
-```
-
-
-
-## Pubblichiamo su Heroku
-
-```bash
-$ git push heroku ui:master
-```
-
-
-
-## Chiudiamo il branch
-
-Lo lasciamo aperto per il prossimo capitolo
-
-
-
-## Facciamo un backup su Github
-
-Lo facciamo nel prossimo capitolo.
 
 
 

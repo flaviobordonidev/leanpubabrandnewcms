@@ -87,7 +87,7 @@ destroy
 - Utente con ruolo "admin"     : autorizzato su tutti i records
 
 
-{id: "01-15-04_01", caption: ".../app/policies/eg_post_policy.rb -- codice 01", format: ruby, line-numbers: true, number-from: 3}
+***codice 01 - .../app/policies/eg_post_policy.rb - line: 3***
 
 ```ruby
   def index?
@@ -141,8 +141,9 @@ destroy
 Poiché con la chiamata "@user.present?" ottengo già TRUE o FALSE, non ho bisogno del ciclo if...else...end.
 Quindi possiamo riscrivere la policy per show
 
-{caption: ".../app/policies/example_post_policy.rb -- codice s.n.", format: ruby, line-numbers: true, number-from: 7}
-```
+***codice n/a - .../app/policies/example_post_policy.rb - line: 7***
+
+```ruby
   def show?
     @user.present?
   end
@@ -150,7 +151,7 @@ Quindi possiamo riscrivere la policy per show
 
 Invece per la policy di update togliamo la verifica "if @user.user?". Questo permette all'utente di modificare i suoi propri record ma non potendoli creare non ha record da modificare.
 
-{caption: ".../app/policies/example_post_policy.rb -- continua", format: ruby, line-numbers: true, number-from: 7}
+***codice n/a - ...continua - line: 17***
 ```
   def update?
     if @user.present?
@@ -163,37 +164,40 @@ Invece per la policy di update togliamo la verifica "if @user.user?". Questo per
 
 
 
-
-
 ## Implementiamo nel controller
 
 Implementiamo l'autorizzazione all'interno del controller.
 
-{id: "01-15-04_02", caption: ".../app/controllers/eg_posts_controller.rb -- codice 02", format: ruby, line-numbers: true, number-from: 6}
-```
+***codice 02 - .../app/controllers/eg_posts_controller.rb - line: 6***
+
+```ruby
   def index
     @eg_posts = EgPost.all
     authorize @eg_posts
 ```
 
-{caption: ".../app/controllers/eg_posts_controller.rb -- continua", format: ruby, line-numbers: true, number-from: 17}
-```
+***codice 02 - ...continua - line: 17***
+
+```ruby
   def new
     @eg_post = EgPost.new
     authorize @eg_post
 ```
 
-{caption: ".../app/controllers/eg_posts_controller.rb -- continua", format: ruby, line-numbers: true, number-from: 28}
-```
+
+***codice 02 - ...continua - line: 28***
+
+```ruby
   def create
     @eg_post = EgPost.new(eg_post_params)
     authorize @eg_post
 ```
 
-Per le azioni [:show, :edit, :update, :destroy], che chiamano la funzione "set_user" con il before_action, inserisco l'autorizzazione direttamente sulla funzione "set_user"
+Per le azioni [:show, :edit, :update, :destroy], che chiamano la funzione *set_user* con il *before_action*, inserisco l'autorizzazione direttamente sulla funzione *set_user*.
 
-{caption: ".../app/controllers/eg_posts_controller.rb -- continua", format: ruby, line-numbers: true, number-from: 71}
-```
+***codice 02 - ...continua - line: 71***
+
+```ruby
     def set_eg_post
       @eg_post = EgPost.find(params[:id])
       authorize @eg_post
@@ -203,28 +207,23 @@ Per le azioni [:show, :edit, :update, :destroy], che chiamano la funzione "set_u
 
 
 
-
 ## Verifichiamo preview
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails s
 ```
 
-* https://mycloud9path.amazonaws.com/eg_posts
-
+- https://mycloud9path.amazonaws.com/eg_posts
 
 
 
 ## aggiorniamo git 
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git add -A
 $ git commit -m "add pundit authorization on all actions of eg_post"
 ```
-
 
 
 
@@ -233,44 +232,45 @@ $ git commit -m "add pundit authorization on all actions of eg_post"
 riportiamo la gestione della logica della policy ad una situazione simile allo schema della logica delle autorizzazioni: 
 
 index
- * Utente non loggato           : autorizzato su tutti i records
- * Utente con ruolo "user"      : autorizzato su tutti i records
- * Utente con ruolo "author"    : autorizzato su tutti i records
- * Utente con ruolo "moderator" : autorizzato su tutti i records
- * Utente con ruolo "admin"     : autorizzato su tutti i records
+- Utente non loggato           : autorizzato su tutti i records
+- Utente con ruolo "user"      : autorizzato su tutti i records
+- Utente con ruolo "author"    : autorizzato su tutti i records
+- Utente con ruolo "moderator" : autorizzato su tutti i records
+- Utente con ruolo "admin"     : autorizzato su tutti i records
 
 show
- * Utente non loggato           : NON autorizzato su tutti i records
- * Utente con ruolo "user"      : autorizzato su tutti i records
- * Utente con ruolo "author"    : autorizzato su tutti i records
- * Utente con ruolo "moderator" : autorizzato su tutti i records
- * Utente con ruolo "admin"     : autorizzato su tutti i records
+- Utente non loggato           : NON autorizzato su tutti i records
+- Utente con ruolo "user"      : autorizzato su tutti i records
+- Utente con ruolo "author"    : autorizzato su tutti i records
+- Utente con ruolo "moderator" : autorizzato su tutti i records
+- Utente con ruolo "admin"     : autorizzato su tutti i records
 
 new/create
- * Utente non loggato           : NON autorizzato su tutti i records
- * Utente con ruolo "user"      : NON autorizzato su tutti i records
- * Utente con ruolo "author"    : autorizzato SOLO sui propri records
- * Utente con ruolo "moderator" : autorizzato SOLO sui propri records
- * Utente con ruolo "admin"     : autorizzato SOLO sui propri records
+- Utente non loggato           : NON autorizzato su tutti i records
+- Utente con ruolo "user"      : NON autorizzato su tutti i records
+- Utente con ruolo "author"    : autorizzato SOLO sui propri records
+- Utente con ruolo "moderator" : autorizzato SOLO sui propri records
+- Utente con ruolo "admin"     : autorizzato SOLO sui propri records
 
 
 edit/update
- * Utente non loggato           : NON autorizzato su tutti i records
- * Utente con ruolo "user"      : NON autorizzato su tutti i records
- * Utente con ruolo "author"    : autorizzato SOLO sui propri records
- * Utente con ruolo "moderator" : autorizzato SOLO sui propri records
- * Utente con ruolo "admin"     : autorizzato su tutti i records
+- Utente non loggato           : NON autorizzato su tutti i records
+- Utente con ruolo "user"      : NON autorizzato su tutti i records
+- Utente con ruolo "author"    : autorizzato SOLO sui propri records
+- Utente con ruolo "moderator" : autorizzato SOLO sui propri records
+- Utente con ruolo "admin"     : autorizzato su tutti i records
 
 destroy
- * Utente non loggato           : NON autorizzato su tutti i records
- * Utente con ruolo "user"      : NON autorizzato su tutti i records
- * Utente con ruolo "author"    : autorizzato SOLO sui propri records
- * Utente con ruolo "moderator" : autorizzato su tutti i records
- * Utente con ruolo "admin"     : autorizzato su tutti i records
+ - Utente non loggato           : NON autorizzato su tutti i records
+ - Utente con ruolo "user"      : NON autorizzato su tutti i records
+ - Utente con ruolo "author"    : autorizzato SOLO sui propri records
+ - Utente con ruolo "moderator" : autorizzato su tutti i records
+ - Utente con ruolo "admin"     : autorizzato su tutti i records
 
 
-{id: "01-15-04_03", caption: ".../app/policies/eg_post_policy.rb -- codice 03", format: ruby, line-numbers: true, number-from: 3}
-```
+***codice 03 - .../app/policies/eg_post_policy.rb - line: 3***
+
+```ruby
   def index?
     if @user.present?
       case @user.role
@@ -376,32 +376,27 @@ In questo modo mi è molto più chiaro capire la logica delle autorizzazioni.
 
 ## Verifichiamo preview
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails s
 ```
 
-* https://mycloud9path.amazonaws.com/eg_posts
-
+- https://mycloud9path.amazonaws.com/eg_posts
 
 
 
 ## aggiorniamo git 
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git add -A
 $ git commit -m "Refactor policies conditions like the logical schema"
 ```
 
 
 
-
 ## Publichiamo su heroku
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git push heroku aep:master
 $ heroku run rake db:migrate
 ```
@@ -410,13 +405,11 @@ Ricordiamo che lato produzione su heroku c'è un database indipendente da quello
 
 
 
-
 ## Chiudiamo il branch
 
 se abbiamo finito le modifiche e va tutto bene:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout master
 $ git merge aep
 $ git branch -d aep
@@ -424,82 +417,13 @@ $ git branch -d aep
 
 
 
-
 ## Facciamo un backup su Github
 
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git push origin master
 ```
-
-
-
-
-## Il codice del capitolo
-
-
-
-
-
-[Codice 01](#01-09-06_01)
-
-{id="01-09-06_01all", title=".../app/policies/example_post_policy.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-```
-```
-
-[tutto il codice](#01-15-04_04all)
-
-
-
-
-
----
-
-
-
-## Verifichiamo preview
-
-```bash
-$ sudo service postgresql start
-$ rails s
-```
-
-apriamolo il browser sull'URL:
-
-* https://mycloud9path.amazonaws.com/users
-
-Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
-
-
-
-## salviamo su git
-
-```bash
-$ git add -A
-$ git commit -m "users_controllers notice messages i18n"
-```
-
-
-
-## Pubblichiamo su Heroku
-
-```bash
-$ git push heroku ui:master
-```
-
-
-
-## Chiudiamo il branch
-
-Lo lasciamo aperto per il prossimo capitolo
-
-
-
-## Facciamo un backup su Github
-
-Lo facciamo nel prossimo capitolo.
 
 
 

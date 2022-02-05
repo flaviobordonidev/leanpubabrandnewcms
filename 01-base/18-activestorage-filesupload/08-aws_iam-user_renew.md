@@ -1,14 +1,13 @@
-# Nuovo IAM user su AWS
+# <a name="top"></a> Cap 18.8 -- Rinnoviamo IAM user su AWS
 
-eliminando l'utente IAM user che sta validando le immagini per il nostro sito, perdiamo accesso a tutte le immagini.
+Eliminando l'utente IAM user che sta validando le immagini per il nostro sito, perdiamo accesso a tutte le immagini.
 In questo capitolo creeremo un nuovo IAM user e lo assoceremo al nostro sito per ripristinare tutte le immagini.
 
 
 
 ## Apriamo il branch "New Iam User"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout -b niu
 ```
 

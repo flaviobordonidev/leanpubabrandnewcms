@@ -1,52 +1,50 @@
-# Massima flessibilità nei ruoli
+# <a name="top"></a> Cap 16.1 - Massima flessibilità nei ruoli
 
-Tutta questa sezione del libro, questa serie di capitoli è totalmente opzionale.
+> Tutta questa sezione del libro, questa serie di capitoli è totalmente opzionale.
 
 Questo è l'approccio più flessibile nella gestione dei ruoli.
 Nella maggior parte delle applicazioni non è richiesto questo livello di flessibilità ma in alcuni casi specifici si possono assegnare dei ruoli ad un utente in maniera maniacalmente minuziosa.
 Ad esempio si possono assegnare ruoli per specifici records di tabelle correlate.
 
 
-Risorse web:
+## Risorse web
 
-* [Rolify wiki - usage](https://github.com/RolifyCommunity/rolify/wiki/Usage)
-* [Rolify wiki](https://github.com/EppO/rolify/wiki)
-* [Rolify community](https://github.com/RolifyCommunity/rolify)
-* [Sito brasileiro](http://groselhas.maurogeorge.com.br/rolify-com-pundit-para-uma-autorizacao-com-multiplos-papeis.html)
+- [Rolify wiki - usage](https://github.com/RolifyCommunity/rolify/wiki/Usage)
+- [Rolify wiki](https://github.com/EppO/rolify/wiki)
+- [Rolify community](https://github.com/RolifyCommunity/rolify)
+- [Sito brasileiro](http://groselhas.maurogeorge.com.br/rolify-com-pundit-para-uma-autorizacao-com-multiplos-papeis.html)
   http://groselhas.maurogeorge.com.br/rolify-com-pundit-para-uma-autorizacao-com-multiplos-papeis.html#sthash.qfwFjKhJ.dpbs
 
-* https://github.com/elabs/pundit
-* https://github.com/RolifyCommunity/rolify
-* http://eng.joingrouper.com/blog/2014/03/20/rails-the-missing-parts-policies/
-* http://railsapps.github.io/rails-authorization.html
-* https://github.com/RolifyCommunity/rolify/wiki
+- https://github.com/elabs/pundit
+- https://github.com/RolifyCommunity/rolify
+- http://eng.joingrouper.com/blog/2014/03/20/rails-the-missing-parts-policies/
+- http://railsapps.github.io/rails-authorization.html
+- https://github.com/RolifyCommunity/rolify/wiki
 
 
-* [sitepoint - Straightforward Rails Authorization with Pundit](https://www.sitepoint.com/straightforward-rails-authorization-with-pundit/)
-* [Pundit](https://github.com/elabs/pundit)
-* [Rails Authorization With Pundit](https://www.youtube.com/watch?v=qruGD_8ry7k)
+- [sitepoint - Straightforward Rails Authorization with Pundit](https://www.sitepoint.com/straightforward-rails-authorization-with-pundit/)
+- [Pundit](https://github.com/elabs/pundit)
+- [Rails Authorization With Pundit](https://www.youtube.com/watch?v=qruGD_8ry7k)
 
 
 
+## Apriamo il branch *Roles Rolify*
 
-## Apriamo il branch "Roles Rolify"
-
-{title="terminale", lang=bash, line-numbers=off}
-```
+```bash
 $ git checkout -b rr
 ```
 
 
 
-
 ## Installiamo la gemma rolify
 
-I> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/rolify)
-I>
-I> facciamo riferimento al [tutorial github della gemma](https://github.com/RolifyCommunity/rolify)
+> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/rolify)
+>
+> facciamo riferimento al [tutorial github della gemma](https://github.com/RolifyCommunity/rolify)
 
-{title="Gemfile", lang=ruby, line-numbers=on, starting-line-number=43}
-```
+***codice n/a - .../Gemfile - line 43***
+
+```ruby
 # Very simple Roles library
 gem 'rolify', '~> 5.2'
 ```
@@ -55,8 +53,7 @@ gem 'rolify', '~> 5.2'
 
 Eseguiamo l'installazione della gemma con bundle
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ bundle install
 ```
 
@@ -66,8 +63,7 @@ $ bundle install
 
 Creiamo le classi "Role" e "User" per definire i ruoli. Sono le classi di default e la classe "User" combina con la scelta "user" di default di devise.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails g rolify Role User
 
 # ===============================================================================
@@ -85,13 +81,14 @@ $ rails g rolify Role User
 ```
 
 lo script:
-* crea il nuovo modello role.rb
-* aggiunge del codice nel modello user.rb 
-* crea config/initializers/rolify.rb
-* crea il seguente migrate
+- crea il nuovo modello role.rb
+- aggiunge del codice nel modello user.rb 
+- crea config/initializers/rolify.rb
+- crea il seguente migrate
 
-{title=".../db/migrate/xxx_rolify_create_roles.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-```
+***codice n/a - .../db/migrate/xxx_rolify_create_roles.rb - line: 1***
+
+```ruby
 class RolifyCreateRoles < ActiveRecord::Migration[5.2]
   def change
     create_table(:roles) do |t|
@@ -114,8 +111,7 @@ end
 
 eseguiamo il migrate
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails db:migrate
 ```
@@ -124,11 +120,9 @@ l'impostazione base è terminata possiamo già usare rolify.
 
 
 
-
 ## Aggiungiamo degli utenti da console 
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails c
 > User.create(name: 'A', email: 'ann@test.abc', password: 'password', password_confirmation: 'password')
 > User.create(name: 'B', email: 'bob@test.abc', password: 'password', password_confirmation: 'password')
@@ -142,8 +136,7 @@ $ rails c
 
 Associamo e togliamo un ruolo al primo utente disponibile.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails c
 > User.first.add_role :admin
 > User.first.remove_role :admin
@@ -153,56 +146,52 @@ vediamo adesso degli scenari di utilizzo
 
 
 
-
 ## Scenari di assegnazione ruolo (e di autorizzazione che implementeremo con pundit)
 
 in questo capitolo e nei capitoli successivi faremo degli esempi per i seguenti scenari:
 
-* Scenario con solo admin (come roles-admin)
+- Scenario con solo admin (come roles-admin)
 
-* Scenario con silver, gold, platinum (come roles-enum)
+- Scenario con silver, gold, platinum (come roles-enum)
 
-* Scenario con silver, gold, platinum ed in aggiunta bonus
-  * In questo caso oltre il ruolo tipo "enum" (silver o gold o platinum) posso avere in aggiunta un ruolo "bonus" (es: gold e bonus)
+- Scenario con silver, gold, platinum ed in aggiunta bonus
+  - In questo caso oltre il ruolo tipo "enum" (silver o gold o platinum) posso avere in aggiunta un ruolo "bonus" (es: gold e bonus)
 
-* Scenario pass di accesso
-  * In questo scenario l'utente 1 ha accesso a cucina, sala e bagno mentre l'utente 2 ha accesso solo a sala e bagno
+- Scenario pass di accesso
+  - In questo scenario l'utente 1 ha accesso a cucina, sala e bagno mentre l'utente 2 ha accesso solo a sala e bagno
 
-* Scenario storico di un blog con moderatore (usiamo la tabella example_posts)
-  * Non vengono più scritti o modificati articoli ma gli utenti con ruolo di moderatore possono cancellare qualsiasi articolo.
+- Scenario storico di un blog con moderatore (usiamo la tabella example_posts)
+  - Non vengono più scritti o modificati articoli ma gli utenti con ruolo di moderatore possono cancellare qualsiasi articolo.
 
-* Scenario storico di un blog con ruolo autore per gli articoli che l'utente scrive
-  * In questo scenario l'utente con id=1 è autore di solo due articoli
+- Scenario storico di un blog con ruolo autore per gli articoli che l'utente scrive
+  - In questo scenario l'utente con id=1 è autore di solo due articoli
 
-* Scenario blog con autori
-  * ogni utente con o senza ruolo ha accesso alla lettura di tutti gli articoli
-  * ogni utente con ruolo di autore ha accesso alla modifica solo dei suoi articoli
+- Scenario blog con autori
+  - ogni utente con o senza ruolo ha accesso alla lettura di tutti gli articoli
+  - ogni utente con ruolo di autore ha accesso alla modifica solo dei suoi articoli
 
-* Scenario blog con autori e moderatore
-  * ogni utente con o senza ruolo ha accesso alla lettura di tutti gli articoli
-  * ogni utente con ruolo di autore ha accesso alla modifica solo dei suoi articoli
-  * ogni utente con ruolo di moderatore ha accesso alla modifica di tutti gli articoli
+- Scenario blog con autori e moderatore
+  - ogni utente con o senza ruolo ha accesso alla lettura di tutti gli articoli
+  - ogni utente con ruolo di autore ha accesso alla modifica solo dei suoi articoli
+  - ogni utente con ruolo di moderatore ha accesso alla modifica di tutti gli articoli
 
-* Scenario forum (usiamo la tabella example_posts come se fosse la tabella forums)
-  * ogni utente con o senza ruolo ha accesso alla lettura di tutti gli articoli
-  * ogni utente con ruolo di autore ha accesso alla creazione/modifica solo dei suoi articoli
-  * ogni utente con ruolo di moderatore ha accesso alla sola eliminazione di tutti gli articoli
-  * Un utente che può creare dei suoi articoli e cancellarli deve avere i ruoli sia di autore che di moderatore.
+- Scenario forum (usiamo la tabella example_posts come se fosse la tabella forums)
+  - ogni utente con o senza ruolo ha accesso alla lettura di tutti gli articoli
+  - ogni utente con ruolo di autore ha accesso alla creazione/modifica solo dei suoi articoli
+  - ogni utente con ruolo di moderatore ha accesso alla sola eliminazione di tutti gli articoli
+  - Un utente che può creare dei suoi articoli e cancellarli deve avere i ruoli sia di autore che di moderatore.
 
-* Scenario articoli aziendali privati (usiamo la tabella example_posts e la tabella companies)
-  * Ogni utente che non appartiene a nessuna azienda non può vedere nessun articolo
-  * Ogni utente con o senza ruolo, che appartiene ad una o più aziende, ha accesso alla lettura di tutti gli articoli delle aziende a cui appartiene
-  * Ogni utente con ruolo moderatore, che appartiene ad una o più aziende, può modificare tutti gli articoli delle aziende a cui appartiene
-  * Ogni utente con ruolo autore, che appartiene ad una o più aziende, può modificare solo i suoi articoli delle aziende a cui appartiene
-
-
+- Scenario articoli aziendali privati (usiamo la tabella example_posts e la tabella companies)
+  - Ogni utente che non appartiene a nessuna azienda non può vedere nessun articolo
+  - Ogni utente con o senza ruolo, che appartiene ad una o più aziende, ha accesso alla lettura di tutti gli articoli delle aziende a cui appartiene
+  - Ogni utente con ruolo moderatore, che appartiene ad una o più aziende, può modificare tutti gli articoli delle aziende a cui appartiene
+  - Ogni utente con ruolo autore, che appartiene ad una o più aziende, può modificare solo i suoi articoli delle aziende a cui appartiene
 
 
 
 ### Scenario con solo admin (come roles-admin)
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails c
 
   # Definiamo un ruolo globale
@@ -219,11 +208,9 @@ $ rails c
 
 
 
-
 ### Scenario con silver, gold, platinum (come roles-enum)
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails c
 
 > u1 = User.find(1)
@@ -263,14 +250,11 @@ $ rails c
 
 
 
-
-
 ### Scenario con silver, gold, platinum ed in aggiunta bonus
 
 In questo caso oltre il ruolo tipo "enum" (silver o gold o platinum) posso avere in aggiunta un ruolo "bonus" (es: gold e bonus)
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails c
 
 > u1 = User.find(1)
@@ -305,13 +289,11 @@ $ rails c
 
 
 
-
 ### Scenario pass di accesso
 
 In questo scenario l'utente 1 ha accesso a cucina, sala e bagno mentre l'utente 2 ha accesso solo a sala e bagno
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails c
 
 > u1 = User.find(1)
@@ -350,11 +332,11 @@ $ rails c
 
 
 
-
 ## Aggiungiamo un ruolo di default agli utenti
 
 https://github.com/plataformatec/devise/wiki/How-To:-Add-a-default-role-to-a-User
 
+```
 class User < ActiveRecord::Base
   belongs_to :role
   before_create :set_default_role
@@ -366,12 +348,7 @@ class User < ActiveRecord::Base
     self.role ||= Role.find_by_name('registered')
   end
 end
-
-
-
-
-
----
+```
 
 
 

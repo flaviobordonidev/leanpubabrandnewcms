@@ -1,23 +1,20 @@
-{id: 01-base-18-activestorage-filesupload-05-remove_uploaded_file}
-# Cap 18.5 -- Eliminiamo il file caricato
+# <a name="top"></a> Cap 18.5 -- Eliminiamo il file caricato
 
-Questo codice noi lo usiamo per rimuovere la singola immagine "has_one_attached :main_image" ma è pensato anche per caricamenti multipli di immagini "has_many_attached :main_image".
+Questo codice noi lo usiamo per rimuovere la singola immagine *has_one_attached :main_image* ma è pensato anche per caricamenti multipli di immagini "has_many_attached :main_image".
 
 
-Risorse interne:
 
-* 99-rails_references/active_storage/aws_s3
+## Risorse interne
 
+- [99-rails_references/active_storage/aws_s3]()
 
 
 
 ## Apriamo il branch "ActiveRecord Remove Upload"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout -b arru
 ```
-
 
 
 
@@ -25,8 +22,9 @@ $ git checkout -b arru
 
 Nel model abbiamo già attivato la variabile "mmain_image" per ActionStorage in modo da poter caricare le immagini.
 
-{id: "01-18-05_01", caption: ".../app//models/post.rb -- codice 01", format: ruby, line-numbers: true, number-from: 2}
-```
+***codice 01 - .../app//models/post.rb - line: 2***
+
+```ruby
   has_one_attached :main_image
 ```
 
@@ -34,14 +32,13 @@ Nel model abbiamo già attivato la variabile "mmain_image" per ActionStorage in 
 
 
 
-
-
 ## Implementiamo sul controller
 
-Creiamo la nuova azione "delete_image_attachment" sul controller
+Creiamo la nuova azione *delete_image_attachment* sul controller
 
-{id: "01-18-05_02", caption: ".../app/controllers/posts_controller.rb -- codice 02", format: ruby, line-numbers: true, number-from: 70}
-```
+***codice 02 - .../app/controllers/posts_controller.rb - line: 70***
+
+```ruby
   def delete_image_attachment
     @image_to_delete = ActiveStorage::Attachment.find(params[:id])
     @image_to_delete.purge
@@ -55,13 +52,13 @@ Come possiamo vedere questo codice è molto generico e può essere usato così c
 
 
 
-
 ## Implementiamo sugli instradamenti (routes)
 
 Prepariamo un instradamento per puntare alla nuova azione "delete_image_attachment". 
 
-{id: "01-18-05_03", caption: ".../app/config/routes.rb -- codice 03", format: ruby, line-numbers: true, number-from: 4}
-```
+***codice 03 - .../app/config/routes.rb - line: 4***
+
+```ruby
   resources :eg_posts do
     member do
       delete :delete_image_attachment
@@ -75,8 +72,7 @@ Prepariamo un instradamento per puntare alla nuova azione "delete_image_attachme
 
 vediamo il path
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails routes | egrep "delete_image_attachment"
 
 user_fb:~/environment/bl6_0 (arru) $ rails routes | egrep "delete_image_attachment"
@@ -87,13 +83,13 @@ Possiamo vedere che esiste l'instradamento / il percorso "delete_image_attachmen
 
 
 
-
 ## Inseriamo il link nella view eg_posts/_form
 
 Usiamo il nuovo instradamento sul link per eliminare l'immagine
 
-{id: "01-18-05_04", caption: ".../app/views/authors/posts/_form.html.erb -- codice 04", format: HTML+Mako, line-numbers: true, number-from: 70}
-```
+***codice 04 - .../app/views/authors/posts/_form.html.erb - line: 70***
+
+```html+erb
       <%= link_to 'Remove', delete_image_attachment_eg_post_path(eg_post.header_image.id), method: :delete, data: { confirm: 'Are you sure?' } if eg_post.header_image.attached? %>
 ```
 
@@ -103,16 +99,14 @@ Mettiamo un "if..." perché se non c'è l'immagine ho un errore nel link non pot
 
 
 
-
 ## Verifichiamo preview
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails s
 ```
 
-* https://mycloud9path.amazonaws.com/eg_posts
+- https://mycloud9path.amazonaws.com/eg_posts
 
 facciamo uploads ed eliminiamo gli uploads fatti.
 Se su aws S3, entriamo nel bucket "bl6-0-dev" possiamo vedere i files caricati e rimossi.
@@ -123,8 +117,9 @@ Se su aws S3, entriamo nel bucket "bl6-0-dev" possiamo vedere i files caricati e
 
 Nel form, se è presente l'immagine, mettiamo una miniatura (thumbnail) con il link di remove.
 
-{id: "01-18-05_05", caption: ".../app/views/authors/posts/_form.html.erb -- codice 05", format: HTML+Mako, line-numbers: true, number-from: 45}
-```
+***codice 05 - .../app/views/authors/posts/_form.html.erb - line: 45***
+
+```html+erb
   <div class="field">
     <%= form.label :header_image %>
     <% if eg_post.header_image.attached? %>
@@ -139,73 +134,6 @@ Nel form, se è presente l'immagine, mettiamo una miniatura (thumbnail) con il l
 
 [tutto il codice](#01-18-05_05all)
 
-
-
-
-## aggiorniamo git 
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git add -A
-$ git commit -m "add link to remove uploaded file"
-```
-
-
-
-
-## Publichiamo su heroku
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git push heroku arru:master
-```
-
-
-
-
-## Chiudiamo il branch
-
-se abbiamo finito le modifiche e va tutto bene:
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git checkout master
-$ git merge arru
-$ git branch -d arru
-```
-
-
-
-
-## Facciamo un backup su Github
-
-Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git push origin master
-```
-
-
-
-
-## Il codice del capitolo
-
-
-
-
-[Codice 01](#01-11-04_01)
-
-{id="01-11-04_01all", title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=1}
-```
-```
-
-
-
-
-
-
----
 
 
 
@@ -224,32 +152,42 @@ Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messag
 
 
 
-## salviamo su git
+## Archiviamo su git 
 
 ```bash
 $ git add -A
-$ git commit -m "users_controllers notice messages i18n"
+$ git commit -m "add link to remove uploaded file"
 ```
 
 
 
-## Pubblichiamo su Heroku
+## Publichiamo su heroku
 
 ```bash
-$ git push heroku ui:master
+$ git push heroku arru:master
 ```
 
 
 
 ## Chiudiamo il branch
 
-Lo lasciamo aperto per il prossimo capitolo
+se abbiamo finito le modifiche e va tutto bene:
+
+```bash
+$ git checkout master
+$ git merge arru
+$ git branch -d arru
+```
 
 
 
 ## Facciamo un backup su Github
 
-Lo facciamo nel prossimo capitolo.
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+```bash
+$ git push origin master
+```
 
 
 

@@ -1,24 +1,21 @@
-{id: 01-base-18-activestorage-filesupload-02-activestorage-install}
-# Cap 18.2 -- Files Upload con ActiveStorage - installazione
+# <a name="top"></a> Cap 18.2 - Files Upload con ActiveStorage - installazione
 
 Da rails 5.2 è inserito un gestore di files upload chiamato ActiveStorage. Vediamo come implementarlo.
 Attiviamo active record per development e facciamo upload dei files in locale. Nel nostro caso il computer locale è quello di Cloud9.
 
 
-Risorse interne:
 
-* 99-rails_references/active_storage/add_image-upload_file_aws
+## Risorse interne
 
+- [99-rails_references/active_storage/add_image-upload_file_aws]()
 
 
 
 ## Apriamo il branch "Active Storage Files Upload"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout -b asfu
 ```
-
 
 
 
@@ -26,9 +23,7 @@ $ git checkout -b asfu
 
 Poiché questa non è una gemma da aggiungere ma è già integrata in Rails dobbiamo solo implementarla. Usiamo lo script seguente:
 
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails active_storage:install
 
 
@@ -38,8 +33,9 @@ Copied migration 20200121112150_create_active_storage_tables.active_storage.rb f
 
 questo crea il seguente migrate
 
-{id: "01-18-02_01", caption: ".../db/migrate/xxx_create_active_storage_tables.active_storage.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
-```
+***codice 01 - .../db/migrate/xxx_create_active_storage_tables.active_storage.rb - line: 1***
+
+```ruby
 # This migration comes from active_storage (originally 20170806125915)
 class CreateActiveStorageTables < ActiveRecord::Migration[5.2]
   def change
@@ -73,17 +69,15 @@ Curiosità: anche se siamo su rails 6.0 il migrate creato è ancora di tipo [5.2
 
 Questo migrate crea due tabelle:
 
- * la tabella active_storage_blobs che archivia tutti i metadata
- * la tabella active_storage_attachments che contiene il collegamento tra il tuo model su cui vuoi fare upload ed il tuo archivio-remoto (o locale) dove immagazzini i files. Questo ci permette di non dover fare nuovi migrate per implemenare vari campi di upload.
+- la tabella active_storage_blobs che archivia tutti i metadata
+- la tabella active_storage_attachments che contiene il collegamento tra il tuo model su cui vuoi fare upload ed il tuo archivio-remoto (o locale) dove immagazzini i files. Questo ci permette di non dover fare nuovi migrate per implemenare vari campi di upload.
 
 Effettuiamo il migrate del database per creare le tabelle sul database
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails db:migrate
 ```
-
 
 
 
@@ -93,16 +87,18 @@ Attiviamo active record per development e facciamo upload dei files in locale. Q
 Il settaggio per il production (su Heroku) lo facciamo nel prossimo capitolo.
 In realtà per l'upload in locale è già preconfigurato di default
 
-{id: "01-18-02_02", caption: ".../config/environments/development.rb -- codice 02", format: ruby, line-numbers: true, number-from: 30}
-```
+***codice 02 - .../config/environments/development.rb - line: 30***
+
+```ruby
   # Store uploaded files on the local file system (see config/storage.yml for options)
   config.active_storage.service = :local
 ```
 
-Verifichiamo la variabile ":local" nello storage.yml
+Verifichiamo la variabile *:local* nello *storage.yml*.
 
-{id: "01-18-02_03", caption: ".../config/storage.yml -- codice 03", format: yaml, line-numbers: true, number-from: 5}
-```
+***codice 03 - .../config/storage.yml - line: 5***
+
+```yaml
 local:
   service: Disk
   root: <%= Rails.root.join("storage") %>
@@ -113,13 +109,13 @@ la cartella principale "root" è nel percorso ".../storage" e la porta di defaul
 
 
 
-
 ## Attiviamo upload immagine per il model eg_post
 
-Implementiamo un campo in cui carichiamo le immagini per i nostri articoli usando "has_one_attached" di active_storage.
+Implementiamo un campo in cui carichiamo le immagini per i nostri articoli usando *has_one_attached* di active_storage.
 
-{id: "01-18-02_04", caption: ".../app/models/eg_post.rb -- codice 04", format: ruby, line-numbers: true, number-from: 4}
-```
+***codice 04 - .../app/models/eg_post.rb - line: 4***
+
+```ruby
   has_one_attached :header_image
 ```
 
@@ -130,13 +126,13 @@ Ogni volta che facciamo l'upload di un'immagine come "header_image" questa chiam
 
 
 
-
 ## Aggiorniamo il controller
 
 Inseriamo il nostro nuovo campo "header_image" nella whitelist
 
-{id: "01-18-02_05", caption: ".../app/controllers/eg_posts_controller.rb -- codice 05", format: ruby, line-numbers: true, number-from: 77}
-```
+***codice 05 - .../app/controllers/eg_posts_controller.rb - line: 77***
+
+```ruby
     # Never trust parameters from the scary internet, only allow the white list through.
     def eg_post_params
       params.require(:eg_post).permit(:meta_title, :meta_description, :headline, :incipit, :user_id, :price, :header_image)
@@ -150,8 +146,9 @@ Inseriamo il nostro nuovo campo "header_image" nella whitelist
 
 ## Implementiamo la view
 
-{id: "01-18-02_06", caption: ".../app/views/eg_posts/_form.html.erb -- codice 06", format: HTML+Mako, line-numbers: true, number-from: 45}
-```
+***codice 06 - .../app/views/eg_posts/_form.html.erb - line: 45***
+
+```html+erb
   <div class="field">
     <%= form.label :header_image %>
     <%= form.file_field :header_image %>
@@ -164,8 +161,9 @@ Inseriamo il nostro nuovo campo "header_image" nella whitelist
 
 Per visualizzare l'immagine basta "image_tag @eg_post.header_image" ma per sicurezza mettiamo anche un controllo
 
-{id: "01-18-02_07", caption: ".../app/views/eg_posts/show.html.erb -- codice 07", format: HTML+Mako, line-numbers: true, number-from: 62}
-```
+***codice 07 - .../app/views/eg_posts/show.html.erb - line: 62***
+
+```html+erb
 <% if @eg_post.header_image.attached? %>
   <p><%= image_tag @eg_post.header_image %></p>
 <% else %>
@@ -183,23 +181,21 @@ non usiamo ".present?" perché darebbe sempre "true". Per verificare la presenza
 
 ## Verifichiamo preview
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails s
 ```
 
 andiamo alla pagina con l'elenco degli articoli ossia sull'URL:
 
-* https://mycloud9path.amazonaws.com/eg_posts
+- https://mycloud9path.amazonaws.com/eg_posts
 
 Creaiamo un nuovo articolo ed aggiungiamo un'immagine. Verremo portati su show e vedremo l'immagine nella pagina.
 
 
 Possiamo inoltre vedere nella log (sul terminale) l'attività di upload nel database:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 Started POST "/eg_posts?locale=it" for 92.223.151.11 at 2020-01-21 12:08:58 +0000
 Processing by EgPostsController#create as HTML
   Parameters: {"authenticity_token"=>"9bwpAogeZ7WtNlLf9ujB3Y6tEIPBBHBzjeR3uNNau1GZ1j5wjxzjT/YxzAcYgqiJYUmRjZK+GSjIc00/BkdUZw==", "eg_post"=>{"meta_title"=>"Articolo con immagine", "meta_description"=>"bella immagine", "headline"=>"Guarda che immagine", "incipit"=>"primo articolo con le immagini", "user_id"=>"1", "price"=>"0.0", "header_image"=>#<ActionDispatch::Http::UploadedFile:0x00007f855a7e84e8 @tempfile=#<Tempfile:/tmp/RackMultipart20200121-13359-rg4719.jpg>, @original_filename="001.jpg", @content_type="image/jpeg", @headers="Content-Disposition: form-data; name=\"eg_post[header_image]\"; filename=\"001.jpg\"\r\nContent-Type: image/jpeg\r\n">}, "commit"=>"Create Eg post", "locale"=>"it"}
@@ -254,17 +250,17 @@ Completed 200 OK in 38ms (Views: 26.0ms | ActiveRecord: 1.2ms | Allocations: 175
 
 
 
-
 ## Ridimensioniamo l'immagine
 
 Per ridimensionare l'immagine possiamo chiamare il metodo ".variant(...)"
 
-{caption: ".../app/views/eg_posts/show.html.erb -- codice s.n.", format: HTML+Mako, line-numbers: true, number-from: 62}
-```
+***codice n/a - .../app/views/eg_posts/show.html.erb - line: 62***
+
+```html+erb
   <p><%= image_tag @eg_post.header_image.variant(resize: "400x400") %></p>
 ```
 
-Attenzione! per funzionare il .variand necessita di minimagic
+> Attenzione! per funzionare il *.variand* necessita di minimagic.
 
 
 
@@ -273,30 +269,31 @@ Attenzione! per funzionare il .variand necessita di minimagic
 
 Fino a rails 5.2 si usava la gemma "mini_magick". La gemma "mini_magick" ci permette la manipolazione delle immagini con un minimo uso di memoria. Questa gemma si appoggia ad  ImageMagick / GraphicsMagick per l'elaborazione delle immagini.
 
-I> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/mini_magick)
-I>
-I> facciamo riferimento al [tutorial github della gemma](https://github.com/minimagick/minimagick)
+> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/mini_magick)
+>
+> facciamo riferimento al [tutorial github della gemma](https://github.com/minimagick/minimagick)
 
 
 Ma da rails 6.0 è proposta la gemma "image_processing" quindi usiamo quest'ultima.
 
-* https://bloggie.io/@kinopyo/upgrade-guide-active-storage-in-rails-6
+- https://bloggie.io/@kinopyo/upgrade-guide-active-storage-in-rails-6
 
 ImageProcessing's advantages:
 
-* The new methods #resize_to_fit, #resize_to_fill, etc also sharpen the thumbnail after resizing.
-* Fixes the orientation automatically, no more mistakenly rotated images!
-* Provides another backend libvips that has significantly better performance than ImageMagick.
-* Has a clear goal and scope and is well maintained. (It was originally written to be used with Shrine.)
+- The new methods #resize_to_fit, #resize_to_fill, etc also sharpen the thumbnail after resizing.
+- Fixes the orientation automatically, no more mistakenly rotated images!
+- Provides another backend libvips that has significantly better performance than ImageMagick.
+- Has a clear goal and scope and is well maintained. (It was originally written to be used with Shrine.)
 
 
-I> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/image_processing)
-I>
-I> facciamo riferimento al [tutorial github della gemma](https://github.com/janko/image_processing)
+> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/image_processing)
+>
+> facciamo riferimento al [tutorial github della gemma](https://github.com/janko/image_processing)
 
 
-{id: "01-18-02_08", caption: ".../Gemfile -- codice 08", format: ruby, line-numbers: true, number-from: 25}
-```
+***codice 08 - .../Gemfile - line: 25***
+
+```ruby
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 gem 'image_processing', '~> 1.10', '>= 1.10.3'
@@ -304,15 +301,13 @@ gem 'image_processing', '~> 1.10', '>= 1.10.3'
 
 [tutto il codice](#01-18-02_08all)
 
-I> In realtà la gemma è già presente nel Gemfile basterebbe solo decommentarla però non è la versione più aggiornata. Quindi lascio la linea commentata ed aggiungo la più aggiornata, così in caso di problemi attivo quella commentata che sappiamo essere stata testata con Rails.
+> In realtà la gemma è già presente nel Gemfile basterebbe solo decommentarla però non è la versione più aggiornata. Quindi lascio la linea commentata ed aggiungo la più aggiornata, così in caso di problemi attivo quella commentata che sappiamo essere stata testata con Rails.
 
 Eseguiamo l'installazione della gemma con bundle
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ bundle install
 ```
-
 
 
 
@@ -321,90 +316,78 @@ $ bundle install
 ImageProcessing, cosi come faceva MiniMagick, richiede l'installazione di "ImageMagic" come backend. 
 Per funzionare image_processing ha bisogno di imagemagick presente, quindi installiamolo su Cloud9. (Per la produzione, Heroku lo installa automaticamente)
 
-I> ImageProcessing è anche in grado di gestire il backend "Libvips" che è una nuova libreria più performante ma ad oggi Gennaio 2020 quest'ultima non è supportata da Heroku e quindi non la usiamo.
-
+> ImageProcessing è anche in grado di gestire il backend "Libvips" che è una nuova libreria più performante ma ad oggi Gennaio 2020 quest'ultima non è supportata da Heroku e quindi non la usiamo.
 
 Visto che abbiamo Ubuntu nella nostra aws Cloud9, usiamo "apt-get".
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo apt-get install imagemagick
 ```
 
 Se non funziona eseguire:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo apt-get update
 $ sudo apt-get install imagemagick
 ```
 
 Se neanche questo funziona eseguire:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo add-apt-repository main
 $ sudo apt-get update
 $ sudo apt-get install imagemagick
 ```
 
+> Attenzione! Se avessimo scelto di far girare aws cloud9 su Amazon Linux invece di Ubuntu avremmo dovuto usare "yum" invece di "apt-get".
 
-Attenzione! Se avessimo scelto di far girare aws cloud9 su Amazon Linux invece di Ubuntu avremmo dovuto usare "yum" invece di "apt-get".
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo yum install ImageMagick
 ```
 
 
 
-
 ## Verifichiamo preview
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails s
 ```
 andiamo all'URL:
 
-* https://mycloud9path.amazonaws.com/example_posts/10
+- https://mycloud9path.amazonaws.com/example_posts/10
 
 verifichiamo che adesso la pagina show visualizza un'immagine di 200x200.
 
 
 Le tre principali forme di resize sono:
 
-* resize_to_fit: Will downsize the image if it's larger than the specified dimensions or upsize if it's smaller.
-* resize_to_limit: Will only resize the image if it's larger than the specified dimensions
-* resize_to_fill: Will crop the image in the larger dimension if it's larger than the specified dimensions
+- resize_to_fit: Will downsize the image if it's larger than the specified dimensions or upsize if it's smaller.
+- resize_to_limit: Will only resize the image if it's larger than the specified dimensions
+- resize_to_fill: Will crop the image in the larger dimension if it's larger than the specified dimensions
 
 
 
 
 ## salviamo su git
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git add -A
 $ git commit -m "Install ActiveStorage and begin implementation with ImageProcessing and ImageMagic"
 ```
 
 
 
-
 ## Pubblichiamo su Heroku
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git push heroku asfu:master
 $ heroku run rails db:migrate
 ```
 
-
 Abbiamo gli avvisi perché ancora non stiamo usando un servizio terzo per archiviare i files
 
-```
+```bash
 remote: ###### WARNING:
 remote: 
 remote:        You set your `config.active_storage.service` to :local in production.
@@ -456,13 +439,11 @@ Nel prossimo capitolo attiviamo Amazon Web Service S3.
 
 
 
-
 ## Chiudiamo il branch
 
 se abbiamo finito le modifiche e va tutto bene:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout master
 $ git merge asfu
 $ git branch -d asfu
@@ -470,328 +451,11 @@ $ git branch -d asfu
 
 
 
-
 ## Facciamo un backup su Github
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git push origin master
 ```
-
-
-
-
-## Il codice del capitolo
-
-
-
-
-[Codice 01](#01-11-02_01)
-
-{id="01-11-02_01all", title=".../app/models/example_post.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-```
-class ExamplePost < ApplicationRecord
-
- has_one_attached :header_image
-
-  belongs_to :user
-end
-```
-
-
-
-
-[Codice 02](#01-11-02_02)
-
-{{id="01-11-02_02all", title=".../app/controllers/example_posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-```
-class ExamplePostsController < ApplicationController
-  before_action :set_example_post, only: [:show, :edit, :update, :destroy]
-
-  # GET /example_posts
-  # GET /example_posts.json
-  def index
-    @example_posts = ExamplePost.all
-    authorize @example_posts
-  end
-
-  # GET /example_posts/1
-  # GET /example_posts/1.json
-  def show
-  end
-
-  # GET /example_posts/new
-  def new
-    @example_post = ExamplePost.new
-    authorize @example_post
-  end
-
-  # GET /example_posts/1/edit
-  def edit
-  end
-
-  # POST /example_posts
-  # POST /example_posts.json
-  def create
-    @example_post = ExamplePost.new(example_post_params)
-    authorize @example_post
-
-    respond_to do |format|
-      if @example_post.save
-        format.html { redirect_to @example_post, notice: 'Example post was successfully created.' }
-        format.json { render :show, status: :created, location: @example_post }
-      else
-        format.html { render :new }
-        format.json { render json: @example_post.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /example_posts/1
-  # PATCH/PUT /example_posts/1.json
-  def update
-    respond_to do |format|
-      if @example_post.update(example_post_params)
-        format.html { redirect_to @example_post, notice: 'Example post was successfully updated.' }
-        format.json { render :show, status: :ok, location: @example_post }
-      else
-        format.html { render :edit }
-        format.json { render json: @example_post.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /example_posts/1
-  # DELETE /example_posts/1.json
-  def destroy
-    @example_post.destroy
-    respond_to do |format|
-      format.html { redirect_to example_posts_url, notice: 'Example post was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_example_post
-      @example_post = ExamplePost.find(params[:id])
-      authorize @example_post
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def example_post_params
-      params.require(:example_post).permit(:title, :incipit, :user_id, :header_image)
-    end
-end
-```
-
-
-
-
-[Codice 03](#01-11-02_03)
-
-{id="01-11-02_03all", title=".../app/views/example_posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-```
-<%= form_with(model: example_post, local: true) do |form| %>
-  <% if example_post.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(example_post.errors.count, "error") %> prohibited this example_post from being saved:</h2>
-
-      <ul>
-      <% example_post.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :title %>
-    <%= form.text_field :title %>
-  </div>
-
-  <div class="field">
-    <%= form.label :incipit %>
-    <%= form.text_area :incipit %>
-  </div>
-
-  <div class="field">
-    <%= form.label :user_id %>
-    <%= form.text_field :user_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :header_image %>
-    <%= form.file_field :header_image %>
-  </div>
-  
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
-```
-
-
-
-
-[Codice 04](#01-11-02_04)
-
-{id="01-11-02_04all", title=".../app/views/example_posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-```
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Title:</strong>
-  <%= @example_post.title %>
-</p>
-
-<p>
-  <strong>Incipit:</strong>
-  <%= @example_post.incipit %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @example_post.user %>
-</p>
-
-<% if @example_post.header_image.attached? %>
-  <p><%= image_tag @example_post.header_image %></p>
-<% else %>
-  <p>Nessuna immagine presente</p>
-<% end %>
-
-<%= link_to 'Edit', edit_example_post_path(@example_post) %> |
-<%= link_to 'Back', example_posts_path %>
-```
-
-
-
-
-[Codice 05](#01-11-02_05)
-
-{id="01-11-02_05all", title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=1}
-```
-source 'https://rubygems.org'
-git_source(:github) { |repo| "https://github.com/#{repo}.git" }
-
-ruby '2.4.1'
-
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2.1', '>= 5.2.1.1'
-# Use postgresql as the database for Active Record
-gem 'pg', '>= 0.18', '< 2.0'
-# Use Puma as the app server
-gem 'puma', '~> 3.11'
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
-# See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'mini_racer', platforms: :ruby
-
-# Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '~> 4.2'
-# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
-gem 'turbolinks', '~> 5'
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.5'
-# Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 4.0'
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
-
-# Use ActiveStorage variant
-gem 'mini_magick', '~> 4.8'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
-# Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '>= 1.1.0', require: false
-
-# Flexible authentication solution for Rails with Warden 
-gem 'devise', '~> 4.5'
-
-# Object oriented authorization for Rails applications
-gem 'pundit', '~> 2.0'
-
-group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-end
-
-group :development do
-  # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
-  gem 'web-console', '>= 3.3.0'
-  gem 'listen', '>= 3.0.5', '< 3.2'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
-end
-
-group :test do
-  # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '>= 2.15'
-  gem 'selenium-webdriver'
-  # Easy installation and use of chromedriver to run system tests with Chrome
-  gem 'chromedriver-helper'
-end
-
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-```
-
-
-
-
-
-
----
-
-
-
-## Verifichiamo preview
-
-```bash
-$ sudo service postgresql start
-$ rails s
-```
-
-apriamolo il browser sull'URL:
-
-* https://mycloud9path.amazonaws.com/users
-
-Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
-
-
-
-## salviamo su git
-
-```bash
-$ git add -A
-$ git commit -m "users_controllers notice messages i18n"
-```
-
-
-
-## Pubblichiamo su Heroku
-
-```bash
-$ git push heroku ui:master
-```
-
-
-
-## Chiudiamo il branch
-
-Lo lasciamo aperto per il prossimo capitolo
-
-
-
-## Facciamo un backup su Github
-
-Lo facciamo nel prossimo capitolo.
 
 
 

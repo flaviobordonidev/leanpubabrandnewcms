@@ -1,4 +1,4 @@
-# Implementiamo le autorizzazioni per example_companies
+# <a name="top"></a> Cap 15.99 - Implementiamo le autorizzazioni per example_companies
 
 Saltiamo questo capitolo perché va sviluppato con più calma.
 
@@ -6,24 +6,21 @@ Ampliamo la gestione delle autorizzazioni introducendo anche autorizzazioni di v
 
 
 
-
 ## Apriamo il branch "Authorization ExampleCompanies"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout -b aec
 ```
-
 
 
 
 ## Scenario articoli aziendali privati
 
 In questo scenario
-* Ogni utente che non appartiene a nessuna azienda non può vedere nessun articolo
-* Ogni utente con o senza ruolo, che appartiene ad una o più aziende, ha accesso alla lettura di tutti gli articoli delle aziende a cui appartiene
-* Ogni utente con ruolo moderatore, che appartiene ad una o più aziende, può modificare tutti gli articoli delle aziende a cui appartiene
-* Ogni utente con ruolo autore, che appartiene ad una o più aziende, può modificare solo i suoi articoli delle aziende a cui appartiene
+- Ogni utente che non appartiene a nessuna azienda non può vedere nessun articolo
+- Ogni utente con o senza ruolo, che appartiene ad una o più aziende, ha accesso alla lettura di tutti gli articoli delle aziende a cui appartiene
+- Ogni utente con ruolo moderatore, che appartiene ad una o più aziende, può modificare tutti gli articoli delle aziende a cui appartiene
+- Ogni utente con ruolo autore, che appartiene ad una o più aziende, può modificare solo i suoi articoli delle aziende a cui appartiene
 
 Questo scenario utillizza la tabella example_companies
 
@@ -32,11 +29,9 @@ Per implementare questo scenario dobbiamo prima creare una relazione uno-a-molti
 
 
 
-
 ## Aggiungiamo policy per ExampleCompany
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails g pundit:policy ExampleCompany
 
 
@@ -49,8 +44,9 @@ Running via Spring preloader in process 6341
 
 questo crea la seguente policy
 
-{title=".../app/policies/example_company_policy.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-```
+***codice n/a - .../app/policies/example_company_policy.rb - line: 1***
+
+```ruby
 class ExampleCompanyPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
@@ -59,9 +55,6 @@ class ExampleCompanyPolicy < ApplicationPolicy
   end
 end
 ```
-
-
-
 
 
 

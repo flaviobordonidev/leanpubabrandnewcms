@@ -1,13 +1,12 @@
-{id: 01-base-18-activestorage-filesupload-07-aws_s3-restrict_permissions}
-# Cap 18.7 -- Restringiamo i permessi
+# <a name="top"></a> Cap 18.7 -- Restringiamo i permessi
 
 E' arrivato il momento di lavorare sui files CORS restringendo i permessi di accesso.
 
 In questo capitolo:
 
-* Lo IAM user botbrandnewcmsdev può accedere solo al bucket brandnewcmsdev 
-* Lo IAM user botbrandnewcmsprod può accedere solo al bucket brandnewcmsprod
-* a scopo didattico creiamo IAM user botbrandnewcmsprodro (read only) che può solo visualizzare i file
+- Lo IAM user botbrandnewcmsdev può accedere solo al bucket brandnewcmsdev 
+- Lo IAM user botbrandnewcmsprod può accedere solo al bucket brandnewcmsprod
+- a scopo didattico creiamo IAM user botbrandnewcmsprodro (read only) che può solo visualizzare i file
 
 
 

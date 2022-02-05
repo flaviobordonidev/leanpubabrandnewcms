@@ -1,13 +1,25 @@
-{id: 01-base-20-organize_models-01-the_method}
-# Cap 20.1 -- Organizziamo i models
+# <a name="top"></a> Cap 20.1 - Organizziamo i models
 
 Un modo semplice ed efficace per mantenere organizzato il codice all'interno dei models è quello di raggrupparlo all'interno di "divisori" prestabiliti.
 In questo capitolo studiamo il metodo scelto.
 
+***
+ATTENZIONE: guarda anhe il capitolo 20.2 perché si possono unire in un unico capitolo.
+***
 
-Risorse interne:
+## Risorse interne
 
-* 99-rails_references/models/01-organize_models
+- [99-rails_references/models/01-organize_models]()
+
+
+
+
+## Apriamo il branch "Organize Models"
+
+{caption: "terminal", format: bash, line-numbers: false}
+```
+$ git checkout -b om
+```
 
 
 
@@ -16,8 +28,9 @@ Risorse interne:
 
 Allinterno dei models della nostra applicazione usare i seguenti divisori
 
-{id: "01-20-01_01", caption: ".../app/models/my_model.rb -- codice 01", format: ruby, line-numbers: true, number-from: 3}
-```
+***codice 01 - .../app/models/my_model.rb - line: 3***
+
+```ruby
   # == Constants ============================================================
   
   # == Extensions ===========================================================
@@ -39,13 +52,11 @@ Allinterno dei models della nostra applicazione usare i seguenti divisori
 
 
 
-
 ### == Constants
 
 Sono variabili fisse in genere tutte scritte in maiuscolo.
 
-* MY_CONSTANT = ...
-
+- MY_CONSTANT = ...
 
 
 
@@ -53,11 +64,10 @@ Sono variabili fisse in genere tutte scritte in maiuscolo.
 
 Sono delle linee di codice precedute dalla chiamata "extend" 
 
-* extend MyModule
-* extend FriendlyId
+- extend MyModule
+- extend FriendlyId
 
 ( se ci fossero degli "include ..." nel model li metteremmo qui. Ma normalmente gli "include ..." non sono nei models)
-
 
 
 
@@ -66,11 +76,10 @@ Sono delle linee di codice precedute dalla chiamata "extend"
 Sono delle "nuove colonne" che vengono fornite alla tabella del model. In altre parole sono attributi della tabella non definiti a livello di database.
   # ATTRIBUTES NOT MAPPED IN DATABASE (getter and setter methods)
 
-* attr_accessor :my_column_x
-* translates :my_article_description
-* has_attached_file :my_logo_image
-* friendly_id :title, use: :slugged
-
+- attr_accessor :my_column_x
+- translates :my_article_description
+- has_attached_file :my_logo_image
+- friendly_id :title, use: :slugged
 
 
 
@@ -78,9 +87,8 @@ Sono delle "nuove colonne" che vengono fornite alla tabella del model. In altre 
 
 Sono le relazioni uno-a-uno, uno-a-molti, molti-a-molti, polimoprfiche, ...
 
-* has_many :documents
-* belongs_to :user 
-
+- has_many :documents
+- belongs_to :user 
 
 
 
@@ -88,10 +96,9 @@ Sono le relazioni uno-a-uno, uno-a-molti, molti-a-molti, polimoprfiche, ...
 
 Sono le funzioni di validazione implementate su alcune colonne della tabella.
 
-* validates: email, presence:     true,
+- validates: email, presence:     true,
                     uniqueness:   true,
                     email_format: true
-
 
 
 
@@ -99,10 +106,9 @@ Sono le funzioni di validazione implementate su alcune colonne della tabella.
 
 Sono chiamate di tipo lambda a delle queries che possiamo anche concatenare.
 
-* scope :published, -> { where(published: true) }
-* scope :search, -> (query) {where("full_address ILIKE ? OR address_tag ILIKE ?", "%#{query.strip}%", "%#{query.strip}%")}
-* scope :tagged, -> (tag){ tagged_with(tag) }
-
+- scope :published, -> { where(published: true) }
+- scope :search, -> (query) {where("full_address ILIKE ? OR address_tag ILIKE ?", "%#{query.strip}%", "%#{query.strip}%")}
+- scope :tagged, -> (tag){ tagged_with(tag) }
 
 
 
@@ -111,9 +117,8 @@ Sono chiamate di tipo lambda a delle queries che possiamo anche concatenare.
 Sono le chiamate che "solitamente" vediamo tra le prime ad esempio nei controllers. Nel caso del model sono finite un po' più in basso.
 Sono le chiamate alle funzioni che vengono fatte "scattare" da un determinato evento (trigger).
 
-* before_validation :my_method_that_is_activated
-* after_validation :my_other_method_that_is_activated
-
+- before_validation :my_method_that_is_activated
+- after_validation :my_other_method_that_is_activated
 
 
 
@@ -121,10 +126,11 @@ Sono le chiamate alle funzioni che vengono fatte "scattare" da un determinato ev
 
 sono i metodi scritti dentro il model che fanno riferimento a se stesso.
 
+```ruby
 def self.my_class_method
   ...
 end
-
+```
 
 
 
@@ -132,19 +138,20 @@ end
 
 sono i metodi scritti dentro il model.
 
+```ruby
 def my_class_method
   ...
 end
-
-
+```
 
 
 
 ### Esempio
 
 
-{id: "01-20-01_02", caption: ".../app/models/my_model.rb -- codice 02", format: ruby, line-numbers: true, number-from: 3}
-```
+***codice 02 - .../app/models/my_model.rb - line: 3***
+
+```ruby
   # == Constants ============================================================
   
   GENDERS = [[‘Male’, ‘m’], [‘Female’, ’f’]].freeze
@@ -220,14 +227,6 @@ end
 ```
 
 [tutto il codice](#01-20-01_01all)
-
-
-
-
-
-
-
----
 
 
 

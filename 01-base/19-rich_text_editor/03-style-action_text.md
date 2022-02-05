@@ -1,20 +1,20 @@
-{id: 01-base-19-rich_text_editor-03-style-action_text}
-# Cap 19.3 -- Cambiamo lo style di Action Text
+# <a name="top"></a> Cap 19.3 - Cambiamo lo style di Action Text
 
 
-* https://blog.saeloun.com/2019/10/01/rails-6-action-text.html
-* https://blog.saeloun.com/2019/11/12/attachments-in-action-text-rails-6
 
+## Risorse esterne
+
+- https://blog.saeloun.com/2019/10/01/rails-6-action-text.html
+- https://blog.saeloun.com/2019/11/12/attachments-in-action-text-rails-6
+- https://stackoverflow.com/questions/51494407/trix-editor-rails-customizing
 
 
 
 ## Apriamo il branch "Style Action Text"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout -b sat
 ```
-
 
 
 
@@ -22,12 +22,13 @@ $ git checkout -b sat
 ## Personalizziamo lo stile di Action Text
 
 
-* https://stackoverflow.com/questions/51494407/trix-editor-rails-customizing
+- https://stackoverflow.com/questions/51494407/trix-editor-rails-customizing
 
 nascondiamo tutto il gruppo di gestione dei files che include il pulsante di inserimento attachment.
 
-{id: "01-19-03_01", caption: ".../app/assets/stylesheets/actiontext.scss -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 2}
-```
+***codice 01 - .../app/assets/stylesheets/actiontext.scss - line: 2***
+
+```scss
 trix-toolbar .trix-button-group--file-tools {
  display: none;
  //background-color: green;
@@ -36,8 +37,9 @@ trix-toolbar .trix-button-group--file-tools {
 
 nascondiamo il bottone dei titoli.
 
-{caption: ".../app/assets/stylesheets/actiontext.scss -- codice s.n.", format: HTML+Mako, line-numbers: true, number-from: 2}
-```
+***codice 01 - ...continua - line: 2***
+
+```scss
 trix-toolbar button.trix-button--icon-heading-1 {
   display: none;
 }
@@ -45,13 +47,13 @@ trix-toolbar button.trix-button--icon-heading-1 {
 
 nascondiamo la sola immagine nel bottone di inserimento attachment. (ovviamente devo commentare il "display: none;" nel gruppo di gestione dei files.
 
-{caption: ".../app/assets/stylesheets/actiontext.scss -- codice s.n.", format: HTML+Mako, line-numbers: true, number-from: 2}
-```
+***codice 01 - ...continua - line: 2***
+
+```scss
 trix-toolbar .trix-button-group button.trix-button--icon-attach::before {
  background-image: none;
 }
 ```
-
 
 
 
@@ -63,7 +65,9 @@ We can modify app/assets/stylesheets/actiontext.scss, to change styling of Trix 
 
 To modify how the attachments are rendered we can update app/views/active_storage/blobs/_blob.html.erb. For example you can add a download link to each rendered attachment. The code would look something like below:
 
-```
+***codice n/a - .../app/views/active_storage/blobs/_blob.html.erb - line 1***
+
+```html+erb
 <%# app/views/active_storage/blobs/_blob.html.erb %>
 <%
   figure_class = [
@@ -94,13 +98,6 @@ To modify how the attachments are rendered we can update app/views/active_storag
   </figcaption>
 </figure>
 ```
-
-
-
-
-
-
----
 
 
 

@@ -1,23 +1,21 @@
-{id: 01-base-17-pagination-01-gem-pagy}
-# Cap 17.1 -- Installiamo gemma Pagy per la paginazione (pagination)
+# <a name="top"></a> Cap 17.1 - Installiamo gemma Pagy per la paginazione (pagination)
 
 Per dividere l'elenco su più pagine.
 Le gemme che vanno per la maggiore sono: will_paginate, kaminari e pagy. Scegliamo pagy perché è mooolto più veloce.
 
-Risorse interne
 
-* 99-rails_references/views/pagination
 
+## Risorse interne
+
+- [99-rails_references/views/pagination]()
 
 
 
 ## Apriamo il branch "Pagination with Pagy"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout -b pp
 ```
-
 
 
 
@@ -27,23 +25,23 @@ A differenza di will_paginate e kaminari che si integrano in ActiveRecord, la ge
 Ad esempio la dobbiamo includere per i controllers "include Pagy::Backend" e la dobbiamo includere per le views "include Pagy::Frontend".
 Inoltre nel controller non abbiamo chiamate "integrate" in ActiveRecord come ad esempio nell'azione "index" di un blog:
 
-* will_paginate : @blog_posts = BlogPost.all.pagination(params[:page])
-* kaminari      : @blog_posts = BlogPost.all.page(params[:page])
-* pagy          : @pagy, @blog_posts = pagy(BlogPost.all)
+- will_paginate : @blog_posts = BlogPost.all.pagination(params[:page])
+- kaminari      : @blog_posts = BlogPost.all.page(params[:page])
+- pagy          : @pagy, @blog_posts = pagy(BlogPost.all)
 
-Invece di avere un aggancio ".page" o ".pagination" la gemma pagy ha una funzione che accetta tutto l'ActiveRecord e ci crea un oggetto "@pagy" dedicato alla paginazione.
-
+Invece di avere un aggancio *.page* o *.pagination* la gemma pagy ha una funzione che accetta tutto l'ActiveRecord e ci crea un oggetto "@pagy" dedicato alla paginazione.
 
 
 
 ## Installiamo la gemma
 
-I> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/pagy)
-I>
-I> facciamo riferimento al [tutorial github della gemma](https://github.com/ddnexus/pagy)
+> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/pagy)
+>
+> facciamo riferimento al [tutorial github della gemma](https://github.com/ddnexus/pagy)
 
-{id: "01-17-01_01", caption: ".../Gemfile -- codice 01", format: ruby, line-numbers: true, number-from: 37}
-```
+***codice 01 - .../Gemfile - line: 37***
+
+```ruby
 # Agnostic pagination in plain ruby
 gem 'pagy', '~> 3.7', '>= 3.7.2'
 ```
@@ -52,11 +50,9 @@ gem 'pagy', '~> 3.7', '>= 3.7.2'
 
 Eseguiamo l'installazione della gemma con bundle
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ bundle install
 ```
-
 
 
 
@@ -69,8 +65,9 @@ Abbiamo due scelte:
 
 Scegliamo di includere la paginazione in tutti i controllers perché per quelli che non la utilizzano non crea nessun problema.
 
-{id: "01-17-01_02", caption: ".../app/controllers/application_controller.rb -- codice 02", format: ruby, line-numbers: true, number-from: 1}
-```
+***codice 02 - .../app/controllers/application_controller.rb - line: 1***
+
+```ruby
 include Pagy::Backend
 ```
 
@@ -82,62 +79,14 @@ include Pagy::Backend
 
 includiamo la paginazione anche in application_helper in modo da rendere disponibili gli helpers di pagy a tutte le views
 
-{id: "01-17-01_04", caption: ".../app/helpers/application_helper.rb -- codice 04", format: ruby, line-numbers: true, number-from: 1}
-```
+***codice 04 - .../app/helpers/application_helper.rb - line: 1***
+
+```ruby
   include Pagy::Frontend
 ```
 
 [tutto il codice](#01-15-04_04all)
 
-
-
-## Archiviamo su git
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git add -A
-$ git commit -m "Install pagination with pagy"
-```
-
-
-
-
-## Pubblichiamo su heroku
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git push heroku pp:master
-```
-
-
-
-
-## Chiudiamo il branch
-
-Lo chiudiamo nei prossimi capitoli. 
-Al momento lo lasciamo aperto per implementare il pagination su "eg_posts" ed "users"
-
-
-
-
-## Il codice del capitolo
-
-
-
-
-
-[Codice 01](#02-09-01_01)
-
-{id="02-09-01_01all", title=".../Gemfile", lang=ruby, line-numbers=on, starting-line-number=1}
-```
-```
-
-
-
-
-
-
----
 
 
 
@@ -156,26 +105,27 @@ Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messag
 
 
 
-## salviamo su git
+## Archiviamo su git
 
 ```bash
 $ git add -A
-$ git commit -m "users_controllers notice messages i18n"
+$ git commit -m "Install pagination with pagy"
 ```
 
 
 
-## Pubblichiamo su Heroku
+## Pubblichiamo su heroku
 
 ```bash
-$ git push heroku ui:master
+$ git push heroku pp:master
 ```
 
 
 
 ## Chiudiamo il branch
 
-Lo lasciamo aperto per il prossimo capitolo
+Lo chiudiamo nei prossimi capitoli. 
+Al momento lo lasciamo aperto per implementare il pagination su *eg_posts* ed *users*.
 
 
 

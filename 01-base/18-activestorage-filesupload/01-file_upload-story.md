@@ -1,11 +1,10 @@
-{id: 01-base-18-activestorage-filesupload-01-file_upload-story}
-# Cap 18.1 -- Soluzioni Rail per upload immagini
+# <a name="top"></a> Cap 18.1 - Soluzioni Rail per upload immagini
 
 
-Risorse interne:
 
-* 99-rails_references/active_storage/add_image-upload_file_aws
+## Risorse interne
 
+- [99-rails_references/active_storage/add_image-upload_file_aws]()
 
 
 
@@ -13,19 +12,17 @@ Risorse interne:
 
 Prima di Rails 5.2 e della comparsa di ActiveRecord esistevano varie gemme per gestire gli upload ed i download dei files su rails è meglio usare una gemma specifica tipo:
 
-* shrine
-* refile
-* carrierwave
-* paperclip
-* dragonfly
-
+- shrine
+- refile
+- carrierwave
+- paperclip
+- dragonfly
 
 
 
 ## Shrine
 
 Nel 2018 è la scelta migliore perché è organizzato molto bene il codice è leggera e modulare.
-
 
 
 
@@ -37,32 +34,10 @@ Purtroppo su C9 mi da errore la "gem "refile-mini_magick". Al posto di Refile us
 
 
 
-
 ## Paperclip
+
 Paperclip is deprecated.
 For new projects, we recommend Rails' own ActiveStorage.
-
-
-
-
-
-
----
-
-
-
-## Verifichiamo preview
-
-```bash
-$ sudo service postgresql start
-$ rails s
-```
-
-apriamolo il browser sull'URL:
-
-* https://mycloud9path.amazonaws.com/users
-
-Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
 
 
 

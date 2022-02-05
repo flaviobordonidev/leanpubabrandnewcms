@@ -1,14 +1,13 @@
-DA RIVEDERE. E' PUNDIT CON ALCUNE GESTIONI DI RUOLO USANDO ROLIFY
+# <a name="top"></a> Cap 16.2 - Implementiamo le autorizzazioni per example_posts
 
-# Implementiamo le autorizzazioni per example_posts
 
+> DA RIVEDERE. E' PUNDIT CON ALCUNE GESTIONI DI RUOLO USANDO ROLIFY
 
 
 
 ## Apriamo il branch "Authorization ExamplePost"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout -b aep
 ```
 
@@ -19,8 +18,7 @@ $ git checkout -b aep
 
 Per aggiungere una policy per un modello specifico aggiungiamo il nome del model.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails g pundit:policy ExamplePost
 ```
 
@@ -33,14 +31,16 @@ $ rails g pundit:policy ExamplePost
 
 Oltre la relazione uno-a-molti aggiungiamo la chiamata **resourcify** per permettere alla gemma rolify di creare ruoli basati sui posts
 
-{title=".../app/models/post.rb", lang=ruby, line-numbers=on, starting-line-number=2}
-```
+***codice n/a - .../app/models/post.rb - line: 2***
+
+```ruby
   resourcify
 
   belongs_to :user
 ```
 
-{title=".../app/models/user.rb", lang=ruby, line-numbers=on, starting-line-number=9}
+***codice n/a - ...continua - line: 9***
+
 ```
   rolify
 
@@ -54,8 +54,7 @@ Oltre la relazione uno-a-molti aggiungiamo la chiamata **resourcify** per permet
 
 Usando roliy associamo il ruolo ":admin" al primo utente
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails c
 > u = User.first
 > u.has_role? :admin

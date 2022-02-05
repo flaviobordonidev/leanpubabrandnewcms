@@ -1,13 +1,13 @@
-{id: 01-base-18-activestorage-filesupload-03-aws_s3-iam_full_access}
-# Cap 18.3 -- Amazon Web Services S3 - IAM user full access
+# <a name="top"></a> Cap 18.3 - Amazon Web Services S3 - IAM user full access
 
 Iniziamo a dialogare con AWS - S3. Creiamo un utente IAM e gli diamo il permesso (CORS) pieno accesso a tutti i buckets di S3, ossia a tutta la parte di archiviazione.
 Successivamente restringeremo i permessi (CORS) ai soli buckets produzione e sviluppo della nostra applicazione.
 
 
-Risorse interne:
 
-* 99-rails_references/active_storage/aws_s3
+## Risorse interne
+
+- [99-rails_references/active_storage/aws_s3]()
 
 
 
@@ -19,15 +19,13 @@ quindi non creiamo un branch sulla nostra applicazione rails
 
 
 
-
 ## Best practise di AWS S3
 
-* La forma più semplice di fare upload è usare AmazonS3 PUTs che carica il file prima nel server dove gira l'applicazione Rails (Heroku nel nostro caso) e poi nel server di Amazon. Questo doppio passaggio è molto più lento. E lo stesso Heroku scoraggia fortemente questo approccio mettendo un taglio a 30s che può causare l'impossibilità di caricare files molto grandi.
-* La forma più performante è usare Amazon S3 POST che passa al browser dell'utente un token di autorizzazione ed il file è direttamente caricato sul server Amazon.
+- La forma più semplice di fare upload è usare AmazonS3 PUTs che carica il file prima nel server dove gira l'applicazione Rails (Heroku nel nostro caso) e poi nel server di Amazon. Questo doppio passaggio è molto più lento. E lo stesso Heroku scoraggia fortemente questo approccio mettendo un taglio a 30s che può causare l'impossibilità di caricare files molto grandi.
+- La forma più performante è usare Amazon S3 POST che passa al browser dell'utente un token di autorizzazione ed il file è direttamente caricato sul server Amazon.
 
 Inizialmente useremo la prima forma che non richiede javascript.
 Più avanti nel libro implementeremo la seconda forma più performante inserendo il codice javascript.
-
 
 
 
@@ -36,9 +34,8 @@ Più avanti nel libro implementeremo la seconda forma più performante inserendo
 andiamo sul sito di amazon web service https://console.aws.amazon.com e facciamo login.
 Per l'upload dei files su aws useremo solo due dei servizi (services) di AWS:
 
-* Identity and Access Management (IAM)
-* il service di storage (S3) 
-
+- Identity and Access Management (IAM)
+- il service di storage (S3) 
 
 
 
@@ -48,9 +45,8 @@ E' utile avere **un utente per ogni dominio web** che ha i diritti di archiviare
 
 AWS -> Service -> IAM -> Users
 
-* Una volta fatto login dalla Console Home AWS fare click sul service "IAM". 
-* Andiamo sul link Users creiamone uno nuovo. "Add user"
-
+- Una volta fatto login dalla Console Home AWS fare click sul service "IAM". 
+- Andiamo sul link Users creiamone uno nuovo. "Add user"
 
 
 
@@ -98,12 +94,11 @@ Visualizza il riepilogo delle scelte fatte
 
 Una volta creato facciamo il download delle "user security credentials". E' un file csv dove abbiamo
 
-* access_key_id : UL...WGERY
-* secret_access_key : zx3I...ela+hg
+- access_key_id : UL...WGERY
+- secret_access_key : zx3I...ela+hg
 
 Salviamoci i dati nel nostro programma di gestione delle passwords o comunque in un luogo sicuro.
 Se torniamo sullo IAM user possiamo solo rivisualizzare la access_key_id. Per la secret_access_key dobbiamo eliminarlo e crearne uno nuovo.
-
 
 
 
@@ -111,14 +106,13 @@ Se torniamo sullo IAM user possiamo solo rivisualizzare la access_key_id. Per la
 
 Per connetterci al "cestello dei files" (bucket) di AWS S3 abbiamo bisogno delle seguenti informazioni:
 
-* access_key_id
-* secret_access_key
-* s3_region
-* nome del bucket
+- access_key_id
+- secret_access_key
+- s3_region
+- nome del bucket
 
 Le credentials, ossia access_key_id e secret_access_key, identificano l'utente IAM e quindi i diritti di accesso ad AmazonWebService (nel nostro caso al solo servizio S3).
 La s3_region ed il nome del bucket identificano dove archiviare i files.
-
 
 
 
@@ -138,13 +132,13 @@ Facciamo click su create bucket.
 Che nome gli diamo?
 Per i nomi dei buckets possiamo rifarci ai nomi dei databases della nostra app: 
 
-* bl6_0_development  
-* bl6_0_production
+- bl6_0_development  
+- bl6_0_production
 
 Quindi avremo i seguenti due buckets:
 
-  * bl6-0-dev
-  * bl6-0-prod
+- bl6-0-dev
+- bl6-0-prod
 
 (l'underscore "_" non è accettato nel nome del bucket.)
 
@@ -158,11 +152,9 @@ la "Region: EU (Ireland)" sarebbe la scelta più saggia dal punto di vista delle
 
 
 
-
 ## Step2
 
 Lasciamo le opzioni di default
-
 
 
 
@@ -177,7 +169,6 @@ Lasciamo le autorizzazioni di default
 Visualizza il riepilogo delle scelte fatte
 
 Accettiamo e creiamo il bucket.
-
 
 
 
@@ -204,15 +195,7 @@ Endpoint : http://s5beginning-dev.s3-website-eu-central-1.amazonaws.com
 )
 
 
-
 E con questo abbiamo tutti i dati che ci servono per collegarci. Nel prossimo capitolo ci collegheremo tramite Rails.
-
-
-
-
-
-
----
 
 
 
