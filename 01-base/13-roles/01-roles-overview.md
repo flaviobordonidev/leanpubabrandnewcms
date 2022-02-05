@@ -1,14 +1,12 @@
-{id: 01-base-13-roles-01-roles-overview}
-# Cap 13.1 -- Ruoli; la teoria
+# <a name="top"></a> Cap 13.1 - Ruoli; la teoria
 
 I ruoli da assegnare alle persone che si autenticano con Devise (ossia che fanno login). A seconda del ruolo si avranno delle autorizzazioni ad operare (Pundit).
 
 Dal login alla gestione degli accessi alle varie funzioni si passa per 3 fasi principali:
 
-* Autenticazione è essere in grado di verificare l'identità dell'utente. E' fare accesso/login --> per la nostra applicazione abbiamo usato "Devise"
-* Ruolificazione è dare un ruolo ad ogni utente. --> per la nostra applicazione, come vediamo in questo capitolo, usiamo "enum"
-* Autorizzazione è chi può fare cosa una volta autenticato. (è dare livelli di accesso differente) --> per la nostra applicazione useremo "Pundit"
-
+- Autenticazione è essere in grado di verificare l'identità dell'utente. E' fare accesso/login --> per la nostra applicazione abbiamo usato "Devise"
+- Ruolificazione è dare un ruolo ad ogni utente. --> per la nostra applicazione, come vediamo in questo capitolo, usiamo "enum"
+- Autorizzazione è chi può fare cosa una volta autenticato. (è dare livelli di accesso differente) --> per la nostra applicazione useremo "Pundit"
 
 
 
@@ -18,15 +16,13 @@ Non serve perché questo capitolo è una panoramica che ha solo teoria
 
 
 
-
 ## Le 3 forme principali di assegnari i ruoli
 
 Esistono tre forme principali di assegnare i ruoli:
 
-* admin - livello base di autorizzazione
-* enum - copre quasi la totalità delle esigenze di autorizzazione
-* rolify - massima flessibilità con una gemma ed una tabella roles con relazione molti-a-molti. La maggior parte delle applicazioni non ha un livello di sofisticazione per cui è richiesto rolify.
-
+- admin - livello base di autorizzazione
+- enum - copre quasi la totalità delle esigenze di autorizzazione
+- rolify - massima flessibilità con una gemma ed una tabella roles con relazione molti-a-molti. La maggior parte delle applicazioni non ha un livello di sofisticazione per cui è richiesto rolify.
 
 
 
@@ -36,11 +32,9 @@ E' un semplice campo binario che permette di dividere solo tra amministratore e 
 
 
 
-
 ## Enum
 
 E' un campo con un elenco di scelte e ci permette di gestire praticamente tutte le autorizzazioni che vogliamo.
-
 
 
 
@@ -50,7 +44,6 @@ E' una gemma che permette di fare complesse gestioni dei ruoli ma le applicazion
 
 Questo è l'approccio più flessibile nella gestione dei ruoli. E' come una relazione molti-a-molti con polimorfismo.
 Possiamo essere estremamente flessibili, ma nella maggior parte dei casi non ci serve questo livello di flessibilità.
-
 
 
 
@@ -74,3 +67,54 @@ Possiamo essere estremamente flessibili, ma nella maggior parte dei casi non ci 
   con solo Pundit dobbiamo creare più campi enum o gestire su un unico campo tutte le combinazioni : 1, 2, 3, 1e2, 1e3, 2e3, 1e2e3.
   aggiungendo Rolify questa gestione è più semplice
 
+
+
+## Verifichiamo preview
+
+```bash
+$ sudo service postgresql start
+$ rails s
+```
+
+apriamolo il browser sull'URL:
+
+- https://mycloud9path.amazonaws.com/users
+
+Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
+
+
+
+## salviamo su git
+
+```bash
+$ git add -A
+$ git commit -m "users_controllers notice messages i18n"
+```
+
+
+
+## Pubblichiamo su Heroku
+
+```bash
+$ git push heroku ui:master
+```
+
+
+
+## Chiudiamo il branch
+
+Lo lasciamo aperto per il prossimo capitolo
+
+
+
+## Facciamo un backup su Github
+
+Lo facciamo nel prossimo capitolo.
+
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)

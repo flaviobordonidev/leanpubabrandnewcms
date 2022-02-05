@@ -1,5 +1,4 @@
-{id: 01-base-13-roles-03-roles-enum}
-# Cap 13.3 -- Roles - enum
+# <a name="top"></a> Cap 13.3 - Roles - enum
 
 Questo approccio è semplice e permette di avere più ruoli fissi (es: user, vip, admin) o (es: silver, gold, platinum, diamond).
 Questo livello permette di gestire più del 90% delle esigenze delle applicazioni web. Usato con pundit e devise riesce a coprire quasi tutte le esigenze di autorizzazione.
@@ -8,39 +7,37 @@ Per questo motivo rolify è stato messo su una sezione distinta, proprio perché
 Aggiungiamo i vari ruoli utilizzando un attributo (role attribute) e non un intero modello.
 Questo vuol dire aggiungere una colonna "role" di tipo integer sulla tabella "users" e dichiarare l'uso di "enum" sul model User.
 
-Volendo usare "rolify" possiamo saltare direttamente alla sezione 10-rolification
+> Volendo usare *rolify* possiamo saltare direttamente alla sezione *16-rolification*.
 
 
-Risorse interne:
 
-* 99-rails_references/authentication_authorization_roles/04-roles_enum
+## Risorse interne
 
+- [99-rails_references/authentication_authorization_roles/04-roles_enum]
 
 
 
 ## Apriamo il branch "Roles Enum"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout -b re
 ```
 
 
 
+## Aggiungiamo il campo *roles:enum* alla tabella users
 
-## Aggiungiamo il campo roles:enum alla tabella users
+Nel db postgresql si possono implementare dei campi di tipo *enum* ma per attivare la gestione *enum* di Rails usiamo la tipologia "integer" nel db. Implementeremo la gestione del campo con la tipologia *enum* direttamente nel model più avanti in questo capitolo.
 
-nel db postgresql si possono implementare dei campi di tipo "enum" ma per attivare la gestione "enum" di Rails usiamo la tipologia "integer" nel db. Implementeremo la gestione del campo con la tipologia "enum" direttamente nel model più avanti in questo capitolo.
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails g migration add_role_to_users role:integer
 ```
 
-Modifichiamo il migrate aggiungendo un default e l'indice per velocizzare queries che usano "role"
+Modifichiamo il migrate aggiungendo un default e l'indice per velocizzare queries che usano *role*.
 
-{id: "01-13-03_01", caption: ".../db/migrate/xxx_add_role_to_users.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
-```
+***codice 01 - .../db/migrate/xxx_add_role_to_users.rb - line: 1***
+
+```ruby
     add_column :users, :role, :integer, default: 0
     add_index :users, :role, unique: false
 ```
@@ -50,22 +47,23 @@ Modifichiamo il migrate aggiungendo un default e l'indice per velocizzare querie
 
 Effettuiamo il migrate del database per creare la tabella sul database
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails db:migrate
 ```
 
+ed otteniamo le seguenti modifiche alla tabella *users*.
 
-ed otteniamo le seguenti modifiche alla tabella "users"
+***codice 02 - .../db/schema.rb - line: 77***
 
-{id: "01-13-03_02", caption: ".../db/schema.rb -- codice 02", format: ruby, line-numbers: true, number-from: 77}
-```
+```ruby
     t.integer "role", default: 0
 ```
 
-{caption: ".../db/schema.rb -- continua", format: ruby, line-numbers: true, number-from: 80}
-```
+
+***codice 02 - ...continua - line: 80***
+
+```ruby
     t.index ["role"], name: "index_users_on_role"
 ```
 
@@ -74,23 +72,23 @@ ed otteniamo le seguenti modifiche alla tabella "users"
 
 Avremmo potuto aggiungere l'indice anche in un secondo momemento
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails g migration add_index_to_role_to_users
 ```
 
-{title=".../db/migrate/xxx_add_index_to_role_to_users.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-```
+***codice n/a - .../db/migrate/xxx_add_index_to_role_to_users.rb - line: 1***
+
+```ruby
     add_index :users, :role, unique: false
 ```
 
 
 
-
 ## Aggiorniamo il Model implementando ENUM
 
-{id: "01-13-03_03", caption: ".../models/user.rb -- codice 03", format: ruby, line-numbers: true, number-from: 3}
-```
+***codice 03 - .../models/user.rb - line: 3***
+
+```ruby
   #enum role: [:user, :admin, :moderator, :author]
   enum role: {user: 0, admin: 1, moderator:2, author:3}
 ```
@@ -102,8 +100,9 @@ Le due linee di codice in alto sono equivalenti solo la seconda linea di codice 
 
 Se non avessimo voluto usare il default lato database con "default: 0" avremmo potuto farlo nel model in questo modo:  
 
-{caption: ".../models/user.rb -- codice s.n.", format: ruby, line-numbers: true, number-from: 7}
-```
+***codice n/a - .../models/user.rb - line: 7***
+
+```ruby
   after_initialize :set_default_role, :if => :new_record?
 
   def set_default_role
@@ -115,13 +114,11 @@ ma lato database è più pulito e più prestazionale.
 
 
 
-
 ## Assegnamo un ruolo ai nostri utenti da terminale rails
 
 Apriamo il terminale
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails c
 
 
@@ -133,8 +130,7 @@ Loading development environment (Rails 5.2.2)
 
 verifichiamo tutti i ruoli presenti nella colonna "role" assegnata ad enum.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 -> User.roles
 
 
@@ -144,8 +140,7 @@ verifichiamo tutti i ruoli presenti nella colonna "role" assegnata ad enum.
 
 verifichiamo che tutti gli utenti hanno il campo della colonna role con il valore di default "0", che per enum corrisponde al valore "user".
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 -> User.all
 
 
@@ -156,11 +151,9 @@ verifichiamo che tutti gli utenti hanno il campo della colonna role con il valor
 
 
 
-
 ## rendiamo il primo utente amministratore.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 -> User.first.admin!
 
 oppure
@@ -174,12 +167,11 @@ oppure
 -> u.save 
 ```
 
-ATTENZIONE! se ho dei validation potrei ricevere un errore perché rails si aspetta che gli vengano passati tutti i parametri!
+> ATTENZIONE! se ho dei validation potrei ricevere un errore perché rails si aspetta che gli vengano passati tutti i parametri!
 
 In questo caso o commentiamo i "validates" nel model oppure usiamo ".save(validate: false)" come possiamo vedere in questo esempio:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 2.6.3 :069 > User.first.admin!
   User Load (0.7ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1  [["LIMIT", 1]]
    (0.3ms)  BEGIN
@@ -223,8 +215,7 @@ ActiveRecord::RecordInvalid (translation missing: it.activerecord.errors.message
 
 ## verifichiamo che ruolo hanno il primo ed il secondo utente
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 -> User.first.admin?
  => true 
 
@@ -243,8 +234,7 @@ ActiveRecord::RecordInvalid (translation missing: it.activerecord.errors.message
 
 prendiamo una lista di tutti gli :admin
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 -> User.admin
 
 
@@ -255,8 +245,7 @@ prendiamo una lista di tutti gli :admin
 
 prendiamo una lista di tutti gli :user
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 -> User.user
 
 
@@ -267,8 +256,7 @@ prendiamo una lista di tutti gli :user
 
 prendiamo una lista di tutti i :moderator
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 -> User.moderator
 
 
@@ -279,18 +267,15 @@ prendiamo una lista di tutti i :moderator
 
 usciamo
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 -> exit
 ```
 
 
 
-
 ## Salviamo su git
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git add -A
 $ git commit -m "Add role:enum to table users"
 ```
@@ -300,21 +285,18 @@ $ git commit -m "Add role:enum to table users"
 
 ## Pubblichiamo su Heroku
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git push heroku re:master
 $ heroku run rails db:migrate
 ```
 
 
 
-
 ## Chiudiamo il branch
 
-se abbiamo finito le modifiche e va tutto bene:
+Se abbiamo finito le modifiche e va tutto bene:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout master
 $ git merge re
 $ git branch -d re
@@ -322,13 +304,11 @@ $ git branch -d re
 
 
 
-
 ## Facciamo un backup su Github
 
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git push origin master
 ```
 
@@ -571,3 +551,61 @@ end
 ```
 
 ```
+
+
+
+
+
+---
+
+
+
+## Verifichiamo preview
+
+```bash
+$ sudo service postgresql start
+$ rails s
+```
+
+apriamolo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/users
+
+Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
+
+
+
+## salviamo su git
+
+```bash
+$ git add -A
+$ git commit -m "users_controllers notice messages i18n"
+```
+
+
+
+## Pubblichiamo su Heroku
+
+```bash
+$ git push heroku ui:master
+```
+
+
+
+## Chiudiamo il branch
+
+Lo lasciamo aperto per il prossimo capitolo
+
+
+
+## Facciamo un backup su Github
+
+Lo facciamo nel prossimo capitolo.
+
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)

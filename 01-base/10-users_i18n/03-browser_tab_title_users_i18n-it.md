@@ -1,10 +1,8 @@
-{id: 01-base-10-users_i18n-04-browser_tab_title_users_i18n}
-# Cap 10.4 -- Rendiamo multilingua il titolo nel tab del browser
+# <a name="top"></a> Cap 10.3 - Rendiamo multilingua il titolo nel tab del browser
 
 Attiviamo le traduzioni per il titolo nel tab del browser
 Titolo dinamico nel tab del browser
 Vogliamo rendere dinamico il titolo che appare nel tab del browser. In questo capitolo introduciamo il "contenitore vuoto" yield(:my_variable).
-
 
 
 
@@ -14,15 +12,14 @@ continuiamo con lo stesso branch del capitolo precedente
 
 
 
-
 ## Implementiamo internazionalizzazione (i18n)
 
 Creiamo delle nuove voci nei locales che aggiungeremo poi alle views.
 Non mettiamo la traduzione per "show" perché richiamiamo solo il nome dell'utente. L'avremmo inserita se avessimo usato una frase tipo "Show user" ("Mostra utente").
 
+***codice 01 - .../config/locales/it.yml - line: 4***
 
-{id: "01-10-04_01", caption: ".../config/locales/it.yml -- codice 01", format: yaml, line-numbers: true, number-from: 4}
-```
+```yaml
   users:
     index:
       html_head_title: "Tutti gli utenti"
@@ -33,9 +30,9 @@ Non mettiamo la traduzione per "show" perché richiamiamo solo il nome dell'uten
 ```
 
 
+***codice 02 - .../config/locales/en.yml - line: 4***
 
-{id: "01-10-04_02", caption: ".../config/locales/en.yml -- codice 02", format: yaml, line-numbers: true, number-from: 4}
-```
+```yaml
   users:
     index:
       html_head_title: "All users"
@@ -47,59 +44,56 @@ Non mettiamo la traduzione per "show" perché richiamiamo solo il nome dell'uten
 
 
 
-
-
 ## Aggiungiamo le chiamate alle views
 
 traduciamo index
 
-{title=".../app/views/users/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
-```
+***codice n/a - .../app/views/users/index.html.erb - line: 3***
+
+```html+erb
 <% provide(:html_head_title, "#{t 'users.index.html_head_title'}") %>
 ```
 
 La chiamata per show la lasciamo così com'è
 
-{title=".../app/views/users/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
-```
+***codice n/a - .../app/views/users/show.html.erb - line: 3***
+
+```html+erb
 <% provide(:html_head_title, @user.name) %>
 ```
 
 traduciamo edit
 
-{title=".../app/views/users/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
-```
+***codice n/a - .../app/views/users/edit.html.erb - line: 3***
+
+```html+erb
 <% provide(:html_head_title, "#{t 'users.edit.html_head_title'} #{@user.name}") %>
 ```
 
 traduciamo new
 
-{title=".../app/views/users/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
-```
+***codice n/a - .../app/views/users/new.html.erb - line: 3***
+
+```html+erb
 <% provide(:html_head_title, "#{t 'users.new.html_head_title'}") %>
 ```
 
 
 
-
 ## salviamo su git
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git add -A
 $ git commit -m "Internationalization title on browser tabs"
 ```
 
 
 
-
 ## Pubblichiamo su Heroku
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git push heroku ui:master
 ```
-
 
 
 
@@ -107,32 +101,70 @@ $ git push heroku ui:master
 
 se abbiamo finito le modifiche e va tutto bene:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout master
 $ git merge ui
 $ git branch -d ui
 ```
 
-
 aggiorniamo github
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git push origin master
 ```
 
 
 
-
-## Il codice del capitolo
-
+---
 
 
 
-[Codice 01](#01-08b-01_01)
+## Verifichiamo preview
 
-{id="01-08b-01_01all", title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+```bash
+$ sudo service postgresql start
+$ rails s
 ```
 
+apriamolo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/users
+
+Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
+
+
+
+## salviamo su git
+
+```bash
+$ git add -A
+$ git commit -m "users_controllers notice messages i18n"
 ```
+
+
+
+## Pubblichiamo su Heroku
+
+```bash
+$ git push heroku ui:master
+```
+
+
+
+## Chiudiamo il branch
+
+Lo lasciamo aperto per il prossimo capitolo
+
+
+
+## Facciamo un backup su Github
+
+Lo facciamo nel prossimo capitolo.
+
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)

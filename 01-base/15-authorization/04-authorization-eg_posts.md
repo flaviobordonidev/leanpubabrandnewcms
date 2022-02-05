@@ -1,27 +1,21 @@
-{id: 01-base-15-authorization-04-authorization-eg_posts}
-# Cap 15.4 -- Implementiamo le autorizzazioni per eg_posts
+# <a name="top"></a> Cap 15.4 - Implementiamo le autorizzazioni per eg_posts
 
 Autentichiamo ed Autorizziamo la gestione degli articoli (eg_posts) in funzione del ruolo.
-
 Siccome molti passaggi sono simili a quelli del capitolo precedente, in questo capitolo inseriamo meno passaggi e meno spiegazioni.
-
 
 
 
 ## Apriamo il branch "Authorization ExamplePost"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout -b aep
 ```
 
 
 
-
 ## Aggiungiamo policy per ExamplePost
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails g pundit:policy EgPost
 
 
@@ -34,9 +28,9 @@ Running via Spring preloader in process 3865
 
 questo crea la seguente policy
 
+***codice n/a - .../app/policies/eg_post_policy.rb - line: 1***
 
-{caption: ".../app/policies/eg_post_policy.rb -- codice s.n.", format: ruby, line-numbers: true, number-from: 1}
-```
+```ruby
 class EgPostPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
@@ -48,54 +42,54 @@ end
 
 
 
-
 ## Implementiamo tutte le policies per tutte le azioni di eg_posts
 
 Vediamo uno schema della logica delle autorizzazioni
 
 Legenda:
- * per "records" si intendono gli "articoli di esempio" (eg_posts)
- * per "propri records" si intendono gli "articoli di esempio di cui l'utente è proprietario". Ossia dove ha una relazione uno-a-molti.
+- per "records" si intendono gli "articoli di esempio" (eg_posts)
+- per "propri records" si intendono gli "articoli di esempio di cui l'utente è proprietario". Ossia dove ha una relazione uno-a-molti.
 
 index
- * Utente non loggato           : autorizzato su tutti i records
- * Utente con ruolo "user"      : autorizzato su tutti i records
- * Utente con ruolo "author"    : autorizzato su tutti i records
- * Utente con ruolo "moderator" : autorizzato su tutti i records
- * Utente con ruolo "admin"     : autorizzato su tutti i records
+- Utente non loggato           : autorizzato su tutti i records
+- Utente con ruolo "user"      : autorizzato su tutti i records
+- Utente con ruolo "author"    : autorizzato su tutti i records
+- Utente con ruolo "moderator" : autorizzato su tutti i records
+- Utente con ruolo "admin"     : autorizzato su tutti i records
 
 show
- * Utente non loggato           : NON autorizzato su tutti i records
- * Utente con ruolo "user"      : autorizzato su tutti i records
- * Utente con ruolo "author"    : autorizzato su tutti i records
- * Utente con ruolo "moderator" : autorizzato su tutti i records
- * Utente con ruolo "admin"     : autorizzato su tutti i records
+- Utente non loggato           : NON autorizzato su tutti i records
+- Utente con ruolo "user"      : autorizzato su tutti i records
+- Utente con ruolo "author"    : autorizzato su tutti i records
+- Utente con ruolo "moderator" : autorizzato su tutti i records
+- Utente con ruolo "admin"     : autorizzato su tutti i records
 
 new/create
- * Utente non loggato           : NON autorizzato su tutti i records
- * Utente con ruolo "user"      : NON autorizzato su tutti i records
- * Utente con ruolo "author"    : autorizzato SOLO sui propri records
- * Utente con ruolo "moderator" : autorizzato SOLO sui propri records
- * Utente con ruolo "admin"     : autorizzato SOLO sui propri records
+- Utente non loggato           : NON autorizzato su tutti i records
+- Utente con ruolo "user"      : NON autorizzato su tutti i records
+- Utente con ruolo "author"    : autorizzato SOLO sui propri records
+- Utente con ruolo "moderator" : autorizzato SOLO sui propri records
+- Utente con ruolo "admin"     : autorizzato SOLO sui propri records
 
 
 edit/update
- * Utente non loggato           : NON autorizzato su tutti i records
- * Utente con ruolo "user"      : NON autorizzato su tutti i records
- * Utente con ruolo "author"    : autorizzato SOLO sui propri records
- * Utente con ruolo "moderator" : autorizzato SOLO sui propri records
- * Utente con ruolo "admin"     : autorizzato su tutti i records
+- Utente non loggato           : NON autorizzato su tutti i records
+- Utente con ruolo "user"      : NON autorizzato su tutti i records
+- Utente con ruolo "author"    : autorizzato SOLO sui propri records
+- Utente con ruolo "moderator" : autorizzato SOLO sui propri records
+- Utente con ruolo "admin"     : autorizzato su tutti i records
 
 destroy
- * Utente non loggato           : NON autorizzato su tutti i records
- * Utente con ruolo "user"      : NON autorizzato su tutti i records
- * Utente con ruolo "author"    : autorizzato SOLO sui propri records
- * Utente con ruolo "moderator" : autorizzato su tutti i records
- * Utente con ruolo "admin"     : autorizzato su tutti i records
+- Utente non loggato           : NON autorizzato su tutti i records
+- Utente con ruolo "user"      : NON autorizzato su tutti i records
+- Utente con ruolo "author"    : autorizzato SOLO sui propri records
+- Utente con ruolo "moderator" : autorizzato su tutti i records
+- Utente con ruolo "admin"     : autorizzato su tutti i records
 
 
 {id: "01-15-04_01", caption: ".../app/policies/eg_post_policy.rb -- codice 01", format: ruby, line-numbers: true, number-from: 3}
-```
+
+```ruby
   def index?
     true
   end
@@ -456,3 +450,61 @@ $ git push origin master
 ```
 
 [tutto il codice](#01-15-04_04all)
+
+
+
+
+
+---
+
+
+
+## Verifichiamo preview
+
+```bash
+$ sudo service postgresql start
+$ rails s
+```
+
+apriamolo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/users
+
+Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
+
+
+
+## salviamo su git
+
+```bash
+$ git add -A
+$ git commit -m "users_controllers notice messages i18n"
+```
+
+
+
+## Pubblichiamo su Heroku
+
+```bash
+$ git push heroku ui:master
+```
+
+
+
+## Chiudiamo il branch
+
+Lo lasciamo aperto per il prossimo capitolo
+
+
+
+## Facciamo un backup su Github
+
+Lo facciamo nel prossimo capitolo.
+
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)

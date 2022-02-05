@@ -1,12 +1,18 @@
-{id: 01-base-12-format_i18n-02-format_currencies_i18n}
-# Cap 12.2 -- Formattiamo le valute
+# <a name="top"></a> Cap 12.2 - Formattiamo le valute
 
 Formattiamo i prezzi per le varie valute, mantenendo la lingua impostata come default; l'italiano.
 
-Risorse interne:
 
-* 99-rails_references/i18n/02-format_date_time_i18n
 
+## Risorse interne
+
+- [99-rails_references/i18n/02-format_date_time_i18n]
+
+
+## Risorse esterne
+
+- [Rails Internationalization guide](https://guides.rubyonrails.org/i18n.html)
+- [](https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale)
 
 
 
@@ -19,18 +25,17 @@ Risorse interne:
 
 Inseriamo la colonna prezzo nella tabella eg_post.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails g migration AddPriceToEgPosts price:decimal
 ```
 
-
-ATTENZIONE: per gestire colonne con i prezzi e non avere problemi di arrotondamenti utiliziamo il data_type "DECIMAL(19, 4)"
+> ATTENZIONE: per gestire colonne con i prezzi e non avere problemi di arrotondamenti utiliziamo il data_type "DECIMAL(19, 4)"
 
 Quindi modifichiamo il migrate creato inserendo "precisione", "scala" e che il valore di default sia zero e non "nil".
 
-{caption: ".../db/migrate/xxx_add_price_to_eg_posts.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
-```
+***codice 01 - .../db/migrate/xxx_add_price_to_eg_posts.rb -line: 1***
+
+```ruby
 class AddPriceToEgPosts < ActiveRecord::Migration[6.0]
   def change
     add_column :eg_posts, :price, :decimal, precision: 19, scale: 4, default: 0
@@ -41,21 +46,20 @@ end
 
 eseguiamo il migrate 
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails db:migrate
 ```
 
 
 
-
 ## Inseriamo nella white list del controller
 
-inseriamo la nuova colonna ":price" nella white list del controller altrimenti i valori passati con il submit del form non sarebbero gestiti.
+inseriamo la nuova colonna *:price* nella white list del controller altrimenti i valori passati con il submit del form non sarebbero gestiti.
 
-{id: "01-12-02_02", caption: ".../app/controllers/eg_posts_controller.rb -- codice 02", format: ruby, line-numbers: true, number-from: 71}
-```
+***codice 02 - .../app/controllers/eg_posts_controller.rb - line: 71***
+
+```ruby
     # Never trust parameters from the scary internet, only allow the white list through.
     def eg_post_params
       params.require(:eg_post).permit(:meta_title, :meta_description, :headline, :incipit, :user_id, :price)
@@ -64,13 +68,13 @@ inseriamo la nuova colonna ":price" nella white list del controller altrimenti i
 
 
 
-
 ## Inseriamo il nuovo campo nelle views
 
-Inseriamo il nuovo campo ":price" nelle views "_form" e "show".
+Inseriamo il nuovo campo *:price* nelle views *_form* e *show*.
 
-{id: "01-12-02_03", caption: ".../app/views/eg_posts/_form.html.erb -- codice 03", format: HTML+Mako, line-numbers: true, number-from: 3}
-```
+***codice 03 - .../app/views/eg_posts/_form.html.erb - line 3***
+
+```html+erb
   <div class="field">
     <%= form.label :price %>
     <%= form.text_field :price %>
@@ -78,8 +82,9 @@ Inseriamo il nuovo campo ":price" nelle views "_form" e "show".
 ```
 
 
-{id: "01-12-02_04", caption: ".../app/views/eg_posts/show.html.erb -- codice 04", format: HTML+Mako, line-numbers: true, number-from: 3}
-```
+***codice 04 - .../app/views/eg_posts/show.html.erb - line: 3***
+
+```html+erb
 <p>
   <strong>Price:</strong>
   <%= @eg_post.price %>
@@ -91,18 +96,16 @@ Inseriamo il nuovo campo ":price" nelle views "_form" e "show".
 
 ## Verifichiamo preview
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails s
 ```
 
 apriamolo il browser sull'URL:
 
-* https://mycloud9path.amazonaws.com/eg_posts
+- https://mycloud9path.amazonaws.com/eg_posts
 
 Modifichiamo un articolo inserendo un valore nel campo price e vediamo su "show" che è correttamente gestito.
-
 
 
 
@@ -112,8 +115,8 @@ Il nuovo campo lavora correttamente ma non ha una buona formattazione. Gestiamol
 
 In Italia per dividere le migliaia si usa il "." e per le cifre decimali si usa la ",". Negli USA è il contrario. Ad esempio:
 
-* Italia: 1.123.450,50
-* USA: 1,123,450.50
+- Italia: 1.123.450,50
+- USA: 1,123,450.50
 
 Quindi formattiamo in maniera diversa il numero a seconda della lingua che usiamo.
 
@@ -133,8 +136,9 @@ https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/it.yml
 e da questo estrarci la parte di formattazione dei numeri
 
 
-{id: "01-12-02_05", caption: ".../config/locales/it.yml -- codice 05", format: yaml, line-numbers: true, number-from: 4}
-```
+***codice 05 - .../config/locales/it.yml - line: 4***
+
+```yaml
   number:
     currency:
       format:
@@ -189,13 +193,13 @@ Siccome gestiamo la valuta a parte evitiamo che venga visualizzata modifichiamo 
 
 
 
-
 ## Passaggio di argomenti/variabili alla traduzione
 
-Possiamo anche passare argomenti nel metodo i18n translate in questo modo: "%{myvariable}"
+Possiamo anche passare argomenti nel metodo i18n translate in questo modo: *%{myvariable}*.
 
-{id: "01-12-02_06", caption: ".../config/locales/it.yml -- codice 06", format: yaml, line-numbers: true, number-from: 4}
-```
+***codice 06 - .../config/locales/it.yml - line: 4***
+
+```yaml
   eg_posts:
     index:
       html_head_title: "Tutti gli articoli"
@@ -204,12 +208,13 @@ Possiamo anche passare argomenti nel metodo i18n translate in questo modo: "%{my
       price_for_reports: "Questo ci costa %{price} di soldini"
 ```
 
-Possiamo variare la "precisione" e mostrare solo due cifre dopo la virgola anche se nel database saranno archiviate le 4 cifre dopo la virgola come definito nel migrate.
+Possiamo variare la *precisione* e mostrare solo due cifre dopo la virgola anche se nel database saranno archiviate le 4 cifre dopo la virgola come definito nel migrate.
 
-Aggiorniamo la views "show" per visualizzare le traduzioni 
+Aggiorniamo la views *show* per visualizzare le traduzioni.
 
-{id: "01-12-02_07", caption: ".../app/views/eg_posts/show.html.erb -- codice 07", format: HTML+Mako, line-numbers: true, number-from: 12}
-```
+***codice 07 - .../app/views/eg_posts/show.html.erb - line: 12***
+
+```html+erb
 <p>
   <strong>Price:</strong>
   <%= @eg_post.price %>
@@ -225,21 +230,18 @@ Aggiorniamo la views "show" per visualizzare le traduzioni
 
 
 
-
 ## Verifichiamo preview
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails s
 ```
 
 apriamolo il browser sull'URL:
 
-* https://mycloud9path.amazonaws.com/eg_posts
+- https://mycloud9path.amazonaws.com/eg_posts
 
-e vediamo su "show" le varie formattazioni del campo "price".
-
+e vediamo su *show* le varie formattazioni del campo *price*.
 
 
 
@@ -247,8 +249,9 @@ e vediamo su "show" le varie formattazioni del campo "price".
 
 lato show adesso il numero è visualizzato con la formattazione italiana ma nel form si deve ancora usare il "." e non la "," per i decimali. Correggiamo.
 
-{id: "01-12-02_08", caption: ".../app/views/eg_posts/show.html.erb -- codice 08", format: HTML+Mako, line-numbers: true, number-from: 12}
-```
+***codice 08 - .../app/views/eg_posts/show.html.erb - line: 12***
+
+```html+erb
   <div class="field">
     <%= form.label :price %>
     <%#= form.text_field :price %>
@@ -259,23 +262,33 @@ lato show adesso il numero è visualizzato con la formattazione italiana ma nel 
 Adesso è visualizzata sempre la virgola di default ma possiamo usare entrambi inserendo i valori.
 
 
+## Verifichiamo preview
 
-
-## salviamo su git
-
-{caption: "terminal", format: bash, line-numbers: false}
+```bash
+$ sudo service postgresql start
+$ rails s
 ```
+
+apriamolo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/users
+
+Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
+
+
+
+## Archiviamo su git
+
+```bash
 $ git add -A
 $ git commit -m "I18n currency field price on eg_posts"
 ```
 
 
 
-
 ## Pubblichiamo su Heroku
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git push heroku btep:master
 $ heroku run rails db:migrate
 ```
@@ -287,8 +300,7 @@ $ heroku run rails db:migrate
 
 se abbiamo finito le modifiche e va tutto bene:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout master
 $ git merge btep
 $ git branch -d btep
@@ -296,25 +308,16 @@ $ git branch -d btep
 
 
 
+## Facciamo un backup su Github
 
-# Aggiorniamo github
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git push origin master
 ```
 
 
 
+---
 
-## Il codice del capitolo
-
-
-
-
-[Codice 01](#01-08b-01_01)
-
-{id="01-08b-01_01all", title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-```
-
-```
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)

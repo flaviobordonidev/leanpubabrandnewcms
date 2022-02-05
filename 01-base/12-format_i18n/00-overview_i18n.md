@@ -1,8 +1,6 @@
-{id: 01-base-12-format_i18n-00-overview_i18n}
-# Cap 12.1 -- Formattiamo le date nelle varie lingue
+# <a name="top"></a> Cap 12.1 - Formattiamo le date nelle varie lingue
 
 Di default il comando di formattazione della data prende i nomi in inglese. Vediamo come implementare l'Italiano.
-
 
 
 
@@ -12,14 +10,14 @@ Di default il comando di formattazione della data prende i nomi in inglese. Vedi
 
 Nella guida ufficiale di Rails https://guides.rubyonrails.org/i18n.html (questo link è anche indicato nel file iniziale locale/en.yml) al Capitolo "9 Contributing to Rails I18n" si rimanda al seguente link:
 
-* https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale
+- https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale
 
 Qui ci sono già tante traduzioni in moltissime lingue.
 
 Nella nostra applicazione partiamo dai seguenti formati:
 
-* 01_01-config-locale-en-base.yml
-* 01_02-config-locale-it-base.yml
+- 01_01-config-locale-en-base.yml
+- 01_02-config-locale-it-base.yml
   a cui abbiamo aggiunto le seguenti due linee che erano presenti solo in inglese:
   126 --> model_invalid: 'Validazione fallita: %{errors}'
   193 --> eb: EB
@@ -42,16 +40,17 @@ Scegliamo l'inglese degli stati uniti:
 
 partiamo quindi da queste due traduzioni di base:
 
-* [Italiano](https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/it.yml)
-* [Inglese](https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/en-US.yml)
+- [Italiano](https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/it.yml)
+- [Inglese](https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/en-US.yml)
 
 Ed aggiungiamo le nostre personalizzazioni, eventualmente con il commento "#customized" in fondo alla riga.
 
 Attenzione:
 Può sembrare comodo iniziare in basso e ripetere delle voci in una sezione customized ad esempio qualcosa del genere:
 
+***codice n/a - ... - line: 1***
 
-```
+```yaml
   ...
   # fine del file di traduzione preso da Github
   
@@ -67,7 +66,9 @@ Questo funziona anche ma si innescano dei problemi e degli errori poco chiari. A
 Ossia un nuovo blocco più in basso annulla tutto quello che era presente nelle righe precedenti.
 Se ad esempio creo questa:
 
-```
+***codice n/a - ... - line: 1***
+
+```yaml
   ...
   # fine del file di traduzione preso da Github
   
@@ -84,7 +85,9 @@ Quindi è meglio NON creare linee duplicate!!!
 
 Nell'esempio in alto è bene aggiungere la linea nel blocco "time" "formats" già esistente:
 
-```
+***codice n/a - ... - line: 1***
+
+```yaml
   time:
     am: am
     formats:
@@ -99,3 +102,52 @@ Nell'esempio in alto è bene aggiungere la linea nel blocco "time" "formats" gi�
 
 
 
+## Verifichiamo preview
+
+```bash
+$ sudo service postgresql start
+$ rails s
+```
+
+apriamolo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/users
+
+Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
+
+
+
+## salviamo su git
+
+```bash
+$ git add -A
+$ git commit -m "users_controllers notice messages i18n"
+```
+
+
+
+## Pubblichiamo su Heroku
+
+```bash
+$ git push heroku ui:master
+```
+
+
+
+## Chiudiamo il branch
+
+Lo lasciamo aperto per il prossimo capitolo
+
+
+
+## Facciamo un backup su Github
+
+Lo facciamo nel prossimo capitolo.
+
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)

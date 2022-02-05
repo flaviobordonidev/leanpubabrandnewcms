@@ -1,19 +1,14 @@
-{id: 01-base-11-eg_pages-04-browser_tab_title_eg_posts}
-# Cap 11.4 -- Rendiamo multilingua il titolo nel tab del browser per eg_posts
+# <a name="top"></a> Cap 11.2 - Rendiamo multilingua il titolo nel tab del browser per eg_posts
 
 Attiviamo le traduzioni per il titolo nel tab del browser.
 
 
 
-
 ## Apriamo il branch "Browser Tab EgPosts"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout -b btep
 ```
-
-
 
 
 
@@ -21,8 +16,9 @@ $ git checkout -b btep
 
 Creiamo delle nuove voci nei locales che aggiungeremo poi alle views.
 
-{id: "01-10-04_01", caption: ".../config/locales/it.yml -- codice 01", format: yaml, line-numbers: true, number-from: 4}
-```
+***codice 01 - .../config/locales/it.yml - line: 4***
+
+```yaml
   eg_posts:
     index:
       html_head_title: "Tutti gli articoli"
@@ -36,8 +32,9 @@ Creiamo delle nuove voci nei locales che aggiungeremo poi alle views.
 
 
 
-{id: "01-10-04_02", caption: ".../config/locales/en.yml -- codice 02", format: yaml, line-numbers: true, number-from: 4}
-```
+***codice 02 - .../config/locales/en.yml - line: 4***
+
+```yaml
   eg_posts:
     index:
       html_head_title: "All posts"
@@ -51,59 +48,71 @@ Creiamo delle nuove voci nei locales che aggiungeremo poi alle views.
 
 
 
-
-
 ## Aggiungiamo le chiamate alle views
 
 traduciamo index
 
-{id: "01-10-04_01", caption: ".../app/views/eg_posts/index.html.erb -- codice 03", format: HTML+Mako, line-numbers: true, number-from: 3}
-```
+***codice 03 - .../app/views/eg_posts/index.html.erb - line: 3***
+
+```html+erb
 <% provide(:html_head_title, "#{t '.html_head_title'}") %>
 ```
 
 traduciamo show
 
-{title=".../app/views/eg_posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
-```
+***codice n/a - .../app/views/eg_posts/show.html.erb - line: 3***
+
+```html+erb
 <% provide(:html_head_title, "#{t '.html_head_title'}: #{@eg_post.headline}") %>
 ```
 
 traduciamo edit
 
-{title=".../app/views/eg_posts/edit.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
-```
+***codice n/a - .../app/views/eg_posts/edit.html.erb - line: 3***
+
+```html+erb
 <% provide(:html_head_title, "#{t '.html_head_title'} #{@eg_post.headline}") %>
 ```
 
 traduciamo new
 
-{title=".../app/views/eg_posts/new.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=3}
-```
+***codice n/a - .../app/views/eg_posts/new.html.erb - line: 3***
+
+```html+erb
 <% provide(:html_head_title, "#{t '.html_head_title'}") %>
 ```
 
 
 
+## Verifichiamo preview
 
-## salviamo su git
-
-{caption: "terminal", format: bash, line-numbers: false}
+```bash
+$ sudo service postgresql start
+$ rails s
 ```
+
+apriamolo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/users
+
+Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
+
+
+
+## Archiviamo su git
+
+```bash
 $ git add -A
 $ git commit -m "Internationalization title on browser tabs"
 ```
 
 
 
-
 ## Pubblichiamo su Heroku
 
-{caption: "terminal", format: bash, line-numbers: false}
+```bash
+$ git push heroku btep:main
 ```
-$ git push heroku btep:master
-```
-
 
 
 
@@ -111,34 +120,24 @@ $ git push heroku btep:master
 
 se abbiamo finito le modifiche e va tutto bene:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git checkout master
+```bash
+$ git checkout main
 $ git merge btep
 $ git branch -d btep
 ```
 
 
 
-
 # Aggiorniamo github
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git push origin master
-```
-
-
-
-
-## Il codice del capitolo
-
-
-
-
-[Codice 01](#01-08b-01_01)
-
-{id="01-08b-01_01all", title=".../app/views/layouts/application.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+```bash
+$ git push origin main
 ```
 
-```
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)

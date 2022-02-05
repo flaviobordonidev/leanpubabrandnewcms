@@ -1,7 +1,6 @@
-{id: 01-base-11-eg_pages-01-eg_posts-seeds}
-# Cap 11.1 -- Tabelle di esempio per gli articoli
+# <a name="top"></a> Cap 11.1 - Tabelle di esempio per gli articoli
 
-Abbiamo già creato la tabella " users " inizializzando " devise " adesso creiamo la tabelle di esempio " eg_posts " che ci ci aiuterà a verificare le future implementazioni che faremo nei prossimi capitoli.
+Abbiamo già creato la tabella *users* inizializzando *devise* adesso creiamo la tabelle di esempio " eg_posts " che ci ci aiuterà a verificare le future implementazioni che faremo nei prossimi capitoli.
 
 In inglese e.g. è l'abbriviazione di "for example" dal latino (exempli gratia). Queste sono "Pagine Dinamiche di Esempio".
 
@@ -10,11 +9,9 @@ In inglese e.g. è l'abbriviazione di "for example" dal latino (exempli gratia).
 
 ## Apriamo il branch "Examples Posts"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout -b ep
 ```
-
 
 
 
@@ -37,8 +34,7 @@ Generiamo tutto lo "scaffold" perché vogliamo anche i controllers e le views.
  - il "model" oltre alla tabella crea il model per il collegamento uno-a-molti.
  - lo "scaffold" crea anche il controller e le views.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails g scaffold EgPost meta_title:string meta_description:string headline:string incipit:string user:references
 ```
 
@@ -47,8 +43,9 @@ La cosa bella di " user:references " è che, oltre a creare un migration "ottimi
 vediamo il migrate creato
 
 
-{id: "01-08-01_01", caption: ".../db/migrate/xxx_create_posts.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
-```
+***codice 01 - .../db/migrate/xxx_create_posts.rb - line: 1***
+
+```ruby
 class CreateEgPosts < ActiveRecord::Migration[6.0]
   def change
     create_table :eg_posts do |t|
@@ -66,17 +63,15 @@ end
 
 [tutto il codice](#01-08-01_01all)
 
-la " t.references :user, foreign_key: true " crea un campo "t.integer :user_id" ed attiva il legame uno a molti lato database.
+la `t.references :user, foreign_key: true` crea un campo `t.integer :user_id` ed attiva il legame uno a molti lato database.
 
 
 eseguiamo il migrate 
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails db:migrate
 ```
-
 
 
 
@@ -84,18 +79,20 @@ $ rails db:migrate
 
 verifichiamo example_post, il lato "molti" 
 
-{id: "01-08-01_02", caption: ".../app/models/eg_post.rb -- codice 02", format: ruby, line-numbers: true, number-from: 2}
-```
+***codice 02 - .../app/models/eg_post.rb - line: 2***
+
+```ruby
   belongs_to :user
 ```
 
 [tutto il codice](#01-08-01_02all)
 
-
 completiamo user, il lato "uno"
 
-{id: "01-08-01_03", caption: ".../app/models/user.rb -- codice 03", format: ruby, line-numbers: true, number-from: 7}
-```
+
+***codice 03 - .../app/models/user.rb - line: 7***
+
+```ruby
   has_many :eg_posts
 ```
 
@@ -108,8 +105,7 @@ completiamo user, il lato "uno"
 
 Inseriamo qualche articolo da terminale nel database locale
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails c
 -> u1 = User.find(1)
 -> u1.eg_posts.create(headline: "Il mio primo articolo", incipit: "Perché scrivere questo articolo")
@@ -133,8 +129,7 @@ $ rails c
 
 Un altro modo più geek per inserire gli articoli è usando il seguente codice
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails c
 -> u1 = User.where(email: "ann@test.abc").first
 -> u2 = User.where(email: "bob@test.abc").first
@@ -168,11 +163,10 @@ $ rails c
  => 7
 ```
 
-il metodo ".create" è equivalente a ".new" seguito da ".save". E' solo un modo più succinto. Ad esempio le seguenti due linee di codice sono equivalenti:
+il metodo *.create* è equivalente a ".new" seguito da ".save". E' solo un modo più succinto. Ad esempio le seguenti due linee di codice sono equivalenti:
 
-* Post.create headline: "articolo di test"
-* Post.new(headline: "articolo di test").save
-
+- Post.create headline: "articolo di test"
+- Post.new(headline: "articolo di test").save
 
 
 
@@ -180,8 +174,7 @@ il metodo ".create" è equivalente a ".new" seguito da ".save". E' solo un modo 
 
 Spieghiamo con degli esempi un po' di codice ruby che abbiamo appena usato.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 5.times { puts "i" }
 
 
@@ -195,8 +188,7 @@ i
 ```
 
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 5.times do 
   puts "i"
 end
@@ -214,8 +206,7 @@ i
 ```
 
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 5.times { |i| puts i }
 
 
@@ -229,8 +220,7 @@ i
 ```
 
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 5.times do |i| 
   puts i
 end
@@ -249,15 +239,12 @@ end
 
 
 
-
 ## Salviamo su git
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git add -A
 $ git commit -m "Add table eg_posts"
 ```
-
 
 
 
@@ -265,8 +252,9 @@ $ git commit -m "Add table eg_posts"
 
 Impostiamo il file dei seeds per popolare la tabella in automatico invece della procedura manuale appena eseguita.
 
-{title=".../db/seeds.rb", lang=ruby, line-numbers=on, starting-line-number=25}
-```
+***codice n/a - .../db/seeds.rb - line: 25***
+
+```ruby
 puts "Inseriamo tre articoli per tre utenti"
 
 u1 = User.find(1)
@@ -288,8 +276,7 @@ u3.eg_posts.create(headline: "Studio di caso gamma", incipit: "Questo studio è 
 
 Per lanciare il comando e popolare tutto in automatico si può usare:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rake db:seed 
 ```
 
@@ -297,13 +284,11 @@ questo comando si aspetta le tabelle già pronte ed esegue solo query di inserim
 
 oppure
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rake db:setup
 ```
 
 questo comando prima esegue i migrate creando le tabelle e poi esegue le query di inserimento tramite i seeds
-
 
 
 
@@ -312,8 +297,9 @@ questo comando prima esegue i migrate creando le tabelle e poi esegue le query d
 Per non avere tutti i semi sul file "seeds.rb" possiamo creare una cartella "/seeds" e metterci all'interno i files per le varie tabelle.
 Sul file "seeds.rb" lasciamo solo il seguente codice:
 
-{title=".../db/seeds.rb", lang=ruby, line-numbers=on, starting-line-number=25}
-```
+***codice n/a - .../db/seeds.rb - line: 25***
+
+```ruby
 # https://medium.com/@ethanryan/split-your-rails-seeds-file-into-separate-files-in-different-folders-3c57be765818
 
 Dir[File.join(Rails.root, 'db', 'seeds/*', '*.rb')].sort.each do |seed|
@@ -323,15 +309,27 @@ end
 
 
 
+## Verifichiamo preview
 
-## archiviamo su git
-
-{caption: "terminal", format: bash, line-numbers: false}
+```bash
+$ sudo service postgresql start
+$ rails s
 ```
+
+apriamolo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/users
+
+Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
+
+
+
+## Archiviamo su git
+
+```bash
 $ git add -A
-$ git commit -m "add seed people"
+$ git commit -m "add seed posts"
 ```
-
 
 
 
@@ -339,7 +337,7 @@ $ git commit -m "add seed people"
 
 {caption: "terminal", format: bash, line-numbers: false}
 ```
-$ git push heroku ep:master
+$ git push heroku ui:master
 $ heroku run rails db:migrate
 ```
 
@@ -355,18 +353,15 @@ e rifare i passi fatti precedentemente per il database locale
 
 
 
-
 ## Chiudiamo il branch
 
 se abbiamo finito le modifiche e va tutto bene:
 
-{caption: "terminal", format: bash, line-numbers: false}
+```bash
+$ git checkout main
+$ git merge ui
+$ git branch -d ui
 ```
-$ git checkout master
-$ git merge ep
-$ git branch -d ep
-```
-
 
 
 
@@ -374,22 +369,14 @@ $ git branch -d ep
 
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git push origin master
-```
-
-
-
-
-## Il codice del capitolo
-
-
-
-
-{id="01-08-01_01all", title=".../app/models/example_post.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-```
-#TODO
+```bash
+$ git push origin main
 ```
 
-indietro
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)

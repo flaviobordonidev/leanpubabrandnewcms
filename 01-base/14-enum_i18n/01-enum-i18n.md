@@ -1,18 +1,7 @@
-# Nuovo IAM user su AWS
-
-eliminando l'utente IAM user che sta validando le immagini per il nostro sito, perdiamo accesso a tutte le immagini.
-In questo capitolo creeremo un nuovo IAM user e lo assoceremo al nostro sito per ripristinare tutte le immagini.
+# <a name="top"></a> Cap 14.1 - enum con internazionalizzazione
 
 
-
-## Apriamo il branch "New Iam User"
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git checkout -b niu
-```
-
-
+> Vedi capitolo vedi52-integram-agency-blog - c05-enum_with_i18n - 01-enum_with_i18n
 
 
 
