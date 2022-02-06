@@ -25,6 +25,7 @@ Internazionalizziamo l'azione *create*.
         format.html { redirect_to user_url(@user), notice: t(".notice") } # notice: "User was successfully created."
 ```
 
+
 Internazionalizziamo l'azione *update*.
 
 ***codice 01 - ...continua - line: 31***
@@ -42,6 +43,9 @@ Internazionalizziamo l'azione *destroy*.
         redirect_to users_url, notice: t(".notice_logged_in") if @user == current_user #  notice: "The logged in user cannot be destroyed."
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03_05-views-users-new.html.erb)
+
+
 Aggiorniamo i files locales
 
 ***codice 02 - .../config/locales/it.yml - line: 1***
@@ -58,6 +62,9 @@ it:
       notice_logged_in: "L'utente loggato non può essere eliminato."
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03_05-views-users-new.html.erb)
+
+
 ***codice 03 - .../config/locales/en.yml - line: 1***
 
 ```yaml
@@ -71,6 +78,8 @@ en:
       notice: "User was successfully destroyed."
       notice_logged_in: "The logged in user cannot be destroyed."
 ```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03_05-views-users-new.html.erb)
 
 
 

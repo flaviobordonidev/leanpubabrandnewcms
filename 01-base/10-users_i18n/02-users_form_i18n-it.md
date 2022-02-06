@@ -13,34 +13,44 @@ Continuiamo con lo stesso branch del capitolo precedente
 Inseriamo un segnaposto nei campi del form (Input Placeholders). 
 Possiamo dire a Rails di usare *i18n placeholder* passando il parametro `placeholder: true` nelle opzioni dei campi input del form.
 
-***codice 01 - .../app/views/users/_form.html.erb - line: 31***
+***codice 01 - .../app/views/users/_form.html.erb - line: 1***
 
 ```html+erb
-<%= form_with(model: user, local: true) do |form| %>
-  ...
-  <div class="field">
-    <%= form.label :name %>
+<%= form_with(model: user) do |form| %>
+```
+
+> Su Rails 6 usavo `<%= form_with(model: user, local: true) do |form| %>`.
+
+***codice 01 - ...continua - line: 14***
+
+```html+erb
+  <div>
+    <%= form.label :name, style: "display: block" %>
     <%= form.text_field :name, placeholder: true %>
   </div>
 
-  <div class="field">
-    <%= form.label :email %>
+  <div>
+    <%= form.label :email, style: "display: block" %>
     <%= form.text_field :email, placeholder: true %>
   </div>
 
-  <div class="field">
-    <%= form.label :password %>
-    <%= form.text_field :password, placeholder: true %>
+  <div>
+    <%= form.label :password, style: "display: block" %>
+    <%= form.password_field :password, placeholder: true %>
   </div>
 
-  <div class="field">
-    <%= form.label :password_confirmation %>
-    <%= form.text_field :password_confirmation, placeholder: true %>
+  <div>
+    <%= form.label :password_confirmation, style: "display: block" %>
+    <%= form.password_field :password_confirmation, placeholder: true %>
   </div>
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02_01-views-users-_form.html.erb)
 
-diamo la traduzione al placeholder nei locales
+> Su rails 6 usavo `<div class="field">`.
+
+
+Diamo la traduzione al placeholder nei locales.
 
 ***codice 02 - .../config/locales/it.yml - line: 1***
 
@@ -54,6 +64,7 @@ it:
         password: "password"
         password_confirmation: "conferma password"
 ```
+
 
 ***codice 02 - .../config/locales/en.yml - line: 1***
 
@@ -104,6 +115,8 @@ it:
         name: "Nome utente"
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02_02-config-locales-it.yml)
+
 Se il percorso tramite *helpers:* non è disponibile, *i18n* userà il percorso alternativo *activerecord:*.
 
 Lo possiamo verificare commentando nome utente.
@@ -124,6 +137,7 @@ it:
         #name: "Nome utente"
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02_02-config-locales-en.yml)
 
 
 
@@ -188,7 +202,7 @@ apriamolo il browser sull'URL:
 
 
 
-## salviamo su git
+## Archiviamo su git
 
 ```bash
 $ git add -A
@@ -208,48 +222,6 @@ $ git push heroku ui:master
 ## Chiudiamo il branch
 
 lo lasciamo aperto per il prossimo capitolo
-
-
-
----
-
-
-
-## Verifichiamo preview
-
-```bash
-$ sudo service postgresql start
-$ rails s
-```
-
-apriamolo il browser sull'URL:
-
-* https://mycloud9path.amazonaws.com/users
-
-Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
-
-
-
-## salviamo su git
-
-```bash
-$ git add -A
-$ git commit -m "users_controllers notice messages i18n"
-```
-
-
-
-## Pubblichiamo su Heroku
-
-```bash
-$ git push heroku ui:master
-```
-
-
-
-## Chiudiamo il branch
-
-Lo lasciamo aperto per il prossimo capitolo
 
 
 
