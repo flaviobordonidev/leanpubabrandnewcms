@@ -113,7 +113,10 @@ $ git commit -m "Dynamic title on browser tabs"
 
 ```bash
 $ git push heroku dtbt:main
+$ heroku run rails db:migrate
 ```
+
+> Possiamo anche non eseguire `$ heroku run rails db:migrate` perché non tocchiamo il database
 
 
 

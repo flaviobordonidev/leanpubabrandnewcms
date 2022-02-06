@@ -460,6 +460,8 @@ $ git push heroku pwl:main
 $ heroku run rails db:migrate
 ```
 
+> Possiamo anche non eseguire `$ heroku run rails db:migrate` perché non tocchiamo il database
+
 
 
 ## Chiudiamo il branch

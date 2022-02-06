@@ -59,7 +59,7 @@ Sul browser vediamo che ...
 
 
 
-
+## Archiviamo su git
 
 ```bash
 $ git add -A
@@ -82,6 +82,17 @@ end
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/04_01-config-routes.rb)
+
+
+
+## Pubblichiamo su Heroku
+
+```bash
+$ git push heroku siso:main
+$ heroku run rails db:migrate
+```
+
+> Possiamo anche non eseguire `$ heroku run rails db:migrate` perché non tocchiamo il database
 
 
 

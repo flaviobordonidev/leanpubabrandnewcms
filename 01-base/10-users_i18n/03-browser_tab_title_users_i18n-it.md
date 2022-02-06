@@ -148,7 +148,10 @@ $ git commit -m "users_controllers notice messages i18n"
 
 ```bash
 $ git push heroku ui:master
+$ heroku run rails db:migrate
 ```
+
+> Possiamo anche non eseguire `$ heroku run rails db:migrate` perché non tocchiamo il database
 
 
 

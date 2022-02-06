@@ -313,12 +313,23 @@ Copiamo le *views* di devise sulla app per permettere la personalizzazione.
 
 
 
-## archiviamo su git
+## Archiviamo su git
 
 ```bash
 $ git add -A
 $ git commit -m "Install gem devise"
 ```
+
+
+
+## Pubblichiamo su Heroku
+
+```bash
+$ git push heroku siso:main
+$ heroku run rails db:migrate
+```
+
+> Possiamo anche non eseguire `$ heroku run rails db:migrate` perché non tocchiamo il database
 
 
 

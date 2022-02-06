@@ -168,7 +168,10 @@ $ git commit -m "add login_devise i18n"
 
 ```bash
 $ git push heroku di:main
+$ heroku run rails db:migrate
 ```
+
+> Possiamo anche non eseguire `$ heroku run rails db:migrate` perché non tocchiamo il database
 
 
 
