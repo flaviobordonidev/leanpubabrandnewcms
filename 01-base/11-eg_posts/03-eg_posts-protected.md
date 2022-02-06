@@ -1,8 +1,12 @@
 # <a name="top"></a> Cap 11.3 - Protezione degli articoli con devise
 
-Attiviamo una *protezione* con devise che si sovrappone al concetto di "autorizzazione" che vedremo più avanti.
+Attiviamo una *protezione* con devise che si sovrappone al concetto di *autorizzazione* che vedremo più avanti.
 In pratica rendiamo alcune pagine non visibili a meno di non fare login, a meno di non autenticarsi.
-In questo caso l'autenticazione porta con se un'autorizzazione basica. Tutte le persone che si autenticano sono autorizzate a vedere la pagina, invece le persone che non si autenticano non sono autorizzate a vedere la pagina.
+
+> In questo caso l'autenticazione porta con se un'autorizzazione basica. 
+>
+> Tutte le persone che si autenticano sono autorizzate a vedere la pagina, invece le persone che non si autenticano non sono autorizzate a vedere la pagina.
+
 La "vera" autorizzazione la vedremo nei prossimi capitoli e permetterà di dare diversi livelli di autrizzazione alle varie persone che si autenticano a seconda del loro "ruolo".
 
 
