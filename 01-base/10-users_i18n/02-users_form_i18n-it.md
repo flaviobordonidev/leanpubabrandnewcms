@@ -52,7 +52,7 @@ Possiamo dire a Rails di usare *i18n placeholder* passando il parametro `placeho
 
 Diamo la traduzione al placeholder nei locales.
 
-***codice 02 - .../config/locales/it.yml - line: 1***
+***codice n/a - .../config/locales/it.yml - line: 1***
 
 ```yaml
 it:
@@ -66,7 +66,7 @@ it:
 ```
 
 
-***codice 02 - .../config/locales/en.yml - line: 1***
+***codice n/a - .../config/locales/en.yml - line: 1***
 
 ```yaml
 en:
@@ -126,7 +126,7 @@ mettiamo la traduzione alle labels nei locales
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02_02-config-locales-it.yml)
 
-***codice: n/a - .../config/locales/en.yml - line: 1***
+***codice 03 - .../config/locales/en.yml - line: 1***
 
 ```yaml
   activerecord:
