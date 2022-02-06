@@ -308,7 +308,7 @@ $ sudo service postgresql start
 $ rails s
 ```
 
-apriamolo il browser sull'URL:
+Apriamo il browser sull'URL:
 
 - https://mycloud9path.amazonaws.com/users
 
@@ -345,6 +345,6 @@ Lo facciamo nel prossimo capitolo.
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/01-users_controllers_i18n-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/03-browser_tab_title_users_i18n-it.md)
