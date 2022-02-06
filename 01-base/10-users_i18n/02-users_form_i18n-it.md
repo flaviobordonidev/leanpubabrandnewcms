@@ -121,7 +121,7 @@ Se il percorso tramite *helpers:* non è disponibile, *i18n* userà il percorso 
 
 Lo possiamo verificare commentando nome utente.
 
-***codice: n/a - .../config/locales/it.yml - line: 1***
+***codice: n/a - .../config/locales/en.yml - line: 1***
 
 ```yaml
 it:
@@ -137,7 +137,7 @@ it:
         #name: "Nome utente"
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02_02-config-locales-en.yml)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02_03-config-locales-en.yml)
 
 
 
