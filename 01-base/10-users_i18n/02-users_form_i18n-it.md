@@ -102,42 +102,63 @@ mettiamo la traduzione alle labels nei locales
 ***codice 02 - .../config/locales/it.yml - line: 1***
 
 ```yaml
-it:
-  ...
   activerecord:
     attributes:
       user:
         name: "Nome utente" # fallback for when label is nil
-  ...
+        email: "Email" # fallback for when label is nil
+        password: "Password" # fallback for when label is nil
+        password_confirmation: "Conferma password" # fallback for when label is nil
   helpers:
     label:
       user:
         name: "Nome utente"
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Conferma password"
+    placeholder:
+      user:
+        name: "Nome utente"
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Conferma password"
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02_02-config-locales-it.yml)
 
-Se il percorso tramite *helpers:* non è disponibile, *i18n* userà il percorso alternativo *activerecord:*.
-
-Lo possiamo verificare commentando nome utente.
-
 ***codice: n/a - .../config/locales/en.yml - line: 1***
 
 ```yaml
-it:
-  ...
   activerecord:
     attributes:
       user:
-        name: "Nome utente (backup label)" # fallback for when label is nil
-  ...
+        name: "User name" # fallback for when label is nil
+        email: "Email" # fallback for when label is nil
+        password: "Password" # fallback for when label is nil
+        password_confirmation: "Password confirmation" # fallback for when label is nil
   helpers:
     label:
       user:
-        #name: "Nome utente"
+        name: "User name"
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Password confirmation"
+    placeholder:
+      user:
+        name: "User name"
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Password confirmation"
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02_03-config-locales-en.yml)
+
+
+Se il percorso tramite *helpers:* non è disponibile, *i18n* userà il percorso alternativo *activerecord:*.
+
+> Lo possiamo verificare commentando nome utente sotto *helpers - label*.
+>
+>   *helpers: -> label: -> user: ->* `#name: "User name"`
 
 
 
