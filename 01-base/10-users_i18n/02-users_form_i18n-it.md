@@ -178,15 +178,11 @@ Verifichiamo che il pulsante sia presente nel form.
 
 > Su rails 6 era `<div class="actions"><%= form.submit %></div>`
 
-e traduciamo il suo valore sui locales
+e traduciamo il suo valore sui locales sotto *helpers:*.
 
-***codice: n/a - .../config/locales/it.yml - line: 1***
+***codice: n/a - .../config/locales/it.yml - line: 55***
 
 ```yaml
-it:
-  [...]
-  helpers:
-    [...]
     submit:
       user:
         create: "Crea %{model}"
@@ -194,18 +190,114 @@ it:
 ```
 
 
-
 ## Traduciamo il nome del model
 
-***codice: n/a - .../config/locales/it.yml - line: 1***
+Traduciamo il suo valore sui locales sotto *activerecord:*.
+
+***codice: n/a - .../config/locales/it.yml - line: 40***
+
+```yaml
+    models:
+      user: "utente"
+```
+
+
+## Vediamo il risultato finale dei locales
+
+***codice 04 - .../config/locales/it.yml - line: 32***
 
 ```yaml
 it:
   activerecord:
-    [...]
+    attributes:
+      user:
+        name: "Nome utente" # fallback for when label is nil
+        email: "Email" # fallback for when label is nil
+        password: "Password" # fallback for when label is nil
+        password_confirmation: "Conferma password" # fallback for when label is nil
     models:
       user: "utente"
+  helpers:
+    label:
+      user:
+        name: "Nome utente"
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Conferma password"
+    placeholder:
+      user:
+        name: "Nome utente"
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Conferma password"
+    submit:
+      user:
+        create: "Crea %{model}"
+        update: "Aggiorna %{model}"
+  mockups:
+    page_a:
+      headline: "Questa è l'homepage"
+      first_paragraph: "Il testo mostrato è o passato da un 'file di traduzione' e questo significa che la nostra applicazione è pronta a supportare più lingue."
+      link_to_page_B: "Andiamo alla pagina B"
+  users:
+    create:
+      notice: "L'utente è stato creato con successo."
+    update:
+      notice: "L'utente è stato aggiornato con successo."
+    destroy:
+      notice: "L'utente è stato eliminato con successo."
+      notice_logged_in: "L'utente loggato non può essere eliminato."
 ```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02_04-config-locales-it.yml)
+
+
+***codice 05 - .../config/locales/en.yml - line: 32***
+
+```yaml
+en:
+  activerecord:
+    attributes:
+      user:
+        name: "User name" # fallback for when label is nil
+        email: "Email" # fallback for when label is nil
+        password: "Password" # fallback for when label is nil
+        password_confirmation: "Password confirmation" # fallback for when label is nil
+    models:
+      user: "user"
+  helpers:
+    label:
+      user:
+        name: "User name"
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Password confirmation"
+    placeholder:
+      user:
+        name: "User name"
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Password confirmation"
+    submit:
+      user:
+        create: "Create %{model}"
+        update: "Update %{model}"
+  mockups:
+    page_a:
+      headline: "This is the homepage"
+      first_paragraph: "The text showed here is passed via a 'translation file' and this means that our application is ready to support more languages."
+      link_to_page_B: "Let's go to page B."
+  users:
+    create:
+      notice: 'User was successfully created.'
+    update:
+      notice: 'User was successfully updated.'
+    destroy:
+      notice: "User was successfully destroyed."
+      notice_logged_in: "The logged in user cannot be destroyed."
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02_05-config-locales-en.yml)
 
 
 
