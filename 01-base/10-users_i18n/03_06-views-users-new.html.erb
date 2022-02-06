@@ -1,11 +1,16 @@
 <%# == Meta_data ============================================================ %>
 
-<% provide(:html_head_title, "#{t '.html_head_title'}") %>
+<% provide(:html_head_title, "#{t 'users.new.html_head_title'}") %>
+<%# provide(:html_head_title, "New user") %>
 
 <%# == Meta_data - end ====================================================== %>
 
-<h1>New User</h1>
+<h1>New user</h1>
 
-<%= render 'form', user: @user %>
+<%= render "form", user: @user %>
 
-<%= link_to 'Back', users_path %>
+<br>
+
+<div>
+  <%= link_to "Back to users", users_path %>
+</div>

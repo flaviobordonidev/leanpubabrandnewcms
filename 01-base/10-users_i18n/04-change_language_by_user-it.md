@@ -120,15 +120,24 @@ $ git push heroku ui:master
 
 
 
+
 ## Chiudiamo il branch
 
-Lo lasciamo aperto per il prossimo capitolo
+se abbiamo finito le modifiche e va tutto bene:
+
+```bash
+$ git checkout master
+$ git merge ui
+$ git branch -d ui
+```
 
 
 
 ## Facciamo un backup su Github
 
-Lo facciamo nel prossimo capitolo.
+```bash
+$ git push origin master
+```
 
 
 

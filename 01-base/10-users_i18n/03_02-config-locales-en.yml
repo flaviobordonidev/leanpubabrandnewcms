@@ -37,6 +37,8 @@ en:
         email: "Email" # fallback for when label is nil
         password: "Password" # fallback for when label is nil
         password_confirmation: "Password confirmation" # fallback for when label is nil
+    models:
+      user: "user"
   helpers:
     label:
       user:
@@ -50,12 +52,22 @@ en:
         email: "Email"
         password: "Password"
         password_confirmation: "Password confirmation"
+    submit:
+      user:
+        create: "Create %{model}"
+        update: "Update %{model}"
   mockups:
     page_a:
       headline: "This is the homepage"
       first_paragraph: "The text showed here is passed via a 'translation file' and this means that our application is ready to support more languages."
       link_to_page_B: "Let's go to page B."
   users:
+    index:
+      html_head_title: "All users"
+    new:
+      html_head_title: "New post"
+    edit:
+      html_head_title: "Edit"
     create:
       notice: 'User was successfully created.'
     update:

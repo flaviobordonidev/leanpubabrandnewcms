@@ -37,6 +37,8 @@ it:
         email: "Email" # fallback for when label is nil
         password: "Password" # fallback for when label is nil
         password_confirmation: "Conferma password" # fallback for when label is nil
+    models:
+      user: "utente"
   helpers:
     label:
       user:
@@ -50,6 +52,10 @@ it:
         email: "Email"
         password: "Password"
         password_confirmation: "Conferma password"
+    submit:
+      user:
+        create: "Crea %{model}"
+        update: "Aggiorna %{model}"
   mockups:
     page_a:
       headline: "Questa è l'homepage"

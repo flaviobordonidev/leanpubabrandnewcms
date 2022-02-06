@@ -4,27 +4,13 @@
 
 <%# == Meta_data - end ====================================================== %>
 
-<p id="notice"><%= notice %></p>
+<p style="color: green"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @user.name %>
-</p>
+<%= render @user %>
 
-<p>
-  <strong>Email:</strong>
-  <%= @user.email %>
-</p>
+<div>
+  <%= link_to "Edit this user", edit_user_path(@user) %> |
+  <%= link_to "Back to users", users_path %>
 
-<p>
-  <strong>Encrypted password:</strong>
-  <%= @user.encrypted_password %>
-</p>
-
-<p>
-  <strong>Remember created at:</strong>
-  <%= @user.remember_created_at %>
-</p>
-
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+  <%= button_to "Destroy this user", @user, method: :delete unless @user == current_user %>
+</div>
