@@ -17,9 +17,6 @@ continuiamo con lo stesso branch del capitolo precedente
 
 Creiamo delle nuove voci nei locales che aggiungeremo poi alle views.
 
-> Invece di metterle in *ordine alfabetico* le mettiamo come si *presentano nel controller*: 
-> ***index, show, new, edit, create, update, destroy.***
-
 ***codice 01 - .../config/locales/it.yml - line: 4***
 
 ```yaml
@@ -45,6 +42,10 @@ Creiamo delle nuove voci nei locales che aggiungeremo poi alle views.
       html_head_title: "New post"
 ```
 
+
+> Invece di metterle in *ordine alfabetico* le mettiamo come si *presentano nel controller*: 
+> ***index, show, new, edit, create, update, destroy.***
+>
 > Non abbiamo inserito la voce *show* perché richiamiamo solo il nome dell'utente. 
 > L'avremmo inserita se avessimo usato una frase tipo "Show user" ("Mostra utente").
 
