@@ -1,8 +1,9 @@
 # <a name="top"></a> Cap 10.3 - Rendiamo multilingua il titolo nel tab del browser
 
-Attiviamo le traduzioni per il titolo nel tab del browser
-Titolo dinamico nel tab del browser
-Vogliamo rendere dinamico il titolo che appare nel tab del browser. In questo capitolo introduciamo il "contenitore vuoto" yield(:my_variable).
+Attiviamo le traduzioni per il titolo nel tab del browser: *titolo dinamico nel tab del browser*.
+
+Rendiamo dinamico il titolo che appare nel tab del browser. 
+In questo capitolo introduciamo il "contenitore vuoto" ***yield(:my_variable)***.
 
 
 
