@@ -171,13 +171,12 @@ Verifichiamo che il pulsante sia presente nel form.
 ***codice: n/a - .../app/views/users/_form.html.erb - line: 56***
 
 ```html+erb
-<%= form_with(model: user, local: true) do |form| %>
-  [...]
-  <div class="actions">
+  <div>
     <%= form.submit %>
   </div>
-<% end %>
 ```
+
+> Su rails 6 era `<div class="actions"><%= form.submit %></div>`
 
 e traduciamo il suo valore sui locales
 
