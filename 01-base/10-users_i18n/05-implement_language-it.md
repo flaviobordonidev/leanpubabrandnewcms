@@ -1,6 +1,7 @@
 # <a name="top"></a> Cap 10.5 - Attiviamo la scelta della lingua dalla GUI
 
 Implementiamo il cambio della lingua nelle *views*. Le varie *views* formano la nostra Graphic User Interface (GUI).
+Invece di cambiare la lingua da console/terminale adesso la cambiamo dalle nostre *views*.
 
 
 
@@ -34,50 +35,39 @@ Aggiungiamo un selettore per permettere di cambiare lingua.
 ***codice n/a - .../app/views/users/_form.html.erb - line: 22***
 
 ```html+erb
-  <div class="field">    
-    <%= form.label :role %>
-    <%#= form.text_field :role %>
-    <%= form.select(:role, User.roles.keys.map {|role| [role.titleize,role]}) %>
+  <div>    
+    <%= form.label :language %>
+    <%#= form.text_field :language %>
+    <%= form.select(:language, User.languages.keys.map {|language| [language,language]}) %>
   </div>
 ```
 
 [Codice 06](#01-09-03_06all)
 
-Attenzione: deve essere attivo solo uno dei due campi: "form.text_field :role" o "form.select(:role...". Se attiviamo entrambi i campi verrà passato come params solo il valore dell'ultimo campo perché hanno lo stesso nome.
+> Attenzione: deve essere attivo solo uno dei due campi: `form.text_field :language` o `form.select(:language...`. 
+> Se attiviamo entrambi i campi verrà passato come *params* solo il valore dell'ultimo campo perché hanno lo stesso nome.
+
+> Altre possibilità per l'elenco a cascata sono:
+>
+> `<%= form.select(:language, [["Lingua Italiana", "it"], ["Lingua Inglese", "en"]]) %>`
+>
+> `<%= form.select(:language, User.languages.keys.map {|language| [language.titleize,language]}) %>`
 
 > Per approfondimenti vedi sezione rails_references/data_types/select-collection_select
 
-
-Mostriamo i ruoli anche nell'elenco iniziale degli utenti. Li mettiamo al posto della colonna "Remember created at"
-
-***codice n/a - .../app/views/users/index.html.erb - line: 11***
-
-```html+erb
-      <th>Role</th>
-```
-
-***codice n/a - ...continua - line: 22***
-
-```html+erb
-        <td><%= user.role %></td>
-```
+L'elenco a cascata è pronto e se diamo il *submit* del form ci dice che tutto è aggiornato correttamente, ma non è così.
+Per far passare realmente il valore al database dobbiamo attivare la *whitelist* sul controller.
 
 
 
+## Attiviamo la *whitelist* sul controller
 
+Mettiamo nella whitelist la colonna *:language*. 
+Normalmente andremmo solo su *users_controller* ma per devise dobbiamo usare anche *application_controller*.
 
-
-
-
-## Attiviamo la white list sul controller
-
-Invece di cambiare la lingua da console/terminale adesso la cambiamo dalle nostre *views*.
-
-Abbiamo un piccolo problema. Devise non è come lo scaffold. 
-Non ci crea già le azioni sul controller e le views.
-Per poter passare i parametri attraverso le views, o meglio il sumbit del form, dobbiamo inserirli nella white list del controller. 
-Una procedura detta *Strong_params* o *mass-assignment*. 
-Ma questo non è così facile su Devise perché di default ci nasconde tutto.
+> Devise non è come lo scaffold. Non ci crea già le azioni sul controller e le views.
+> Per poter passare i parametri attraverso le views, o meglio il sumbit del form, dobbiamo inserirli nella white list del controller.
+> Una procedura detta *Strong_params* o *mass-assignment*. Ma questo non è così facile su Devise perché di default ci nasconde tutto.
 
 Abbiamo già visualizzato i controllers e le views di devise-users nei capitoli precedenti.
 Possiamo passare i parametri in due modi:
@@ -88,8 +78,6 @@ Possiamo passare i parametri in due modi:
 
 
 ### 1. Il metodo raccomandato da plataformatec. Il metodo Lazy way.
-
-Mettiamo nella whitelist la colonna :language. Normalmente andremmo solo su *users_controller* ma per devise dobbiamo usare anche *application_controller*.
 
 Permettiamo il passaggio del parametro "language" che con devise è fatto tramite "devise_parameter_sanitizer".
 Questa è la sicurezza per il mass-assignment che nei controllers è fatto normalmente con "params.require(:my_model_name).permit(:column1_name, :column2_name)"
