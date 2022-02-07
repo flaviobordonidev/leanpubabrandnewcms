@@ -154,7 +154,7 @@ Mostriamo i ruoli anche nell'elenco iniziale degli utenti. Li mettiamo al posto 
 
 
 
-### Verifichiamo preview
+## Verifichiamo preview
 
 ```bash
 $ sudo service postgresql start

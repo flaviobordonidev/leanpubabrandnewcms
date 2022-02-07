@@ -1,5 +1,6 @@
 # <a name="top"></a> Cap 10.4 - Impostiamo la lingua dalle preferenze dell'utente
 
+*change_language_by_use*
 Alle modalità di cambio lingua già impostate nei capitoli precedenti aggiungiamo anche quella di un utente
 
 
@@ -111,19 +112,19 @@ Loading development environment (Rails 7.0.1)
 
 
 
-## Assegniamo al primo utente la lingua italiana.
+## Assegniamo al primo utente la lingua inglese.
 
 ```bash
--> User.first.it!
+-> User.first.en!
 
 oppure
 
--> User.first.update(language: :it)
+-> User.first.update(language: :en)
 
 oppure
 
 -> u= User.first 
--> u.language = :it 
+-> u.language = :en 
 -> u.save 
 ```
 
@@ -131,82 +132,62 @@ oppure
 
 
 
+## verifichiamo che lingua hanno i vari utenti
 
-## Abilitiamo il nuovo campo "language" per devise
+- verifichiamo se il primo e il secondo utente hanno lingua italiana o inglese
+- prendiamo una lista di tutti gli :it e di tutti gli :en
 
-Permettiamo il passaggio del parametro "language" che con devise è fatto tramite "devise_parameter_sanitizer".
-Questa è la sicurezza per il mass-assignment che nei controllers è fatto normalmente con "params.require(:my_model_name).permit(:column1_name, :column2_name)"
+```bash
+-> User.first.it?
+-> User.second.it?
+-> User.second.en?
+-> User.first.language
+-> User.second.language
 
-***codice 01 - .../app/controllers/appllication_controller.rb - line: 19***
-
-```ruby
-  #-----------------------------------------------------------------------------
-  protected
-
-    def configure_permitted_parameters
-      devise_parameter_sanitizer.permit(:sign_in, keys: [:role, :name, :language])
-      devise_parameter_sanitizer.permit(:sign_up, keys: [:role, :name, :language])
-      devise_parameter_sanitizer.permit(:account_update, keys: [:role, :name, :language])
-    end
+-> User.it
+-> User.en
 ```
 
-[tutto il codice](#01-06-03_01all)
+Esempio
 
-Questo ci permette di aggiungere il campo "language" nei form dell'utente
-
-
-
-
-## Cambiamo lingua da utente
-
-Alle modalità di cambio lingua già impostate nei capitoli precedenti aggiungiamo anche quella di un utente
-
-***codice 01 - .../app/controllers/appllication_controller.rb - line: 19***
-
-```ruby
-before_action :set_locale
-
-.
-.
-.
-
-  #-----------------------------------------------------------------------------
-  private
-  
-    #set language for internationalization
-    def set_locale
-      if user_signed_in?
-        I18n.locale = current_user.language
-      else
-        I18n.locale = params[:locale] || locale_from_header || I18n.default_locale
-      end
-    end
-  
-    def locale_from_header
-      request.env.fetch('HTTP_ACCEPT_LANGUAGE', '').scan(/[a-z]{2}/).first
-    end
+```bash
+user_fb:~/environment/bl7_0 (ui) $ rails c
+Loading development environment (Rails 7.0.1)
+3.1.0 :001 > User.first.it?
+  User Load (0.4ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1  [["LIMIT", 1]]
+ => false 
+3.1.0 :002 > User.second.it?
+  User Load (0.3ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2  [["LIMIT", 1], ["OFFSET", 1]]
+ => true 
+3.1.0 :003 > User.second.en?
+  User Load (0.4ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2  [["LIMIT", 1], ["OFFSET", 1]]
+ => false 
+3.1.0 :004 > User.first.language
+  User Load (0.8ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1  [["LIMIT", 1]]
+ => "en"                                             
+3.1.0 :005 > User.second.language
+  User Load (1.3ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2  [["LIMIT", 1], ["OFFSET", 1]]
+ => "it"                                              
+3.1.0 :006 > User.it
+  User Load (0.3ms)  SELECT "users".* FROM "users" WHERE "users"."language" = $1  [["language", 0]]
+ =>                                                   
+[#<User id: 4, name: "David", email: "david@test.abc", created_at: "2022-02-01 16:28:14.397848000 +0000", updated_at: "2022-02-01 16:28:14.397848000 +0000", language: "it">,
+ #<User id: 5, name: "Elvis", email: "elvis@test.abc", created_at: "2022-02-01 16:29:06.259332000 +0000", updated_at: "2022-02-01 16:29:06.259332000 +0000", language: "it">,
+ #<User id: 7, name: "Flav", email: "flav@test.abc", created_at: "2022-02-01 17:11:04.252571000 +0000", updated_at: "2022-02-01 17:11:04.252571000 +0000", language: "it">,
+ #<User id: 2, name: "Bob", email: "bob@test.abc", created_at: "2022-02-01 16:26:18.569214000 +0000", updated_at: "2022-02-03 10:03:36.219345000 +0000", language: "it">,
+ #<User id: 3, name: "Carl", email: "carl@test.abc", created_at: "2022-02-01 16:27:25.761382000 +0000", updated_at: "2022-02-04 17:19:10.336174000 +0000", language: "it">] 
+3.1.0 :007 > User.en
+  User Load (0.4ms)  SELECT "users".* FROM "users" WHERE "users"."language" = $1  [["language", 1]]
+ => [#<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2022-01-30 11:50:16.615885000 +0000", updated_at: "2022-02-07 00:11:26.611473000 +0000", language: "en">] 
+3.1.0 :008 > exit
+user_fb:~/environment/bl7_0 (ui) $ 
 ```
-
-[tutto il codice](#01-06-03_01all)
-
-
-
----
 
 
 
 ## Verifichiamo preview
 
-```bash
-$ sudo service postgresql start
-$ rails s
-```
-
-apriamolo il browser sull'URL:
-
-* https://mycloud9path.amazonaws.com/users
-
-Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
+La vediamo nel prossimo capitolo perché in questo non abbiamo fatto modifiche alle *views*.
 
 
 
@@ -214,7 +195,7 @@ Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messag
 
 ```bash
 $ git add -A
-$ git commit -m "users_controllers notice messages i18n"
+$ git commit -m "add language field to users table"
 ```
 
 
@@ -223,8 +204,8 @@ $ git commit -m "users_controllers notice messages i18n"
 
 ```bash
 $ git push heroku ui:master
+$ heroku run rails db:migrate
 ```
-
 
 
 
