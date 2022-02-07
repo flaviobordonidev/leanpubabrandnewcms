@@ -71,7 +71,7 @@ ed otteniamo la seguente modifica alla tabella *users*.
   enum language: {it: 0, en: 1}
 ```
 
-[tutto il codice](#01-13-03_03all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/04_03-models-user.rb)
 
 Le due linee di codice in alto sono equivalenti solo la seconda linea di codice è più flessibile per eventuali aggiunte o eliminazioni all'elenco.
 
@@ -211,27 +211,19 @@ $ heroku run rails db:migrate
 
 ## Chiudiamo il branch
 
-se abbiamo finito le modifiche e va tutto bene:
-
-```bash
-$ git checkout master
-$ git merge ui
-$ git branch -d ui
-```
+Lo chiudiamo nel prossimo capitolo.
 
 
 
 ## Facciamo un backup su Github
 
-```bash
-$ git push origin master
-```
+Lo facciamo nel prossimo capitolo.
 
 
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/03-browser_tab_title_users-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/05-implement_language-it.md)
 

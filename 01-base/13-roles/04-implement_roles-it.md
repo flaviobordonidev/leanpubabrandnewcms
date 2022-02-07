@@ -6,7 +6,7 @@ Adesso che abbiamo i ruoli nella nostra tabella *users* possiamo implementarli n
 
 ## Risorse interne
 
-- 99-rails_references-models-04-public-protected-private
+- [99-rails_references-models-04-public-protected-private]()
 
 
 
@@ -212,4 +212,4 @@ $ git push origin master
 
 [<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/05-implement_language-it.md)
