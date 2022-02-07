@@ -30,9 +30,22 @@ Alle modalità di cambio lingua già impostate nei capitoli precedenti aggiungia
 
 ## Inseriamo il campo *language* nelle *views*
 
-Aggiungiamo un selettore per permettere di cambiare lingua.
+Aggiungiamo il campo nel partial *_user* usato dalle views *show* ed *index*.
 
-***codice n/a - .../app/views/users/_form.html.erb - line: 22***
+***codice 02 - .../app/views/users/_user.html.erb - line: 22***
+
+```html+erb
+  <p>
+    <strong>Language:</strong>
+    <%= user.language %>
+  </p>
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/05_02-views-users-_user.html.erb)
+
+Aggiungiamo un selettore (menu a cascata) per permettere di cambiare lingua.
+
+***codice 03 - .../app/views/users/_form.html.erb - line: 22***
 
 ```html+erb
   <div>    
@@ -42,7 +55,7 @@ Aggiungiamo un selettore per permettere di cambiare lingua.
   </div>
 ```
 
-[Codice 06](#01-09-03_06all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/05_03-views-users-_form.html.erb)
 
 > Attenzione: deve essere attivo solo uno dei due campi: `form.text_field :language` o `form.select(:language...`. 
 > Se attiviamo entrambi i campi verrà passato come *params* solo il valore dell'ultimo campo perché hanno lo stesso nome.
@@ -62,8 +75,30 @@ Per far passare realmente il valore al database dobbiamo attivare la *whitelist*
 
 ## Attiviamo la *whitelist* sul controller
 
-Mettiamo nella whitelist la colonna *:language*. 
-Normalmente andremmo solo su *users_controller* ma per devise dobbiamo usare anche *application_controller*.
+Inoltre mettiamo il campo *:language* nella whitelist di *users_controller*.
+
+***codice 04 - .../app/controllers/users_controller.rb - line: 70***
+
+```ruby
+    # Only allow a list of trusted parameters through.
+    def user_params
+      if params[:user][:password].blank?
+        params.require(:user).permit(:name, :email, :language)
+      else
+        params.require(:user).permit(:name, :email, :password, :password_confirmation, :language)
+      end
+    end
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/05_04-controllers-users_controller.rb)
+
+Questo ancora **non** ci permette di aggiornare il campo *language* nella tabella *users* perché è bloccato da *devise*.
+
+
+
+## Attiviamo la *whitelist* su devise
+
+Normalmente andremmo solo su *users_controller* ma siccome *User* e legato a *devise* dobbiamo usare anche *application_controller*.
 
 > Devise non è come lo scaffold. Non ci crea già le azioni sul controller e le views.
 > Per poter passare i parametri attraverso le views, o meglio il sumbit del form, dobbiamo inserirli nella white list del controller.
@@ -119,21 +154,7 @@ I loro nomi e parametri di default permessi sono:
 - *account_update* (Devise::RegistrationsController#update) - Permette le chiavi di autenticazione più i campi :password, :password_confirmation e :current_password
 
 
-Inoltre mettiamo il campo *:language* nella whitelist di *users_controller*.
-
-***codice 02 - .../app/controllers/users_controller.rb - line: 83***
-
-```ruby
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation, :language)
-    end
-```
-
-[tutto il codice](#01-13-03_02all)
-
-
-Questo ci permette di aggiungere il campo "language" nei form dell'utente
+Adesso finalmente riusciamo ad aggiornare il campo *language* nella tabella *users* perché è bloccato da *devise*.
 
 
 
