@@ -156,12 +156,8 @@ I loro nomi e parametri di default permessi sono:
 
 Adesso finalmente riusciamo ad aggiornare il campo *language* nella tabella *users* perché è bloccato da *devise*.
 
-
-
-
-
-
-
+> Una CURIOSITA': questa parte che abbiamo dovuto dare a causa di devise su *language* non è servita per il campo *name* !
+> Da APPROFONDIRE! Cos'ha di differente *language* da *name*?
 
 
 
