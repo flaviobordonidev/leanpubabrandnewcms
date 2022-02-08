@@ -6,6 +6,11 @@ Queste sono "Pagine Dinamiche di Esempio".
 > In inglese *e.g.* è l'abbriviazione di *for example*, dal latino: *exempli gratia*. 
 
 
+## Risorse esterne
+
+- [split-your-rails-seeds](https://medium.com/@ethanryan/split-your-rails-seeds-file-into-separate-files-in-different-folders-3c57be765818)
+
+
 
 ## Apriamo il branch "Examples Posts"
 
@@ -99,6 +104,31 @@ completiamo sul model *User*, il lato *uno* dell'associazione.
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/01_03-models-user.rb)
+
+
+
+## Vediamo i controllers
+
+Diamo un'occhiata ai controllers che sono stati creati notando la chiave esterna *user_id* su *posts_controller*.
+
+***codice 04 - .../app/controllers/eg_posts_controller.rb - line: 68***
+
+```ruby
+      params.require(:eg_post).permit(:meta_title, :meta_description, :headline, :incipit, :user_id)
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/01_04-controllers-eg_posts_controller.rb)
+
+
+***codice 05 - .../app/controllers/users_controller.rb - line: 10***
+
+```ruby
+class UsersController < ApplicationController
+  before_action :authenticate_user!
+  before_action :set_user, only: %i[ show edit update destroy ]
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/01_05-controllers-users_controller.rb)
 
 
 
@@ -585,43 +615,54 @@ $ git commit -m "Add table eg_posts"
 
 Impostiamo il file dei seeds per popolare la tabella in automatico invece della procedura manuale appena eseguita.
 
-***codice n/a - .../db/seeds.rb - line: 25***
+***codice 06 - .../db/seeds.rb - line: 9***
 
 ```ruby
 puts "Inseriamo tre articoli per tre utenti"
 
-u1 = User.find(1)
+#u1 = User.find(1)
+u1 = User.first
 u1.eg_posts.create(headline: "Il mio primo articolo", incipit: "Perché scrivere questo articolo")
 u1.eg_posts.create(headline: "Il mio secondo articolo", incipit: "Ci ho preso gusto")
 u1.eg_posts.create(headline: "Il mio terzo articolo", incipit: "Adesso sono esperto")
 
-u2 = User.find(2)
+#u2 = User.find(2)
+u2 = User.second
 u2.eg_posts.create(headline: "La conferenza uno", incipit: "Una interessante conferenza sul cielo")
 u2.eg_posts.create(headline: "La conferenza due", incipit: "Perché si formano le nuvole? Capiamo il ciclo dell'acqua")
 u2.eg_posts.create(headline: "La conferenza tre", incipit: "Il sole è una stella nana")
 
 
-u3 = User.find(3)
+#u3 = User.find(3)
+u3 = User.third
 u3.eg_posts.create(headline: "Studio di caso alfa", incipit: "In questo studio la nostra azienda è stata brava")
 u3.eg_posts.create(headline: "Studio di caso beta", incipit: "In questo studio identifichiamo i pesci nell'acquario")
 u3.eg_posts.create(headline: "Studio di caso gamma", incipit: "Questo studio è praticamente identico a quello dell'architetto")
+
+3.times do |i|
+  u1.eg_posts.create headline: "articolo di #{u1.email} - articolo numero #{i}"
+  u2.eg_posts.create headline: "articolo di #{u2.email} - articolo numero #{i}"
+  u3.eg_posts.create headline: "articolo di #{u3.email} - articolo numero #{i}"
+end
 ```
 
-Per lanciare il comando e popolare tutto in automatico si può usare:
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/01_03-models-user.rb)
 
-```bash
-$ rake db:seed 
-```
+Useremo i seeds per popolare il database in produzione su *Heroku*.
 
-questo comando si aspetta le tabelle già pronte ed esegue solo query di inserimento tramite i seeds
 
-oppure
-
-```bash
-$ rake db:setup
-```
-
-questo comando prima esegue i migrate creando le tabelle e poi esegue le query di inserimento tramite i seeds
+> Per lanciare il comando e popolare tutto in automatico si può usare: <br/>
+> ```bash
+> $ rake db:seed 
+> ```
+> questo comando si aspetta le tabelle già pronte ed esegue solo query di inserimento tramite i seeds.
+>
+>Oppure
+>
+> ```bash
+> $ rake db:setup
+> ```
+> questo comando prima esegue i migrate creando le tabelle e poi esegue le query di inserimento tramite i seeds.
 
 
 
