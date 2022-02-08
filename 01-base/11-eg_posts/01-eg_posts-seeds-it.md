@@ -657,7 +657,7 @@ Useremo i seeds per popolare il database in produzione su *Heroku*.
 > ```
 > questo comando si aspetta le tabelle già pronte ed esegue solo query di inserimento tramite i seeds.
 >
->Oppure
+>Oppure:
 >
 > ```bash
 > $ rake db:setup
