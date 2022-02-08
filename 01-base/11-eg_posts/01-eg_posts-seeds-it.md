@@ -1,9 +1,9 @@
 # <a name="top"></a> Cap 11.1 - Tabelle di esempio per gli articoli
 
-Abbiamo già creato la tabella *users* inizializzando *devise* adesso creiamo la tabelle di esempio " eg_posts " che ci ci aiuterà a verificare le future implementazioni che faremo nei prossimi capitoli.
+Abbiamo già creato la tabella *users* inizializzando *devise* adesso creiamo la tabelle di esempio *eg_posts* che ci ci aiuterà a verificare le future implementazioni che faremo nei prossimi capitoli.
+Queste sono "Pagine Dinamiche di Esempio".
 
-In inglese e.g. è l'abbriviazione di "for example" dal latino (exempli gratia). Queste sono "Pagine Dinamiche di Esempio".
-
+> In inglese *e.g.* è l'abbriviazione di *for example*, dal latino: *exempli gratia*. 
 
 
 
