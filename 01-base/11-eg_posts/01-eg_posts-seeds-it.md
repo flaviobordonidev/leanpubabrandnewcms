@@ -48,7 +48,7 @@ vediamo il migrate creato
 ***codice 01 - .../db/migrate/xxx_create_posts.rb - line: 1***
 
 ```ruby
-class CreateEgPosts < ActiveRecord::Migration[6.0]
+class CreateEgPosts < ActiveRecord::Migration[7.0]
   def change
     create_table :eg_posts do |t|
       t.string :meta_title
@@ -63,7 +63,7 @@ class CreateEgPosts < ActiveRecord::Migration[6.0]
 end
 ```
 
-[tutto il codice](#01-08-01_01all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/01_01-db-migrate-xxx_create_eg_posts.rb)
 
 la `t.references :user, foreign_key: true` crea un campo `t.integer :user_id` ed attiva il legame uno a molti lato database.
 
@@ -79,7 +79,7 @@ $ rails db:migrate
 
 ## Completiamo la relazione uno-a-molti
 
-verifichiamo example_post, il lato "molti" 
+Verifichiamo sul model *EgPost* il lato *molti* dell'associazione.
 
 ***codice 02 - .../app/models/eg_post.rb - line: 2***
 
@@ -87,19 +87,18 @@ verifichiamo example_post, il lato "molti"
   belongs_to :user
 ```
 
-[tutto il codice](#01-08-01_02all)
-
-completiamo user, il lato "uno"
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/01_02-models-eg_post.rb)
 
 
-***codice 03 - .../app/models/user.rb - line: 7***
+completiamo sul model *User*, il lato *uno* dell'associazione.
+
+***codice 03 - .../app/models/user.rb - line: 10***
 
 ```ruby
   has_many :eg_posts
 ```
 
-[tutto il codice](#01-08-01_03all)
-
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/01_03-models-user.rb)
 
 
 
@@ -141,7 +140,11 @@ $ rails c
 -> u2.eg_posts.create headline: "articolo di #{u2.email} - articolo numero #{i}"
 -> u3.eg_posts.create headline: "articolo di #{u3.email} - articolo numero #{i}"
 -> end
+```
 
+Esempio:
+
+```bash
 2.4.1 :001 > u = User.where(email: "ann@test.abc")
   User Load (0.3ms)  SELECT  "users".* FROM "users" WHERE "users"."email" = $1 LIMIT $2  [["email", "ann@test.abc"], ["LIMIT", 11]]
  => #<ActiveRecord::Relation [#<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2019-01-04 11:53:46", updated_at: "2019-01-08 11:43:42", role: "admin">]> 
@@ -165,10 +168,12 @@ $ rails c
  => 7
 ```
 
-il metodo *.create* è equivalente a ".new" seguito da ".save". E' solo un modo più succinto. Ad esempio le seguenti due linee di codice sono equivalenti:
-
-- Post.create headline: "articolo di test"
-- Post.new(headline: "articolo di test").save
+> Il metodo *.create* è equivalente a *.new* seguito da *.save*. 
+>
+> Ad esempio le seguenti due linee di codice sono equivalenti:
+>
+>- Post.create headline: "articolo di test"
+>- Post.new(headline: "articolo di test").save
 
 
 
