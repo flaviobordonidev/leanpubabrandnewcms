@@ -172,8 +172,8 @@ Esempio:
 >
 > Ad esempio le seguenti due linee di codice sono equivalenti:
 >
->- Post.create headline: "articolo di test"
->- Post.new(headline: "articolo di test").save
+>- `Post.create headline: "articolo di test"`
+>- `Post.new(headline: "articolo di test").save`
 
 
 
