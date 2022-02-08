@@ -14,7 +14,9 @@ continuiamo con lo stesso branch del capitolo precedente
 
 ## Cambiamo la lingua a seconda di quella dell'utente
 
-Alle modalità di cambio lingua già impostate nei capitoli precedenti aggiungiamo anche quella dell'utente loggato e le diamo priorità.
+Alle modalità di cambio lingua già impostate nei capitoli precedenti aggiungiamo anche quella dell'utente loggato.
+Non gli diamo priorità assoluta perché devo poter cambiare la lingua con i link interni, ma gli diamo priorità rispetto al browser.
+Quindi se il params[:locale] è impostato comanda lui. Se invece il prarms[:locale] **non** è impostato allora comanda la lingua dell'utente se l'utente è loggato, altrimenti la lingua del browser.
 
 ***codice 01 - .../app/controllers/appllication_controller.rb - line: 14***
 
