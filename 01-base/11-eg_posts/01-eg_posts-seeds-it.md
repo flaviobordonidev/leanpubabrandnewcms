@@ -127,7 +127,7 @@ $ rails c
 ```
 
 
-> Il metodo *.create* è equivalente a *.new* seguito da *.save*.
+> Il metodo *.create* è equivalente a *.new* seguito da *.save*. <br/>
 > Ad esempio le seguenti due linee di codice sono equivalenti:
 >
 >- `Post.create headline: "articolo di test"`

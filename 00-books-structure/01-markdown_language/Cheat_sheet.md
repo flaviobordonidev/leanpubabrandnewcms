@@ -86,6 +86,51 @@ Vediamo testo messo in "Quote" e liste.
 >> Nested blockquote
 ```
 
+COME ANDARE A CAPO.
+
+> Blockquote
+>
+> Rimando a capo
+
+```
+> Blockquote
+>
+> Rimando a capo
+```
+
+PER ANDARE A CAPO SENZA TROPPO SPAZIO TRA LE LINEE (I mean, something like \newline in TeX.) -> LASCIAMO DUE O PIU' SPAZI ALLA FINE DELLA RIGA SOPRA!!!
+
+> Blockquote   
+> Rimando a capo
+
+```
+> Blockquote   # Ho lasciato 3 spazi!!!
+> Rimando a capo
+```
+
+SE NON LASCI DUE O PIU' SPAZI SONO MESSI SULLA STESSA LINEA
+
+> Blockquote
+> Purtroppo non c'è Rimando a capo.
+
+```
+> Blockquote # Ho lasciato 1 spazio solo :(
+> Purtroppo non c'è Rimando a capo.
+```
+
+ALTRO MODO PER ANDARE A CAPO INVECE DI PIU' SPAZI E' USARE <br/>
+
+> Blockquote <br/>
+> Rimando a capo
+
+```
+> Blockquote <br/>
+> Rimando a capo
+```
+
+
+---
+Bullet list
 
 * Bullet list
     * Nested bullet
