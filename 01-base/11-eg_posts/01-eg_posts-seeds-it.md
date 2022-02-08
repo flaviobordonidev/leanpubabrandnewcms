@@ -330,6 +330,174 @@ Loading development environment (Rails 7.0.1)
  => 3 
 3.1.0 :009 > exit
 user_fb:~/environment/bl7_0 (ep) $ 
+user_fb:~/environment/bl7_0 (ep) $ rails c
+3.1.0 :002 > EgPost.all
+  EgPost Load (0.4ms)  SELECT "eg_posts".* FROM "eg_posts"
+ =>                                                           
+[#<EgPost:0x00007fdd3f6b1b00                                  
+  id: 1,                                                      
+  meta_title: nil,                                            
+  meta_description: nil,                                      
+  headline: "Il mio primo articolo",                          
+  incipit: "Perché scrivere questo articolo",                 
+  user_id: 1,                                                 
+  created_at: Tue, 08 Feb 2022 21:54:21.969955000 UTC +00:00, 
+  updated_at: Tue, 08 Feb 2022 21:54:21.969955000 UTC +00:00>,
+ #<EgPost:0x00007fdd3f670a10                                  
+  id: 2,                                                      
+  meta_title: nil,                                            
+  meta_description: nil,                                      
+  headline: "Il mio secondo articolo",
+  incipit: "Ci ho preso gusto",
+  user_id: 1,
+  created_at: Tue, 08 Feb 2022 21:54:36.086542000 UTC +00:00,
+  updated_at: Tue, 08 Feb 2022 21:54:36.086542000 UTC +00:00>,
+ #<EgPost:0x00007fdd3f670920
+  id: 3,
+  meta_title: nil,
+  meta_description: nil,
+  headline: "Il mio terzo articolo",
+  incipit: "Adesso sono esperto",
+  user_id: 1,
+  created_at: Tue, 08 Feb 2022 21:54:49.606923000 UTC +00:00,
+  updated_at: Tue, 08 Feb 2022 21:54:49.606923000 UTC +00:00>,
+ #<EgPost:0x00007fdd3f670808
+  id: 4,
+  meta_title: nil,
+  meta_description: nil,
+  headline: "La conferenza uno",
+  incipit: "Una interessante conferenza sul cielo",
+  user_id: 2,
+  created_at: Tue, 08 Feb 2022 21:55:16.574955000 UTC +00:00,
+  updated_at: Tue, 08 Feb 2022 21:55:16.574955000 UTC +00:00>,
+ #<EgPost:0x00007fdd3f670740
+  id: 5,
+  meta_title: nil,
+  meta_description: nil,
+  headline: "La conferenza due",
+  incipit: "Perché si formano le nuvole? Capiamo il ciclo dell'acqua",
+  user_id: 2,
+  created_at: Tue, 08 Feb 2022 21:55:30.575196000 UTC +00:00,
+  updated_at: Tue, 08 Feb 2022 21:55:30.575196000 UTC +00:00>,
+ #<EgPost:0x00007fdd3f670650
+  id: 6,
+  meta_title: nil,
+  meta_description: nil,
+  headline: "La conferenza tre",
+  incipit: "Il sole è una stella nana",
+  user_id: 2,
+  created_at: Tue, 08 Feb 2022 21:55:43.268644000 UTC +00:00,
+  updated_at: Tue, 08 Feb 2022 21:55:43.268644000 UTC +00:00>,
+ #<EgPost:0x00007fdd3f670560
+  id: 7,
+  meta_title: nil,
+  meta_description: nil,
+  headline: "Studio di caso alfa",
+  incipit: "In questo studio la nostra azienda è stata brava",
+  user_id: 3,
+  created_at: Tue, 08 Feb 2022 21:56:06.053173000 UTC +00:00,
+  updated_at: Tue, 08 Feb 2022 21:56:06.053173000 UTC +00:00>,
+ #<EgPost:0x00007fdd3f670448
+  id: 8,
+  meta_title: nil,
+  meta_description: nil,
+  headline: "Studio di caso beta",
+  incipit: "In questo studio identifichiamo i pesci nell'acquario",
+  user_id: 3,
+  created_at: Tue, 08 Feb 2022 21:56:18.652491000 UTC +00:00,
+  updated_at: Tue, 08 Feb 2022 21:56:18.652491000 UTC +00:00>,
+ #<EgPost:0x00007fdd3f670380
+  id: 9,
+  meta_title: nil,
+  meta_description: nil,
+  headline: "Studio di caso gamma",
+  incipit: "Questo studio è praticamente identico a quello dell'architetto",
+  user_id: 3,
+  created_at: Tue, 08 Feb 2022 21:56:32.434590000 UTC +00:00,
+  updated_at: Tue, 08 Feb 2022 21:56:32.434590000 UTC +00:00>,
+ #<EgPost:0x00007fdd3f6702b8
+  id: 10,
+  meta_title: nil,
+  meta_description: nil,
+  headline: "articolo di ann@test.abc - articolo numero 0",
+  incipit: nil,
+  user_id: 1,
+  created_at: Tue, 08 Feb 2022 22:03:22.446380000 UTC +00:00,
+  updated_at: Tue, 08 Feb 2022 22:03:22.446380000 UTC +00:00>,
+ #<EgPost:0x00007fdd3f670178
+  id: 11,
+  meta_title: nil,
+  meta_description: nil,
+  headline: "articolo di bob@test.abc - articolo numero 0",
+  incipit: nil,
+  user_id: 2,
+  created_at: Tue, 08 Feb 2022 22:03:22.456463000 UTC +00:00,
+  updated_at: Tue, 08 Feb 2022 22:03:22.456463000 UTC +00:00>,
+ #<EgPost:0x00007fdd3f6700b0
+  id: 12,
+  meta_title: nil,
+  meta_description: nil,
+  headline: "articolo di carl@test.abc - articolo numero 0",
+  incipit: nil,
+  user_id: 3,
+  created_at: Tue, 08 Feb 2022 22:03:22.461921000 UTC +00:00,
+  updated_at: Tue, 08 Feb 2022 22:03:22.461921000 UTC +00:00>,
+ #<EgPost:0x00007fdd3f677fb8
+  id: 13,
+  meta_title: nil,
+  meta_description: nil,
+  headline: "articolo di ann@test.abc - articolo numero 1",
+  incipit: nil,
+  user_id: 1,
+  created_at: Tue, 08 Feb 2022 22:03:22.467316000 UTC +00:00,
+  updated_at: Tue, 08 Feb 2022 22:03:22.467316000 UTC +00:00>,
+ #<EgPost:0x00007fdd3f677ef0
+  id: 14,
+  meta_title: nil,
+  meta_description: nil,
+  headline: "articolo di bob@test.abc - articolo numero 1",
+  incipit: nil,
+  user_id: 2,
+  created_at: Tue, 08 Feb 2022 22:03:22.471237000 UTC +00:00,
+  updated_at: Tue, 08 Feb 2022 22:03:22.471237000 UTC +00:00>,
+ #<EgPost:0x00007fdd3f677e28
+  id: 15,
+  meta_title: nil,
+  meta_description: nil,
+  headline: "articolo di carl@test.abc - articolo numero 1",
+  incipit: nil,
+  user_id: 3,
+  created_at: Tue, 08 Feb 2022 22:03:22.476160000 UTC +00:00,
+  updated_at: Tue, 08 Feb 2022 22:03:22.476160000 UTC +00:00>,
+ #<EgPost:0x00007fdd3f677d60
+  id: 16,
+  meta_title: nil,
+  meta_description: nil,
+  headline: "articolo di ann@test.abc - articolo numero 2",
+  incipit: nil,
+  user_id: 1,
+  created_at: Tue, 08 Feb 2022 22:03:22.479874000 UTC +00:00,
+  updated_at: Tue, 08 Feb 2022 22:03:22.479874000 UTC +00:00>,
+ #<EgPost:0x00007fdd3f677c98
+  id: 17,
+  meta_title: nil,
+  meta_description: nil,
+  headline: "articolo di bob@test.abc - articolo numero 2",
+  incipit: nil,
+  user_id: 2,
+  created_at: Tue, 08 Feb 2022 22:03:22.484426000 UTC +00:00,
+  updated_at: Tue, 08 Feb 2022 22:03:22.484426000 UTC +00:00>,
+ #<EgPost:0x00007fdd3f677bd0
+  id: 18,
+  meta_title: nil,
+  meta_description: nil,
+  headline: "articolo di carl@test.abc - articolo numero 2",
+  incipit: nil,
+  user_id: 3,
+  created_at: Tue, 08 Feb 2022 22:03:22.489103000 UTC +00:00,
+  updated_at: Tue, 08 Feb 2022 22:03:22.489103000 UTC +00:00>] 
+3.1.0 :003 > 
+user_fb:~/environment/bl7_0 (ep) $ 
 ```
 
 
@@ -339,71 +507,72 @@ user_fb:~/environment/bl7_0 (ep) $
 Spieghiamo con degli esempi un po' di codice ruby che abbiamo appena usato.
 
 ```bash
-5.times { puts "i" }
+$irb
+-> 5.times { puts "i" }
 
+-> 5.times do 
+--> puts "i"
+-> end
 
-2.6.3 :019 > 5.times { puts "i" }
+-> 5.times { |i| puts i }
+
+-> 5.times do |i| 
+--> puts i
+-> end
+```
+
+> `irb` apre una console solo ruby; senza interazione con la nostra applicazione. <br/>
+> `rails c` invece apre una console ruby/rails che interagisce con la nostra applicazione.
+
+Esempio:
+
+```bash
+user_fb:~/environment/bl7_0 (ep) $ irb
+3.1.0 :001 > 5.times { puts "i" }
 i
 i
 i
 i
 i
  => 5 
-```
+3.1.0 :002 > 
 
-
-```bash
-5.times do 
-  puts "i"
-end
-
-
-2.6.3 :022 > 5.times do
-2.6.3 :023 >     puts "i"
-2.6.3 :024?>   end
+user_fb:~/environment/bl7_0 (ep) $ irb
+3.1.0 :001 > 5.times do
+3.1.0 :002 >   puts "i"
+3.1.0 :003 > end
 i
 i
 i
 i
 i
- => 5 
-```
+ => 5
 
-
-```bash
-5.times { |i| puts i }
-
-
-2.6.3 :027 > 5.times { |i| puts i }
+user_fb:~/environment/bl7_0 (ep) $ irb
+3.1.0 :001 > 5.times { |i| puts i }
 0
 1
 2
 3
 4
  => 5 
-```
+3.1.0 :002 > 
 
-
-```bash
-5.times do |i| 
-  puts i
-end
-
-
-2.6.3 :030 > 5.times do |i|
-2.6.3 :031 >     puts i
-2.6.3 :032?>   end
+3.1.0 :002 > 5.times do |i|
+3.1.0 :003 >   puts i
+3.1.0 :004 > end
 0
-1
-2
-3
-4
- => 5 
+1                                                 
+2                                                 
+3                                                 
+4                                                 
+ => 5                                             
+3.1.0 :005 >
 ```
 
 
 
-## Salviamo su git
+## Archiviamo su git
 
 ```bash
 $ git add -A
@@ -412,7 +581,7 @@ $ git commit -m "Add table eg_posts"
 
 
 
-## seeds
+## Seeds
 
 Impostiamo il file dei seeds per popolare la tabella in automatico invece della procedura manuale appena eseguita.
 
