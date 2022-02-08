@@ -117,28 +117,26 @@ Possiamo passare i parametri in due modi:
 Permettiamo il passaggio del parametro "language" che con devise è fatto tramite "devise_parameter_sanitizer".
 Questa è la sicurezza per il mass-assignment che nei controllers è fatto normalmente con "params.require(:my_model_name).permit(:column1_name, :column2_name)"
 
-***codice 01 - .../app/controllers/application_controller.rb - line: 2***
+***codice 05 - .../app/controllers/application_controller.rb - line: 3***
 
 ```ruby
   before_action :configure_permitted_parameters, if: :devise_controller?
 ```
 
-***codice 01 - ...continua - line: 9***
+***codice 05 - ...continua - line: 10***
 
 ```
+  #-----------------------------------------------------------------------------
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_in, keys: [:role])
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:role])
-    devise_parameter_sanitizer.permit(:account_update, keys: [:role])
-
+    devise_parameter_sanitizer.permit(:sign_in, keys: [:language])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:language])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:language])
     #devise_parameter_sanitizer.permit(:sign_in, keys: [:role, :name, :language])
     #devise_parameter_sanitizer.permit(:sign_up, keys: [:role, :name, :language])
     #devise_parameter_sanitizer.permit(:account_update, keys: [:role, :name, :language])
-
   end
-end
 ```
 
 [tutto il codice](#01-13-03_01all)
@@ -194,14 +192,6 @@ L'aggiunta dell'instradamento di *users/registration_controller*.
 
 
 
-
-
-
-
-
-
-
-
 ## Verifichiamo preview
 
 ```bash
@@ -211,7 +201,7 @@ $ rails s
 
 - https://mycloud9path.amazonaws.com/users
 
-Andiamo in edit sui vari utenti e ne vediamo i vari ruoli. Volendo possiamo anche cambiarli.
+Andiamo in edit sui vari utenti e vediamo la lingua selezionata. Volendo possiamo anche cambiarla.
 (se proviamo a cambiarli dobbiamo reinserire anche password e password_confirmation altrimenti abbiamo un errore di validazione. Più avanti risolveremo anche questo)
 
 
@@ -220,7 +210,7 @@ Andiamo in edit sui vari utenti e ne vediamo i vari ruoli. Volendo possiamo anch
 
 ```bash
 $ git add -A
-$ git commit -m "Add role:enum to table users"
+$ git commit -m "Add language:enum to table users"
 ```
 
 
@@ -228,7 +218,7 @@ $ git commit -m "Add role:enum to table users"
 ## Pubblichiamo su Heroku
 
 ```bash
-$ git push heroku re:master
+$ git push heroku ui:main
 $ heroku run rails db:migrate
 ```
 
@@ -239,9 +229,9 @@ $ heroku run rails db:migrate
 se abbiamo finito le modifiche e va tutto bene:
 
 ```bash
-$ git checkout master
-$ git merge re
-$ git branch -d re
+$ git checkout main
+$ git merge ui
+$ git branch -d ui
 ```
 
 
@@ -260,7 +250,7 @@ $ git push origin main
 
 [<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/04-language_enum-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/01-eg_posts-seeds-it.md)
 
 
 
