@@ -110,6 +110,9 @@ Usiamo il comando `generate scaffold` che non abbiamo potuto usare prima per cre
 Il comando *scaffold* oltre alla tabella crea tutta l'infrastruttura *restfull* con controllers e views con già del codice coerente con le convenzioni rails.
 
 > Mettiamo il prefisso *eg_* davanti al nome della tabella per indicare che è un *esempio*.
+>
+> In inglese *e.g.* è l'abbriviazione di *for example*, dal latino: *exempli gratia*. 
+
 
 ```bash
 $ rails g scaffold EgUser name:string email:string encrypted_password:string
