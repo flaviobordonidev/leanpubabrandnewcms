@@ -28,17 +28,19 @@ La tabella avrà le seguenti colonne:
 
 ## Impementiamo tabella eg_posts
 
-implementiamo tutta la gestione degli articoli come esempio inclusa la tabella eg_posts per gestire gli articoli creati da utenti con ruolo di autore.
-Generiamo tutto lo "scaffold" perché vogliamo anche i controllers e le views. 
- - il "migrate" crea la sola tabella
- - il "model" oltre alla tabella crea il model per il collegamento uno-a-molti.
- - lo "scaffold" crea anche il controller e le views.
+Implementiamo tutta la gestione degli articoli come esempio inclusa la tabella *eg_posts* per gestire gli articoli creati da utenti con ruolo di autore.
+
+Generiamo tutto lo *scaffold* perché vogliamo anche i controllers e le views. 
+ 
+- il *migrate* crea la sola tabella.
+- il *model* oltre alla tabella crea il model per il collegamento uno-a-molti.
+- lo *scaffold* crea anche il controller e le views.
 
 ```bash
 $ rails g scaffold EgPost meta_title:string meta_description:string headline:string incipit:string user:references
 ```
 
-La cosa bella di " user:references " è che, oltre a creare un migration "ottimizzato" per la relazione uno a molti, ci predispone parte della relazione uno-a-molti anche lato model.
+La cosa bella di `user:references` è che, oltre a creare un migration *ottimizzato* per la relazione uno a molti, ci predispone parte della relazione uno-a-molti anche lato model.
 
 vediamo il migrate creato
 
@@ -377,6 +379,6 @@ $ git push origin main
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/05-implement_language-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/02-users_form_i18n-it.md)
