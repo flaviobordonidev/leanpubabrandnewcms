@@ -123,12 +123,20 @@ $ rails c
 -> u3.eg_posts.create(headline: "Studio di caso alfa", incipit: "In questo studio la nostra azienda è stata brava")
 -> u3.eg_posts.create(headline: "Studio di caso beta", incipit: "In questo studio identifichiamo i pesci nell'acquario")
 -> u3.eg_posts.create(headline: "Studio di caso gamma", incipit: "Questo studio è praticamente identico a quello dell'architetto")
-
 -> exit
 ```
 
 
-Un altro modo più geek per inserire gli articoli è usando il seguente codice
+> Il metodo *.create* è equivalente a *.new* seguito da *.save*. 
+>
+> Ad esempio le seguenti due linee di codice sono equivalenti:
+>
+>- `Post.create headline: "articolo di test"`
+>- `Post.new(headline: "articolo di test").save`
+
+
+
+Inseriamo altri articoli in un modo più "geek".
 
 ```bash
 $ rails c
@@ -140,40 +148,190 @@ $ rails c
 -> u2.eg_posts.create headline: "articolo di #{u2.email} - articolo numero #{i}"
 -> u3.eg_posts.create headline: "articolo di #{u3.email} - articolo numero #{i}"
 -> end
+-> exit
 ```
 
 Esempio:
 
 ```bash
-2.4.1 :001 > u = User.where(email: "ann@test.abc")
-  User Load (0.3ms)  SELECT  "users".* FROM "users" WHERE "users"."email" = $1 LIMIT $2  [["email", "ann@test.abc"], ["LIMIT", 11]]
- => #<ActiveRecord::Relation [#<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2019-01-04 11:53:46", updated_at: "2019-01-08 11:43:42", role: "admin">]> 
-2.4.1 :002 > u = u.first
-  User Load (0.3ms)  SELECT  "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2  [["email", "ann@test.abc"], ["LIMIT", 1]]
- => #<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2019-01-04 11:53:46", updated_at: "2019-01-08 11:43:42", role: "admin"> 
-2.4.1 :003 > 7.times do
-2.4.1 :004 >     u.posts.create title: "articolo di test"
-2.4.1 :005?>   end
-   (0.1ms)  BEGIN
-  Post Exists (0.5ms)  SELECT  1 AS one FROM "posts" WHERE "posts"."id" IS NOT NULL AND "posts"."slug" = $1 LIMIT $2  [["slug", "articolo-di-test"], ["LIMIT", 1]]
-  Post Create (9.6ms)  INSERT INTO "posts" ("title", "user_id", "created_at", "updated_at", "slug") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["title", "articolo di test"], ["user_id", 1], ["created_at", "2019-01-31 13:41:12.110627"], ["updated_at", "2019-01-31 13:41:12.110627"], ["slug", "articolo-di-test"]]
-   (1.1ms)  COMMIT
-
-  ...
-
-   (0.1ms)  BEGIN
-  Post Exists (0.2ms)  SELECT  1 AS one FROM "posts" WHERE "posts"."id" IS NOT NULL AND "posts"."slug" = $1 LIMIT $2  [["slug", "articolo-di-test"], ["LIMIT", 1]]
-  Post Create (0.3ms)  INSERT INTO "posts" ("title", "user_id", "created_at", "updated_at", "slug") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["title", "articolo di test"], ["user_id", 1], ["created_at", "2019-01-31 13:41:12.319967"], ["updated_at", "2019-01-31 13:41:12.319967"], ["slug", "articolo-di-test-8fded178-c7b3-4773-b903-fff189c98eba"]]
-   (0.7ms)  COMMIT
- => 7
+user_fb:~/environment/bl7_0 (ep) $ rails c
+Loading development environment (Rails 7.0.1)
+3.1.0 :001 > u1 = User.find(1)
+  User Load (4.4ms)  SELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2  [["id", 1], ["LIMIT", 1]]
+ => #<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2022-01-30 11:50:16.615885000 +0000", updated_at: "2022-02-07 00:11:26.611473000 +0000", language: "en"> 
+3.1.0 :002 > u1.eg_posts.create(headline: "Il mio primo articolo", incipit: "Perché scrivere questo articolo")
+  TRANSACTION (0.1ms)  BEGIN
+  EgPost Create (6.8ms)  INSERT INTO "eg_posts" ("meta_title", "meta_description", "headline", "incipit", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["meta_title", nil], ["meta_description", nil], ["headline", "Il mio primo articolo"], ["incipit", "Perché scrivere questo articolo"], ["user_id", 1], ["created_at", "2022-02-08 21:54:21.969955"], ["updated_at", "2022-02-08 21:54:21.969955"]]
+  TRANSACTION (1.3ms)  COMMIT
+ => 
+#<EgPost:0x00007f990cb6a650
+ id: 1,
+ meta_title: nil,
+ meta_description: nil,
+ headline: "Il mio primo articolo",
+ incipit: "Perché scrivere questo articolo",
+ user_id: 1,
+ created_at: Tue, 08 Feb 2022 21:54:21.969955000 UTC +00:00,
+ updated_at: Tue, 08 Feb 2022 21:54:21.969955000 UTC +00:00> 
+3.1.0 :003 > u1.eg_posts.create(headline: "Il mio secondo articolo", incipit: "Ci ho preso gusto")
+  TRANSACTION (0.1ms)  BEGIN
+  EgPost Create (0.5ms)  INSERT INTO "eg_posts" ("meta_title", "meta_description", "headline", "incipit", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["meta_title", nil], ["meta_description", nil], ["headline", "Il mio secondo articolo"], ["incipit", "Ci ho preso gusto"], ["user_id", 1], ["created_at", "2022-02-08 21:54:36.086542"], ["updated_at", "2022-02-08 21:54:36.086542"]]
+  TRANSACTION (1.2ms)  COMMIT
+ => 
+#<EgPost:0x00007f990cc5b438
+ id: 2,
+ meta_title: nil,
+ meta_description: nil,
+ headline: "Il mio secondo articolo",
+ incipit: "Ci ho preso gusto",
+ user_id: 1,
+ created_at: Tue, 08 Feb 2022 21:54:36.086542000 UTC +00:00,
+ updated_at: Tue, 08 Feb 2022 21:54:36.086542000 UTC +00:00> 
+3.1.0 :004 > u1.eg_posts.create(headline: "Il mio terzo articolo", incipit: "Adesso sono esperto")
+  TRANSACTION (0.1ms)  BEGIN
+  EgPost Create (0.4ms)  INSERT INTO "eg_posts" ("meta_title", "meta_description", "headline", "incipit", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["meta_title", nil], ["meta_description", nil], ["headline", "Il mio terzo articolo"], ["incipit", "Adesso sono esperto"], ["user_id", 1], ["created_at", "2022-02-08 21:54:49.606923"], ["updated_at", "2022-02-08 21:54:49.606923"]]
+  TRANSACTION (1.2ms)  COMMIT
+ => 
+#<EgPost:0x00007f99058d3cb8
+ id: 3,
+ meta_title: nil,
+ meta_description: nil,
+ headline: "Il mio terzo articolo",
+ incipit: "Adesso sono esperto",
+ user_id: 1,
+ created_at: Tue, 08 Feb 2022 21:54:49.606923000 UTC +00:00,
+ updated_at: Tue, 08 Feb 2022 21:54:49.606923000 UTC +00:00> 
+  User Load (0.4ms)  SELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2  [["id", 2], ["LIMIT", 1]]
+ => #<User id: 2, name: "Bob", email: "bob@test.abc", created_at: "2022-02-01 16:26:18.569214000 +0000", updated_at: "2022-02-03 10:03:36.219345000 +0000", language: "it"> 
+  TRANSACTION (0.2ms)  BEGIN
+  EgPost Create (0.4ms)  INSERT INTO "eg_posts" ("meta_title", "meta_description", "headline", "incipit", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["meta_title", nil], ["meta_description", nil], ["headline", "La conferenza uno"], ["incipit", "Una interessante conferenza sul cielo"], ["user_id", 2], ["created_at", "2022-02-08 21:55:16.574955"], ["updated_at", "2022-02-08 21:55:16.574955"]]
+  TRANSACTION (1.5ms)  COMMIT
+ => 
+#<EgPost:0x00007f9904c61ac0
+ id: 4,
+ meta_title: nil,
+ meta_description: nil,
+ headline: "La conferenza uno",
+ incipit: "Una interessante conferenza sul cielo",
+ user_id: 2,
+ created_at: Tue, 08 Feb 2022 21:55:16.574955000 UTC +00:00,
+ updated_at: Tue, 08 Feb 2022 21:55:16.574955000 UTC +00:00> 
+  TRANSACTION (0.1ms)  BEGIN
+  EgPost Create (0.6ms)  INSERT INTO "eg_posts" ("meta_title", "meta_description", "headline", "incipit", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["meta_title", nil], ["meta_description", nil], ["headline", "La conferenza due"], ["incipit", "Perché si formano le nuvole? Capiamo il ciclo dell'acqua"], ["user_id", 2], ["created_at", "2022-02-08 21:55:30.575196"], ["updated_at", "2022-02-08 21:55:30.575196"]]
+  TRANSACTION (1.2ms)  COMMIT
+ => 
+#<EgPost:0x00007f9904aac1a8
+ id: 5,
+ meta_title: nil,
+ meta_description: nil,
+ headline: "La conferenza due",
+ incipit: "Perché si formano le nuvole? Capiamo il ciclo dell'acqua",
+ user_id: 2,
+ created_at: Tue, 08 Feb 2022 21:55:30.575196000 UTC +00:00,
+ updated_at: Tue, 08 Feb 2022 21:55:30.575196000 UTC +00:00> 
+  TRANSACTION (0.1ms)  BEGIN
+  EgPost Create (0.5ms)  INSERT INTO "eg_posts" ("meta_title", "meta_description", "headline", "incipit", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["meta_title", nil], ["meta_description", nil], ["headline", "La conferenza tre"], ["incipit", "Il sole è una stella nana"], ["user_id", 2], ["created_at", "2022-02-08 21:55:43.268644"], ["updated_at", "2022-02-08 21:55:43.268644"]]
+  TRANSACTION (1.3ms)  COMMIT
+ => 
+#<EgPost:0x00007f9904943f00
+ id: 6,
+ meta_title: nil,
+ meta_description: nil,
+ headline: "La conferenza tre",
+ incipit: "Il sole è una stella nana",
+ user_id: 2,
+ created_at: Tue, 08 Feb 2022 21:55:43.268644000 UTC +00:00,
+ updated_at: Tue, 08 Feb 2022 21:55:43.268644000 UTC +00:00> 
+  User Load (0.4ms)  SELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2  [["id", 3], ["LIMIT", 1]]
+ => #<User id: 3, name: "Carl", email: "carl@test.abc", created_at: "2022-02-01 16:27:25.761382000 +0000", updated_at: "2022-02-04 17:19:10.336174000 +0000", language: "it"> 
+  TRANSACTION (0.1ms)  BEGIN
+  EgPost Create (0.4ms)  INSERT INTO "eg_posts" ("meta_title", "meta_description", "headline", "incipit", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["meta_title", nil], ["meta_description", nil], ["headline", "Studio di caso alfa"], ["incipit", "In questo studio la nostra azienda è stata brava"], ["user_id", 3], ["created_at", "2022-02-08 21:56:06.053173"], ["updated_at", "2022-02-08 21:56:06.053173"]]
+  TRANSACTION (1.9ms)  COMMIT
+ => 
+#<EgPost:0x00007f990cd2c3f8
+ id: 7,
+ meta_title: nil,
+ meta_description: nil,
+ headline: "Studio di caso alfa",
+ incipit: "In questo studio la nostra azienda è stata brava",
+ user_id: 3,
+ created_at: Tue, 08 Feb 2022 21:56:06.053173000 UTC +00:00,
+ updated_at: Tue, 08 Feb 2022 21:56:06.053173000 UTC +00:00> 
+  TRANSACTION (0.2ms)  BEGIN
+  EgPost Create (0.5ms)  INSERT INTO "eg_posts" ("meta_title", "meta_description", "headline", "incipit", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["meta_title", nil], ["meta_description", nil], ["headline", "Studio di caso beta"], ["incipit", "In questo studio identifichiamo i pesci nell'acquario"], ["user_id", 3], ["created_at", "2022-02-08 21:56:18.652491"], ["updated_at", "2022-02-08 21:56:18.652491"]]
+  TRANSACTION (1.4ms)  COMMIT
+ => 
+#<EgPost:0x00007f9905913408
+ id: 8,
+ meta_title: nil,
+ meta_description: nil,
+ headline: "Studio di caso beta",
+ incipit: "In questo studio identifichiamo i pesci nell'acquario",
+ user_id: 3,
+ created_at: Tue, 08 Feb 2022 21:56:18.652491000 UTC +00:00,
+ updated_at: Tue, 08 Feb 2022 21:56:18.652491000 UTC +00:00> 
+  TRANSACTION (0.1ms)  BEGIN
+  EgPost Create (0.4ms)  INSERT INTO "eg_posts" ("meta_title", "meta_description", "headline", "incipit", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["meta_title", nil], ["meta_description", nil], ["headline", "Studio di caso gamma"], ["incipit", "Questo studio è praticamente identico a quello dell'architetto"], ["user_id", 3], ["created_at", "2022-02-08 21:56:32.434590"], ["updated_at", "2022-02-08 21:56:32.434590"]]
+  TRANSACTION (1.3ms)  COMMIT
+ => 
+#<EgPost:0x00007f9904ce81d8
+ id: 9,
+ meta_title: nil,
+ meta_description: nil,
+ headline: "Studio di caso gamma",
+ incipit: "Questo studio è praticamente identico a quello dell'architetto",
+ user_id: 3,
+ created_at: Tue, 08 Feb 2022 21:56:32.434590000 UTC +00:00,
+ updated_at: Tue, 08 Feb 2022 21:56:32.434590000 UTC +00:00> 
+3.1.0 :013 > exit
+user_fb:~/environment/bl7_0 (ep) $ 
+user_fb:~/environment/bl7_0 (ep) $ rails c
+Loading development environment (Rails 7.0.1)
+3.1.0 :001 > u1 = User.where(email: "ann@test.abc").first
+  User Load (0.4ms)  SELECT "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2  [["email", "ann@test.abc"], ["LIMIT", 1]]
+ => #<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2022-01-30 11:50:16.615885000 +0000", updated_at: "2022-02-07 00:11:26.611473000 +0000", language: "en"> 
+3.1.0 :002 > u2 = User.where(email: "bob@test.abc").first
+  User Load (0.5ms)  SELECT "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2  [["email", "bob@test.abc"], ["LIMIT", 1]]
+ => #<User id: 2, name: "Bob", email: "bob@test.abc", created_at: "2022-02-01 16:26:18.569214000 +0000", updated_at: "2022-02-03 10:03:36.219345000 +0000", language: "it"> 
+3.1.0 :003 > u3 = User.where(email: "carl@test.abc").first
+  User Load (0.4ms)  SELECT "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2  [["email", "carl@test.abc"], ["LIMIT", 1]]
+ => #<User id: 3, name: "Carl", email: "carl@test.abc", created_at: "2022-02-01 16:27:25.761382000 +0000", updated_at: "2022-02-04 17:19:10.336174000 +0000", language: "it"> 
+3.1.0 :004 > 3.times do |i|
+3.1.0 :005 >   u1.eg_posts.create headline: "articolo di #{u1.email} - articolo numero #{i}"
+3.1.0 :006 >   u2.eg_posts.create headline: "articolo di #{u2.email} - articolo numero #{i}"
+3.1.0 :007 >   u3.eg_posts.create headline: "articolo di #{u3.email} - articolo numero #{i}"
+3.1.0 :008 > end
+  TRANSACTION (0.1ms)  BEGIN
+  EgPost Create (0.7ms)  INSERT INTO "eg_posts" ("meta_title", "meta_description", "headline", "incipit", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["meta_title", nil], ["meta_description", nil], ["headline", "articolo di ann@test.abc - articolo numero 0"], ["incipit", nil], ["user_id", 1], ["created_at", "2022-02-08 22:03:22.446380"], ["updated_at", "2022-02-08 22:03:22.446380"]]
+  TRANSACTION (1.4ms)  COMMIT
+  TRANSACTION (0.1ms)  BEGIN
+  EgPost Create (1.0ms)  INSERT INTO "eg_posts" ("meta_title", "meta_description", "headline", "incipit", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["meta_title", nil], ["meta_description", nil], ["headline", "articolo di bob@test.abc - articolo numero 0"], ["incipit", nil], ["user_id", 2], ["created_at", "2022-02-08 22:03:22.456463"], ["updated_at", "2022-02-08 22:03:22.456463"]]
+  TRANSACTION (1.3ms)  COMMIT
+  TRANSACTION (1.1ms)  BEGIN
+  EgPost Create (0.7ms)  INSERT INTO "eg_posts" ("meta_title", "meta_description", "headline", "incipit", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["meta_title", nil], ["meta_description", nil], ["headline", "articolo di carl@test.abc - articolo numero 0"], ["incipit", nil], ["user_id", 3], ["created_at", "2022-02-08 22:03:22.461921"], ["updated_at", "2022-02-08 22:03:22.461921"]]
+  TRANSACTION (1.3ms)  COMMIT
+  TRANSACTION (0.4ms)  BEGIN
+  EgPost Create (0.5ms)  INSERT INTO "eg_posts" ("meta_title", "meta_description", "headline", "incipit", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["meta_title", nil], ["meta_description", nil], ["headline", "articolo di ann@test.abc - articolo numero 1"], ["incipit", nil], ["user_id", 1], ["created_at", "2022-02-08 22:03:22.467316"], ["updated_at", "2022-02-08 22:03:22.467316"]]
+  TRANSACTION (1.1ms)  COMMIT
+  TRANSACTION (0.5ms)  BEGIN
+  EgPost Create (0.6ms)  INSERT INTO "eg_posts" ("meta_title", "meta_description", "headline", "incipit", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["meta_title", nil], ["meta_description", nil], ["headline", "articolo di bob@test.abc - articolo numero 1"], ["incipit", nil], ["user_id", 2], ["created_at", "2022-02-08 22:03:22.471237"], ["updated_at", "2022-02-08 22:03:22.471237"]]
+  TRANSACTION (1.4ms)  COMMIT
+  TRANSACTION (0.1ms)  BEGIN
+  EgPost Create (0.5ms)  INSERT INTO "eg_posts" ("meta_title", "meta_description", "headline", "incipit", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["meta_title", nil], ["meta_description", nil], ["headline", "articolo di carl@test.abc - articolo numero 1"], ["incipit", nil], ["user_id", 3], ["created_at", "2022-02-08 22:03:22.476160"], ["updated_at", "2022-02-08 22:03:22.476160"]]
+  TRANSACTION (1.2ms)  COMMIT
+  TRANSACTION (0.6ms)  BEGIN
+  EgPost Create (0.6ms)  INSERT INTO "eg_posts" ("meta_title", "meta_description", "headline", "incipit", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["meta_title", nil], ["meta_description", nil], ["headline", "articolo di ann@test.abc - articolo numero 2"], ["incipit", nil], ["user_id", 1], ["created_at", "2022-02-08 22:03:22.479874"], ["updated_at", "2022-02-08 22:03:22.479874"]]
+  TRANSACTION (1.1ms)  COMMIT
+  TRANSACTION (0.7ms)  BEGIN
+  EgPost Create (0.6ms)  INSERT INTO "eg_posts" ("meta_title", "meta_description", "headline", "incipit", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["meta_title", nil], ["meta_description", nil], ["headline", "articolo di bob@test.abc - articolo numero 2"], ["incipit", nil], ["user_id", 2], ["created_at", "2022-02-08 22:03:22.484426"], ["updated_at", "2022-02-08 22:03:22.484426"]]
+  TRANSACTION (1.1ms)  COMMIT
+  TRANSACTION (0.1ms)  BEGIN
+  EgPost Create (0.6ms)  INSERT INTO "eg_posts" ("meta_title", "meta_description", "headline", "incipit", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["meta_title", nil], ["meta_description", nil], ["headline", "articolo di carl@test.abc - articolo numero 2"], ["incipit", nil], ["user_id", 3], ["created_at", "2022-02-08 22:03:22.489103"], ["updated_at", "2022-02-08 22:03:22.489103"]]
+  TRANSACTION (2.2ms)  COMMIT
+ => 3 
+3.1.0 :009 > exit
+user_fb:~/environment/bl7_0 (ep) $ 
 ```
-
-> Il metodo *.create* è equivalente a *.new* seguito da *.save*. 
->
-> Ad esempio le seguenti due linee di codice sono equivalenti:
->
->- `Post.create headline: "articolo di test"`
->- `Post.new(headline: "articolo di test").save`
 
 
 
