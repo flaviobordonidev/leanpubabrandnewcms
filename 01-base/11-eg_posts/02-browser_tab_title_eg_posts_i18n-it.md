@@ -1,6 +1,6 @@
 # <a name="top"></a> Cap 11.2 - Rendiamo multilingua il titolo nel tab del browser per eg_posts
 
-Attiviamo le traduzioni per il titolo nel tab del browser.
+Attiviamo le traduzioni per il titolo nel tab del browser quando siamo nella pagine di EgPost.
 
 
 
@@ -30,6 +30,7 @@ Creiamo delle nuove voci nei locales che aggiungeremo poi alle views.
       html_head_title: "Nuovo articolo"
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/02_01-config-locales-it.yml)
 
 
 ***codice 02 - .../config/locales/en.yml - line: 4***
@@ -45,6 +46,8 @@ Creiamo delle nuove voci nei locales che aggiungeremo poi alle views.
     new:
       html_head_title: "New post"
 ```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/02_02-config-locales-en.yml)
 
 
 
