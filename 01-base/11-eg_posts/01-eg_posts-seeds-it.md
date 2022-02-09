@@ -618,7 +618,7 @@ Impostiamo il file dei seeds per popolare la tabella in automatico invece della 
 ***codice 06 - .../db/seeds.rb - line: 9***
 
 ```ruby
-puts "Inseriamo tre articoli per tre utenti"
+puts "Inseriamo sei articoli per tre utenti"
 
 #u1 = User.find(1)
 u1 = User.first
@@ -666,7 +666,9 @@ Useremo i seeds per popolare il database in produzione su *Heroku*.
 
 
 
-## creiamo una cartella per i seeds
+## Creiamo una cartella per i seeds
+
+> QUESTA PARTE LA SPOSTEREI PIU' AVANTI.
 
 Per non avere tutti i semi sul file "seeds.rb" possiamo creare una cartella "/seeds" e metterci all'interno i files per le varie tabelle.
 Sul file "seeds.rb" lasciamo solo il seguente codice:
@@ -692,9 +694,9 @@ $ rails s
 
 apriamolo il browser sull'URL:
 
-* https://mycloud9path.amazonaws.com/users
+* https://mycloud9path.amazonaws.com/eg_posts
 
-Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
+Vediamo i posts creati tramite terminale/console.
 
 
 
@@ -711,19 +713,40 @@ $ git commit -m "add seed posts"
 
 {caption: "terminal", format: bash, line-numbers: false}
 ```
-$ git push heroku ui:master
+$ git push heroku ep:master
 $ heroku run rails db:migrate
 ```
 
-per popolare il database di heroku 
 
+## Popoliamo il database su heroku
 
-{caption: "terminal", format: bash, line-numbers: false}
+Per popolare il database su heroku sfruttiamo il file seeds.
+
+```bash
+$ heroku run rails db:seed
 ```
-$ heroku run rails c
+
+Esempio:
+
+```bash
+user_fb:~/environment/bl7_0 (ep) $ heroku run rails db:seed
+Running rails db:seed on ⬢ bl7-0... up, run.9423 (Free)
+Inseriamo sei articoli per tre utenti
+user_fb:~/environment/bl7_0 (ep) $ 
 ```
 
-e rifare i passi fatti precedentemente per il database locale
+> Altrimenti avremmo potuto entrare in console remota su heroku e rifatto i passi fatti precedentemente per il database locale.
+>
+> ```bash
+> $ heroku run rails c
+> ```
+
+
+Apriamolo il browser sull'URL:
+
+* https://bl7-0.herokuapp.com/eg_posts
+
+Vediamo i posts creati tramite file *seeds*.
 
 
 
@@ -733,8 +756,8 @@ se abbiamo finito le modifiche e va tutto bene:
 
 ```bash
 $ git checkout main
-$ git merge ui
-$ git branch -d ui
+$ git merge ep
+$ git branch -d ep
 ```
 
 

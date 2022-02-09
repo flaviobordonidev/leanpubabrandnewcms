@@ -6,7 +6,7 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-puts "Inseriamo tre articoli per tre utenti"
+puts "Inseriamo sei articoli per tre utenti"
 
 #u1 = User.find(1)
 u1 = User.first
