@@ -66,7 +66,7 @@ it:
     show:
       html_head_title: "Art. %{id}"
     edit:
-      html_head_title: "Modifica"
+      html_head_title: "Modifica Art. %{id}"
     new:
       html_head_title: "Nuovo articolo"
   mockups:

@@ -25,7 +25,7 @@ Creiamo delle nuove voci nei locales che aggiungeremo poi alle views.
     show:
       html_head_title: "Art. %{id}"
     edit:
-      html_head_title: "Modifica"
+      html_head_title: "Modifica Art. %{id}"
     new:
       html_head_title: "Nuovo articolo"
 ```
@@ -42,14 +42,14 @@ Creiamo delle nuove voci nei locales che aggiungeremo poi alle views.
     show:
       html_head_title: "Post %{id}"
     edit:
-      html_head_title: "Edit"
+      html_head_title: "Edit Post %{id}"
     new:
       html_head_title: "New post"
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/02_02-config-locales-en.yml)
 
-> Nella traduzione su *show* passiamo il parametro *id* che corrisponde al numero dell'articolo.
+> Nella traduzione su *show* ed *edit* passiamo il parametro *id* che corrisponde al numero dell'articolo.
 
 
 
@@ -86,7 +86,11 @@ traduciamo edit
 ***codice 05 - .../app/views/eg_posts/edit.html.erb - line: 1***
 
 ```html+erb
-<% provide(:html_head_title, "#{t '.html_head_title'} #{@eg_post.headline}") %>
+<%# == Meta_data ============================================================ %>
+
+<% provide(:html_head_title, t('eg_posts.edit.html_head_title', id: @eg_post.id)) %>
+
+<%# == Meta_data - end ====================================================== %>
 ```
 
 traduciamo new
@@ -94,7 +98,11 @@ traduciamo new
 ***codice 06 - .../app/views/eg_posts/new.html.erb - line: 1***
 
 ```html+erb
-<% provide(:html_head_title, "#{t '.html_head_title'}") %>
+<%# == Meta_data ============================================================ %>
+
+<% provide(:html_head_title, t('eg_posts.new.html_head_title')) %>
+
+<%# == Meta_data - end ====================================================== %>
 ```
 
 
