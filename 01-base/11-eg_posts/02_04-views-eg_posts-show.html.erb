@@ -1,0 +1,16 @@
+<%# == Meta_data ============================================================ %>
+
+<% provide(:html_head_title, t('eg_posts.show.html_head_title', id: @eg_post.id)) %>
+
+<%# == Meta_data - end ====================================================== %>
+
+<p style="color: green"><%= notice %></p>
+
+<%= render @eg_post %>
+
+<div>
+  <%= link_to "Edit this eg post", edit_eg_post_path(@eg_post) %> |
+  <%= link_to "Back to eg posts", eg_posts_path %>
+
+  <%= button_to "Destroy this eg post", @eg_post, method: :delete %>
+</div>

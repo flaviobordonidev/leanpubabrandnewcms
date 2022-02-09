@@ -23,7 +23,7 @@ Creiamo delle nuove voci nei locales che aggiungeremo poi alle views.
     index:
       html_head_title: "Tutti gli articoli"
     show:
-      html_head_title: "Art."
+      html_head_title: "Art. %{id}"
     edit:
       html_head_title: "Modifica"
     new:
@@ -40,7 +40,7 @@ Creiamo delle nuove voci nei locales che aggiungeremo poi alle views.
     index:
       html_head_title: "All posts"
     show:
-      html_head_title: "Post"
+      html_head_title: "Post %{id}"
     edit:
       html_head_title: "Edit"
     new:
@@ -49,29 +49,41 @@ Creiamo delle nuove voci nei locales che aggiungeremo poi alle views.
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/02_02-config-locales-en.yml)
 
+> Nella traduzione su *show* passiamo il parametro *id* che corrisponde al numero dell'articolo.
+
 
 
 ## Aggiungiamo le chiamate alle views
 
 traduciamo index
 
-***codice 03 - .../app/views/eg_posts/index.html.erb - line: 3***
+***codice 03 - .../app/views/eg_posts/index.html.erb - line: 1***
 
 ```html+erb
-<% provide(:html_head_title, "#{t '.html_head_title'}") %>
+<%# == Meta_data ============================================================ %>
+
+<% provide(:html_head_title, "#{t 'eg_posts.index.html_head_title'}") %>
+
+<%# == Meta_data - end ====================================================== %>
 ```
 
 traduciamo show
 
-***codice n/a - .../app/views/eg_posts/show.html.erb - line: 3***
+***codice 04 - .../app/views/eg_posts/show.html.erb - line: 1***
 
 ```html+erb
-<% provide(:html_head_title, "#{t '.html_head_title'}: #{@eg_post.headline}") %>
+<%# == Meta_data ============================================================ %>
+
+<%# provide(:html_head_title, "Articolo/Post: #{@eg_post.id}") %>
+<%# provide(:html_head_title, "#{t '.html_head_title'}: #{@eg_post.headline}") %>
+<% provide(:html_head_title, t('eg_posts.show.html_head_title', id: @eg_post.id)) %>
+
+<%# == Meta_data - end ====================================================== %>
 ```
 
 traduciamo edit
 
-***codice n/a - .../app/views/eg_posts/edit.html.erb - line: 3***
+***codice 05 - .../app/views/eg_posts/edit.html.erb - line: 1***
 
 ```html+erb
 <% provide(:html_head_title, "#{t '.html_head_title'} #{@eg_post.headline}") %>
@@ -79,7 +91,7 @@ traduciamo edit
 
 traduciamo new
 
-***codice n/a - .../app/views/eg_posts/new.html.erb - line: 3***
+***codice 06 - .../app/views/eg_posts/new.html.erb - line: 1***
 
 ```html+erb
 <% provide(:html_head_title, "#{t '.html_head_title'}") %>

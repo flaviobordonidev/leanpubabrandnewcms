@@ -64,7 +64,7 @@ it:
     index:
       html_head_title: "Tutti gli articoli"
     show:
-      html_head_title: "Art."
+      html_head_title: "Art. %{id}"
     edit:
       html_head_title: "Modifica"
     new:

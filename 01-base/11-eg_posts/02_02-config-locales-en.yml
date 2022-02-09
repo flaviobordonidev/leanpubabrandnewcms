@@ -64,7 +64,7 @@ en:
     index:
       html_head_title: "All posts"
     show:
-      html_head_title: "Post"
+      html_head_title: "Post %{id}"
     edit:
       html_head_title: "Edit"
     new:
