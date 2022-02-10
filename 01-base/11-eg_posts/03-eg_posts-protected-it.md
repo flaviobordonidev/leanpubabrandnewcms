@@ -48,14 +48,14 @@ $ rails s
 
 apriamolo il browser sull'URL:
 
-- https://mycloud9path.amazonaws.com/
+- mycloud9path.amazonaws.com/
 
 Verifichiamo di non essere loggati e proviamo ad entrare in:
 
-- [https://mycloud9path.amazonaws.com/eg_posts]()
-- [https://mycloud9path.amazonaws.com/eg_posts/1]()
-- [https://mycloud9path.amazonaws.com/eg_posts/1/edit]()
-- [https://mycloud9path.amazonaws.com/eg_posts/new]()
+- mycloud9path.amazonaws.com/eg_posts
+- mycloud9path.amazonaws.com/eg_posts/1
+- mycloud9path.amazonaws.com/eg_posts/1/edit
+- mycloud9path.amazonaws.com/eg_posts/new
 
 Saremo reinstradati nella pagina di login. 
 Effettuato login con successo entreremo nella pagina richiesta inizialmente.
