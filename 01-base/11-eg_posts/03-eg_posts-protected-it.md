@@ -31,8 +31,8 @@ before_action :authenticate_user!
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/02_01-config-locales-it.yml)
 
-> before_action ha sostituito il "deprecated" before_filter
->
+> *before_action* ha sostituito il "deprecated" *before_filter*
+
 > Attenzione! <br/>
 > For Rails 5, note that *protect_from_forgery* is no longer prepended to the *before_action* chain, so if you have set *authenticate_user* before *protect_from_forgery*, your request will result in "Can't verify CSRF token authenticity." 
 > To resolve this, either ***change the order*** in which you call them, or use protect_from_forgery prepend: true.
@@ -52,10 +52,10 @@ apriamolo il browser sull'URL:
 
 Verifichiamo di non essere loggati e proviamo ad entrare in:
 
-- https://mycloud9path.amazonaws.com/eg_posts
-- https://mycloud9path.amazonaws.com/eg_posts/1
-- https://mycloud9path.amazonaws.com/eg_posts/1/edit
-- https://mycloud9path.amazonaws.com/eg_posts/new
+- [https://mycloud9path.amazonaws.com/eg_posts]()
+- [https://mycloud9path.amazonaws.com/eg_posts/1]()
+- [https://mycloud9path.amazonaws.com/eg_posts/1/edit]()
+- [https://mycloud9path.amazonaws.com/eg_posts/new]()
 
 Saremo reinstradati nella pagina di login. 
 Effettuato login con successo entreremo nella pagina richiesta inizialmente.
