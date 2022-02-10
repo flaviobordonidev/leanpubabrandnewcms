@@ -1,3 +1,5 @@
+# <a name="top"></a> Cap 99.action_text.02 - Come interagire con Trix di Action Text
+
 Prima di Action Text (che è TRIX implementato dentro Rails) si usavano varie soluzioni per l'upload dei files.
 Vediamone alcune:
 

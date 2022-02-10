@@ -711,8 +711,7 @@ $ git commit -m "add seed posts"
 
 ## Pubblichiamo su Heroku
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git push heroku ep:master
 $ heroku run rails db:migrate
 ```

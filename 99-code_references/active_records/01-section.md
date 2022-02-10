@@ -1,7 +1,6 @@
--# Active records
+# <a name="top"></a> Cap 99.action_view.01 - Active records
 
 gestiamo i valori sul database
-
 
 
 

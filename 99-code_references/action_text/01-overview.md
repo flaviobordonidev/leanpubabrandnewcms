@@ -1,5 +1,4 @@
-
-## Come interagire con Trix di Action Text
+# <a name="top"></a> Cap 99.action_text.01 - Come interagire con Trix di Action Text
 
 * https://blog.craz8.com/articles/2019/9/2/trix-config-object-and-rails-6-webpack
 

@@ -135,6 +135,7 @@ $ git commit -m "Internationalization title on browser tabs"
 
 ```bash
 $ git push heroku btep:main
+$ heroku run rails db:migrate
 ```
 
 
@@ -151,7 +152,7 @@ $ git branch -d btep
 
 
 
-# Aggiorniamo github
+# Facciamo un backup su Github
 
 ```bash
 $ git push origin main
