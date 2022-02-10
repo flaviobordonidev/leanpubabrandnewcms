@@ -1,5 +1,24 @@
+# Migrations
 
-https://makandracards.com/brainchild/48046-rails-generate-migrations-cheat-sheet
+db/migrate
+
+* [Active Record Migrations](http://guides.rubyonrails.org/active_record_migrations.html)
+
+---
+https://coderwall.com/p/1dsjoq/quickly-re-run-rails-migrations
+
+rake db:migrate:redo
+
+
+for migration with schema ID 20100421175455 the command would be:
+
+rake db:migrate:redo VERSION=20100421175455
+Reference: http://stackoverflow.com/a/5600310
+
+
+## migrations-cheat-sheet
+
+- [](https://makandracards.com/brainchild/48046-rails-generate-migrations-cheat-sheet)
 
 Types
 assignable values: string, text, integer, float, decimal, boolean, datetime, time, date and binary
