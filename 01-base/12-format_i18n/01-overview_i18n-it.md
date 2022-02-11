@@ -71,10 +71,9 @@ en-US:
 
 ## Allineiamo i due files
 
-Riportiamo queste traduzioni nei nostri files su *config/locale* e li allineiamo.
-
-> Durante l'allineamento facciamo anche alcune correzioni e aggiunte.
-> Ed aggiungiamo le nostre personalizzazioni, eventualmente con il commento "#customized" in fondo alla riga.
+Riportiamo queste traduzioni nei nostri files su *config/locale* e le allineiamo. 
+Ossia facciamo in modo che nei due files allo stesso numero di riga corrisponda la stessa parte da tradurre.
+Inoltre riportiamo le traduzioni all'interno dei gruppi di competenza. (es: `activerecord:`, `helpers:`, ...)
 
 Aggiorniamo il nostro file della traduzione statica in italiano.
 
@@ -128,9 +127,9 @@ Descrizioni dei cambi effettuati
 # Controllers (in alphabetical order)
 ```
 
-2. Inglobate le nostre traduzioni di `activerecord:` all'interno di quello del file scaricato.
+2. Inglobate le nostre traduzioni di `activerecord:` all'interno di quelle del file scaricato.
 
-3. Inglobate le nostre traduzioni di `helpers:` all'interno di quello del file scaricato.
+3. Inglobate le nostre traduzioni di `helpers:` all'interno di quelle del file scaricato.
 
 
 
