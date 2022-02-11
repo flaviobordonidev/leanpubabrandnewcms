@@ -3,24 +3,62 @@
 Di default il comando di formattazione della data prende i nomi in inglese. Vediamo come implementare l'Italiano.
 
 
+## Risorse interne
+
+- [VEDI 99-rails_references/i18n/02-format_date_time_i18n]()
+
+
+
+## Risorse esterne
+
+- [guida ufficiale di Rails](https://guides.rubyonrails.org/i18n.html)
+
+
+
+## Apriamo il branch "Formats i18n"
+
+```bash
+$ git checkout -b fin
+```
+
+
 
 ## I formati di default
 
-[VEDI 99-rails_references/i18n/02-format_date_time_i18n]
+Per la formattazione in più lingue di date, monete, numeri ed altro ci sono già dei files .yml predisposti.
 
-Nella guida ufficiale di Rails https://guides.rubyonrails.org/i18n.html (questo link è anche indicato nel file iniziale locale/en.yml) al Capitolo "9 Contributing to Rails I18n" si rimanda al seguente link:
+Noi scarichiamo quello per la lingua inglese e quello per la lingua italiana e li allineiamo.
+Durante l'allineamento facciamo anche alcune correzioni e aggiunte.
 
-- https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale
+> abbiamo aggiunto le seguenti due linee che erano presenti solo in inglese:
+> - line: 126 -> `model_invalid: 'Validazione fallita: %{errors}'`
+> - line: 193 -> `eb: EB`
 
-Qui ci sono già tante traduzioni in moltissime lingue.
 
-Nella nostra applicazione partiamo dai seguenti formati:
+***codice 01 - .../config/locle/it.yml - line: 1***
 
-- 01_01-config-locale-en-base.yml
-- 01_02-config-locale-it-base.yml
-  a cui abbiamo aggiunto le seguenti due linee che erano presenti solo in inglese:
-  126 --> model_invalid: 'Validazione fallita: %{errors}'
-  193 --> eb: EB
+```yaml
+  ...
+  # fine del file di traduzione preso da Github
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/02_01-config-locales-it.yml)
+
+
+***codice 02 - .../config/locle/en.yml - line: 1***
+
+```yaml
+  ...
+  # fine del file di traduzione preso da Github
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/02_01-config-locales-it.yml)
+
+
+> I files sono stati presi da https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale <br/>
+> Ci siamo arrivati tramite il link https://guides.rubyonrails.org/i18n.html che è riportato sia nel file iniziale locale/en.yml, sia nella guida ufficiale di Rails al Capitolo "9 Contributing to Rails I18n". 
+
+
 
 
 

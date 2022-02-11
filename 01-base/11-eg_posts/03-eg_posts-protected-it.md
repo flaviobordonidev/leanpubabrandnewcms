@@ -74,7 +74,8 @@ $ git commit -m "Activate Devise protection for eg_posts"
 ## Pubblichiamo su Heroku
 
 ```bash
-$ git push heroku pep:master
+$ git push heroku pep:main
+$ heroku run rails db:migrate
 ```
 
 
