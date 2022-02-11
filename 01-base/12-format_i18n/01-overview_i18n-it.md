@@ -78,10 +78,20 @@ Riportiamo queste traduzioni nei nostri files su *config/locale* e li allineiamo
 
 Aggiorniamo il nostro file della traduzione statica in italiano.
 
-***codice 03 - .../config/locales/it.yml - line: 1***
+***codice 03 - .../config/locales/it.yml - line: 32***
 
 ```yaml
-
+it:
+  activerecord:
+    attributes:
+      user:
+        name: "Nome utente" # fallback for when label is nil
+        email: "Email" # fallback for when label is nil
+        password: "Password" # fallback for when label is nil
+        password_confirmation: "Conferma password" # fallback for when label is nil
+    errors:
+      messages:
+        record_invalid: 'Validazione fallita: %{errors}'
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/01_03-config-locales-it.yml)
@@ -89,18 +99,38 @@ Aggiorniamo il nostro file della traduzione statica in italiano.
 
 Aggiorniamo il nostro file della traduzione statica in inglese.
 
-***codice 04 - .../config/locales/en.yml - line: 1***
+***codice 04 - .../config/locales/en.yml - line: 32***
 
 ```yaml
-
+en:
+  activerecord:
+    attributes:
+      user:
+        name: "User name" # fallback for when label is nil
+        email: "Email" # fallback for when label is nil
+        password: "Password" # fallback for when label is nil
+        password_confirmation: "Password confirmation" # fallback for when label is nil
+    errors:
+      messages:
+        record_invalid: 'Validation failed: %{errors}'
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/01_04-config-locales-en.yml)
 
-> abbiamo aggiunto le seguenti due linee che erano presenti solo in inglese:
-> - line: 126 -> `model_invalid: 'Validazione fallita: %{errors}'`
-> - line: 193 -> `eb: EB`
 
+Descrizioni dei cambi effettuati
+
+1. Inseriti il codice dei file scaricati sopra la traduzione dei *controllers*.
+   Lasciato invariato tutto il codice dei *Controllers*; quello sotto la riga:
+
+```yaml
+#-------------------------------------------------------------------------------
+# Controllers (in alphabetical order)
+```
+
+2. Inglobate le nostre traduzioni di `activerecord:` all'interno di quello del file scaricato.
+
+3. Inglobate le nostre traduzioni di `helpers:` all'interno di quello del file scaricato.
 
 
 

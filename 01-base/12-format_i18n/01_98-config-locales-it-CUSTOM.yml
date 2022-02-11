@@ -1,50 +1,40 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# The following keys must be escaped otherwise they will not be retrieved by
-# the default I18n backend:
-#
-# true, false, on, off, yes, no
-#
-# Instead, surround them with single quotes.
-#
-# en:
-#   "true": "foo"
-#
-# To learn more, please read the Rails Internationalization guide
-# available at https://guides.rubyonrails.org/i18n.html.
-
+# https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/it.yml
+# Customized by Flavio
 it:
   activerecord:
-    attributes:
-      user:
-        name: "Nome utente" # fallback for when label is nil
-        email: "Email" # fallback for when label is nil
-        password: "Password" # fallback for when label is nil
-        password_confirmation: "Conferma password" # fallback for when label is nil
     errors:
       messages:
         record_invalid: 'Validazione fallita: %{errors}'
         restrict_dependent_destroy:
           has_one: Il record non può essere cancellato perchè esiste un %{record} dipendente
           has_many: Il record non può essere cancellato perchè esistono %{record} dipendenti
+      models:
+        user:
+          attributes:
+            name:
+              blank: ": campo obbligatorio"
+            email:
+              blank: ": campo obbligatorio"
+              invalid: ": non valida"
+            password:
+              blank: ": campo obbligatorio"
+              too_short: ": troppo corta"
+            password_confirmation:
+              confirmation: ": non corrisponde con password"
+    attributes:
+      user:
+        name: "Nome utente" # fallback for when label is nil
+        email: "email"
+        password: "password"
+        password_confirmation: "conferma password"
     models:
       user: "utente"
+      eg_company: "azienda esempio"
+
+  form_errors_message:
+    one: "1 errore ha impedito il salvataggio"
+    other: "%{count} errori hanno impedito il salvataggio"
+
   date:
     abbr_day_names:
     - dom
@@ -110,8 +100,8 @@ it:
         one: circa un anno
         other: circa %{count} anni
       almost_x_years:
-        one: quasi un anno
-        other: quasi %{count} anni
+        one: circa 1 anno
+        other: circa %{count} anni
       half_a_minute: mezzo minuto
       less_than_x_seconds:
         one: meno di un secondo
@@ -144,6 +134,7 @@ it:
       day: Giorno
       month: Mese
       year: Anno
+
   errors:
     format: "%{attribute} %{message}"
     messages:
@@ -182,29 +173,33 @@ it:
       header:
         one: 'Non posso salvare questo %{model}: 1 errore'
         other: 'Non posso salvare questo %{model}: %{count} errori.'
+
   helpers:
-    label:
-      user:
-        name: "Nome utente"
-        email: "Email"
-        password: "Password"
-        password_confirmation: "Conferma password"
-    placeholder:
-      user:
-        name: "Nome utente"
-        email: "Email"
-        password: "Password"
-        password_confirmation: "Conferma password"
     select:
       prompt: Seleziona...
     submit:
       create: Crea %{model}
       submit: Invia %{model}
       update: Aggiorna %{model}
-    #submit:
+      # user:
+      #   create: "Crea %{model}"
+      #   update: "Aggiorna %{model}"
+      # eg_company:
+      #   create: "Crea %{model}"
+      #   update: "Aggiorna %{model}"
+    label:
       user:
-        create: "Crea %{model}"
-        update: "Aggiorna %{model}"
+        name: "Nome utente"
+        email: "email"
+        password: "password"
+        password_confirmation: "conferma password"
+    placeholder:
+      user:
+        name: "nome utente"
+        email: "email"
+        password: "password"
+        password_confirmation: "conferma password"
+  
   number:
     currency:
       format:
@@ -215,6 +210,7 @@ it:
         significant: false
         strip_insignificant_zeros: false
         unit: "€"
+        #unit: "" #Customized
     format:
       delimiter: "."
       precision: 2
@@ -265,26 +261,51 @@ it:
     formats:
       default: "%a %d %b %Y, %H:%M:%S %z"
       long: "%d %B %Y %H:%M"
+      long_phrase: "%A %d %^B %Y alle %H:%M e %S secondi" #customized
       short: "%d %b %H:%M"
+      short_phrase: "il giorno %d %^B %Y" #customized
     pm: pm
 
-#-------------------------------------------------------------------------------
-# Controllers (in ordine alfabetico)
+  # Controllers ----------------------------------------------------------------
+  
+  eg_companies:
+    index:
+      html_head_title: "Tutte le aziende"
+    show:
+      html_head_title: "Az."
+    edit:
+      html_head_title: "Modifica"
+    new:
+      html_head_title: "Nuova azienda"
+
+  eg_components:
+    index:
+      html_head_title: "Tutti i componenti"
+    show:
+      html_head_title: "Comp."
+    edit:
+      html_head_title: "Modifica"
+    new:
+      html_head_title: "Nuovo componente"
 
   eg_posts:
+    not_published: "non è stato ancora pubblicato"
     index:
       html_head_title: "Tutti gli articoli"
     show:
-      html_head_title: "Art. %{id}"
+      html_head_title: "Art."
+      price_fomatted: "Questo costa %{price} di soldini"
     edit:
-      html_head_title: "Modifica Art. %{id}"
+      html_head_title: "Modifica"
     new:
       html_head_title: "Nuovo articolo"
+
   mockups:
     page_a:
       headline: "Questa è l'homepage"
-      first_paragraph: "Il testo mostrato è o passato da un 'file di traduzione' e questo significa che la nostra applicazione è pronta a supportare più lingue."
+      first_paragraph: "il testo mostrato è o passato da un 'file di traduzione' e questo significa che la nostra applicazione è pronta a supportare più lingue."
       link_to_page_B: "Andiamo alla pagina B"
+
   users:
     index:
       html_head_title: "Tutti gli utenti"
@@ -296,6 +317,3 @@ it:
       notice: "L'utente è stato creato con successo."
     update:
       notice: "L'utente è stato aggiornato con successo."
-    destroy:
-      notice: "L'utente è stato eliminato con successo."
-      notice_logged_in: "L'utente loggato non può essere eliminato."

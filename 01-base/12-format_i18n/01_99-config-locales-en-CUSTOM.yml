@@ -1,50 +1,40 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# The following keys must be escaped otherwise they will not be retrieved by
-# the default I18n backend:
-#
-# true, false, on, off, yes, no
-#
-# Instead, surround them with single quotes.
-#
-# en:
-#   "true": "foo"
-#
-# To learn more, please read the Rails Internationalization guide
-# available at https://guides.rubyonrails.org/i18n.html.
-
+# https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/en-US.yml
+# Customized by Flavio
 en:
   activerecord:
-    attributes:
-      user:
-        name: "User name" # fallback for when label is nil
-        email: "Email" # fallback for when label is nil
-        password: "Password" # fallback for when label is nil
-        password_confirmation: "Password confirmation" # fallback for when label is nil
     errors:
       messages:
         record_invalid: 'Validation failed: %{errors}'
         restrict_dependent_destroy:
           has_one: Cannot delete record because a dependent %{record} exists
           has_many: Cannot delete record because dependent %{record} exist
+      models:
+        user:
+          attributes:
+            name:
+              blank: ": required field"
+            email:
+              blank: ": required field"
+              invalid: ": not valid"
+            password:
+              blank: ": required field"
+              too_short: ": too short"
+            password_confirmation:
+              confirmation: ": does not match with password"
+    attributes:
+      user:
+        name: "User name" # fallback for when label is nil
+        email: "email"
+        password: "password"
+        password_confirmation: "Password confirmation"
     models:
       user: "user"
+      eg_company: "example company"
+
+  form_errors_message:
+    one: "1 error prevented saving"
+    other: "%{count} errors prevented saving"
+
   date:
     abbr_day_names:
     - Sun
@@ -144,6 +134,7 @@ en:
       day: Day
       month: Month
       year: Year
+
   errors:
     format: "%{attribute} %{message}"
     messages:
@@ -182,29 +173,33 @@ en:
       header:
         one: 1 error prohibited this %{model} from being saved
         other: "%{count} errors prohibited this %{model} from being saved"
+
   helpers:
-    label:
-      user:
-        name: "User name"
-        email: "Email"
-        password: "Password"
-        password_confirmation: "Password confirmation"
-    placeholder:
-      user:
-        name: "User name"
-        email: "Email"
-        password: "Password"
-        password_confirmation: "Password confirmation"
     select:
       prompt: Please select
     submit:
       create: Create %{model}
       submit: Save %{model}
       update: Update %{model}
-    #submit:
+      # user:
+      #   create: "Create %{model}"
+      #   update: "Update %{model}"
+      # eg_company:
+      #   create: "Crete %{model}"
+      #   update: "Update %{model}"
+    label:
       user:
-        create: "Create %{model}"
-        update: "Update %{model}"
+        name: "User name"
+        email: "email"
+        password: "password"
+        password_confirmation: "password confirmation"
+    placeholder:
+      user:
+        name: "user name"
+        email: "email"
+        password: "password"
+        password_confirmation: "password confirmation"
+
   number:
     currency:
       format:
@@ -215,6 +210,7 @@ en:
         significant: false
         strip_insignificant_zeros: false
         unit: "$"
+        #unit: "" #Customized
     format:
       delimiter: ","
       precision: 3
@@ -265,37 +261,59 @@ en:
     formats:
       default: "%a, %d %b %Y %I:%M:%S %p %Z"
       long: "%B %d, %Y %I:%M %p"
+      long_phrase: "%A %d %^B %Y at %H:%M and %S seconds" #customized
       short: "%d %b %I:%M %p"
+      short_phrase: "The day %d %^B %Y" #customized
     pm: pm
 
-#-------------------------------------------------------------------------------
-# Controllers (in alphabetical order)
+  # Controllers ----------------------------------------------------------------
+
+  eg_companies:
+    index:
+      html_head_title: "All companies"
+    show:
+      html_head_title: "Company"
+    edit:
+      html_head_title: "Edit"
+    new:
+      html_head_title: "New company"
+
+  eg_components:
+    index:
+      html_head_title: "All components"
+    show:
+      html_head_title: "Comp."
+    edit:
+      html_head_title: "Edit"
+    new:
+      html_head_title: "New component"
 
   eg_posts:
+    not_published: "It is not published yet"
     index:
-      html_head_title: "All posts"
+      html_head_title: "All the posts"
     show:
-      html_head_title: "Post %{id}"
+      html_head_title: "Art."
+      price_fomatted: "This cost %{price} of money"
     edit:
-      html_head_title: "Edit Post %{id}"
+      html_head_title: "Edit"
     new:
       html_head_title: "New post"
+
   mockups:
     page_a:
       headline: "This is the homepage"
-      first_paragraph: "The text showed here is passed via a 'translation file' and this means that our application is ready to support more languages."
+      first_paragraph: "the text showed here is passed via a 'translation file' and this means that our application is ready to support more languages."
       link_to_page_B: "Let's go to page B."
+
   users:
     index:
       html_head_title: "All users"
     new:
-      html_head_title: "New post"
+      html_head_title: "New user"
     edit:
       html_head_title: "Edit"
     create:
-      notice: 'User was successfully created.'
+      notice: "The user was created successfully."
     update:
-      notice: 'User was successfully updated.'
-    destroy:
-      notice: "User was successfully destroyed."
-      notice_logged_in: "The logged in user cannot be destroyed."
+      notice: "The user was successfully updated."
