@@ -140,19 +140,19 @@ $ sudo service postgresql start
 $ rails s
 ```
 
-apriamolo il browser sull'URL:
+apriamolo il browser all'URL:
 
-* https://mycloud9path.amazonaws.com/users
+- mycloud9path.amazonaws.com/users
 
 Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
 
 
 
-## salviamo su git
+## Archiviamo su git
 
 ```bash
 $ git add -A
-$ git commit -m "users_controllers notice messages i18n"
+$ git commit -m "implement format_i18n"
 ```
 
 
@@ -161,6 +161,7 @@ $ git commit -m "users_controllers notice messages i18n"
 
 ```bash
 $ git push heroku ui:master
+$ heroku run rails db:migrate
 ```
 
 
@@ -179,6 +180,6 @@ Lo facciamo nel prossimo capitolo.
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_postss/04-eg_redirect_after_login-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/02-format_date_time_i18n-it.md)
