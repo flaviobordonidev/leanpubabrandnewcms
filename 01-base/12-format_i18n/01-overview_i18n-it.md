@@ -71,9 +71,31 @@ en-US:
 
 ## Allineiamo i due files
 
- e li allineiamo.
-Durante l'allineamento facciamo anche alcune correzioni e aggiunte.
-Ed aggiungiamo le nostre personalizzazioni, eventualmente con il commento "#customized" in fondo alla riga.
+Riportiamo queste traduzioni nei nostri files su *config/locale* e li allineiamo.
+
+> Durante l'allineamento facciamo anche alcune correzioni e aggiunte.
+> Ed aggiungiamo le nostre personalizzazioni, eventualmente con il commento "#customized" in fondo alla riga.
+
+Aggiorniamo il nostro file della traduzione statica in italiano.
+
+***codice 03 - .../config/locales/it.yml - line: 1***
+
+```yaml
+
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/01_03-config-locales-it.yml)
+
+
+Aggiorniamo il nostro file della traduzione statica in inglese.
+
+***codice 04 - .../config/locales/en.yml - line: 1***
+
+```yaml
+
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/01_04-config-locales-en.yml)
 
 > abbiamo aggiunto le seguenti due linee che erano presenti solo in inglese:
 > - line: 126 -> `model_invalid: 'Validazione fallita: %{errors}'`
