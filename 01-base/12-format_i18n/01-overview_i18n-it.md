@@ -119,8 +119,8 @@ en:
 
 Descrizioni dei cambi effettuati
 
-1. Inseriti il codice dei file scaricati sopra la traduzione dei *controllers*.
-   Lasciato invariato tutto il codice dei *Controllers*; quello sotto la riga:
+1. Inserita la traduzione dei file scaricati sopra la traduzione dei *controllers*.
+   Lasciato invariata tutta la traduzione dei *Controllers*; quella sotto la riga:
 
 ```yaml
 #-------------------------------------------------------------------------------
