@@ -1,4 +1,4 @@
-# https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/en-US.yml
+---
 en-US:
   activerecord:
     errors:

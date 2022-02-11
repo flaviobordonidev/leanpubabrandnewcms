@@ -32,36 +32,40 @@ Per la formattazione in più lingue di date, monete, numeri ed altro ci sono gi�
 
 Noi scarichiamo quello per la lingua inglese e quello per la lingua italiana.
 
-- [Italiano](https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/it.yml)
-- [Inglese](https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/en-US.yml)
+- [Italiano - svenfuchs-it](https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/it.yml)
+- [Inglese - svenfuchs-en-US](https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/en-US.yml)
 
 > Anche se di default ho già in Rails le traduzioni in inglese le prendiamo comunque perché nel prossimo paragrafo allineeremo i due files *.yml*.
 
+> I files sono stati presi da https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale <br/>
+> Ci siamo arrivati tramite il link https://guides.rubyonrails.org/i18n.html che è riportato sia nel file iniziale locale/en.yml, sia nella guida ufficiale di Rails al Capitolo "9 Contributing to Rails I18n". 
+
 Il file italiano così com'è stato scaricato.
 
-***codice 01 - .../config/locale/it.yml - line: 1***
+***codice 01 - https://github.com/svenfuchs/.../it.yml - line: 1***
 
 ```yaml
-  ...
-  # fine del file di traduzione preso da Github
+---
+it:
+  activerecord:
+    errors:
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/02_01-config-locales-it.yml)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/01_01-svenfuchs-it.yml)
 
 Il file inglese così com'è stato scaricato.
 
-***codice 02 - .../config/locle/en.yml - line: 1***
+***codice 02 - https://github.com/svenfuchs/.../en-US.yml - line: 1***
 
 ```yaml
-  ...
-  # fine del file di traduzione preso da Github
+---
+en-US:
+  activerecord:
+    errors:
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/02_01-config-locales-it.yml)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/01_02-svenfuchs-en-US.yml)
 
-
-> I files sono stati presi da https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale <br/>
-> Ci siamo arrivati tramite il link https://guides.rubyonrails.org/i18n.html che è riportato sia nel file iniziale locale/en.yml, sia nella guida ufficiale di Rails al Capitolo "9 Contributing to Rails I18n". 
 
 
 
