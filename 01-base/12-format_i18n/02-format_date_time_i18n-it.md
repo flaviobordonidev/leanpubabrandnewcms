@@ -1,6 +1,6 @@
-# <a name="top"></a> Cap 12.1 - Formattiamo le date nelle varie lingue
+# <a name="top"></a> Cap 12.1 - Formattiamo le date nelle varie lingue lato DATABASE
 
-Di default il comando di formattazione della data prende i nomi in inglese. Vediamo come implementare l'Italiano.
+Abbiamo aggiunto i due files *it* e *en* con le formattazioni già impostate. Adesso entriamo più in profondità.
 
 
 ## Risorse interne
@@ -10,9 +10,15 @@ Di default il comando di formattazione della data prende i nomi in inglese. Vedi
 
 
 
+## Apriamo il branch "Formats i18n"
+
+Già aperto nel capitolo precedente.
+
+
+
 ## Visualizziamo il campo ultimo aggiornamento degli articoli
 
-di default la voce "t.timestamps" nei migrations crea le due colonne "created_at" e "updated_at" come possiamo vedere nello schema del database.
+Di default il codice *t.timestamps* nei migrations crea le due colonne *created_at* e *updated_at* come possiamo vedere nello schema del database.
 
 ***codice 01 - .../db/schema.rb - line: 54***
 
@@ -21,19 +27,21 @@ di default la voce "t.timestamps" nei migrations crea le due colonne "created_at
     t.datetime "updated_at", precision: 6, null: false
 ```
 
-Possiamo usarli nella pagina show per visualizzare la data di creazione e quella dell'ultimo aggiornamento.
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/02_01-db-schema.rb)
 
-***codice 02 - .../app/views/eg_posts/show.html.erb - line: 3***
+Possiamo usare quelli di *eg_posts* nelle pagine *show* e *index* per visualizzare la data di creazione e quella dell'ultimo aggiornamento.
+
+***codice 02 - .../app/views/eg_posts/_eg_post.html.erb - line: 3***
 
 ```html+erb
 <p>
   <strong>created_at:</strong>
-  <%= @eg_post.created_at %>
+  <%= eg_post.created_at %>
 </p>
 
 <p>
   <strong>updated_at:</strong>
-  <%= @eg_post.updated_at %>
+  <%= eg_post.updated_at %>
 </p>
 ```
 
@@ -41,23 +49,25 @@ Possiamo usarli nella pagina show per visualizzare la data di creazione e quella
 
 ## Formattiamo la data
 
-Diamo un formato alla data con il metodo ".strftime". Per la creazione indichiamo il giorno il mese e l'anno, invece per l'ultimo aggiornamento usiamo più indicazioni:
+Diamo un formato alla data con il metodo *.strftime*. 
+Per la *data di creazione* visualizziamo solo il giorno il mese e l'anno.
+Invece per la *data dell'ultimo aggiornamento* visualizziamo anche ore e minuti.
 
 ***codice 03 - .../app/views/eg_posts/show.html.erb - line: 12***
 
 ```html+erb
 <p>
   <strong>created_at:</strong>
-  <%= @eg_post.created_at.strftime("day %d %^B %Y") %>
+  <%= eg_post.created_at.strftime("day %d %^B %Y") %>
 </p>
 
 <p>
   <strong>updated_at:</strong>
-  <%= @eg_post.updated_at.strftime("%A %d %^B %Y at %H:%M and %S seconds") %>
+  <%= eg_post.updated_at.strftime("%A %d %^B %Y at %H:%M and %S seconds") %>
 </p>
 ```
 
-questi sono i parametri più usati di ".strftime":
+Di seguito i parametri più usati di *.strftime*.
 
 - %Y - Anno con incluso il secolo, ossia almeno con 4 cifre. Può essere anche negativo. Es: -0001, 0000, 1995, 2009, 14292, etc.
 - %y - Anno senza il secolo, ossia con solo 2 cifre. Es: 00..99

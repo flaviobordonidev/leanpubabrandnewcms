@@ -1,6 +1,8 @@
 # <a name="top"></a> Cap 12.1 - Formattiamo le date nelle varie lingue
 
-Di default il comando di formattazione della data prende i nomi in inglese. Vediamo come implementare l'Italiano.
+Di default il comando di formattazione della data prende i nomi in inglese. 
+Vediamo come implementare l'Italiano.
+
 
 
 ## Risorse interne
@@ -12,9 +14,12 @@ Di default il comando di formattazione della data prende i nomi in inglese. Vedi
 ## Risorse esterne
 
 - [guida ufficiale di Rails](https://guides.rubyonrails.org/i18n.html)
-- [elenco lingue](https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale)
+- [example translations data / elenco ufficiale lingue](https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale)
 - [lingua en](https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/en-US.yml)
 - [lingua it](https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/it.yml)
+
+> guides.rubyonrails.org/i18n.html -> 9 Contributing to Rails I18n <br/>
+> If you find your own locale (language) missing from our example translations data repository for Ruby on Rails, please fork the repository, add your data, and send a pull request.
 
 
 
@@ -160,7 +165,7 @@ $ git commit -m "implement format_i18n"
 ## Pubblichiamo su Heroku
 
 ```bash
-$ git push heroku ui:master
+$ git push heroku fin:main
 $ heroku run rails db:migrate
 ```
 
