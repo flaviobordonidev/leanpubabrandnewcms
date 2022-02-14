@@ -1,6 +1,8 @@
-# <a name="top"></a> Cap 12.1 - Formattiamo le date nelle varie lingue lato DATABASE
+# <a name="top"></a> Cap 12.1 - la formattazione delle date nelle varie lingue
 
-Abbiamo aggiunto i due files *it* e *en* con le formattazioni già impostate. Adesso entriamo più in profondità.
+Abbiamo aggiunto i due files *it* e *en* con le formattazioni già impostate. 
+Adesso entriamo più in profondità nella formattazione delle **date**.
+
 
 
 ## Risorse interne

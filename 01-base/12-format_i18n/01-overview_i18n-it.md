@@ -1,7 +1,6 @@
-# <a name="top"></a> Cap 12.1 - Formattiamo le date nelle varie lingue
+# <a name="top"></a> Cap 12.1 - Lo formattazioni base nelle varie lingue
 
-Di default il comando di formattazione della data prende i nomi in inglese. 
-Vediamo come implementare l'Italiano.
+Per la formattazione in più lingue di date, monete, numeri ed altro ...
 
 
 
