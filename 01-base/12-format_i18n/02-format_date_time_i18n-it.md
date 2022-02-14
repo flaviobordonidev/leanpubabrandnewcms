@@ -84,11 +84,11 @@ Code | Description                                              | Esempio
 %^B | Mese, con nome pieno in maiuscolo.                        | gennaio è rappresentato con "JANUARY"
 %b  | Mese, con nome abbreviato.                                | gennaio è rappresentato con "Jan"
 %^b | Mese, con nome abbreviato in maiuscolo.                   | gennaio è rappresentato con "JAN"
---- |             
+--- |                                                           |
 %d  | Giorno del mese,   zero-padded (01..31).                  | il primo di gennaio è rappresentato con "01"
 %-d | Giorno del mese,      no-padded (1..31).                  | il primo di gennaio è rappresentato con "1"
 %e  | Giorno del mese,  blank-padded ( 1..31).                  | il primo di gennaio è rappresentato con " 1"
-%j  | Giorno dell'anno (001..366)
+%j  | Giorno dell'anno (001..366)                               | il primo di febbraio è rappresentato con "32"
 %A  | Giorno della settimana nome pieno.                        | domenica è rappresentata con "Sunday"
 %^A | Giorno della settimana nome pieno in maiuscolo.           | domenica è rappresentata con "SUNDAY"
 %a  | Giorno della settimana abbreviato.                        | domenica è rappresentata con "Sun"
@@ -96,12 +96,12 @@ Code | Description                                              | Esempio
 %u  | Giorno della settimana in numero (1..7) con Monday is 1.  | domenica è rappresentata con "7"
 %w  | Giorno della settimana in numero (0..6) con Sunday is 0.  | domenica è rappresentata con "0"
 --- |                                                           |
-%H  | Hour of the day, 24-hour clock, zero-padded (00..23)      |
-%k  | Hour of the day, 24-hour clock, blank-padded ( 0..23)     |
-%I  | Hour of the day, 12-hour clock, zero-padded (01..12)      |
-%l  | Hour of the day, 12-hour clock, blank-padded ( 1..12)     |
-%P  | Meridian indicator, lowercase ('am' or 'pm')              |
-%p  | Meridian indicator, uppercase ('AM' or 'PM')              |
+%H  | Hour of the day, 24-hour clock, zero-padded (00..23)      | le otto di sera sono    "20"
+%k  | Hour of the day, 24-hour clock, blank-padded ( 0..23)     | le otto di mattina sono " 8"
+%I  | Hour of the day, 12-hour clock, zero-padded (01..12)      | le otto di sera sono    "08"
+%l  | Hour of the day, 12-hour clock, blank-padded ( 1..12)     | le otto di mattina sono " 8"
+%P  | Meridian indicator, lowercase                             | ('am' or 'pm')
+%p  | Meridian indicator, uppercase                             | ('AM' or 'PM')
 --- |                                                           |
 %M  | Minute of the hour (00..59)                               |
 %S  | Second of the minute (00..59)                             |
