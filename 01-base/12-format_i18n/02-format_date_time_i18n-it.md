@@ -72,7 +72,7 @@ Invece per la *data dell'ultimo aggiornamento* visualizziamo anche ore e minuti.
 Di seguito i parametri più usati di *.strftime*.
 
 Code | Description                                              | Esempio
---- | -------------------------------------------------------- |
+--- | -------------------------------------------------------- |-----------
 %Y  | Anno con incluso il secolo, ossia almeno con 4 cifre. Può essere anche negativo. | Es: -0001, 0000, 1995, 2009, 14292, etc.
 %y  | Anno senza il secolo, ossia con solo 2 cifre. | Es: 00..99
 %C  | Secolo (Anno / 100 arrotondato per difetto).  | Es: il secolo dell'anno 2019 è rappresentato con "20" 
