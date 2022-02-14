@@ -100,12 +100,12 @@ Code | Description                                              | Esempio
 %k  | Hour of the day, 24-hour clock, blank-padded ( 0..23)     | le otto di mattina sono " 8"
 %I  | Hour of the day, 12-hour clock, zero-padded (01..12)      | le otto di sera sono    "08"
 %l  | Hour of the day, 12-hour clock, blank-padded ( 1..12)     | le otto di mattina sono " 8"
-%P  | Meridian indicator, lowercase                             | ('am' or 'pm')
-%p  | Meridian indicator, uppercase                             | ('AM' or 'PM')
+%P  | Meridian indicator, lowercase                             | "am" o "pm"
+%p  | Meridian indicator, uppercase                             | "AM" o "PM"
 --- |                                                           |
-%M  | Minute of the hour (00..59)                               |
-%S  | Second of the minute (00..59)                             |
-%L  | Millisecond of the second (000..999)                      |
+%M  | Minute of the hour (00..59)                               | ventitre minuti sono "23"
+%S  | Second of the minute (00..59)                             | cinquantasei secondi sono "56"
+%L  | Millisecond of the second (000..999)                      | cento millisecondi sono "100"
 
 Per una lista completa dei formati per il metodo *.strftime* visitiamo [APIDock](http://apidock.com/ruby/DateTime/strftime)
 
