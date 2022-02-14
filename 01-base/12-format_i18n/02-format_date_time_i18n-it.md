@@ -71,6 +71,45 @@ Invece per la *data dell'ultimo aggiornamento* visualizziamo anche ore e minuti.
 
 Di seguito i parametri più usati di *.strftime*.
 
+
+--- | ----------------------------------------------------
+%Y  | Anno con incluso il secolo, ossia almeno con 4 cifre. Può essere anche negativo. Es: -0001, 0000, 1995, 2009, 14292, etc.
+%y  | Anno senza il secolo, ossia con solo 2 cifre. Es: 00..99
+%C  | Secolo (Anno / 100 arrotondato per difetto). Es: il secolo dell'anno 2019 è rappresentato con "20" 
+--- |
+%m  | Mese,  zero-padded (01..12).            Es: gennaio è rappresentato con "01"
+%-m | Mese,     no-padded (1..12).            Es: gennaio è rappresentato con "1"
+%_m | Mese, blank-padded ( 1..12).            Es: gennaio è rappresentato con " 1"
+%B  | Mese, con nome pieno.                   Es: gennaio è rappresentato con "January"
+%^B | Mese, con nome pieno in maiuscolo.      Es: gennaio è rappresentato con "JANUARY"
+%b  | Mese, con nome abbreviato.              Es: gennaio è rappresentato con "Jan"
+%^b | Mese, con nome abbreviato in maiuscolo. Es: gennaio è rappresentato con "JAN"
+--- |
+%d  | Giorno del mese,   zero-padded (01..31). Es: il primo di gennaio è rappresentato con "01"
+%-d | Giorno del mese,      no-padded (1..31). Es: il primo di gennaio è rappresentato con "1"
+%e  | Giorno del mese,  blank-padded ( 1..31). Es: il primo di gennaio è rappresentato con " 1"
+%j  | Giorno dell'anno (001..366)
+%A  | Giorno della settimana nome pieno.                        Es: domenica è rappresentata con "Sunday"
+%^A | Giorno della settimana nome pieno in maiuscolo.           Es: domenica è rappresentata con "SUNDAY"
+%a  | Giorno della settimana abbreviato.                        Es: domenica è rappresentata con "Sun"
+%^a | Giorno della settimana abbreviato in maiuscolo.           Es: domenica è rappresentata con "SUN"
+%u  | Giorno della settimana in numero (1..7) con Monday is 1.  Es: domenica è rappresentata con "7"
+%w  | Giorno della settimana in numero (0..6) con Sunday is 0.  Es: domenica è rappresentata con "0"
+--- |
+%H  | Hour of the day, 24-hour clock, zero-padded (00..23)
+%k  | Hour of the day, 24-hour clock, blank-padded ( 0..23)
+%I  | Hour of the day, 12-hour clock, zero-padded (01..12)
+%l  | Hour of the day, 12-hour clock, blank-padded ( 1..12)
+%P  | Meridian indicator, lowercase (``am'' or ``pm'')
+%p  | Meridian indicator, uppercase (``AM'' or ``PM'')
+--- |
+%M  | Minute of the hour (00..59)
+%S  | Second of the minute (00..59)
+%L  | Millisecond of the second (000..999)
+
+
+
+
 - %Y - Anno con incluso il secolo, ossia almeno con 4 cifre. Può essere anche negativo. Es: -0001, 0000, 1995, 2009, 14292, etc.
 - %y - Anno senza il secolo, ossia con solo 2 cifre. Es: 00..99
 - %C - Secolo (Anno / 100 arrotondato per difetto). Es: il secolo dell'anno 2019 è rappresentato con "20" 
