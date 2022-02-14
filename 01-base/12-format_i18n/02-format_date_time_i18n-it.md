@@ -76,7 +76,7 @@ Code | Description                                              | Esempio
 %Y  | Anno con incluso il secolo, ossia almeno con 4 cifre. Può essere anche negativo. | Es: -0001, 0000, 1995, 2009, 14292, etc.
 %y  | Anno senza il secolo, ossia con solo 2 cifre. | Es: 00..99
 %C  | Secolo (Anno / 100 arrotondato per difetto).  | Es: il secolo dell'anno 2019 è rappresentato con "20" 
---- 
+    |                                         |
 %m  | Mese, zero-padded (01..12).             | Es: gennaio è rappresentato con "01"
 %-m | Mese, no-padded (1..12).                | Es: gennaio è rappresentato con "1"
 %_m | Mese, blank-padded ( 1..12).            | Es: gennaio è rappresentato con " 1"
