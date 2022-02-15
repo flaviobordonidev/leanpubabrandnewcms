@@ -31,9 +31,9 @@ Di default il codice *t.timestamps* nei migrations crea le due colonne *created_
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/02_01-db-schema.rb)
 
-Possiamo usare quelli di *eg_posts* nelle pagine *show* e *index* per visualizzare la data di creazione e quella dell'ultimo aggiornamento.
+Possiamo usare quelli di *eg_posts* nel partial *_eg_post*, delle pagine *show* e *index*, per visualizzare la data di creazione e quella dell'ultimo aggiornamento.
 
-***codice 02 - .../app/views/eg_posts/_eg_post.html.erb - line: 3***
+***codice 02 - .../app/views/eg_posts/_eg_post.html.erb - line: 27***
 
 ```html+erb
 <p>
@@ -47,15 +47,17 @@ Possiamo usare quelli di *eg_posts* nelle pagine *show* e *index* per visualizza
 </p>
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/02_02-views-eg_posts-_eg_post.html.erb)
+
 
 
 ## Formattiamo la data
 
-Diamo un formato alla data con il metodo *.strftime*. 
+Diamo un formato alla data con il metodo *.strftime()*. 
 Per la *data di creazione* visualizziamo solo il giorno il mese e l'anno.
 Invece per la *data dell'ultimo aggiornamento* visualizziamo anche ore e minuti.
 
-***codice 03 - .../app/views/eg_posts/show.html.erb - line: 12***
+***codice 03 - .../app/views/eg_posts/_eg_post.html.erb - line: 27***
 
 ```html+erb
 <p>
@@ -69,7 +71,9 @@ Invece per la *data dell'ultimo aggiornamento* visualizziamo anche ore e minuti.
 </p>
 ```
 
-Di seguito i parametri più usati di *.strftime*.
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/02_03-views-eg_posts-_eg_post.html.erb)
+
+Di seguito i parametri più usati di *.strftime()*.
 
 Code | Description                                              | Esempio
 --- | --------------------------------------------------------- | -----------------------------
@@ -113,11 +117,12 @@ Per una lista completa dei formati per il metodo *.strftime* visitiamo [APIDock]
 
 ## Traduciamo la data
 
-La data si presenta in inglese (nomi dei mesi, nomi dei giorni della settimana, ...) ed in questo paragrafo la traduciamo in italiano.
-Per formattare in italiano la data possiamo usare le stesse variabili di ".strftime" all'interno del nostro locale (it.yml).
-C'è chi ha già fatto questo lavoro quindi prendiamo la traduzione da https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/it.yml
+La data si presenta in inglese (prima il mese, poi i giorni, infine l'anno).
+In questo paragrafo la traduciamo in italiano.
+Per formattare in italiano la data possiamo usare le stesse variabili di *.strftime* all'interno del nostro locale *it.yml*.
+Questo lo abbiamo già dal file scaricato nel capitolo precedente.
 
-***codice 04 - .../config/locales/it.yml - line: 4***
+***codice n/a - .../config/locales/it.yml - line: 4***
 
 ```yaml
   time:
@@ -150,32 +155,33 @@ C'è chi ha già fatto questo lavoro quindi prendiamo la traduzione da https://g
     - dic
 ```
 
-[tutto il codice](#01-12-01_04all)
+Non ci resta che richiamare la formattazione con l'helper *l*.
 
-
-e richiamiamo la formattazione con l'helper "l"
-
-***codice 05 - .../app/views/eg_posts/show.html.erb - line: 12***
+***codice 04 - .../app/views/eg_posts/_eg_post.html.erb - line: 27***
 
 ```html+erb
 <p>
   <strong>created_at:</strong>
   <br>
-  <%= @eg_post.created_at.strftime("The day %d %^B %Y") %>
+  <%= eg_post.created_at.strftime("day %d %^B %Y") %>
   <br>
-  <%= l @eg_post.created_at, format: :short %>
+  <%= l eg_post.created_at, format: :long %>
+  <br>
+  <%= l eg_post.created_at, format: :short %>
 </p>
 
 <p>
   <strong>updated_at:</strong>
   <br>
-  <%= @eg_post.updated_at.strftime("%A %d %^B %Y at %H:%M and %S seconds") %>
+  <%= eg_post.updated_at.strftime("%A %d %^B %Y at %H:%M and %S seconds") %>
   <br>
-  <%= l @eg_post.created_at, format: :long %>
+  <%= l eg_post.created_at, format: :long %>
+  <br>
+  <%= l eg_post.created_at, format: :short %>
 </p>
 ```
 
-[tutto il codice](#01-12-01_05all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/02_04-views-eg_posts-_eg_post.html.erb)
 
 
 
@@ -192,11 +198,59 @@ apriamolo il browser sull'URL:
 
 
 
+## Aggiungiamo nostri formati personalizzati
+
+***codice 05 - .../config/locales/en.yml - line: 27***
+
+```yaml
+  time:
+    formats:
+
+      my_long: "%A %d %^B %Y at %H:%M and %S seconds"
+```
+
+
+***codice 06 - .../config/locales/it.yml - line: 27***
+
+```yaml
+  time:
+    formats:
+
+      my_long: "%A %d %^B %Y alle %H:%M e %S secondi"
+```
+
+
+
+***codice 07 - .../app/views/eg_posts/_eg_post.html.erb - line: 27***
+
+```html+erb
+<p>
+  <strong>created_at:</strong>
+  <br>
+  <%= eg_post.created_at.strftime("day %d %^B %Y") %>
+  <br>
+  <%= l eg_post.created_at, format: :my_long %>
+</p>
+
+<p>
+  <strong>updated_at:</strong>
+  <br>
+  <%= eg_post.updated_at.strftime("%A %d %^B %Y at %H:%M and %S seconds") %>
+  <br>
+  <%= l eg_post.created_at, format: :my_long %>
+</p>
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/02_07-views-eg_posts-_eg_post.html.erb)
+
+
+
+
 ## Archiviamo su git
 
 ```bash
 $ git add -A
-$ git commit -m "I18n date fields created_at updated_at on eg_posts"
+$ git commit -m "Format with i18n the date fields created_at and updated_at on eg_posts"
 ```
 
 
@@ -204,7 +258,8 @@ $ git commit -m "I18n date fields created_at updated_at on eg_posts"
 ## Pubblichiamo su Heroku
 
 ```bash
-$ git push heroku btep:main
+$ git push heroku fin:main
+$ heroku run rails db:migrate
 ```
 
 
@@ -215,8 +270,8 @@ se abbiamo finito le modifiche e va tutto bene:
 
 ```bash
 $ git checkout main
-$ git merge btep
-$ git branch -d btep
+$ git merge fin
+$ git branch -d fin
 ```
 
 
