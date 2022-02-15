@@ -77,55 +77,44 @@ Queste formattazioni le abbiamo già acquisite con i files *.yml* che abbiamo sc
 
 Possiamo anche passare argomenti nel metodo i18n translate in questo modo: *%{myvariable}*.
 
-***codice 01 - .../config/locales/it.yml - line: 4***
+***codice 01 - .../config/locales/it.yml - line: 218***
 
 ```yaml
-  eg_posts:
-    index:
-      html_head_title: "Tutti gli articoli"
-    show:
-      html_head_title: "Art."
-      price_for_reports: "Questo ci costa %{price} di soldini"
+        price_for_reports: "Questo ci costa %{price} di soldini"
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/04_01-config-locales-it.yml)
 
 
-***codice 02 - .../config/locales/en.yml - line: 4***
+***codice 02 - .../config/locales/en.yml - line: 218***
 
 ```yaml
-  eg_posts:
-    index:
-      html_head_title: "All posts"
-    show:
-      html_head_title: "Post"
-      price_for_reports: "This costs us %{price} of pennies"
+        price_for_reports: "This costs us %{price} of pennies"
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/04_02-config-locales-en.yml)
 
 
+Aggiorniamo il partial *_eg_post* per visualizzare le traduzioni nelle views *index* e *show*.
 
-Aggiorniamo la views *show* per visualizzare le traduzioni.
-
-***codice 07 - .../app/views/eg_posts/show.html.erb - line: 12***
+***codice 03 - .../app/views/eg_posts/_eg_post.html.erb - line: 12***
 
 ```html+erb
-<p>
-  <strong>Price:</strong>
-  <%= @eg_post.price %>
-  <br> numero formattato: <%= number_to_currency(@eg_post.price) %>
-  <br> numero formattato con 3 decimali: <%= number_to_currency(@eg_post.price, precision: 3) %>
-  <br> numero formattato con 4 decimali: <%= number_to_currency(@eg_post.price, precision: 4) %>
-  <br> numero formattato con 5 decimali (oltre i 4 dichiarati nel migrate quindi la quinta cifra decimale è sempre zero perché nel submit del form rails arrotonda): <%= number_to_currency(@eg_post.price, precision: 5) %>
-  <br> numero formattato con valuta: <%= number_to_currency(@eg_post.price)+" EUR" %>
-  <br> numero formattato con frase: <%= t ".price_for_reports", price: number_to_currency(@eg_post.price, precision: 2)+" EUR" %>
-  <br> numero formattato descrittivo: <%= t ".price_for_reports", price: number_to_human(@eg_post.price) %>
-</p>
+  <p>
+    <strong>Price:</strong>
+    <%= eg_post.price %>
+    <br> numero formattato: <%= number_to_currency(eg_post.price) %>
+    <br> numero formattato con 3 decimali: <%= number_to_currency(eg_post.price, precision: 3) %>
+    <br> numero formattato con 4 decimali: <%= number_to_currency(eg_post.price, precision: 4) %>
+    <br> numero formattato con 5 decimali: <%= number_to_currency(eg_post.price, precision: 5) %>
+    (nel database abbiamo dichiarato 4 decimali quindi la quinta cifra decimale sarà sempre zero)
+    <br> numero formattato con frase: <%= t "number.currency.format.price_for_reports", price: number_to_currency(eg_post.price, precision: 2) %>
+    <br> numero formattato descrittivo con frase: <%= t "number.currency.format.price_for_reports", price: number_to_human(eg_post.price) %>
+  </p>
 ```
 
 > La *precisione (precision)* che diamo in formattazione è solo "visiva". <br/>
-> Nel database saranno archiviate tutte le 4 cifre dopo la virgola come definito nel migrate.
+> Nel database saranno archiviate **4 cifre** dopo la virgola, così come definito nel migrate.
 
 
 
@@ -146,9 +135,9 @@ e vediamo su *show* le varie formattazioni del campo *price*.
 
 ## Aggiorniamo il form
 
-lato show adesso il numero è visualizzato con la formattazione italiana ma nel form si deve ancora usare il "." e non la "," per i decimali. Correggiamo.
+Il prezzo lo visualizziamo correttamente adesso lavoriamo lato *immissione (input)* sul *_form*.
 
-***codice 08 - .../app/views/eg_posts/show.html.erb - line: 12***
+***codice 04 - .../app/views/eg_posts/_form.html.erb - line: 12***
 
 ```html+erb
   <div class="field">
@@ -158,7 +147,11 @@ lato show adesso il numero è visualizzato con la formattazione italiana ma nel 
   </div>
 ```
 
-Adesso è visualizzata sempre la virgola di default ma possiamo usare entrambi inserendo i valori.
+> l'opzione `step: :any` ci permette di inserire i decimali, altrimenti potremmo mettere solo numeri interi.
+>
+> Per l'immissione usiamo un campo numerico `form.number_field`. <br/>
+> Non usiamo la traduzione perché dovremmo lavorare sul front-end con javascript.
+> Comunque nel campo numerico possiamo usare sia la "," che il "." come separatore di decimali.
 
 
 
