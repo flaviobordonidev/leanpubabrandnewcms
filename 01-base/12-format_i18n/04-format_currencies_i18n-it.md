@@ -26,32 +26,35 @@ $ git checkout -b fic
 
 ## Formattiamo/Traduciamo i prezzi
 
-Il nuovo campo lavora correttamente ma non ha una buona formattazione. Gestiamola in questo paragrafo. Inoltre la formattazione la rendiamo flessibile per le varie lingue.
+Il nuovo campo lavora correttamente ma non ha una buona formattazione. 
+Gestiamola in questo paragrafo. 
+Inoltre la formattazione la rendiamo flessibile per le varie lingue.
 
-In Italia per dividere le migliaia si usa il "." e per le cifre decimali si usa la ",". Negli USA è il contrario. Ad esempio:
+In Italia per dividere le migliaia si usa il *"."* e per le cifre decimali si usa la *","*. 
+Negli USA è il contrario. Ad esempio:
 
 - Italia: 1.123.450,50
 - USA: 1,123,450.50
 
 Quindi formattiamo in maniera diversa il numero a seconda della lingua che usiamo.
+Queste formattazioni le abbiamo già acquisite con i files *.yml* che abbiamo scaricato nei capitoli precedenti.
 
-Questo è già stato fatto e lo possiamo trovare nel sito ufficiale di Rails (come ci è anche suggerito nel locale di default en.yml)
+***codice n/a - .../config/locales/en.yml - line: 208***
 
-# To learn more, please read the Rails Internationalization guide
-# available at https://guides.rubyonrails.org/i18n.html.
+```yaml
+  number:
+    currency:
+      format:
+        delimiter: ","
+        format: "%u%n"
+        precision: 2
+        separator: "."
+        significant: false
+        strip_insignificant_zeros: false
+        unit: "$"
+```
 
-Nella guida troviamo un riferimento a questo sito per esempi di traduzione in tutte le lingue:
-
-https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale
-
-e da questo possiamo prendere l'italiano
-
-https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/it.yml
-
-e da questo estrarci la parte di formattazione dei numeri
-
-
-***codice 05 - .../config/locales/it.yml - line: 4***
+***codice n/a - .../config/locales/it.yml - line: 208***
 
 ```yaml
   number:
@@ -64,47 +67,9 @@ e da questo estrarci la parte di formattazione dei numeri
         significant: false
         strip_insignificant_zeros: false
         unit: "€"
-    format:
-      delimiter: "."
-      precision: 2
-      separator: ","
-      significant: false
-      strip_insignificant_zeros: false
-    human:
-      decimal_units:
-        format: "%n %u"
-        units:
-          billion: Miliardi
-          million: Milioni
-          quadrillion: Biliardi
-          thousand: Mila
-          trillion: Bilioni
-          unit: ''
-      format:
-        delimiter: ''
-        precision: 3
-        significant: true
-        strip_insignificant_zeros: true
-      storage_units:
-        format: "%n %u"
-        units:
-          byte:
-            one: Byte
-            other: Byte
-          gb: GB
-          kb: KB
-          mb: MB
-          tb: TB
-    percentage:
-      format:
-        delimiter: ''
-        format: "%n%"
-    precision:
-      format:
-        delimiter: ''
 ```
 
-Siccome gestiamo la valuta a parte evitiamo che venga visualizzata modifichiamo in "currency -> format" da " unit: "€" " in " unit: '' ".
+> se vogliamo che **non** sia visualizzato il simbolo della valuta ('€', '$', ...) variamo in *currency -> format* da *unit: "€"* a  *unit: ''*.
 
 
 
@@ -112,7 +77,7 @@ Siccome gestiamo la valuta a parte evitiamo che venga visualizzata modifichiamo 
 
 Possiamo anche passare argomenti nel metodo i18n translate in questo modo: *%{myvariable}*.
 
-***codice 06 - .../config/locales/it.yml - line: 4***
+***codice 01 - .../config/locales/it.yml - line: 4***
 
 ```yaml
   eg_posts:
@@ -123,7 +88,24 @@ Possiamo anche passare argomenti nel metodo i18n translate in questo modo: *%{my
       price_for_reports: "Questo ci costa %{price} di soldini"
 ```
 
-Possiamo variare la *precisione* e mostrare solo due cifre dopo la virgola anche se nel database saranno archiviate le 4 cifre dopo la virgola come definito nel migrate.
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/04_01-config-locales-it.yml)
+
+
+***codice 02 - .../config/locales/en.yml - line: 4***
+
+```yaml
+  eg_posts:
+    index:
+      html_head_title: "All posts"
+    show:
+      html_head_title: "Post"
+      price_for_reports: "This costs us %{price} of pennies"
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/04_02-config-locales-en.yml)
+
+
+> Possiamo variare la *precisione* e mostrare solo due cifre dopo la virgola anche se nel database saranno archiviate le 4 cifre dopo la virgola come definito nel migrate.
 
 Aggiorniamo la views *show* per visualizzare le traduzioni.
 
@@ -175,59 +157,6 @@ lato show adesso il numero è visualizzato con la formattazione italiana ma nel 
 ```
 
 Adesso è visualizzata sempre la virgola di default ma possiamo usare entrambi inserendo i valori.
-
-
-## Verifichiamo preview
-
-```bash
-$ sudo service postgresql start
-$ rails s
-```
-
-apriamolo il browser sull'URL:
-
-* https://mycloud9path.amazonaws.com/users
-
-Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
-
-
-
-## Archiviamo su git
-
-```bash
-$ git add -A
-$ git commit -m "I18n currency field price on eg_posts"
-```
-
-
-
-## Pubblichiamo su Heroku
-
-```bash
-$ git push heroku btep:master
-$ heroku run rails db:migrate
-```
-
-
-
-
-## Chiudiamo il branch
-
-se abbiamo finito le modifiche e va tutto bene:
-
-```bash
-$ git checkout master
-$ git merge btep
-$ git branch -d btep
-```
-
-
-
-## Facciamo un backup su Github
-
-```bash
-$ git push origin master
-```
 
 
 
