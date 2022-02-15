@@ -105,7 +105,6 @@ Possiamo anche passare argomenti nel metodo i18n translate in questo modo: *%{my
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/04_02-config-locales-en.yml)
 
 
-> Possiamo variare la *precisione* e mostrare solo due cifre dopo la virgola anche se nel database saranno archiviate le 4 cifre dopo la virgola come definito nel migrate.
 
 Aggiorniamo la views *show* per visualizzare le traduzioni.
 
@@ -124,6 +123,9 @@ Aggiorniamo la views *show* per visualizzare le traduzioni.
   <br> numero formattato descrittivo: <%= t ".price_for_reports", price: number_to_human(@eg_post.price) %>
 </p>
 ```
+
+> La *precisione (precision)* che diamo in formattazione è solo "visiva". 
+> Nel database saranno archiviate tutte le 4 cifre dopo la virgola come definito nel migrate.
 
 
 
