@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 12.3 - Formattiamo le valute
+# <a name="top"></a> Cap 12.4 - Formattiamo le valute
 
 Formattiamo i prezzi per le varie valute.
 
