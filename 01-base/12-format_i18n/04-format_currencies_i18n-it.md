@@ -155,8 +155,64 @@ Il prezzo lo visualizziamo correttamente adesso lavoriamo lato *immissione (inpu
 
 
 
+## Verifichiamo preview
+
+```bash
+$ sudo service postgresql start
+$ rails s
+```
+
+apriamolo il browser sull'URL:
+
+- https://mycloud9path.amazonaws.com/eg_posts
+
+Vediamo che il campo *price* mostra un formato differente a seconda della lingua.
+
+
+
+## Archiviamo su git
+
+```bash
+$ git add -A
+$ git commit -m "Format i18n price field on eg_posts"
+```
+
+
+
+## Pubblichiamo su Heroku
+
+```bash
+$ git push heroku fic:main
+$ heroku run rails db:migrate
+```
+
+
+
+
+## Chiudiamo il branch
+
+Se abbiamo finito le modifiche e va tutto bene:
+
+```bash
+$ git checkout main
+$ git merge fic
+$ git branch -d fic
+```
+
+
+
+## Facciamo un backup su Github
+
+```bash
+$ git push origin main
+```
+
+
+
+
+
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/03-eg_posts_add_price-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/01-roles-overview-it.md)
