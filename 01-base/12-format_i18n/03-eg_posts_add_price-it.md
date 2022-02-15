@@ -16,10 +16,10 @@ Inseriamo la colonna *price* ad *eg_posts* per formattare i prezzi per le varie 
 
 
 
-## Apriamo il branch "Formats i18n Currency"
+## Apriamo il branch "Add Price Column"
 
 ```bash
-$ git checkout -b fic
+$ git checkout -b apc
 ```
 
 
@@ -285,7 +285,7 @@ Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messag
 
 ```bash
 $ git add -A
-$ git commit -m "I18n currency field price on eg_posts"
+$ git commit -m "Add price field to eg_posts"
 ```
 
 
@@ -293,7 +293,7 @@ $ git commit -m "I18n currency field price on eg_posts"
 ## Pubblichiamo su Heroku
 
 ```bash
-$ git push heroku btep:master
+$ git push heroku apc:master
 $ heroku run rails db:migrate
 ```
 
@@ -305,9 +305,9 @@ $ heroku run rails db:migrate
 se abbiamo finito le modifiche e va tutto bene:
 
 ```bash
-$ git checkout master
-$ git merge btep
-$ git branch -d btep
+$ git checkout main
+$ git merge apc
+$ git branch -d apc
 ```
 
 
@@ -315,7 +315,7 @@ $ git branch -d btep
 ## Facciamo un backup su Github
 
 ```bash
-$ git push origin master
+$ git push origin main
 ```
 
 
