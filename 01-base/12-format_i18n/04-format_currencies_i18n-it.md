@@ -1,6 +1,6 @@
-# <a name="top"></a> Cap 12.2 - Formattiamo le valute
+# <a name="top"></a> Cap 12.3 - Formattiamo le valute
 
-Formattiamo i prezzi per le varie valute, mantenendo la lingua impostata come default; l'italiano.
+Formattiamo i prezzi per le varie valute.
 
 
 
@@ -9,103 +9,18 @@ Formattiamo i prezzi per le varie valute, mantenendo la lingua impostata come de
 - [99-rails_references/i18n/02-format_date_time_i18n]
 
 
+
 ## Risorse esterne
 
 - [Rails Internationalization guide](https://guides.rubyonrails.org/i18n.html)
-- [](https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale)
 
 
 
-## Apriamo il branch
-
-
-
-
-## Creiamo la nuova colonna prezzo
-
-Inseriamo la colonna prezzo nella tabella eg_post.
+## Apriamo il branch "Formats i18n Currency"
 
 ```bash
-$ rails g migration AddPriceToEgPosts price:decimal
+$ git checkout -b fic
 ```
-
-> ATTENZIONE: per gestire colonne con i prezzi e non avere problemi di arrotondamenti utiliziamo il data_type "DECIMAL(19, 4)"
-
-Quindi modifichiamo il migrate creato inserendo "precisione", "scala" e che il valore di default sia zero e non "nil".
-
-***codice 01 - .../db/migrate/xxx_add_price_to_eg_posts.rb -line: 1***
-
-```ruby
-class AddPriceToEgPosts < ActiveRecord::Migration[6.0]
-  def change
-    add_column :eg_posts, :price, :decimal, precision: 19, scale: 4, default: 0
-  end
-end
-```
-
-
-eseguiamo il migrate 
-
-```bash
-$ sudo service postgresql start
-$ rails db:migrate
-```
-
-
-
-## Inseriamo nella white list del controller
-
-inseriamo la nuova colonna *:price* nella white list del controller altrimenti i valori passati con il submit del form non sarebbero gestiti.
-
-***codice 02 - .../app/controllers/eg_posts_controller.rb - line: 71***
-
-```ruby
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def eg_post_params
-      params.require(:eg_post).permit(:meta_title, :meta_description, :headline, :incipit, :user_id, :price)
-    end
-```
-
-
-
-## Inseriamo il nuovo campo nelle views
-
-Inseriamo il nuovo campo *:price* nelle views *_form* e *show*.
-
-***codice 03 - .../app/views/eg_posts/_form.html.erb - line 3***
-
-```html+erb
-  <div class="field">
-    <%= form.label :price %>
-    <%= form.text_field :price %>
-  </div>
-```
-
-
-***codice 04 - .../app/views/eg_posts/show.html.erb - line: 3***
-
-```html+erb
-<p>
-  <strong>Price:</strong>
-  <%= @eg_post.price %>
-</p>
-```
-
-
-
-
-## Verifichiamo preview
-
-```bash
-$ sudo service postgresql start
-$ rails s
-```
-
-apriamolo il browser sull'URL:
-
-- https://mycloud9path.amazonaws.com/eg_posts
-
-Modifichiamo un articolo inserendo un valore nel campo price e vediamo su "show" che è correttamente gestito.
 
 
 
