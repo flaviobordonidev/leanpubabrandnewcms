@@ -124,7 +124,7 @@ Aggiorniamo la views *show* per visualizzare le traduzioni.
 </p>
 ```
 
-> La *precisione (precision)* che diamo in formattazione è solo "visiva". 
+> La *precisione (precision)* che diamo in formattazione è solo "visiva". <br/>
 > Nel database saranno archiviate tutte le 4 cifre dopo la virgola come definito nel migrate.
 
 
