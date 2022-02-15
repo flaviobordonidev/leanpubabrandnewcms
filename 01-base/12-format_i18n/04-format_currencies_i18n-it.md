@@ -69,7 +69,7 @@ Queste formattazioni le abbiamo già acquisite con i files *.yml* che abbiamo sc
         unit: "€"
 ```
 
-> se vogliamo che **non** sia visualizzato il simbolo della valuta ('€', '$', ...) variamo in *currency -> format* da *unit: "€"* a  *unit: ''*.
+> se vogliamo che **non** sia visualizzato il simbolo della valuta ('€', '$', ...) variamo *currency -> format -> unit:* da *"€"* a *""*.
 
 
 
