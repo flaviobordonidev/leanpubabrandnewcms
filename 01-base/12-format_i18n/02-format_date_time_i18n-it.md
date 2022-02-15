@@ -209,6 +209,8 @@ apriamolo il browser sull'URL:
       my_long: "%A %d %^B %Y at %H:%M and %S seconds"
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/02_05-config-locales-en.yml)
+
 
 ***codice 06 - .../config/locales/it.yml - line: 27***
 
@@ -219,6 +221,7 @@ apriamolo il browser sull'URL:
       my_long: "%A %d %^B %Y alle %H:%M e %S secondi"
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/02_06-config-locales-it.yml)
 
 
 ***codice 07 - .../app/views/eg_posts/_eg_post.html.erb - line: 27***
