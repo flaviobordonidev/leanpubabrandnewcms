@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 13.1 - Ruoli; la teoria
+# <a name="top"></a> Cap 13.1 - Teoria su Autenticazione, Ruoli e Autorizzazione
 
 I ruoli da assegnare alle persone che si autenticano con Devise (ossia che fanno login). 
 A seconda del ruolo si avranno delle autorizzazioni ad operare.
