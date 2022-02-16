@@ -1,10 +1,17 @@
 # <a name="top"></a> Cap 16.1 - Massima flessibilità nei ruoli
 
-> Tutta questa sezione del libro, questa serie di capitoli è totalmente opzionale.
+> Tutta questa sezione del libro, questa serie di capitoli **non** la usiamo nella nostra app.
+>
+> Possiamo saltare tuti i Capitoli 16.x
+
+> ATTENZIONE - QUESTO CAPITOLO NON LO HO RIVISTO CON RAILS 7. L'ho saltato! ^_^
 
 Questo è l'approccio più flessibile nella gestione dei ruoli.
-Nella maggior parte delle applicazioni non è richiesto questo livello di flessibilità ma in alcuni casi specifici si possono assegnare dei ruoli ad un utente in maniera maniacalmente minuziosa.
+Ma nella maggior parte delle applicazioni **non** è richiesto questo livello di flessibilità.
+
+Si usa in casi specifici per assegnare dei ruoli ad un utente in maniera maniacalmente minuziosa.
 Ad esempio si possono assegnare ruoli per specifici records di tabelle correlate.
+
 
 
 ## Risorse web

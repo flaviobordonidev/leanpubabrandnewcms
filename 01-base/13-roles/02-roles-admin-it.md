@@ -1,13 +1,13 @@
 # <a name="top"></a> Cap 13.2 - Roles - admin
 
-Questo capitolo può essere saltato ai fini della creazione della nostra app. 
-E' un capitolo didattico in cui le modifiche inserite ad inizio capitolo sono poi tolte alla fine del capitolo.
+> Questo capitolo può essere saltato ai fini della creazione della nostra app. 
+>
+> E'un capitolo didattico in cui le modifiche inserite ad inizio capitolo sono poi tolte alla fine del capitolo.
 
-Questo è l'approccio più semplice della gestione dei ruoli. Esiste solo la possibilità di Amministratore o Utente normale. 
-Aggiungiamo il ruolo di amministratore utilizzando un attributo (admin attribute) e non un intero modello.
-Questo vuol dire aggiungere una colonna "admin" di tipo boolean sulla tabella "users"
+Questo è l'approccio più semplice della gestione dei ruoli. Esiste solo la possibilità di essere *Amministratore* o *Utente normale*. 
 
-Per la nostra applicazione possiamo saltare questo capitolo.
+Aggiungiamo il ruolo di amministratore utilizzando un attributo (*admin attribute*) e non un intero modello.
+Questo vuol dire aggiungere la colonna *admin* di tipo *boolean* sulla tabella *users*.
 
 
 
@@ -28,15 +28,24 @@ $ git checkout -b ra
 ## Aggiungiamo l'attributo role_admin
 
 ```bash
-$ rails generate migration add_admin_to_users role_admin:boolean
+$ rails generate migration AddAdminToUsers role_admin:boolean
 ```
 
-Aggiungiamo al migration l'opzione *defautl: false* per la colonna role_admin
+Esempio:
+
+```bash
+user_fb:~/environment/bl7_0 (ra) $ rails generate migration AddAdminToUsers role_admin:boolean
+      invoke  active_record
+      create    db/migrate/20220216094353_add_admin_to_users.rb
+user_fb:~/environment/bl7_0 (ra) $ 
+```
+
+Aggiungiamo al migration l'opzione *defautl: false* per la colonna *role_admin*.
 
 ***codice 01 - .../db/migrate/xxx_add_admin_to_users.rb - line. 1***
 
 ```ruby
-class AddAdminToUsers < ActiveRecord::Migration
+class AddAdminToUsers < ActiveRecord::Migration[7.0]
   def change
     add_column :users, :role_admin, :boolean, default: false
   end
@@ -47,38 +56,79 @@ Eseguiamo il migrate
 
 ```bash
 $ sudo service postgresql start
-$ rake db:migrate
+$ rails db:migrate
 ```
 
-Adesso possiamo identificare se un utente loggato è amministratore.
+Esempio:
 
-***codice n/a - verifichiamo se amministratore - line: 1***
+```bash
+user_fb:~/environment/bl7_0 (ra) $ rails db:migrate
+== 20220216094353 AddAdminToUsers: migrating ==================================
+-- add_column(:users, :role_admin, :boolean, {:default=>false})
+   -> 0.0815s
+== 20220216094353 AddAdminToUsers: migrated (0.0822s) =========================
+
+user_fb:~/environment/bl7_0 (ra) $ 
+```
+
+
+
+## Verifica e gestione ruoli da console
+
+Da console/terminale verifichiamo se l'utente loggato è amministratore.
+
+```bash
+$ rails c
+-> User.first.role_admin?
+-> User.first.update_attribute :role_admin, true
+-> User.first.role_admin?
+```
+
+Esempio:
+
+```bash
+user_fb:~/environment/bl7_0 (ra) $ rails c                            
+Loading development environment (Rails 7.0.1)                         
+3.1.0 :001 > User.first.role_admin?
+  User Load (0.4ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1  [["LIMIT", 1]]
+ => false                                                             
+3.1.0 :002 > User.first.update_attribute :role_admin, true
+  User Load (0.5ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1  [["LIMIT", 1]]
+  TRANSACTION (0.1ms)  BEGIN                                    
+  User Update (0.4ms)  UPDATE "users" SET "updated_at" = $1, "role_admin" = $2 WHERE "users"."id" = $3  [["updated_at", "2022-02-16 11:55:50.819645"], ["role_admin", true], ["id", 1]]
+  TRANSACTION (1.2ms)  COMMIT
+ => true                    
+3.1.0 :003 > User.first.role_admin?
+  User Load (0.4ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1  [["LIMIT", 1]]
+ => true 
+3.1.0 :004 > 
+```
+
+
+
+## Verifica ruoli da view
+
+Adesso verifichiamo se l'utente loggato è amministratore.
+
+***codice 01 - .../app/views/mockups-page_a.html.erb - line: 1***
 
 ```ruby
-if current_user.role_admin?
-  # do something
-end
+    <% if current_user.role_admin? %>
+      <%= current_user.name %> è un amministratore: "<%= current_user.role_admin %>".
+    <% else %>
+      <%= current_user.name %> è un utente normale: "<%= current_user.role_admin %>".
+    <% end %>
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/02_01-views-mockups-page_a.html.erb)
 
-Se ho un caso particolare in cui una pagina può non avere un utente loggato usiamo `.try()` per evitare l'errore.
-Se *current_user* è *nil* non viene generato un errore (raising an undefined method admin? for nil:NilClass exception).
 
-***codice n/a - verifichiamo se amministratore - line: 1***
+> Per evitare l'errore "*undefined method 'role_admin?' for nil:NilClass*" se la pagina **non** ha un utente loggato abbiamo usato `if current_user.present? ... end`.
 
-```ruby
-if current_user.try(:role_admin?)
-  # do something
-end
-```
 
-Se voglio dare i diritti di amministratore (grant admin status) da codice posso dare:
 
-***codice n/a - grant admin status - line: 1***
 
-```ruby
-current_user.update_attribute :role_admin, true
-```
+
 
 
 
@@ -149,7 +199,7 @@ $ git commit -m "Remove role_admin from table users"
 
 
 
-## Pubblichiamo su Heroku
+## Togliamola anche dal database in produzione su Heroku
 
 ```bash
 $ git push heroku ra:master
@@ -158,30 +208,28 @@ $ heroku run rails db:migrate
 
 
 
-## Chiudiamo il branch
+## Chiudiamo il branch ed eliminiamo le modifiche
 
-se abbiamo finito le modifiche e va tutto bene:
+Per il database abbiamo dovuto eseguire il migrate con *remove_column* ma per il codice possiamo annullare tutte le modifiche semplicemente chiudendo il branch ed eliminandolo.
 
 ```bash
 $ git checkout master
-$ git merge ra
-$ git branch -d ra
+$ git branch -D ra
 ```
 
+> **Non** eseguiamo `git merge` perché non vogliamo il codice usato in questo capitolo.
+>
+> Per eliminare il *branch* che non ha fatto il *merge* dobbiamo **forzare** l'eliminazione con `-D`.
 
 
 ## Facciamo un backup su Github
 
-Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
-
-```bash
-$ git push origin master
-```
+Non dobbiamo fare nessun backup perché abbiamo annullato tutte le modifiche di questo capitolo.
 
 
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/01-roles-overview-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/03-roles-enum-it.md)
