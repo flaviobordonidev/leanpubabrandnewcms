@@ -13,8 +13,8 @@ Dal login alla gestione degli accessi alle varie funzioni si passa per 3 fasi pr
 fasi                 | descrizione                                             | assegnazione                                       | implementazione
 -------------------- | ------------------------------------------------------- | -------------------------------------------------- | ---------------------------------------------------------------------------
 ***Autenticazione*** | è essere in grado di verificare l'identità dell'utente. | Lo facciamo facendo il login.                      | per la nostra applicazione abbiamo usato la gemma *Devise*.
-***Ruolificazione*** | è dare un ruolo ad ogni utente.                         | Lo assegna l'amministratore sul database.          | per la nostra applicazione, come vediamo in questo capitolo, usiamo *enum*.
-***Autorizzazione*** | è chi può fare cosa una volta autenticato.              | è definire i diversi livelli di accesso per ogni ruolo. | per la nostra applicazione useremo *Pundit*.
+***Ruolificazione*** | è dare un ruolo ad ogni utente.                         | Lo assegna l'amministratore agendo sulla tabella *users*.  | per la nostra applicazione, come vediamo in questo capitolo, usiamo *enum*.
+***Autorizzazione*** | è chi può fare cosa una volta autenticato.              | A livello di app sono definiti i diversi livelli di accesso per ogni ruolo. | per la nostra applicazione useremo *Pundit*.
 
 
 ## Le 3 forme principali di assegnazione dei ruoli
