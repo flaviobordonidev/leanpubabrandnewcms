@@ -1,12 +1,13 @@
 # <a name="top"></a> Cap 13.1 - Ruoli; la teoria
 
-I ruoli da assegnare alle persone che si autenticano con Devise (ossia che fanno login). A seconda del ruolo si avranno delle autorizzazioni ad operare (Pundit).
+I ruoli da assegnare alle persone che si autenticano con Devise (ossia che fanno login). 
+A seconda del ruolo si avranno delle autorizzazioni ad operare.
 
 Dal login alla gestione degli accessi alle varie funzioni si passa per 3 fasi principali:
 
-- Autenticazione è essere in grado di verificare l'identità dell'utente. E' fare accesso/login --> per la nostra applicazione abbiamo usato "Devise"
-- Ruolificazione è dare un ruolo ad ogni utente. --> per la nostra applicazione, come vediamo in questo capitolo, usiamo "enum"
-- Autorizzazione è chi può fare cosa una volta autenticato. (è dare livelli di accesso differente) --> per la nostra applicazione useremo "Pundit"
+- ***Autenticazione*** è essere in grado di verificare l'identità dell'utente. E' fare accesso/login --> per la nostra applicazione abbiamo usato la gemma *Devise*.
+- ***Ruolificazione*** è dare un ruolo ad ogni utente. --> per la nostra applicazione, come vediamo in questo capitolo, usiamo *enum*.
+- ***Autorizzazione*** è chi può fare cosa una volta autenticato. (è dare livelli di accesso differente) --> per la nostra applicazione useremo *Pundit*.
 
 
 
