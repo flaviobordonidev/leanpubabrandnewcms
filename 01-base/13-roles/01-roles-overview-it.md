@@ -9,17 +9,16 @@ Dal login alla gestione degli accessi alle varie funzioni si passa per 3 fasi pr
 - ***Ruolificazione*** è dare un ruolo ad ogni utente. --> per la nostra applicazione, come vediamo in questo capitolo, usiamo *enum*.
 - ***Autorizzazione*** è chi può fare cosa una volta autenticato. (è dare livelli di accesso differente) --> per la nostra applicazione useremo *Pundit*.
 
+  funzioni           | descrizione                                                                           | uso
+-------------------- | ------------------------------------------------------------------------------------- | -----------------------------------------------------------
+***Autenticazione*** | è essere in grado di verificare l'identità dell'utente. Lo facciamo facendo il login. | per la nostra applicazione abbiamo usato la gemma *Devise*.
+***Ruolificazione*** | è dare un ruolo ad ogni utente.                                                       | per la nostra applicazione, come vediamo in questo capitolo, usiamo *enum*.
+***Autorizzazione*** | è chi può fare cosa una volta autenticato. (è dare livelli di accesso differente)     | per la nostra applicazione useremo *Pundit*.
 
 
-## Non apriamo il branch 
+## Le 3 forme principali di assegnazione dei ruoli
 
-Non serve perché questo capitolo è una panoramica che ha solo teoria
-
-
-
-## Le 3 forme principali di assegnari i ruoli
-
-Esistono tre forme principali di assegnare i ruoli:
+Esistono tre forme principali per assegnare i ruoli:
 
 - admin - livello base di autorizzazione
 - enum - copre quasi la totalità delle esigenze di autorizzazione
@@ -67,50 +66,6 @@ Possiamo essere estremamente flessibili, ma nella maggior parte dei casi non ci 
 * Se vogliamo assegnare più autorizzazioni ad un utente es: pass_area1, pass_area2, pass_area3
   con solo Pundit dobbiamo creare più campi enum o gestire su un unico campo tutte le combinazioni : 1, 2, 3, 1e2, 1e3, 2e3, 1e2e3.
   aggiungendo Rolify questa gestione è più semplice
-
-
-
-## Verifichiamo preview
-
-```bash
-$ sudo service postgresql start
-$ rails s
-```
-
-apriamolo il browser sull'URL:
-
-- https://mycloud9path.amazonaws.com/users
-
-Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
-
-
-
-## salviamo su git
-
-```bash
-$ git add -A
-$ git commit -m "users_controllers notice messages i18n"
-```
-
-
-
-## Pubblichiamo su Heroku
-
-```bash
-$ git push heroku ui:master
-```
-
-
-
-## Chiudiamo il branch
-
-Lo lasciamo aperto per il prossimo capitolo
-
-
-
-## Facciamo un backup su Github
-
-Lo facciamo nel prossimo capitolo.
 
 
 
