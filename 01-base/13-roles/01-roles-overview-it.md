@@ -11,10 +11,11 @@ Dal login alla gestione degli accessi alle varie funzioni si passa per 3 fasi pr
 
 
 fase                 | descrizione                                             | verifica e assegnazione                                    | implementazione
--------------------- | ------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------
+-------------------- | ------------------------------------------------------- | ---------------------------------------------------------- | -------------------------------------------------------------
 ***Autenticazione*** | è essere in grado di verificare l'identità dell'utente. | Lo facciamo facendo il login.                              | per la nostra applicazione usiamo la gemma *Devise*.
 ***Ruolificazione*** | è dare un ruolo ad ogni utente.                         | Lo da l'amministratore sulla tabella *users*.              | per la nostra applicazione usiamo *enum*.
-***Autorizzazione*** | è chi può fare cosa una volta autenticato.              | Nell'app sono definiti i diversi livelli di accesso per ogni ruolo. | per la nostra applicazione usiamo *Pundit*.
+***Autorizzazione*** | è chi può fare cosa una volta autenticato.              | Nell'app sono definiti i diversi livelli di accesso per ogni ruolo. | per la nostra applicazione usiamo la gemma *Pundit*.
+
 
 
 ## Le 3 forme principali di assegnazione dei ruoli
@@ -72,6 +73,6 @@ Possiamo essere estremamente flessibili, ma nella maggior parte dei casi non ci 
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/04-format_currencies_i18n-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/02-roles-admin-it.md)
