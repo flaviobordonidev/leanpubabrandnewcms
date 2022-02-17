@@ -152,23 +152,24 @@ $ rails c
 # verifichiamo che tutti gli utenti hanno il campo della colonna role con il valore di default "0", che per enum corrisponde al valore "user".
 -> User.all
 
-# rendiamo il primo utente amministratore. modo 1.
+# rendiamo il primo utente amministratore.
 -> User.first.admin!
 
-# rendiamo il primo utente amministratore. modo 2.
--> User.first.update(role: :admin)
+# rendiamo il primo utente moderator.
+-> User.first.update(role: :moderator)
 
-# rendiamo il primo utente amministratore. modo 3.
+# rendiamo il primo utente amministratore.
 -> u = User.first 
 -> u.role = :admin 
 -> u.save 
 
 # verifichiamo che ruolo hanno il primo ed il secondo utente
--> User.first.admin?
--> User.second.admin? 
--> User.second.user?
 -> User.first.role
 -> User.second.role
+-> User.first.admin?
+-> User.second.admin?
+-> User.second.user?
+
 
 # prendiamo una lista di tutti gli :admin
 -> User.admin
@@ -182,28 +183,74 @@ $ rails c
 
 
 ```bash
-
-
-2.4.1 :001 > User.roles
+user_fb:~/environment/bl7_0 (re) $ clear
+user_fb:~/environment/bl7_0 (re) $ rails c
+Loading development environment (Rails 7.0.1)
+3.1.0 :001 > User.roles
  => {"user"=>0, "admin"=>1, "moderator"=>2, "author"=>3} 
-
-2.4.1 :002 > User.all
-  User Load (0.3ms)  SELECT  "users".* FROM "users" LIMIT $1  [["LIMIT", 11]]
- => #<ActiveRecord::Relation [#<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2019-01-04 11:53:46", updated_at: "2019-01-06 09:32:02", role: "user">, #<User id: 2, name: "Bob", email: "bob@test.abc", created_at: "2019-01-06 09:40:34", updated_at: "2019-01-06 09:40:34", role: "user">, #<User id: 3, name: "Carl", email: "carl@test.abc", created_at: "2019-01-06 09:40:51", updated_at: "2019-01-06 09:40:51", role: "user">, #<User id: 4, name: "David", email: "david@test.abc", created_at: "2019-01-06 09:41:12", updated_at: "2019-01-06 09:41:12", role: "user">, #<User id: 5, name: "Elvis", email: "elvis@test.abc", created_at: "2019-01-06 09:41:30", updated_at: "2019-01-06 23:46:51", role: "user">]> 
-
-2.4.1 :024 > User.admin
-  User Load (0.2ms)  SELECT  "users".* FROM "users" WHERE "users"."role" = $1 LIMIT $2  [["role", 1], ["LIMIT", 11]]
- => #<ActiveRecord::Relation [#<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2019-01-04 11:53:46", updated_at: "2019-01-08 11:43:42", role: "admin">]> 
-
-2.4.1 :025 > User.user
-  User Load (0.3ms)  SELECT  "users".* FROM "users" WHERE "users"."role" = $1 LIMIT $2  [["role", 0], ["LIMIT", 11]]
- => #<ActiveRecord::Relation [#<User id: 2, name: "Bob", email: "bob@test.abc", created_at: "2019-01-06 09:40:34", updated_at: "2019-01-06 09:40:34", role: "user">, #<User id: 3, name: "Carl", email: "carl@test.abc", created_at: "2019-01-06 09:40:51", updated_at: "2019-01-06 09:40:51", role: "user">, #<User id: 4, name: "David", email: "david@test.abc", created_at: "2019-01-06 09:41:12", updated_at: "2019-01-06 09:41:12", role: "user">, #<User id: 5, name: "Elvis", email: "elvis@test.abc", created_at: "2019-01-06 09:41:30", updated_at: "2019-01-06 23:46:51", role: "user">]> 
-
-2.4.1 :026 > User.moderator
-  User Load (0.6ms)  SELECT  "users".* FROM "users" WHERE "users"."role" = $1 LIMIT $2  [["role", 2], ["LIMIT", 11]]
- => #<ActiveRecord::Relation []> 
+3.1.0 :002 > User.all
+  User Load (2.7ms)  SELECT "users".* FROM "users"
+ =>                                                
+[#<User id: 5, name: "Elvis", email: "elvis@test.abc", created_at: "2022-02-01 16:29:06.259332000 +0000", updated_at: "2022-02-01 16:29:06.259332000 +0000", language: "it", role: "user">,
+ #<User id: 7, name: "Flav", email: "flav@test.abc", created_at: "2022-02-01 17:11:04.252571000 +0000", updated_at: "2022-02-01 17:11:04.252571000 +0000", language: "it", role: "user">,
+ #<User id: 3, name: "Carl", email: "carl@test.abc", created_at: "2022-02-01 16:27:25.761382000 +0000", updated_at: "2022-02-04 17:19:10.336174000 +0000", language: "it", role: "user">,
+ #<User id: 4, name: "Davidino", email: "david@test.abc", created_at: "2022-02-01 16:28:14.397848000 +0000", updated_at: "2022-02-07 12:23:23.442029000 +0000", language: "en", role: "user">,
+ #<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2022-01-30 11:50:16.615885000 +0000", updated_at: "2022-02-16 11:55:50.819645000 +0000", language: "en", role: "user">,
+ #<User id: 2, name: "Bob", email: "bob@test.abc", created_at: "2022-02-01 16:26:18.569214000 +0000", updated_at: "2022-02-16 14:25:48.049432000 +0000", language: "it", role: "user">] 
+3.1.0 :001 > User.first.admin!
+  User Load (0.4ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1  [["LIMIT", 1]]
+  TRANSACTION (0.1ms)  BEGIN
+  User Update (0.4ms)  UPDATE "users" SET "updated_at" = $1, "role" = $2 WHERE "users"."id" = $3  [["updated_at", "2022-02-17 17:17:56.339015"], ["role", 1], ["id", 1]]
+  TRANSACTION (1.4ms)  COMMIT
+ => true                    
+3.1.0 :002 > User.first.update(role: :moderator)
+  User Load (0.4ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1  [["LIMIT", 1]]
+  TRANSACTION (0.1ms)  BEGIN
+  User Update (0.3ms)  UPDATE "users" SET "updated_at" = $1, "role" = $2 WHERE "users"."id" = $3  [["updated_at", "2022-02-17 17:18:46.645311"], ["role", 2], ["id", 1]]
+  TRANSACTION (1.0ms)  COMMIT
+ => true 
+3.1.0 :003 > u = User.first
+  User Load (0.4ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1  [["LIMIT", 1]]
+ => #<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2022-01-30 11:50:16.615885000 +0000", updated_at: "2022-02-17 17:18:46.645311000 +0000", language: "en", role: "moderator"> 
+3.1.0 :004 > u.role = :admin 
+ => :admin 
+3.1.0 :005 > u.save 
+  TRANSACTION (0.1ms)  BEGIN
+  User Update (0.4ms)  UPDATE "users" SET "updated_at" = $1, "role" = $2 WHERE "users"."id" = $3  [["updated_at", "2022-02-17 17:19:15.481079"], ["role", 1], ["id", 1]]
+  TRANSACTION (1.4ms)  COMMIT
+ => true
+3.1.0 :001 > User.first.role
+  User Load (0.4ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1  [["LIMIT", 1]]
+ => "admin"                                       
+3.1.0 :002 > User.second.role
+  User Load (0.3ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2  [["LIMIT", 1], ["OFFSET", 1]]
+ => "user"                                        
+3.1.0 :003 > User.first.admin?
+  User Load (0.4ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1  [["LIMIT", 1]]
+ => true                                          
+3.1.0 :004 > User.second.admin?
+  User Load (0.4ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2  [["LIMIT", 1], ["OFFSET", 1]]
+ => false                                         
+3.1.0 :005 > User.second.user?
+  User Load (0.4ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2  [["LIMIT", 1], ["OFFSET", 1]]
+ => true                                          
+3.1.0 :006 >
+3.1.0 :009 > User.admin
+  User Load (0.3ms)  SELECT "users".* FROM "users" WHERE "users"."role" = $1  [["role", 1]]
+ => [#<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2022-01-30 11:50:16.615885000 +0000", updated_at: "2022-02-17 17:19:15.481079000 +0000", language: "en", role: "admin">] 
+3.1.0 :010 > User.user
+  User Load (0.4ms)  SELECT "users".* FROM "users" WHERE "users"."role" = $1  [["role", 0]]
+ => 
+[#<User id: 5, name: "Elvis", email: "elvis@test.abc", created_at: "2022-02-01 16:29:06.259332000 +0000", updated_at: "2022-02-01 16:29:06.259332000 +0000", language: "it", role: "user">,
+ #<User id: 7, name: "Flav", email: "flav@test.abc", created_at: "2022-02-01 17:11:04.252571000 +0000", updated_at: "2022-02-01 17:11:04.252571000 +0000", language: "it", role: "user">,
+ #<User id: 3, name: "Carl", email: "carl@test.abc", created_at: "2022-02-01 16:27:25.761382000 +0000", updated_at: "2022-02-04 17:19:10.336174000 +0000", language: "it", role: "user">,
+ #<User id: 4, name: "Davidino", email: "david@test.abc", created_at: "2022-02-01 16:28:14.397848000 +0000", updated_at: "2022-02-07 12:23:23.442029000 +0000", language: "en", role: "user">,
+ #<User id: 2, name: "Bob", email: "bob@test.abc", created_at: "2022-02-01 16:26:18.569214000 +0000", updated_at: "2022-02-16 14:25:48.049432000 +0000", language: "it", role: "user">] 
+3.1.0 :011 > User.moderator
+  User Load (0.4ms)  SELECT "users".* FROM "users" WHERE "users"."role" = $1  [["role", 2]]
+ => [] 
+3.1.0 :012 > 
 ```
-
 
 
 
@@ -263,7 +310,6 @@ ActiveRecord::RecordInvalid (translation missing: it.activerecord.errors.message
 
 
 
-
 ## Salviamo su git
 
 ```bash
@@ -273,312 +319,18 @@ $ git commit -m "Add role:enum to table users"
 
 
 
-
 ## Pubblichiamo su Heroku
 
 ```bash
-$ git push heroku re:master
+$ git push heroku re:main
 $ heroku run rails db:migrate
 ```
 
-
-
-## Chiudiamo il branch
-
-Se abbiamo finito le modifiche e va tutto bene:
+Rendiamo il primo utente amministratore.
 
 ```bash
-$ git checkout master
-$ git merge re
-$ git branch -d re
-```
-
-
-
-## Facciamo un backup su Github
-
-Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
-
-```bash
-$ git push origin master
-```
-
-
-
-
-## Il codice del capitolo
-
-
-
-
-[Codice 01](#01-09-03_01)
-
-{id="01-09-03_01all", title=".../db/migrate/xxx_add_role_to_users.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-```
-class AddRoleToUsers < ActiveRecord::Migration[5.2]
-  def change
-    add_column :users, :role, :integer, default: 0
-    add_index :users, :role, unique: false
-  end
-end
-```
-
-
-
-
-[Codice 02](#01-09-03_02)
-
-{id="01-09-03_02all", title=".../db/schema.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-```
-# This file is auto-generated from the current state of the database. Instead
-# of editing this file, please use the migrations feature of Active Record to
-# incrementally modify your database, and then regenerate this schema definition.
-#
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
-#
-# It's strongly recommended that you check this file into your version control system.
-
-ActiveRecord::Schema.define(version: 2019_01_08_110724) do
-
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
-  create_table "example_companies", force: :cascade do |t|
-    t.string "name"
-    t.text "sector"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "example_posts", force: :cascade do |t|
-    t.string "title"
-    t.text "incipit"
-    t.bigint "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_example_posts_on_user_id"
-  end
-
-  create_table "example_users", force: :cascade do |t|
-    t.string "name"
-    t.string "email"
-    t.string "encrypted_password"
-    t.datetime "remember_created_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "users", force: :cascade do |t|
-    t.string "name", default: "", null: false
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "role", default: 0
-    t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["role"], name: "index_users_on_role"
-  end
-
-  add_foreign_key "example_posts", "users"
-end
-```
-
-
-
-
-[Codice 03](#01-09-03_03)
-
-{id="01-09-03_03all", title=".../models/user.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-```
-class User < ApplicationRecord
-  #enum role: [:user, :admin, :moderator, :author]
-  enum role: {user: 0, admin: 1, moderator:2, author:3}
-
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :registerable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable,
-         :recoverable, :rememberable, :validatable
-
-  has_many :eg_posts
-end
-```
-
-
-
-
-[Codice 04](#01-09-03_04)
-
-{id="01-09-03_04all", title=".../db/schema.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-```
-class ApplicationController < ActionController::Base
-  before_action :configure_permitted_parameters, if: :devise_controller?
-
-  def after_sign_in_path_for(resource_or_scope)
-    users_path
-    #current_user
-  end
-
-  protected
-  
-    def configure_permitted_parameters
-      devise_parameter_sanitizer.permit(:sign_in, keys: [:role])
-      devise_parameter_sanitizer.permit(:sign_up, keys: [:role])
-      devise_parameter_sanitizer.permit(:account_update, keys: [:role])
-    end
-end
-```
-
-
-
-
-[Codice 05](#01-09-03_05)
-
-{id="01-09-03_05all", title=".../app/controllers/users_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-```
-class UsersController < ApplicationController
-  before_action :authenticate_user!
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
-
-  # GET /users
-  # GET /users.json
-  def index
-    @users = User.all
-  end
-
-  # GET /users/1
-  # GET /users/1.json
-  def show
-  end
-
-  # GET /users/new
-  def new
-    @user = User.new
-  end
-  
-  # GET /users/1/edit
-  def edit
-  end
-
-  # POST /users
-  # POST /users.json
-  def create
-    @user = User.new(user_params)
-
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @user }
-      else
-        format.html { render :new }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /users/1
-  # PATCH/PUT /users/1.json
-  def update
-    if params[:user][:password].blank?
-      params[:user].delete(:password)
-      params[:user].delete(:password_confirmation)
-    end
-    current_user_temp = current_user
-    respond_to do |format|
-      if @user.update(user_params)
-        format.html do
-          # Logghiamoci di nuovo automaticamente bypassando le validazioni
-          sign_in(@user, bypass: true) if @user == current_user_temp
-          redirect_to @user, notice: 'User was successfully updated.'
-        end
-        format.json { render :show, status: :ok, location: @user }
-      else
-        format.html { render :edit }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /users/1
-  # DELETE /users/1.json
-  def destroy
-    @user.destroy unless @user == current_user
-    respond_to do |format|
-      format.html do 
-        redirect_to users_url, notice: 'User was successfully destroyed.' unless @user == current_user
-        redirect_to users_url, notice: 'Non posso eliminare utente loggato.' if @user == current_user
-      end
-      format.json { head :no_content }
-    end
-  end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation, :remember_created_at, :role)
-    end
-
-end
-```
-
-
-
-
-[Codice 06](#01-09-03_06)
-
-{id="01-09-03_06all", title=".../app/views/users/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-```
-
-```
-
-
-
-
-
----
-
-
-
-## Verifichiamo preview
-
-```bash
-$ sudo service postgresql start
-$ rails s
-```
-
-apriamolo il browser sull'URL:
-
-* https://mycloud9path.amazonaws.com/users
-
-Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
-
-
-
-## salviamo su git
-
-```bash
-$ git add -A
-$ git commit -m "users_controllers notice messages i18n"
-```
-
-
-
-## Pubblichiamo su Heroku
-
-```bash
-$ git push heroku ui:master
+$ heroku run rails c
+-> User.first.admin!
 ```
 
 
@@ -597,6 +349,6 @@ Lo facciamo nel prossimo capitolo.
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/02-roles-admin-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/04-implement_roles-it.md)
