@@ -1,6 +1,7 @@
 # <a name="top"></a> Cap 13.3 - Roles - enum
 
 Questo approccio è semplice e permette di avere più ruoli fissi.
+
 Esempio:
 - user, vip, admin
 - silver, gold, platinum, diamond
