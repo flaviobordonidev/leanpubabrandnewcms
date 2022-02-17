@@ -123,7 +123,7 @@ $ rails g migration add_index_to_role_to_users
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/03_03-models-users.rb)
 
 
-Se non avessimo voluto usare il default lato database con "default: 0" avremmo potuto farlo nel model.
+Se non avessimo voluto usare il default lato database con *default: 0* avremmo potuto farlo nel model.
 
 ***codice n/a - .../models/user.rb - line: 7***
 
