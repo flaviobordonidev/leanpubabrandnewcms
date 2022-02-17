@@ -1,13 +1,18 @@
 # <a name="top"></a> Cap 13.3 - Roles - enum
 
-Questo approccio è semplice e permette di avere più ruoli fissi (es: user, vip, admin) o (es: silver, gold, platinum, diamond).
-Questo livello permette di gestire più del 90% delle esigenze delle applicazioni web. Usato con pundit e devise riesce a coprire quasi tutte le esigenze di autorizzazione.
-Per questo motivo rolify è stato messo su una sezione distinta, proprio perché è una gemma che, quasi sempre, possiamo evitare di installare.
+Questo approccio è semplice e permette di avere più ruoli fissi.
+Esempio:
+- user, vip, admin
+- silver, gold, platinum, diamond
 
-Aggiungiamo i vari ruoli utilizzando un attributo (role attribute) e non un intero modello.
-Questo vuol dire aggiungere una colonna "role" di tipo integer sulla tabella "users" e dichiarare l'uso di "enum" sul model User.
+Usare *enum* per i *ruoli* permette di gestire più del 90% delle esigenze delle applicazioni web. 
+Usato in congiunzione con *devise* e *pundit* riesce a coprire quasi tutte le esigenze di autorizzazione.
 
+> Per questo motivo *rolify* è stato messo su una sezione distinta, proprio perché è una gemma che, quasi sempre, possiamo evitare di installare. <br/>
 > Volendo usare *rolify* possiamo saltare direttamente alla sezione *16-rolification*.
+
+Aggiungiamo i vari ruoli utilizzando l'attributo *:role* e non un intero modello.
+Questo vuol dire aggiungere la colonna *role* di tipo *integer* sulla tabella *users* e dichiarare l'uso di *enum* sul model *User*.
 
 
 
