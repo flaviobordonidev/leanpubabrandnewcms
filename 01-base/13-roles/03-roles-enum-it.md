@@ -33,7 +33,8 @@ $ git checkout -b re
 
 ## Aggiungiamo il campo *roles:enum* alla tabella users
 
-Nel db postgresql si possono implementare dei campi di tipo *enum* ma per attivare la gestione *enum* di Rails usiamo la tipologia "integer" nel db. Implementeremo la gestione del campo con la tipologia *enum* direttamente nel model più avanti in questo capitolo.
+Nel db postgresql si possono implementare dei campi di tipo *enum* ma per attivare la gestione *enum* di Rails usiamo la tipologia *integer* nel db. 
+Implementeremo la gestione del campo con la tipologia *enum* direttamente nel model più avanti in questo capitolo.
 
 ```bash
 $ rails g migration add_role_to_users role:integer
@@ -41,14 +42,14 @@ $ rails g migration add_role_to_users role:integer
 
 Modifichiamo il migrate aggiungendo un default e l'indice per velocizzare queries che usano *role*.
 
-***codice 01 - .../db/migrate/xxx_add_role_to_users.rb - line: 1***
+***codice 01 - .../db/migrate/xxx_add_role_to_users.rb - line: 3***
 
 ```ruby
     add_column :users, :role, :integer, default: 0
     add_index :users, :role, unique: false
 ```
 
-[tutto il codice](#01-13-03_01all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/03_01-xxxx_add_role_to_users.rb)
 
 
 Effettuiamo il migrate del database per creare la tabella sul database
@@ -58,31 +59,52 @@ $ sudo service postgresql start
 $ rails db:migrate
 ```
 
+Esempio:
+
+```bash
+user_fb:~/environment/bl7_0 (re) $ rails db:migrate
+== 20220217162110 AddRoleToUsers: migrating ===================================
+-- add_column(:users, :role, :integer, {:default=>0})
+   -> 0.0596s
+-- add_index(:users, :role, {:unique=>false})
+   -> 0.0083s
+== 20220217162110 AddRoleToUsers: migrated (0.0693s) ==========================
+
+user_fb:~/environment/bl7_0 (re) $ 
+```
+
 ed otteniamo le seguenti modifiche alla tabella *users*.
 
-***codice 02 - .../db/schema.rb - line: 77***
+***codice 02 - .../db/schema.rb - line: 38***
 
 ```ruby
+  create_table "users", force: :cascade do |t|
+    t.string "name", default: "", null: false
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at", precision: 6
+    t.datetime "remember_created_at", precision: 6
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "language", default: 0
     t.integer "role", default: 0
-```
-
-
-***codice 02 - ...continua - line: 80***
-
-```ruby
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["role"], name: "index_users_on_role"
+  end
 ```
 
-[tutto il codice](#01-13-03_02all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/03_02-db-schema.rb)
 
 
-Avremmo potuto aggiungere l'indice anche in un secondo momemento
+Avremmo potuto aggiungere l'indice anche in un secondo momento.
 
 ```bash
 $ rails g migration add_index_to_role_to_users
 ```
 
-***codice n/a - .../db/migrate/xxx_add_index_to_role_to_users.rb - line: 1***
+***codice n/a - .../db/migrate/xxx_add_index_to_role_to_users.rb - line: 3***
 
 ```ruby
     add_index :users, :role, unique: false
