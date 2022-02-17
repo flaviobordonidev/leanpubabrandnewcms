@@ -114,19 +114,16 @@ $ rails g migration add_index_to_role_to_users
 
 ## Aggiorniamo il Model implementando ENUM
 
-***codice 03 - .../models/user.rb - line: 3***
+***codice 03 - .../models/user.rb - line: 10***
 
 ```ruby
-  #enum role: [:user, :admin, :moderator, :author]
   enum role: {user: 0, admin: 1, moderator:2, author:3}
 ```
 
-[tutto il codice](#01-13-03_03all)
-
-Le due linee di codice in alto sono equivalenti solo la seconda linea di codice è più flessibile per eventuali aggiunte o eliminazioni all'elenco.
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/03_03-models-users.rb)
 
 
-Se non avessimo voluto usare il default lato database con "default: 0" avremmo potuto farlo nel model in questo modo:  
+Se non avessimo voluto usare il default lato database con "default: 0" avremmo potuto farlo nel model.
 
 ***codice n/a - .../models/user.rb - line: 7***
 
@@ -138,7 +135,7 @@ Se non avessimo voluto usare il default lato database con "default: 0" avremmo p
   end
 ```
 
-ma lato database è più pulito e più prestazionale.
+Ma lato database è più pulito e più prestazionale.
 
 
 
@@ -149,55 +146,81 @@ Apriamo il terminale
 ```bash
 $ rails c
 
+# verifichiamo tutti i ruoli presenti nella colonna "role" assegnata ad enum.
+-> User.roles
 
-c2-user:~/environment/myapp (ra) $ rails c
-Running via Spring preloader in process 5590
-Loading development environment (Rails 5.2.2)
-2.4.1 :001 > 
+# verifichiamo che tutti gli utenti hanno il campo della colonna role con il valore di default "0", che per enum corrisponde al valore "user".
+-> User.all
+
+# rendiamo il primo utente amministratore. modo 1.
+-> User.first.admin!
+
+# rendiamo il primo utente amministratore. modo 2.
+-> User.first.update(role: :admin)
+
+# rendiamo il primo utente amministratore. modo 3.
+-> u = User.first 
+-> u.role = :admin 
+-> u.save 
+
+# verifichiamo che ruolo hanno il primo ed il secondo utente
+-> User.first.admin?
+-> User.second.admin? 
+-> User.second.user?
+-> User.first.role
+-> User.second.role
+
+# prendiamo una lista di tutti gli :admin
+-> User.admin
+
+# prendiamo una lista di tutti gli :user
+-> User.user
+
+# prendiamo una lista di tutti i :moderator
+-> User.moderator
 ```
 
-verifichiamo tutti i ruoli presenti nella colonna "role" assegnata ad enum.
 
 ```bash
--> User.roles
 
 
 2.4.1 :001 > User.roles
  => {"user"=>0, "admin"=>1, "moderator"=>2, "author"=>3} 
-```
-
-verifichiamo che tutti gli utenti hanno il campo della colonna role con il valore di default "0", che per enum corrisponde al valore "user".
-
-```bash
--> User.all
-
 
 2.4.1 :002 > User.all
   User Load (0.3ms)  SELECT  "users".* FROM "users" LIMIT $1  [["LIMIT", 11]]
  => #<ActiveRecord::Relation [#<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2019-01-04 11:53:46", updated_at: "2019-01-06 09:32:02", role: "user">, #<User id: 2, name: "Bob", email: "bob@test.abc", created_at: "2019-01-06 09:40:34", updated_at: "2019-01-06 09:40:34", role: "user">, #<User id: 3, name: "Carl", email: "carl@test.abc", created_at: "2019-01-06 09:40:51", updated_at: "2019-01-06 09:40:51", role: "user">, #<User id: 4, name: "David", email: "david@test.abc", created_at: "2019-01-06 09:41:12", updated_at: "2019-01-06 09:41:12", role: "user">, #<User id: 5, name: "Elvis", email: "elvis@test.abc", created_at: "2019-01-06 09:41:30", updated_at: "2019-01-06 23:46:51", role: "user">]> 
+
+2.4.1 :024 > User.admin
+  User Load (0.2ms)  SELECT  "users".* FROM "users" WHERE "users"."role" = $1 LIMIT $2  [["role", 1], ["LIMIT", 11]]
+ => #<ActiveRecord::Relation [#<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2019-01-04 11:53:46", updated_at: "2019-01-08 11:43:42", role: "admin">]> 
+
+2.4.1 :025 > User.user
+  User Load (0.3ms)  SELECT  "users".* FROM "users" WHERE "users"."role" = $1 LIMIT $2  [["role", 0], ["LIMIT", 11]]
+ => #<ActiveRecord::Relation [#<User id: 2, name: "Bob", email: "bob@test.abc", created_at: "2019-01-06 09:40:34", updated_at: "2019-01-06 09:40:34", role: "user">, #<User id: 3, name: "Carl", email: "carl@test.abc", created_at: "2019-01-06 09:40:51", updated_at: "2019-01-06 09:40:51", role: "user">, #<User id: 4, name: "David", email: "david@test.abc", created_at: "2019-01-06 09:41:12", updated_at: "2019-01-06 09:41:12", role: "user">, #<User id: 5, name: "Elvis", email: "elvis@test.abc", created_at: "2019-01-06 09:41:30", updated_at: "2019-01-06 23:46:51", role: "user">]> 
+
+2.4.1 :026 > User.moderator
+  User Load (0.6ms)  SELECT  "users".* FROM "users" WHERE "users"."role" = $1 LIMIT $2  [["role", 2], ["LIMIT", 11]]
+ => #<ActiveRecord::Relation []> 
 ```
 
 
 
-## rendiamo il primo utente amministratore.
 
-```bash
--> User.first.admin!
-
-oppure
-
--> User.first.update(role: :admin)
-
-oppure
-
--> u= User.first 
--> u.role = :admin 
--> u.save 
-```
+## Se avessimo *validations*
 
 > ATTENZIONE! se ho dei validation potrei ricevere un errore perché rails si aspetta che gli vengano passati tutti i parametri!
 
-In questo caso o commentiamo i "validates" nel model oppure usiamo ".save(validate: false)" come possiamo vedere in questo esempio:
+In questo caso o commentiamo i *validates* nel model oppure usiamo `.save(validate: false)`.
+
+```bash
+$ rails c
+-> u = User.first
+-> u.role = :admin
+-> u.save(validate: false)
+```
+
+Esempio:
 
 ```bash
 2.6.3 :069 > User.first.admin!
@@ -208,7 +231,7 @@ In questo caso o commentiamo i "validates" nel model oppure usiamo ".save(valida
    (0.2ms)  ROLLBACK
 Traceback (most recent call last):
         2: from (irb):69
-        1: from (irb):69:in `rescue in irb_binding'
+        1: from (irb):69:in 'rescue in irb_binding'
 ActiveRecord::RecordInvalid (translation missing: it.activerecord.errors.messages.record_invalid)
 2.6.3 :070 > User.first.update(role: :admin)
   User Load (0.4ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1  [["LIMIT", 1]]
@@ -238,66 +261,6 @@ ActiveRecord::RecordInvalid (translation missing: it.activerecord.errors.message
 2.6.3 :076 > 
 ```
 
-
-
-
-## verifichiamo che ruolo hanno il primo ed il secondo utente
-
-```bash
--> User.first.admin?
- => true 
-
--> User.second.admin? 
- => false 
-
--> User.second.user?
- => true
-
--> User.first.role
- => "admin" 
-
--> User.second.role
- => "user" 
-```
-
-prendiamo una lista di tutti gli :admin
-
-```bash
--> User.admin
-
-
-2.4.1 :024 > User.admin
-  User Load (0.2ms)  SELECT  "users".* FROM "users" WHERE "users"."role" = $1 LIMIT $2  [["role", 1], ["LIMIT", 11]]
- => #<ActiveRecord::Relation [#<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2019-01-04 11:53:46", updated_at: "2019-01-08 11:43:42", role: "admin">]> 
-```
-
-prendiamo una lista di tutti gli :user
-
-```bash
--> User.user
-
-
-2.4.1 :025 > User.user
-  User Load (0.3ms)  SELECT  "users".* FROM "users" WHERE "users"."role" = $1 LIMIT $2  [["role", 0], ["LIMIT", 11]]
- => #<ActiveRecord::Relation [#<User id: 2, name: "Bob", email: "bob@test.abc", created_at: "2019-01-06 09:40:34", updated_at: "2019-01-06 09:40:34", role: "user">, #<User id: 3, name: "Carl", email: "carl@test.abc", created_at: "2019-01-06 09:40:51", updated_at: "2019-01-06 09:40:51", role: "user">, #<User id: 4, name: "David", email: "david@test.abc", created_at: "2019-01-06 09:41:12", updated_at: "2019-01-06 09:41:12", role: "user">, #<User id: 5, name: "Elvis", email: "elvis@test.abc", created_at: "2019-01-06 09:41:30", updated_at: "2019-01-06 23:46:51", role: "user">]> 
-```
-
-prendiamo una lista di tutti i :moderator
-
-```bash
--> User.moderator
-
-
-2.4.1 :026 > User.moderator
-  User Load (0.6ms)  SELECT  "users".* FROM "users" WHERE "users"."role" = $1 LIMIT $2  [["role", 2], ["LIMIT", 11]]
- => #<ActiveRecord::Relation []> 
-```
-
-usciamo
-
-```bash
--> exit
-```
 
 
 
