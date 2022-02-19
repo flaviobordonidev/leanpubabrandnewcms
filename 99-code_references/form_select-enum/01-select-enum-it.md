@@ -1,6 +1,13 @@
 # Menu a cascata
 
 
+## Risorse interne
+
+- [vedi 01-base - 14-enum_i18n - 01-enum-i18n-it]()
+- [vedi 52-integram-agency-blog - c05-enum_with_i18n - 01-enum_with_i18n]()
+
+
+
 ## Risorse esterne
 
 - [Create a Dynamic Select Tag for Your Model-Based Form in Ruby on Rails](https://dev.to/jleewebdev/create-a-dynamic-select-tag-for-your-model-based-form-in-ruby-on-rails-39l6)
