@@ -89,9 +89,9 @@ Per completezza manteniamo allineato anche il file per la traduzione in inglese.
 
 Con questa struttura possiamo usare i metodi:
 
-- *<Model>.model_name.human*
-- *<Model>.human_attribute_name("<attribute>")*
-- *<Model>.human_attribute_name("<attribute>.<nested_attribute>")*
+- *[Model].model_name.human*
+- *[Model].human_attribute_name("[attribute]")*
+- *[Model].human_attribute_name("[attribute].[nested_attribute]")*
 
 per cercare in modo trasparente le traduzioni per *il modello* e *i nomi degli attributi*. 
 Nel caso in cui sia necessario accedere ad attributi nidificati all'interno di un determinato modello, è necessario nidificarli sotto *modello/attributo* a livello di modello nel file di traduzione (*locales/xx.yml*).
