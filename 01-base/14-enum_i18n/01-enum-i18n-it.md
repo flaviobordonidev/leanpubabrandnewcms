@@ -107,113 +107,118 @@ $ rails c
 Esempio:
 
 ```bash
-
-
-2.4.1 :001 > Post.model_name.human
- => "articolo" 
-2.4.1 :002 > Post.human_attribute_name(:content_type)
- => "tipologia"
-2.4.1 :003 > Post.human_attribute_name("content_type.image")
- => "immagine" 
-2.4.1 :004 > Post.human_attribute_name("content_type.video_youtube")
- => "video YouTube"
+user_fb:~/environment/bl7_0 (ein) $ rails c
+Loading development environment (Rails 7.0.1)
+3.1.0 :001 > User.model_name.admin
+(irb):1:in `<main>': undefined method `admin' for #<ActiveModel::Name:0x00007f33208caa00 @name="User", @klass=User (call 'User.connection' to establish a connection), @singular="user", @plural="users", @uncountable=false, @element="user", @human="User", @collection="users", @param_key="user", @i18n_key=:user, @route_key="users", @singular_route_key="user"> (NoMethodError)
+3.1.0 :002 > User.model_name.human
+ => "utente" 
+3.1.0 :003 > User.human_attribute_name("role")
+ => "ruolo" 
+3.1.0 :004 > User.human_attribute_name("role.admin")
+ => "amministratore" 
+3.1.0 :005 > User.human_attribute_name("role.moderator")
+ => "moderatore" 
+3.1.0 :006 > 
 ```
 
 Vediamo come gestire la traduzione
 
 ```bash
 $ rails c
--> Post.content_types
--> Post.content_types.map
--> Post.content_types.map{ |k,v| [k, Post.human_attribute_name("content_type.#{k}")]}
--> Post.content_types.map{ |k,v| [k, Post.human_attribute_name("content_type.#{k}")]}.to_h
-
-2.4.1 :013 > Post.content_types
- => {"image"=>0, "video_youtube"=>1, "video_vimeo"=>2, "audio"=>3} 
-2.4.1 :014 > Post.content_types.map
- => #<Enumerator: {"image"=>0, "video_youtube"=>1, "video_vimeo"=>2, "audio"=>3}:map> 
-2.4.1 :015 > Post.content_types.map{ |k,v| [k, Post.human_attribute_name("type.#{k}")]}
- => [["image", "immagine"], ["video_youtube", "video YouTube"], ["video_vimeo", "video Vimeo"], ["audio", "audio"]] 
- 2.4.1 :016 > Post.content_types.map{ |k,v| [k, Post.human_attribute_name("type.#{k}")]}.to_h
- => {"image"=>"immagine", "video_youtube"=>"video YouTube", "video_vimeo"=>"video Vimeo", "audio"=>"audio"} 
+-> User.roles
+-> User.roles.map
+-> User.roles.map{ |k,v| [k, User.human_attribute_name("role.#{k}")]}
+-> User.roles.map{ |k,v| [k, User.human_attribute_name("role.#{k}")]}.to_h
 ```
 
-I> al posto di xxx.to_h si poteva usare Hash[xxx]
-I>
-I> quindi avremmo avuto Hash[Post.content_types.map{ |k,v| [k, Post.human_attribute_name("content_type.#{k}")]}]
+> al posto di `xxx.to_h` si può usare `Hash[xxx]`. <br/>
+> quindi avremmo avuto `Hash[User.roles.map{ |k,v| [k, User.human_attribute_name("role.#{k}")]}]`
 
+Esempio:
+
+```bash
+3.1.0 :002 > User.roles
+ => {"user"=>0, "admin"=>1, "moderator"=>2, "author"=>3} 
+3.1.0 :003 > User.roles.map
+ => #<Enumerator: ...> 
+    #<Enumerator: {"user"=>0, "admin"=>1, "moderator"=>2, "author"=>3}:map> 
+3.1.0 :004 > User.roles.map{ |k,v| [k, User.human_attribute_name("role.#{k}")]}
+ => [["user", "utente"], ["admin", "amministratore"], ["moderator", "moderatore"], ["author", "autore"]] 
+3.1.0 :005 > User.roles.map{ |k,v| [k, User.human_attribute_name("role.#{k}")]}.to_h
+ => {"user"=>"utente", "admin"=>"amministratore", "moderator"=>"moderatore", "author"=>"autore"} 
+3.1.0 :006 > Hash[User.roles.map{ |k,v| [k, User.human_attribute_name("role.#{k}")]}]
+ => {"user"=>"utente", "admin"=>"amministratore", "moderator"=>"moderatore", "author"=>"autore"} 
+3.1.0 :007 > 
+```
 
 
 
 ## Inseriamo la traduzione nel view
 
-Ora che conosciamo la definizione e come accedervi possiamo inserirli nel view
+Ora che conosciamo la definizione e come accedervi possiamo inserirla nel view.
 
-al posto di 
+***codice 03 - .../views/users/_form.html.erb - line: 33***
 
-{title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
-~~~~~~~~
-  <div class="field">    
-    <%= form.label :content_type %>
-    <%= form.select(:content_type, Post.content_types.keys.map {|content_type| [content_type.titleize, content_type]}) %>
+```html+erb
+  <div>
+    <%= form.label :role %>
+    <%#= form.select(:role, User.roles.keys.map {|role| [role.titleize,role]}) %>
+    <%= form.select(:role, User.roles.keys.map {|role| [User.human_attribute_name("role.#{role}"), role]}) %>
   </div>
-~~~~~~~~
-    
-possiamo avere
+```
 
-{title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
-~~~~~~~~
-  <div class="field">    
-    <%= form.label :content_type %>
-    <%= form.select(:content_type, Post.content_types.keys.map {|content_type| [Post.human_attribute_name("content_type.#{content_type}"), content_type]}) %>
+oppure visualizzarli come *radio_buttons*.
+
+
+***codice n/a - .../views/users/_form.html.erb - line: 33***
+
+```html+erb
+  <div>
+    <%= form.label :role %>
+    <%= form.collection_radio_buttons :role, Hash[User.roles.map { |k,v| [k, User.human_attribute_name("role.#{k}")] }], :first, :second %>
   </div>
-~~~~~~~~
+```
 
-oppure visualizzarli come radio_buttons
+volendo si può creare un helper.
 
-{title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
-~~~~~~~~
-  <div class="field">    
-    <%= form.label :content_type %>
-    <%= form.collection_radio_buttons :content_type, Hash[Post.content_types.map { |k,v| [k, Post.human_attribute_name("content_type.#{k}")] }], :first, :second %>
-  </div>
-~~~~~~~~
 
-volendo si può creare un helper
+***codice n/a - .../app/helpers/users_helper.rb - line: 33***
 
-{title=".../app/helpers/posts_helper.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
-module PostsHelper
+```ruby
+module UsersHelper
   def h_human_attribute_types
-    Hash[Post.content_types.map { |k,v| [k, Post.human_attribute_name("content_type.#{k}")] }]
+    Hash[User.roles.map { |k,v| [k, User.human_attribute_name("role.#{k}")] }]
   end
 end
-~~~~~~~~
+```
 
-in modo da avere un view più "dry"
+in modo da avere un view più *"dry"*.
 
-{title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=12}
-~~~~~~~~
-  <div class="field">    
-    <%= form.label :content_type %>
-    <%= form.collection_radio_buttons :content_type, h_human_attribute_content_types, :first, :second %>
+***codice n/a - .../views/users/_form.html.erb - line: 33***
+
+```html+erb
+  <div>
+    <%= form.label :role %>
+    <%= form.collection_radio_buttons :role, h_human_attribute_content_types, :first, :second %>
   </div>
-~~~~~~~~
+```
 
 Un altro modo è quello di creare una variabile virtuale nel Model.
 
 
 
-## Implementiamo nel Model
+## Creiamo una variabile virtuale nel Model
 
-{title=".../models/post.rb", lang=ruby, line-numbers=on, starting-line-number=3}
-~~~~~~~~
+Vedi virtual attribute con *get_read*, *get_write*, ...
 
-(vedi virtual attribute con get_read, get_write ....)
+***codice n/a - .../models/post.rb - line: 33***
 
-  Post.content_types.map{ |k,v| [k, Post.human_attribute_name("content_type.#{k}")]}.to_h
-~~~~~~~~
+```ruby
+  Post.roles.map{ |k,v| [k, User.human_attribute_name("role.#{k}")]}.to_h
+```
 
+```ruby
   # def self.human_attribute_enum_value(attr_name, value)
   #   human_attribute_name("#{attr_name}.#{value}")
   # end
@@ -221,9 +226,7 @@ Un altro modo è quello di creare una variabile virtuale nel Model.
   # def human_attribute_enum(attr_name)
   #   self.class.human_attribute_enum_value(attr_name, self[attr_name])
   # end
-
-
----
+```
 
 
 
