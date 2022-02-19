@@ -89,20 +89,25 @@ Per completezza manteniamo allineato anche il file per la traduzione in inglese.
 
 Con questa struttura possiamo usare i metodi:
 
-- *Model.model_name.human*
-- *Model.human_attribute_name("attribute")*
-- *Model.human_attribute_name("attribute.nested_attribute")*
+- *<Model>.model_name.human*
+- *<Model>.human_attribute_name("<attribute>")*
+- *<Model>.human_attribute_name("<attribute>.<nested_attribute>")*
 
 per cercare in modo trasparente le traduzioni per *il modello* e *i nomi degli attributi*. 
 Nel caso in cui sia necessario accedere ad attributi nidificati all'interno di un determinato modello, è necessario nidificarli sotto *modello/attributo* a livello di modello nel file di traduzione (*locales/xx.yml*).
 
 ```bash
 $ rails c
--> Post.model_name.human
--> Post.human_attribute_name("content_type")
--> Post.human_attribute_name("content_type.image")
--> Post.human_attribute_name("content_type.video_youtube")
+-> User.model_name.human
+-> User.human_attribute_name("role")
+-> User.human_attribute_name("role.admin")
+-> User.human_attribute_name("role.moderator")
 ```
+
+Esempio:
+
+```bash
+
 
 2.4.1 :001 > Post.model_name.human
  => "articolo" 
@@ -112,12 +117,11 @@ $ rails c
  => "immagine" 
 2.4.1 :004 > Post.human_attribute_name("content_type.video_youtube")
  => "video YouTube"
-~~~~~~~~
+```
 
 Vediamo come gestire la traduzione
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```bash
 $ rails c
 -> Post.content_types
 -> Post.content_types.map
@@ -132,7 +136,7 @@ $ rails c
  => [["image", "immagine"], ["video_youtube", "video YouTube"], ["video_vimeo", "video Vimeo"], ["audio", "audio"]] 
  2.4.1 :016 > Post.content_types.map{ |k,v| [k, Post.human_attribute_name("type.#{k}")]}.to_h
  => {"image"=>"immagine", "video_youtube"=>"video YouTube", "video_vimeo"=>"video Vimeo", "audio"=>"audio"} 
-~~~~~~~~
+```
 
 I> al posto di xxx.to_h si poteva usare Hash[xxx]
 I>
