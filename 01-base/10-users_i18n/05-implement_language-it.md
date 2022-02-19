@@ -77,7 +77,7 @@ Per far passare realmente il valore al database dobbiamo attivare la *whitelist*
 
 ## Attiviamo la *whitelist* sul controller
 
-Inoltre mettiamo il campo *:language* nella whitelist di *users_controller*.
+Mettiamo il campo *:language* nella whitelist di *users_controller*.
 
 ***codice 04 - .../app/controllers/users_controller.rb - line: 70***
 
@@ -101,6 +101,15 @@ Questo ancora **non** ci permette di aggiornare il campo *language* nella tabell
 ## Attiviamo la *whitelist* su devise
 
 Normalmente andremmo solo su *users_controller* ma siccome *User* e legato a *devise* dobbiamo usare anche *application_controller*.
+
+> **NON** E' VERO!!!
+> MI SONO SBAGLIATO!
+> FUNZIONA ANCHE SENZA!!!
+> LO MANTENGO PERCHE' E' utile sapere questa parte di passare per devise ma NON è il caso di *language*
+> Forse serve se vogliamo passare qualche parametro in fase di login o di qualche views che parla direttamente con *devise_controller*.
+
+> POSSIAMO SALTARE QUESTO PARAGRAFO
+
 
 > Devise non è come lo scaffold. Non ci crea già le azioni sul controller e le views.
 > Per poter passare i parametri attraverso le views, o meglio il sumbit del form, dobbiamo inserirli nella white list del controller.
@@ -132,9 +141,14 @@ Questa è la sicurezza per il mass-assignment che nei controllers è fatto norma
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_in, keys: [:language])
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:language])
-    devise_parameter_sanitizer.permit(:account_update, keys: [:language])
+    devise_parameter_sanitizer.permit(:sign_in)
+    devise_parameter_sanitizer.permit(:sign_up)
+    devise_parameter_sanitizer.permit(:account_update)
+
+    #devise_parameter_sanitizer.permit(:sign_in, keys: [:language])
+    #devise_parameter_sanitizer.permit(:sign_up, keys: [:language])
+    #devise_parameter_sanitizer.permit(:account_update, keys: [:language])
+
     #devise_parameter_sanitizer.permit(:sign_in, keys: [:role, :name, :language])
     #devise_parameter_sanitizer.permit(:sign_up, keys: [:role, :name, :language])
     #devise_parameter_sanitizer.permit(:account_update, keys: [:role, :name, :language])
