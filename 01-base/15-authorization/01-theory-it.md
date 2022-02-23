@@ -32,14 +32,7 @@ Quindi possiamo dire che:
 - Devise ha un'autorizzazione a livello di view.
 - Pundit ha un'autorizzazione a livello di azioni sul database.
 
-Con pundit autorizziamo le azioni da fare sul database. Nell'esempio qui in basso abbiamo un'idea:
-
-- s : show
-- n : new/create
-- e : edit/update
-- d : destroy
-- \* : autorizzato solo per un ristretto set di records. (senza asterisco è autorizzato per tutti i records)
-- \- : non autorizzato
+Con pundit autorizziamo le azioni da fare sul database. Di seguito vediamo una panoramica delle autorizzazioni che implementeremo per la tabella *users* e *eg_posts*.
 
 Legenda autorizzazioni:
 
@@ -50,8 +43,7 @@ show    | new/create | edit/update | destroy  | non autorizzato
 > Con asterisco "*" vuol dire autorizzato solo per un ristretto set di records. (senza asterisco è autorizzato per tutti i records)
 
 
-
-utenti          | users   | posts     |
+utenti          | users   | eg_posts  |
 --------------- | ------- | --------- |
 admin           | s,n,e,d | s,-,e,d   |
 moderator       | -,-,-,- | s*,-,-,d  |
@@ -62,7 +54,7 @@ commerciale     | -,-,-,- | s*,-,-,-  |
 supervisore     | s,-,-,- | s,-,-,-   |
 
 
-Vediamo più in dettaglio le autorizzazioni per la tabella Posts:
+Vediamo più in dettaglio le autorizzazioni per la tabella *posts*.
 
 Tabella Posts
   admin
