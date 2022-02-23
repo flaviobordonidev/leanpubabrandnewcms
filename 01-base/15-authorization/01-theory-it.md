@@ -4,9 +4,16 @@ Finalmente attiviamo la sicurezza implementando le autorizzazioni alle varie azi
 
 Dal login alla gestione degli accessi alle varie funzioni si passa per 3 fasi principali:
 
-- *Autenticazione* è essere in grado di verificare l'identità dell'utente. E' fare accesso/login --> per la nostra applicazione abbiamo usato "Devise"
-- *Ruolificazione* è dare un ruolo ad ogni utente. --> per la nostra applicazione abbiamo usato "enum"
-- *Autorizzazione* è chi può fare cosa una volta autenticato. (è dare livelli di accesso differente) --> per la nostra applicazione, come vediamo in questo capitolo, usiamo "Pundit"
+- ***Autenticazione*** è essere in grado di verificare l'identità dell'utente. E' fare accesso/login --> per la nostra applicazione abbiamo usato la gemma *Devise*.
+- ***Ruolificazione*** è dare un ruolo ad ogni utente. --> per la nostra applicazione, come vediamo in questo capitolo, usiamo *enum*.
+- ***Autorizzazione*** è chi può fare cosa una volta autenticato. (è dare livelli di accesso differente) --> per la nostra applicazione useremo *Pundit*.
+
+
+fase                 | descrizione                                             | verifica e assegnazione                                    | implementazione
+-------------------- | ------------------------------------------------------- | ---------------------------------------------------------- | -------------------------------------------------------------
+***Autenticazione*** | è essere in grado di verificare l'identità dell'utente. | Lo facciamo facendo il login.                              | per la nostra applicazione usiamo la gemma *Devise*.
+***Ruolificazione*** | è dare un ruolo ad ogni utente.                         | Lo da l'amministratore sulla tabella *users*.              | per la nostra applicazione usiamo *enum*.
+***Autorizzazione*** | è chi può fare cosa una volta autenticato.              | Nell'app sono definiti i diversi livelli di accesso per ogni ruolo. | per la nostra applicazione usiamo la gemma *Pundit*.
 
 
 
