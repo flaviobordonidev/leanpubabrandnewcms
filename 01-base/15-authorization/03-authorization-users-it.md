@@ -2,7 +2,7 @@
 
 Autentichiamo ed Autorizziamo la gestione degli utenti (users) in funzione del ruolo.
 
-Finalmente cominciamo ad attivare la sicurezza ed iniziamo definendo le autorizzazioni per la gestione degli utenti; tabella users.
+Finalmente cominciamo ad attivare la sicurezza ed iniziamo definendo le autorizzazioni per la gestione degli utenti.
 
 
 
@@ -26,13 +26,16 @@ Per aggiungere una policy per un modello specifico aggiungiamo il nome del model
 
 ```bash
 $ rails g pundit:policy User
+```
 
+Esempio:
 
-user_fb:~/environment/bl6_0 (pi) $ rails g pundit:policy User
-Running via Spring preloader in process 6589
+```bash
+user_fb:~/environment/bl7_0 (main) $ rails g pundit:policy User
       create  app/policies/user_policy.rb
       invoke  test_unit
       create    test/policies/user_policy_test.rb
+user_fb:~/environment/bl7_0 (main) $ 
 ```
 
 questo ci crea la seguente policy
@@ -43,22 +46,30 @@ questo ci crea la seguente policy
 ```ruby
 class UserPolicy < ApplicationPolicy
   class Scope < Scope
-    def resolve
-      scope.all
-    end
+    # NOTE: Be explicit about which records you allow access to!
+    # def resolve
+    #   scope.all
+    # end
   end
 end
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/02_01-gemfile.rb)
 
-> ATTENZIONE:
->
-> Se ci si fosse loggati come IAM user e non si fossero gestite bene le autorizzazioni potrebbe essere necessario lanciare lo script come root. Si dovrà successivamente rivedere le autorizzazioni dei files creati o ricopiare il codice su nuovi files. Se il file è stato creato lanciando lo script come root per poter modificare i files crearne uno nuovo, copiarci tutto il codice ed eliminare il vecchio.
+
+
+## Attenzione con aws IAM users
+
+> Normalmente possiamo saltare questo paragrafo
+
+Se come IAM user può succedere un problema di autorizzazioni sui files.
+Se non si fossero gestite bene le autorizzazioni potrebbe essere necessario lanciare lo script come root. 
+Si dovrà successivamente rivedere le autorizzazioni dei files creati o ricopiare il codice su nuovi files. 
+Se il file è stato creato lanciando lo script come root per poter modificare i files crearne uno nuovo, copiarci tutto il codice ed eliminare il vecchio.
+
+Esempio:
 
 ```bash
-$ sudo su
-# rails g pundit:policy User
-
 cloud9:~/environment/rigenerabatterie (au) $ sudo su
 [root@ip-172-31-7-7 rigenerabatterie]# rails g pundit:policy User
 Running via Spring preloader in process 574
