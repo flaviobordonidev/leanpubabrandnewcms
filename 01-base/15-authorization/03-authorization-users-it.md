@@ -54,7 +54,7 @@ class UserPolicy < ApplicationPolicy
 end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/02_01-gemfile.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/03_01-policies-user_policy.rb)
 
 
 
