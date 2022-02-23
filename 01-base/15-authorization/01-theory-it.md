@@ -34,11 +34,11 @@ Quindi possiamo dire che:
 
 Con pundit autorizziamo le azioni da fare sul database. Nell'esempio qui in basso abbiamo un'idea:
 
-s : show
-n : new/create
-e : edit/update
-d : destroy
-* : autorizzato solo per un ristretto set di records. (senza asterisco è autorizzato per tutti i records)
+- s : show
+- n : new/create
+- e : edit/update
+- d : destroy
+- * : autorizzato solo per un ristretto set di records. (senza asterisco è autorizzato per tutti i records)
 
 
 tabelle         | users   | posts     | companies | products | offers | invoices
