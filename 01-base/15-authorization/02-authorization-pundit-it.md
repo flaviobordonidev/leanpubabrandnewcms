@@ -64,46 +64,51 @@ Questo passaggio è opzionale ma è interessante farlo per avere una policy gene
 Quindi eseguiamo lo script di implementazione di pundit su rails. 
 Lo script è anche noto con il nome di *generator*.
 
-Il *generator* imposterà una *"application policy"* (file con le varie regole di aturizzazione) con alcune impostazioni predefinite.
+Il *generator* creerà un file con le varie regole di autorizzazione di default chiamato *"application policy"*.
 
 ```bash
 $ rails g pundit:install
-
-
-user_fb:~/environment/bl6_0 (pi) $ rails g pundit:install
-Running via Spring preloader in process 4686
-      create  app/policies/application_policy.rb
 ```
 
-Questo ci crea il seguente codice
+Esempio:
+  
+```bash
+user_fb:~/environment/bl7_0 (pi) $ rails g pundit:install
+      create  app/policies/application_policy.rb
+user_fb:~/environment/bl7_0 (pi) $ 
+```
 
-***codice 03 - .../app/policies/application_policy.rb - line: 1***
+Vediamo il file creato.
+
+***codice 03 - .../app/policies/application_policy.rb - line: 3***
 
 ```ruby
 class ApplicationPolicy
   attr_reader :user, :record
 ```
 
-[tutto il codice](#01-15-02_03all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/02_03-policies-application_policy.rb)
 
-Dopo aver generato la "application policy", riavviamo il server Rails in modo che Rails possa rilevare ogni classe nella nuova directory ".../app/policies".
+Riavviamo il server Rails per rilevare ogni classe nella nuova directory *".../app/policies"*.
+E con questo abbiamo predisposto l'ambiente di pundit. 
+Nel prossimo capitolo inizieremo ad usarlo per le autorizzazioni.
 
-E con questo abbiamo predisposto l'ambiente di pundit. Nel prossimo capitolo inizieremo ad usarlo per le autorizzazioni.
+> Nota: <br/>
+> Su pundit 2.1 il *generator* creava un file con dentro *class Scope* -> *def resolve* -> *scope.all*.
+
+```ruby
+    def resolve
+      scope.all
+    end
+```
+
+> invece su pundit 2.2 nel file abbiamo  *class Scope* -> *def resolve* -> *raise NotImplementedError*
 
 
 
 ## Verifichiamo preview
 
-```bash
-$ sudo service postgresql start
-$ rails s
-```
-
-apriamolo il browser sull'URL:
-
-* https://mycloud9path.amazonaws.com/users
-
-Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
+Al momento abbiamo fatto solo la preparazione. Verificheremo le autorizzazioni nel prossimo capitolo.
 
 
 
@@ -119,7 +124,7 @@ $ git commit -m "install pundit"
 ## Publichiamo su heroku
 
 ```bash
-$ git push heroku pi:master
+$ git push heroku pi:main
 ```
 
 Non serve `heroku run rails db:migrate` perché non abbbiamo fatto modifiche al database.
@@ -131,7 +136,7 @@ Non serve `heroku run rails db:migrate` perché non abbbiamo fatto modifiche al 
 se abbiamo finito le modifiche e va tutto bene:
 
 ```bash
-$ git checkout master
+$ git checkout main
 $ git merge pi
 $ git branch -d pi
 ```
@@ -143,13 +148,13 @@ $ git branch -d pi
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 ```bash
-$ git push origin master
+$ git push origin main
 ```
 
 
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/01-theory-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/03-authorization-users-it.md)
