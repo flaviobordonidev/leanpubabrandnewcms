@@ -281,12 +281,14 @@ La linea di codice `@user == @record` verifica se l'utente loggato è lo stesso 
 
 Questo perché nelle policies di pundit abbiamo che:
 
-- la variabile @user rappresenta l'utente loggato
-- la variabile @record rappresenta l'utente nel database
+- la variabile ***@user*** rappresenta l'utente loggato.
+- la variabile ***@record*** rappresenta l'utente nel database.
 
-Questo può confondere perché normalmente nell'applicazione Rails per riferirci all'utente loggato usiamo il metodo "current_user" e per riferirci all'utente nel database usiamo la variabile "@user".
+> Attenzione a non confondersi! <br/>
+> Normalmente in Rails per riferirci all'utente loggato usiamo il metodo ***current_user***.
+> e per riferirci all'utente nel database usiamo la variabile ***@user***.
 
-La variabile "@record" è definita sulla classe ApplicationPolicy da cui la ereditiamo.
+La variabile ***@record*** è definita sulla classe *ApplicationPolicy* da cui la ereditiamo.
 
 
 
