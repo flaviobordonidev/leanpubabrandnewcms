@@ -284,7 +284,7 @@ Questo perché nelle policies di pundit abbiamo che:
 - la variabile ***@user*** rappresenta l'utente loggato.
 - la variabile ***@record*** rappresenta l'utente nel database.
 
-> Attenzione a non confondersi! <br/>
+> Attenzione a non confondersi! Perché nel resto del codice abbiamo che: <br/>
 > Normalmente in Rails per riferirci all'utente loggato usiamo il metodo ***current_user***.
 > e per riferirci all'utente nel database usiamo la variabile ***@user***.
 
@@ -294,27 +294,34 @@ La variabile ***@record*** è definita sulla classe *ApplicationPolicy* da cui l
 
 ## Implementiamo nel controller
 
-Adesso che la policy di autorizzazione è pronta possiamo indicare all'azione "index" del controller "users" di passare per l'autorizzazione
+Adesso che la policy di autorizzazione è pronta possiamo indicare a tutte le azioni del controller *users* di passare per l'autorizzazione (`authorize @user`).
+
+Le azioni *new* e *create* le abbiamo già fatte. Autorizziamo l'azione *index*.
 
 ***codice 05 - .../app/controllers/users_controller.rb - line: 9***
 
 ```ruby
+  # GET /users or /users.json
   def index
     @users = User.all
     authorize @users
 ```
 
-Per le azioni [:show, :edit, :update, :destroy], che chiamano la funzione *set_user* con il *before_action*, inserisco l'autorizzazione direttamente sulla funzione *set_user*.
+Per le azioni *[:show, :edit, :update, :destroy]*, che chiamano la funzione *set_user* con il *before_action*, inserisco l'autorizzazione direttamente sulla funzione *set_user*.
 
 ***codice 05 - ...continua - line: 81***
 
 ```ruby
+    # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
       authorize @user
 ```
 
-[tutto il codice](#01-15-03_05all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/03_05-controllers-users_controller.rb)
+
+
+> Attenzione: L'azione *index* ha `authorize @users` (plurale), tutte le altre azioni hanno `authorize @user` (singolare).
 
 
 
