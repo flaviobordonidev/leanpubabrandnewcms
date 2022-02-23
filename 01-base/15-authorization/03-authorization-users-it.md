@@ -380,6 +380,42 @@ e nella sezione *private* mettiamo il metodo `user_not_authorized`.
 
 
 
+## Traduciamo il messaggio di non autorizzato
+
+Implementiamo i18n per il messaggio di non autorizzato.
+
+***codice n/a - .../config/locales/it.yml - line: 279***
+
+```yaml
+#-------------------------------------------------------------------------------
+# Gems (in ordine alfabetico)
+
+  pundit:
+    you_are_not_authorized: "Non sei autorizzato a eseguire questa azione."
+```
+
+
+***codice n/a - .../config/locales/en.yml - line: 279***
+
+```yaml
+#-------------------------------------------------------------------------------
+# Gems (in alphabetical order)
+
+  pundit:
+    you_are_not_authorized: "You are not authorized to perform this action."
+```
+
+
+***codice n/a - .../app/controllers/application_controller.rb - line. 56***
+
+```ruby
+    def user_not_authorized
+      redirect_to request.referrer || root_path, notice: t("pundit.you_are_not_authorized")
+    end
+```
+
+
+
 ## verifichiamo
 
 ```bash
@@ -436,7 +472,7 @@ Inseriamo un controllo nel selettore che permettere di cambiare ruolo e lo visua
 
 Adesso solo se l'utente è amministratore può cambiare i ruoli.
 
-> Se ti stai domandando qual'è la differenza fra `user_signed_in?` e `current_user.present?` la risposta è **non c'è nessuna differenza**.
+> Se ti stai domandando qual è la differenza fra `user_signed_in?` e `current_user.present?` la risposta è **non c'è nessuna differenza**.
 
 
 
@@ -471,7 +507,7 @@ $ git commit -m "Pundit authorized views/users/edit"
 ## Publichiamo su heroku
 
 ```bash
-$ git push heroku au:master
+$ git push heroku au:main
 ```
 
 Non serve `heroku run rails db:migrate` perché non abbbiamo fatto modifiche al database.
@@ -489,10 +525,10 @@ $ heroku run rails c
 
 ## Chiudiamo il branch
 
-se abbiamo finito le modifiche e va tutto bene:
+Se abbiamo finito le modifiche e va tutto bene:
 
 ```bash
-$ git checkout master
+$ git checkout main
 $ git merge au
 $ git branch -d au
 ```
@@ -504,13 +540,13 @@ $ git branch -d au
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 ```bash
-$ git push origin master
+$ git push origin main
 ```
 
 
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/02-authorization-pundit-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/04-authorization-eg_posts-it.md)
