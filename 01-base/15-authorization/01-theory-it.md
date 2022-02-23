@@ -32,7 +32,8 @@ Quindi possiamo dire che:
 - Devise ha un'autorizzazione a livello di view.
 - Pundit ha un'autorizzazione a livello di azioni sul database.
 
-Con pundit autorizziamo le azioni da fare sul database. Di seguito vediamo una panoramica delle autorizzazioni che implementeremo per la tabella *users* e *eg_posts*.
+Con pundit autorizziamo le azioni da fare sul database. 
+Di seguito vediamo una panoramica delle autorizzazioni che implementeremo per la tabella *users* ed *eg_posts*.
 
 Legenda autorizzazioni:
 
@@ -48,38 +49,32 @@ utenti          | users   | eg_posts  |
 admin           | s,n,e,d | s,-,e,d   |
 moderator       | -,-,-,- | s*,-,-,d  |
 author          | -,-,-,- | s*,n,e,d  |
-contabile       | -,-,-,- | s*,-,-,-  |
-tecnico         | -,-,-,- | s*,-,-,-  |
-commerciale     | -,-,-,- | s*,-,-,-  |
-supervisore     | s,-,-,- | s,-,-,-   |
-
+user            | -,-,-,- | s*,-,-,-  |
 
 Vediamo più in dettaglio le autorizzazioni per la tabella *posts*.
 
-Tabella Posts
-  admin
-    show : all records
-    new  : no
-    edit : all records
-    destroy : any record
-  moderator
-    show : only published records
-    new  : no
-    edit : no
-    destroy : only published records
-  author
-    show : all published and any of his own records
-    new  : yes
-    edit : all his own records
-    destroy : any of his own record
-  ...
-  ...
-  ...
+- admin
+  - show : all records
+  - new  : no
+  - edit : all records
+  - destroy : any record
+- moderator
+  - show : only published records
+  - new  : no
+  - edit : no
+  - destroy : only published records
+- author
+  - show : all published and any of his own posts
+  - new  : yes
+  - edit : all his own records
+  - destroy : any of his own record
+- user
+  - show : all published but none unpublished
+  - new  : no
+  - edit : no
+  - destroy : no
 
-
-
-
-
+ 
 ---
 
 
