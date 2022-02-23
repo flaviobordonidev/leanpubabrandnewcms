@@ -41,10 +41,13 @@ Con pundit autorizziamo le azioni da fare sul database. Nell'esempio qui in bass
 - \* : autorizzato solo per un ristretto set di records. (senza asterisco è autorizzato per tutti i records)
 - \- : non autorizzato
 
-s       | n          | e           | d
-------- | ---------- | ----------- |---------
-show    | new/create | edit/update | destroy
+Legenda autorizzazioni:
 
+s       | n          | e           | d        | -
+------- | ---------- | ----------- |--------- | ---------
+show    | new/create | edit/update | destroy  | non autorizzato
+
+> Con asterisco "*" vuol dire autorizzato solo per un ristretto set di records. (senza asterisco è autorizzato per tutti i records)
 
 
 
