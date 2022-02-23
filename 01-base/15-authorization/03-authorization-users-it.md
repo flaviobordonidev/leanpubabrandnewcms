@@ -196,7 +196,7 @@ $ git commit -m "add pundit authorization on actions new and create of users"
 
 ## Rimuoviamo la protezione di Devise
 
-Togliamo la protezione di Devise per le views "users" così rinforziamo il nostro scope di pundit (la nostra autorizzazione) includendo anche il caso di un utente non autenticato (non loggato).
+Togliamo la protezione di Devise per le views *users* così rinforziamo il nostro scope di pundit (la nostra autorizzazione) includendo anche il caso di un utente non autenticato (non loggato).
 
 ***codice n/a - .../app/controllers/users_controller.rb - line: 2***
 
@@ -220,7 +220,7 @@ E' un errore nel codice dell'applicazione. Lo risolviamo ed implementiamo l'auto
   end
 ```
 
-Adesso se si prova a creare un nuovo utente senza essere loggati si riceve un errore di autorizzazione.
+Adesso se si prova a creare un nuovo utente senza essere loggati si riceve un errore di **autorizzazione**.
 
 
 
@@ -228,14 +228,14 @@ Adesso se si prova a creare un nuovo utente senza essere loggati si riceve un er
 
 Autorizziamo l'index visibile a tutti mentre tutte le altre azioni le può eseguire solo l'amministratore. 
 Inoltre mettiamo un controllo per vedere se è presente un utente loggato. 
-Nel caso in cui nessuno ha fatto login permettere solo la visualizzazione dell'index e vietare tutto il resto.
+Nel caso in cui nessuno ha fatto login permettiamo solo la visualizzazione dell'index e vietiamo tutto il resto.
+
 Unica eccezione è l'azione show che può essere eseguita:
 
-- sia dall'amministratore per tutti i record della tabella users
-- sia da qualsiasi utente loggato ma SOLO per il suo record della tabella users
+- sia dall'amministratore per tutti i record della tabella users.
+- sia da qualsiasi utente loggato ma SOLO per il suo record della tabella users.
 
-
-***codice 04 - .../app/policies/user_policy.rb - line: 3***
+***codice 04 - .../app/policies/user_policy.rb - line: 2***
 
 ```ruby
   def index?
@@ -243,14 +243,13 @@ Unica eccezione è l'azione show che può essere eseguita:
   end
 
   def show?
-    #@user.present? ? @user.admin? : false
     if @user.present?
       @user.admin? or @user == @record
     else
       false
     end
   end
-  
+
   def create?
     if @user.present?
       @user.admin?
@@ -258,7 +257,7 @@ Unica eccezione è l'azione show che può essere eseguita:
       false
     end
   end
-  
+
   def update?
     if @user.present?
       @user.admin?
@@ -276,8 +275,7 @@ Unica eccezione è l'azione show che può essere eseguita:
   end
 ```
 
-[tutto il codice](#01-15-03_04all)
-
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/03_04-policies-user_policy.rb)
 
 La linea di codice `@user == @record` verifica se l'utente loggato è lo stesso del record a cui si vuole accedere.
 

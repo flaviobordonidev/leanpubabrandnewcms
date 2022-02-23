@@ -1,5 +1,4 @@
 class UserPolicy < ApplicationPolicy
-
   def index?
     true
   end
@@ -12,7 +11,7 @@ class UserPolicy < ApplicationPolicy
       false
     end
   end
-  
+
   def create?
     if @user.present?
       @user.admin?
@@ -20,7 +19,7 @@ class UserPolicy < ApplicationPolicy
       false
     end
   end
-  
+
   def update?
     if @user.present?
       @user.admin?
@@ -36,10 +35,11 @@ class UserPolicy < ApplicationPolicy
       false
     end
   end
-
+  
   class Scope < Scope
-    def resolve
-      scope.all
-    end
+    # NOTE: Be explicit about which records you allow access to!
+    # def resolve
+    #   scope.all
+    # end
   end
 end
