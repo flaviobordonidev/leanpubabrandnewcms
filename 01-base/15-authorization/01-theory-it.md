@@ -20,17 +20,18 @@ Non serve aprire un branch perché questo capitolo è una panoramica che ha solo
 
 ## Pundit
 
-Abbiamo visto come Devise permette di **autenticare** un utente facendogli fare login. 
-Inoltre Devise si sovrappone un poco a Pundit perché ha una sorta di **autorizzazione** a livello di view.
+Abbiamo visto che Devise permette di **autenticare** un utente facendogli fare login.
+
+Inoltre Devise si sovrappone un poco a Pundit perché ha una sorta di **autorizzazione a livello di view**.
 Possiamo infatti indicare quali sono le pagine che per essere viste hanno bisogno che un utente sia **autenticato** (abbia fatto login).
 
-Quindi possiamo dire che Devise ha un'autorizzazione a livello di view. <br/>
-Similmente possiamo dire che Pundit ha un'autorizzazione a livello di tabelle.
+Invece con Pundit puoi **autorizzare** la persona che ha fatto login a fare determinate azioni in funzione del suo ruolo.
+In Pundit abbiamo dei file di policy. Ogni file di policy (set di regole di autorizzazione) ha un corrispettivo file model ed è quindi legato alla tabella del database.
 
-> La verità è che con Devise puoi non visualizzare le pagine se la persona non ha fatto login (non è autenticata).
-> Invece con Pundit puoi autorizzare la persona che ha fatto login a fare determinate azioni in funzione del suo ruolo.
+Quindi possiamo dire che:
+- Devise ha un'autorizzazione a livello di view.
+- Pundit ha un'autorizzazione a livello di tabelle.
 
-Ogni file di policy (set di regole di autorizzazione) ha un corrispettivo file model ed è quindi legato alla tabella del database.
 Con pundit autorizziamo le azioni da fare sul database. Nell'esempio qui in basso abbiamo un'idea:
 
 s : show
