@@ -82,20 +82,27 @@ exit
 
 
 
-## Aggiungiamo ruolo di amministratore al primo utente da console
+## Aggiungiamo il ruolo di amministratore al primo utente da console
 
 Al momento qualsiasi utente che fa login può impostare il ruolo di admin da interfaccia grafica (GUI).
-Però noi lo impostiamo da console perché a breve limiteremo la GUI.
+Però a breve limiteremo la GUI.
+Quindi rivediamo come assegnare il ruolo di amministratore da console. 
 
-Usando *enum* associamo il ruolo *admin* al primo utente.
+> Usando *enum* associamo il ruolo *admin* al primo utente.
 
 ```bash
-$ sudo service postgresql start
 $ rails c
 -> u= User.first
 -> u.role = :admin
 -> u.save(validate: false)
+```
 
+> Usiamo il codice che ci permette di "skippare" delle eventuali validazioni nel model.
+> Altrimenti avremmo potuto anche usare `User.first.admin!` o `User.first.update(role: :admin)`.
+
+Esempio:
+  
+```bash
 
 2.6.3 :004 > u= User.first
   User Load (0.5ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1  [["LIMIT", 1]]
@@ -106,7 +113,6 @@ $ rails c
  => true 
 ```
 
-Se avessimo commentato i "validate" nel model, avremmo potuto anche usare "User.first.admin!" o "User.first.update(role: :admin)".
 
 
 
