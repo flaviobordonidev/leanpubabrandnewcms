@@ -41,7 +41,7 @@ Con pundit autorizziamo le azioni da fare sul database. Nell'esempio qui in bass
 - \* : autorizzato solo per un ristretto set di records. (senza asterisco è autorizzato per tutti i records)
 - \- : non autorizzato
 
-utenti - tebelle | users   | posts     |
+utenti - tabelle | users   | posts     |
 ---------------- | ------- | --------- |
 admin           | s,n,e,d | s,-,e,d   |
 moderator       | -,-,-,- | s*,-,-,d  |
@@ -51,6 +51,17 @@ tecnico         | -,-,-,- | s*,-,-,-  |
 commerciale     | -,-,-,- | s*,-,-,-  |
 supervisore     | s,-,-,- | s,-,-,-   |
 
+
+utenti - tebelle | users  | posts     |
+utenti - tebelle | users  | posts     |
+---------------- | ------- | --------- |
+admin           | s,n,e,d | s,-,e,d   |
+moderator       | -,-,-,- | s*,-,-,d  |
+author          | -,-,-,- | s*,n,e,d  |
+contabile       | -,-,-,- | s*,-,-,-  |
+tecnico         | -,-,-,- | s*,-,-,-  |
+commerciale     | -,-,-,- | s*,-,-,-  |
+supervisore     | s,-,-,- | s,-,-,-   |
 
 Vediamo più in dettaglio le autorizzazioni per la tabella Posts:
 
