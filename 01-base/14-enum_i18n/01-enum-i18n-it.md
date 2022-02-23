@@ -212,10 +212,10 @@ Un altro modo è quello di creare una variabile virtuale nel Model.
 
 Vedi virtual attribute con *get_read*, *get_write*, ...
 
-***codice n/a - .../models/post.rb - line: 33***
+***codice n/a - .../models/user.rb - line: 33***
 
 ```ruby
-  Post.roles.map{ |k,v| [k, User.human_attribute_name("role.#{k}")]}.to_h
+  User.roles.map{ |k,v| [k, User.human_attribute_name("role.#{k}")]}.to_h
 ```
 
 ```ruby
@@ -237,9 +237,9 @@ $ sudo service postgresql start
 $ rails s
 ```
 
-apriamolo il browser sull'URL:
+Apriamo il browser sull'URL:
 
-* https://mycloud9path.amazonaws.com/users
+- https://mycloud9path.amazonaws.com/users
 
 Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
 
@@ -257,25 +257,36 @@ $ git commit -m "users_controllers notice messages i18n"
 ## Pubblichiamo su Heroku
 
 ```bash
-$ git push heroku ui:main
+$ git push heroku ein:main
+$ heroku run rails db:migrate
 ```
 
 
 
 ## Chiudiamo il branch
 
-Lo lasciamo aperto per il prossimo capitolo
+Se abbiamo finito le modifiche e va tutto bene:
+
+```bash
+$ git checkout main
+$ git merge ein
+$ git branch -d ein
+```
 
 
 
 ## Facciamo un backup su Github
 
-Lo facciamo nel prossimo capitolo.
+Dal nostro branch main di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+```bash
+$ git push origin main
+```
 
 
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/04-implement_roles-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/01-enum-i18n-it.md)
