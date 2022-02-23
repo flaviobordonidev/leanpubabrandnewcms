@@ -116,7 +116,9 @@ Esempio:
 
 
 
-## Implementiamo policy che autorizza la creazione di un nuovo post solo all'ammministratore
+## Solo *admin* può creare nuovo utente
+
+Implementiamo la policy che autorizza la creazione di un nuovo utente solo a chi è ammministratore.
 
 ***codice 02 - .../app/policies/user_policy.rb - line: 3***
 
@@ -126,7 +128,7 @@ Esempio:
   end
 ```
 
-[tutto il codice](#01-15-03_02all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/03_02-policies-user_policy.rb)
 
 Questo codice indica a pundit di vedere se siamo nell'azione create del controller e la autorizza solo se l'utente è "admin". 
 Infatti *@user.admin?* è *TRUE* se l'utente ha il ruolo di amministratore. Altrimenti *@user.admin?* è *FALSE* e pundit non autorizza l'esecuzione.
