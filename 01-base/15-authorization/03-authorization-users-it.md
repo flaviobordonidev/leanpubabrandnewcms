@@ -349,29 +349,29 @@ $ git commit -m "add pundit authorization on all actions of users"
 
 ## Messaggio di non autorizzato invece dell'errore
 
-In fase di sviluppo l'errore Pundit::NotAuthorizedError è gestibile ma in fase di produzione no. Riceveremmo solo una pagina bianca con "Ops! c'è stato un errore".
+In fase di sviluppo l'errore Pundit::NotAuthorizedError è gestibile ma in fase di produzione no. 
+Riceveremmo solo una pagina bianca con "Ops! c'è stato un errore".
 E' quindi opportuno gestire l'errore reindirizzando sulla pagina che ha provocato l'azione non autorizzata e visualizzando un messaggio di "non autorizzato".
 
-Per farlo aggiungiamo il seguente codice ad ApplicationController.
+Per farlo aggiungiamo il `rescue_from Pundit::NotAuthorizedError` ad *ApplicationController*.
 
-
-***codice 6 - .../app/controllers/application_controller.rb - line. 4***
+***codice 6 - .../app/controllers/application_controller.rb - line. 6***
 
 ```ruby
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 ```
 
-***codice 6 - ...continua - line: 17***
+e nella sezione *private* mettiamo il metodo `user_not_authorized`.
+
+***codice 6 - ...continua - line: 56***
 
 ```ruby
-  private
-
     def user_not_authorized
       redirect_to request.referrer || root_path, notice: "You are not authorized to perform this action."
     end
 ```
 
-[tutto il codice](#01-15-03_06all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/03_06-controllers-application_controller.rb)
 
 
 > il codice *protected* è prima del codice *private* perché è meno restrittivo.
@@ -384,10 +384,10 @@ Per farlo aggiungiamo il seguente codice ad ApplicationController.
 
 ```bash
 $ sudo service postgresql start
-$ rails s -b $IP -p $PORT
+$ rails s
 ```
 
-Se non siamo loggati come amministratori,tentando violare le autorizzazioni impostate, riceveremo il messaggio "Non sei autorizzato ad eseguire questa azione".
+Se non siamo loggati come amministratori, tentando violare le autorizzazioni impostate, riceveremo il messaggio "You are not authorized to perform this action." ("Non sei autorizzato ad eseguire questa azione.").
 
 
 
@@ -416,7 +416,8 @@ Rimettiamo la protezione di Devise per le views *users*.
 
 Solo admin deve poter cambiare il ruolo!
 Lo so che tutta l'azione edit è già autorizzata da pundit ma aggiungiamo questa nel caso in cui volessimo permettere modifiche solo al proprio record dell'utente loggato, come facciamo per show. 
-Non sarà comunque il nostro caso perché le eventuali modifiche dell'utente loggato le faremmo fare a "registerable" di devise, però una sicurezza in più non guasta ^_^.
+
+> Non sarà comunque il nostro caso perché le eventuali modifiche dell'utente loggato le faremmo fare a "registerable" di devise, però una sicurezza in più non guasta ^_^.
 
 Per questa autorizzazione non ci serve scomodare pundit. Scomodiamo solo l'helper di Devise.
 
@@ -427,13 +428,11 @@ Inseriamo un controllo nel selettore che permettere di cambiare ruolo e lo visua
 ```html+erb
   <%# if user_signed_in? and current_user.admin? %>
   <% if current_user.present? and current_user.admin? %>
-    <div class="field">    
+    <div>
       <%= form.label :role %>
-      <%#= form.text_field :role %>
-      <%= form.select(:role, User.roles.keys.map {|role| [role.titleize,role]}) %>
-    </div>
-  <% end %>
 ```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/03_07-views-users-_form.html.erb)
 
 Se ti stai domandando qual'è la differenza fra *user_signed_in?* e *current_user.present?* la risposta è **non c'è nessuna differenza**.
 
@@ -443,25 +442,20 @@ Adesso solo se l'utente è amministratore può cambiare i ruoli.
 
 ## Evitiamo che l'utente loggato come amministratore cambi il suo ruolo
 
-Evitiamo di tagliarci il ramo su cui siamo seduti ^_^.
+Evitiamo di tagliarci il ramo su cui siamo seduti (`@user != current_user`) ^_^.
 
-***codice 07 - .../app/views/users/_form.html.erb - line: 12***
+***codice n/a - .../app/views/users/_form.html.erb - line: 12***
 
 ```html+erb
   <% if current_user.present? and current_user.admin? and @user != current_user %>
-    <div class="field">    
+    <div>
       <%= form.label :role %>
-      <%= form.select(:role, User.roles.keys.map {|role| [role.titleize,role]}) %>
-      <%#= form.number_field :role %>
-    </div>
-  <% end %>
 ```
 
-Ti ricordo che "!=" è l'opposto di "==". 
-Ad esempio le due condizioni seguenti sono identiche:
-
-- unless user == current_user
-- if user != current_user
+> Ti ricordo che `!=` è l'opposto di `==`. <br/>
+> Ad esempio le due condizioni seguenti sono identiche:
+> - `unless user == current_user`
+> - `if user != current_user`
 
 
 
