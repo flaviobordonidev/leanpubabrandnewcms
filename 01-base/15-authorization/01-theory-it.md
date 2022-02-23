@@ -41,8 +41,8 @@ d : destroy
 * : autorizzato solo per un ristretto set di records. (senza asterisco è autorizzato per tutti i records)
 
 
-       tabelle: | users   | posts     | companies | products | offers | invoices |
---------------- | ------- | --------- | --------- | -------- | ------ | -------- |
+tabelle         | users   | posts     | companies | products | offers | invoices
+--------------- | ------- | --------- | --------- | -------- | ------ | --------
 admin           | s,n,e,d | s,-,e,d   |
 moderator       | -,-,-,- | s*,-,-,d  |
 author          | -,-,-,- | s*,n,e,d  |
