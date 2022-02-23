@@ -24,14 +24,14 @@ $ git checkout -b pi
 >
 > facciamo riferimento al [tutorial github della gemma](https://github.com/varvet/pundit)
 
-***codice 01 - .../Gemfile - line: 34***
+***codice 01 - .../Gemfile - line: 54***
 
 ```ruby
 # Object oriented authorization for Rails applications
-gem 'pundit', '~> 2.1'
+gem 'pundit', '~> 2.2'
 ```
 
-[tutto il codice](#01-15-02_01all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/02_01-gemfile.rb)
 
 
 Eseguiamo l'installazione della gemma con bundle
@@ -46,22 +46,25 @@ $ bundle install
 
 Includiamo Pundit nel nostro application controller.
 
-***codice 02 - .../app/controllers/application_controller.rb - line: 4***
+***codice 02 - .../app/controllers/application_controller.rb - line: 5***
 
 ```ruby
   include Pundit
 ```
 
-[tutto il codice](#01-15-02_02all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/02_02-application_controller.rb)
 
-Questo ci permette di usare Pundit in tutta la nostra applicazione.
+> Questo ci permette di usare Pundit in tutta la nostra applicazione.
 
 
 
 ## Lo script
 
-Questo passaggio è opzionale ma è interessante farlo per avere una policy generica che erediteremo nelle classi delle policies specifiche per ogni Model da autorizzare. Quindi eseguiamo lo script di implementazione di pundit su rails. Lo script (Anche noto con il nome di "generator").
-Il "generator" (generatore) imposterà un "application policy" (file con le varie regole di aturizzazione) con alcune impostazioni predefinite utili. 
+Questo passaggio è opzionale ma è interessante farlo per avere una policy generica che erediteremo nelle classi delle policies specifiche per ogni Model da autorizzare. 
+Quindi eseguiamo lo script di implementazione di pundit su rails. 
+Lo script è anche noto con il nome di *generator*.
+
+Il *generator* imposterà una *"application policy"* (file con le varie regole di aturizzazione) con alcune impostazioni predefinite.
 
 ```bash
 $ rails g pundit:install
