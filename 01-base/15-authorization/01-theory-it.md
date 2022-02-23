@@ -44,12 +44,12 @@ show    | new/create | edit/update | destroy  | non autorizzato
 > Con asterisco "*" vuol dire autorizzato solo per un ristretto set di records. (senza asterisco è autorizzato per tutti i records)
 
 
-utenti          | users   | eg_posts  |
---------------- | ------- | --------- |
-admin           | s,n,e,d | s,-,e,d   |
-moderator       | -,-,-,- | s*,-,-,d  |
-author          | -,-,-,- | s*,n,e,d  |
-user            | -,-,-,- | s*,-,-,-  |
+utenti          | users   | eg_posts    |
+--------------- | ------- | ----------- |
+admin           | s,n,e,d | s,-,e,d     |
+moderator       | -,-,-,- | s\*,-,-,d\* |
+author          | -,-,-,- | s\*,n,e,d\* |
+user            | -,-,-,- | s\*,-,-,-   |
 
 Vediamo più in dettaglio le autorizzazioni per la tabella *posts*.
 
