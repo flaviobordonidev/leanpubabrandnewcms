@@ -30,7 +30,7 @@ In Pundit abbiamo dei file di policy. Ogni file di policy (set di regole di auto
 
 Quindi possiamo dire che:
 - Devise ha un'autorizzazione a livello di view.
-- Pundit ha un'autorizzazione a livello di tabelle.
+- Pundit ha un'autorizzazione a livello di azioni sul database.
 
 Con pundit autorizziamo le azioni da fare sul database. Nell'esempio qui in basso abbiamo un'idea:
 
@@ -41,8 +41,15 @@ Con pundit autorizziamo le azioni da fare sul database. Nell'esempio qui in bass
 - \* : autorizzato solo per un ristretto set di records. (senza asterisco è autorizzato per tutti i records)
 - \- : non autorizzato
 
-utenti - tabelle | users   | posts     |
----------------- | ------- | --------- |
+s       | n          | e           | d
+------- | ---------- | ----------- |---------
+show    | new/create | edit/update | destroy
+
+
+
+
+utenti          | users   | posts     |
+--------------- | ------- | --------- |
 admin           | s,n,e,d | s,-,e,d   |
 moderator       | -,-,-,- | s*,-,-,d  |
 author          | -,-,-,- | s*,n,e,d  |
@@ -51,17 +58,6 @@ tecnico         | -,-,-,- | s*,-,-,-  |
 commerciale     | -,-,-,- | s*,-,-,-  |
 supervisore     | s,-,-,- | s,-,-,-   |
 
-
-utenti - tebelle | users  | posts     |
-utenti - tebelle | users  | posts     |
----------------- | ------- | --------- |
-admin           | s,n,e,d | s,-,e,d   |
-moderator       | -,-,-,- | s*,-,-,d  |
-author          | -,-,-,- | s*,n,e,d  |
-contabile       | -,-,-,- | s*,-,-,-  |
-tecnico         | -,-,-,- | s*,-,-,-  |
-commerciale     | -,-,-,- | s*,-,-,-  |
-supervisore     | s,-,-,- | s,-,-,-   |
 
 Vediamo più in dettaglio le autorizzazioni per la tabella Posts:
 
