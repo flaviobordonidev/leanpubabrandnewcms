@@ -39,10 +39,10 @@ Con pundit autorizziamo le azioni da fare sul database. Nell'esempio qui in bass
 - e : edit/update
 - d : destroy
 - \* : autorizzato solo per un ristretto set di records. (senza asterisco è autorizzato per tutti i records)
+- \- : non autorizzato
 
-
-tabelle         | users   | posts     | companies | products | offers | invoices
---------------- | ------- | --------- | --------- | -------- | ------ | --------
+tabelle         | users   | posts     |
+--------------- | ------- | --------- |
 admin           | s,n,e,d | s,-,e,d   |
 moderator       | -,-,-,- | s*,-,-,d  |
 author          | -,-,-,- | s*,n,e,d  |
