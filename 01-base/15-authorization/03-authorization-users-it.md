@@ -436,7 +436,7 @@ Inseriamo un controllo nel selettore che permettere di cambiare ruolo e lo visua
 
 Adesso solo se l'utente è amministratore può cambiare i ruoli.
 
-> Se ti stai domandando qual'è la differenza fra *user_signed_in?* e *current_user.present?* la risposta è **non c'è nessuna differenza**.
+> Se ti stai domandando qual'è la differenza fra `user_signed_in?` e `current_user.present?` la risposta è **non c'è nessuna differenza**.
 
 
 
