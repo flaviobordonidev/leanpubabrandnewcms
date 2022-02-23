@@ -147,11 +147,12 @@ Non dobbiamo implementare anche la poilcy `def new?` perché su *application_pol
 
 ## Implementiamo nel controller
 
-Adesso che la policy di autorizzazione è pronta possiamo indicare all'azione "create" del controller "user" di passare per l'autorizzazione
+Adesso che la policy di autorizzazione è pronta possiamo indicare alle azioni *create* e *new* del controller *user* di passare per l'autorizzazione (`authorize @user`).
 
-***codice 03 - .../app/controllers/users_controller.rb - line: 17***
+***codice 03 - .../app/controllers/users_controller.rb - line: 14***
 
 ```ruby
+  # GET /users/new
   def new
     @user = User.new
     authorize @user
@@ -160,12 +161,13 @@ Adesso che la policy di autorizzazione è pronta possiamo indicare all'azione "c
 ***codice 03 - ...continua - line: 28***
 
 ```ruby
+  # POST /users or /users.json
   def create
     @user = User.new(user_params)
     authorize @user
 ```
 
-[tutto il codice](#01-15-03_02all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/03_03-controllers-users_controller.rb)
 
 
 
@@ -178,8 +180,8 @@ $ rails s
 
 - https://mycloud9path.amazonaws.com/login
 
-Se ci logghiamo con il secondo utente (Bob) che non ha i diritti di amministratore, quando proviamo a creare un nuovo utente riceviamo l'errore: "Pundit::NotAuthorizedError in UsersController#new".
-Se ci logghiamo con il primo utente (Ann) che ha i diritti di amministratore (role: :administrator), possiamo creare un nuovo utente senza nessun errore.
+- Se ci logghiamo con il secondo utente (Bob) che **non** ha i diritti di amministratore, quando proviamo a creare un nuovo utente riceviamo l'errore: `"Pundit::NotAuthorizedError in UsersController#new"`.
+- Se ci logghiamo con il primo utente (Ann) che ha i diritti di amministratore (`role: :administrator`), possiamo creare un nuovo utente senza nessun errore.
 
 
 
