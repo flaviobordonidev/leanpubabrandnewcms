@@ -76,7 +76,7 @@ Vediamo più in dettaglio le autorizzazioni per la tabella *posts*.
 
 
 
-## salviamo su git
+## Salviamo su git
 
 Non c'è nulla di nuovo da salvare.
 

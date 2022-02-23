@@ -1,11 +1,12 @@
 # <a name="top"></a> Cap 15.2 - Autorizzazione - installiamo Pundit
 
-Per gestire le varie autorizzazioni ai vari ruoli usiamo la gemma Pundit.
+Per gestire le varie *autorizzazioni* ai vari *ruoli* usiamo la gemma **Pundit**.
 
 
-Risorse interne
 
-- [99-rails_references/authentication_authorization_roles/05-pundit]
+## Risorse interne
+
+- [99-rails_references/authentication_authorization_roles/05-pundit]()
 
 
 
