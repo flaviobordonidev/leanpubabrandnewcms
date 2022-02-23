@@ -180,8 +180,8 @@ $ rails s
 
 - https://mycloud9path.amazonaws.com/login
 
-- Se ci logghiamo con il secondo utente (Bob) che **non** ha i diritti di amministratore, quando proviamo a creare un nuovo utente riceviamo l'errore: `"Pundit::NotAuthorizedError in UsersController#new"`.
-- Se ci logghiamo con il primo utente (Ann) che ha i diritti di amministratore (`role: :administrator`), possiamo creare un nuovo utente senza nessun errore.
+Se ci logghiamo con il secondo utente (Bob) che **non** ha i diritti di amministratore, quando proviamo a creare un nuovo utente riceviamo l'errore: `"Pundit::NotAuthorizedError in UsersController#new"`. <br/>
+Se ci logghiamo con il primo utente (Ann) che ha i diritti di amministratore (`role: :administrator`), possiamo creare un nuovo utente senza nessun errore.
 
 
 
