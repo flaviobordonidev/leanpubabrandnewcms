@@ -133,11 +133,9 @@ Implementiamo la policy che autorizza la creazione di un nuovo utente solo a chi
 Questo codice indica a pundit di vedere se siamo nell'azione create del controller e la autorizza solo se l'utente è "admin". 
 Infatti *@user.admin?* è *TRUE* se l'utente ha il ruolo di amministratore. Altrimenti *@user.admin?* è *FALSE* e pundit non autorizza l'esecuzione.
 
-Non dobbiamo implementare anche la poilcy *new?* perché su *application_policy* viene impostato di default che "new?" prende le stesse autorizzazioni di "create?".
+Non dobbiamo implementare anche la poilcy `def new?` perché su *application_policy* come valori di default abbiamo che `new?` prende le stesse autorizzazioni di `create?`.
 
-Come possiamo vedere nella seguente chiamata:
-
-***codice n/a - .../app/policies/application_policy.rb - line: 21***
+***codice n/a - .../app/policies/application_policy.rb - line: 23***
 
 ```ruby
   def new?
