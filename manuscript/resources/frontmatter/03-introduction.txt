@@ -1,6 +1,0 @@
-# introduzione
-
-Questa è la storia di due programmatori Bob e Fla che vivono lontano e decidono di sviluppare un programma insieme.
-
-Come tenersi aggiornati? Mandarsi per email le parti di codice modificato è troppo lavoro e richiede troppo tempo. Decidono allora di usare Git.
-Git è estremamente potente ma la curva di apprendimento è molto ripida. Scelgono allora di usare solo alcune funzioni base di Git e di appoggiarsi ad un famoso "repository esterno": Github.
