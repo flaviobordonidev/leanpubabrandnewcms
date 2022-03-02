@@ -20,11 +20,12 @@ Il nostro ambiente di sviluppo è su Ubuntu Server attivato con multipass e ragg
 
 ## Che cos'è Ubuntu Server Multipass
 
-Multipass è un progetto di Canonical per creare macchine virtuali Ubuntu Linux sul nostro computer tramite terminale.
+Multipass è un progetto di Canonical (l'azienda che mantiene Ubuntu) per creare macchine virtuali Ubuntu Linux sul nostro computer tramite terminale.
 Per il nostro progetto sto utilizzando un notebook MAC con sistema operativo macOS, ma multipass possiamo installarlo anche su un pc con sistema operativo windows o anche linux stesso.
 
 > Con multipass puoi creare dei server linux da terminale. <br/>
 > Multipass è un modo semplice per creare e gestire VM (Virtual Machines) tutto da terminale.
+> Multipass è open source e gratuito.
 
 Multipass utilizza hypervisor nativi di tutte le piattaforme supportate (Windows, macOS e Linux), ci dà una riga di comando di Ubuntu con un semplice comando nel terminale `multipass shell <nome-VM>`.
 
