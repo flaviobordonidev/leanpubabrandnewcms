@@ -87,28 +87,15 @@ $ multipass launch --name ubuntufla --mem 4G --disk 20G
 > $ multipass launch --name ubuntufla --cpus 2 --mem 4G --disk 40G
 
 
-Creo istanza da 20G di spazio disco con il comando:
+
+## Giochiamo con multipass
+
 
 ```bash
-$ multipass launch --name ubuntufla --cpus 2 --mem 1G --disk 20G
-$ multipass shell ubuntufla
-
-$ sudo apt update
-$ sudo apt install ubuntu-desktop xrdp
-
-$ sudo passwd ubuntu
-```
-
-We will be asked to enter and re-enter a password. And we are done on the server side.
-
-
-
 $ multipass list
 $ multipass stop <nome-server-ubuntu>
 $ multipass start <nome-server-ubuntu>
 $ multipass shell flub <nome-server-ubuntu>
-
-$ ssh -p 22 ubuntu@192.168.64.4
 ```
 
 Esempio:
@@ -118,6 +105,44 @@ $ multipass list
 MacBook-Pro-di-Flavio:~ FB$ multipass list
 Name                    State             IPv4             Image
 flub                    Stopped           --               Ubuntu 20.04 LTS
+```
+
+
+
+## Entriamo nella nostra VM
+
+Adesso logghiamoci nella nostra istanza di Ubuntu Linux ed impostiamo la password per l'utente di default che si chiama *ubuntu* (che fantasia che hanno in Canonical ^_^).
+
+```bash
+$ multipass shell ubuntufla
+
+$ sudo passwd ubuntu
+```
+
+Ci sarà chiesto di inserire una password e di confermarla.
+
+
+
+## Verifichiamo i nostri privilegi 
+
+Verfichiamo che l'utente *ubuntu* sulla VM abbia i privilegi di amministratore.
+
+```bash
+$ multipass shell ubuntufla
+
+$ sudo -l
+```
+
+If you see the following lines on your terminal, it means that you currently belongs to the sudo group.
+
+User user may run the following commands on server-ubuntu:
+    (ALL : ALL) ALL
+Alternatively, you can run the “groups” command and verify that “sudo” is one of the entries.
+
+```bash
+$ multipass shell ubuntufla
+
+$ groups
 ```
 
 
