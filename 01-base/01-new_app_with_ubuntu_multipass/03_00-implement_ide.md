@@ -52,6 +52,9 @@ Nella palette dei comandi (F1) seleziona Remote-SSH: Add New SSH Host…
 
 ![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_fig02-command_palette.png)
 
+![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_fig03-remote_ssh_add_new.png)
+
+![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_fig04-remote_ssh_password.png)
 
 e usa lo stesso user@hostname come nel passaggio 1
 Seleziona Remote-SSH: Connect to Host... dalla Command Palette (F1). Dal menu a tendina scegli l'host già aggiunto. Digita la password quando richiesta.
