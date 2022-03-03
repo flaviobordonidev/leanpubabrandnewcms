@@ -84,12 +84,18 @@ Nella *palette dei comandi* (F1) selezioniamo *Remote-SSH: Connect to Host…*
 
 Dal menu a tendina scegliamo l'host già aggiunto (*192.168.64.3*).
 
-![fig07](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_fig08-remote_ssh_select.png)
+![fig08](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_fig08-remote_ssh_select.png)
 
 Digitiamo la password quando richiesta.
 
+![fig09](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_fig09-remote_ssh_password.png)
 
-Vs Code rileverà automaticamente il tipo di server, in caso contrario ti verrà chiesto di selezionare il tipo manualmente.
+Adesso VS Code è connesso come possiamo vedere dal menu in basso.
+
+> Normalamente Vs Code rileva automaticamente il tipo di server e si connette. In caso contrario ci verrà chiesto di selezionare il tipo manualmente.
+
+![fig10](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_fig10-remote_ssh_connected.png)
+
 
 
 ## Apriamo la directory test
