@@ -48,7 +48,7 @@ Colleghiamo Visual Studio Code alla Virtual Machine con Ubuntu Linux tramite Sec
 
 
 
-Nella palette dei comandi (F1) seleziona Remote-SSH: Add New SSH Host… 
+Nella *palette dei comandi* (F1) selezioniamo *Remote-SSH: Add New SSH Host…*
 
 ![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_fig02-command_palette.png)
 
