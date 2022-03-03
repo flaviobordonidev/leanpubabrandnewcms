@@ -92,9 +92,7 @@ Save the file and exit.
 
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/02_fig01-sshd_config_password_authentication_1.png)
 
-![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/02_fig01-sshd_config_password_authentication_2.png)
-
-![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/02_fig01-sshd_config_password_authentication_3.png)
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/02_fig02-sshd_config_password_authentication_2.png)
 
 Restart the SSH service by typing the following command:
 
