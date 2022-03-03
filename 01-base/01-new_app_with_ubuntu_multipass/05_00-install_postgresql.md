@@ -277,24 +277,9 @@ port = 5432
 
 ## Aggiorniamo il file *pg_hba.conf* per l'autenticazione
 
-Nel seguente file di configurazione impostiamo la connessione locale IPv4 sull'indirizzo di "localhost" (127.0.0.1) e l'id dell'utente registrato nel sistema operativo.
+Nel seguente file di configurazione impostiamo la connessione locale IPv4 sull'indirizzo di *localhost* (127.0.0.1) e l'id dell'utente registrato nel sistema operativo.
 
-Attenzione:
-L'id utente **non è necessariamente** quello che vediamo nel prompt dei comandi.
-
-Se ci logghiamo su AWS come *root* nel prompt del terminal vediamo il nome *ubuntu*: 
-
-```bash
-ubuntu:~/environment $
-```
-
-Invece se ci logghiamo su AWS come utente IAM *user_fb* nel prompt del terminal vediamo il nome *user_fb*: 
-
-```bash
-user_fb:~/environment $
-```
-
-Ma in **entrambi** i casi l'*id* dell'utente registrato è ***ubuntu*** e questo lo verifichiamo il comando ***whoami***. 
+Per verificarlo usiamo il comando ***whoami***. 
 
 ```bash
 $ whoami
@@ -303,16 +288,19 @@ $ whoami
 Esempio:
 
 ```bash
-user_fb:~/environment $ whoami
+ubuntu@ubuntufla:~$ whoami
 ubuntu
-user_fb:~/environment $ 
+ubuntu@ubuntufla:~$ 
 ```
 
+> Attenzione: <br/>
+> L'id utente **non è necessariamente** quello che vediamo nel prompt dei comandi. <br/>
+> Nel nostro caso è lo stesso ma non è sempre così.
 
 Aggiorniamo quindi il file di configurazione
 
 ```bash
-$ sudo vim /etc/postgresql/10/main/pg_hba.conf
+$ sudo vim /etc/postgresql/12/main/pg_hba.conf
 ```
 
 Troviamo la parte:
@@ -333,7 +321,7 @@ host    replication     all             127.0.0.1/32            md5
 host    replication     all             ::1/128                 md5
 ```
 
-![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/05_fig02-postgresql_conf-default-addresses_and_port.png)
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/05_fig02-postgresql_conf-default-addresses_and_port.png)
 
 e modifichiamo le seguenti due righe:
 
@@ -344,8 +332,7 @@ local   all             all                                     trust
 host    all             ubuntu          127.0.0.1/0             trust
 ```
 
-![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/05_fig03-postgresql_conf-updated-addresses_and_port.png)
-
+![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/05_fig03-postgresql_conf-updated-addresses_and_port.png)
 
 
 
