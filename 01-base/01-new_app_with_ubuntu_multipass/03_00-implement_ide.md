@@ -30,37 +30,37 @@ Basta andare sul sito della microsoft e scaricarlo tanto è gratuito ed open sou
 
 ## Installiamo Visual Studio Code Remote Development Extension Pack
 
-Apriamo Visual Studio Code e clicchiamo su *extension icon*. Cerchiamo *remote development extension pack* ed installiamolo.
+Apriamo Visual Studio Code. Sulla barra del menu laterale clicchiamo sull'icona *extension*. Cerchiamo *remote development extension pack* ed installiamolo.
 
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_01-install_remote_development_pack.png)
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_fig01-install_remote_development_pack.png)
 
 
 
-## Colleghiamolo alla VM tramite SSH
+## Colleghiamo VS Code alla VM tramite SSH
+
+Colleghiamo Visual Studio Code alla Virtual Machine con Ubuntu Linux tramite Secure SHell.
 
 > Prerequisiti <br/>
 > Local: Ssh client compatible with openssh. On macOS, it comes preinstalled. <br/>
 > Remote SSH host: A running ssh server on your remote Linux machine. (Fatto nei capitoli precedenti)
+>
+> Abbiamo già visto che riusciamo a collegarci con la VM eseguendo da terminale di macOS il comando `$ ssh nomeutente@hostip`. Nello specifico `$ ssh -p 22 ubuntu@192.168.64.3`.
 
 
-Configure
-step 0: Install Visual Studio Code Remote Development Extension Pack.
-Click on the extensions icon.
-Search for remote development extension pack.
-Click install
 
-Step1: Try connecting to a remote host.
-To verify that you can connect to the remote machine, where your actual code base is executed the command from the terminal replacing username with your username on the remote machine and host IP with the IP of the remote machine.
-ssh username@hostip
+Nella palette dei comandi (F1) seleziona Remote-SSH: Add New SSH Host… 
 
-Step 2: Configuring ssh In VS Code
-In the command pallete(F1)select Remote-SSH: Add New SSH Host… and use the same user@hostname as in step 1
-Select Remote-SSH: Connect to Host… from the Command Palette (F1). From the drop-down choose the already added host. Type in the password when prompted for it.
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_fig02-command_palette.png)
 
-Vs Code will automatically detect the type of the server, if not you will be asked to select the type manually.
+
+e usa lo stesso user@hostname come nel passaggio 1
+Seleziona Remote-SSH: Connect to Host... dalla Command Palette (F1). Dal menu a tendina scegli l'host già aggiunto. Digita la password quando richiesta.
+
+Vs Code rileverà automaticamente il tipo di server, in caso contrario ti verrà chiesto di selezionare il tipo manualmente.
+
 
 You can edit this in vscode settings (Code > Preferences > Settings)by updating remote.SSH.remotePlatform property
 After a moment, VS Code will connect to the SSH server and set itself up. VS Code will keep you up-to-date using a progress notification and you can see a detailed log in the Remote - SSH output channel. You can check the status bar to check the remote host you are connected to
 
-Step 3: You can then open any folder or workspace using File > Open… or File > Open Workspace… on the remote machine.
+> You can then open any folder or workspace using File > Open… or File > Open Workspace… on the remote machine.
 
