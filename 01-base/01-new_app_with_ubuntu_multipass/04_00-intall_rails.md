@@ -1,15 +1,32 @@
 # <a name="top"></a> Cap 1.4 - Installiamo Rails sulla VM
 
-Per installare Rails installiamo prima i programmi necessari a sostenerlo.
+Prima di installare Rails installiamo i programmi necessari a sostenerlo.
+
+- Ruby
+- Node.js
+- Yarn
 
 > La nostra VM ha un sistema operativo Ubuntu Linux quindi le procedure che seguiremo per installare Rails sono le stesse che si farebbero su un pc con Ubuntu Linux.
 
 
 
-## Risorse eseterne
+## Risorse interne:
 
-- https://linuxize.com/post/how-to-install-ruby-on-ubuntu-20-04/
+- [99-rails_references/gems/rails]
+- [99-rails_references/yarn/01-yarn]
+
+
+
+## Risorse esterne:
+
+- [rubyonrails.org - getting_started](https://guides.rubyonrails.org/getting_started.html)
+- [ruby-lang.org](https://www.ruby-lang.org/en/downloads/)
+- [How to Install Ruby on Ubuntu 20.04](https://linuxize.com/post/how-to-install-ruby-on-ubuntu-20-04/)
 - [apt vs apt-get](https://itsfoss.com/apt-vs-apt-get-difference/)
+- [How to install Node.js](https://joshtronic.com/2021/05/09/how-to-install-nodejs-16-on-ubuntu-2004-lts/)
+- [Install Node.js](https://techviewleo.com/install-node-js-and-npm-on-ubuntu/)
+- [Heroku - getting-started-with-rails7](https://devcenter.heroku.com/articles/getting-started-with-rails7)
+
 
 
 ## Aggiorniamo il sistema
@@ -169,60 +186,438 @@ ubuntu@ubuntufla:~$
 
 ## Installiamo RUBY
 
-https://linuxize.com/post/how-to-install-ruby-on-ubuntu-20-04/
+> Attenzione! ***NON*** usiamo `$ sudo apt install ruby-full` perché installa una vecchia versione di ruby: *ruby 2.7.0p0 (2019-12-25…)*.
 
-NON USIAMO ($ sudo apt install ruby-full) perché installa una vecchia versione di ruby del 2019 ( ruby 2.7.0p0 (2019-12-25…)).
+Invece lo installiamo passando per **RVM** (Ruby Version Manager).
 
-Installing Ruby using RVM
+> RVM is a command-line tool that you can use to install, manage, and work with multiple Ruby environments.
 
+```bash
 $ sudo apt update
 $ sudo apt install curl g++ gcc autoconf automake bison libc6-dev \
         libffi-dev libgdbm-dev libncurses5-dev libsqlite3-dev libtool \
         libyaml-dev make pkg-config sqlite3 zlib1g-dev libgmp-dev \
         libreadline-dev libssl-dev
+```
+
+Run the following commands to add the GPG keys and install RVM:
+
+```bash
 $ curl -sSL https://rvm.io/mpapis.asc | gpg --import -
 $ curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -
 $ curl -sSL https://get.rvm.io | bash -s stable
+```
+
+Esempio:
+
+```bash
+ubuntu@ubuntufla:~$ curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+gpg: directory '/home/ubuntu/.gnupg' created
+gpg: keybox '/home/ubuntu/.gnupg/pubring.kbx' created
+gpg: key 3804BB82D39DC0E3: 47 signatures not checked due to missing keys
+gpg: /home/ubuntu/.gnupg/trustdb.gpg: trustdb created
+gpg: key 3804BB82D39DC0E3: public key "Michal Papis (RVM signing) <mpapis@gmail.com>" imported
+gpg: Total number processed: 1
+gpg:               imported: 1
+gpg: no ultimately trusted keys found
+ubuntu@ubuntufla:~$ curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -
+gpg: key 105BD0E739499BDB: public key "Piotr Kuczynski <piotr.kuczynski@gmail.com>" imported
+gpg: Total number processed: 1
+gpg:               imported: 1
+ubuntu@ubuntufla:~$ curl -sSL https://get.rvm.io | bash -s stable
+Downloading https://github.com/rvm/rvm/archive/1.29.12.tar.gz
+Downloading https://github.com/rvm/rvm/releases/download/1.29.12/1.29.12.tar.gz.asc
+gpg: Signature made Fri Jan 15 19:46:22 2021 CET
+gpg:                using RSA key 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+gpg: Good signature from "Piotr Kuczynski <piotr.kuczynski@gmail.com>" [unknown]
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: 7D2B AF1C F37B 13E2 069D  6956 105B D0E7 3949 9BDB
+GPG verified '/home/ubuntu/.rvm/archives/rvm-1.29.12.tgz'
+Installing RVM to /home/ubuntu/.rvm/
+    Adding rvm PATH line to /home/ubuntu/.profile /home/ubuntu/.mkshrc /home/ubuntu/.bashrc /home/ubuntu/.zshrc.
+    Adding rvm loading line to /home/ubuntu/.profile /home/ubuntu/.bash_profile /home/ubuntu/.zlogin.
+Installation of RVM in /home/ubuntu/.rvm/ is almost complete:
+
+  * To start using RVM you need to run `source /home/ubuntu/.rvm/scripts/rvm`
+    in all your open shell windows, in rare cases you need to reopen all shell windows.
+Thanks for installing RVM 🙏
+Please consider donating to our open collective to help us maintain RVM.
+
+👉  Donate: https://opencollective.com/rvm/donate
+
+
+ubuntu@ubuntufla:~$ 
+```
+
+To start using RVM, load the script environment variables using the source command:
+
+```bash
 $ source ~/.rvm/scripts/rvm
+```
 
+To get a list of all Ruby versions that can be installed with this tool, type:
 
+```bash
+$ rvm list known
+```
+
+Installiamo l'ultima versione stabile di Ruby con RVM e impostiamola come versione predefinita.
+
+> Rails requires Ruby version 2.7.0 or later. It is preferred to use latest Ruby version.
+
+> verifichiamo [l'ultima versione di ruby](https://www.ruby-lang.org/en/downloads/) <br/>
+> The current stable version is 3.1.1. 
+
+```bash
 $ rvm get stable
-$ rvm install ruby-3.1.0
-$ rvm use ruby-3.1.0
-$ ruby —version
+$ rvm install ruby-3.1.1
+$ rvm use ruby-3.1.1
+$ rvm list
+$ rvm use ruby-3.1.1 --default
+```
+
+> Se ci sono altre versioni le possiamo cancellare con `rvm remove <version>`.
+
+Verifichiamo che versione di ruby stiamo usando. 
+
+```bash
+$ ruby --version
+```
+
+Esempio:
+
+```bash
+ubuntu@ubuntufla:~$ ruby --version
+ruby 3.1.1p18 (2022-02-18 revision 53f5fc4236) [x86_64-linux]
+ubuntu@ubuntufla:~$ 
+```
 
 
-Installiamo NODE JS
 
-https://joshtronic.com/2021/05/09/how-to-install-nodejs-16-on-ubuntu-2004-lts/
+## Installiamo NODE JS
 
-$ sudo apt update
-$ sudo apt upgrade
-
-Se “curl” non è installato usare $ sudo apt install -y curl
-
+```bash
 $ curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 $ sudo apt install -y nodejs
 $ node --version
+```
+
+> Se *curl* non è installato usiamo `$ sudo apt install -y curl`
+
+Esempio:
+
+```bash
+ubuntu@ubuntufla:~$ curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+
+## Installing the NodeSource Node.js 16.x repo...
 
 
-Installiamo YARN
+## Populating apt-get cache...
 
++ apt-get update
+Hit:1 http://archive.ubuntu.com/ubuntu focal InRelease
+Get:2 http://archive.ubuntu.com/ubuntu focal-updates InRelease [114 kB]
+Get:3 http://security.ubuntu.com/ubuntu focal-security InRelease [114 kB]
+Get:4 http://archive.ubuntu.com/ubuntu focal-backports InRelease [108 kB]
+Get:5 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 Packages [1608 kB]
+Get:6 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 Packages [906 kB]
+Get:7 http://security.ubuntu.com/ubuntu focal-security/main amd64 Packages [1275 kB]
+Get:8 http://security.ubuntu.com/ubuntu focal-security/main amd64 c-n-f Metadata [9736 B]
+Get:9 http://security.ubuntu.com/ubuntu focal-security/universe amd64 Packages [680 kB]
+Fetched 4815 kB in 2s (2565 kB/s)                        
+Reading package lists... Done
+
+## Confirming "focal" is supported...
+
++ curl -sLf -o /dev/null 'https://deb.nodesource.com/node_16.x/dists/focal/Release'
+
+## Adding the NodeSource signing key to your keyring...
+
++ curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmor | tee /usr/share/keyrings/nodesource.gpg >/dev/null
+gpg: WARNING: unsafe ownership on homedir '/home/ubuntu/.gnupg'
+
+## Creating apt sources list file for the NodeSource Node.js 16.x repo...
+
++ echo 'deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_16.x focal main' > /etc/apt/sources.list.d/nodesource.list
++ echo 'deb-src [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_16.x focal main' >> /etc/apt/sources.list.d/nodesource.list
+
+## Running `apt-get update` for you...
+
++ apt-get update
+Hit:1 http://security.ubuntu.com/ubuntu focal-security InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu focal InRelease                    
+Get:3 https://deb.nodesource.com/node_16.x focal InRelease [4583 B]       
+Hit:4 http://archive.ubuntu.com/ubuntu focal-updates InRelease
+Hit:5 http://archive.ubuntu.com/ubuntu focal-backports InRelease
+Get:6 https://deb.nodesource.com/node_16.x focal/main amd64 Packages [775 B]
+Fetched 5358 B in 1s (8635 B/s)
+Reading package lists... Done
+
+## Run `sudo apt-get install -y nodejs` to install Node.js 16.x and npm
+## You may also need development tools to build native addons:
+     sudo apt-get install gcc g++ make
+## To install the Yarn package manager, run:
+     curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | sudo tee /usr/share/keyrings/yarnkey.gpg >/dev/null
+     echo "deb [signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+     sudo apt-get update && sudo apt-get install yarn
+
+
+ubuntu@ubuntufla:~$ sudo apt install -y nodejs
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following NEW packages will be installed:
+  nodejs
+0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.
+Need to get 26.2 MB of archives.
+After this operation, 122 MB of additional disk space will be used.
+Get:1 https://deb.nodesource.com/node_16.x focal/main amd64 nodejs amd64 16.14.0-deb-1nodesource1 [26.2 MB]
+Fetched 26.2 MB in 1s (21.5 MB/s) 
+Selecting previously unselected package nodejs.
+(Reading database ... 100754 files and directories currently installed.)
+Preparing to unpack .../nodejs_16.14.0-deb-1nodesource1_amd64.deb ...
+Unpacking nodejs (16.14.0-deb-1nodesource1) ...
+Setting up nodejs (16.14.0-deb-1nodesource1) ...
+Processing triggers for man-db (2.9.1-1) ...
+ubuntu@ubuntufla:~$ node --version
+v16.14.0
+ubuntu@ubuntufla:~$ 
+```
+
+
+
+## Installiamo YARN
+
+YARN lo installiamo sfruttando *npm* messo a disposizione da *node.js*.
+
+> *npm* è il gestore di pacchetti (*package manager*) per la piattaforma Node JavaScript. 
+> It puts modules in place so that node can find them, and manages dependency conflicts intelligently. 
+
+> Once you have npm installed you can run the following both to **install** and **upgrade** Yarn:
+
+```bash
 $ sudo npm install --global yarn
-$ sudo npm install -g npm@8.3.2
+```
+
+> Lo script di installazione ci ha chiesto di eseguire anche `$ sudo npm install -g npm@8.3.2`
+
+Esempio:
+
+```bash
+ubuntu@ubuntufla:~$ sudo npm install --global yarn
+
+added 1 package, and audited 2 packages in 2s
+
+found 0 vulnerabilities
+npm notice 
+npm notice New minor version of npm available! 8.3.1 -> 8.5.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v8.5.2
+npm notice Run npm install -g npm@8.5.2 to update!
+npm notice 
+ubuntu@ubuntufla:~$ sudo npm install -g npm@8.3.2
+
+changed 17 packages, and audited 215 packages in 4s
+
+11 packages are looking for funding
+  run `npm fund` for details
+
+3 moderate severity vulnerabilities
+
+To address all issues, run:
+  npm audit fix
+
+Run `npm audit` for details.
+ubuntu@ubuntufla:~$ 
+ubuntu@ubuntufla:~$ yarn --version
+1.22.17
+ubuntu@ubuntufla:~$ 
+```
 
 
 
+## Installiamo Rails
 
-$ rails s -b 192.168.64.4
+Per installare Rails carichiamo la corrispondente gemma ruby.
+To install Rails, use the gem install command provided by RubyGems.
 
-Di default va sulla porta 3000 se vogliamo spostarlo sulla porta 8080 facciamo:
+I> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/rails)
+I>
+I> facciamo riferimento al [tutorial della gemma](https://rubyonrails.org/)
 
-$ rails s -b 192.168.64.4 -p  8080
+Poiché pubblicheremo in produzione la nostra applicazione su Heroku verifichiamo quale versione Rails è supportata su [Heroku devcenter - Getting Started on Heroku with Rails 7.x](https://devcenter.heroku.com/articles/getting-started-with-rails7)
 
-(possiamo usare solo porte libere. se proviamo sulla porta 80 riceviamo un errore.)
+```bash
+$ cd ~/environment
+$ gem install rails
+```
+
+> Volendo istallare una versione specifica possiamo indicarla. 
+> Ad esempio: *$ gem install rails -v 7.0.1*
+
+Per verificare quale versione di rails abbiamo installato
+
+```bash
+$ rails --version
+```
+
+Esempio:
+
+```bash
+ubuntu@ubuntufla:~$ gem install rails
+Fetching tzinfo-2.0.4.gem
+Fetching activesupport-7.0.2.2.gem
+Fetching i18n-1.10.0.gem
+Fetching method_source-1.0.0.gem
+Fetching concurrent-ruby-1.1.9.gem
+Fetching thor-1.2.1.gem
+Fetching zeitwerk-2.5.4.gem
+Fetching loofah-2.14.0.gem
+Fetching rails-html-sanitizer-1.4.2.gem
+Fetching rack-2.2.3.gem
+Fetching rack-test-1.1.0.gem
+Fetching nokogiri-1.13.3-x86_64-linux.gem
+Fetching builder-3.2.4.gem
+Fetching actionview-7.0.2.2.gem
+Fetching actionpack-7.0.2.2.gem
+Fetching mini_mime-1.1.2.gem
+Fetching marcel-1.0.2.gem
+Fetching activemodel-7.0.2.2.gem
+Fetching activerecord-7.0.2.2.gem
+Fetching crass-1.0.6.gem
+Fetching railties-7.0.2.2.gem
+Fetching actiontext-7.0.2.2.gem
+Fetching globalid-1.0.0.gem
+Fetching mail-2.7.1.gem
+Fetching activestorage-7.0.2.2.gem
+Fetching actionmailer-7.0.2.2.gem
+Fetching websocket-extensions-0.1.5.gem
+Fetching erubi-1.10.0.gem
+Fetching rails-dom-testing-2.0.3.gem
+Fetching actionmailbox-7.0.2.2.gem
+Fetching activejob-7.0.2.2.gem
+Fetching rails-7.0.2.2.gem
+Fetching websocket-driver-0.7.5.gem
+Fetching nio4r-2.5.8.gem
+Fetching actioncable-7.0.2.2.gem
+Successfully installed zeitwerk-2.5.4
+Successfully installed thor-1.2.1
+Successfully installed method_source-1.0.0
+Successfully installed concurrent-ruby-1.1.9
+Successfully installed tzinfo-2.0.4
+Successfully installed i18n-1.10.0
+Successfully installed activesupport-7.0.2.2
+Successfully installed nokogiri-1.13.3-x86_64-linux
+Successfully installed crass-1.0.6
+Successfully installed loofah-2.14.0
+Successfully installed rails-html-sanitizer-1.4.2
+Successfully installed rails-dom-testing-2.0.3
+Successfully installed rack-2.2.3
+Successfully installed rack-test-1.1.0
+Successfully installed erubi-1.10.0
+Successfully installed builder-3.2.4
+Successfully installed actionview-7.0.2.2
+Successfully installed actionpack-7.0.2.2
+Successfully installed railties-7.0.2.2
+Successfully installed mini_mime-1.1.2
+Successfully installed marcel-1.0.2
+Successfully installed activemodel-7.0.2.2
+Successfully installed activerecord-7.0.2.2
+Successfully installed globalid-1.0.0
+Successfully installed activejob-7.0.2.2
+Successfully installed activestorage-7.0.2.2
+Successfully installed actiontext-7.0.2.2
+Successfully installed mail-2.7.1
+Successfully installed actionmailer-7.0.2.2
+Successfully installed actionmailbox-7.0.2.2
+Successfully installed websocket-extensions-0.1.5
+Building native extensions. This could take a while...
+Successfully installed websocket-driver-0.7.5
+Building native extensions. This could take a while...
+Successfully installed nio4r-2.5.8
+Successfully installed actioncable-7.0.2.2
+Successfully installed rails-7.0.2.2
+Parsing documentation for zeitwerk-2.5.4
+Installing ri documentation for zeitwerk-2.5.4
+Parsing documentation for thor-1.2.1
+Installing ri documentation for thor-1.2.1
+Parsing documentation for method_source-1.0.0
+Installing ri documentation for method_source-1.0.0
+Parsing documentation for concurrent-ruby-1.1.9
+Installing ri documentation for concurrent-ruby-1.1.9
+Parsing documentation for tzinfo-2.0.4
+Installing ri documentation for tzinfo-2.0.4
+Parsing documentation for i18n-1.10.0
+Installing ri documentation for i18n-1.10.0
+Parsing documentation for activesupport-7.0.2.2
+Installing ri documentation for activesupport-7.0.2.2
+Parsing documentation for nokogiri-1.13.3-x86_64-linux
+Installing ri documentation for nokogiri-1.13.3-x86_64-linux
+Parsing documentation for crass-1.0.6
+Installing ri documentation for crass-1.0.6
+Parsing documentation for loofah-2.14.0
+Installing ri documentation for loofah-2.14.0
+Parsing documentation for rails-html-sanitizer-1.4.2
+Installing ri documentation for rails-html-sanitizer-1.4.2
+Parsing documentation for rails-dom-testing-2.0.3
+Installing ri documentation for rails-dom-testing-2.0.3
+Parsing documentation for rack-2.2.3
+Installing ri documentation for rack-2.2.3
+Parsing documentation for rack-test-1.1.0
+Installing ri documentation for rack-test-1.1.0
+Parsing documentation for erubi-1.10.0
+Installing ri documentation for erubi-1.10.0
+Parsing documentation for builder-3.2.4
+Installing ri documentation for builder-3.2.4
+Parsing documentation for actionview-7.0.2.2
+Installing ri documentation for actionview-7.0.2.2
+Parsing documentation for actionpack-7.0.2.2
+Installing ri documentation for actionpack-7.0.2.2
+Parsing documentation for railties-7.0.2.2
+Installing ri documentation for railties-7.0.2.2
+Parsing documentation for mini_mime-1.1.2
+Installing ri documentation for mini_mime-1.1.2
+Parsing documentation for marcel-1.0.2
+Installing ri documentation for marcel-1.0.2
+Parsing documentation for activemodel-7.0.2.2
+Installing ri documentation for activemodel-7.0.2.2
+Parsing documentation for activerecord-7.0.2.2
+Installing ri documentation for activerecord-7.0.2.2
+Parsing documentation for globalid-1.0.0
+Installing ri documentation for globalid-1.0.0
+Parsing documentation for activejob-7.0.2.2
+Installing ri documentation for activejob-7.0.2.2
+Parsing documentation for activestorage-7.0.2.2
+Installing ri documentation for activestorage-7.0.2.2
+Parsing documentation for actiontext-7.0.2.2
+Installing ri documentation for actiontext-7.0.2.2
+Parsing documentation for mail-2.7.1
+Installing ri documentation for mail-2.7.1
+Parsing documentation for actionmailer-7.0.2.2
+Installing ri documentation for actionmailer-7.0.2.2
+Parsing documentation for actionmailbox-7.0.2.2
+Installing ri documentation for actionmailbox-7.0.2.2
+Parsing documentation for websocket-extensions-0.1.5
+Installing ri documentation for websocket-extensions-0.1.5
+Parsing documentation for websocket-driver-0.7.5
+Installing ri documentation for websocket-driver-0.7.5
+Parsing documentation for nio4r-2.5.8
+Installing ri documentation for nio4r-2.5.8
+Parsing documentation for actioncable-7.0.2.2
+Installing ri documentation for actioncable-7.0.2.2
+Parsing documentation for rails-7.0.2.2
+Installing ri documentation for rails-7.0.2.2
+Done installing documentation for zeitwerk, thor, method_source, concurrent-ruby, tzinfo, i18n, activesupport, nokogiri, crass, loofah, rails-html-sanitizer, rails-dom-testing, rack, rack-test, erubi, builder, actionview, actionpack, railties, mini_mime, marcel, activemodel, activerecord, globalid, activejob, activestorage, actiontext, mail, actionmailer, actionmailbox, websocket-extensions, websocket-driver, nio4r, actioncable, rails after 61 seconds
+35 gems installed
+ubuntu@ubuntufla:~$ rails --version
+Rails 7.0.2.2
+ubuntu@ubuntufla:~$ 
+```
+
+L'ambiente Ruby on Rails è pronto ma prima di creare la nostra applicazione installiamo il database PostgreSQL. Questo lo facciamo nel prossimo capitolo.
 
 
-
-
-
+---
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_00-implement_ide.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/05_00-install_postgresql.md)
