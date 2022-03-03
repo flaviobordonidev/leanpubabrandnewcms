@@ -371,9 +371,9 @@ $ sudo su - postgres
 Esempio:
 
 ```bash
-user_fb:~/environment $ sudo su - postgres
-postgres@ip-172-31-24-105:~$ psql -U postgres
-psql (10.19 (Ubuntu 10.19-0ubuntu0.18.04.1))
+ubuntu@ubuntufla:~$ sudo su - postgres
+postgres@ubuntufla:~$ psql -U postgres
+psql (12.9 (Ubuntu 12.9-0ubuntu0.20.04.1))
 Type "help" for help.
 
 postgres=# ALTER USER postgres WITH PASSWORD 'myPassword123';
@@ -383,13 +383,12 @@ CREATE ROLE
 postgres=# ALTER USER "ubuntu" WITH PASSWORD 'myPassword456';
 ALTER ROLE
 postgres=# \q
-postgres@ip-172-31-24-105:~$ exit
+postgres@ubuntufla:~$ exit
 logout
-user_fb:~/environment $ 
+ubuntu@ubuntufla:~$ 
 ```
 
-Adesso è tutto inizializzato e pronto per lavorare su aws Cloud9.
-
+Adesso è tutto inizializzato e pronto per lavorare.
 
 
 
@@ -409,6 +408,6 @@ Ma per quanto riguarda il nostro tutorial abbiamo già tutto quello che ci serve
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/04-aws_c9_more_disk_space.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/04_00-install_rails.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/06-install_postgresql_on_ec2_amazon.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/06_00-new_app.md)
