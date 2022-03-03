@@ -55,7 +55,7 @@ Nella *palette dei comandi* (F1) selezioniamo *Remote-SSH: Add New SSH Host…*
 
 ![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_fig03-remote_ssh_add_new.png)
 
-![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_fig04-remote_ssh_connection.png)
+![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_fig04-remote_ssh_command.png)
 
 Inseriamo il comando per la connessione `$ ssh ubuntu@192.168.64.3`.
 
@@ -78,13 +78,22 @@ Il file di configurazione che viene creato ha le indicazioni per la connessione.
 
 Colleghiamo Visual Studio Code alla Virtual Machine con Ubuntu Linux tramite Secure SHell.
 
+Nella *palette dei comandi* (F1) selezioniamo *Remote-SSH: Connect to Host…*
+
+![fig07](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_fig07-remote_ssh_connect.png)
+
+Dal menu a tendina scegliamo l'host già aggiunto (*192.168.64.3*).
+
+![fig07](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_fig08-remote_ssh_select.png)
+
+Digitiamo la password quando richiesta.
+
+
+Vs Code rileverà automaticamente il tipo di server, in caso contrario ti verrà chiesto di selezionare il tipo manualmente.
 
 
 ## Apriamo la directory test
 
-Seleziona Remote-SSH: Connect to Host... dalla Command Palette (F1). Dal menu a tendina scegli l'host già aggiunto. Digita la password quando richiesta.
-
-Vs Code rileverà automaticamente il tipo di server, in caso contrario ti verrà chiesto di selezionare il tipo manualmente.
 
 
 You can edit this in vscode settings (Code > Preferences > Settings)by updating remote.SSH.remotePlatform property
