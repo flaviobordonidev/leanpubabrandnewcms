@@ -135,6 +135,35 @@ ubuntu@ubuntufla:~$
 Adesso funziona! ^_^
 
 
+## Creiamo una direcctory di test
+
+Per verificare il collegamento con l'ide che faremo nel prossimo capitolo creiamo una nuova directory/cartlela nella VM.
+
+```bash
+$ mkdir test
+$ ls
+```
+
+Esempio:
+
+```bash
+ubuntu@ubuntufla:~$ ls
+ubuntu@ubuntufla:~$ pwd
+/home/ubuntu
+ubuntu@ubuntufla:~$ ls -a
+.  ..  .bash_history  .bash_logout  .bashrc  .cache  .profile  .ssh  .sudo_as_admin_successful  .vscode-server  .wget-hsts
+ubuntu@ubuntufla:~$ mkdir test
+ubuntu@ubuntufla:~$ ls
+test
+ubuntu@ubuntufla:~$ exit
+logout
+Connection to 192.168.64.3 closed.
+MacBook-Pro-di-Flavio:~ FB$ 
+```
+
+Al momento abbiamo finito.
+
+
 
 ---
 [<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/01_00-ubuntu_multipass.md)

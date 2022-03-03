@@ -1,6 +1,7 @@
 # <a name="top"></a> Cap 1.3 - Implementiamo la IDE
 
-Implementiamo la parte grafica per lo sviluppo.
+In questo capitolo Implementiamo la parte grafica per lo sviluppo e Colleghiamo VS Code alla VM tramite SSH.
+
 
 
 ## Risorse esterne
@@ -36,7 +37,7 @@ Apriamo Visual Studio Code. Sulla barra del menu laterale clicchiamo sull'icona 
 
 
 
-## Colleghiamo VS Code alla VM tramite SSH
+## Aggiungiamo su VS Code il collegamento SSH alla VM
 
 Colleghiamo Visual Studio Code alla Virtual Machine con Ubuntu Linux tramite Secure SHell.
 
@@ -56,7 +57,31 @@ Nella *palette dei comandi* (F1) selezioniamo *Remote-SSH: Add New SSH Host…*
 
 ![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_fig04-remote_ssh_password.png)
 
-e usa lo stesso user@hostname come nel passaggio 1
+Inseriamo la chiamata ssh `$ ssh ubuntu@192.168.64.3`
+
+> la riga di esempio suggerita da VS Code aggiunge l'opzione *-A* ma noi non la usiamo
+
+Ci viene poi chiesto di salvare le impostazioni in un file che userà per collegarsi.
+
+![fig05](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_fig05-remote_ssh_select_config.png)
+
+> Nel mio caso Scelgo */Users/FB/.ssh/config* <br/>
+> *FB* è il mio nome utente su macOS, nel tuo pc sarà differente! ^_^
+
+Il file di configurazione che viene creato ha le indicazioni per la connessione.
+
+![fig06](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_fig06-remote_ssh_config_file.png)
+
+
+
+## Colleghiamo VS Code alla VM tramite SSH
+
+Colleghiamo Visual Studio Code alla Virtual Machine con Ubuntu Linux tramite Secure SHell.
+
+
+
+## Apriamo la directory test
+
 Seleziona Remote-SSH: Connect to Host... dalla Command Palette (F1). Dal menu a tendina scegli l'host già aggiunto. Digita la password quando richiesta.
 
 Vs Code rileverà automaticamente il tipo di server, in caso contrario ti verrà chiesto di selezionare il tipo manualmente.
