@@ -96,18 +96,67 @@ Adesso VS Code è connesso come possiamo vedere dal menu in basso.
 
 ![fig10](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_fig10-remote_ssh_connected.png)
 
-
-
-## Apriamo la directory test
-
-
-
 You can edit this in vscode settings (Code > Preferences > Settings)by updating remote.SSH.remotePlatform property
-After a moment, VS Code will connect to the SSH server and set itself up. VS Code will keep you up-to-date using a progress notification and you can see a detailed log in the Remote - SSH output channel. You can check the status bar to check the remote host you are connected to
-
-> You can then open any folder or workspace using File > Open… or File > Open Workspace… on the remote machine.
+After a moment, VS Code will connect to the SSH server and set itself up. VS Code will keep you up-to-date using a progress notification and you can see a detailed log in the Remote - SSH output channel. You can check the status bar to check the remote host you are connected to.
 
 
+
+## Apriamo la directory test
+
+Apriamo da VS Code la cartella *test* che abbiamo creato sulla ns VM.
+Usiamo `File > Open…` oppure `File > Open Workspace…` 
+
+![fig11](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_fig11-remote_ssh_file_open.png)
+
+Selezioniamo *test* e premiamo il pulsante *OK*.
+Ci verrà chiesta di nuovo la password.
+Adesso siamo collegati e possiamo lavorare in quella cartella. 
+Ad esempio aggiungiamo il file *pippo.md* e scriviamoci dentro *Ciao VM!*.
+
+![fig12](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_fig12-remote_ssh_file_pippo.png)
+
+Se adesso ci colleghiamo da Terminale di macOS alla VM usando multipass possiamo vedere che c'è il nuovo file *pippo.md*
+
+```bash
+MacBook-Pro-di-Flavio:~ FB$ multipass list
+Name                    State             IPv4             Image
+flub                    Stopped           --               Ubuntu 20.04 LTS
+ubuntufla               Running           192.168.64.3     Ubuntu 20.04 LTS
+MacBook-Pro-di-Flavio:~ FB$ multipass shell ubuntufla
+Welcome to Ubuntu 20.04.3 LTS (GNU/Linux 5.4.0-99-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Thu Mar  3 12:37:43 CET 2022
+
+  System load:  0.13               Processes:               118
+  Usage of /:   10.9% of 19.21GB   Users logged in:         0
+  Memory usage: 10%                IPv4 address for enp0s2: 192.168.64.3
+  Swap usage:   0%
+
+ * Super-optimized for small spaces - read how we shrank the memory
+   footprint of MicroK8s to make it the smallest full K8s around.
+
+   https://ubuntu.com/blog/microk8s-memory-optimisation
+
+13 updates can be applied immediately.
+To see these additional updates run: apt list --upgradable
+
+
+*** System restart required ***
+Last login: Thu Mar  3 10:44:51 2022 from 192.168.64.1
+ubuntu@ubuntufla:~$ ls
+test
+ubuntu@ubuntufla:~$ cd test/
+ubuntu@ubuntufla:~/test$ ls
+pippo.md
+ubuntu@ubuntufla:~/test$ nano pippo.md 
+ubuntu@ubuntufla:~/test$ cat pippo.md 
+Ciao VM!
+ubuntu@ubuntufla:~/test$ 
+```
 
 
 ---
