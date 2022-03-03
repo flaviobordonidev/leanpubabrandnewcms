@@ -55,13 +55,13 @@ Nella *palette dei comandi* (F1) selezioniamo *Remote-SSH: Add New SSH Host…*
 
 ![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_fig03-remote_ssh_add_new.png)
 
-![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_fig04-remote_ssh_password.png)
+![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_fig04-remote_ssh_connection.png)
 
-Inseriamo la chiamata ssh `$ ssh ubuntu@192.168.64.3`
+Inseriamo il comando per la connessione `$ ssh ubuntu@192.168.64.3`.
 
 > la riga di esempio suggerita da VS Code aggiunge l'opzione *-A* ma noi non la usiamo
 
-Ci viene poi chiesto di salvare le impostazioni in un file che userà per collegarsi.
+Ci viene poi chiesto di salvare le impostazioni in un file che userà per collegarsi.  
 
 ![fig05](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/03_fig05-remote_ssh_select_config.png)
 
@@ -92,3 +92,10 @@ After a moment, VS Code will connect to the SSH server and set itself up. VS Cod
 
 > You can then open any folder or workspace using File > Open… or File > Open Workspace… on the remote machine.
 
+
+
+
+---
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/02_00-install_ssh_server.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/04_00-intall_rails.md)
