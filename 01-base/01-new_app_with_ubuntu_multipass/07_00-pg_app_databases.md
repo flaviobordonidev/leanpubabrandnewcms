@@ -52,6 +52,16 @@ Prende errore perché manca il database lato sviluppo: *"bl7_0_development"*.
 
 L'errore già ci ha detto il nome del database con cui la nostra app cerca di collegarsi (*bl7_0_development*) ma vediamo il file nella nostra app in cui sono definiti i collegamenti ai databases.
 
+Per vedere i files della nostra app ci colleghiamo con VS Code tramite SSH alla nostra VM come abbiamo visto nei capitoli precedenti ed apriamo il file *bl7_0*.
+Da lì raggiungiamo il file *database.yml* nella sottocartella *config*.
+
+
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/07_fig01-ssh_remote_open.png)
+
+
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/07_fig02-ssh_remote_rails_app.png)
+
+
 ***codice 01 - .../config/database.yml - line:24***
 
 ```yaml
@@ -204,7 +214,7 @@ $ sudo service postgresql start
 $ rails s
 ```
 
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/07_fig01-preview_working.png)
+![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/07_fig03-preview_working.png)
 
 Funziona ^_^!
 
