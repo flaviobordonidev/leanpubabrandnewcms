@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 1.7 - Nuova app Rails
+# <a name="top"></a> Cap 1.6 - Nuova app Rails
 
 Abbiamo preparato tutto l'ambiente e adesso creaimo una nuova app Rails.
 
@@ -21,18 +21,22 @@ Un'alternativa era quella di caricare la gemma "pg" solo per l'ambiente di produ
 
 ```bash
 $ cd ~/environment
-
+$ rails --version
 $ rails new bl7_0 --database=postgresql
-
-$ rails _7.0.1_ new bl7_0 --database=postgresql
 ```
 
 Il nome "bl7_0" vuol dire " baseline 7.0 " ad indicare che siamo partiti da rails 7.0.x.
 
+> Possiamo anche indicare una specifica versione di rails ad esempio `rails _7.0.1_ new bl7_0 --database=postgresql` ma può essere utile solo in casi particolari. Normalmente è preferibile non forzarla e lasciare quella di default che è la più attuale che trova installata.
+
 Esempio:
 
 ```bash
-user_fb:~/environment $ rails _7.0.1_ new bl7_0 --database=postgresql
+ubuntu@ubuntufla:~$ ls
+test
+ubuntu@ubuntufla:~$ rails --version
+Rails 7.0.2.2
+ubuntu@ubuntufla:~$ rails new bl7_0 --database=postgresql
       create  
       create  README.md
       create  Rakefile
@@ -42,7 +46,7 @@ user_fb:~/environment $ rails _7.0.1_ new bl7_0 --database=postgresql
       create  .gitattributes
       create  Gemfile
          run  git init from "."
-Initialized empty Git repository in /home/ubuntu/environment/bl7_0/.git/
+Initialized empty Git repository in /home/ubuntu/bl7_0/.git/
       create  app
       create  app/assets/config/manifest.js
       create  app/assets/stylesheets/application.css
@@ -139,99 +143,97 @@ Initialized empty Git repository in /home/ubuntu/environment/bl7_0/.git/
       remove  config/initializers/new_framework_defaults_7_0.rb
          run  bundle install
 Fetching gem metadata from https://rubygems.org/...........
-Resolving dependencies......
+Resolving dependencies.......
 Using rake 13.0.6
 Using concurrent-ruby 1.1.9
-Using i18n 1.8.11
+Using i18n 1.10.0
 Using minitest 5.15.0
 Using tzinfo 2.0.4
-Using activesupport 7.0.1
+Using activesupport 7.0.2.2
 Using builder 3.2.4
 Using erubi 1.10.0
 Using racc 1.6.0
-Using nokogiri 1.13.1 (x86_64-linux)
+Using nokogiri 1.13.3 (x86_64-linux)
 Using rails-dom-testing 2.0.3
 Using crass 1.0.6
-Using loofah 2.13.0
+Using loofah 2.14.0
 Using rails-html-sanitizer 1.4.2
-Using actionview 7.0.1
+Using actionview 7.0.2.2
 Using rack 2.2.3
 Using rack-test 1.1.0
-Using actionpack 7.0.1
+Using actionpack 7.0.2.2
 Using nio4r 2.5.8
 Using websocket-extensions 0.1.5
 Using websocket-driver 0.7.5
-Using actioncable 7.0.1
+Using actioncable 7.0.2.2
 Using globalid 1.0.0
-Using activejob 7.0.1
-Using activemodel 7.0.1
-Using activerecord 7.0.1
+Using activejob 7.0.2.2
+Using activemodel 7.0.2.2
+Using activerecord 7.0.2.2
 Using marcel 1.0.2
 Using mini_mime 1.1.2
-Using activestorage 7.0.1
+Using activestorage 7.0.2.2
 Using mail 2.7.1
 Using digest 3.1.0
 Using io-wait 0.2.1
 Using timeout 0.2.0
 Using net-protocol 0.1.2
 Using strscan 3.0.1
-Fetching net-imap 0.2.3
-Installing net-imap 0.2.3
+Using net-imap 0.2.3
 Using net-pop 0.1.1
 Using net-smtp 0.3.1
-Using actionmailbox 7.0.1
-Using actionmailer 7.0.1
-Using actiontext 7.0.1
+Using actionmailbox 7.0.2.2
+Using actionmailer 7.0.2.2
+Using actiontext 7.0.2.2
 Fetching public_suffix 4.0.6
 Installing public_suffix 4.0.6
 Fetching addressable 2.8.0
 Installing addressable 2.8.0
 Fetching bindex 0.8.1
 Installing bindex 0.8.1 with native extensions
-Fetching msgpack 1.4.2
-Installing msgpack 1.4.2 with native extensions
-Fetching bootsnap 1.10.1
-Installing bootsnap 1.10.1 with native extensions
-Using bundler 2.3.3
+Fetching msgpack 1.4.5
+Installing msgpack 1.4.5 with native extensions
+Fetching bootsnap 1.10.3
+Installing bootsnap 1.10.3 with native extensions
+Using bundler 2.3.7
 Using matrix 0.4.2
-Fetching regexp_parser 2.2.0
-Installing regexp_parser 2.2.0
+Fetching regexp_parser 2.2.1
+Installing regexp_parser 2.2.1
 Fetching xpath 3.2.0
 Installing xpath 3.2.0
 Fetching capybara 3.36.0
 Installing capybara 3.36.0
 Fetching childprocess 4.1.0
 Installing childprocess 4.1.0
-Fetching io-console 0.5.11
-Installing io-console 0.5.11 with native extensions
+Using io-console 0.5.11
 Fetching reline 0.3.1
 Installing reline 0.3.1
 Using irb 1.4.1
 Using debug 1.4.0
 Using method_source 1.0.0
 Using thor 1.2.1
-Using zeitwerk 2.5.3
-Using railties 7.0.1
-Fetching importmap-rails 1.0.2
-Installing importmap-rails 1.0.2
+Using zeitwerk 2.5.4
+Using railties 7.0.2.2
+Fetching importmap-rails 1.0.3
+Installing importmap-rails 1.0.3
 Fetching jbuilder 2.11.5
 Installing jbuilder 2.11.5
-Fetching pg 1.2.3
-Installing pg 1.2.3 with native extensions
-Fetching puma 5.5.2
-Installing puma 5.5.2 with native extensions
-Using rails 7.0.1
+Fetching pg 1.3.3
+Installing pg 1.3.3 with native extensions
+Fetching puma 5.6.2
+Installing puma 5.6.2 with native extensions
+Using rails 7.0.2.2
 Using rexml 3.2.5
 Fetching rubyzip 2.3.2
 Installing rubyzip 2.3.2
 Fetching selenium-webdriver 4.1.0
 Installing selenium-webdriver 4.1.0
-Fetching sprockets 4.0.2
-Installing sprockets 4.0.2
+Fetching sprockets 4.0.3
+Installing sprockets 4.0.3
 Fetching sprockets-rails 3.4.2
 Installing sprockets-rails 3.4.2
-Fetching stimulus-rails 1.0.2
-Installing stimulus-rails 1.0.2
+Fetching stimulus-rails 1.0.4
+Installing stimulus-rails 1.0.4
 Fetching turbo-rails 1.0.1
 Installing turbo-rails 1.0.1
 Fetching web-console 4.2.0
@@ -269,8 +271,14 @@ Create controllers directory
 Import Stimulus controllers
       append  app/javascript/application.js
 Pin Stimulus
+Appending: pin "@hotwired/stimulus", to: "stimulus.min.js", preload: true"
       append  config/importmap.rb
-user_fb:~/environment $ 
+Appending: pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true
+      append  config/importmap.rb
+Pin all controllers
+Appending: pin_all_from "app/javascript/controllers", under: "controllers"
+      append  config/importmap.rb
+ubuntu@ubuntufla:~$ 
 ```
 
 
@@ -278,19 +286,34 @@ user_fb:~/environment $
 ## Verifichiamo quanto spazio disco ci resta
 
 ```bash
-$ df -hT /dev/xvda1
+$ df -hT /dev/vda1
 ```
 
 Esempio:
 
 ```bash
-user_fb:~/environment $ df -hT /dev/xvda1
+ubuntu@ubuntufla:~$ df -hT 
+Filesystem     Type      Size  Used Avail Use% Mounted on
+udev           devtmpfs  2.0G     0  2.0G   0% /dev
+tmpfs          tmpfs     394M  880K  393M   1% /run
+/dev/vda1      ext4       20G  3.6G   16G  19% /
+tmpfs          tmpfs     2.0G   16K  2.0G   1% /dev/shm
+tmpfs          tmpfs     5.0M     0  5.0M   0% /run/lock
+tmpfs          tmpfs     2.0G     0  2.0G   0% /sys/fs/cgroup
+/dev/loop0     squashfs   68M   68M     0 100% /snap/lxd/21835
+/dev/loop2     squashfs   62M   62M     0 100% /snap/core20/1361
+/dev/loop1     squashfs   62M   62M     0 100% /snap/core20/1328
+/dev/loop3     squashfs   44M   44M     0 100% /snap/snapd/14978
+/dev/loop4     squashfs   68M   68M     0 100% /snap/lxd/22526
+/dev/vda15     vfat      105M  5.2M  100M   5% /boot/efi
+tmpfs          tmpfs     394M     0  394M   0% /run/user/1000
+ubuntu@ubuntufla:~$ df -hT /dev/vda1
 Filesystem     Type  Size  Used Avail Use% Mounted on
-/dev/xvda1     ext4   12G  9.3G  2.4G  80% /
-user_fb:~/environment $ 
+/dev/vda1      ext4   20G  3.6G   16G  19% /
+ubuntu@ubuntufla:~$ 
 ```
 
-Abbiamo ancora **2.4GB** disponibili.
+Abbiamo ancora **16GB** disponibili.
 
 
 
@@ -300,82 +323,72 @@ Per aprire la nuova applicazione entriamo nella cartella e facciamo partire il w
 
 ```bash
 $ cd bl7_0
-$ rails s
+$ rails s -b 192.168.64.3
 ```
+
+> Se usavamo solo `$ rails s` la pagina web era raggiungibile solo in locale ed invece noi il browser lo apriamo nella pc con macOS. Quindi per renderlo raggiungibile da un altro pc gli facciamo esporre un indirizzo ip e nello specifico lo stesso della VM.
+
+Di default va sulla porta 3000 se volevamo spostarlo sulla porta 8080 avremmo fatto:
+
+```bash
+$ rails s -b 192.168.64.3 -p  8080
+```
+
+> Possiamo usare solo porte libere. se proviamo sulla porta 80 riceviamo un errore.
+
 
 Esempio:
 
 ```bash
-user_fb:~/environment $ cd bl7_0
-user_fb:~/environment/bl7_0 (main) $ rails s
+ubuntu@ubuntufla:~/bl7_0$ rails s
 => Booting Puma
-=> Rails 7.0.1 application starting in development 
+=> Rails 7.0.2.2 application starting in development 
 => Run `bin/rails server --help` for more startup options
 Puma starting in single mode...
-* Puma version: 5.5.2 (ruby 3.1.0-p0) ("Zawgyi")
+* Puma version: 5.6.2 (ruby 3.1.1-p18) ("Birdie's Version")
 *  Min threads: 5
 *  Max threads: 5
 *  Environment: development
-*          PID: 3679
-* Listening on http://127.0.0.1:8080
-* Listening on http://[::1]:8080
+*          PID: 1876
+* Listening on http://127.0.0.1:3000
+* Listening on http://[::1]:3000
+Use Ctrl-C to stop
+^C- Gracefully stopping, waiting for requests to finish
+=== puma shutdown: 2022-03-04 09:48:45 +0100 ===
+- Goodbye!
+Exiting
+ubuntu@ubuntufla:~/bl7_0$ rails s -b 192.168.64.3
+=> Booting Puma
+=> Rails 7.0.2.2 application starting in development 
+=> Run `bin/rails server --help` for more startup options
+Puma starting in single mode...
+* Puma version: 5.6.2 (ruby 3.1.1-p18) ("Birdie's Version")
+*  Min threads: 5
+*  Max threads: 5
+*  Environment: development
+*          PID: 1888
+* Listening on http://192.168.64.3:3000
 Use Ctrl-C to stop
 ```
 
-su cloud9 clicchiamo sul link di "Preview" in alto e scegliamo "Preview Running Application"
-In basso a destra si apre la finestra di preview con un messaggio di errore " Blocked host: ... " perché manca il permesso di connettersi al web server locale.
-
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/07_fig01-preview-web_server_connection_error.png)
 
 
+## Verifichiamo preview
 
-## Risolviamo problema di connessione
+Una volta partito il server apriamo un browser sul nostro pc con macOS ed indichiamo nell'URL l'indirizzo IP della VM e la porta *3000* su cui si sta presentando il web server *Puma*.
 
-Before running rails server, it’s necessary on some systems (including the cloud IDE) to allow connections to the local web server. 
-To enable this, you should navigate to the file config/environments/development.rb and paste in the two extra lines.
+***URL: http://192.168.64.3:3000***
 
-Permettiamo le connessioni al web server locale aggiungendo in fondo il permesso di connessione al server locale.
+Ci colleghiamo correttamente ma riceviamo il messaggio di errore *ActiveRecord:NoDatabaseError*.
+Questo è semplicemente dovuto alla mancanza del database su PostgreSQL per la nostra applicazione.
+Cosa che risolviamo nel prossimo capitolo.
 
-***codice 01 - .../config/environments/development.rb - line: 71***
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/06_00-new_app.png)
 
-```ruby
-  # Allow connections to local server.
-  config.hosts.clear
-```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/07_01-config-environments-development.rb)
-
-Adesso se clicchiamo sul link di "Preview" in alto e scegliamo "Preview Running Application"
-In basso a destra si apre la finestra di preview con un altro messaggio di errore perché manca la connessione al database PostgreSQL.
-
-![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/07_fig02-preview-db_error.png)
-
-Per vedere il preview su un tab separato del browser fare click sull'icona di espansione. Quella che quando vai sopra con il cursore apre tip "Pop Out into new windows"
-
-Questo errore lo risolviamo nel prossimo capitolo. 
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/06-install_postgresql_on_ec2_amazon.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/05_00-install_postgresql.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/08-pg_app_databases.md)
-
-
-
-
-## Facciamo partire Rails server
-
-```bash
-$ rails s -b 192.168.64.4
-```
-
-Di default va sulla porta 3000 se vogliamo spostarlo sulla porta 8080 facciamo:
-
-```bash
-$ rails s -b 192.168.64.4 -p  8080
-```
-
-(possiamo usare solo porte libere. se proviamo sulla porta 80 riceviamo un errore.)
-
-
-
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/07-pg_app_databases.md)
