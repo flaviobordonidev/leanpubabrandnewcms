@@ -383,7 +383,7 @@ Ci colleghiamo correttamente ma riceviamo il messaggio di errore *ActiveRecord:N
 Questo è semplicemente dovuto alla mancanza del database su PostgreSQL per la nostra applicazione.
 Cosa che risolviamo nel prossimo capitolo.
 
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/06_00-new_app.png)
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/06_fig01-browser_preview.png)
 
 
 
