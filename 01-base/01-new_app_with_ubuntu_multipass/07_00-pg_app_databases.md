@@ -204,7 +204,7 @@ $ sudo service postgresql start
 $ rails s
 ```
 
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/08_fig01-preview_working.png)
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/07_fig01-preview_working.png)
 
 Funziona ^_^!
 
