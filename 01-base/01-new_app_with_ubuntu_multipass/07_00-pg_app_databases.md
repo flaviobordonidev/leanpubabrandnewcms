@@ -206,15 +206,8 @@ $ rails s
 
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/08_fig01-preview_working.png)
 
-Anche se non riceviamo errore sembra non stia funzionando ma è un problema di preview dentro aws Cloud9. 
-Basta aprirlo su un nuovo tab del browser e vediamo che funziona tutto!
-Clicchiamo sull'icona in alto a destra nel riquadro del preview per aprirlo su un nuovo tab del browser.
+Funziona ^_^!
 
-Si apre un nuovo tab del browser sull'URL del root_path:
-
-- *https://[mycloud9path].amazonaws.com*
-
-![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/08_fig02-preview_working_new_tab.png)
 
 
 ---
