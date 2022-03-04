@@ -204,7 +204,7 @@ $ sudo service postgresql start
 $ rails s
 ```
 
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/07_fig01-preview_working.png)
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/07_fig01-preview_working.png)
 
 Funziona ^_^!
 
@@ -212,6 +212,6 @@ Funziona ^_^!
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/07-new_app.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/07-new_app.md)
  | [top](#top) |
 [next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/09-gemfile_ruby_version.md)
