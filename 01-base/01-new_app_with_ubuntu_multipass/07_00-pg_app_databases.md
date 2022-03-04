@@ -136,8 +136,8 @@ $ psql postgres
 Esempio:
 
 ```bash
-user_fb:~/environment/bl7_0 (main) $ psql postgres
-psql (10.19 (Ubuntu 10.19-0ubuntu0.18.04.1))
+ubuntu@ubuntufla:~/bl7_0$ psql postgres
+psql (12.9 (Ubuntu 12.9-0ubuntu0.20.04.1))
 Type "help" for help.
 
 postgres=# \list
@@ -154,12 +154,10 @@ postgres=# \list
 (5 rows)
 
 postgres=# \q
-user_fb:~/environment/bl7_0 (main) $ 
+ubuntu@ubuntufla:~/bl7_0$
 ```
 
-
 oppure
-
 
 ```bash
 $ psql --list
@@ -168,7 +166,7 @@ $ psql --list
 Esempio:
 
 ```bash
-user_fb:~/environment/bl7_0 (main) $ psql --list
+ubuntu@ubuntufla:~/bl7_0$ psql --list
                                   List of databases
        Name        |  Owner   | Encoding | Collate |  Ctype  |   Access privileges   
 -------------------+----------+----------+---------+---------+-----------------------
@@ -181,7 +179,7 @@ user_fb:~/environment/bl7_0 (main) $ psql --list
                    |          |          |         |         | postgres=CTc/postgres
 (5 rows)
 
-user_fb:~/environment/bl7_0 (main) $ 
+ubuntu@ubuntufla:~/bl7_0$ 
 ```
 
 Avremmo potuto anche creare i databases da linea di comando di postgreSQL:
