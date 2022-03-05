@@ -20,7 +20,7 @@ Possiamo gestire postgreSQL localmente nell'ambiente di sviluppo e test perché 
 Un'alternativa era quella di caricare la gemma "pg" solo per l'ambiente di produzione. Ma è preferibile usare nell'ambiente di sviluppo le stesse risorse usate in produzione.
 
 ```bash
-$ cd ~/environment
+$ cd ~/
 $ rails --version
 $ rails new bl7_0 --database=postgresql
 ```
