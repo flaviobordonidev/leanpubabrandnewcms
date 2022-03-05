@@ -12,35 +12,20 @@ Version Control System. Un gestore che controlla le versioni del software in fas
 
 ## Inizializziamo
 
-Da rails 7.0 git è inizializzato in automatico. Se entriamo nella directory del nostro nuovo applicativo.
+Da rails 7.0 git è inizializzato in automatico. Se entriamo nella directory del nostro nuovo applicativo, vediamo che c'è la cartella **nascosta** *.git*.
 
 ```bash
-$ cd bl7_0
-```
-
-Vediamo che c'è la cartella **nascosta** *.git*.
-
-```bash
-$ ls -a
-```
-
-> Per vedere possiamo visualizzare i files nascosti dalla ruota dentata al lato del nome del workspace scegliendo dal menu a discesa la voce "show hidden files"
-
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/02-git/02_fig01-show_hidden_files.png)
-
-Oppure da terminale
-
-```bash
+$ cd ~/bl7_0
 $ ls -a
 ```
 
 Esempio:
 
 ```bash
-user_fb:~/environment/bl7_0 (main) $ ls -a
+ubuntu@ubuntufla:~/bl7_0$ ls -a
 .   .git            .gitignore     Gemfile       README.md  app  config     db   log     storage  tmp
 ..  .gitattributes  .ruby-version  Gemfile.lock  Rakefile   bin  config.ru  lib  public  test     vendor
-user_fb:~/environment/bl7_0 (main) $ 
+ubuntu@ubuntufla:~/bl7_0$ 
 ```
 
 Altrimenti avremmo dovuto inizializzare git con il comando **$ git init**
