@@ -65,6 +65,6 @@ Heroku è infatti un repository remoto di git.
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/03-mockups/01-mockups.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/03-mockups/01_00-mockups.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/04-heroku/02-inizializiamo_heroku.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/04-heroku/02_00-inizializiamo_heroku.md)
