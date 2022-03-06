@@ -15,6 +15,6 @@ Noi lo utilizziamo per avere un backup del nostro applicativo e per predisporre 
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/04-heroku/03-heroku_finish.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/04-heroku/03_00-heroku_finish.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/02-github_readme-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/02_00-github_readme-it.md)
