@@ -146,10 +146,10 @@ Per il numero della versione seguiamo le convenzioni del [semantic versioning](h
 Esempio:
 
 ```bash
-user_fb:~/environment/bl7_0 (main) $ git add -A
-user_fb:~/environment/bl7_0 (main) $ git commit -m "new rails app"
-[main (root-commit) d64bcf1] new rails app
- 79 files changed, 1450 insertions(+)
+ubuntu@ubuntufla:~/bl7_0$ git add -A
+ubuntu@ubuntufla:~/bl7_0$ git commit -m "new rails app"
+[main (root-commit) 2c977e0] new rails app
+ 79 files changed, 1448 insertions(+)
  create mode 100644 .gitattributes
  create mode 100644 .gitignore
  create mode 100644 .ruby-version
@@ -229,14 +229,14 @@ user_fb:~/environment/bl7_0 (main) $ git commit -m "new rails app"
  create mode 100644 tmp/storage/.keep
  create mode 100644 vendor/.keep
  create mode 100644 vendor/javascript/.keep
-user_fb:~/environment/bl7_0 (main) $ git tag v0.1.0
-user_fb:~/environment/bl7_0 (main) $ 
+ubuntu@ubuntufla:~/bl7_0$ git tag v0.1.0
+ubuntu@ubuntufla:~/bl7_0$ 
 ```
 
 
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/02-git/01-git_story.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/02-git/01_00-git_story.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/02-git/03-daily_routine.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/02-git/03_00-daily_routine.md)
