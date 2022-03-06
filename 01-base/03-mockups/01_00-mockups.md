@@ -262,16 +262,16 @@ $ git commit -m "implement mockups"
 Esempio:
 
 ```bash
-user_fb:~/environment/bl7_0 (msp) $ git add -A
-user_fb:~/environment/bl7_0 (msp) $ git commit -m "implement mockups"
-[msp 92f76c7] implement mockups
- 6 files changed, 34 insertions(+)
+ubuntu@ubuntufla:~/bl7_0 (msp)$git add -A
+ubuntu@ubuntufla:~/bl7_0 (msp)$git commit -m "implement mockups"
+[msp 3ef9e14] implement mockups
+ 6 files changed, 33 insertions(+)
  create mode 100644 app/controllers/mockups_controller.rb
  create mode 100644 app/helpers/mockups_helper.rb
  create mode 100644 app/views/mockups/page_a.html.erb
  create mode 100644 app/views/mockups/page_b.html.erb
  create mode 100644 test/controllers/mockups_controller_test.rb
-user_fb:~/environment/bl7_0 (msp) $ 
+ubuntu@ubuntufla:~/bl7_0 (msp)$
 ```
 
 
@@ -323,6 +323,6 @@ user_fb:~/environment/bl7_0 (main) $
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/02-git/03-daily_routine.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/02-git/04_00-daily_routine.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/04-heroku/01-heroku_story.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/04-heroku/01_00-heroku_story.md)
