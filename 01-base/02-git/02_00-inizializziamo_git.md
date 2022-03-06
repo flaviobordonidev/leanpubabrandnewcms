@@ -47,15 +47,12 @@ $ git config -l
 Esempio:
   
 ```bash
-user_fb:~/environment/bl7_0 (main) $ git config -l
-credential.helper=!aws codecommit credential-helper $@
-credential.usehttppath=true
-core.editor=nano
+ubuntu@ubuntufla:~/bl7_0$ git config -l
 core.repositoryformatversion=0
 core.filemode=true
 core.bare=false
 core.logallrefupdates=true
-user_fb:~/environment/bl7_0 (main) $ 
+ubuntu@ubuntufla:~/bl7_0$ 
 ```
 
 Essendo la prima configurazione del sistema, prima di usare Git, dobbiamo eseguire un paio di passaggi di configurazione una tantum.
@@ -69,23 +66,19 @@ $ git config --global user.email "my@email.com"
 Esempio:
 
 ```bash
-user_fb:~/environment/bl7_0 (main) $ git config --global user.name "My Name"
-user_fb:~/environment/bl7_0 (main) $ git config --global user.email "my@email.com"
-user_fb:~/environment/bl7_0 (main) $ git config -l
-credential.helper=!aws codecommit credential-helper $@
-credential.usehttppath=true
-core.editor=nano
+ubuntu@ubuntufla:~/bl7_0$ git config --global user.name "My Name"
+ubuntu@ubuntufla:~/bl7_0$ git config --global user.email "my@email.com"
+ubuntu@ubuntufla:~/bl7_0$ git config -l
 user.name=My Name
 user.email=my@email.com
 core.repositoryformatversion=0
 core.filemode=true
 core.bare=false
 core.logallrefupdates=true
-user_fb:~/environment/bl7_0 (main) $ 
+ubuntu@ubuntufla:~/bl7_0$ 
 ```
 
-> Più avanti quando attiveremo GitHub useremo la stessa email usata qui.
->
+> Più avanti quando attiveremo GitHub useremo la stessa email usata qui. <br/>
 > Tieni presente che il nome e l'indirizzo email che utilizzi nella configurazione di Git saranno disponibili in tutti i repository che rendi pubblici.
 
 
