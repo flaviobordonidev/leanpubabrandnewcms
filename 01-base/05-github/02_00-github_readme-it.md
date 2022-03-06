@@ -36,7 +36,7 @@ dopo tutta la descrizione del progetto mettiamo la storia delle varie releases
 ```Markdown
 history:
 
-- v0.1.0  26.01.22  creazione dell'applicazione su rails 7.0.1
+- v0.1.0  06.03.22  creazione dell'applicazione su rails 7.0.2
 ==
 ```
 
@@ -72,6 +72,6 @@ Lo chiudiamo nel prossimo capitolo
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/01-github_story-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/01_00-github_story-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/03-github_initializing-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/03_00-github_initializing-it.md)

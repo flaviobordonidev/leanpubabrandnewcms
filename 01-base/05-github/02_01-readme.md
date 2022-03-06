@@ -21,4 +21,5 @@ by [mycompany_name](http://www.mycompany_name.com/).
 
 history:
 
-- v0.1.0  26.01.22  creazione dell'applicazione su rails 7.0.1
+- v0.1.0  06.03.22  creazione dell'applicazione su rails 7.0.2
+==
