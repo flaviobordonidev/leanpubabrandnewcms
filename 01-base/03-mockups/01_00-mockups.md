@@ -98,6 +98,7 @@ $ rails s -b 192.168.64.3
 
 e vediamo i vari URLs sul nostro browser:
 
+- http://192.168.64.3:3000
 - http://192.168.64.3:3000/mockups/page_a
 - http://192.168.64.3:3000/mockups/page_b
 
@@ -121,7 +122,7 @@ Aggiorniamo il file routes per mettere l'homepage come pagina principale (root)
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/03-mockups/01_01-config-routes.rb)
 
 > Su rails 7 la configurazione di default di *routes* suggerisce di inserire il percorso di *root* come ultima riga del codice.
-> Inizialmente lo usavamo come prima riga ma seguiamo la convenzione e lo mettiamo in fondo. 
+
 
 
 ## Verifichiamo preview
@@ -133,11 +134,11 @@ $ sudo service postgresql start
 $ rails s
 ```
 
-e vediamo che addesso sull'URL della root "/" ci reinstrada su page_a:
+e vediamo che addesso sull'URL della root */* ci reinstrada su *page_a*:
 
-- https://mycloud9path.amazonaws.com
-- https://mycloud9path.amazonaws.com/mockups/page_a
-- https://mycloud9path.amazonaws.com/mockups/page_b
+- http://192.168.64.3:3000
+- http://192.168.64.3:3000/mockups/page_a
+- http://192.168.64.3:3000/mockups/page_b
 
 ![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/03-mockups/01_fig03-views-mockups-page_a-root_path.png)
 
