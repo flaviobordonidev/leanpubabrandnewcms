@@ -154,11 +154,11 @@ $ rails routes
 Esempio:
 
 ```bash
-user_fb:~/environment/bl7_0 (msp) $ rails routes
+ubuntu@ubuntufla:~/bl7_0 (msp)$rails routes
                                   Prefix Verb   URI Pattern                                                                                       Controller#Action
-                                    root GET    /                                                                                                 mockups#page_a
                           mockups_page_a GET    /mockups/page_a(.:format)                                                                         mockups#page_a
                           mockups_page_b GET    /mockups/page_b(.:format)                                                                         mockups#page_b
+                                    root GET    /                                                                                                 mockups#page_a
         turbo_recede_historical_location GET    /recede_historical_location(.:format)                                                             turbo/native/navigation#recede
         turbo_resume_historical_location GET    /resume_historical_location(.:format)                                                             turbo/native/navigation#resume
        turbo_refresh_historical_location GET    /refresh_historical_location(.:format)                                                            turbo/native/navigation#refresh
@@ -189,7 +189,7 @@ rails_conductor_inbound_email_incinerate POST   /rails/conductor/action_mailbox/
                       rails_disk_service GET    /rails/active_storage/disk/:encoded_key/*filename(.:format)                                       active_storage/disk#show
                update_rails_disk_service PUT    /rails/active_storage/disk/:encoded_token(.:format)                                               active_storage/disk#update
                     rails_direct_uploads POST   /rails/active_storage/direct_uploads(.:format)                                                    active_storage/direct_uploads#create
-user_fb:~/environment/bl7_0 (msp) $ 
+ubuntu@ubuntufla:~/bl7_0 (msp)$
 ```
 
 Nella colonna *Prefix* c'è la voce che utiliziamo per creare i **paths** per i nostri links: *Prefix + _path*.
