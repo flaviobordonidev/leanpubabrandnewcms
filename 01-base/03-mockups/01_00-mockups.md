@@ -15,17 +15,16 @@ $ git log
 Esempio:
 
 ```bash
-user_fb:~/environment $ cd bl7_0/
-user_fb:~/environment/bl7_0 (main) $ git status
+ubuntu@ubuntufla:~/bl7_0$ git status
 On branch main
 nothing to commit, working tree clean
-user_fb:~/environment/bl7_0 (main) $ git log
-commit d64bcf1dfc29ecacc5652754eae6a40b1ad5b579 (HEAD -> main, tag: v0.1.0)
-Author: Flavio Bordoni Dev <flavio.bordoni.dev@gmail.com>
-Date:   Tue Jan 18 14:37:49 2022 +0000
+ubuntu@ubuntufla:~/bl7_0$ git log
+commit 2c977e03d536f4b99e032bb098dcb53f1e23a75b (HEAD -> main, tag: v0.1.0)
+Author: My Name <my@email.com>
+Date:   Sun Mar 6 01:06:31 2022 +0100
 
     new rails app
-user_fb:~/environment/bl7_0 (main) $ 
+ubuntu@ubuntufla:~/bl7_0$ 
 ```
 
 
@@ -35,7 +34,7 @@ user_fb:~/environment/bl7_0 (main) $
 Assicuriamoci di essere nella directory della nostra applicazione Rails e creiamo il ramo con git.
 
 ```bash
-$ cd ~/environment/bl7_0
+$ cd ~/bl7_0
 $ git checkout -b msp
 ```
 
@@ -68,7 +67,7 @@ $ rails g controller Mockups page_a page_b
 ```
 
 ```bash
-user_fb:~/environment/bl7_0 (msp) $ rails g controller Mockups page_a page_b
+ubuntu@ubuntufla:~/bl7_0 (msp)$rails g controller Mockups page_a page_b
       create  app/controllers/mockups_controller.rb
        route  get 'mockups/page_a'
               get 'mockups/page_b'
@@ -81,7 +80,7 @@ user_fb:~/environment/bl7_0 (msp) $ rails g controller Mockups page_a page_b
       invoke  helper
       create    app/helpers/mockups_helper.rb
       invoke    test_unit
-user_fb:~/environment/bl7_0 (msp) $ 
+ubuntu@ubuntufla:~/bl7_0 (msp)$
 ```
 
 > Non abbiamo nessun migrate perché non ci interfacciamo con il database.
@@ -94,14 +93,13 @@ Vediamo la nostra applicazione rails funzionante. Attiviamo il webserver
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 e vediamo i vari URLs sul nostro browser:
 
-- https://mycloud9path.amazonaws.com
-- https://mycloud9path.amazonaws.com/mockups/page_a
-- https://mycloud9path.amazonaws.com/mockups/page_b
+- http://192.168.64.3:3000/mockups/page_a
+- http://192.168.64.3:3000/mockups/page_b
 
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/03-mockups/01_fig01-views-mockups-page_a.png)
 
