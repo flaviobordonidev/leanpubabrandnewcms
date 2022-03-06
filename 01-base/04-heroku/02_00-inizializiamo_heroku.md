@@ -75,13 +75,13 @@ $ heroku --version
 Esempio:
 
 ```bash
-user_fb:~/environment/bl7_0 (pp) $ heroku --version
+ubuntu@ubuntufla:~/bl7_0 (pp)$heroku --version
 
 Command 'heroku' not found, but can be installed with:
 
 sudo snap install heroku
 
-user_fb:~/environment/bl7_0 (pp) $ 
+ubuntu@ubuntufla:~/bl7_0 (pp)$
 ```
 
 Nel nostro caso non è installato.
@@ -103,14 +103,14 @@ Come abbiamo già fatto per PostgreSQL, anche Heroku lo installiamo sulla cartel
 Assicuriamoci di essere sulla cartella principale
 
 ```bash
-$ cd ~/environment
+$ cd ~/
 ```
 
 Esempio:
 
 ```bash
-user_fb:~/environment/bl7_0 (pp) $ cd ~/environment
-user_fb:~/environment $ 
+ubuntu@ubuntufla:~/bl7_0 (pp)$cd ~/
+ubuntu@ubuntufla:~ $
 ```
 
 Per installare Heroku dobbiamo scaricare ed installare la "heroku CLI" (ex heroku-toolbelt).
@@ -125,22 +125,22 @@ $ sudo su -
 Esempio:
 
 ```bash
-user_fb:~/environment $ sudo su -
-root@ip-172-31-24-105:~# curl https://cli-assets.heroku.com/install.sh | sh
+ubuntu@ubuntufla:~ $sudo su -
+root@ubuntufla:~# curl https://cli-assets.heroku.com/install.sh | sh
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-100  1894  100  1894    0     0  42088      0 --:--:-- --:--:-- --:--:-- 42088
+100  1894  100  1894    0     0   7576      0 --:--:-- --:--:-- --:--:--  7576
 Installing CLI from https://cli-assets.heroku.com/heroku-linux-x64.tar.xz
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-100 18.7M  100 18.7M    0     0  4965k      0  0:00:03  0:00:03 --:--:-- 4964k
+100 18.7M  100 18.7M    0     0  4867k      0  0:00:03  0:00:03 --:--:-- 4866k
 v12.21.0
 heroku installed to /usr/local/bin/heroku
  ›   Warning: Our terms of service have changed: https://dashboard.heroku.com/terms-of-service
 heroku/7.59.2 linux-x64 node-v12.21.0
-root@ip-172-31-24-105:~# exit
+root@ubuntufla:~# exit
 logout
-user_fb:~/environment $ 
+ubuntu@ubuntufla:~ $
 ```
 
 Verifichiamo che l'installazione è andata a buon fine.
@@ -152,10 +152,10 @@ $ heroku --version
 Esempio:
 
 ```bash
-user_fb:~/environment $ heroku --version
+ubuntu@ubuntufla:~ $heroku --version
  ›   Warning: Our terms of service have changed: https://dashboard.heroku.com/terms-of-service
 heroku/7.59.2 linux-x64 node-v12.21.0
-user_fb:~/environment $ 
+ubuntu@ubuntufla:~ $
 ```
 
 
@@ -163,19 +163,19 @@ user_fb:~/environment $
 ## Verifichiamo quanto spazio disco ci resta
 
 ```bash
-$ df -hT /dev/xvda1
+$ df -hT /dev/vda1
 ```
 
 Esempio:
 
 ```bash
-user_fb:~/environment $ df -hT /dev/xvda1
+ubuntu@ubuntufla:~ $df -hT /dev/vda1
 Filesystem     Type  Size  Used Avail Use% Mounted on
-/dev/xvda1     ext4   12G  9.5G  2.1G  82% /
-user_fb:~/environment $ 
+/dev/vda1      ext4   20G  3.8G   16G  20% /
+ubuntu@ubuntufla:~ $
 ```
 
-Abbiamo ancora **2.1GB** disponibili.
+Abbiamo ancora **16GB** disponibili.
 
 
 
@@ -206,12 +206,19 @@ Opening browser to https://cli-auth.heroku.com/auth/browser/fbca295d-9ffd-46ba-9
 ```
 
 Questa procedura ti fa fare il login sulla pagina web. Basta cliccare sul link, scegliere "open" ed eseguire il login.
-Purtroppo con aws cloud9 non funziona per qualche errore di autorizzazione o di reinstradamanento.
-Appare una pagina web con l'errore: ip-address-mismatch
+
+Funziona
+
+
 
 
 
 ## IP address mismatch
+
+In alcune situazioni potrebbe non funzionare e dare errore di *ip-address-mismatch*.
+
+> Ad esempio su aws cloud9 non funziona per qualche errore di autorizzazione o di reinstradamanento.
+Appare una pagina web con l'errore: ip-address-mismatch
 
 Risolviamo il problema dell'IP address mismatch.
 
@@ -394,6 +401,55 @@ user_fb:~/environment/bl7_0 (pp) $
 Se ci appare "fatal: not in a git directory" allora probabilmente non siamo nella directory corretta. Altrimenti possiamo mandare in produzione il nostro codice.
 
 
+## Ricolleghiamo l'app
+
+> [couldnt find the app in heroku](https://stackoverflow.com/questions/53551717/couldnt-find-that-app-when-running-heroku-commands-in-console)
+
+Mi è successo di cancellare l'app dall'interfaccia web di heroku e quindi di doverla ricreare.
+Creata di nuovo ho perso il collegamento.
+
+```bash
+ubuntu@ubuntufla:~/bl7_0 (pp)$heroku domains
+ ›   Error: Couldn't find that app.
+ ›
+ ›   Error ID: not_found
+```
+
+Per riprenderlo ho dovuto reinserire nel *git:remote* il nome della nuova *app*.
+
+```bash
+heroku apps
+heroku git:remote -a YOUR_APP
+```
+
+Esempio:
+
+```bash
+ubuntu@ubuntufla:~/bl7_0 (pp)$heroku domains
+ ›   Warning: heroku update available from 7.59.2 to 7.59.3.
+ ›   Error: Couldnt find that app.
+ ›
+ ›   Error ID: not_found
+ubuntu@ubuntufla:~/bl7_0 (pp)$heroku apps
+ ›   Warning: heroku update available from 7.59.2 to 7.59.3.
+=== flavio.bordoni.dev@gmail.com Apps
+agile-everglades-47263
+elisinfo
+
+=== Collaborated Apps
+integram-agency-blog  r.desantis@integram-system.com
+rebisworld4           r.desantis@integram-system.com
+ubuntu@ubuntufla:~/bl7_0 (pp)$heroku git:remote -a agile-everglades-47263
+ ›   Warning: heroku update available from 7.59.2 to 7.59.3.
+set git remote heroku to https://git.heroku.com/agile-everglades-47263.git
+ubuntu@ubuntufla:~/bl7_0 (pp)$heroku domains
+ ›   Warning: heroku update available from 7.59.2 to 7.59.3.
+=== agile-everglades-47263 Heroku Domain
+agile-everglades-47263.herokuapp.com
+ubuntu@ubuntufla:~/bl7_0 (pp)$
+```
+
+
 
 ## Rinominiamo l'app
 
@@ -415,7 +471,7 @@ user_fb:~/environment/bl7_0 (pp) $
 ```
 
 Attenzione:
-Il nome deve essere unico in tutto l'ambiente Heroku. Se il nome fosse già utilizzato possiamo aggiungere un prefisso *-mese* per renderlo univoco.
+Il nome deve essere unico in tutto l'ambiente Heroku. Se il nome fosse già utilizzato potremmo aggiungere il prefisso *-mese* per renderlo univoco.
 
 
 verifichiamo di nuovo le informazione della nostra app
