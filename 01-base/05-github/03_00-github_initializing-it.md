@@ -35,8 +35,8 @@ Inizializziamo GitHub che useremo principalmente come repositroy remoto di backu
 
 ## Condividiamo la chiave pubblica
 
-Per far comunicare Github con aws Cloud9 dobbiamo fargli condividere la chiave pubblica.
-Andiamo sul terminale di aws Cloud9 e visualizziamo e copiamoci la chiave pubblica (public key) di aws Cloud9.
+Per far comunicare Github con la nostra VM *ubuntufla* dobbiamo fargli condividere la chiave pubblica.
+Andiamo sul terminale della VM, visualizziamo e copiamo la chiave pubblica (public key).
 
 ```bash
 $ cat ~/.ssh/id_rsa.pub
@@ -45,14 +45,14 @@ $ cat ~/.ssh/id_rsa.pub
 Esempio:
   
 ```bash
-user_fb:~/environment/bl7_0 (gh) $ cat ~/.ssh/id_rsa.pub
+ubuntu@ubuntufla:~/bl7_0 (gh)$cat ~/.ssh/id_rsa.pub
 ssh-rsa AAAAB3...[...]...MmDRyKWg55 ubuntu@ip-172-56-27-218
-user_fb:~/environment/bl7_0 (gh) $
+ubuntu@ubuntufla:~/bl7_0 (gh)$
 ```
 
 Copiare tutta la chiave pubblica, compreso ***ssh-rsa***, e passarla su ***Github -> Settings -> SSH and GPG keys -> button "New SSH key"***
 
-- Title : awsC9-bl7_0
+- Title : ubuntufla-bl7_0
 - Key   : ssh-rsa AAAAB3...[...]...MmDRyKWg5 ec2-user@ip-172-56-27-218
 
 ![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/03_fig03-github_ssh_public_key.png)
@@ -87,7 +87,7 @@ con *add origin* si dichiara che il nome di riferimento del repositroy remoto è
 
 Il comando *branch -M main* imposta il branch principale con il nome ***main***. In passato era chiamata *master* ma è stato cambiato perché non era una parola "politically correct".
 
-L'ultimo comando *push -u origin main* imposta di default "*origin main*" e ci permette di eseguire successivamente anche il solo: *git push*. Ma io preferisco lasciarlo esplicito, quindi l'ultima riga non la uso.
+L'ultimo comando *push -u origin main* imposta di default "*origin main*" e ci permette di eseguire successivamente anche il solo: *git push*.
 
 Prima di spostare il nostro git locale sul repository remoto Github dobbiamo chiudere il branch locale, tornare sul branch master ed effettuare il merge. 
 
@@ -153,7 +153,7 @@ To github.com:flaviobordonidev/bl7_0.git
 user_fb:~/environment/bl7_0 (main) $ 
 ```
 
-Se adesso facciamo un refresh alla pagina di Github vedremo il nostro nuovo repository con la nostra myapp-01
+Se adesso facciamo un refresh alla pagina di Github vedremo il nostro nuovo repository popolato con il codice della nostra app.
 
 ![fig06](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/03_fig06-github_repository_overview.png)
 
@@ -169,6 +169,6 @@ ed i tags delle varie versioni
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/02-github_readme-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/02_00-github_readme-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/04-github-multi-users-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/04_00-github-multi-users-it.md)
