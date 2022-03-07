@@ -4,7 +4,7 @@ Attiviamo l'internazionalizzazione statica
 
 Invece di scrivere i contenuti statici (quelli non presi dal database) già tradotti è più elegante mettere dei "segnaposto" che saranno poi usati dai vari files di traduzione nelle varie lingue. Questo permette di avere un'applicazione già pronta per essere tradotta in più lingue.
 
-Il nome dei "segnaposto" li mettiamo in inglese per dare un'impronta world-wide al nostro applicativo che ci permetterà in futuro di collaborare con sviluppatori da tutto il mondo.
+> Il nome dei "segnaposto" lo mettiamo in inglese per dare un'impronta *world-wide* al nostro applicativo che ci permetterà in futuro di collaborare con sviluppatori da tutto il mondo.
 
 
 
@@ -31,7 +31,9 @@ Al momento noi ci occupiamo solo di quella statica.
 
 ## I18n statico con YAML
 
-Per tradurre in varie lingue il contenuto statico della nostra applicazione (quello che non è contenuto nel database) utilizziamo il file *yaml* che è disponibile di default su Rails. Non c'è necessità di installare una nuova gemma. Rimane comunque la possibilità di cambiare successivamente solo il backend ed usarne uno differente invece dei files *yaml*. Tutto il resto dell'internazionalizzazione resta invariato.
+Per tradurre in varie lingue il contenuto statico della nostra applicazione (quello che non è contenuto nel database) utilizziamo il file *yaml* che è disponibile di default su Rails. Non c'è necessità di installare una nuova gemma. 
+
+> Rimane comunque la possibilità di cambiare successivamente solo il backend ed usarne uno differente invece dei files *yaml*. Tutto il resto dell'internazionalizzazione resta invariato.
 
 Usiamo l'helper "***t***" per tutte le stringhe che dobbiamo internazionalizzare.
 la stringa che viene passata all'helper "***t***" è un segnaposto che si usa nel file yaml associandogli la stringa corretta nella lingua scelta.
@@ -83,7 +85,8 @@ en:
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/01_02-config-locales-en.yml)
 
-> ATTENZIONE! i files YAML (.yml) sono sensibili all'indentatura. Per indentare usate gli "spazi" e non i "tabs".
+> ATTENZIONE! i files YAML (.yml) sono sensibili all'indentatura. <br/>
+> Per indentare usiamo gli *spazi* e non i *tabs*.
 
 
 
@@ -180,6 +183,6 @@ Lo chiudiamo nel prossimo capitolo
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/04-github-multi-users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/05-github/04_00-github-multi-users-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/02-default_language-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/02_00-default_language-it.md)
