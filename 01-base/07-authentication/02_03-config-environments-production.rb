@@ -70,7 +70,7 @@ Rails.application.configure do
 
   # Devise config
   config.action_mailer.default_url_options = { host: 'bl7-0.herokuapp.com', port: 3000 }
-
+  
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
   config.i18n.fallbacks = true
