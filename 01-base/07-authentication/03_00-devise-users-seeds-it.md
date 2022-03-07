@@ -15,16 +15,16 @@ $ rails g devise User
 Esempio:
   
 ```bash
-user_fb:~/environment/bl7_0 (ldi) $ rails g devise User
+ubuntu@ubuntufla:~/bl7_0 (ldi)$rails g devise User
       invoke  active_record
-      create    db/migrate/20220130110553_devise_create_users.rb
+      create    db/migrate/20220307163946_devise_create_users.rb
       create    app/models/user.rb
       invoke    test_unit
       create      test/models/user_test.rb
       create      test/fixtures/users.yml
       insert    app/models/user.rb
        route  devise_for :users
-user_fb:~/environment/bl7_0 (ldi) $ 
+ubuntu@ubuntufla:~/bl7_0 (ldi)$
 ```
 
 > La maggior parte delle volte il *MyModel* usato è **User**, ma esistono situazioni in cui si preferisce dare un nome più esplicito. 
@@ -288,16 +288,16 @@ $ rails c
 Esempio:
   
 ```bash
-user_fb:~/environment/bl7_0 (ldi) $ rails c
-Loading development environment (Rails 7.0.1)
-3.1.0 :001 > User.create(name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda')
-  TRANSACTION (0.1ms)  BEGIN
-  User Exists? (0.8ms)  SELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2  [["email", "ann@test.abc"], ["LIMIT", 1]]
-  User Create (1.6ms)  INSERT INTO "users" ("name", "email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"  [["name", "Ann"], ["email", "ann@test.abc"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["created_at", "2022-01-30 11:50:16.615885"], ["updated_at", "2022-01-30 11:50:16.615885"]]
-  TRANSACTION (2.1ms)  COMMIT
- => #<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2022-01-30 11:50:16.615885000 +0000", updated_at: "2022-01-30 11:50:16.615885000 +0000"> 
-3.1.0 :002 > exit
-user_fb:~/environment/bl7_0 (ldi) $ 
+ubuntu@ubuntufla:~/bl7_0 (ldi)$rails c
+Loading development environment (Rails 7.0.2.2)
+3.1.1 :001 > User.create(name: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda')
+  TRANSACTION (0.2ms)  BEGIN
+  User Exists? (1.0ms)  SELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2  [["email", "ann@test.abc"], ["LIMIT", 1]]
+  User Create (0.9ms)  INSERT INTO "users" ("name", "email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"  [["name", "Ann"], ["email", "ann@test.abc"], ["encrypted_password", "[FILTERED]"], ["reset_password_token", "[FILTERED]"], ["reset_password_sent_at", "[FILTERED]"], ["remember_created_at", nil], ["created_at", "2022-03-07 16:47:37.711835"], ["updated_at", "2022-03-07 16:47:37.711835"]]
+  TRANSACTION (1.2ms)  COMMIT
+ => #<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2022-03-07 16:47:37.711835000 +0000", updated_at: "2022-03-07 16:47:37.711835000 +0000"> 
+3.1.1 :002 > exit
+ubuntu@ubuntufla:~/bl7_0 (ldi)$
 ```
 
 Oppure
@@ -327,7 +327,7 @@ Attiviamo il webserver
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 Per verificarlo dobbiamo andare alla pagina **/users/sign_in** quindi all'URL:
@@ -365,7 +365,7 @@ $ git commit -m "Implement devise with User model and table"
 ## Pubblichiamo su Heroku
 
 ```bash
-$ git push heroku ldi:master
+$ git push heroku ldi:main
 $ heroku run rails db:migrate
 ```
 
@@ -439,6 +439,6 @@ $ git push origin main
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/02-authentication-devise_install-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/02_00-authentication-devise_install-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/04-devise-login_logout-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/04_00-devise-login_logout-it.md)
