@@ -4,8 +4,8 @@ class ApplicationController < ActionController::Base
   #-----------------------------------------------------------------------------
   private
   
-    #set language for internationalization
-    def set_locale
-      I18n.locale = params[:locale]
-    end
+  #set language for internationalization
+  def set_locale
+    I18n.locale = params[:locale]
+  end
 end

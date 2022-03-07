@@ -26,11 +26,11 @@ non serve perché è rimasto aperto dal capitolo precedente
 
 ## Passo 1 - Cambio fisso da codice (hard-coded)
 
-Per il cambio dinamico della lingua useremo *application_controller.rb*. Facciamo un primo passo impostando in modo rigido da codice la visualizzazione in inglese che sovrascrive la lingua di *default_locale* che abbiamo impostato essere quella in italiano.
+Per il cambio dinamico della lingua usiamo *application_controller.rb*. Facciamo un primo passo impostando in modo rigido da codice la visualizzazione in inglese che sovrascrive la lingua di *default_locale* che abbiamo impostato essere quella in italiano.
 
 Per impostare la lingua a livello di *application_controller*, la guida di Rails consiglia di usare *around_action* per impostare il *locale* ma noi usiamo il *before_action* perché *around_action* non funziona per le traduzioni di *devise*.
 
-> *around_action* da un livello di sicurezza maggiore e questo era importante fino a qualche anno fa perché *I18n.locale =* non era *tread-safe*, ma oggi lo è e quindi possiamo usare tranquillamente un *before_action*.
+> *around_action* dà un livello di sicurezza maggiore e questo era importante fino a qualche anno fa perché *I18n.locale =* non era *tread-safe*, ma oggi lo è e quindi possiamo usare tranquillamente un *before_action*.
 
 ***codice 01 - .../app/controllers/application_controller.rb - line: 2***
 
@@ -39,11 +39,11 @@ Per impostare la lingua a livello di *application_controller*, la guida di Rails
 
   #-----------------------------------------------------------------------------
   private
-  
-    #set language for internationalization
-    def set_locale
-      I18n.locale = :en
-    end
+
+  #set language for internationalization
+  def set_locale
+    I18n.locale = :en
+  end
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_01-controllers-application_controller.rb)
@@ -70,9 +70,9 @@ Impostiamo il cambio della lingua dal parametro *locale* nell'url.
 ***codice 02 - .../app/controllers/application_controller.rb - line: 8***
 
 ```ruby
-    def set_locale
-      I18n.locale = params[:locale]
-    end
+  def set_locale
+    I18n.locale = params[:locale]
+  end
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_02-controllers-application_controller.rb)
@@ -86,7 +86,7 @@ Impostiamo il cambio della lingua dal parametro *locale* nell'url.
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 Adesso, sul browser, per la lingua inglese dobbiamo passare nell'URL il parametro *locale=en*.
@@ -105,14 +105,14 @@ Invece di avere l'errore passiamo il *default_locale*.
 ***codice 03 - .../app/controllers/application_controller.rb - line: 8***
 
 ```ruby
-    def set_locale
-      case params[:locale]
-      when "it", "en"
-        I18n.locale = params[:locale]
-      else
-        I18n.locale = I18n.default_locale
-      end
+  def set_locale
+    case params[:locale]
+    when "it", "en"
+      I18n.locale = params[:locale]
+    else
+      I18n.locale = I18n.default_locale
     end
+  end
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_03-controllers-application_controller.rb)
@@ -122,7 +122,7 @@ Invece di avere l'errore passiamo il *default_locale*.
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 Adesso, sul browser, per la lingua inglese dobbiamo passare nell'URL il parametro *locale=en*.
@@ -254,6 +254,6 @@ $ git push origin main
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03-change_language_by_url_browser-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/03_00-change_language_by_url_browser-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/04-change_language_by_subdirectory-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/04_00-change_language_by_subdirectory-it.md)
