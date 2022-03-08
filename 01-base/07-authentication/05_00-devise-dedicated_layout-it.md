@@ -92,6 +92,7 @@ Aggiungiamo il parametro `controllers: { sessions: 'users/sessions' }` a *devise
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/05_01-config-routes.rb)
 
 
+
 ## Come sarabbero gli instradamenti anche con *registerable*
 
 Se avessimo attivo il *:registerable* avremmo dovuto inserire l'instradamento anche per *users/registrations*. 
@@ -155,7 +156,7 @@ Aggiungendo `layout 'entrance'` indichiamo a tutte le azioni di *sessions_contro
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 - https://mycloud9path.amazonaws.com/
@@ -209,6 +210,6 @@ $ git push origin main
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/04-devise-login_logout-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/04_00-devise-login_logout-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/08-authentication_i18n/01-devise_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/08-authentication_i18n/01_00-devise_i18n-it.md)
