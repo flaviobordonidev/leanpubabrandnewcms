@@ -45,7 +45,7 @@ Aggiungiamo subito l'operatore ternario `condizione ? azione_true : azione_false
 ***codice 01 - .../app/views/mockups/page_a.html.erb - line: 9***
 
 ```html+erb
-<p> utente attivo: <%= current_user.present? == true ? current_user.email : "nessun utente loggato" %> <p> 
+<p> utente attivo: <%= current_user.present? == true ? current_user.email : "nessun utente loggato" %> </p> 
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/04_01-views-mockups-page_a.html.erb)
@@ -98,7 +98,7 @@ Attiviamo il webserver
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 Andiamo alla pagina principale (*root_path*) quindi all'URL di login */users/sign_in*.
@@ -162,7 +162,7 @@ Attiviamo il webserver
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 verifichiamo vecchio e nuovo URL di login.
@@ -222,7 +222,7 @@ Attiviamo il webserver
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 verifichiamo gli URLs:
@@ -335,6 +335,6 @@ Lo facciamo nel prossimo capitolo.
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/03-devise-users-seeds-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/03_00-devise-users-seeds-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/05-devise-dedicated_layout-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/05_00-devise-dedicated_layout-it.md)
