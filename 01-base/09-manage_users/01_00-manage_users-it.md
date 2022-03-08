@@ -170,7 +170,7 @@ Vediamo che lo schema del database si è aggiornato
 
 Invece di crearci lo scaffold di una tabella *eg_users*, avremmo potuto eseguire lo *scaffold* come se stessimo creando la tabella *users* senza eseguire il *$ rails db:migrate* e cancellando il file di migrate.
 
-> Ma noi non eseguiamo il seguente comando nella nostra app. 
+> Ma noi **non** eseguiamo il seguente comando nella nostra app. 
 
 ```bash
 $ rails g scaffold User name:string email:string encrypted_password:string remember_created_at:datetime
@@ -741,6 +741,6 @@ $ git push origin main
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/08-authentication_i18n/01-devise_i18n-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/08-authentication_i18n/01_00-devise_i18n-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/02-users_protected-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/02_00-users_protected-it.md)
