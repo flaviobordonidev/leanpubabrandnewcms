@@ -56,7 +56,7 @@ In fase di installazione Devise ha creato il file *...config/locales/devise.en.y
 I messaggi di informazione e avviso di devise li abbiamo messi a livello di layout così li abbiamo su tutte le views.
 
 
-***codice 01 - .../config/routes.rb - line: 14***
+***codice 01 - .../views/layouts/application.html.erb - line: 14***
 
 ```html+erb
     <% if notice %><p class="alert alert-info"><%= notice %></p><% end %>
@@ -199,6 +199,6 @@ $ git push origin main
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/05-devise-dedicated_layout-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/05_00-devise-dedicated_layout-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01-manage_users-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_00-manage_users-it.md)
