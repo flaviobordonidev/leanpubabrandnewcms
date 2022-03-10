@@ -150,7 +150,7 @@ Adesso tutti i messaggi di devise sono tradotti in italiano.
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 

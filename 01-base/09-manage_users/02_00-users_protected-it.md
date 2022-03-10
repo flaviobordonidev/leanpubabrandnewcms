@@ -69,7 +69,7 @@ Ad esempio:
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 dalla root_path:
@@ -184,7 +184,7 @@ Vediamo come si presenta la configurazione iniziale:
 
 Di seguito facciamo le modifiche:
 
-***codice 06 - .../config/initializers/devise.rb - line: x***
+***codice 06 - .../config/initializers/devise.rb - line:11***
 
 ```ruby
 # Turbo doesn't work with devise by default.
@@ -203,34 +203,48 @@ class TurboFailureApp < Devise::FailureApp
     %w(html turbo_stream */*).include? request_format.to_s
   end
 end
+```
 
+***codice 06 - ...continua - line:37***
 
-# ...
-Devise.setup do |config|
-  # ...
-  
+```ruby
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
   config.parent_controller = 'TurboDeviseController'
-  
-  # ...
+```
 
-  # ==> Navigation configuration
-  # ...
+***codice 06 - ...continua - line:276***
+
+```ruby
+ # ==> Navigation configuration
+  # Lists the formats that should be treated as navigational. Formats like
+  # :html, should redirect to the sign in page when the user does not have
+  # access, but formats like :xml or :json, should return 401.
+  #
+  # If you have any extra navigational formats, like :iphone or :mobile, you
+  # should add them to the navigational formats lists.
+  #
+  # The "*/*" below is required to match Internet Explorer requests.
+  # config.navigational_formats = ['*/*', :html]
   config.navigational_formats = ['*/*', :html, :turbo_stream]
+```
 
-  # ...
+***codice 06 - ...continua - line:296***
 
+```ruby
   # ==> Warden configuration
-  # ...
+  # If you want to use other strategies, that are not supported by Devise, or
+  # change the failure app, you can configure them inside the config.warden block.
+  #
+  # config.warden do |manager|
+  #   manager.intercept_401 = false
+  #   manager.default_strategies(scope: :user).unshift :some_external_strategy
+  # end
   config.warden do |manager|
     manager.failure_app = TurboFailureApp
   #   manager.intercept_401 = false
   #   manager.default_strategies(scope: :user).unshift :some_external_strategy
   end
-  
-  # ...
-end
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/02_06-config-initializers-devise.rb)
@@ -271,7 +285,7 @@ Partiamo col webserver
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 Andiamo sulla pagina degli utenti e proviamo ad eliminare l'utente loggato. 
@@ -288,7 +302,7 @@ L'utente verrà eliminato e riceveremo il messaggio di eliminazione avvenuta con
 
 Sulla view mostriamo il link di eliminazione solo se non è l'utente loggato `unless user == current_user`.
 
-***codice 08 - .../app/views/users/show.html.erb - line: 23***
+***codice 08 - .../app/views/users/show.html.erb - line:9***
 
 ```html+erb
   <%= button_to "Destroy this user", @user, method: :delete unless @user == current_user %>
@@ -304,7 +318,7 @@ Partiamo col webserver
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 Andiamo sulla pagina degli utenti.
@@ -435,7 +449,7 @@ Adesso è molto meglio ^_^
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 - https://mycloud9path.amazonaws.com/users
@@ -488,6 +502,6 @@ $ git push origin main
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01-manage_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_00-manage_users-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03_00-browser_tab_title_users-it.md)

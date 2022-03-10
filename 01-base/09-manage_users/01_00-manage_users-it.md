@@ -288,7 +288,7 @@ Ma Rails 7 ha introdotto questa nuova struttura che ha anche il partial *_user.h
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 - https://mycloud9path.amazonaws.com/users
@@ -366,7 +366,7 @@ Creiamo il nuovo file *show.html.erb* dentro la cartella *views/users*. Ci copia
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 - https://mycloud9path.amazonaws.com/users/1
@@ -468,7 +468,7 @@ Ci copiamo il contenuto dei files su *views/eg_users/...* e lo riadattiamo.
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 - https://mycloud9path.amazonaws.com/users/1/edit
@@ -576,7 +576,7 @@ Creiamo il nuovo file "new.html.erb" dentro la cartella "views/users". Ci copiam
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 - https://mycloud9path.amazonaws.com/users/new
@@ -677,7 +677,7 @@ L'azione *destroy* appena aggiunta è attivata dal pulsante che è su *views/use
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 - https://mycloud9path.amazonaws.com/users
