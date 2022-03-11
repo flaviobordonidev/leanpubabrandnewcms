@@ -106,12 +106,12 @@ traduciamo new
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 apriamolo il browser sull'URL:
 
-* https://mycloud9path.amazonaws.com/users
+* http://192.168.64.3:3000/users
 
 Andando nelle varie *views* vediamo che il nome del *tab* del browser ha la traduzione in funzione della lingua selezionata.
 
@@ -151,6 +151,6 @@ Lo facciamo nel prossimo capitolo.
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02_00-users_form_i18n-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/04-language_enum-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/04_00-language_enum-it.md)

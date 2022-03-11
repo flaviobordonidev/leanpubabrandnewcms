@@ -52,10 +52,9 @@ Possiamo dire a Rails di usare *i18n placeholder* passando il parametro `placeho
 
 Diamo la traduzione al placeholder nei locales.
 
-***codice n/a - .../config/locales/it.yml - line: 1***
+***codice n/a - .../config/locales/it.yml - line:33***
 
 ```yaml
-it:
   helpers:
     placeholder:
       user:
@@ -66,10 +65,9 @@ it:
 ```
 
 
-***codice n/a - .../config/locales/en.yml - line: 1***
+***codice n/a - .../config/locales/en.yml - line:33***
 
 ```yaml
-en:
   helpers:
     placeholder:
       user:
@@ -85,21 +83,21 @@ en:
 
 Lato form non devo fare nulla. L'importante è che ci sia la ***label*** per ogni campo.
 
-***codice n/a - .../app/views/users/_form.html.erb - line: 1***
+***codice n/a - .../app/views/users/_form.html.erb - line:15***
 
 ```htnl+erb
-    <%= form.label :name %>
+    <%= form.label :name ... %>
   ...
-    <%= form.label :email %>
+    <%= form.label :email ... %>
   ...
-    <%= form.label :password %>
+    <%= form.label :password ... %>
   ...
-    <%= form.label :password_confirmation %>
+    <%= form.label :password_confirmation ... %>
 ```
 
 mettiamo la traduzione alle labels nei locales
 
-***codice 02 - .../config/locales/it.yml - line: 1***
+***codice 02 - .../config/locales/it.yml - line:33***
 
 ```yaml
   activerecord:
@@ -126,7 +124,7 @@ mettiamo la traduzione alle labels nei locales
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02_02-config-locales-it.yml)
 
-***codice 03 - .../config/locales/en.yml - line: 1***
+***codice 03 - .../config/locales/en.yml - line:33***
 
 ```yaml
   activerecord:
@@ -305,12 +303,12 @@ en:
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 Apriamo il browser sull'URL:
 
-- https://mycloud9path.amazonaws.com/users
+- http://192.168.64.3:3000/users
 
 
 
@@ -326,7 +324,7 @@ $ git commit -m "users form fields i18n"
 ## Pubblichiamo su Heroku
 
 ```bash
-$ git push heroku ui:master
+$ git push heroku ui:main
 $ heroku run rails db:migrate
 ```
 
@@ -348,6 +346,6 @@ Lo facciamo nel prossimo capitolo.
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/01-users_controllers_i18n-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/01_00-users_controllers_i18n-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/03-browser_tab_title_users_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/03_00-browser_tab_title_users_i18n-it.md)
