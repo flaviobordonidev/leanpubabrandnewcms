@@ -94,20 +94,20 @@ $ rails c
 Esempio:
   
 ```bash
-user_fb:~/environment/bl7_0 (ui) $ rails c
-Loading development environment (Rails 7.0.1)
-3.1.0 :001 > User.languages
+ubuntu@ubuntufla:~/bl7_0 (dtbt)$rails c
+Loading development environment (Rails 7.0.2.2)
+3.1.1 :001 > User.languages
  => {"it"=>0, "en"=>1} 
-3.1.0 :002 > User.all
+3.1.1 :002 > User.all
   User Load (0.6ms)  SELECT "users".* FROM "users"
  =>                                                
-[#<User id: 4, name: "David", email: "david@test.abc", created_at: "2022-02-01 16:28:14.397848000 +0000", updated_at: "2022-02-01 16:28:14.397848000 +0000", language: "it">,
- #<User id: 5, name: "Elvis", email: "elvis@test.abc", created_at: "2022-02-01 16:29:06.259332000 +0000", updated_at: "2022-02-01 16:29:06.259332000 +0000", language: "it">,
- #<User id: 7, name: "Flav", email: "flav@test.abc", created_at: "2022-02-01 17:11:04.252571000 +0000", updated_at: "2022-02-01 17:11:04.252571000 +0000", language: "it">,
- #<User id: 2, name: "Bob", email: "bob@test.abc", created_at: "2022-02-01 16:26:18.569214000 +0000", updated_at: "2022-02-03 10:03:36.219345000 +0000", language: "it">,
- #<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2022-01-30 11:50:16.615885000 +0000", updated_at: "2022-02-03 12:08:18.378467000 +0000", language: "it">,
- #<User id: 3, name: "Carl", email: "carl@test.abc", created_at: "2022-02-01 16:27:25.761382000 +0000", updated_at: "2022-02-04 17:19:10.336174000 +0000", language: "it">] 
-3.1.0 :003 > 
+[#<User id: 2, name: "Bob", email: "bob@test.abc", created_at: "2022-03-08 12:45:24.212301000 +0000", updated_at: "2022-03-08 12:45:24.212301000 +0000", language: "it">,
+ #<User id: 3, name: "Carl", email: "carl@test.abc", created_at: "2022-03-08 12:45:58.212534000 +0000", updated_at: "2022-03-08 12:45:58.212534000 +0000", language: "it">,
+ #<User id: 4, name: "David", email: "david@test.abc", created_at: "2022-03-08 12:46:40.500049000 +0000", updated_at: "2022-03-08 12:46:40.500049000 +0000", language: "it">,
+ #<User id: 5, name: "Elvis\t", email: "elvis@test.abc", created_at: "2022-03-08 12:47:20.257733000 +0000", updated_at: "2022-03-08 12:47:20.257733000 +0000", language: "it">,
+ #<User id: 6, name: "Flav", email: "flav@test.abc", created_at: "2022-03-08 12:47:51.449597000 +0000", updated_at: "2022-03-10 18:25:27.969738000 +0000", language: "it">,
+ #<User id: 1, name: "Ann", email: "ann@test.abc", created_at: "2022-03-07 16:47:37.711835000 +0000", updated_at: "2022-03-10 18:26:20.808193000 +0000", language: "it">] 
+3.1.1 :003 > 
 ```
 
 
@@ -203,7 +203,7 @@ $ git commit -m "add language field to users table"
 ## Pubblichiamo su Heroku
 
 ```bash
-$ git push heroku ui:master
+$ git push heroku ui:main
 $ heroku run rails db:migrate
 ```
 
@@ -223,7 +223,7 @@ Lo facciamo nel prossimo capitolo.
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/03-browser_tab_title_users_i18n-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/03_00-browser_tab_title_users_i18n-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/05-implement_language-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/05_00-implement_language-it.md)
 
