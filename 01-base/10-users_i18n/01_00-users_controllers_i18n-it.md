@@ -108,7 +108,7 @@ $ git commit -m "users_controllers notice messages i18n"
 ## Pubblichiamo su Heroku
 
 ```bash
-$ git push heroku ui:master
+$ git push heroku ui:main
 $ heroku run rails db:migrate
 ```
 
@@ -130,6 +130,6 @@ Lo facciamo nel prossimo capitolo.
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03_00-browser_tab_title_users-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02_00-users_form_i18n-it.md)
