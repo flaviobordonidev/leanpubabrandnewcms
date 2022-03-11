@@ -34,7 +34,7 @@ Quindi se il params[:locale] è impostato comanda lui. Se invece il prarms[:loca
 
 Aggiungiamo il campo nel partial *_user* usato dalle views *show* ed *index*.
 
-***codice 02 - .../app/views/users/_user.html.erb - line: 22***
+***codice 02 - .../app/views/users/_user.html.erb - line:12***
 
 ```html+erb
   <p>
@@ -47,7 +47,7 @@ Aggiungiamo il campo nel partial *_user* usato dalle views *show* ed *index*.
 
 Aggiungiamo un selettore (menu a cascata) per permettere di cambiare lingua.
 
-***codice 03 - .../app/views/users/_form.html.erb - line: 22***
+***codice 03 - .../app/views/users/_form.html.erb - line:34***
 
 ```html+erb
   <div>    
@@ -79,7 +79,7 @@ Per far passare realmente il valore al database dobbiamo attivare la *whitelist*
 
 Mettiamo il campo *:language* nella whitelist di *users_controller*.
 
-***codice 04 - .../app/controllers/users_controller.rb - line: 70***
+***codice 04 - .../app/controllers/users_controller.rb - line: 74***
 
 ```ruby
     # Only allow a list of trusted parameters through.
@@ -212,10 +212,10 @@ L'aggiunta dell'instradamento di *users/registration_controller*.
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
-- https://mycloud9path.amazonaws.com/users
+- http://192.168.64.3:3000/users
 
 Andiamo in edit sui vari utenti e vediamo la lingua selezionata. Volendo possiamo anche cambiarla.
 (se proviamo a cambiarli dobbiamo reinserire anche password e password_confirmation altrimenti abbiamo un errore di validazione. Più avanti risolveremo anche questo)
@@ -237,6 +237,8 @@ $ git commit -m "Add language:enum to table users"
 $ git push heroku ui:main
 $ heroku run rails db:migrate
 ```
+
+> Possiamo anche non eseguire `$ heroku run rails db:migrate` perché non tocchiamo il database.
 
 
 
@@ -264,75 +266,6 @@ $ git push origin main
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/04-language_enum-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/04_00-language_enum-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/01-eg_posts-seeds-it.md)
-
-
-
-
-
-
-
----
-
-
-## Verifichiamo preview
-
-```bash
-$ sudo service postgresql start
-$ rails s
-```
-
-- https://mycloud9path.amazonaws.com/users
-
-Andiamo in edit sui vari utenti e ne vediamo i vari ruoli. Volendo possiamo anche cambiarli.
-(se proviamo a cambiarli dobbiamo reinserire anche password e password_confirmation altrimenti abbiamo un errore di validazione. Più avanti risolveremo anche questo)
-
-
-
-## Archiviamo su git
-
-```bash
-$ git add -A
-$ git commit -m "Add role:enum to table users"
-```
-
-
-
-## Pubblichiamo su Heroku
-
-```bash
-$ git push heroku re:master
-$ heroku run rails db:migrate
-```
-
-
-
-## Chiudiamo il branch
-
-se abbiamo finito le modifiche e va tutto bene:
-
-```bash
-$ git checkout master
-$ git merge re
-$ git branch -d re
-```
-
-
-
-## Facciamo un backup su Github
-
-Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
-
-```bash
-$ git push origin master
-```
-
-
-
----
-
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/04-language_enum-it.md)
- | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/01-eg_posts-seeds-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/01_00-eg_posts-seeds-it.md)
