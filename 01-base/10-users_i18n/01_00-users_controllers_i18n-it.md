@@ -64,10 +64,9 @@ Aggiorniamo i files locales
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/01_02-config-locales-it.yml)
 
 
-***codice 03 - .../config/locales/en.yml - line: 1***
+***codice 03 - .../config/locales/en.yml - line:38***
 
 ```yaml
-en:
   users:
     create:
       notice: 'User was successfully created.'
@@ -86,12 +85,12 @@ en:
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 apriamolo il browser sull'URL:
 
-* https://mycloud9path.amazonaws.com/users
+* http://192.168.64.3:3000/users
 
 Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
 
