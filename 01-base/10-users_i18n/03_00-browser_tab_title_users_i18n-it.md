@@ -129,7 +129,7 @@ $ git commit -m "Internationalization title on browser tabs"
 ## Pubblichiamo su Heroku
 
 ```bash
-$ git push heroku ui:master
+$ git push heroku ui:main
 $ heroku run rails db:migrate
 ```
 
