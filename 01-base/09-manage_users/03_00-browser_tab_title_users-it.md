@@ -88,7 +88,7 @@ Sulle views di nostro interesse collochiamo i contenuti per il nostro "contenito
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 apriamolo il browser sull'URL:

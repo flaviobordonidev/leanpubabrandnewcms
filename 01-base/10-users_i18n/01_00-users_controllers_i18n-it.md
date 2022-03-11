@@ -19,7 +19,7 @@ Gestiamo i messaggi *notice* ed *alerts* in *users_controller*.
 
 Internazionalizziamo l'azione *create*.
 
-***codice 01 - .../app/controllers/users_controller.rb - line: 31***
+***codice 01 - .../app/controllers/users_controller.rb - line:33***
 
 ```html+erb
         format.html { redirect_to user_url(@user), notice: t(".notice") } # notice: "User was successfully created."
@@ -28,7 +28,7 @@ Internazionalizziamo l'azione *create*.
 
 Internazionalizziamo l'azione *update*.
 
-***codice 01 - ...continua - line: 31***
+***codice 01 - ...continua - line:48***
 
 ```html+erb
         format.html { redirect_to user_url(@user), notice: t(".notice") } # notice: "User was successfully updated."
@@ -36,22 +36,21 @@ Internazionalizziamo l'azione *update*.
 
 Internazionalizziamo l'azione *destroy*.
 
-***codice 01 - ...continua - line: 31***
+***codice 01 - ...continua - line:64***
 
 ```html+erb
         redirect_to users_url, notice: t(".notice") unless @user == current_user # notice: "User was successfully destroyed."
         redirect_to users_url, notice: t(".notice_logged_in") if @user == current_user #  notice: "The logged in user cannot be destroyed."
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03_05-views-users-new.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/01_01-controllers-users_controller.rb)
 
 
 Aggiorniamo i files locales
 
-***codice 02 - .../config/locales/it.yml - line: 1***
+***codice 02 - .../config/locales/it.yml - line:38***
 
 ```yaml
-it:
   users:
     create:
       notice: "L'utente è stato creato con successo."
@@ -62,7 +61,7 @@ it:
       notice_logged_in: "L'utente loggato non può essere eliminato."
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03_05-views-users-new.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/01_02-config-locales-it.yml)
 
 
 ***codice 03 - .../config/locales/en.yml - line: 1***
@@ -79,7 +78,7 @@ en:
       notice_logged_in: "The logged in user cannot be destroyed."
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03_05-views-users-new.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/01_03-config-locales-en.yml)
 
 
 
