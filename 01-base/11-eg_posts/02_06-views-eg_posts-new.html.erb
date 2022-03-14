@@ -1,0 +1,15 @@
+<%# == Meta_data ============================================================ %>
+
+<% provide(:html_head_title, t('eg_posts.new.html_head_title')) %>
+
+<%# == Meta_data - end ====================================================== %>
+
+<h1>New eg post</h1>
+
+<%= render "form", eg_post: @eg_post %>
+
+<br>
+
+<div>
+  <%= link_to "Back to eg posts", eg_posts_path %>
+</div>

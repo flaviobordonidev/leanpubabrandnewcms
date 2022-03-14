@@ -58,7 +58,7 @@ it:
         update: "Aggiorna %{model}"
 
 #-------------------------------------------------------------------------------
-# Tables (in ordine alfabetico)
+# Controllers (in ordine alfabetico)
 
   eg_posts:
     index:

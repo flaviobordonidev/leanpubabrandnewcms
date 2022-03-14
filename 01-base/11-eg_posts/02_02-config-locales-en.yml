@@ -58,7 +58,7 @@ en:
         update: "Update %{model}"
 
 #-------------------------------------------------------------------------------
-# Tables (in alphabetical order)
+# Controllers (in alphabetical order)
 
   eg_posts:
     index:

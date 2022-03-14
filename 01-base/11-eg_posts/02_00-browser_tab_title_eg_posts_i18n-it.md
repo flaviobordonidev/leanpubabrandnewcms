@@ -16,12 +16,15 @@ $ git checkout -b btep
 
 Creiamo delle nuove voci nei locales che aggiungeremo poi alle views.
 
-***codice 01 - .../config/locales/it.yml - line: 4***
+***codice 01 - .../config/locales/it.yml - line:60***
 
 ```yaml
-  eg_posts:
+#-------------------------------------------------------------------------------
+# Controllers (in ordine alfabetico)
+
+  eg_posts:  eg_posts:
     index:
-      html_head_title: "Tutti gli articoli"
+      html_head_title: "Tutti gli articoli"s
     show:
       html_head_title: "Art. %{id}"
     edit:
@@ -33,9 +36,12 @@ Creiamo delle nuove voci nei locales che aggiungeremo poi alle views.
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/02_01-config-locales-it.yml)
 
 
-***codice 02 - .../config/locales/en.yml - line: 4***
+***codice 02 - .../config/locales/en.yml - line:60***
 
 ```yaml
+#-------------------------------------------------------------------------------
+# Controllers (in alphabetical order)
+
   eg_posts:
     index:
       html_head_title: "All posts"
@@ -55,7 +61,7 @@ Creiamo delle nuove voci nei locales che aggiungeremo poi alle views.
 
 ## Aggiungiamo le chiamate alle views
 
-traduciamo index
+Traduciamo index
 
 ***codice 03 - .../app/views/eg_posts/index.html.erb - line: 1***
 
@@ -67,7 +73,9 @@ traduciamo index
 <%# == Meta_data - end ====================================================== %>
 ```
 
-traduciamo show
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/02_03-views-eg_posts-index.html.erb)
+
+Traduciamo show
 
 ***codice 04 - .../app/views/eg_posts/show.html.erb - line: 1***
 
@@ -81,6 +89,8 @@ traduciamo show
 <%# == Meta_data - end ====================================================== %>
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/02_04-views-eg_posts-show.html.erb)
+
 traduciamo edit
 
 ***codice 05 - .../app/views/eg_posts/edit.html.erb - line: 1***
@@ -93,6 +103,8 @@ traduciamo edit
 <%# == Meta_data - end ====================================================== %>
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/02_05-views-eg_posts-edit.html.erb)
+
 traduciamo new
 
 ***codice 06 - .../app/views/eg_posts/new.html.erb - line: 1***
@@ -104,6 +116,8 @@ traduciamo new
 
 <%# == Meta_data - end ====================================================== %>
 ```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/02_06-views-eg_posts-new.html.erb)
 
 
 
