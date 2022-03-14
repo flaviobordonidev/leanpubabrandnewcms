@@ -125,14 +125,14 @@ traduciamo new
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 apriamolo il browser sull'URL:
 
-* https://mycloud9path.amazonaws.com/users
+* http://192.168.64.3:3000/eg_posts
 
-Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
+Creando un nuovo articolo o aggiornando un articolo esistente vediamo i nuovi messaggi tradotti.
 
 
 
@@ -151,6 +151,8 @@ $ git commit -m "Internationalization title on browser tabs"
 $ git push heroku btep:main
 $ heroku run rails db:migrate
 ```
+
+> In questo caso il comando `heroku run rails db:migrate` è superfluo lo lascio solo come promemoria per quando serve.
 
 
 
@@ -176,6 +178,6 @@ $ git push origin main
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/01-eg_posts-seeds-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/01_00-eg_posts-seeds-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/03-eg_posts-protected-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/03_00-eg_posts-protected-it.md)
