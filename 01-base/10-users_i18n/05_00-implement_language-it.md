@@ -11,7 +11,6 @@ continuiamo con lo stesso branch del capitolo precedente
 
 
 
-
 ## Cambiamo la lingua a seconda di quella dell'utente
 
 Alle modalità di cambio lingua già impostate nei capitoli precedenti aggiungiamo anche quella dell'utente loggato.

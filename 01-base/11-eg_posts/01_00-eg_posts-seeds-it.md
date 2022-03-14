@@ -107,9 +107,9 @@ completiamo sul model *User*, il lato *uno* dell'associazione.
 
 
 
-## Vediamo i controllers
+## Vediamo il controller
 
-Diamo un'occhiata ai controllers che sono stati creati notando la chiave esterna *user_id* su *posts_controller*.
+Diamo un'occhiata al controller *eg_posts_controller* che è stato creato e notiamo la chiave esterna *user_id*.
 
 ***codice 04 - .../app/controllers/eg_posts_controller.rb - line: 68***
 
@@ -118,17 +118,6 @@ Diamo un'occhiata ai controllers che sono stati creati notando la chiave esterna
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/01_04-controllers-eg_posts_controller.rb)
-
-
-***codice 05 - .../app/controllers/users_controller.rb - line: 10***
-
-```ruby
-class UsersController < ApplicationController
-  before_action :authenticate_user!
-  before_action :set_user, only: %i[ show edit update destroy ]
-```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/01_05-controllers-users_controller.rb)
 
 
 
@@ -615,7 +604,7 @@ $ git commit -m "Add table eg_posts"
 
 Impostiamo il file dei seeds per popolare la tabella in automatico invece della procedura manuale appena eseguita.
 
-***codice 06 - .../db/seeds.rb - line: 9***
+***codice 05 - .../db/seeds.rb - line: 9***
 
 ```ruby
 puts "Inseriamo sei articoli per tre utenti"
@@ -646,7 +635,7 @@ u3.eg_posts.create(headline: "Studio di caso gamma", incipit: "Questo studio è 
 end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/01_03-models-user.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/01_05-db-seeds.rb)
 
 Useremo i seeds per popolare il database in produzione su *Heroku*.
 
@@ -689,14 +678,14 @@ end
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 apriamolo il browser sull'URL:
 
-* https://mycloud9path.amazonaws.com/eg_posts
+* http://192.168.64.3:3000/eg_posts
 
-Vediamo i posts creati tramite terminale/console.
+Vediamo i posts che abbiamo creato da terminale/console.
 
 
 
@@ -712,7 +701,7 @@ $ git commit -m "add seed posts"
 ## Pubblichiamo su Heroku
 
 ```bash
-$ git push heroku ep:master
+$ git push heroku ep:main
 $ heroku run rails db:migrate
 ```
 
@@ -734,7 +723,7 @@ Inseriamo sei articoli per tre utenti
 user_fb:~/environment/bl7_0 (ep) $ 
 ```
 
-> Altrimenti avremmo potuto entrare in console remota su heroku e rifatto i passi fatti precedentemente per il database locale.
+> Altrimenti avremmo potuto entrare in console remota su heroku e rifare i passi fatti precedentemente per il database locale.
 >
 > ```bash
 > $ heroku run rails c
