@@ -122,14 +122,9 @@ In questo paragrafo la traduciamo in italiano.
 Per formattare in italiano la data possiamo usare le stesse variabili di *.strftime* all'interno del nostro locale *it.yml*.
 Questo lo abbiamo già dal file scaricato nel capitolo precedente.
 
-***codice n/a - .../config/locales/it.yml - line: 4***
+***codice n/a - .../config/locales/it.yml - line: 48***
 
 ```yaml
-  time:
-    formats:
-      short: "giorno %d %^B %Y"
-      long: "%A %d %^B %Y alle %H:%M e %S secondi"
-
   date:
     abbr_day_names:
     - dom
@@ -153,6 +148,46 @@ Questo lo abbiamo già dal file scaricato nel capitolo precedente.
     - ott
     - nov
     - dic
+    day_names:
+    - domenica
+    - lunedì
+    - martedì
+    - mercoledì
+    - giovedì
+    - venerdì
+    - sabato
+    formats:
+      default: "%d/%m/%Y"
+      long: "%d %B %Y"
+      short: "%d %b"
+    month_names:
+    - 
+    - gennaio
+    - febbraio
+    - marzo
+    - aprile
+    - maggio
+    - giugno
+    - luglio
+    - agosto
+    - settembre
+    - ottobre
+    - novembre
+    - dicembre
+```
+
+***codice n/a - ...continua - line: 263***
+
+```yaml
+  time:
+    am: am
+    formats:
+      default: "%a %d %b %Y, %H:%M:%S %z"
+      long: "%d %B %Y %H:%M"
+      #long: "%A %d %^B %Y alle %H:%M e %S secondi"
+      short: "%d %b %H:%M"
+      #short: "giorno %d %^B %Y"
+    pm: pm
 ```
 
 Non ci resta che richiamare la formattazione con l'helper *l*.
