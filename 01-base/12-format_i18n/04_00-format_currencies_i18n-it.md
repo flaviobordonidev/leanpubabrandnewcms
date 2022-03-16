@@ -129,7 +129,7 @@ $ rails s -b  192.168.64.3
 
 apriamolo il browser sull'URL:
 
-- https://mycloud9path.amazonaws.com/eg_posts
+- http://192.168.64.3:3000/eg_posts
 
 e vediamo su *show* le varie formattazioni del campo *price*.
 
@@ -163,12 +163,12 @@ Il prezzo lo visualizziamo correttamente adesso lavoriamo lato *immissione (inpu
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b  192.168.64.3
 ```
 
 apriamolo il browser sull'URL:
 
-- https://mycloud9path.amazonaws.com/eg_posts
+- http://192.168.64.3:3000/eg_posts
 
 Vediamo che il campo *price* mostra un formato differente a seconda della lingua.
 
@@ -187,10 +187,9 @@ $ git commit -m "Format i18n price field on eg_posts"
 
 ```bash
 $ git push heroku fic:main
-$ heroku run rails db:migrate
 ```
 
-
+> Il comando `$ heroku run rails db:migrate` non serve perché non abbiamo modificato la struttura del database.
 
 
 ## Chiudiamo il branch
@@ -213,10 +212,8 @@ $ git push origin main
 
 
 
-
-
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/03-eg_posts_add_price-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/03_00-eg_posts_add_price-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/01-roles-overview-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/01_00-roles-overview-it.md)
