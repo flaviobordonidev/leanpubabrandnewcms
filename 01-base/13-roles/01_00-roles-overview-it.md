@@ -37,7 +37,7 @@ E' un campo con un elenco di scelte e ci permette di gestire praticamente tutte 
 
 ## Rolify
 
-E' una gemma che permette di fare complesse gestioni dei ruoli ma le applicazioni dove sia realmente necessario sono rare perché spesso se si analizza con calma la gestione dei ruoli che vogliamo implementare si riesce quasi sempre a ricondurle ad una gestion con "Enum".
+E' una gemma che permette di fare complesse gestioni dei ruoli ma le applicazioni dove sia realmente necessario sono rare perché spesso se si analizza con calma la gestione dei ruoli che vogliamo implementare si riesce quasi sempre a ricondurle ad una gestione con "Enum".
 
 Questo è l'approccio più flessibile nella gestione dei ruoli. E' come una relazione molti-a-molti con polimorfismo.
 Possiamo essere estremamente flessibili, ma nella maggior parte dei casi non ci serve questo livello di flessibilità.
@@ -68,6 +68,6 @@ Possiamo essere estremamente flessibili, ma nella maggior parte dei casi non ci 
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/04-format_currencies_i18n-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/04_00-format_currencies_i18n-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/02-roles-admin-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/02_00-roles-admin-it.md)
