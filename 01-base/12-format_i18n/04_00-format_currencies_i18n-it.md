@@ -97,7 +97,7 @@ Possiamo anche passare argomenti nel metodo i18n translate in questo modo: *%{my
 
 Aggiorniamo il partial *_eg_post* per visualizzare le traduzioni nelle views *index* e *show*.
 
-***codice 03 - .../app/views/eg_posts/_eg_post.html.erb - line: 12***
+***codice 03 - .../app/views/eg_posts/_eg_post.html.erb - line:22***
 
 ```html+erb
   <p>
@@ -113,6 +113,8 @@ Aggiorniamo il partial *_eg_post* per visualizzare le traduzioni nelle views *in
   </p>
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/04_03-views-eg_posts-_eg_post.html.erb)
+
 > La *precisione (precision)* che diamo in formattazione è solo "visiva". <br/>
 > Nel database saranno archiviate **4 cifre** dopo la virgola, così come definito nel migrate.
 
@@ -122,7 +124,7 @@ Aggiorniamo il partial *_eg_post* per visualizzare le traduzioni nelle views *in
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b  192.168.64.3
 ```
 
 apriamolo il browser sull'URL:
@@ -137,7 +139,7 @@ e vediamo su *show* le varie formattazioni del campo *price*.
 
 Il prezzo lo visualizziamo correttamente adesso lavoriamo lato *immissione (input)* sul *_form*.
 
-***codice 04 - .../app/views/eg_posts/_form.html.erb - line: 12***
+***codice 04 - .../app/views/eg_posts/_form.html.erb - line:34***
 
 ```html+erb
   <div class="field">
@@ -146,6 +148,8 @@ Il prezzo lo visualizziamo correttamente adesso lavoriamo lato *immissione (inpu
     <%= form.number_field :price, step: :any %>
   </div>
 ```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/04_04-views-eg_posts-_form.html.erb)
 
 > l'opzione `step: :any` ci permette di inserire i decimali, altrimenti potremmo mettere solo numeri interi.
 >
