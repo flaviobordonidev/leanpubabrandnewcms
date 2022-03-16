@@ -83,7 +83,7 @@ Inseriamo la nuova colonna *:price* nella white list del controller altrimenti i
     end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/03_01-db-migrate-xxx_add_price_to_eg_posts.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/03_02-controllers-eg_posts_controller.rb)
 
 > Abbiamo lasciato *:user_id* per ultimo solo perché mi piace di più vedere gli indici esterni in fondo.
 
