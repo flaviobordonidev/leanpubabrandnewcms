@@ -43,19 +43,19 @@ before_action :authenticate_user!
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 apriamolo il browser sull'URL:
 
-- mycloud9path.amazonaws.com/
+- http://192.168.64.3:3000/eg_posts
 
 Verifichiamo di non essere loggati e proviamo ad entrare in:
 
-- mycloud9path.amazonaws.com/eg_posts
-- mycloud9path.amazonaws.com/eg_posts/1
-- mycloud9path.amazonaws.com/eg_posts/1/edit
-- mycloud9path.amazonaws.com/eg_posts/new
+- http://192.168.64.3:3000/eg_posts
+- http://192.168.64.3:3000/eg_posts/1
+- http://192.168.64.3:3000/eg_posts/1/edit
+- http://192.168.64.3:3000/eg_posts/new
 
 Saremo reinstradati nella pagina di login. 
 Effettuato login con successo entreremo nella pagina richiesta inizialmente.
@@ -75,8 +75,9 @@ $ git commit -m "Activate Devise protection for eg_posts"
 
 ```bash
 $ git push heroku pep:main
-$ heroku run rails db:migrate
 ```
+
+> Non serve `$ heroku run rails db:migrate` perché non abbiamo modificato la struttura del database.
 
 
 
@@ -102,6 +103,6 @@ $ git push origin main
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/03-browser_tab_title_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/03_00-browser_tab_title_users-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/01-overview_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/01_00-overview_i18n-it.md)
