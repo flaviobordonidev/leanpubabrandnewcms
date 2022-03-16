@@ -122,12 +122,12 @@ Inseriamo il nuovo campo *:price* nelle views *_form* e *_eg_post*.
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 apriamolo il browser sull'URL:
 
-- https://mycloud9path.amazonaws.com/eg_posts
+- http://192.168.64.3:3000/eg_posts
 
 Modifichiamo un articolo inserendo un valore nel campo *price* e vediamo su *show* o su *index* che è correttamente gestito.
 
@@ -145,10 +145,11 @@ $ git commit -m "Add price field to eg_posts"
 ## Pubblichiamo su Heroku
 
 ```bash
-$ git push heroku apc:master
+$ git push heroku apc:main
 $ heroku run rails db:migrate
 ```
 
+> Usiamo il comando `$ heroku run rails db:migrate` perché abbiamo modificato la struttura del database con il comando `rails db:migrate`. Abbiamo aggiunto il campo *price* alla tabella *eg_posts*.
 
 
 
@@ -174,6 +175,6 @@ $ git push origin main
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/02-format_date_time_i18n-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/02_00-format_date_time_i18n-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/04-format_currencies_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/04_00-format_currencies_i18n-it.md)
