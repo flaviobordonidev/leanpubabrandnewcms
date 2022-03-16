@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 12.1 - la formattazione delle date nelle varie lingue
+# <a name="top"></a> Cap 12.2 - la formattazione delle date nelle varie lingue
 
 Abbiamo aggiunto i due files *it* e *en* con le formattazioni già impostate. 
 Adesso entriamo più in profondità nella formattazione delle **date**.
@@ -200,24 +200,34 @@ apriamolo il browser sull'URL:
 
 ## Aggiungiamo nostri formati personalizzati
 
-***codice 05 - .../config/locales/en.yml - line: 27***
+Aggiungiamo `my_long: "%A %d %^B %Y at %H:%M and %S seconds"` alle traduzioni in inglese.
+
+***codice 05 - .../config/locales/en.yml - line: 263***
 
 ```yaml
   time:
+    am: am
     formats:
-
+      default: "%a, %d %b %Y %I:%M:%S %p %Z"
+      long: "%B %d, %Y %I:%M %p"
+      short: "%d %b %I:%M %p"
       my_long: "%A %d %^B %Y at %H:%M and %S seconds"
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/02_05-config-locales-en.yml)
 
 
-***codice 06 - .../config/locales/it.yml - line: 27***
+Aggiungiamo `my_long: "%A %d %^B %Y alle %H:%M e %S secondi"` alle traduzioni in italiano.
+
+***codice 06 - .../config/locales/it.yml - line: 263***
 
 ```yaml
   time:
+    am: am
     formats:
-
+      default: "%a %d %b %Y, %H:%M:%S %z"
+      long: "%d %B %Y %H:%M"
+      short: "%d %b %H:%M"
       my_long: "%A %d %^B %Y alle %H:%M e %S secondi"
 ```
 
@@ -248,7 +258,6 @@ apriamolo il browser sull'URL:
 
 
 
-
 ## Archiviamo su git
 
 ```bash
@@ -262,8 +271,9 @@ $ git commit -m "Format with i18n the date fields created_at and updated_at on e
 
 ```bash
 $ git push heroku fin:main
-$ heroku run rails db:migrate
 ```
+
+> Il comando `$ heroku run rails db:migrate` non serve perché non abbiamo modificato la struttura del databasa.
 
 
 
@@ -289,6 +299,6 @@ $ git push origin main
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/01-overview_i18n-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/01_00-overview_i18n-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/03-eg_posts_add_price-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/03_00-eg_posts_add_price-it.md)

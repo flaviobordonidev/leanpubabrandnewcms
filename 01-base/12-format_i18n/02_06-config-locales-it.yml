@@ -1,13 +1,50 @@
+# Files in the config/locales directory are used for internationalization
+# and are automatically loaded by Rails. If you want to use locales other
+# than English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t "hello"
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t("hello") %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# The following keys must be escaped otherwise they will not be retrieved by
+# the default I18n backend:
+#
+# true, false, on, off, yes, no
+#
+# Instead, surround them with single quotes.
+#
+# en:
+#   "true": "foo"
+#
+# To learn more, please read the Rails Internationalization guide
+# available at https://guides.rubyonrails.org/i18n.html.
+
 it:
   activerecord:
+    attributes:
+      user:
+        name: "Nome utente" # fallback for when label is nil
+        email: "Email" # fallback for when label is nil
+        password: "Password" # fallback for when label is nil
+        password_confirmation: "Conferma password" # fallback for when label is nil
     errors:
       messages:
         record_invalid: 'Validazione fallita: %{errors}'
         restrict_dependent_destroy:
-          has_one: Il record non può essere cancellato perchè esiste un %{record}
-            dipendente
-          has_many: Il record non può essere cancellato perchè esistono %{record}
-            dipendenti
+          has_one: Il record non può essere cancellato perchè esiste un %{record} dipendente
+          has_many: Il record non può essere cancellato perchè esistono %{record} dipendenti
+    models:
+      user: "utente"
   date:
     abbr_day_names:
     - dom
@@ -73,8 +110,8 @@ it:
         one: circa un anno
         other: circa %{count} anni
       almost_x_years:
-        one: circa 1 anno
-        other: circa %{count} anni
+        one: quasi un anno
+        other: quasi %{count} anni
       half_a_minute: mezzo minuto
       less_than_x_seconds:
         one: meno di un secondo
@@ -123,6 +160,7 @@ it:
       invalid: non è valido
       less_than: deve essere minore di %{count}
       less_than_or_equal_to: deve essere minore o uguale a %{count}
+      model_invalid: 'Validazione fallita: %{errors}'
       not_a_number: non è un numero
       not_an_integer: non è un numero intero
       odd: deve essere dispari
@@ -145,12 +183,28 @@ it:
         one: 'Non posso salvare questo %{model}: 1 errore'
         other: 'Non posso salvare questo %{model}: %{count} errori.'
   helpers:
+    label:
+      user:
+        name: "Nome utente"
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Conferma password"
+    placeholder:
+      user:
+        name: "Nome utente"
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Conferma password"
     select:
       prompt: Seleziona...
     submit:
       create: Crea %{model}
       submit: Invia %{model}
       update: Aggiorna %{model}
+    #submit:
+      user:
+        create: "Crea %{model}"
+        update: "Aggiorna %{model}"
   number:
     currency:
       format:
@@ -188,9 +242,11 @@ it:
           byte:
             one: Byte
             other: Byte
+          eb: EB
           gb: GB
           kb: KB
           mb: MB
+          pb: PB
           tb: TB
     percentage:
       format:
@@ -210,25 +266,37 @@ it:
       default: "%a %d %b %Y, %H:%M:%S %z"
       long: "%d %B %Y %H:%M"
       short: "%d %b %H:%M"
+      my_long: "%A %d %^B %Y alle %H:%M e %S secondi"
     pm: pm
 
-  activerecord:
-    models:
-      post: "articolo"
-    attributes:
-      post:
-        content_type: "tipologia"
-      post/content_type:
-        image: "immagine" 
-        video_youtube: "filmato YouTube" 
-        video_vimeo: "filmato Vimeo"
-        audio: "audio"
-  helpers:
-    label:
-      post:
-        tag_list: "Tags (separati da virgola)"
+#-------------------------------------------------------------------------------
+# Controllers (in ordine alfabetico)
+
+  eg_posts:
+    index:
+      html_head_title: "Tutti gli articoli"
+    show:
+      html_head_title: "Art. %{id}"
+    edit:
+      html_head_title: "Modifica Art. %{id}"
+    new:
+      html_head_title: "Nuovo articolo"
   mockups:
     page_a:
-      first_header: "Questa è l'homepage"
-      first_paragraph: "il testo verrà preso dal database ma alcuni messaggi sono passati dall'applicazione ed è quindi bene che vengano tradotti per essere pronti a supportare più lingue."
-      link_goto_page_B: "Andiamo alla pagina B"
+      headline: "Questa è l'homepage"
+      first_paragraph: "Il testo mostrato è o passato da un 'file di traduzione' e questo significa che la nostra applicazione è pronta a supportare più lingue."
+      link_to_page_B: "Andiamo alla pagina B"
+  users:
+    index:
+      html_head_title: "Tutti gli utenti"
+    new:
+      html_head_title: "Nuovo utente"
+    edit:
+      html_head_title: "Modifica"
+    create:
+      notice: "L'utente è stato creato con successo."
+    update:
+      notice: "L'utente è stato aggiornato con successo."
+    destroy:
+      notice: "L'utente è stato eliminato con successo."
+      notice_logged_in: "L'utente loggato non può essere eliminato."

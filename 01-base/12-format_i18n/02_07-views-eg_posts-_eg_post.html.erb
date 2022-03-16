@@ -24,27 +24,28 @@
     <%= eg_post.user_id %>
   </p>
 
-<p>
-  <strong>created_at:</strong>
-  <br>
-  <%= eg_post.created_at.strftime("day %d %^B %Y") %>
-  <br>
-  <%= l eg_post.created_at, format: :my_long %>
-  <br>
-  <%= l eg_post.created_at, format: :long %>
-  <br>
-  <%= l eg_post.created_at, format: :short %>
-</p>
+  <p>
+    <strong>created_at:</strong>
+    <br>
+    <%= eg_post.created_at.strftime("day %d %^B %Y") %>
+    <br>
+    <%= l eg_post.created_at, format: :my_long %>
+    <br>
+    <%= l eg_post.created_at, format: :long %>
+    <br>
+    <%= l eg_post.created_at, format: :short %>
+  </p>
 
-<p>
-  <strong>updated_at:</strong>
-  <br>
-  <%= eg_post.updated_at.strftime("%A %d %^B %Y at %H:%M and %S seconds") %>
-  <br>
-  <%= l eg_post.created_at, format: :my_long %>
-  <br>
-  <%= l eg_post.created_at, format: :long %>
-  <br>
-  <%= l eg_post.created_at, format: :short %>
-</p>
+  <p>
+    <strong>updated_at:</strong>
+    <br>
+    <%= eg_post.updated_at.strftime("%A %d %^B %Y at %H:%M and %S seconds") %>
+    <br>
+    <%= l eg_post.created_at, format: :my_long %>
+    <br>
+    <%= l eg_post.created_at, format: :long %>
+    <br>
+    <%= l eg_post.created_at, format: :short %>
+  </p>
+
 </div>
