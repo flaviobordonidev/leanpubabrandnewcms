@@ -141,12 +141,12 @@ Descrizioni dei cambi effettuati
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 apriamolo il browser all'URL:
 
-- mycloud9path.amazonaws.com/users
+- http://192.168.64.3:3000/users
 
 Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
 
@@ -165,8 +165,9 @@ $ git commit -m "implement format_i18n"
 
 ```bash
 $ git push heroku fin:main
-$ heroku run rails db:migrate
 ```
+
+> Il comando `$ heroku run rails db:migrate` non serve perché non ho cambiato la struttura del database.
 
 
 
@@ -184,6 +185,6 @@ Lo facciamo nel prossimo capitolo.
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/04-eg_redirect_after_login-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/11-eg_posts/04_00-eg_redirect_after_login-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/02-format_date_time_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/02_00-format_date_time_i18n-it.md)
