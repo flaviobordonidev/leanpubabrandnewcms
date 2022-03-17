@@ -37,41 +37,45 @@ Di seguito vediamo una panoramica delle autorizzazioni che implementeremo per la
 
 Legenda autorizzazioni:
 
-s       | n          | e           | d        | -
-------- | ---------- | ----------- |--------- | ---------
-show    | new/create | edit/update | destroy  | non autorizzato
+i       | s       | n          | e           | d        | -
+------- | ------- | ---------- | ----------- |--------- | ---------
+index   | show    | new/create | edit/update | destroy  | non autorizzato
 
 > Con asterisco "*" vuol dire autorizzato solo per un ristretto set di records. (senza asterisco è autorizzato per tutti i records)
 
 
-utenti          | users   | eg_posts    |
---------------- | ------- | ----------- |
-admin           | s,n,e,d | s,-,e,d     |
-moderator       | -,-,-,- | s\*,-,-,d\* |
-author          | -,-,-,- | s\*,n,e\*,d\* |
-user            | -,-,-,- | s\*,-,-,-   |
+utenti          | users         | eg_posts          |
+--------------- | ------------- | ----------------- |
+admin           | i,s,n,e,d     | i,s,-,e,d         |
+moderator       | -,s\*,-,e\*,- | i\*,s\*,-,-,d\*   |
+author          | -,s\*,-,e\*,- | i\*,s\*,n,e\*,d\* |
+user            | -,s\*,-,e\*,- | i\*,s\*,-,-,-     |
 
 Vediamo più in dettaglio le autorizzazioni per la tabella *posts*.
 
 - admin
-  - show : all records
-  - new  : no
-  - edit : all records
+  - index : all records 
+  - show  : all records
+  - new   : no
+  - edit  : all records
   - destroy : any record
 - moderator
-  - show : only published records
-  - new  : no
-  - edit : no
+  - index : only published records
+  - show  : only published records
+  - new   : no
+  - edit  : no
   - destroy : only published records
 - author
-  - show : all published and any of his own posts
-  - new  : yes
-  - edit : all his own records
+  - index : all published and any of his own posts
+  - show  : all published and any of his own posts
+  - new   : yes
+  - edit  : all his own records
   - destroy : any of his own record
 - user
-  - show : all published but none unpublished
-  - new  : no
-  - edit : no
+  - index : all published but none unpublished
+  - show  : all published but none unpublished
+  - new   : no
+  - edit  : no
   - destroy : no
 
 
