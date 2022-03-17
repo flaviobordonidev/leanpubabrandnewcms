@@ -175,10 +175,10 @@ Adesso che la policy di autorizzazione è pronta possiamo indicare alle azioni *
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
-- https://mycloud9path.amazonaws.com/login
+- http://192.168.64.3:3000/login
 
 Se ci logghiamo con il secondo utente (Bob) che **non** ha i diritti di amministratore, quando proviamo a creare un nuovo utente riceviamo l'errore: `"Pundit::NotAuthorizedError in UsersController#new"`. <br/>
 Se ci logghiamo con il primo utente (Ann) che ha i diritti di amministratore (`role: :administrator`), possiamo creare un nuovo utente senza nessun errore.
@@ -298,7 +298,7 @@ Adesso che la policy di autorizzazione è pronta possiamo indicare a tutte le az
 
 Le azioni *new* e *create* le abbiamo già fatte. Autorizziamo l'azione *index*.
 
-***codice 05 - .../app/controllers/users_controller.rb - line: 9***
+***codice 05 - .../app/controllers/users_controller.rb - line:6***
 
 ```ruby
   # GET /users or /users.json
@@ -309,7 +309,7 @@ Le azioni *new* e *create* le abbiamo già fatte. Autorizziamo l'azione *index*.
 
 Per le azioni *[:show, :edit, :update, :destroy]*, che chiamano la funzione *set_user* con il *before_action*, inserisco l'autorizzazione direttamente sulla funzione *set_user*.
 
-***codice 05 - ...continua - line: 81***
+***codice 05 - ...continua - line:72***
 
 ```ruby
     # Use callbacks to share common setup or constraints between actions.
@@ -329,10 +329,10 @@ Per le azioni *[:show, :edit, :update, :destroy]*, che chiamano la funzione *set
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
-- https://mycloud9path.amazonaws.com/users
+- http://192.168.64.3:3000/users
 
 Se non siamo loggati come amministratori, tentando *editare* *creare nuovo* o *eliminare* un utente, riceveremo l'errore di azione non autorizzata: *Pundit::NotAuthorizedError*.
 
@@ -355,7 +355,7 @@ E' quindi opportuno gestire l'errore reindirizzando sulla pagina che ha provocat
 
 Per farlo aggiungiamo il `rescue_from Pundit::NotAuthorizedError` ad *ApplicationController*.
 
-***codice 6 - .../app/controllers/application_controller.rb - line. 6***
+***codice 6 - .../app/controllers/application_controller.rb - line:5***
 
 ```ruby
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -384,7 +384,7 @@ e nella sezione *private* mettiamo il metodo `user_not_authorized`.
 
 Implementiamo i18n per il messaggio di non autorizzato.
 
-***codice n/a - .../config/locales/it.yml - line: 279***
+***codice n/a - .../config/locales/it.yml - line:311***
 
 ```yaml
 #-------------------------------------------------------------------------------
@@ -405,6 +405,8 @@ Implementiamo i18n per il messaggio di non autorizzato.
     you_are_not_authorized: "You are not authorized to perform this action."
 ```
 
+> Si potevano creare anche due nuovi files `pundit.it.yml` è `pundit.en.yml` mettendo li dentro la traduzione. (come fa *devise*)
+
 
 ***codice n/a - .../app/controllers/application_controller.rb - line. 56***
 
@@ -420,7 +422,7 @@ Implementiamo i18n per il messaggio di non autorizzato.
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 Se non siamo loggati come amministratori, tentando violare le autorizzazioni impostate, riceveremo il messaggio "You are not authorized to perform this action." ("Non sei autorizzato ad eseguire questa azione.").
@@ -510,7 +512,7 @@ $ git commit -m "Pundit authorized views/users/edit"
 $ git push heroku au:main
 ```
 
-Non serve `heroku run rails db:migrate` perché non abbbiamo fatto modifiche al database.
+> Non serve `heroku run rails db:migrate` perché non abbbiamo fatto modifiche alla struttura del database.
 
 Rendiamo amministratore anche il primo utente nel database di heroku.
 
@@ -547,6 +549,6 @@ $ git push origin main
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/02-authorization-pundit-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/02_00-authorization-pundit-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/04-authorization-eg_posts-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/04_00-authorization-eg_posts-it.md)
