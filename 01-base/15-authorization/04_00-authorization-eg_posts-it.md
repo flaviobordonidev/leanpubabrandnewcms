@@ -211,10 +211,10 @@ Per le azioni [:show, :edit, :update, :destroy], che chiamano la funzione *set_u
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
-- https://mycloud9path.amazonaws.com/eg_posts
+- http://192.168.64.3:3000/eg_posts
 
 
 
@@ -378,10 +378,10 @@ In questo modo mi è molto più chiaro capire la logica delle autorizzazioni.
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
-- https://mycloud9path.amazonaws.com/eg_posts
+- http://192.168.64.3:3000/eg_posts
 
 
 
@@ -397,11 +397,12 @@ $ git commit -m "Refactor policies conditions like the logical schema"
 ## Publichiamo su heroku
 
 ```bash
-$ git push heroku aep:master
-$ heroku run rake db:migrate
+$ git push heroku aep:main
 ```
 
-Ricordiamo che lato produzione su heroku c'è un database indipendente da quello di sviluppo. Se si è seguito il tutorial avremo la tabella già con i records inseriti e quindi speculare a quella di sviluppo.
+> Non serve `$ heroku run rake db:migrate` perché non abbiamo fatto modifiche alla struttura del database.
+
+> Ricordiamo che lato produzione su heroku c'è un database indipendente da quello di sviluppo. Se si è seguito il tutorial avremo la tabella già con i records inseriti e quindi speculare a quella di sviluppo.
 
 
 
@@ -410,7 +411,7 @@ Ricordiamo che lato produzione su heroku c'è un database indipendente da quello
 se abbiamo finito le modifiche e va tutto bene:
 
 ```bash
-$ git checkout master
+$ git checkout main
 $ git merge aep
 $ git branch -d aep
 ```
@@ -419,16 +420,16 @@ $ git branch -d aep
 
 ## Facciamo un backup su Github
 
-Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+Dal nostro branch main di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 ```bash
-$ git push origin master
+$ git push origin main
 ```
 
 
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/03_00-authorization-users-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/16-rolification/01_00-roles-rolify-it.md)
