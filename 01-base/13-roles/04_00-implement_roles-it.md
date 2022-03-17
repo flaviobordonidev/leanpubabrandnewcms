@@ -7,6 +7,7 @@ Adesso che abbiamo i ruoli nella nostra tabella *users* possiamo implementarli n
 ## Risorse interne
 
 - [99-rails_references-models-04-public-protected-private]()
+- [rails_references/data_types/select-collection_select]()
 
 
 
@@ -37,7 +38,7 @@ Nel partial *_form* usato dalle views *edit* e *new*, aggiungiamo un selettore (
 ***codice 02 - .../app/views/users/_form.html.erb - line: 42***
 
 ```html+erb
-  <div>    
+  <div>
     <%= form.label :role %>
     <%= form.select(:role, User.roles.keys.map {|role| [role.titleize,role]}) %>
   </div>
@@ -79,7 +80,7 @@ Questo ancora **non** ci permette di aggiornare il campo *language* nella tabell
 ## Attiviamo la *whitelist* su devise
 
 
-> ATTENZIONE -- MI HA FUNZIONATO SENZA whitelist se devise!!!
+> ATTENZIONE -- MI HA FUNZIONATO SENZA whitelist su devise!!!
 >
 > DA RIVEDERE!!!
 
@@ -162,13 +163,12 @@ Adesso finalmente riusciamo ad aggiornare il campo *language* nella tabella *use
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
-- https://mycloud9path.amazonaws.com/users
+- http://192.168.64.3:3000/users
 
 Andiamo in edit sui vari utenti e ne vediamo i vari ruoli. Volendo possiamo anche cambiarli.
-(se proviamo a cambiarli dobbiamo reinserire anche password e password_confirmation altrimenti abbiamo un errore di validazione. Più avanti risolveremo anche questo)
 
 
 
@@ -185,8 +185,9 @@ $ git commit -m "Add role:enum to table users"
 
 ```bash
 $ git push heroku re:main
-$ heroku run rails db:migrate
 ```
+
+> Non serve `$ heroku run rails db:migrate` perché non abbiamo fatto modifiche alla struttura del database.
 
 
 
@@ -214,6 +215,6 @@ $ git push origin main
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/03-roles-enum-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/03_00-roles-enum-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/14-enum_i18n/01-enum-i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/14-enum_i18n/01_00-enum-i18n-it.md)
