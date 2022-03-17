@@ -158,7 +158,7 @@ Esempio:
 
 Ora che conosciamo la definizione e come accedervi possiamo inserirla nel view.
 
-***codice 03 - .../views/users/_form.html.erb - line: 33***
+***codice 03 - .../views/users/_form.html.erb - line:42***
 
 ```html+erb
   <div>
@@ -168,10 +168,12 @@ Ora che conosciamo la definizione e come accedervi possiamo inserirla nel view.
   </div>
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/14-enum_i18n/01_03-views-users-_form.html.erb)
+
 oppure visualizzarli come *radio_buttons*.
 
 
-***codice n/a - .../views/users/_form.html.erb - line: 33***
+***codice n/a - .../views/users/_form.html.erb - line:42***
 
 ```html+erb
   <div>
@@ -183,7 +185,7 @@ oppure visualizzarli come *radio_buttons*.
 volendo si può creare un helper.
 
 
-***codice n/a - .../app/helpers/users_helper.rb - line: 33***
+***codice n/a - .../app/helpers/users_helper.rb - line:42***
 
 ```ruby
 module UsersHelper
@@ -195,7 +197,7 @@ end
 
 in modo da avere un view più *"dry"*.
 
-***codice n/a - .../views/users/_form.html.erb - line: 33***
+***codice n/a - .../views/users/_form.html.erb - line:42***
 
 ```html+erb
   <div>
@@ -212,7 +214,7 @@ Un altro modo è quello di creare una variabile virtuale nel Model.
 
 Vedi virtual attribute con *get_read*, *get_write*, ...
 
-***codice n/a - .../models/user.rb - line: 33***
+***codice n/a - .../models/user.rb - line:42***
 
 ```ruby
   User.roles.map{ |k,v| [k, User.human_attribute_name("role.#{k}")]}.to_h
@@ -234,12 +236,12 @@ Vedi virtual attribute con *get_read*, *get_write*, ...
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 Apriamo il browser sull'URL:
 
-- https://mycloud9path.amazonaws.com/users
+- http://192.168.64.3:3000/users
 
 Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
 
@@ -258,8 +260,9 @@ $ git commit -m "users_controllers notice messages i18n"
 
 ```bash
 $ git push heroku ein:main
-$ heroku run rails db:migrate
 ```
+
+> Non serve `$ heroku run rails db:migrate` perché non abbiamo modificato la struttura del database.
 
 
 
@@ -287,6 +290,6 @@ $ git push origin main
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/04-implement_roles-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/04_00-implement_roles-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/01-theory-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/01_00-theory-it.md)
