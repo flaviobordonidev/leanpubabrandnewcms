@@ -75,7 +75,7 @@ user_fb:~/environment/bl7_0 (re) $
 
 ed otteniamo le seguenti modifiche alla tabella *users*.
 
-***codice 02 - .../db/schema.rb - line: 38***
+***codice 02 - .../db/schema.rb - line:38***
 
 ```ruby
   create_table "users", force: :cascade do |t|
@@ -326,6 +326,8 @@ $ git push heroku re:main
 $ heroku run rails db:migrate
 ```
 
+> Dobbiamo usare `$ heroku run rails db:migrate` perché abbiamo modificato la struttura del database con `$ rails db:migrate` che ha eseguito il *migrate* di aggiunta della colonna *role* alla tabella *users*.
+
 Rendiamo il primo utente amministratore.
 
 ```bash
@@ -349,6 +351,6 @@ Lo facciamo nel prossimo capitolo.
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/02-roles-admin-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/02_00-roles-admin-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/04-implement_roles-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/04_00-implement_roles-it.md)
