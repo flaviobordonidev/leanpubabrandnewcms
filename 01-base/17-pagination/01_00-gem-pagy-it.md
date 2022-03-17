@@ -65,43 +65,33 @@ Abbiamo due scelte:
 
 Scegliamo di includere la paginazione in tutti i controllers perché per quelli che non la utilizzano non crea nessun problema.
 
-***codice 02 - .../app/controllers/application_controller.rb - line: 1***
+***codice 02 - .../app/controllers/application_controller.rb - line:5***
 
 ```ruby
 include Pagy::Backend
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/17-pagination/01_01-gemfile.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/17-pagination/01_02-controllers-application_controller.rb)
 
 
 
 ## Aggiungiamo il Frontend alle nostre pagine
 
-includiamo la paginazione anche in application_helper in modo da rendere disponibili gli helpers di pagy a tutte le views
+Includiamo la paginazione anche in *application_helper* in modo da rendere disponibili gli helpers di pagy a tutte le views.
 
-***codice 04 - .../app/helpers/application_helper.rb - line: 1***
+***codice 04 - .../app/helpers/application_helper.rb - line:2***
 
 ```ruby
   include Pagy::Frontend
 ```
 
-[tutto il codice](#01-15-04_04all)
-
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/17-pagination/01_04-helpers-application_helper.rb)
 
 
 
 ## Verifichiamo preview
 
-```bash
-$ sudo service postgresql start
-$ rails s
-```
-
-apriamolo il browser sull'URL:
-
-* https://mycloud9path.amazonaws.com/users
-
-Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
+Al momento non abbiamo ancora nulla da vedere sul preview.
 
 
 
@@ -117,7 +107,7 @@ $ git commit -m "Install pagination with pagy"
 ## Pubblichiamo su heroku
 
 ```bash
-$ git push heroku pp:master
+$ git push heroku pp:main
 ```
 
 
@@ -137,6 +127,6 @@ Lo facciamo nel prossimo capitolo.
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/16-rolification/05_00-authorization-more_roles-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/17-pagination/02_00-eg_posts_pagination-it.md)
