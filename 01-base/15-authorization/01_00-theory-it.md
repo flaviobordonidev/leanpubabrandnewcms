@@ -51,6 +51,33 @@ moderator       | -,s\*,-,e\*,- | i\*,s\*,-,-,d\*   |
 author          | -,s\*,-,e\*,- | i\*,s\*,n,e\*,d\* |
 user            | -,s\*,-,e\*,- | i\*,s\*,-,-,-     |
 
+Vediamo più in dettaglio le autorizzazioni per la tabella *users*.
+
+- admin
+  - index : all records 
+  - show  : all records
+  - new   : yes
+  - edit  : all records
+  - destroy : any record
+- moderator
+  - index : no
+  - show  : only his own record
+  - new   : no
+  - edit  : only his own record
+  - destroy : no
+- author
+  - index : no
+  - show  : only his own record
+  - new   : no
+  - edit  : only his own record
+  - destroy : no
+- user
+  - index : no
+  - show  : only his own record
+  - new   : no
+  - edit  : only his own record
+  - destroy : no
+
 Vediamo più in dettaglio le autorizzazioni per la tabella *posts*.
 
 - admin
@@ -106,6 +133,6 @@ Non c'è nulla di nuovo da archiviare.
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/14-enum_i18n/01-enum-i18n-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/14-enum_i18n/01_00-enum-i18n-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/02-authorization-pundit-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/02_00-authorization-pundit-it.md)
