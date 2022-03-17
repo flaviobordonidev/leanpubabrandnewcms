@@ -46,7 +46,7 @@ $ bundle install
 
 Includiamo Pundit nel nostro application controller.
 
-***codice 02 - .../app/controllers/application_controller.rb - line: 5***
+***codice 02 - .../app/controllers/application_controller.rb - line:4***
 
 ```ruby
   include Pundit
@@ -102,7 +102,7 @@ Nel prossimo capitolo inizieremo ad usarlo per le autorizzazioni.
     end
 ```
 
-> invece su pundit 2.2 nel file abbiamo  *class Scope* -> *def resolve* -> *raise NotImplementedError*
+> invece su pundit 2.2 nel file abbiamo  *class Scope* -> *def resolve* -> `raise NotImplementedError, "You must define #resolve in #{self.class}"`
 
 
 
@@ -127,7 +127,7 @@ $ git commit -m "install pundit"
 $ git push heroku pi:main
 ```
 
-Non serve `heroku run rails db:migrate` perché non abbbiamo fatto modifiche al database.
+> Non serve `heroku run rails db:migrate` perché non abbbiamo fatto modifiche alla struttura del database.
 
 
 
@@ -155,6 +155,6 @@ $ git push origin main
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/01-theory-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/01_00-theory-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/03-authorization-users-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/03_00-authorization-users-it.md)

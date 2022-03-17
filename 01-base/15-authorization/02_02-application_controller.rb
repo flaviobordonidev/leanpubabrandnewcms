@@ -1,31 +1,12 @@
 class ApplicationController < ActionController::Base
   before_action :set_locale
-  before_action :configure_permitted_parameters, if: :devise_controller?
 
   include Pundit
-
+  
   #def after_sign_in_path_for(resource_or_scope)
-  #  #current_user # goes to users/1 (if current_user = 1)
+  #  current_user # goes to users/1 (if current_user = 1)
   #  #users_path #goes to users/index
-  #  eg_posts_path #goes to eg_posts/index
   #end
-
-  #-----------------------------------------------------------------------------
-  protected
-
-  def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_in)
-    devise_parameter_sanitizer.permit(:sign_up)
-    devise_parameter_sanitizer.permit(:account_update)
-
-    #devise_parameter_sanitizer.permit(:sign_in, keys: [:language])
-    #devise_parameter_sanitizer.permit(:sign_up, keys: [:language])
-    #devise_parameter_sanitizer.permit(:account_update, keys: [:language])
-
-    #devise_parameter_sanitizer.permit(:sign_in, keys: [:role, :name, :language])
-    #devise_parameter_sanitizer.permit(:sign_up, keys: [:role, :name, :language])
-    #devise_parameter_sanitizer.permit(:account_update, keys: [:role, :name, :language])
-  end
   
   #-----------------------------------------------------------------------------
   private
