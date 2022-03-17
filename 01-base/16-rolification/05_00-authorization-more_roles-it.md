@@ -1,3 +1,5 @@
+# <a name="top"></a> Cap 16.5 - Implementiamo le autorizzazioni nel dettaglio.
+
 Adesso definiamo ed implementiamo le autorizzazioni nel dettaglio.
 se sei autore del post
 se sei moderatore
