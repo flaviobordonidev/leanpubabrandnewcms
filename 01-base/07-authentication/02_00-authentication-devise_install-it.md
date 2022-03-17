@@ -44,6 +44,7 @@ gem 'devise', '~> 4.8', '>= 4.8.1'
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/02_01-Gemfile.rb)
 
+
 Eseguiamo l'installazione della gemma con bundle
 
 ```bash

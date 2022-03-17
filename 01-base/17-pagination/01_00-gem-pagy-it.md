@@ -39,14 +39,14 @@ Invece di avere un aggancio *.page* o *.pagination* la gemma pagy ha una funzion
 >
 > facciamo riferimento al [tutorial github della gemma](https://github.com/ddnexus/pagy)
 
-***codice 01 - .../Gemfile - line: 37***
+***codice 01 - .../Gemfile - line:57***
 
 ```ruby
 # Agnostic pagination in plain ruby
-gem 'pagy', '~> 3.7', '>= 3.7.2'
+gem 'pagy', '~> 5.10', '>= 5.10.1'
 ```
 
-[tutto il codice](#01-17-01_01all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/17-pagination/01_01-gemfile.rb)
 
 Eseguiamo l'installazione della gemma con bundle
 
@@ -71,7 +71,7 @@ Scegliamo di includere la paginazione in tutti i controllers perché per quelli 
 include Pagy::Backend
 ```
 
-[tutto il codice](#01-15-04_02all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/17-pagination/01_01-gemfile.rb)
 
 
 

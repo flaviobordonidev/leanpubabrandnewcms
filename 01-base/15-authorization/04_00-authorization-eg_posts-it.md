@@ -131,7 +131,7 @@ destroy
   end
 ```
 
-[tutto il codice](#01-15-04_01all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/04_01-policies-eg_post_policy.rb)
 
 
 
@@ -203,7 +203,7 @@ Per le azioni [:show, :edit, :update, :destroy], che chiamano la funzione *set_u
       authorize @eg_post
 ```
 
-[tutto il codice](#01-15-04_02all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/04_02-controllers-eg_posts_controller.rb)
 
 
 
@@ -367,7 +367,7 @@ destroy
   end
 ```
 
-[Codice 03](#01-09-06_03all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/15-authorization/04_03-policies-eg_post_policy.rb)
 
 In questo modo mi è molto più chiaro capire la logica delle autorizzazioni.
 
