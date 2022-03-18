@@ -15,10 +15,11 @@ Continuiamo con il branch aperto nel capitolo precedente.
 Abbiamo già incluso il backend di pagy a livello di "application_controller" con "include Pagy::Backend"; adesso lo possiamo usare nel controller.
 Chiamiamo la funzione "pagy()" nelle azioni dei nostri controllers. Implementiamo la paginazione nell'azione "index"
 
-***codice 01 - .../app/controllers/users_controller.rb - line: 1***
+***codice 01 - .../app/controllers/users_controller.rb - line:8***
 
 ```ruby
-    @pagy, @users = pagy(User.all)
+    #@users = User.all
+    @pagy, @users = pagy(User.all, items: 3)
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/17-pagination/03_01-controllers-users_controller.rb)
@@ -42,27 +43,14 @@ Usiamo l'helper "pagy_nav()" messo a disposizione da pagy e lo passiamo con sani
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 apriamo il browser sull'URL:
 
-- https://mycloud9path.amazonaws.com/users
+- http://192.168.64.3:3000/users
 
-E vediamo la paginazione. Al momento i link sono disattivati perché abbiamo pochi utenti.
-Attenzione! ricordiamoci che dobbiamo essere loggati altrimenti riceviamo un errore perché non abbiamo gestito current_user = nil.
-
-
-
-## Scegliamo quanti records per pagina
-
-Di default sono impostati 20 records ogni pagina. Riduciamoli a 2 così avremo attivi i links per la paginazione.
-
-***codice n/a - .../app/controllers/users_controller.rb - line: 1***
-
-```ruby
-    @pagy, @users = pagy(User.all, items: 2)
-```
+> Attenzione! ricordiamoci che dobbiamo essere loggati altrimenti riceviamo un errore perché non abbiamo gestito current_user = nil.
 
 
 
@@ -70,10 +58,10 @@ Di default sono impostati 20 records ogni pagina. Riduciamoli a 2 così avremo a
 
 Di default l'ordinamento è crescente in base l'ultima modifica fatta, quindi ogni modifica l'utente va in fondo all'elenco. Per lasciare un elenco più "statico" inseriamo l'ordinamento decrescente in base alla creazione.
 
-***codice n/a - .../app/controllers/users_controller.rb - line: 1***
+***codice n/a - .../app/controllers/users_controller.rb - line:9***
 
 ```ruby
-    @pagy, @users = pagy(User.all.order(created_at: "DESC"), items: 2)
+    @pagy, @users = pagy(User.all.order(created_at: "DESC"), items: 3)
 ```
 
 
@@ -82,14 +70,14 @@ Di default l'ordinamento è crescente in base l'ultima modifica fatta, quindi og
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 apriamo il browser sull'URL:
 
-- https://mycloud9path.amazonaws.com/authors/posts
+- http://192.168.64.3:3000/users
 
-E vediamo la paginazione. Questa volta appaiono i links di navigazione tra le pagine
+E vediamo la paginazione con ordinamento decrescente con l'ultimo creato in alto.
 
 
 
@@ -134,6 +122,6 @@ $ git push origin main
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/17-pagination/01_00-gem-pagy-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/17-pagination/02_00-eg_posts_pagination-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/17-pagination/03_00-users_pagination-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/01_00-file_upload-story-it.md)

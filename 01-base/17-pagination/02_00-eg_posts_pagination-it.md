@@ -14,12 +14,13 @@ continuiamo con il branch aperto nel capitolo precedente.
 
 Abbiamo già inserito la chiamata a pagy in *application_controller*. 
 Adesso che abbiamo incluso pagy possiamo chiamare la funzione `pagy()` nelle azioni dei nostri controllers. 
-Implementiamo la paginazione nell'azione index di *eg_posts_controller*.
+Implementiamo la paginazione nell'azione index di *eg_posts_controller* sostituendo `@eg_posts = EgPost.all` con `@pagy, @eg_posts = pagy(EgPost.all)`.
 
-***codice 01 - .../app/controllers/eg_posts_controller.rb - line:8***
+***codice 01 - .../app/controllers/eg_posts_controller.rb - line:7***
 
 ```ruby
-    @pagy, @posts = pagy(Post.all)
+    #@eg_posts = EgPost.all
+    @pagy, @eg_posts = pagy(EgPost.all)
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/17-pagination/02_01-controllers-eg_posts_controller.rb)
@@ -137,23 +138,13 @@ $ git push heroku pp:main
 
 ## Chiudiamo il branch
 
-se abbiamo finito le modifiche e va tutto bene:
-
-```bash
-$ git checkout main
-$ git merge pp
-$ git branch -d pp
-```
+lo chiudiamo nel prossimo capitolo
 
 
 
 ## Facciamo un backup su Github
 
-Dal nostro branch main di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
-
-```bash
-$ git push origin main
-```
+Lo facciamo nel prossimo capitolo
 
 
 

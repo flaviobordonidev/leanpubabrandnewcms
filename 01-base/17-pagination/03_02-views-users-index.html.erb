@@ -1,47 +1,24 @@
 <%# == Meta_data ============================================================ %>
 
-<% provide(:html_head_title, "#{t '.html_head_title'}") %>
+<% provide(:html_head_title, "#{t 'users.index.html_head_title'}") %>
 
 <%# == Meta_data - end ====================================================== %>
 
-<p id="notice"><%= notice %></p>
+<p style="color: green"><%= notice %></p>
 
 <h1>Users</h1>
 
-<%= link_to 'New User', new_user_path, class: "btn btn-sm btn-success float-right" %>
+<div id="users">
+  <% @users.each do |user| %>
+    <%= render user %>
+    <p>
+      <%= link_to "Show this user", user %>
+    </p>
+  <% end %>
+</div>
+
+<%= sanitize pagy_nav(@pagy) %>
+<br/>
 <br/>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Encrypted password</th>
-      <th>Role</th>
-      <th colspan="5"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @users.each do |user| %>
-      <tr>
-        <td><%= user.name %></td>
-        <td><%= user.email %></td>
-        <td><%= user.encrypted_password %></td>
-        <td><%= user.role %></td>
-        <td><%= link_to 'Show', user %></td>
-        <td><%= link_to 'Edit', edit_user_path(user) %></td>
-        <td><%= link_to 'Destroy', user,  method: :delete, data: { confirm: 'Are you sure?' } unless user == current_user %></td>
-        <td><%= link_to 'Edit', edit_user_path(user), class: 'btn btn-sm btn-warning' %></td>
-        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' unless user == current_user %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-<%= sanitize pagy_nav(@pagy) %>
-<br>
-
-
-<%= link_to 'New User', new_user_path %>
+<%= link_to "New user", new_user_path %>
