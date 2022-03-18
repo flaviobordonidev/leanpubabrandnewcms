@@ -16,35 +16,39 @@ Abbiamo già inserito la chiamata a pagy in *application_controller*.
 Adesso che abbiamo incluso pagy possiamo chiamare la funzione `pagy()` nelle azioni dei nostri controllers. 
 Implementiamo la paginazione nell'azione index di *eg_posts_controller*.
 
-***codice 01 - .../app/controllers/eg_posts_controller.rb - line: 1***
+***codice 01 - .../app/controllers/eg_posts_controller.rb - line:8***
 
 ```ruby
     @pagy, @posts = pagy(Post.all)
 ```
 
-[tutto il codice](#01-17-02_01all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/17-pagination/02_01-controllers-eg_posts_controller.rb)
 
 
 
 ## Implementiamo la pagina eg_posts/index
 
-Abbiamo già incluso il frontend di pagy a livello di "application_helper" con "include Pagy::Frontend"; adesso lo possiamo usare nelle views.
+Abbiamo già incluso il frontend di pagy a livello di *application_helper* con `include Pagy::Frontend`; adesso lo possiamo usare nelle views.
 
-Usiamo l'helper "pagy_nav()" messo a disposizione da pagy.
+Usiamo l'helper `pagy_nav()` messo a disposizione da pagy.
 
-***codice 05 - .../app/views/eg_posts/index.html.erb - line:  36***
+***codice n/a - .../app/views/eg_posts/index.html.erb - line:20***
 
 ```html+erb
 <%= raw pagy_nav(@pagy) %>
 ```
 
-un modo più compatto di scrivere lo stesso codice è usando il "doppio uguale" 
+un modo più compatto di scrivere lo stesso codice è usando il "doppio uguale".
 
-***codice n/a - .../app/views/eg_posts/index.html.erb - line:  36***
+***codice n/a - .../app/views/eg_posts/index.html.erb - line:20***
+
+```html+erb
+<%== pagy_nav(@pagy) %>
+```
 
 se invece usiamo la sintassi classica senza *raw* ci viene passato il codice HTML.
 
-***codice n/a - .../app/views/eg_posts/index.html.erb - line:  36***
+***codice n/a - .../app/views/eg_posts/index.html.erb - line:20***
 
 ```html+erb
 <%= pagy_nav(@pagy) %>
@@ -53,7 +57,7 @@ se invece usiamo la sintassi classica senza *raw* ci viene passato il codice HTM
 Possiamo usare "raw" perché sappiamo che pagy già evita query-injections.
 Ma se vogliamo essere espressamente prudenti possiamo usare *html_safe* invece di *raw* ma è sconsigliato perché *html_safe* ha alcuni difetti.
 
-***codice n/a - .../app/views/eg_posts/index.html.erb - line:  36***
+***codice n/a - .../app/views/eg_posts/index.html.erb - line:20***
 
 ```html+erb
 <%= pagy_nav(@pagy).html_safe %>
@@ -61,7 +65,7 @@ Ma se vogliamo essere espressamente prudenti possiamo usare *html_safe* invece d
 
 Se vogliamo essere esplicitamente prudenti è bene usare ***sanitize***.
 
-***codice n/a - .../app/views/eg_posts/index.html.erb - line:  36***
+***codice n/a - .../app/views/eg_posts/index.html.erb - line:20***
 
 ```html+erb
 <%= sanitize pagy_nav(@pagy) %>
@@ -73,12 +77,12 @@ Se vogliamo essere esplicitamente prudenti è bene usare ***sanitize***.
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 apriamo il browser sull'URL:
 
-* https://mycloud9path.amazonaws.com/authors/posts
+- http://192.168.64.3:3000/eg_posts
 
 E vediamo la paginazione. Al momento i link sono disattivati perché abbiamo pochi articoli.
 
@@ -88,11 +92,13 @@ E vediamo la paginazione. Al momento i link sono disattivati perché abbiamo poc
 
 Di default sono impostati 20 records ogni pagina. Riduciamoli a 2 così avremo attivi i links per la paginazione.
 
-***codice 0X - .../app/controllers/eg_posts_controller.rb - line: 1***
+***codice n/a - .../app/controllers/eg_posts_controller.rb - line:8***
 
 ```ruby
     @pagy, @eg_posts = pagy(EgPost.all, items: 2)
 ```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/17-pagination/02_03-controllers-eg_posts_controller.rb)
 
 
 
@@ -100,12 +106,12 @@ Di default sono impostati 20 records ogni pagina. Riduciamoli a 2 così avremo a
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 apriamo il browser sull'URL:
 
-- https://mycloud9path.amazonaws.com/authors/posts
+- http://192.168.64.3:3000/eg_posts
 
 E vediamo la paginazione. Questa volta appaiono i links di navigazione tra le pagine
 
@@ -123,9 +129,10 @@ $ git commit -m "add pagination with pagy"
 ## Pubblichiamo su heroku
 
 ```bash
-$ git push heroku pp:master
+$ git push heroku pp:main
 ```
 
+> Non serve `$ rails db:migrate` perché non abbiamo fatto modifiche alla struttura del database.
 
 
 ## Chiudiamo il branch
@@ -133,7 +140,7 @@ $ git push heroku pp:master
 se abbiamo finito le modifiche e va tutto bene:
 
 ```bash
-$ git checkout master
+$ git checkout main
 $ git merge pp
 $ git branch -d pp
 ```
@@ -142,10 +149,10 @@ $ git branch -d pp
 
 ## Facciamo un backup su Github
 
-Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+Dal nostro branch main di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 ```bash
-$ git push origin master
+$ git push origin main
 ```
 
 
@@ -154,4 +161,4 @@ $ git push origin master
 
 [<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/17-pagination/01_00-gem-pagy-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/17-pagination/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/17-pagination/03_00-users_pagination-it.md)

@@ -21,7 +21,7 @@ Chiamiamo la funzione "pagy()" nelle azioni dei nostri controllers. Implementiam
     @pagy, @users = pagy(User.all)
 ```
 
-[tutto il codice](#01-17-03_01all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/17-pagination/03_01-controllers-users_controller.rb)
 
 
 
@@ -105,7 +105,7 @@ $ git commit -m "add pagination with pagy for users"
 ## Pubblichiamo su heroku
 
 ```bash
-$ git push heroku pp:master
+$ git push heroku pp:main
 ```
 
 
@@ -115,7 +115,7 @@ $ git push heroku pp:master
 se abbiamo finito le modifiche e va tutto bene:
 
 ```bash
-$ git checkout master
+$ git checkout main
 $ git merge pp
 $ git branch -d pp
 ```
@@ -124,16 +124,16 @@ $ git branch -d pp
 
 ## Facciamo un backup su Github
 
-Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+Dal nostro branch main di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 ```bash
-$ git push origin master
+$ git push origin main
 ```
 
 
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/17-pagination/01_00-gem-pagy-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/17-pagination/03_00-users_pagination-it.md)

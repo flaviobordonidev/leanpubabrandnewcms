@@ -1,43 +1,24 @@
 <%# == Meta_data ============================================================ %>
 
-<% provide(:html_head_title, "#{t '.html_head_title'}") %>
+<% provide(:html_head_title, "#{t 'eg_posts.index.html_head_title'}") %>
 
 <%# == Meta_data - end ====================================================== %>
 
-<p id="notice"><%= notice %></p>
+<p style="color: green"><%= notice %></p>
 
-<h1>Eg Posts</h1>
+<h1>Eg posts</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Meta title</th>
-      <th>Meta description</th>
-      <th>Headline</th>
-      <th>Incipit</th>
-      <th>User</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<div id="eg_posts">
+  <% @eg_posts.each do |eg_post| %>
+    <%= render eg_post %>
+    <p>
+      <%= link_to "Show this eg post", eg_post %>
+    </p>
+  <% end %>
+</div>
 
-  <tbody>
-    <% @eg_posts.each do |eg_post| %>
-      <tr>
-        <td><%= eg_post.meta_title %></td>
-        <td><%= eg_post.meta_description %></td>
-        <td><%= eg_post.headline %></td>
-        <td><%= eg_post.incipit %></td>
-        <td><%= eg_post.user_id %></td>
-        <td><%= link_to 'Show', eg_post %></td>
-        <td><%= link_to 'Edit', edit_eg_post_path(eg_post) %></td>
-        <td><%= link_to 'Destroy', eg_post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
 <%= sanitize pagy_nav(@pagy) %>
-<br>
+<br/>
+<br/>
 
-<%= link_to 'New Eg Post', new_eg_post_path %>
+<%= link_to "New eg post", new_eg_post_path %>
