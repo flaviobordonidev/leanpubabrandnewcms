@@ -49,7 +49,7 @@ class CreateActiveStorageTables < ActiveRecord::Migration[5.2]
     create_table :active_storage_blobs, id: primary_key_type do |t|
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/02_00-activestorage-install-it.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/02_01-db-migrate-xxx_create_active_storage_tables-active_storage.rb)
 
 > Curiosità: anche se siamo su rails 7.0 il migrate creato è ancora di tipo [5.2]
 
@@ -83,6 +83,8 @@ In realtà per l'upload in locale c'è già una configurazione di default.
   config.active_storage.service = :local
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/02_02-config-environments-development.rb)
+
 Verifichiamo la variabile *:local* nello *storage.yml*.
 
 ***codice 03 - .../config/storage.yml - line:5***
@@ -92,6 +94,8 @@ local:
   service: Disk
   root: <%= Rails.root.join("storage") %>
 ```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/02_03-config-storage.yml)
 
 la cartella principale "root" è nel percorso ".../storage" e la porta di default sull'url "localhost" è la 3000.
 
@@ -103,40 +107,39 @@ la cartella principale "root" è nel percorso ".../storage" e la porta di defaul
 
 Implementiamo un campo in cui carichiamo le immagini per i nostri articoli usando *has_one_attached* di active_storage.
 
-***codice 04 - .../app/models/eg_post.rb - line: 4***
+***codice 04 - .../app/models/eg_post.rb - line:2***
 
 ```ruby
   has_one_attached :header_image
 ```
 
-[tutto il codice](#01-18-02_04all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/02_04-models-eg_post.rb)
 
 
-Ogni volta che facciamo l'upload di un'immagine come "header_image" questa chiamata aggiorna in automatico i metatdata della tabella blobs ed il collegamento della tabella attachments. 
+Ogni volta che facciamo l'upload di un'immagine come *header_image* questa chiamata aggiorna in automatico i metatdata della tabella blobs ed il collegamento della tabella attachments. 
 
 
 
 ## Aggiorniamo il controller
 
-Inseriamo il nostro nuovo campo "header_image" nella whitelist
+Inseriamo il nostro nuovo campo *header_image* nella whitelist.
 
-***codice 05 - .../app/controllers/eg_posts_controller.rb - line: 77***
+***codice 05 - .../app/controllers/eg_posts_controller.rb - line: 72***
 
 ```ruby
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Only allow a list of trusted parameters through.
     def eg_post_params
-      params.require(:eg_post).permit(:meta_title, :meta_description, :headline, :incipit, :user_id, :price, :header_image)
+      params.require(:eg_post).permit(:meta_title, :meta_description, :headline, :incipit, :price, :header_image, :user_id)
     end
 ```
 
-[tutto il codice](#01-18-02_05all)
-
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/02_05-eg_posts_controller.rb)
 
 
 
 ## Implementiamo la view
 
-***codice 06 - .../app/views/eg_posts/_form.html.erb - line: 45***
+***codice 06 - .../app/views/eg_posts/_form.html.erb - line:40***
 
 ```html+erb
   <div class="field">
@@ -145,13 +148,13 @@ Inseriamo il nostro nuovo campo "header_image" nella whitelist
   </div>
 ```
 
-[tutto il codice](#01-18-02_06all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/02_06-views-eg_posts-_form.html.erb)
 
 
 
-Per visualizzare l'immagine basta "image_tag @eg_post.header_image" ma per sicurezza mettiamo anche un controllo
+Per visualizzare l'immagine basta `image_tag @eg_post.header_image` ma per sicurezza mettiamo anche un controllo.
 
-***codice 07 - .../app/views/eg_posts/show.html.erb - line: 62***
+***codice 07 - .../app/views/eg_posts/_eg_post.html.erb - line:34***
 
 ```html+erb
 <% if @eg_post.header_image.attached? %>
@@ -161,11 +164,9 @@ Per visualizzare l'immagine basta "image_tag @eg_post.header_image" ma per sicur
 <% end %>
 ```
 
-[tutto il codice](#01-18-02_07all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/02_06-views-eg_posts-_form.html.erb)
 
-INFO:
-non usiamo ".present?" perché darebbe sempre "true". Per verificare la presenza del file allegato dobbiamo usare ".attached?"
-
+> INFO: non usiamo `.present?` perché darebbe sempre *true*. Per verificare la presenza del file allegato dobbiamo usare `.attached?`.
 
 
 
@@ -173,14 +174,14 @@ non usiamo ".present?" perché darebbe sempre "true". Per verificare la presenza
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 andiamo alla pagina con l'elenco degli articoli ossia sull'URL:
 
-- https://mycloud9path.amazonaws.com/eg_posts
+- http://192.168.64.3:3000/eg_posts/
 
-Creaiamo un nuovo articolo ed aggiungiamo un'immagine. Verremo portati su show e vedremo l'immagine nella pagina.
+Creiamo un nuovo articolo ed aggiungiamo un'immagine. Verremo portati su show e vedremo l'immagine nella pagina.
 
 
 Possiamo inoltre vedere nella log (sul terminale) l'attività di upload nel database:
@@ -235,127 +236,7 @@ Processing by EgPostsController#show as HTML
   ↳ app/views/eg_posts/show.html.erb:63
   Rendered eg_posts/show.html.erb within layouts/application (Duration: 16.1ms | Allocations: 5656)
 Completed 200 OK in 38ms (Views: 26.0ms | ActiveRecord: 1.2ms | Allocations: 17563)
-
 ```
-
-
-
-## Ridimensioniamo l'immagine
-
-Per ridimensionare l'immagine possiamo chiamare il metodo ".variant(...)"
-
-***codice n/a - .../app/views/eg_posts/show.html.erb - line: 62***
-
-```html+erb
-  <p><%= image_tag @eg_post.header_image.variant(resize: "400x400") %></p>
-```
-
-> Attenzione! per funzionare il *.variand* necessita di minimagic.
-
-
-
-
-## installiamo la gemma di gestione delle immmagini
-
-Fino a rails 5.2 si usava la gemma "mini_magick". La gemma "mini_magick" ci permette la manipolazione delle immagini con un minimo uso di memoria. Questa gemma si appoggia ad  ImageMagick / GraphicsMagick per l'elaborazione delle immagini.
-
-> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/mini_magick)
->
-> facciamo riferimento al [tutorial github della gemma](https://github.com/minimagick/minimagick)
-
-
-Ma da rails 6.0 è proposta la gemma "image_processing" quindi usiamo quest'ultima.
-
-- https://bloggie.io/@kinopyo/upgrade-guide-active-storage-in-rails-6
-
-ImageProcessing's advantages:
-
-- The new methods #resize_to_fit, #resize_to_fill, etc also sharpen the thumbnail after resizing.
-- Fixes the orientation automatically, no more mistakenly rotated images!
-- Provides another backend libvips that has significantly better performance than ImageMagick.
-- Has a clear goal and scope and is well maintained. (It was originally written to be used with Shrine.)
-
-
-> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/image_processing)
->
-> facciamo riferimento al [tutorial github della gemma](https://github.com/janko/image_processing)
-
-
-***codice 08 - .../Gemfile - line: 25***
-
-```ruby
-# Use Active Storage variant
-# gem 'image_processing', '~> 1.2'
-gem 'image_processing', '~> 1.10', '>= 1.10.3'
-```
-
-[tutto il codice](#01-18-02_08all)
-
-> In realtà la gemma è già presente nel Gemfile basterebbe solo decommentarla però non è la versione più aggiornata. Quindi lascio la linea commentata ed aggiungo la più aggiornata, così in caso di problemi attivo quella commentata che sappiamo essere stata testata con Rails.
-
-Eseguiamo l'installazione della gemma con bundle
-
-```bash
-$ bundle install
-```
-
-
-
-## Installiamo la libreria di backend "imagemagick" su aws Cloud9
-
-ImageProcessing, cosi come faceva MiniMagick, richiede l'installazione di "ImageMagic" come backend. 
-Per funzionare image_processing ha bisogno di imagemagick presente, quindi installiamolo su Cloud9. (Per la produzione, Heroku lo installa automaticamente)
-
-> ImageProcessing è anche in grado di gestire il backend "Libvips" che è una nuova libreria più performante ma ad oggi Gennaio 2020 quest'ultima non è supportata da Heroku e quindi non la usiamo.
-
-Visto che abbiamo Ubuntu nella nostra aws Cloud9, usiamo "apt-get".
-
-```bash
-$ sudo apt-get install imagemagick
-```
-
-Se non funziona eseguire:
-
-```bash
-$ sudo apt-get update
-$ sudo apt-get install imagemagick
-```
-
-Se neanche questo funziona eseguire:
-
-```bash
-$ sudo add-apt-repository main
-$ sudo apt-get update
-$ sudo apt-get install imagemagick
-```
-
-> Attenzione! Se avessimo scelto di far girare aws cloud9 su Amazon Linux invece di Ubuntu avremmo dovuto usare "yum" invece di "apt-get".
-
-```bash
-$ sudo yum install ImageMagick
-```
-
-
-
-## Verifichiamo preview
-
-```bash
-$ sudo service postgresql start
-$ rails s
-```
-andiamo all'URL:
-
-- https://mycloud9path.amazonaws.com/example_posts/10
-
-verifichiamo che adesso la pagina show visualizza un'immagine di 200x200.
-
-
-Le tre principali forme di resize sono:
-
-- resize_to_fit: Will downsize the image if it's larger than the specified dimensions or upsize if it's smaller.
-- resize_to_limit: Will only resize the image if it's larger than the specified dimensions
-- resize_to_fill: Will crop the image in the larger dimension if it's larger than the specified dimensions
-
 
 
 
@@ -363,7 +244,7 @@ Le tre principali forme di resize sono:
 
 ```bash
 $ git add -A
-$ git commit -m "Install ActiveStorage and begin implementation with ImageProcessing and ImageMagic"
+$ git commit -m "Install ActiveStorage and begin local implementation"
 ```
 
 
@@ -375,7 +256,9 @@ $ git push heroku asfu:master
 $ heroku run rails db:migrate
 ```
 
-Abbiamo gli avvisi perché ancora non stiamo usando un servizio terzo per archiviare i files
+> In questo caso *rails db:migrate* serve perché abbiamo fatto modifiche alla struttura del database.
+
+Quando eravamo su Rails 6 da Heroku riceveveamo gli avvisi in basso perché ancora non stavamo usando un servizio terzo per archiviare i files. Con Rails 7 non sono apparsi.
 
 ```bash
 remote: ###### WARNING:
@@ -418,39 +301,33 @@ remote:        For all available Ruby versions see:
 remote:          https://devcenter.heroku.com/articles/ruby-support#supported-runtimes
 ```
 
+
 Heroku accetta uploads di immagini direttamente sul suo sito ma è bene attivare un servizio terzo: Amazon S3, Google GCS, Microsoft AzureStorage, Digitalocean, ...
-Attenzione. Anche se le immagini heroku le accetta si rischia che queste vengono cancellate dopo un po' di tempo. E comunque occupano del prezioso spazio su Heroku.
-es: 
+
+> Attenzione. Anche se le immagini heroku le accetta si rischia che queste vengono cancellate dopo un po' di tempo. E comunque occupano del prezioso spazio su Heroku.
+
+Esempio: 
 Effettuato l'upload del file "Screen Shot 2018-06-14 at 11.35.28.png" ed è stata caricata su:
 
 https://quiet-shelf-47596.herokuapp.com/rails/active_storage/disk/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJbWQyWVhKcFlXNTBjeTl6UmxKM2IxYzNjamN4UzNWU2VGcFdXbWQwY2tSdFkwMHZZalZpTkdFMFpXTXhPREF6TW1abU5HRmxNemhrTURaaU5EWmxOV1k1WVRWbE5qQTFOalExWkRNeFpUaGpNbVEzWWpBeU9ESXpaakl4WmpFM09Ua3paZ1k2QmtWVSIsImV4cCI6IjIwMTgtMDYtMjVUMTQ6NDY6MjcuNjkyWiIsInB1ciI6ImJsb2Jfa2V5In19--2d9e91046d31c6045815219e10ec136825b9ae6e/Screen%20Shot%202018-06-14%20at%2011.35.28.png?content_type=image%2Fpng&disposition=inline%3B+filename%3D%22Screen+Shot+2018-06-14+at+11.35.28.png%22%3B+filename%2A%3DUTF-8%27%27Screen%2520Shot%25202018-06-14%2520at%252011.35.28.png
 
-Nel prossimo capitolo attiviamo Amazon Web Service S3.
+Nei prossimi capitoli attiveremo Amazon Web Service S3.
 
 
 
 ## Chiudiamo il branch
 
-se abbiamo finito le modifiche e va tutto bene:
-
-```bash
-$ git checkout master
-$ git merge asfu
-$ git branch -d asfu
-```
-
+Lo chiudiamo nel prossimo capitolo
 
 
 ## Facciamo un backup su Github
 
-```bash
-$ git push origin master
-```
+Lo facciamo nel prossimo capitolo
 
 
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/01_00-file_upload-story-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/03_00-image_resize.md)

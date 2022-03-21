@@ -1,39 +1,34 @@
-<%= form_with(model: eg_post, local: true) do |form| %>
+<%= form_with(model: eg_post) do |form| %>
   <% if eg_post.errors.any? %>
-    <div id="error_explanation">
+    <div style="color: red">
       <h2><%= pluralize(eg_post.errors.count, "error") %> prohibited this eg_post from being saved:</h2>
 
       <ul>
-        <% eg_post.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
+        <% eg_post.errors.each do |error| %>
+          <li><%= error.full_message %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :meta_title %>
+  <div>
+    <%= form.label :meta_title, style: "display: block" %>
     <%= form.text_field :meta_title %>
   </div>
 
-  <div class="field">
-    <%= form.label :meta_description %>
+  <div>
+    <%= form.label :meta_description, style: "display: block" %>
     <%= form.text_field :meta_description %>
   </div>
 
-  <div class="field">
-    <%= form.label :headline %>
+  <div>
+    <%= form.label :headline, style: "display: block" %>
     <%= form.text_field :headline %>
   </div>
 
-  <div class="field">
-    <%= form.label :incipit %>
+  <div>
+    <%= form.label :incipit, style: "display: block" %>
     <%= form.text_field :incipit %>
-  </div>
-
-  <div class="field">
-    <%= form.label :user_id %>
-    <%= form.text_field :user_id %>
   </div>
 
   <div class="field">
@@ -47,7 +42,12 @@
     <%= form.file_field :header_image %>
   </div>
 
-  <div class="actions">
+  <div>
+    <%= form.label :user_id, style: "display: block" %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div>
     <%= form.submit %>
   </div>
 <% end %>
