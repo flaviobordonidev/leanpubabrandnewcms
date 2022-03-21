@@ -43,19 +43,13 @@ For new projects, we recommend Rails' own ActiveStorage.
 
 ## salviamo su git
 
-```bash
-$ git add -A
-$ git commit -m "users_controllers notice messages i18n"
-```
+Non c'è nulla da salvare.
 
 
 
 ## Pubblichiamo su Heroku
 
-```bash
-$ git push heroku ui:master
-```
-
+Non c'è nulla da pubblicare.
 
 
 ## Chiudiamo il branch
@@ -72,6 +66,6 @@ Lo facciamo nel prossimo capitolo.
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/17-pagination/03_00-users_pagination-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/02_00-activestorage-install-it.md)
