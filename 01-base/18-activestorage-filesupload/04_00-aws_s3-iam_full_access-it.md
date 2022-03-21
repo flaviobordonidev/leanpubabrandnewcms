@@ -52,9 +52,9 @@ AWS -> Service -> IAM -> Users
 
 ## Step1
 
-Come nome dell'utente usiamo bot+nome_app_rails; nel nostro caso "botbl6_0".
+Come nome dell'utente usiamo bot+nome_app_rails; nel nostro caso "botbl7_0".
 
-User name   : botbl6_0
+User name   : botbl7_0
 Access type : Programmatic access
 
 ![Fig. 01](images/01-beginning/11-activestorage-filesupload/03_01-new-iam_user-step1.png)
@@ -132,13 +132,13 @@ Facciamo click su create bucket.
 Che nome gli diamo?
 Per i nomi dei buckets possiamo rifarci ai nomi dei databases della nostra app: 
 
-- bl6_0_development  
-- bl6_0_production
+- bl7_0_development  
+- bl7_0_production
 
 Quindi avremo i seguenti due buckets:
 
-- bl6-0-dev
-- bl6-0-prod
+- bl7-0-dev
+- bl7-0-prod
 
 (l'underscore "_" non è accettato nel nome del bucket.)
 
@@ -201,34 +201,18 @@ E con questo abbiamo tutti i dati che ci servono per collegarci. Nel prossimo ca
 
 ## Verifichiamo preview
 
-```bash
-$ sudo service postgresql start
-$ rails s
-```
-
-apriamolo il browser sull'URL:
-
-* https://mycloud9path.amazonaws.com/users
-
-Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
+nessun preview da visualizzare
 
 
 
 ## salviamo su git
 
-```bash
-$ git add -A
-$ git commit -m "users_controllers notice messages i18n"
-```
-
+nessuna modifica fatta al codice
 
 
 ## Pubblichiamo su Heroku
 
-```bash
-$ git push heroku ui:master
-```
-
+niente di nuovo da pubblicare
 
 
 ## Chiudiamo il branch
@@ -245,6 +229,6 @@ Lo facciamo nel prossimo capitolo.
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/03_00-image_resize.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/05_00-aws_s3_activestorage-it.md)
