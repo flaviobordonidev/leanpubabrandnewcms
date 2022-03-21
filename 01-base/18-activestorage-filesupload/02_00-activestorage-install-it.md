@@ -1,7 +1,7 @@
 # <a name="top"></a> Cap 18.2 - Files Upload con ActiveStorage - installazione
 
 Da rails 5.2 è inserito un gestore di files upload chiamato ActiveStorage. Vediamo come implementarlo.
-Attiviamo active record per development e facciamo upload dei files in locale. Nel nostro caso il computer locale è quello di Cloud9.
+Attiviamo active record per development e facciamo upload dei files in locale. Nel nostro caso il computer locale è quello di multipass con ubuntu.
 
 
 
@@ -25,52 +25,39 @@ Poiché questa non è una gemma da aggiungere ma è già integrata in Rails dobb
 
 ```bash
 $ rails active_storage:install
+```
 
+Esempio
 
-user_fb:~/environment/bl6_0 (asfu) $ rails active_storage:install
-Copied migration 20200121112150_create_active_storage_tables.active_storage.rb from active_storage
+```bash
+ubuntu@ubuntufla:~/bl7_0 (asfu)$rails active_storage:install
+Copied migration 20220321084113_create_active_storage_tables.active_storage.rb from active_storage
+ubuntu@ubuntufla:~/bl7_0 (asfu)$
 ```
 
 questo crea il seguente migrate
 
-***codice 01 - .../db/migrate/xxx_create_active_storage_tables.active_storage.rb - line: 1***
+***codice 01 - .../db/migrate/xxx_create_active_storage_tables.active_storage.rb - line:1***
 
 ```ruby
 # This migration comes from active_storage (originally 20170806125915)
 class CreateActiveStorageTables < ActiveRecord::Migration[5.2]
   def change
-    create_table :active_storage_blobs do |t|
-      t.string   :key,        null: false
-      t.string   :filename,   null: false
-      t.string   :content_type
-      t.text     :metadata
-      t.bigint   :byte_size,  null: false
-      t.string   :checksum,   null: false
-      t.datetime :created_at, null: false
+    # Use Active Record's configured type for primary and foreign keys
+    primary_key_type, foreign_key_type = primary_and_foreign_key_types
 
-      t.index [ :key ], unique: true
-    end
-
-    create_table :active_storage_attachments do |t|
-      t.string     :name,     null: false
-      t.references :record,   null: false, polymorphic: true, index: false
-      t.references :blob,     null: false
-
-      t.datetime :created_at, null: false
-
-      t.index [ :record_type, :record_id, :name, :blob_id ], name: "index_active_storage_attachments_uniqueness", unique: true
-      t.foreign_key :active_storage_blobs, column: :blob_id
-    end
-  end
-end
+    create_table :active_storage_blobs, id: primary_key_type do |t|
 ```
 
-Curiosità: anche se siamo su rails 6.0 il migrate creato è ancora di tipo [5.2]
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/02_00-activestorage-install-it.rb)
+
+> Curiosità: anche se siamo su rails 7.0 il migrate creato è ancora di tipo [5.2]
 
 Questo migrate crea due tabelle:
 
 - la tabella active_storage_blobs che archivia tutti i metadata
 - la tabella active_storage_attachments che contiene il collegamento tra il tuo model su cui vuoi fare upload ed il tuo archivio-remoto (o locale) dove immagazzini i files. Questo ci permette di non dover fare nuovi migrate per implemenare vari campi di upload.
+- la tabella active_storage_variant_records che è stata introdotto in Rails 7.0 - TODO: Vedere che fa ^_^!!
 
 Effettuiamo il migrate del database per creare le tabelle sul database
 
@@ -83,29 +70,32 @@ $ rails db:migrate
 
 ## Settiamo config development
 
-Attiviamo active record per development e facciamo upload dei files in locale. Quindi su Cloud9.
-Il settaggio per il production (su Heroku) lo facciamo nel prossimo capitolo.
-In realtà per l'upload in locale è già preconfigurato di default
+Attiviamo active record per development e facciamo upload dei files in locale. Quindi su istanza Ubuntu di multipass.
 
-***codice 02 - .../config/environments/development.rb - line: 30***
+> Il settaggio per il production (su Heroku) lo facciamo nel prossimo capitolo.
+
+In realtà per l'upload in locale c'è già una configurazione di default.
+
+***codice 02 - .../config/environments/development.rb - line:36***
 
 ```ruby
-  # Store uploaded files on the local file system (see config/storage.yml for options)
+  # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 ```
 
 Verifichiamo la variabile *:local* nello *storage.yml*.
 
-***codice 03 - .../config/storage.yml - line: 5***
+***codice 03 - .../config/storage.yml - line:5***
 
 ```yaml
 local:
   service: Disk
   root: <%= Rails.root.join("storage") %>
-  #host: "http://localhost:5000" #se usi una porta logica diversa dalla 3000.
 ```
 
 la cartella principale "root" è nel percorso ".../storage" e la porta di default sull'url "localhost" è la 3000.
+
+> Se vogliamo usare la porta logica *5000* invece della *3000* usiamo `host: "http://localhost:5000"`.
 
 
 
