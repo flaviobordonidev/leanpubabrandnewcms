@@ -211,7 +211,10 @@ aws:
   secret_access_key: sx1......G2nyKdela
 ```
 
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/05_fig02-bucket-myapp-dev-file_uploaded.png)
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/05_fig01-rails-encrypted-credentials.png)
+
+
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/05_fig02-bucket-myapp-dev-file_uploaded.PNG)
 
 
 
