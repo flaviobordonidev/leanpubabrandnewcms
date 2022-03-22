@@ -10,6 +10,13 @@ Effettuiamo il collegamento con S3 usando i secrests criptati.
 - [99-rails_references/active_storage/aws_s3]()
 
 
+## Risorse esterne
+
+- [Rails guide - Active Storage - Amazon S3](https://guides.rubyonrails.org/active_storage_overview.html#s3-service-amazon-s3-and-s3-compatible-apis)
+- [Cosa vuol dire "require = False" nel Gemfile](https://stackoverflow.com/questions/4800721/ruby-what-does-require-false-in-gemfile-mean#:~:text=require%3A%20false%20tells%20Bundler.,search%20path%20setup%20by%20bundler.)
+- [AWS SDK for Ruby - Version 3](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/index.html)
+
+
 
 ## Apriamo il branch "AWS S3 on ActiveRecord"
 
@@ -19,29 +26,27 @@ $ git checkout -b asar
 
 
 
-## installiamo aws-sdk per comunicare con amazon web service S3
+## Installiamo aws-sdk per comunicare con amazon web service S3
 
-Seguendo la guida Rails installiamo " gem "aws-sdk-s3", require: false " invece di tutta la suite " gem 'aws-sdk', '~> 3.0', '>= 3.0.1' "
+Seguendo la guida Rails installiamo `gem "aws-sdk-s3", require: false` invece di tutta la suite `gem 'aws-sdk', '~> 3.0', '>= 3.0.1'`.
 
 > verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/aws-sdk-s3)
 >
 > facciamo riferimento al [tutorial github della gemma](http://github.com/aws/aws-sdk-ruby)
+>
+> facciamo riferimento alla [Rails guide - Active Storage - Amazon S3](https://guides.rubyonrails.org/active_storage_overview.html#s3-service-amazon-s3-and-s3-compatible-apis)
 
-***codice 01 - .../Gemfile - line: 25***
-
-```ruby
-# API clients for AWS S3 services. Comunicazione con Amazon Web Service S3 per ActiveStorage
-gem 'aws-sdk-s3', '~> 1.60', '>= 1.60.1'
-```
-[tutto il codice](#01-18-04_01all)
-
-Attenzione:
-In passato si doveva aggiungere l'opzione "require: false", ma oggi non serve più 
+***codice 01 - .../Gemfile - line:48***
 
 ```ruby
 # API clients for AWS S3 services. Comunicazione con Amazon Web Service S3 per ActiveStorage
-gem "aws-sdk-s3", require: false
+gem 'aws-sdk-s3', '~> 1.113', require: false
 ```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/05_01-gemfile.rb)
+
+> l'opzione `require: false` è indicata nella *Rails guide* e permette di installare la gemma ma di **non** caricarla per ogni processo. Ciò consente di risparmiare memoria nei principali processi dell'app e riduce il tempo di avvio. Le prestazioni dell'app, tuttavia, non dovrebbero essere influenzate anche se carichiamo la gemma in ogni processo.
+
 
 Eseguiamo l'installazione della gemma con bundle
 
@@ -53,14 +58,54 @@ $ bundle install
 
 ## Verifichiamo connessione da rails console
 
+- [AWS SDK for Ruby - Version 3](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/index.html)
+
 Entrando in console da awsC9 siamo già collegati ad Amazon e possiamo vedere tutti i buckets
 
 ```bash
 $ rails c
+-> require "aws-sdk-s3"
 -> s3 = Aws::S3::Client.new
+-> s3 = Aws::S3::Client.new(region: 'us-east-1')
+-> s3 = Aws::S3::Client.new(region: 'us-east-1', access_key_id: 'BJLS6UI4FQTNWREYNI41', secret_access_key: 'A2Y0CbGgeu1g72SQUxdB9Lc7NLem5i3boknDsxFq')
 -> resp = s3.list_buckets
 -> resp.buckets.map(&:name)
+```
 
+> Visto che sul *Gemfile* abbiamo indicato l'opzione `require: false` per caricare la gemma dobbiamo esplicitamente richiederla con `require "aws-sdk-s3"`.
+
+> Per accedere al client dobbiamo passare *:region*, *:access_key_id* e *secret_access_key*.
+
+Esempio:
+
+```bash
+ubuntu@ubuntufla:~/bl7_0 (asar)$rails c
+Loading development environment (Rails 7.0.2.2)
+3.1.1 :001 > s3 = Aws::S3::Client.new
+(irb):1:in '<main>': uninitialized constant Aws (NameError)
+3.1.1 :002 > require "aws-sdk-s3"
+ => true 
+3.1.1 :003 > s3 = Aws::S3::Client.new
+/home/ubuntu/.rvm/gems/ruby-3.1.1/gems/aws-sdk-s3-1.113.0/lib/aws-sdk-s3/plugins/s3_signer.rb:23:in 'block in <class:S3Signer>': No region was provided. Configure the `:region` option or export the region name to ENV['AWS_REGION'] (Aws::Errors::MissingRegionError)
+3.1.1 :004 > 
+3.1.1 :004 > s3 = Aws::S3::Client.new(region: 'us-east-1')
+/home/ubuntu/.rvm/gems/ruby-3.1.1/gems/aws-sigv4-1.4.0/lib/aws-sigv4/signer.rb:627:in 'extract_credentials_provider': missing credentials, provide credentials with one of the following options: (Aws::Sigv4::Errors::MissingCredentialsError)
+  - :access_key_id and :secret_access_key
+  - :credentials
+  - :credentials_provider
+3.1.1 :005 > 
+3.1.1 :005 > s3 = Aws::S3::Client.new(region: 'us-east-1', access_key_id: 'BJLS6UI4FQTNWREYNI41', secret_access_key: 'A2Y0CbGgeu1g72SQUxdB9Lc7NLem5i3boknDsxFq')
+ => #<Aws::S3::Client> 
+3.1.1 :006 > 
+3.1.1 :006 > resp = s3.list_buckets
+ => 
+#<struct Aws::S3::Types::ListBucketsOutput
+... 
+3.1.1 :007 > resp.buckets.map(&:name)
+ => ["bl7-0-dev", "bl7-0-prod", "elisinfo-dev", "elisinfo-prod", "integram-agency-blog-dev", "integram-agency-blog-prod", "rebisworld-dev", "rebisworld-prod", "rebisworld-pub"] 
+3.1.1 :008 > 
+
+#vecchi output
 
 2.6.3 :002 > s3 = Aws::S3::Client.new
  => #<Aws::S3::Client> 
@@ -74,35 +119,36 @@ $ rails c
 Proviamo a leggere il contenuto del bucket "s5beginning-dev"
 
 ```bash
--> resp = s3.list_objects(bucket: 's5beginning-dev', max_keys: 2)
+-> resp = s3.list_objects(bucket: 'bl7-0-dev', max_keys: 2)
 -> resp.contents.each do |object|
 -->  puts "#{object.key} => #{object.etag}"
 --> end
-
-2.6.3 :005 > resp = s3.list_objects(bucket: 's5beginning-dev', max_keys: 2)                  
- => #<struct Aws::S3::Types::ListObjectsOutput is_truncated=false, marker="", next_marker=nil, contents=[], name="s5beginning-dev", prefix="", delimiter=nil, max_keys=2, common_prefixes=[], encoding_type="url"> 
-2.6.3 :006 > resp.contents.each do |object|
-2.6.3 :007 >     puts "#{object.key} => #{object.etag}"
-2.6.3 :008?>   end
- => [] 
-2.6.3 :009 > 
 ```
 
-Effettivamente è vuoto perché ancora non abbiamo messo nessun file al suo interno.
+Esempio:
 
-Se vi state chiedendo come fa la console ad avere autorizzazione a leggere nel bucket... me lo sto chiedendo anche io !??
-Scherzo. E' semplicemente perché stiamo lavorando con aws cloud9 e l'utente che lo sta usando "user_fb" ha le autorizzazioni anche per aws S3.
+```bash
+3.1.1 :009 > resp = s3.list_objects(bucket: 'bl7-0-dev', max_keys: 2)
+ => #<struct Aws::S3::Types::ListObjectsOutput is_truncated=false, marker="", next_marker=nil, contents=[], name="bl7-0-dev", prefix="", delimiter=nil, max_keys=2, common_prefixes=[], encoding_type="url"> 
+3.1.1 :010 > resp.contents.each do |object|
+3.1.1 :011 >   puts "#{object.key} => #{object.etag}"
+3.1.1 :012 > end
+ => [] 
+3.1.1 :013 > 
+```
 
-Per fare una prova "dall'esterno" possiamo usare la console di heroku ($ heroku run rails c).
-E questa è una prova che facciamo alla fine del capitolo perché prima di poterlo usare dobbiamo spostare su heroku la nuova gemma appena installata.
+> Effettivamente è vuoto perché ancora non abbiamo messo nessun file al suo interno.
+
+> Per fare una prova "dall'esterno" possiamo usare la console di heroku ($ heroku run rails c). <br/>
+> E questa è una prova che facciamo alla fine del capitolo perché prima di poterlo usare dobbiamo spostare su heroku la nuova gemma appena installata.
 
 
 
 ## Settiamo config development per Amazon S3
 
-Nel file di configurazione dell'ambiente di sviluppo impostiamo "config.active_storage.service" su ":amazondev" al posto di ":local". La variabile ":amazondev" la creiamo nel prossimo paragrafo. Visto che sia lo sviluppo che la produzione puntano ad aws s3 la variabile l'avremmo potuta chiamare semplicemente ":amazon" ma abbiamo preferito distinguerla per far capire didatticamente che puoi chiamarla come vuoi e per predisporci all'eventuale creazione di due utenze IAM diverse una per il bucket "myapp-dev" e l'altra per "myapp-prod".
+Nel file di configurazione dell'ambiente di sviluppo impostiamo *config.active_storage.service* su *:amazondev* al posto di *:local*. 
 
-***codice 02 - .../app/config/environments/development.rb - line: 31***
+***codice 02 - .../app/config/environments/development.rb - line:36***
 
 ```ruby
   # Store uploaded files on the local file system (see config/storage.yml for options).
@@ -110,7 +156,11 @@ Nel file di configurazione dell'ambiente di sviluppo impostiamo "config.active_s
   config.active_storage.service = :amazondev
 ```
 
-[tutto il codice](#01-18-04_02all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/05_02-config-environments-development.rb)
+
+La variabile ":amazondev" la creiamo nel prossimo paragrafo. 
+
+> Visto che sia lo *sviluppo* che la *produzione* puntano entrambi ad **aws s3**, la variabile l'avremmo potuta chiamare semplicemente *:amazon* ma abbiamo preferito distinguerla per far capire didatticamente che puoi chiamarla come vuoi e per predisporci all'eventuale creazione di due utenze IAM diverse una per il bucket "myapp-dev" e l'altra per "myapp-prod".
 
 
 
@@ -127,19 +177,19 @@ amazondev:
   access_key_id: <%= Rails.application.credentials.dig(:aws, :access_key_id) %>
   secret_access_key: <%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
   region: us-east-1
-  bucket: s5beginning-dev
+  bucket: bl7-0-dev
 ```
 
-[tutto il codice](#01-18-04_03all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/05_03-config-storage.yml)
 
 
 Non resta che impostare in modo sicuro, le variabili *access_key_id* e *secret_access_key*, anche dette *secrets*.
 
 
 
-## Implementiamo i due secrets
+## Implementiamo le due variabili *secrets*
 
-Implementiamo le due secrets nel file criptato "credentials". Per editare il file eseguire:
+Implementiamo le due variabili *secrets* nel file criptato *credentials*. Per editare il file eseguire:
 
 ```bash
 $ EDITOR=vim rails credentials:edit
@@ -164,12 +214,24 @@ aws:
 ![Fig. 01](images/01-beginning/11-activestorage-filesupload/04_01-rails-encrypted-credentials.png)
 
 
-Volendo essere più precisi avremmo potuto usare il più completo *aws_iam_bot_bl6_0* al posto *aws*. 
-In questo caso avremmo dovuto portare il cambiamento anche alle due chiamate su *.../app/config/storage.yml*.
+
+## Per i più pignoli
+
+Volendo essere più precisi avremmo potuto usare il nome di variabile *aws_iam_botbl7_0* al posto di *aws*. 
 
 ```bash
-  access_key_id: <%= Rails.application.credentials.dig(:aws_iam_bot_bl6_0, :access_key_id) %>
-  secret_access_key: <%= Rails.application.credentials.dig(:aws_iam_bot_bl6_0, :secret_access_key) %>
+aws_iam_botbl7_0:
+  access_key_id: AKI...LWBYA
+  secret_access_key: sx1......G2nyKdela
+```
+
+In questo caso avremmo dovuto portare il cambiamento anche alle due chiamate su *.../app/config/storage.yml*.
+
+***codice n/a - .../app/config/storage.yml - line: 5***
+
+```yaml
+  access_key_id: <%= Rails.application.credentials.dig(:aws_iam_botbl7_0, :access_key_id) %>
+  secret_access_key: <%= Rails.application.credentials.dig(:aws_iam_botbl7_0, :secret_access_key) %>
 ```
 
 
@@ -190,7 +252,7 @@ $ rails c
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 proviamo adesso a caricare un file.
@@ -245,7 +307,7 @@ Nel frattempo avremmo già creato il nuovo bucket "bl6-0-prod" su AWS S3 per man
 
 ## Implementiamo AWS S3 per la produzione su Heroku
 
-Creiamo il nuovo bucket "bl6-0-prod" su AWS S3 per mantenere distinte le immagini caricate come development da quelle caricate in produzione. (I passaggi sono gli stessi fatti per bl6-0-dev).
+Creiamo il nuovo bucket "bl7-0-prod" su AWS S3 per mantenere distinte le immagini caricate come development da quelle caricate in produzione. (I passaggi sono gli stessi fatti per bl7-0-dev).
 
 Adesso passiamo la nuova gemma in produzione caricando tutto il codice con "git push" e successivamente passiamo le chiavi di accesso al bucket "bl6-0-prod" di aws S3 .
 
@@ -263,12 +325,12 @@ $ git commit -m "add AWS S3 connection to upload images with ActiveRecord in Pro
 ## Publichiamo su heroku
 
 ```bash
-$ git push heroku asar:master
+$ git push heroku asar:main
 ```
 
 Se provassimo adesso ad andare sull'URL di produzione
 
-- https://bl6-0.herokuapp.com/
+- https://bl7-0.herokuapp.com/
 
 riceveremmo un errore
 
@@ -287,7 +349,7 @@ Passiamo le variabile d'ambiente ad heroku via terminale
 $ heroku config:set AWS_ACCESS_KEY_ID='AKIA....JTOMA'
 $ heroku config:set AWS_SECRET_ACCESS_KEY='LwdJ........45KHZ'
 $ heroku config:set AWS_REGION='us-east-1'
-$ heroku config:set S3_BUCKET_NAME='bl6-0-prod'
+$ heroku config:set S3_BUCKET_NAME='bl7-0-prod'
 ```
 
 Le avremmo potute passare anche tramite web GUI di heroku.
@@ -296,7 +358,7 @@ Le avremmo potute passare anche tramite web GUI di heroku.
 
 ## verifichiamo che funziona tutto
 
-- https://myapp-1-blabla.herokuapp.com/example_posts
+- https://bl7-0.herokuapp.com/eg_posts
 
 creiamo un nuovo post ed inseriamo l'immagine
 
@@ -318,6 +380,118 @@ Se sul browser facciamo click con tasto destro del mouse sull'immagine e scelgia
 ```
 
 Possiamo vedere che l'immagine sembra sul nostro server heroku ma in realtà è solo il puntamento sul database. La vera immagine è su Amazon Web Service S3.
+
+
+
+## Problema sul ridimensionamento con VIPS su Heroku
+
+L'immagine senza ridimensionamento si carica correttamente. Invece quella con il ridimensionamento appare l'icona con l'immagine "rotta". Questo perché di default Heroku gestisce ImageMagick e non VIPS.
+
+- [Getting vips to work with Rails on Heroku](https://tosbourn.com/vips-rails-7-heroku/)
+- [How to Fix – NameError: uninitialized constant Vips on Heroku](https://www.donnfelker.com/how-to-fix-nameerror-uninitialized-constant-vips-on-heroku/)
+
+
+In my Rails app I needed to do two things:
+
+- Install the ruby-vips gem
+- Add an Aptfile with a couple dependencies
+
+Then in Heroku I needed to add two build packs:
+
+- heroku-community/apt
+- https://github.com/brandoncc/heroku-buildpack-vips
+
+Then push your changes to Heroku (you need to do this step last).
+
+In your Rails app, add the ruby-vips to your Gemfile:
+
+> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/ruby-vips)
+>
+> facciamo riferimento al [tutorial github della gemma](https://github.com/libvips/ruby-vips)
+
+***codice 01 - .../Gemfile - line:48***
+
+```ruby
+# A binding for the libvips image processing library
+gem 'ruby-vips', '~> 2.1', '>= 2.1.4'
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/05_01-gemfile.rb)
+
+Visto che è solo per Heroku la potevo mettere nel gruppo *:production*.
+
+```ruby
+group :production do
+  # A binding for the libvips image processing library
+  gem 'ruby-vips', '~> 2.1', '>= 2.1.4'
+end
+```
+
+Eseguiamo l'installazione della gemma con bundle
+
+```bash
+$ bundle install
+```
+
+Next, create a file in the root of your Rails app called Aptfile
+
+***codice 01 - .../Aptfile - line:1***
+
+```bash
+libglib2.0-0
+libglib2.0-dev
+libpoppler-glib8
+libheif-dev
+libvips-dev
+libvips
+```
+
+Now open a command prompt and add the following buildpacks:
+
+```bash
+$ heroku buildpacks:add --index 1 heroku-community/apt -a bl7-0
+$ heroku buildpacks:add --index 2 https://github.com/brandoncc/heroku-buildpack-vips -a bl7-0
+```
+
+Esempio:
+
+```bash
+ubuntu@ubuntufla:~/bl7_0 (asar)$heroku domains
+=== bl7-0 Heroku Domain
+bl7-0.herokuapp.com
+ubuntu@ubuntufla:~/bl7_0 (asar)$heroku buildpacks:add --index 1 heroku-community/apt -a bl7-0
+Buildpack added. Next release on bl7-0 will use:
+  1. heroku-community/apt
+  2. heroku/ruby
+Run git push heroku main to create a new release using these buildpacks.
+ubuntu@ubuntufla:~/bl7_0 (asar)$heroku buildpacks:add --index 2 https://github.com/brandoncc/heroku-buildpack-vips -a bl7-0
+Buildpack added. Next release on bl7-0 will use:
+  1. heroku-community/apt
+  2. https://github.com/brandoncc/heroku-buildpack-vips
+  3. heroku/ruby
+Run git push heroku main to create a new release using these buildpacks.
+ubuntu@ubuntufla:~/bl7_0 (asar)$
+```
+
+
+
+## aggiorniamo git 
+
+```bash
+$ git add -A
+$ git commit -m "Resolve vips resize image on Heroku"
+```
+
+
+
+## Publichiamo su heroku
+
+```bash
+$ git push heroku asar:main
+```
+
+A me ha funzionato! ^_^
+(inizialmente mi ha dato entrambe le immagini caricate precedentemente con l'icona dell'immagine rotta ma andato in edit e caricata una nuova immagine ha funzionato!!!)
 
 
 
@@ -373,7 +547,7 @@ $ git commit -m "users_controllers notice messages i18n"
 ## Pubblichiamo su Heroku
 
 ```bash
-$ git push heroku ui:master
+$ git push heroku ui:main
 ```
 
 
@@ -383,7 +557,7 @@ $ git push heroku ui:master
 se abbiamo finito le modifiche e va tutto bene:
 
 ```bash
-$ git checkout master
+$ git checkout main
 $ git merge asar
 $ git branch -d asar
 ```
@@ -392,16 +566,16 @@ $ git branch -d asar
 
 ## Facciamo un backup su Github
 
-Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+Dal nostro branch main di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 ```bash
-$ git push origin master
+$ git push origin main
 ```
 
 
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/04_00-aws_s3-iam_full_access-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/06_00-remove_uploaded_file-it.md)

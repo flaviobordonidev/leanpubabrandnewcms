@@ -20,9 +20,9 @@ $ git checkout -b arru
 
 ## Nel model EgPost
 
-Nel model abbiamo già attivato la variabile "mmain_image" per ActionStorage in modo da poter caricare le immagini.
+Nel model abbiamo già attivato la variabile *main_image* per ActionStorage in modo da poter caricare le immagini.
 
-***codice 01 - .../app//models/post.rb - line: 2***
+***codice 01 - .../app//models/post.rb - line:2***
 
 ```ruby
   has_one_attached :main_image

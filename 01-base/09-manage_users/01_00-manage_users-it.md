@@ -685,6 +685,7 @@ $ rails s -b 192.168.64.3
 - Eliminiamo l'ultimo utente "flav" (id: 6)
 - Ricreiamo di nuovo l'utente "flav" che prenderà id: 7.
 
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_fig01-user_successfully_destroyed.png)
 
 
 ## Salviamo su git

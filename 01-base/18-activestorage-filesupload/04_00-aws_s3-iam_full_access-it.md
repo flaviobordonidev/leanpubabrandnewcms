@@ -57,7 +57,7 @@ Come nome dell'utente usiamo bot+nome_app_rails; nel nostro caso "botbl7_0".
 User name   : botbl7_0
 Access type : Programmatic access
 
-![Fig. 01](images/01-beginning/11-activestorage-filesupload/03_01-new-iam_user-step1.png)
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/04_fig01-new-iam_user-step1.png)
 
 "bot" convenzionalemente indica che non è un utente fisico ma un accesso per una applicazione.
 

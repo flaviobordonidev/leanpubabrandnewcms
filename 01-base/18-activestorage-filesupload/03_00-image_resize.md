@@ -106,7 +106,7 @@ Vantaggi di *ImageProcessing*:
 gem 'image_processing', '~> 1.12', '>= 1.12.2'
 ```
 
-[tutto il codice](#01-18-02_08all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/03_01-gemfile.rb)
 
 > In realtà la gemma è già presente nel Gemfile basterebbe solo decommentarla però non è la versione più aggiornata. <br/>
 > Nota: la versione *1.2* è più piccola della versione *1.12* perché le versioni non sono come i numeri decimali; il "." serve solo per dividere le varie sotto versioni.
