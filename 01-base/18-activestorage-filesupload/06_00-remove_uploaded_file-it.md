@@ -20,15 +20,15 @@ $ git checkout -b arru
 
 ## Nel model EgPost
 
-Nel model abbiamo già attivato la variabile *main_image* per ActionStorage in modo da poter caricare le immagini.
+Nel model abbiamo già attivato la variabile *header_image* per ActionStorage in modo da poter caricare le immagini.
 
-***codice 01 - .../app//models/post.rb - line:2***
+***codice 01 - .../app//models/eg_post.rb - line:2***
 
 ```ruby
-  has_one_attached :main_image
+  has_one_attached :header_image
 ```
 
-[tutto il codice](#01-18-05_01all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/06_01-models-post.rb)
 
 
 
@@ -36,7 +36,7 @@ Nel model abbiamo già attivato la variabile *main_image* per ActionStorage in m
 
 Creiamo la nuova azione *delete_image_attachment* sul controller
 
-***codice 02 - .../app/controllers/posts_controller.rb - line: 70***
+***codice 02 - .../app/controllers/eg_posts_controller.rb - line:65***
 
 ```ruby
   def delete_image_attachment
@@ -46,7 +46,7 @@ Creiamo la nuova azione *delete_image_attachment* sul controller
   end
 ```
 
-[tutto il codice](#01-18-05_02all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/06_02-controllers-eg_posts_controller.rb)
 
 Come possiamo vedere questo codice è molto generico e può essere usato così com'è su qualsiasi controller.
 
@@ -54,7 +54,7 @@ Come possiamo vedere questo codice è molto generico e può essere usato così c
 
 ## Implementiamo sugli instradamenti (routes)
 
-Prepariamo un instradamento per puntare alla nuova azione "delete_image_attachment". 
+Prepariamo un instradamento per puntare alla nuova azione *delete_image_attachment*.
 
 ***codice 03 - .../app/config/routes.rb - line: 4***
 
@@ -69,17 +69,76 @@ Prepariamo un instradamento per puntare alla nuova azione "delete_image_attachme
 [tutto il codice](#01-18-05_03all)
 
 
+vediamo il path
+
+```bash
+$ rails routes | egrep "delete_image_attachment"
+```
+
+Esempio:
+
+```bash
+ubuntu@ubuntufla:~/bl7_0 (arru)$rails routes | egrep "delete_image_attachment"
+         delete_image_attachment_eg_post DELETE /eg_posts/:id/delete_image_attachment(.:format)                                                   eg_posts#delete_image_attachment
+ubuntu@ubuntufla:~/bl7_0 (arru)$
+```
+
+Possiamo vedere che esiste l'instradamento / il percorso *delete_image_attachment_eg_post_path* che punta all'azione *delete_image_attachment* del controller *eg_posts* (*eg_posts#delete_image_attachment*).
+
+
+> Questo instradamento sarebbe il più corretto ma ho un problema lato views perché da Rails 7 non funziona più il *link_to* con `method: :delete`. Siamo costretti a usare il *button*.
+>
+> Se uso il *link_to ...* ottengo un errore di routing
+>
+> Se uso *button ...* mi cancella l'intero articolo *_*.
+
+***codice n/a - .../app/views/eg_posts/_form.html.erb - line: 70***
+
+```html+erb
+      <%= link_to 'Remove', delete_image_attachment_eg_post_path(eg_post.header_image.id), method: :delete, data: { confirm: 'Are you sure?' } if eg_post.header_image.attached? %>
+```
+
+***codice n/a - .../app/views/eg_posts/_form.html.erb - line: 70***
+
+```html+erb
+      <%= button 'Remove', delete_image_attachment_eg_post_path(eg_post.header_image.id), method: :delete, data: { confirm: 'Are you sure?' } if eg_post.header_image.attached? %>
+```
+
+
+## Workaround
+
+Per questo motivo usiamo un routing con *get*
+
+Prepariamo un instradamento per puntare alla nuova azione *delete_image_attachment*.
+
+***codice 03 - .../app/config/routes.rb - line: 4***
+
+```ruby
+  resources :eg_posts do
+    member do
+      get :delete_image_attachment
+    end
+  end
+```
+
+[tutto il codice](#01-18-05_03all)
+
 
 vediamo il path
 
 ```bash
 $ rails routes | egrep "delete_image_attachment"
-
-user_fb:~/environment/bl6_0 (arru) $ rails routes | egrep "delete_image_attachment"
-      delete_image_attachment_eg_post DELETE /eg_posts/:id/delete_image_attachment(.:format)                                          eg_posts#delete_image_attachment
 ```
 
-Possiamo vedere che esiste l'instradamento / il percorso "delete_image_attachment_eg_post_path" che punta all'azione "delete_image_attachment" del controller "eg_posts" (eg_posts#delete_image_attachment).
+Esempio:
+
+```bash
+ubuntu@ubuntufla:~/bl7_0 (arru)$rails routes | egrep "delete_image_attachment"
+         delete_image_attachment_eg_post GET    /eg_posts/:id/delete_image_attachment(.:format)                                                   eg_posts#delete_image_attachment
+ubuntu@ubuntufla:~/bl7_0 (arru)$
+```
+
+In questo modo riesco a far funzionare il *link_to ...*
 
 
 
@@ -90,12 +149,12 @@ Usiamo il nuovo instradamento sul link per eliminare l'immagine
 ***codice 04 - .../app/views/authors/posts/_form.html.erb - line: 70***
 
 ```html+erb
-      <%= link_to 'Remove', delete_image_attachment_eg_post_path(eg_post.header_image.id), method: :delete, data: { confirm: 'Are you sure?' } if eg_post.header_image.attached? %>
+      <%= link_to 'Remove', delete_image_attachment_eg_post_path(eg_post.header_image.id), method: :get if eg_post.header_image.attached? %>
 ```
 
 [tutto il codice](#01-18-05_04all)
 
-Mettiamo un "if..." perché se non c'è l'immagine ho un errore nel link non potendo avere l'"id".
+Mettiamo un `if...` perché se non c'è l'immagine ho un errore nel link non potendo avere l'`id`.
 
 
 
@@ -103,13 +162,13 @@ Mettiamo un "if..." perché se non c'è l'immagine ho un errore nel link non pot
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 - https://mycloud9path.amazonaws.com/eg_posts
 
 facciamo uploads ed eliminiamo gli uploads fatti.
-Se su aws S3, entriamo nel bucket "bl6-0-dev" possiamo vedere i files caricati e rimossi.
+Se su aws S3, entriamo nel bucket *bl7-0-dev* possiamo vedere i files caricati e rimossi.
 
 
 
@@ -164,9 +223,10 @@ $ git commit -m "add link to remove uploaded file"
 ## Publichiamo su heroku
 
 ```bash
-$ git push heroku arru:master
+$ git push heroku arru:main
 ```
 
+> Il comando `$ heroku run db:migrate` non serve perché non abbiamo fatto modifiche alla struttura del database.
 
 
 ## Chiudiamo il branch
@@ -174,7 +234,7 @@ $ git push heroku arru:master
 se abbiamo finito le modifiche e va tutto bene:
 
 ```bash
-$ git checkout master
+$ git checkout main
 $ git merge arru
 $ git branch -d arru
 ```
@@ -183,10 +243,10 @@ $ git branch -d arru
 
 ## Facciamo un backup su Github
 
-Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+Dal nostro branch main di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 ```bash
-$ git push origin master
+$ git push origin main
 ```
 
 
