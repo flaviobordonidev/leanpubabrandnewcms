@@ -214,9 +214,6 @@ aws:
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/05_fig01-rails-encrypted-credentials.PNG)
 
 
-![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/05_fig02-bucket-myapp-dev-file_uploaded.PNG)
-
-
 
 ## Per i più pignoli
 
@@ -267,7 +264,7 @@ ATTENZIONE! Normalmente le immagini vengono caricate subito ma a volte ci può v
 
 Se su aws S3, entriamo nel bucket "bl6-0-dev" vediamo il file di cui abbiamo appena fatto l'upload. (Potrebbe essere necessario fare un refresh della pagina)
 
-![Fig. 02](images/01-beginning/11-activestorage-filesupload/04_02-bucket-myapp-dev-file_uploaded.png)
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/05_fig02-bucket-myapp-dev-file_uploaded.PNG)
 
 
 
@@ -337,7 +334,7 @@ Se provassimo adesso ad andare sull'URL di produzione
 
 riceveremmo un errore
 
-![Fig. 03](images/01-beginning/11-activestorage-filesupload/04_03-heroku-application_error.png)
+![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/05_fig03-heroku-application_error.PNG)
 
 Questo perché non abbiamo ancora passato ad heroku le variabili per collegarsi ad aws S3
 
@@ -369,7 +366,7 @@ creiamo un nuovo post ed inseriamo l'immagine
 
 Funziona! Abbiamo l'immagine. E questa è archiviata su aws S3
 
-![Fig. 04](images/01-beginning/11-activestorage-filesupload/04_04-bucket-myapp-prod-file_uploaded.png)
+![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/05_fig04-bucket-myapp-prod-file_uploaded.PNG)
 
 
 Interessante vedere che la nostra archiviazione su AWS rimane nascosta all'utente finale.
