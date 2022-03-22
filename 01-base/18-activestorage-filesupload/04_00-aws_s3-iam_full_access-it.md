@@ -65,10 +65,9 @@ Access type : Programmatic access
 
 ## Step2
 
-Come autorizzazioni diamo pieno accesso al nostro utente.
-Iniziamo con permission di tipo accesso pieno senza altre configurazioni. Questo ci permette di concentrarci sulla connessione tra Rails e lo storage in AWS S3. 
+Come autorizzazioni diamo pieno accesso al nostro utente, questo ci permette di concentrarci sulla connessione tra Rails e lo storage in AWS S3.
 
-gli diamo permissions "AmazonS3FullAccess" senza altre configurazioni.
+Diamo permission *AmazonS3FullAccess* senza altre configurazioni.
 
 ![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/04_fig02-new-iam_user-step2.png)
 
@@ -88,6 +87,7 @@ Non aggiungiamo nessun tag
 
 Visualizza il riepilogo delle scelte fatte
 
+![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/04_fig04-new-iam_user-step4.png)
 
 
 ## Step5
@@ -99,6 +99,8 @@ Una volta creato facciamo il download delle "user security credentials". E' un f
 
 Salviamoci i dati nel nostro programma di gestione delle passwords o comunque in un luogo sicuro.
 Se torniamo sullo IAM user possiamo solo rivisualizzare la access_key_id. Per la secret_access_key dobbiamo eliminarlo e crearne uno nuovo.
+
+![fig05](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/04_fig05-new-iam_user-step5.png)
 
 
 
@@ -123,8 +125,6 @@ creiamo il cestello (Bucket) dove archivieremo i files.
 AWS -> Service -> S3
 
 Facciamo click su create bucket.
-
-![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/04_fig04-new-iam_user-step4.png)
 
 
 
@@ -151,17 +151,23 @@ Region      : US East (N. Virginia)
 Nota:
 la "Region: EU (Ireland)" sarebbe la scelta più saggia dal punto di vista delle prestazioni perché è più vicina all'Italia ma costa di più quindi, per risparmiare, preferisco usare US East.
 
+![fig06](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/04_fig06-new-bucket-step1.png)
+
 
 
 ## Step2
 
 Lasciamo le opzioni di default
 
+![fig07](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/04_fig07-new-bucket-step2.png)
+
 
 
 ## Step3
 
 Lasciamo le autorizzazioni di default
+
+![fig08](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/04_fig08-new-bucket-step3.png)
 
 
 
@@ -171,6 +177,9 @@ Visualizza il riepilogo delle scelte fatte
 
 Accettiamo e creiamo il bucket.
 
+![fig09](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/04_fig09-new-bucket-step4.png)
+
+![fig10](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/04_fig10-new-bucket-done.png)
 
 
 ## Per recuperare la s3_region del bucket appena creato
@@ -183,7 +192,7 @@ Endpoint : http://bl6-0-dev.s3-website-us-east-1.amazonaws.com
 
 La region in questo caso è "us-east-1" e corrisponde alla region US East (N. Virginia)
 
-![fig05](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/04_fig05-new-iam_user-step5.png)
+![fig11](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/04_fig11-bucket_endpoint.png)
 
 (
 se avessimo usato "Region: EU (Ireland)" sarebbe stato "http://s5beginning-dev.s3-website-eu-west-1.amazonaws.com
