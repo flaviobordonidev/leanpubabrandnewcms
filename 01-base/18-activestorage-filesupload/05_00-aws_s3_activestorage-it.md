@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 18.4 - AWS S3 su ActiveRecord
+# <a name="top"></a> Cap 18.5 - AWS S3 su ActiveRecord
 
 In questo capitolo implementiamo l'upload dei files su AWS S3 tramite ActiveRecord.
 Effettuiamo il collegamento con S3 usando i secrests criptati.

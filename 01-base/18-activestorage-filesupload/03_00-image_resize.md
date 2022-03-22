@@ -1,5 +1,5 @@
 
-# <a name="top"></a> Cap 18.2 - Ridimensioniamo immagini
+# <a name="top"></a> Cap 18.3 - Ridimensioniamo immagini
 
 In questo capitolo attiviamo la possibilità di lavorare con le immagini ed implementiamo il ridimensionamento.
 

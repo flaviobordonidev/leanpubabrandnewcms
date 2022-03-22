@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 18.5 -- Eliminiamo il file caricato
+# <a name="top"></a> Cap 18.6 -- Eliminiamo il file caricato
 
 Questo codice noi lo usiamo per rimuovere la singola immagine *has_one_attached :main_image* ma è pensato anche per caricamenti multipli di immagini "has_many_attached :main_image".
 

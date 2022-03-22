@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 18.7 -- Restringiamo i permessi
+# <a name="top"></a> Cap 18.8 -- Restringiamo i permessi
 
 E' arrivato il momento di lavorare sui files CORS restringendo i permessi di accesso.
 

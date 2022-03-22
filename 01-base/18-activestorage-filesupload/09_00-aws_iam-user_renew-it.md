@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 18.8 -- Rinnoviamo IAM user su AWS
+# <a name="top"></a> Cap 18.9 -- Rinnoviamo IAM user su AWS
 
 Eliminando l'utente IAM user che sta validando le immagini per il nostro sito, perdiamo accesso a tutte le immagini.
 In questo capitolo creeremo un nuovo IAM user e lo assoceremo al nostro sito per ripristinare tutte le immagini.

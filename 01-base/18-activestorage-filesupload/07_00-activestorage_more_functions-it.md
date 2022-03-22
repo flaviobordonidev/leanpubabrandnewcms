@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 18.6 -- Aggiungiamo più funzionalità e controlli per l'upload delle immagini
+# <a name="top"></a> Cap 18.7 -- Aggiungiamo più funzionalità e controlli per l'upload delle immagini
 
 Implementiamo le funzionalità aggiuntive presenti nel video di gorails. Il caricare più files ed il gestire anche files pdf, suoni, video, svg, ...
 

@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 18.3 - Amazon Web Services S3 - IAM user full access
+# <a name="top"></a> Cap 18.4 - Amazon Web Services S3 - IAM user full access
 
 Iniziamo a dialogare con AWS - S3. Creiamo un utente IAM e gli diamo il permesso (CORS) pieno accesso a tutti i buckets di S3, ossia a tutta la parte di archiviazione.
 Successivamente restringeremo i permessi (CORS) ai soli buckets produzione e sviluppo della nostra applicazione.
