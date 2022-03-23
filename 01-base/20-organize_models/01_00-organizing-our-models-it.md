@@ -424,14 +424,16 @@ $ git commit -m "organize models"
 ## Pubblichiamo su Heroku
 
 ```bash
-$ git push heroku ui:main
+$ git push heroku om:main
 ```
+
+> Non serve `db:migrate` perché non abbiamo modificato la struttura del database.
 
 
 
 ## Chiudiamo il branch
 
-se abbiamo finito le modifiche e va tutto bene:
+Se abbiamo finito le modifiche e va tutto bene:
 
 ```bash
 $ git checkout main
@@ -455,4 +457,4 @@ $ git push origin main
 
 [<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/19-rich_text_editor/03_00-style-action_text-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/20-organize_models/02_00-organizing-our-models-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/01_00-bootstrap_story-it.md)
