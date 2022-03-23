@@ -1,48 +1,58 @@
-{id: 01-base-21-bootstrap-02-install-bootstrap}
-# Cap 21.2 -- Installiamo Bootstrap
+# <a name="top"></a> Cap 21.2 - Installiamo Bootstrap
 
-Da rails 6, essendo introdotto webpack, non usiamo più la gemma perché, seppur funzionando, sarebbe obsoleta appoggiandosi a sprokets e all'asset pipeline che è stato rimpiazzato da webpack. L'asset pipeline ancora funziona ma è destinato ad essere abbandonato e sostituito integralmente da webpack.
+In rails 7 non c'è più l'esigenza di passare per webpack ed è tornato in auge l'asset-pipe-line.
 
-
-Riferimenti interni:
-
-* 99-rails_reference/boot_strap/01-bootstrap_intall
+> Lo spiega bene lo sviluppatore rails *morgoth85* nel suo post
+> [Rails 7.0.1, Webpacker retirement and more](https://rubyonrails.org/2022/1/21/this-week-in-rails-rails-7-0-1-webpacker-retirement-and-more-10bad602)
 
 
-***********
-Da adattare con articolo:
-https://blog.capsens.eu/how-to-write-javascript-in-rails-6-webpacker-yarn-and-sprockets-cdf990387463
 
-vedi anche:
-https://www.arjunrajkumar.in/blog/how-to-use-bootstrap-templates-via-webpacker-in-rails-6
-***********
+## Risorse interne
+
+- 99-rails_reference/boot_strap/01-bootstrap_intall
+
+
+
+## Risorse esterne
+
+- [GoRails #417 · October 11, 2021 - How to use Bootstrap with CSS bundling in Rails](https://gorails.com/episodes/bootstrap-css-bundling-rails?autoplay=1)
+- [bootstrap sito ufficiale - Install RubyGems](https://getbootstrap.com/docs/5.1/getting-started/download/#rubygems)
+- [How to add bootstrap 5 to an existing Rails 7 app](https://www.uday.net/add-bootstrap-5-to-an-existing-Rails-7-app)
+> [Rails 7.0: Fulfilling a vision](https://rubyonrails.org/2021/12/15/Rails-7-fulfilling-a-vision)
+
 
 
 ## Apriamo il branch "BootStrap"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout -b bs
 ```
 
 
+## Gemma *bootstrap* vs *CSS bundling*
 
-## Dall'asset pipeline a webpack
+Perché installare bootstrap tramite la nuova gemma *CSS bundling* quando il sito ufficiale consiglia di installare *bootstrap*?
 
-La migrazione dall'asset pipeline a webpack è stata impostata in maniera graduale. Inizialmente si è pensato di far gestire a webpack solo le librerie javascript (ed in realtà nasce per questo). 
-Ed è per questo motivo che nel layouts/application il solo javascript è chiamato con il nuovo helper per webpack "javascript_pack_tag" invece lo stylesheet continua ad usare il vecchio helper per l'asset-pipeline "stylesheet_link_tag".
+- Perché con questa gemma è più semplice anche la gestione di Javascript collegato a bootstrap.
+- Perché questa è la gemma scelta di default da *rubyonrails.org* 
 
-{id: "01-21-02_01", caption: ".../app/views/layouts/application.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 8}
-```
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-```
+> [Rails 7.0: Fulfilling a vision](https://rubyonrails.org/2021/12/15/Rails-7-fulfilling-a-vision)
+>
+> [...] ...you can pre-configure your new Rails app to use any of them with `--css bootstrap` and it’ll use **cssbundling-rails**. [...]
 
-[tutto il codice](#01-21-02_01all)
+Installing Bootstrap is easier than ever thanks to CSS Bundling in Rails now. It also wires up the Javascript so you don't have to do much of anything.
 
-I files del'asset-pipeline sono archiviati nella cartella ".../app/assets" mentre i file webpack sono gestiti nella cartella ".../app/javascript/packs". Come abbiamo detto nel file di default layouts/application si ha un riferimento al file "application.css" utilizzando stylesheet_link_tag (asset pipeline), invece al file "application.js" utilizzando javascript_pack_tag (webpacker).
 
-Con webpacker il file principale "application.js" risiede nella cartella ".../app/javascript/packs" Questo perché Webpacker ora cercherà di compilare tutti i file javascript in questa directory. Questa è l'impostazione predefinita per Webpacker.
+
+
+
+## Installiamo bootstrap con la nuova gemma *CSS bundling*
+
+
+
+
+
+
 
 
 

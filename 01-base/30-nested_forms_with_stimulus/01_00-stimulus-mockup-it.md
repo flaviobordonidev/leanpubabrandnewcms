@@ -4,6 +4,11 @@ Un JavaScript framework focalizzato nella gestione degli eventi in un modo organ
 
 
 
+## Risorse esterne
+
+- [GoRails #423 · November 29, 2021 - Refactoring Javascript with Stimulus Values API & Defaults](https://gorails.com/episodes/refactoring-javascript-with-stimulus-values-api-defaults?autoplay=1)
+
+
 
 ## Cos'è turbolinks
 
