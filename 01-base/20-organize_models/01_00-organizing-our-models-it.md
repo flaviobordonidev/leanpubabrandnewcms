@@ -101,10 +101,11 @@ Sono le relazioni uno-a-uno, uno-a-molti, molti-a-molti, polimoprfiche, ...
 
 Sono le funzioni di validazione implementate su alcune colonne della tabella.
 
-- validates: email, presence:     true,
-                    uniqueness:   true,
-                    email_format: true
-
+```
+validates: email, presence:     true,
+                  uniqueness:   true,
+                  email_format: true
+```
 
 
 ### == Scopes
