@@ -155,10 +155,10 @@ end
 
 
 
-### Esempio 1
+## Esempio 1
 
 
-***codice 02 - .../app/models/my_model.rb - line: 3***
+***codice 02 - .../app/models/example1.rb - line:3***
 
 ```ruby
   # == Constants ============================================================
@@ -242,21 +242,83 @@ end
 ## Esempio 2
 
 
+***codice 03 - .../app/models/example2.rb - line:3***
 
-## Organizziamo eg_posts
+```ruby
+class Post < ApplicationRecord
+  # == Constants ============================================================
+  
+  # == Extensions ===========================================================
+
+  ## friendly_id
+  extend FriendlyId
+  
+  # == Attributes ===========================================================
+
+  enum content_type: {image: 0, video_youtube: 1, video_vimeo: 2, audio: 3}
+
+  ## ActiveStorage
+  has_one_attached :main_image
+  has_one_attached :paragraph_image1
+  has_one_attached :paragraph_image4
+  has_one_attached :paragraph_image5
+  has_one_attached :paragraph_image6
+
+  ## friendly_id
+  friendly_id :title, use: :slugged
+
+  ## acts_as_taggable_on
+  acts_as_taggable # Alias for acts_as_taggable_on :tags
+  
+  # == Relationships ========================================================
+
+  ## one-to-many
+  belongs_to :user
+
+  # == Validations ==========================================================
+
+  # == Scopes ===============================================================
+
+  scope :published, -> { where(published: true) }
+
+  # == Callbacks ============================================================
+
+  # == Class Methods ========================================================
+
+  # == Instance Methods =====================================================
+
+  ## friendly_id
+  def should_generate_new_friendly_id?
+    title_changed?
+  end
+
+  ## getter method
+  def published_at_formatted 
+    if published_at.present?
+      published_at.strftime('%-d %-b %Y')
+      #"Published #{published_at.strftime('%-d %-b %Y')}"
+    else
+      "not published yet"
+    end
+  end
+end
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/20-organize_models/01_03-models-example2.rb)
 
 
 
-## EgPost
+## Organiziamo *EgPost*
 
 Nel model EgPost abbiamo del codice nella:
 
-* sezione "# == Attributes", sottosezione "## Active Storage"
-* sezione "# == Attributes", sottosezione "## Action Text"
-* sezione "# == Relationships", sottosezione "## association one-to-many"
+- sezione "# == Attributes", sottosezione "## Active Storage"
+- sezione "# == Attributes", sottosezione "## Action Text"
+- sezione "# == Relationships", sottosezione "## association one-to-many"
 
-{id: "01-20-02_01", caption: ".../app/models/eg_post.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
-```
+***codice 04 - .../app/models/eg_post.rb - line:3***
+
+```ruby
 class EgPost < ApplicationRecord
   # == Constants ============================================================
   
@@ -284,24 +346,25 @@ class EgPost < ApplicationRecord
   # == Class Methods ========================================================
 
   # == Instance Methods =====================================================
-
 end
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/20-organize_models/01_04-models-eg_post.rb)
 
 
 
-## User
+## Organiziamo *User*
 
 Nel model User abbiamo del codice nella:
 
-* sezione "# == Extensions", sottosezione "## devise"
-* sezione "# == Attributes", sottosezione "## enum"
-* sezione "# == Relationships", sottosezione "## association one-to-many"
-* sezione "# == Validations"
+- sezione "# == Extensions", sottosezione "## devise"
+- sezione "# == Attributes", sottosezione "## enum"
+- sezione "# == Relationships", sottosezione "## association one-to-many"
+- sezione "# == Validations"
 
-{id: "01-20-02_01", caption: ".../app/models/user.rb -- codice 02", format: ruby, line-numbers: true, number-from: 1}
-```
+***codice 05 - .../app/models/user.rb - line:3***
+
+```ruby
 class User < ApplicationRecord
   # == Constants ============================================================
   
@@ -349,35 +412,15 @@ class User < ApplicationRecord
 end
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/20-organize_models/01_05-models-user.rb)
+
 > La parte di devise è nella sezione "Extensions" e non "Attributes" perché ogni voce non è una singola colonna nella tabella ma è un modulo che attiva più funzionalità e a volte più colonne nella tabella (che vanno abilitate con un migrate).
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
 ## Verifichiamo preview
 
-```bash
-$ sudo service postgresql start
-$ rails s
-```
-
-apriamolo il browser sull'URL:
-
-* https://mycloud9path.amazonaws.com/users
-
-Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
+nel preview non cambia nulla.
 
 
 
@@ -390,46 +433,32 @@ $ git commit -m "organize models"
 
 
 
-
 ## Pubblichiamo su Heroku
 
 ```bash
-$ git push heroku ui:master
+$ git push heroku ui:main
 ```
 
 
-
-## Chiudiamo il branch
-
-Lo lasciamo aperto per il prossimo capitolo
-
-
-
-## Facciamo un backup su Github
-
-Lo facciamo nel prossimo capitolo.
 
 ## Chiudiamo il branch
 
 se abbiamo finito le modifiche e va tutto bene:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git checkout master
+```bash
+$ git checkout main
 $ git merge om
 $ git branch -d om
 ```
 
 
 
-
 ## Facciamo un backup su Github
 
-Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+Dal nostro branch main di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git push origin master
+```bash
+$ git push origin main
 ```
 
 

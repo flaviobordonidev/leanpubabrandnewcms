@@ -25,5 +25,4 @@ class EgPost < ApplicationRecord
   # == Class Methods ========================================================
 
   # == Instance Methods =====================================================
-
 end

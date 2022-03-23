@@ -54,5 +54,4 @@ class Post < ApplicationRecord
       "not published yet"
     end
   end
-
 end

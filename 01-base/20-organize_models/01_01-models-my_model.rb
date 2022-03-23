@@ -16,5 +16,4 @@ class MyModel < ApplicationRecord
   # == Class Methods ========================================================
 
   # == Instance Methods =====================================================
-
 end

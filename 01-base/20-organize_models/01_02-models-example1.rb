@@ -70,5 +70,4 @@ class MyModel < ApplicationRecord
     def set_location
       self.location = LocationService.query(self)
     end
-
 end
