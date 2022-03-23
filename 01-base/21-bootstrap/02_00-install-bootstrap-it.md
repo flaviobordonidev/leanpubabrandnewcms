@@ -378,6 +378,6 @@ Lo facciamo nel prossimo capitolo.
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/01_00-bootstrap_story-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/03_00-grid_examples-it.md)
