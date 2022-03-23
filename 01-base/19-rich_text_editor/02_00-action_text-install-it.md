@@ -91,7 +91,7 @@ pin "@rails/actiontext", to: "actiontext.js"
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/19-rich_text_editor/02_02-config-importmap.rb)
 
 
-Vediamo le due migrazioni create
+Vediamo le due migrazioni create. (in realtà la prima l'abbiamo già creata nei capitoli precedenti)
 
 ***codice 03 - .../db/migrate/xxx_create_active_storage_tables.active_storage.rb - line:1***
 
@@ -126,27 +126,43 @@ class CreateActiveStorageTables < ActiveRecord::Migration[5.2]
       t.string :variation_digest, null: false
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/19-rich_text_editor/02_03-db-migrate-xxx_create_active_storage_tables.active_storage.rb)
 
 Il secondo migrate.
 
-***codice 02 - .../db/migrate/xxx_create_action_text_tables.action_text.rb - line: 1***
+***codice 04 - .../db/migrate/xxx_create_action_text_tables.action_text.rb - line:1***
 
 ```ruby
 # This migration comes from action_text (originally 20180528164100)
 class CreateActionTextTables < ActiveRecord::Migration[6.0]
   def change
-    create_table :action_text_rich_texts do |t|
+    # Use Active Record's configured type for primary and foreign keys
+    primary_key_type, foreign_key_type = primary_and_foreign_key_types
+
+    create_table :action_text_rich_texts, id: primary_key_type do |t|
       t.string     :name, null: false
       t.text       :body, size: :long
-      t.references :record, null: false, polymorphic: true, index: false
+      t.references :record, null: false, polymorphic: true, index: false, type: foreign_key_type
 
       t.timestamps
 
       t.index [ :record_type, :record_id, :name ], name: "index_action_text_rich_texts_uniqueness", unique: true
     end
   end
+
+  private
+    def primary_and_foreign_key_types
+      config = Rails.configuration.generators
+      setting = config.options[config.orm][:primary_key_type]
+      primary_key_type = setting || :primary_key
+      foreign_key_type = setting || :bigint
+      [primary_key_type, foreign_key_type]
+    end
 end
 ```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/19-rich_text_editor/02_04-db-migrate-xxx_create_action_text_tables.action_text.rb)
+
 
 Eseguiamo le due migrazioni
 
@@ -160,42 +176,41 @@ $ rails db:migrate
 
 Usiamo un campo Rich Text con il modello EgPost.
 
-***codice 03 - .../app/models/eg_post.rb - line: 2***
+***codice 05 - .../app/models/eg_post.rb - line:3***
 
 ```ruby
   has_rich_text :content
 ```
 
-[tutto il codice](#01-19-02_03all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/19-rich_text_editor/02_05-models-eg_post.rb)
 
-Nota: il campo "content" non è un campo effettivo nella tabella eg_posts. I dati rich text sono archiviati in una tabella interna denominata action_text_rich_texts.
-
+> Nota: il campo *content* non è un campo effettivo nella tabella *eg_posts*. I dati del *rich text* sono archiviati in una tabella interna denominata *action_text_rich_texts*.
 
 
 
 ## Aggiorniamo il controller
 
-Inseriamo il campo ":content" nella white list
+Inseriamo il campo *:content* nella *white list*.
 
-***codice 04 - .../app/controllers/eg_posts_controller.rb - line: 83***
+***codice 06 - .../app/controllers/eg_posts_controller.rb - line:79***
 
 ```ruby
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Only allow a list of trusted parameters through.
     def eg_post_params
-      params.require(:eg_post).permit(:meta_title, :meta_description, :headline, :incipit, :user_id, :price, :header_image, :content)
+      params.require(:eg_post).permit(:meta_title, :meta_description, :headline, :incipit, :price, :header_image, :content, :user_id)
     end
 ```
 
-[tutto il codice](#01-19-02_04all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/19-rich_text_editor/02_06-controllers-eg_posts_controller.rb)
 
 
 
-## Aggiungiamo il campo ":content" di Active Text nel view _form
+## Aggiungiamo il campo *:content* di *Active Text* nel view *_form*
 
-Aggiungiamo Trix sul view edit di descrizione dell'articolo.
-Possiamo usare il metodo helper "rich_text_area" per rendere il campo nel form:
+Aggiungiamo *Trix* sul view *edit* di descrizione dell'articolo.
+Possiamo usare il metodo helper `rich_text_area` per rendere il campo nel form.
 
-***codice 05 - .../app/views/eg_posts/_form.html.erb - line: 2***
+***codice 07 - .../app/views/eg_posts/_form.html.erb - line:47***
 
 ```html+erb
   <div class="field">
@@ -204,19 +219,24 @@ Possiamo usare il metodo helper "rich_text_area" per rendere il campo nel form:
   </div>
 ```
 
-[tutto il codice](#01-19-02_05all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/19-rich_text_editor/02_07-views-eg_posts-_form.html.erb)
 
 
 
-## Aggiungiamo il campo ":content" sul view show 
+## Aggiungiamo il campo *:content* sul view *show* 
 
-***codice 06 - .../app/views/eg_posts/show.html.erb - line: 2***
+Aggiungiamo la visualizzazione *rich format* di *Trix* nella visualizzazione dell'articolo.
+
+***codice 08 - .../app/views/eg_posts/_eg_post.html.erb - line:41***
 
 ```html+erb
-<%= @post.content %>
+  <p>
+    <strong>Content:</strong>
+    <%= eg_post.content %>
+  </p>
 ```
 
-[tutto il codice](#01-19-02_06all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/19-rich_text_editor/02_08-views-eg_posts-_eg_post.html.erb)
 
 
 Note, we need to add image_processing gem to enable rendering of attached images.
@@ -227,11 +247,7 @@ gem 'image_processing', '~> 1.2'
 
 In its absence LoadError (cannot load such file -- mini_magick): error will be thrown while working with images.
 
-Questa gemma la abbiamo già installata per ActionStorage ma non è ancora attiva.
-Possiamo caricare l'immagine ma non è archiviata nel database.
-Per inserire le immagini dobbiamo vedere nei capitoli futuri.
 
-vedi: * https://blog.saeloun.com/2019/11/12/attachments-in-action-text-rails-6
 
 
 
