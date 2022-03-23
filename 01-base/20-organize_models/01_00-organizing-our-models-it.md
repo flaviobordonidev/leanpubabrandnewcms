@@ -312,9 +312,9 @@ end
 
 Nel model EgPost abbiamo del codice nella:
 
-- sezione "# == Attributes", sottosezione "## Active Storage"
-- sezione "# == Attributes", sottosezione "## Action Text"
-- sezione "# == Relationships", sottosezione "## association one-to-many"
+- sezione *"*# == Attributes*, sottosezione *## Active Storage*
+- sezione *"*# == Attributes*, sottosezione *## Action Text*
+- sezione *"*# == Relationships*, sottosezione *## association one-to-many*
 
 ***codice 04 - .../app/models/eg_post.rb - line:3***
 
@@ -357,10 +357,10 @@ end
 
 Nel model User abbiamo del codice nella:
 
-- sezione "# == Extensions", sottosezione "## devise"
-- sezione "# == Attributes", sottosezione "## enum"
-- sezione "# == Relationships", sottosezione "## association one-to-many"
-- sezione "# == Validations"
+- sezione *"*# == Extensions*, sottosezione *## devise*
+- sezione *"*# == Attributes*, sottosezione *## enum*
+- sezione *"*# == Relationships*, sottosezione *## association one-to-many*
+- sezione *"*# == Validations*
 
 ***codice 05 - .../app/models/user.rb - line:3***
 
