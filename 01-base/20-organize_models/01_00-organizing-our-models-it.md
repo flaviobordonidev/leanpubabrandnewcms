@@ -76,13 +76,15 @@ Sono delle linee di codice precedute dalla chiamata "extend"
 
 ### == Attributes
 
-Sono delle "nuove colonne" che vengono fornite alla tabella del model. In altre parole sono attributi della tabella non definiti a livello di database.
-  # ATTRIBUTES NOT MAPPED IN DATABASE (getter and setter methods)
+Sono delle *nuove colonne* che vengono fornite alla tabella del model. 
+In altre parole sono attributi della tabella non definiti a livello di database.
 
-- attr_accessor :my_column_x
-- translates :my_article_description
-- has_attached_file :my_logo_image
-- friendly_id :title, use: :slugged
+> ATTRIBUTES NOT MAPPED IN DATABASE => ***getter*** and ***setter*** methods.
+
+- `attr_accessor :my_column_x`
+- `translates :my_article_description`
+- `has_attached_file :my_logo_image`
+- `friendly_id :title, use: :slugged`
 
 
 
@@ -90,8 +92,8 @@ Sono delle "nuove colonne" che vengono fornite alla tabella del model. In altre 
 
 Sono le relazioni uno-a-uno, uno-a-molti, molti-a-molti, polimoprfiche, ...
 
-- has_many :documents
-- belongs_to :user 
+- `has_many :documents`
+- `belongs_to :user`
 
 
 
