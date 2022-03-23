@@ -66,6 +66,10 @@ gem 'image_processing', '~> 1.12', '>= 1.12.2'
 
 > Se non avessimo già attivato la gemma avremmo dovuto eseguire il `$ bundle install`.
 
+> Note, we need to add image_processing gem to enable rendering of attached images. <br/>
+> `gem 'image_processing', '~> 1.2'` <br/>
+> In its absence LoadError (cannot load such file -- mini_magick): error will be thrown while working with images.
+
 
 Vediamo le modifiche, con il riferimento a *trix* e ad *actiontext*, nel file *application.js*. 
 
@@ -239,30 +243,19 @@ Aggiungiamo la visualizzazione *rich format* di *Trix* nella visualizzazione del
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/19-rich_text_editor/02_08-views-eg_posts-_eg_post.html.erb)
 
 
-Note, we need to add image_processing gem to enable rendering of attached images.
-
-```
-gem 'image_processing', '~> 1.2'
-```
-
-In its absence LoadError (cannot load such file -- mini_magick): error will be thrown while working with images.
-
-
-
-
 
 ## Verifichiamo preview
 
 ```bash
 $ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 apriamolo il browser sull'URL:
 
-* https://mycloud9path.amazonaws.com/users
+- http://192.168.64.3:3000/eg_posts
 
-Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
+Editiamo un utente o aggiuniamo del testo formattato con l'editor che ci è messo a disposizione.
 
 
 
@@ -278,9 +271,11 @@ $ git commit -m "add Action Text :content field to eg_posts"
 ## Publichiamo su heroku
 
 ```bash
-$ git push heroku ati:master
+$ git push heroku ati:main
 $ heroku run rails db:migrate
 ```
+
+> Il comando `db:migrate` serve perché abbiamo modificiato la struttura del database.
 
 
 
@@ -289,7 +284,7 @@ $ heroku run rails db:migrate
 se abbiamo finito le modifiche e va tutto bene:
 
 ```bash
-$ git checkout master
+$ git checkout main
 $ git merge ati
 $ git branch -d ati
 ```
@@ -298,10 +293,10 @@ $ git branch -d ati
 
 ## Facciamo un backup su Github
 
-Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+Dal nostro branch main di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 ```bash
-$ git push origin master
+$ git push origin main
 ```
 
 
