@@ -312,9 +312,9 @@ end
 
 Nel model EgPost abbiamo del codice nella:
 
-- sezione *"*# == Attributes*, sottosezione *## Active Storage*
-- sezione *"*# == Attributes*, sottosezione *## Action Text*
-- sezione *"*# == Relationships*, sottosezione *## association one-to-many*
+- sezione *# == Attributes*, sottosezione *## Active Storage*
+- sezione *# == Attributes*, sottosezione *## Action Text*
+- sezione *# == Relationships*, sottosezione *## association one-to-many*
 
 ***codice 04 - .../app/models/eg_post.rb - line:3***
 
