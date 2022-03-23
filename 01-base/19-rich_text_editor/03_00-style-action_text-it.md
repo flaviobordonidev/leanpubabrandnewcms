@@ -149,4 +149,4 @@ Lo facciamo nel prossimo capitolo.
 
 [<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/19-rich_text_editor/02_00-action_text-install-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/20-organize_models/01_00-the_method-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/20-organize_models/01_00-organizing-our-models-it.md)
