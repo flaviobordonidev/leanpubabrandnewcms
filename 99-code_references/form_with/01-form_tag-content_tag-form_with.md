@@ -1,19 +1,40 @@
-# I Forms
-
+# <a name="top"></a> Cap form_with.2 - Forms
 Uno per controllarli tutti...
 Il nuovo helper "form_with" sostituisce entrambe le vecchie versioni "form_tag" e "form_for".
 
 
-Risorse esterne:
+
+## Risorse esterne
 
 Rivediamo i vecchi codici con content_tag, form_tag, ... con i nuovi metodi di Rails
 
-* https://www.justinweiss.com/articles/the-lesser-known-features-in-rails-5-dot-1/
-* https://blog.engineyard.com/using_form_with-vs-form_for-vs-form_tag
+- https://www.justinweiss.com/articles/the-lesser-known-features-in-rails-5-dot-1/
+- https://blog.engineyard.com/using_form_with-vs-form_for-vs-form_tag
 
-* https://medium.com/@michellekwong2/form-tag-vs-form-for-vs-form-with-fa6e0ac73aac
-*
+- https://medium.com/@michellekwong2/form-tag-vs-form-for-vs-form-with-fa6e0ac73aac
+- https://gorails.com/episodes/upgrade-from-turbolinks-to-hotwire-and-turbo?autoplay=1
 
+
+
+## *local: true* non serve più
+
+Su *form_with* l'opzione *local: true* è stata messa di default e quindi è superfluo riportarla.
+
+Le due linee di codice seguenti sono in pratica identiche:
+
+***codice n/a - .../app/views/posts/_form.rb - line:1***
+
+```html+erb
+<%= form_with(model: post, local: true) do |form| %>
+```
+
+***codice n/a - .../app/views/posts/_form.rb - line:1***
+
+```html+erb
+<%= form_with(model: post) do |form| %>
+```
+
+> è per questo che quando facciamo `rails g scaffold ...` non ci sarà l'opzione *, local: true*.
 
 
 

@@ -19,92 +19,115 @@ $ git checkout -b ati
 
 ## Setup Action Text
 
-Per impostare Action Text, possiamo eseguire il comando seguente dalla directory principale della nostra app Rails 6:
+Attiviamo *Action Text*.
+
+> Prima di eseguire il comando vediamo che su *.../app/javascript/application.js* non c'è nessun riferimento a *trix*. 
 
 ```bash
 $ rails action_text:install
+```
 
+Esempio:
 
-user_fb:~/environment/bl6_0 (ati) $ rails action_text:install
-Copying actiontext.scss to app/assets/stylesheets
-      create  app/assets/stylesheets/actiontext.scss
-Copying fixtures to test/fixtures/action_text/rich_texts.yml
-      create  test/fixtures/action_text/rich_texts.yml
-Copying blob rendering partial to app/views/active_storage/blobs/_blob.html.erb
+```bash
+ubuntu@ubuntufla:~/bl7_0 (ati)$rails action_text:install
+      append  app/javascript/application.js
+      append  config/importmap.rb
+      create  app/assets/stylesheets/actiontext.css
+To use the Trix editor, you must require 'app/assets/stylesheets/actiontext.css' in your base stylesheet.
       create  app/views/active_storage/blobs/_blob.html.erb
-Installing JavaScript dependencies
-         run  yarn add trix@^1.0.0 @rails/actiontext@^6.0.0 from "."
-yarn add v1.19.1
-[1/4] Resolving packages...
-[2/4] Fetching packages...
-info fsevents@1.2.9: The platform "linux" is incompatible with this module.
-info "fsevents@1.2.9" is an optional dependency and failed compatibility check. Excluding it from installation.
-[3/4] Linking dependencies...
-warning " > webpack-dev-server@3.8.2" has unmet peer dependency "webpack@^4.0.0".
-warning "webpack-dev-server > webpack-dev-middleware@3.7.2" has unmet peer dependency "webpack@^4.0.0".
-[4/4] Building fresh packages...
-success Saved lockfile.
-warning Your current version of Yarn is out of date. The latest version is "1.21.1", while you're on "1.19.1".
-info To upgrade, run the following command:
-$ sudo apt-get update && sudo apt-get install yarn
-success Saved 2 new dependencies.
-info Direct dependencies
-├─ @rails/actiontext@6.0.2
-└─ trix@1.2.2
-info All dependencies
-├─ @rails/actiontext@6.0.2
-└─ trix@1.2.2
-Done in 5.95s.
-Adding trix to app/javascript/packs/application.js
-      append  app/javascript/packs/application.js
-Adding @rails/actiontext to app/javascript/packs/application.js
-      append  app/javascript/packs/application.js
-Copied migration 20200126163125_create_action_text_tables.action_text.rb from action_text
+      create  app/views/layouts/action_text/contents/_content.html.erb
+Ensure image_processing gem has been enabled so image uploads will work (remember to bundle!)
+        gsub  Gemfile
+       rails  railties:install:migrations FROM=active_storage,action_text
+Copied migration 20220323082351_create_action_text_tables.action_text.rb from action_text
+      invoke  test_unit
+      create    test/fixtures/action_text/rich_texts.yml
+ubuntu@ubuntufla:~/bl7_0 (ati)$
 ```
 
 Il comando esegue i seguenti passaggi:
 
-Aggiorna package.json per aggiungere pacchetti per actiontext e trix.
-Aggiunge una migrazione per creare le tabelle necessarie per supportare l'archiviazione di contenuti RTF.
-Aggiunge una migrazione per creare le tabelle necessarie per Active Storage.
-Aggiunge app/views/active_storage/blobs/_blob.html.erb: possiamo modificare questo file per cambiare il modo in cui vengono visualizzati i caricamenti di immagini e altri allegati.
-Aggiunge app/assets/stylesheets/actiontext.scss: possiamo modificare questo file per cambiare lo stile dell'editor Trix.
+- Aggiorna package.json per aggiungere pacchetti per actiontext e trix.
+- Aggiunge una migrazione per creare le tabelle necessarie per supportare l'archiviazione di contenuti RTF.
+- Aggiunge una migrazione per creare le tabelle necessarie per Active Storage.
+- Aggiunge app/views/active_storage/blobs/_blob.html.erb: possiamo modificare questo file per cambiare il modo in cui vengono visualizzati i caricamenti di immagini e altri allegati.
+- Aggiunge app/assets/stylesheets/actiontext.scss: possiamo modificare questo file per cambiare lo stile dell'editor Trix.
+
+
+
+nel file *Gemfile* sarebbe attivata la `gem 'image_processing'` ma noi la abbiamo già attivata. 
+
+***codice n/a - .../Gemfile - line:49***
+
+```ruby
+gem 'image_processing', '~> 1.12', '>= 1.12.2'
+```
+
+> Se non avessimo già attivato la gemma avremmo dovuto eseguire il `$ bundle install`.
+
+
+Vediamo le modifiche, con il riferimento a *trix* e ad *actiontext*, nel file *application.js*. 
+
+***codice 01 - .../app/javascript/application.js - line:4***
+
+```ruby
+import "trix"
+import "@rails/actiontext"
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/19-rich_text_editor/02_01-app-javascript-application.js)
+
+
+Vediamo le modifiche, con il riferimento a *trix* e ad *actiontext*, nel file *importmap.rb*. 
+
+***codice 02 - .../config/importmap.rb - line:8***
+
+```ruby
+pin "trix"
+pin "@rails/actiontext", to: "actiontext.js"
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/19-rich_text_editor/02_02-config-importmap.rb)
 
 
 Vediamo le due migrazioni create
 
-***codice 01 - .../db/migrate/xxx_create_active_storage_tables.active_storage.rb - line: 1***
+***codice 03 - .../db/migrate/xxx_create_active_storage_tables.active_storage.rb - line:1***
 
 ```ruby
 # This migration comes from active_storage (originally 20170806125915)
 class CreateActiveStorageTables < ActiveRecord::Migration[5.2]
   def change
-    create_table :active_storage_blobs do |t|
-      t.string   :key,        null: false
-      t.string   :filename,   null: false
+    # Use Active Record's configured type for primary and foreign keys
+    primary_key_type, foreign_key_type = primary_and_foreign_key_types
+
+    create_table :active_storage_blobs, id: primary_key_type do |t|
+      t.string   :key,          null: false
+      t.string   :filename,     null: false
       t.string   :content_type
       t.text     :metadata
-      t.bigint   :byte_size,  null: false
-      t.string   :checksum,   null: false
-      t.datetime :created_at, null: false
-
-      t.index [ :key ], unique: true
-    end
-
-    create_table :active_storage_attachments do |t|
-      t.string     :name,     null: false
-      t.references :record,   null: false, polymorphic: true, index: false
-      t.references :blob,     null: false
-
-      t.datetime :created_at, null: false
-
-      t.index [ :record_type, :record_id, :name, :blob_id ], name: "index_active_storage_attachments_uniqueness", unique: true
-      t.foreign_key :active_storage_blobs, column: :blob_id
-    end
-  end
-end
 ```
 
+***codice 03 - ...continua - line:25***
+
+```ruby
+    create_table :active_storage_attachments, id: primary_key_type do |t|
+      t.string     :name,     null: false
+      t.references :record,   null: false, polymorphic: true, index: false, type: foreign_key_type
+      t.references :blob,     null: false, type: foreign_key_type
+```
+
+***codice 03 - ...continua - line:40***
+
+```ruby
+    create_table :active_storage_variant_records, id: primary_key_type do |t|
+      t.belongs_to :blob, null: false, index: false, type: foreign_key_type
+      t.string :variation_digest, null: false
+```
+
+
+Il secondo migrate.
 
 ***codice 02 - .../db/migrate/xxx_create_action_text_tables.action_text.rb - line: 1***
 
