@@ -1,9 +1,19 @@
-{id: 01-base-21-bootstrap-01-bootstrap_story}
-# Cap 21.1 -- Bootstrap
+# <a name="top"></a> Cap 21.1 - Bootstrap
 
 Prepariamo un'interfaccia grafica per la dashboard di gestione degli articoli. Questa parte è sganciata dal template scelto per la presentazione del Blog.
 Inizialmente preperiamo una dashboard molto semplice sfruttando la potente libreria bootstrap. In seguito sceglieremo un tema più elaborato per abbellire la dashboard ed aggiungervi ulteriori funzionalità.
 
+
+
+## Risorse esterne
+
+- [bootstrap sito ufficiale](https://getbootstrap.com/)
+
+
+
+## Apriamo il branch "Bootstrap"
+
+lo apriamo nel prossimo capitolo
 
 
 
@@ -69,48 +79,27 @@ Fra le proposte abbiamo anche il Boostrap Theme Start Kit sostanzialmente un the
 
 
 
-
-
-
----
-
-
-
 ## Verifichiamo preview
 
-```bash
-$ sudo service postgresql start
-$ rails s
-```
-
-apriamolo il browser sull'URL:
-
-* https://mycloud9path.amazonaws.com/users
-
-Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
+Niente da verificare.
 
 
 
-## salviamo su git
+## Archiviamo su git
 
-```bash
-$ git add -A
-$ git commit -m "users_controllers notice messages i18n"
-```
+Niente da archiviare.
 
 
 
 ## Pubblichiamo su Heroku
 
-```bash
-$ git push heroku ui:master
-```
+Niente da pubblicare.
 
 
 
 ## Chiudiamo il branch
 
-Lo lasciamo aperto per il prossimo capitolo
+Non è stato aperto.
 
 
 
@@ -122,6 +111,6 @@ Lo facciamo nel prossimo capitolo.
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/20-organize_models/01_00-organizing-our-models-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/02_00-install-bootstrap-it.md)
