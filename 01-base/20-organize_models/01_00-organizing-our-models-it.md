@@ -1,10 +1,13 @@
 # <a name="top"></a> Cap 20.1 - Organizziamo i models
 
-Un modo semplice ed efficace per mantenere organizzato il codice all'interno dei models è quello di raggrupparlo all'interno di "divisori" prestabiliti.
-In questo capitolo studiamo il metodo scelto.
+Un modo semplice ed efficace per mantenere organizzato il codice all'interno dei models è quello di raggrupparlo all'interno di *divisori* prestabiliti.
 
+Il *divisorio* non è altro che una linea di commento che seziona il codice in più parti.
 
-Impostiamo i "divisori" visti nel metodo di organizzazione
+```ruby
+  # == Nome-Divisorio ============================================================
+```
+
 
 
 ## Risorse interne
@@ -16,17 +19,15 @@ Impostiamo i "divisori" visti nel metodo di organizzazione
 
 ## Apriamo il branch "Organize Models"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout -b om
 ```
 
 
 
-
 ## Divisori da mettere dentro i models
 
-Allinterno dei models della nostra applicazione usare i seguenti divisori
+All'interno dei models della nostra applicazione usiamo i seguenti divisori.
 
 ***codice 01 - .../app/models/my_model.rb - line: 3***
 
@@ -50,13 +51,15 @@ Allinterno dei models della nostra applicazione usare i seguenti divisori
   # == Instance Methods =====================================================
 ```
 
+Vediamoli nel dettaglio.
+
 
 
 ### == Constants
 
 Sono variabili fisse in genere tutte scritte in maiuscolo.
 
-- MY_CONSTANT = ...
+- `MY_CONSTANT = ...`
 
 
 
@@ -64,10 +67,10 @@ Sono variabili fisse in genere tutte scritte in maiuscolo.
 
 Sono delle linee di codice precedute dalla chiamata "extend" 
 
-- extend MyModule
-- extend FriendlyId
+- `extend MyModule`
+- `extend FriendlyId`
 
-( se ci fossero degli "include ..." nel model li metteremmo qui. Ma normalmente gli "include ..." non sono nei models)
+> Se ci fossero degli `include ...` nel model li metteremmo qui. Ma normalmente gli `include ...` **non** sono nei models.
 
 
 
