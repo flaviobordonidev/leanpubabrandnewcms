@@ -51,6 +51,9 @@ All'interno dei models della nostra applicazione usiamo i seguenti divisori.
   # == Instance Methods =====================================================
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/20-organize_models/01_01-models-my_model.rb)
+
+
 Vediamoli nel dettaglio.
 
 
@@ -112,9 +115,9 @@ validates: email, presence:     true,
 
 Sono chiamate di tipo lambda a delle queries che possiamo anche concatenare.
 
-- scope :published, -> { where(published: true) }
-- scope :search, -> (query) {where("full_address ILIKE ? OR address_tag ILIKE ?", "%#{query.strip}%", "%#{query.strip}%")}
-- scope :tagged, -> (tag){ tagged_with(tag) }
+- `scope :published, -> { where(published: true) }`
+- `scope :search, -> (query) {where("full_address ILIKE ? OR address_tag ILIKE ?", "%#{query.strip}%", "%#{query.strip}%")}`
+- `scope :tagged, -> (tag){ tagged_with(tag) }`
 
 
 
@@ -123,8 +126,8 @@ Sono chiamate di tipo lambda a delle queries che possiamo anche concatenare.
 Sono le chiamate che "solitamente" vediamo tra le prime ad esempio nei controllers. Nel caso del model sono finite un po' più in basso.
 Sono le chiamate alle funzioni che vengono fatte "scattare" da un determinato evento (trigger).
 
-- before_validation :my_method_that_is_activated
-- after_validation :my_other_method_that_is_activated
+- `before_validation :my_method_that_is_activated`
+- `after_validation :my_other_method_that_is_activated`
 
 
 
@@ -232,7 +235,7 @@ end
     end
 ```
 
-[tutto il codice](#01-20-01_01all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/20-organize_models/01_02-models-example1.rb)
 
 
 
