@@ -12,6 +12,8 @@ class User < ApplicationRecord
   # == Attributes ===========================================================
 
   ## enum
+  #enum language: [:it, :en]
+  enum language: {it: 0, en: 1}
   #enum role: [:user, :admin, :moderator, :author]
   enum role: {user: 0, admin: 1, moderator:2, author:3}
 
@@ -21,18 +23,6 @@ class User < ApplicationRecord
   has_many :eg_posts
 
   # == Validations ==========================================================
-
-  validates :name, presence: true,
-                  uniqueness: true,
-                  length: { maximum: 50 }
-
-  validates :email, presence: true,
-                    uniqueness: true,
-                    length: { maximum: 50 },
-                    format: { with: URI::MailTo::EMAIL_REGEXP } 
-
-  validates :password, presence: true,
-                      length: { in: 6..25 }
 
   # == Scopes ===============================================================
 

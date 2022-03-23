@@ -360,7 +360,6 @@ Nel model User abbiamo del codice nella:
 - sezione *"*# == Extensions*, sottosezione *## devise*
 - sezione *"*# == Attributes*, sottosezione *## enum*
 - sezione *"*# == Relationships*, sottosezione *## association one-to-many*
-- sezione *"*# == Validations*
 
 ***codice 05 - .../app/models/user.rb - line:3***
 
@@ -379,6 +378,8 @@ class User < ApplicationRecord
   # == Attributes ===========================================================
 
   ## enum
+  #enum language: [:it, :en]
+  enum language: {it: 0, en: 1}
   #enum role: [:user, :admin, :moderator, :author]
   enum role: {user: 0, admin: 1, moderator:2, author:3}
 
@@ -389,18 +390,6 @@ class User < ApplicationRecord
 
   # == Validations ==========================================================
 
-  validates :name, presence: true,
-                  uniqueness: true,
-                  length: { maximum: 50 }
-
-  validates :email, presence: true,
-                    uniqueness: true,
-                    length: { maximum: 50 },
-                    format: { with: URI::MailTo::EMAIL_REGEXP } 
-
-  validates :password, presence: true,
-                      length: { in: 6..25 }
-
   # == Scopes ===============================================================
 
   # == Callbacks ============================================================
@@ -408,13 +397,12 @@ class User < ApplicationRecord
   # == Class Methods ========================================================
 
   # == Instance Methods =====================================================
-
 end
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/20-organize_models/01_05-models-user.rb)
 
-> La parte di devise è nella sezione "Extensions" e non "Attributes" perché ogni voce non è una singola colonna nella tabella ma è un modulo che attiva più funzionalità e a volte più colonne nella tabella (che vanno abilitate con un migrate).
+> La parte di devise è nella sezione *Extensions* e non *Attributes* perché ogni voce non è una singola colonna nella tabella ma è un modulo che attiva più funzionalità e a volte più colonne nella tabella (che vanno abilitate con un migrate).
 
 
 
