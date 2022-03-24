@@ -399,6 +399,31 @@ Vediamo che il pulsante di *logout* è già in stile bootstrap.
 
 
 
+## Inseriamo il nav_bar
+
+Questo componente di bootstrap ha bisogno di javascript per funzionare.
+
+***codice 04 - .../app/views/mockups/page_a.html.erb - line:1***
+
+```html+erb
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Navbar</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/02_04-views-mockups-page_a.html.erb)
+
+Al momento si visualizza ma non funziona né il drop-down menu (menu a cascata), né funziona il menu che si crea quando stringi il browser. Per farli funzionare dobbiamo attivare la parte di javascript.
+
+
 
 ## Concludiamo la parte Javascript di Bootstrap
 
@@ -406,37 +431,37 @@ For the javascript part we need to do three things:
 
 Precompile the *bootstrap.min.js* that comes with the gem, by adding to *config/initializers/assets.rb*
 
-***codice 04 - .../config/initializers/assets.rb - line:13***
+***codice 05 - .../config/initializers/assets.rb - line:13***
 
 ```ruby
 Rails.application.config.assets.precompile += %w( bootstrap.min.js popper.js )
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/02_04-config-initializers-assets.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/02_05-config-initializers-assets.rb)
 
 
 pin the compiled asset in *config/importmap.rb*.
 
-***codice 05 - .../config/importmap.rb - line:10***
+***codice 06 - .../config/importmap.rb - line:10***
 
 ```ruby
 pin "popper", to: 'popper.js', preload: true
 pin "bootstrap", to: 'bootstrap.min.js', preload: true
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/02_05-config-importmap.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/02_06-config-importmap.rb)
 
 
 Include bootstrap in your *app/javascript/application.js*.
 
-***codice 06 - .../app/javascript/application.js - line:6***
+***codice 07 - .../app/javascript/application.js - line:6***
 
 ```javascript
 import "popper"
 import "bootstrap"
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/02_05-config-importmap.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/02_07-javascript-application.js)
 
 
 > I prefer this approach rather than pinning a CDN because we avoid diverging versions of Bootstrap.
@@ -464,53 +489,20 @@ I, [2022-03-24T16:13:53.576229 #9673]  INFO -- : Writing /home/ubuntu/bl7_0/publ
 ubuntu@ubuntufla:~/bl7_0 (bs)$
 ```
 
-> ho già attivato il nav_bar che in questo tutorial attiviamo nel prossimo capitolo ed ho visto che adesso funziona!!! ^_^
-
-ABBIAMO FINITO PER QUESTO CAPITOLO
-
-Di seguito del codice da spostare/eliminare
 
 
----
+## Verifichiamo preview
 
-
-
-
-## Vediamo l'asset-pipe-line *app/assets*
-
-Vediamo che sulla cartella *app/assets/stylesheets* abbiamo il file *application.bootstrap.scss*.
-
-***codice 05 - .../app/assets/stylesheets/application.bootstrap.scss - line:01***
-
-```scss
-@import 'bootstrap/scss/bootstrap';
-@import 'bootstrap-icons/font/bootstrap-icons';
+```bash
+$ sudo service postgresql start
+$ rails s -b 192.168.64.3
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/02_05-assets-stylesheets-application_bootrap.scss)
+apriamolo il browser sull'URL:
 
+* http://192.168.64.3:3000/
 
-
-
-
-## Il pulsante con tooltip per verificare installazione bootstrap
-
-Aggiungiamo al nostro mockups/page_a un pulsante con la gestione del tooltip preso dagli esempi di bootsnap. Così possiamo verificare l'avvenuta installazione di bootstrap per la parte javascript.
-
-{id: "01-21-02_02", caption: ".../app/views/mockups/page_a.html.erb -- codice 02", format: HTML+Mako, line-numbers: true, number-from: 34}
-```
-<p>---</p>
-
-<h1>Hello World</h1>
-<button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
-  Tooltip on top
-</button>
-```
-
-[tutto il codice](#01-21-02_02all)
-
-Al momento se andiamo sopra con il mouse nel nuovo pulsante non appare nessun tooltip sopra al pulsante perché bootstrap non è installato.
-
+Vediamo che adesso il nav_bar funziona!!! ^_^
 
 
 
@@ -531,10 +523,9 @@ $ git push heroku bs:main
 
 
 
-
 ## Chiudiamo il branch
 
-lo chiudiamo nel prossimo capitolo dopo aver conferma che bootstrap funziona correttamente
+Lo chiudiamo nel prossimo capitolo dopo aver conferma che bootstrap funziona correttamente
 
 
 
@@ -548,4 +539,4 @@ Lo facciamo nel prossimo capitolo.
 
 [<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/01_00-bootstrap_story-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/03_00-grid_examples-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/03_00-bootstrap_complete-it.md)
