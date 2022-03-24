@@ -1,5 +1,5 @@
 {id: 01-base-21-bootstrap-01-bootstrap_story}
-# Cap 21.3 -- Bootstrap Grid
+# Cap 21.4 -- Bootstrap Grid
 
 Implementiamo la grid bootstrap nella nostra pagina mockups/page_a
 
