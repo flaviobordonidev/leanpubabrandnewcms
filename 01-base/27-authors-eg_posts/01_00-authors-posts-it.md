@@ -3,6 +3,11 @@
 
 E' arrivato il momento di dividere l'elenco di tutti gli articoli per l'autore, che vede anche i suoi non pubblicati, da quello di tutti gli articoli per gli utenti che vedono solo quelli pubblicati. Dividiamo tra i posts degli utenti ed i posts degli autori che sono nella dashboard. Invece l'amministratore vede TUTTO. Vede tutti gli articoli di tutti gli autori sia pubblicati che non.
 
+Lato layouts abbiamo che:
+
+- i lettori vedono il tema principale del sito: application.html.erb
+- chi si logga (autori e amministratori) vede il tema *dashboard* del sito: dashboard.html.erb
+
 Incapsuliamo una copia di posts dentro il modulo "Authors" in modo da avere tutta la parte di gestione degli articoli protetta da login con devise e con un suo specifico layout tutto dentro uno stesso modulo.
 Si poteva anche gestire il tutto senza usare il modulo ma questa gestione mi piace di più perché è chiaro cosa appartiene alla gestione fatta sulla dashboard ed ho delle ridondanze che posso personalizzare (ad esempio un doppio controller per la stessa tabella posts).
 

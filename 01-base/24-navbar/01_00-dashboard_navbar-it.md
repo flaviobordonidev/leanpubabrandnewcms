@@ -4,7 +4,13 @@
 Introduciamo la dashboard_navbar. In questo capitolo prepariamo una navbar attiva su tutto il sito ma in seguito la rendiamo attiva solo per gli utenti loggati.
 
 
-Risorse interne
+***
+Creiamo una navbar per `application.html.erb` ed una diversa per `dashboard.html.erb`
+***
+
+
+
+## Risorse interne
 
 * 99-rails_references/boot_strap/05-components-navbar
 

@@ -5,6 +5,11 @@ Implementiamo lo stile Bootsrap alla paginazione che abbiamo implementato al cap
 
 
 
+***
+Creiamo un pagination per `application.html.erb` ed uno diverso per `dashboard.html.erb`
+***
+
+
  
 ## Verifichiamo dove eravamo rimasti
 
