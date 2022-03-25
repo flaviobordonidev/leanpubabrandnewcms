@@ -421,7 +421,7 @@ Questo componente di bootstrap ha bisogno di javascript per funzionare.
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/02_04-views-mockups-page_a.html.erb)
 
-Al momento si visualizza ma non funziona né il drop-down menu (menu a cascata), né funziona il menu che si crea quando stringi il browser. Per farli funzionare dobbiamo attivare la parte di javascript.
+Al momento si visualizza ma non funziona né il drop-down menu (menu a cascata), né funziona il menu che si crea quando stringi la finestra del browser (*hamburger menu*). Per farli funzionare dobbiamo attivare la parte di javascript.
 
 
 
