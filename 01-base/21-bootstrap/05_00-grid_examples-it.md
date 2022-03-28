@@ -26,6 +26,37 @@ Andiamo su Layout -> Grid.
 
 
 
+La griglia ci permette di creare diversi scenari a seconda della dimensione degli apparati su cui sono visualizzati.
+Ad esempio sul desktop ho due colonne ai lati (margin) Poi due colonne iniziali su una gallery e sull'altra due righe Title e Buy/box poi sotto description e Related.
+
+Invece sul tablet non sono visualizzati i margini e tutti i blocchi sono uno sotto l'altro su una sola colonna.
+
+Per creare un layout usiamo:
+
+- Container (grigio)
+- Row       (viola)
+- Columns   (blu)
+
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/05_fig01-grid_overview.png)
+
+
+
+## Grid: Breakpoints
+
+I breakpoint sono le dimensioni raggiunte le quali la griglia si modifica (responsive).
+
+Breakpoint        | Class infix   | Dimensions
+----------------- | ------------- | -----------
+x-small           | none          | 0-576 px
+small             | sm            | ≥ 576 px
+medium            | md            | ≥ 768 px
+large             | lg            | ≥ 992 px
+extra large       | xl            | ≥ 1200 px
+extra extra large | xxl           | ≥ 1400 px
+
+
+
+
 
 ## Usiamo uno stile per visualizzare la griglia di bootstrap
 
