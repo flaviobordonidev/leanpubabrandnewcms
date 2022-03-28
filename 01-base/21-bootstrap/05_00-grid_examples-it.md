@@ -55,6 +55,95 @@ extra large       | xl            | ≥ 1200 px
 extra extra large | xxl           | ≥ 1400 px
 
 
+## Layouts *empty* e *mockups*
+
+Creiamo un layout completamente vuoto in modo che non aggiunge nulla al codice che inseriamo nella view.
+Questo layout ci è utile nel caso in cui copiamo tutto il codice di una pagina web compresi i tag <html>, <header>, <body>, eccetera.
+
+***codice 01 - .../app/views/layouts/empty.html.erb - line:1***
+
+```html+erb
+<%= yield %>
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/05_01-views-layouts-empty.html.erb)
+
+> Il codice `<%= yield %>` passa tutto il codice presente nel *view*. Se non lo mettiamo nel browser si presente una pagina vuota perché tutto il codice che è nel *view* non viene passato.
+
+> questo file è identico a "mailer.text.erb"
+
+Nel layout *empty* non è attiva tutta la parte *bootstrap*. è solo un layout di "passaggio". Quello che invece usiamo nei nostri *mockups* è una struttura minima di layout che comprenda tutta la parte di *bootstrap*. Chiamiamo questo layout "*mockup*".
+
+***codice 02 - .../app/views/layouts/mockup.html.erb - line:1***
+
+```html+erb
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mockups</title>
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/05_02-views-layouts-mockup.html.erb)
+
+
+
+
+
+
+
+## Esempio 1
+
+- [Bootstrap 5 tutorial - 20:01](https://www.youtube.com/watch?v=rQryOSyfXmI&list=PLl1gkwYU90QkvmT4uLM5jzLsotJZtLHgW)
+
+Creiamo una nuova views in *mockups*, la inseriamo nel *mockups_controller.rb* e nel *routes.rb*.
+
+***codice 01 - .../app/views/mockups/bs_grid_a.html.erb - line:1***
+
+```html+erb
+
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/05_01-views-mockups-bs_grid_a.html.erb)
+
+
+
+***codice 02 - .../app/controllers/mockups_controller.rb - line:1***
+
+```ruby
+
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/05_01-views-mockups-bs_grid_a.html.erb)
+
+
+
+
+
+
+## Il *gutter*
+
+Il *gutter* è lo spazio tra le righe (rows) e le colonne (columns) della griglia (grid).
+In bootstrap 4 si usava la classe *.gutter* invece su bootstrap 5 si usa *.g/**
+
+Esempio:
+
+```html+erb
+<div class="row g-5">
+  <div class="col">...</div>
+  <div class="col">...</div>
+  <div class="col">...</div>
+</div>
+```
+
+
+
+
+
+
+
+
+
+
 
 
 
