@@ -123,7 +123,7 @@ Creiamo una nuova views in *mockups*, la inseriamo nel *mockups_controller.rb* e
 ## Il *gutter*
 
 Il *gutter* è lo spazio tra le righe (rows) e le colonne (columns) della griglia (grid).
-In bootstrap 4 si usava la classe *.gutter* invece su bootstrap 5 si usa *.g/**
+In bootstrap 4 si usava la classe *.gutter* invece su bootstrap 5 si usa *.g\**
 
 Esempio:
 
