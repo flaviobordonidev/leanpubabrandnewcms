@@ -438,6 +438,12 @@ in realtà mi va bene che dopo la creazione e l'aggiornamento vada sul posts sta
 
 
 
+## Aggiorniamo il form
+
+```html+erb
+<%= form_with(model: post, local: true, url: authors_url) do |form| %>
+```
+
 
 
 ## Correggiamo il sumbit del form

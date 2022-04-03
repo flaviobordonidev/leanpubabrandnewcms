@@ -1,144 +1,71 @@
-<%= form_with(model: post, local: true, url: authors_url) do |form| %>
-  <% if post.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
+<%= form_with(model: eg_post) do |form| %>
+  <% if eg_post.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(eg_post.errors.count, "error") %> prohibited this eg_post from being saved:</h2>
 
       <ul>
-      <% post.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+        <% eg_post.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>
 
+  <div>
+    <%= form.label :meta_title, style: "display: block" %>
+    <%= form.text_field :meta_title %>
+  </div>
+
+  <div>
+    <%= form.label :meta_description, style: "display: block" %>
+    <%= form.text_field :meta_description %>
+  </div>
+
+  <div>
+    <%= form.label :headline, style: "display: block" %>
+    <%= form.text_field :headline %>
+  </div>
+
+  <div>
+    <%= form.label :incipit, style: "display: block" %>
+    <%= form.text_field :incipit %>
+  </div>
+
   <div class="field">
-    <%= form.label :user_id %>
+    <%= form.label :price %>
+    <%#= form.text_field :price %>
+    <%= form.number_field :price, step: :any %>
+  </div>
+
+  <div class="field">
+    <p><%= image_tag eg_post.header_image.variant(resize_to_limit: [100, 100]) if eg_post.header_image.attached? %></p>
+    <%= form.label :header_image %>
+    <%= form.file_field :header_image %>
+    <%= link_to 'Remove', delete_image_attachment_eg_post_path(eg_post.header_image.id), method: :get if eg_post.header_image.attached? %>
+  </div>
+
+  <div class="field">
+    <%= form.label :content %>
+    <%= form.rich_text_area :content %>
+  </div>
+
+  <div class="field">
+    <%= form.label :published, class: "control-label" %>
+    <%= form.check_box :published, class: "form-control" %>
+    <%#= f.check_box :remove_logo, "data-size" => "medium", "data-on-color" => "primary", "data-on-text" => "SI", "data-off-color" => "default", "data-off-text" => "NO" %>
+  </div>
+
+  <div class="field">
+    <%= form.label :published_at, class: "control-label" %>
+    <%= form.text_field :published_at, class: "form-control" %>
+  </div>
+
+  <div>
+    <%= form.label :user_id, style: "display: block" %>
     <%= form.text_field :user_id %>
   </div>
 
-
-  <div class="row">
-    <div class="col-md-4">
-      <!--<div class="card" style="width: 18rem;">-->
-      <div class="card">
-        <div class="card-header">
-          <h5 class="card-title"><%= yield(:page_title) %></h5>
-        </div>
-        <div class="card-body">
-          <div class="field">
-            <%= form.label :title %>
-            <%= form.text_field :title, class: "form-control" %>
-          </div>
-        </div>
-      </div>
-      
-      <div class="card">
-        <div class="card-header">
-          <%= form.label :type_of_content, class: "control-label" %>
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">
-            <div class="field">    
-              <%= form.select(:type_of_content, Post.type_of_contents.keys.map {|type| [Post.human_attribute_name("type.#{type}"),type]}) %><!-- menu a cascata (drop-down list) -->
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="field">
-              <%= form.label :main_image, class: "control-label" %>
-              <%= form.file_field :main_image, class: "form-control" %>
-              <br>
-              <% if post.main_image.attached? %>
-                <%= image_tag post.main_image.variant(resize: "200x200") %>
-              <% else %>
-                <p>Nessuna immagine presente</p>
-              <% end %>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="field">
-              <%= form.label :video_youtube, class: "control-label" %>
-              <%= form.text_field :video_youtube, class: "form-control" %><!-- parte di URL youtube che identifica il video -->
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="field">
-              <%= form.label :video_vimeo, class: "control-label" %>
-              <%= form.text_field :video_vimeo, class: "form-control" %><!-- parte di URL vimeo che identifica il video -->
-            </div>
-          </li>
-        </ul>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <p>Social</p>
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">
-            <div class="field">
-              <label class="control-label">Immagine per i social. (476x249px)</label>
-              <br><img src="https://images.pexels.com/photos/634843/pexels-photo-634843.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=476&w=249" alt="Immagine demo presa da pexels.com" width="200" height="200"><br>
-              <input type="file" name="myFile"><!-- image 476x249 px -->
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="field">
-              <%= form.label :seocontent, class: "control-label" %>
-              <%= form.text_area :seocontent, row: "3", class: "form-control" %><!-- max 160 caratteri -->
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="field">
-              <label class="control-label">Tags (separati da virgola)</label>
-              <textarea name="incipit" rows="2" class='form-control'>salute, sport, cucina mediterranea, mantenersi in forma</textarea>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="field">
-              <%= form.label :date_chosen, class: "control-label"  %>
-              <%#= form.date_select :date_chosen %>
-              <%= form.text_field :date_chosen, class: "form-control", row: "2" %>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="field">
-              <%= form.label :published, class: "control-label" %>
-              <%= form.check_box :published, class: "form-control" %>
-              <%#= f.check_box :remove_logo, "data-size" => "medium", "data-on-color" => "primary", "data-on-text" => "SI", "data-off-color" => "default", "data-off-text" => "NO" %>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="field">
-              <%= form.label :published_at, class: "control-label" %>
-              <%= form.text_field :published_at, class: "form-control" %>
-            </div>
-          </li>
-
-          <li class="list-group-item">
-            <div class="actions">
-              <%= form.submit "Salva l'articolo", class: "btn btn-success btn-lg btn-block" %>
-            </div>
-          </li>
-        </ul>
-      </div><!--.card end-->
-
-    </div><!--.col-md-4 end-->
-    
-    <div class="col-md-8">
-      <div class="field">
-        <%= form.label :incipit %>
-        <%= form.text_area :incipit, rows: "3", class:'form-control' %>
-        <%#= form.trix_editor :incipit, required: true, autofocus: true %>
-      </div>
-  
-      <div class="field"><h6>---Read More---</h6></div>
-    
-      <div class="field">
-        <%= form.label :content, class: "control-label" %>
-        <%#= form.text_area :content, rows: "8", class:'form-control' %>
-        <%= form.trix_editor :content, required: true, autofocus: true %>
-      </div>
-    </div>
+  <div>
+    <%= form.submit %>
   </div>
-
 <% end %>

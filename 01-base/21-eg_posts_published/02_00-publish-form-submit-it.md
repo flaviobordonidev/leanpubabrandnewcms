@@ -43,7 +43,7 @@ Nel controller nell'azione `index`.
     #@pagy, @eg_posts = pagy(EgPost.published.order(created_at: "DESC"), items: 2)
 ```
 
-Per passare i valori a `published` e `published_at` tramite form abilitiamo i campi nella *whitelist*.<br/>
+Per passare i valori a `:published` e `:published_at` tramite form abilitiamo i campi nella *whitelist*.<br/>
 Nel controller nel *metodo privato* `eg_post_params`.
 
 ***codice 01 - ...continua - line:28***
@@ -61,12 +61,13 @@ Nel controller nel *metodo privato* `eg_post_params`.
 
 
 
+## Aggiorniamo il form
 
-## Creiamo il check_box "published" ed il text_field "published_at"
+Creiamo il *check_box :published* ed il *text_field :published_at*.
 
+***codice 02 - .../app/views/eg_posts/_form.html.erb - line:29***
 
-{id: "01-26-02_02", caption: ".../app/views/eg_posts/_form.html.erb -- codice 02", format: HTML+Mako, line-numbers: true, number-from: 29}
-```
+```html+erb
   <div class="field">
     <%= form.label :published, class: "control-label" %>
     <%= form.check_box :published, class: "form-control" %>
@@ -79,8 +80,38 @@ Nel controller nel *metodo privato* `eg_post_params`.
   </div>
 ```
 
-[tutto il codice](#01-26-02_02all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-eg_posts_published/02_02-views-eg_posts-_form.html.erb)
 
+
+
+
+
+
+
+
+## Aggiorniamo index
+
+Nella pagina *eg_posts/index* implementiamo una semplice indicazione se l'articolo è pubblicato (published) o è ancora una bozza (draft) e quindi non pubblicata (unpublished).
+
+***codice 03 - .../app/views/eg_posts/index.html.erb - line:22***
+
+```html+erb
+      <th>Pubblicato</th>
+      <td><%= eg_post.published_at %></td>
+```
+
+
+
+## Verifichiamo preview
+
+```bash
+$ sudo service postgresql start
+$ rails s
+```
+
+apriamo il browser sull'URL:
+
+* https://mycloud9path.amazonaws.com/eg_posts
 
 
 
@@ -145,21 +176,6 @@ Nella pagina edit, sul submit del form:
 - se published è flaggato e published_at ha una data, allora è lasciata quella data.
 - se published non è flaggato, allora published_at è automaticamente cancellato
 
-
-
-## Aggiorniamo index
-
-Nella pagina *eg_posts/index* implementiamo una semplice indicazione se l'articolo è pubblicato (published) o è in bozza (draft).
-
-{id: "01-26-02_04", caption: ".../app/views/eg_posts/index.html.erb -- codice 04", format: HTML+Mako, line-numbers: true, number-from: 22}
-```
-      <th>Pubblicato</th>
-```
-
-{caption: ".../app/views/eg_posts/index.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 38}
-```
-        <td><%= eg_post.published_at %></td>
-```
 
 
 
