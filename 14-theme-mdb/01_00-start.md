@@ -1,7 +1,11 @@
-# Tema che useremo per UbuntuDream
+# Tema che estende l'User Interface di bootstrap
 
-Usiamo questo tema perché è gratuito ed è una "UI Kit" di Bootstrap, ossia sono una serie di elementi e di componenti che arricchiscono quelli di default di Bootstrap.
+Questo tema è gratuito ed è una "UI Kit" di Bootstrap, ossia sono una serie di elementi e di componenti che arricchiscono quelli di default di Bootstrap.
 
+
+> Sembrava un'ottima soluzione ma poi ho preferito andare su un tema specifico perché tutti i temi si basano su una sola infrastruttura, nel nostro caso si basano tutti su BootStrap e quindi non usano nulla di un "UI Kit" al di fuori di bootstrap.
+>
+> Il grande vantaggio di un tema è trovarne uno che si avvicina molto a quello che vuoi fare in modo da partire su quel lavoro già impostato. Ad esempio già la sola gestione dei colori è un lavorone.
 
 
 ## Risorse esterne

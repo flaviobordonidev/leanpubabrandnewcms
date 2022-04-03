@@ -123,7 +123,7 @@ Creiamo una nuova views in *mockups*, la inseriamo nel *mockups_controller.rb* e
 ## Il *gutter*
 
 Il *gutter* è lo spazio tra le righe (rows) e le colonne (columns) della griglia (grid).
-In bootstrap 4 si usava la classe *.gutter* invece su bootstrap 5 si usa *.g\**
+In bootstrap 4 si usava la classe *.gutter* invece su bootstrap 5 si usa "*.g\**".
 
 Esempio:
 
@@ -135,13 +135,94 @@ Esempio:
 </div>
 ```
 
+> se esprimo solo il valore `g-5` è applicato sia in orizzontale che in verticale
+> altrimenti posso usare `gx-0` o `gy-0`
+
+Esempio:
+In questo esempio quando stringo il browser e le colonne vanno a capo, lo spazio tra le due righe di colonne è con un *gutter di 5*. 
+
+```html+erb
+<div class="container">
+  <div class="row g-5">
+    <div class="col-6">1</div>
+    <div class="col-6">2</div>
+    <div class="col-6">3</div>
+    <div class="col-6">4</div>
+  </div>
+</div>
+```
+
+> Abbiamo forzato il rimando a capo assegnando un totale di "24" e non di "12" nella riga. <br/>
+> Questo **non** è il modo corretto di usare la griglia ed è stato messo solo a scopo didattico.
+
+Il seguente esempio è più corretto:
+
+<div class="container">
+  <div class="row g-5">
+    <div class="col-lg-3 col-md-6">1</div>
+    <div class="col-lg-3 col-md-6">2</div>
+    <div class="col-lg-3 col-md-6">3</div>
+    <div class="col-lg-3 col-md-6">4</div>
+  </div>
+</div>
+
+> In questo caso su schermo largo le ho tutte e 4 allineate su schermo medio due sopra e due sotto e su schermo piccolo tutte una sotto l'altra.
 
 
 
+## Il *container*
+
+Se non vogliamo lo spazio a destra e sinistra usiamo l'opzione `-fluid`.
+
+Esempio:
+
+```html+erb
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-8">Main Content</div>
+        <div class="col-md-4">Sidebar</div>
+      </div>
+    </div>
+```
+
+
+Oppure possiamo usare l'opzione `-md`.
+In questo caso fino al brackpoint *medium* il container si comporta come *-fluid* su dimensioni inferiori e torna ad applicare lo spazio a destra e a sinistra quando si raggiunge la dime.
+
+Esempio:
+
+```html+erb
+    <div class="container-md">
+      <div class="row">
+        <div class="col-md-8">Main Content</div>
+        <div class="col-md-4">Sidebar</div>
+      </div>
+    </div>
+```
+
+> Chiaramente si possono usare tutti i breakpoints: `-sm`, `-md`, `-lg`, `-xl`, `-xxl`
 
 
 
+## le colonne *columns*
 
+Se lasci solo *col* quando stringi le colonne non si riordinano in basso per rispondere al responsive, ma restano tutte sulla stessa riga diventando sempre più piccole.
+
+```html+erb
+    <div class="container-md">
+      <div class="row">
+        <div class="col">1</div>
+        <div class="col">2</div>
+        <div class="col">3</div>
+      </div>
+      <div class="row">
+        <div class="col-sm">1</div>
+        <div class="col-sm">2</div>
+      </div>
+    </div>
+```
+
+> Invece le colonne che hanno *col-sm* raggiunto il *breakpoint small* si mettono una sotto l'altra.
 
 
 

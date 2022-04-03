@@ -1,6 +1,6 @@
 # I Layouts
 
-Mettiamo in piedi un piccolo blog di esempio con articoli di esempio (*eg_posts*) in modo da avere le strutture principali che possano essere utili per qualsiasi applicazione.
+Mettiamo in piedi un piccolo blog di esempio con vari articoli (*eg_posts*) in modo da avere le strutture principali che possano essere utili per qualsiasi applicazione.
 
 L'applicazione userà 3 temi differenti (tutti basati su bootstrap):
 
