@@ -116,11 +116,9 @@ $ rails c
 
 
 
-
 ## Verifichiamo preview
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails s
 ```
@@ -133,24 +131,19 @@ Adesso viene visualizzato solo l'articolo in cui abbiamo impostato "published: t
 
 
 
+## Archiviamo su git
 
-## archiviamo su git
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git add -A
 $ git commit -m "add published to eg_posts"
 ```
 
 
 
+## Pubblichiamo su Heroku
 
-## Pubblichiamo su heroku
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git push heroku pub:master
-$ heroku run rails db:migrate
+```bash
+$ git push heroku ui:main
 ```
 
 
@@ -160,74 +153,11 @@ $ heroku run rails db:migrate
 
 se abbiamo finito le modifiche e va tutto bene:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git checkout master
+```bash
+$ git checkout main
 $ git merge pub
 $ git branch -d pub
 ```
-
-
-
-
-## Facciamo un backup su Github
-
-Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git push origin master
-```
-
-
-
-
-## Il codice del capitolo
-
-
-
-
-
-
----
-
-
-
-## Verifichiamo preview
-
-```bash
-$ sudo service postgresql start
-$ rails s
-```
-
-apriamolo il browser sull'URL:
-
-* https://mycloud9path.amazonaws.com/users
-
-Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
-
-
-
-## salviamo su git
-
-```bash
-$ git add -A
-$ git commit -m "users_controllers notice messages i18n"
-```
-
-
-
-## Pubblichiamo su Heroku
-
-```bash
-$ git push heroku ui:master
-```
-
-
-
-## Chiudiamo il branch
-
-Lo lasciamo aperto per il prossimo capitolo
 
 
 
