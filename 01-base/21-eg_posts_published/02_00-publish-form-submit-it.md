@@ -43,7 +43,7 @@ Nel controller nell'azione `index`.
     #@pagy, @eg_posts = pagy(EgPost.published.order(created_at: "DESC"), items: 2)
 ```
 
-Per passare i valori a `published` e `published_at` tramite form abilitiamo i campi nella *whitelist*.
+Per passare i valori a `published` e `published_at` tramite form abilitiamo i campi nella *whitelist*.<br/>
 Nel controller nel *metodo privato* `eg_post_params`.
 
 ***codice 01 - ...continua - line:28***
