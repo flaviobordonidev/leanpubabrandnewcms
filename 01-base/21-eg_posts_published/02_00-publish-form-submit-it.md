@@ -1,7 +1,6 @@
 # <a name="top"></a> Cap 21.2 - Implementiamo un check_box per la pubblicazione
 
-Dentro il partial *eg_posts/_form* implementiamo un check-box che indica se è pubblicato.
-Nella pagina *eg_posts/index* implementiamo una semplice indicazione se l'articolo è pubblicato (published) o è in bozza (draft).
+Rendiamo possibile pubblicare un articolo con un check-box in modifica (*eg_posts/_form*).
 
 
 
@@ -30,27 +29,35 @@ $ git checkout -b ps
 
 ## Aggiorniamo il controller
 
-Torniamo indietro sull'azione index e visualizziamo tutto l'elenco degli articoli.
-Nei prossimi capitoli creeremo due elenchi di articoli uno per gli autori, che include anche i non pubblicati, ed uno per i lettori, che include solo i pubblicati.
-Ma al momento ci serve vedere tutti gli articoli per permettere di andare in modifica e mettere il segno di spunta per la pubblicazione.
+Torniamo indietro e visualizziamo tutto l'elenco degli articoli.
 
-{id: "01-26-02_01", caption: ".../app/controllers/eg_posts_controller.rb -- codice 01", format: ruby, line-numbers: true, number-from: 5}
-```
+> Nei prossimi capitoli creeremo due elenchi di articoli uno per gli autori, che include anche i non pubblicati, ed uno per i lettori, che include solo i pubblicati.<br/>
+> Ma al momento ci serve vedere tutti gli articoli per permettere di andare in modifica e mettere il segno di spunta per la pubblicazione.
+
+Nel controller nell'azione `index`.
+
+***codice 01 - .../app/controllers/eg_posts_controller.rb - line:9***
+
+```ruby
     @pagy, @eg_posts = pagy(EgPost.all, items: 2)
     #@pagy, @eg_posts = pagy(EgPost.published.order(created_at: "DESC"), items: 2)
 ```
 
-Per passare i valori a published e published_at tramite form abilitiamo i campi nella whitelist.
+Per passare i valori a `published` e `published_at` tramite form abilitiamo i campi nella *whitelist*.
+Nel controller nel *metodo privato* `eg_post_params`.
 
-{caption: ".../app/controllers/eg_posts_controller.rb -- continua", format: ruby, line-numbers: true, number-from: 5}
-```
-    # Never trust parameters from the scary internet, only allow the white list through.
+***codice 01 - ...continua - line:28***
+
+```ruby
+    # Only allow a list of trusted parameters through.
     def eg_post_params
-      params.require(:eg_post).permit(:meta_title, :meta_description, :headline, :incipit, :user_id, :price, :header_image, :content, :published, :published_at)
+      params.require(:eg_post).permit(:meta_title, :meta_description, :headline, :incipit, :price, :header_image, :content, :published, :published_at, :user_id)
     end
 ```
 
-[tutto il codice](#01-26-02_01all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-eg_posts_published/01_02-models-post.rb)
+
+> Su rails 6 il commento era più simpatico: `# Never trust parameters from the scary internet, only allow the white list through.`.
 
 
 
@@ -120,7 +127,6 @@ e neanche questo:
 
 
 
-
 ## Verifichiamo preview
 
 {caption: "terminal", format: bash, line-numbers: false}
@@ -135,14 +141,15 @@ apriamo il browser sull'URL:
 
 Nella pagina edit, sul submit del form:
 
-* se published è flaggato e published_at è vuoto, allora è messa in automatico la data attuale.
-* se published è flaggato e published_at ha una data, allora è lasciata quella data.
-* se published non è flaggato, allora published_at è automaticamente cancellato
-
+- se published è flaggato e published_at è vuoto, allora è messa in automatico la data attuale.
+- se published è flaggato e published_at ha una data, allora è lasciata quella data.
+- se published non è flaggato, allora published_at è automaticamente cancellato
 
 
 
 ## Aggiorniamo index
+
+Nella pagina *eg_posts/index* implementiamo una semplice indicazione se l'articolo è pubblicato (published) o è in bozza (draft).
 
 {id: "01-26-02_04", caption: ".../app/views/eg_posts/index.html.erb -- codice 04", format: HTML+Mako, line-numbers: true, number-from: 22}
 ```
