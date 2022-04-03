@@ -1,8 +1,7 @@
 # Readers::Posts - facoltativo
 
-questo capitolo è facoltativo ed ha interessanti finalità didattiche. Forse torneremo indietro annullando il branch e tutte le modifiche fatte, forse no ;).
+questo capitolo è facoltativo ed ha interessanti finalità didattiche.
 E' interessante vedere come incapsulare posts e farlo sembrare come se non lo fosse.
-
 
 
 
@@ -12,7 +11,7 @@ Così come abbiamo fatto per authors possiamo incapsulare il posts dentro reader
 
 creiamo la cartella **readers** e spostiamoci dentro la cartella **posts**.
 
-* .../app/views/posts/            ->  .../app/views/readers/posts/ (spostamento di "posts/")
+- spostiamo .../app/views/posts/     in ->   .../app/views/readers/posts/ 
 
 Adesso abbiamo ovviamente errore nella nostra app. Risolviamo la cosa:
 Correggiamo il file di routes. Spostiamo il " resources :posts " dentro lo " scope module: 'readers' " 
@@ -32,39 +31,7 @@ la differenza tra "scope" e "namespace" è che con "scope", anche se ho un incap
 
 
 
-
-
-
-
-
-
-################################################################################
-
-
-
-
-In questo vecchio capitolo creiamo un doppio incapsulamento
-
-* dentro **blog** i posts saranno accessibili da tutti ma in sola visualizzazione.
-* dentro **authors** i posts saranno accessibili solo dai rispettivi autori che potranno anche crearne di nuovi, editarli ed eliminarli. In pratica una "dashboard" di gestione dei posts.
-
-
-creiamo la cartella **authors** e la cartella **blog**. Spostiamo la cartella **posts** dentro la cartella **blog** e mettiamone una copia anche dentro la cartella **authors**.
-
-* .../app/views/posts/            ->  .../app/views/blog/posts/
-* .../app/views/posts/            ->  .../app/views/authors/posts/
-
-Adesso abbiamo ovviamente errore nella nostra app. Risolviamo la cosa:
-Correggiamo il file di routes. Spostiamo il **resources :posts** dentro lo **scope module: 'blog'** 
-
-{title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=7}
-~~~~~~~~
-  scope module: 'blog' do
-    resources :posts
-  end
-~~~~~~~~
-
-lasciamo dentro lo scope blog solo le chiamate di visualizzazione (index e show)
+lasciamo dentro lo scope readers solo le chiamate di visualizzazione (index e show)
 
 
 {title=".../config/routes.rb", lang=ruby, line-numbers=on, starting-line-number=7}
@@ -73,7 +40,7 @@ lasciamo dentro lo scope blog solo le chiamate di visualizzazione (index e show)
     resources :posts
   end
 
-  scope module: 'blog' do
+  scope module: 'readers' do
     get 'posts' => 'posts#index'
     get 'posts/:id' => 'posts#show'
   end
@@ -126,6 +93,7 @@ end
 Questo namespacing produce Blog::PostsController che useremo nella nostra applicazione.
 
 
+
 verifichiamo 
 
 {title="terminal", lang=bash, line-numbers=off}
@@ -148,17 +116,13 @@ Correggiamo la chiamata di root nel routes file
 
 
 
-***************************
-
-
-
-
 {title=".../app/views/authors/posts/_posts.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
 ~~~~~~~~
         <td><%= link_to 'Show', authors_post_path(post) %></td>
         <td><%= link_to 'Edit', edit_authors_post_path(post) %></td>
-        <td><%= link_to 'Destroy', authors_post_path(post), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= button_to 'Destroy', authors_post_path(post), method: :delete %></td>
 ~~~~~~~~
+
 
 Correggiamo in authors/posts_controller il redirect dell'azione destroy
 
@@ -166,20 +130,6 @@ Correggiamo in authors/posts_controller il redirect dell'azione destroy
 ~~~~~~~~
         format.html { redirect_to authors_posts_url, notice: 'Post was successfully destroyed.' }
 ~~~~~~~~
-
-Non funziona. Perché?
-Purtroppo è dovuto al fatto di come gestiamo bootstrap. Infatti per riflettere lo standard restful l'invio del comando di destroy dovrebbe essere inviato con un put di :delete come richiesta HTML. Questa richiesta non è ancora gestita dalla maggior parte dei browser ed allora si è creato un workaround che converte il link in una chiamata post con l'invio del comando di destroy. Questo workaround è stato implementato nel pacchetto bootstrap specifico di Rails. Quindi funziona solo se si installa bootstrap utilizzando la gemma.
-Noi abbiamo caricato direttamente bootstrap dal template e quindi non abbiamo questo workaround.
-
-Come possiamo fare?
-l'alternativa è quella di non usare il link ma di usare un button che attiva la chiamata post.
-
-{title=".../app/views/authors/posts/_posts.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
-        <td><%= button_to 'Destroy', authors_post_path(post), method: :delete, data: { confirm: 'Are you sure?' } %></td>
-~~~~~~~~
-
-Solo che queso ha bisogno di un po' di stylesheet ed inoltre non funziona il confirm! Cancella senza chiederti se sei sicuro. Quindi prevede più codice per evitare cancellazioni indesiderate.
 
 
 

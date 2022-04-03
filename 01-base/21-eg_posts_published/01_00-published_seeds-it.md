@@ -18,23 +18,23 @@ $ git checkout -b pub
 
 
 
-## Aggiungiamo le colonne per gestire la pubblicazione degli articoli
+## Aggiungiamo colonne alla tabela eg_post
 
-Aggiungiamo due colonne alla tabella eg_posts
+Aggiungiamo due colonne alla tabella eg_posts per gestire la pubblicazione degli articoli.
 
-* published      : Un campo boolean per tenere traccia se l'articolo è stato pubblicato o no.
-* published_at   : Utile per gestire pubblicazioni automatiche o allineare le date con le campagne di email marketing.
+- published      : (true/false) Un campo boolean per tenere traccia se l'articolo è stato pubblicato o no.
+- published_at   : (data e ora) Utile per gestire pubblicazioni automatiche o allineare le date con le campagne di email marketing.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails g migration AddPublishedToEgPosts published:boolean published_at:datetime
 ```
 
-aggiungiamo al migrate creato il "default: false" alla colonna :published
+Aggiungiamo al migrate creato il `default: false` alla colonna `:published`.
 
-{id: "01-26-01_01", caption: ".../db/migrate/xxx_add_published_to_eg_posts.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
-```
-class AddPublishedToEgPosts < ActiveRecord::Migration[6.0]
+***codice 01 - .../db/migrate/xxx_add_published_to_eg_posts.rb - line: 1***
+
+```ruby
+class AddPublishedToEgPosts < ActiveRecord::Migration[7.0]
   def change
     add_column :eg_posts, :published, :boolean, default: false
     add_column :eg_posts, :published_at, :datetime
@@ -42,63 +42,68 @@ class AddPublishedToEgPosts < ActiveRecord::Migration[6.0]
 end
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-eg_posts_published/01_01-xxx_add_published_to_eg_posts.rb)
+
 eseguiamo il migrate 
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails db:migrate
 ```
 
 
 
-
 ## Aggiorniamo il model
 
-aggiungiamo uno scope per gli articoli pubblicati.
-Nel model nella sezione "# == Scopes".
+Aggiungiamo uno scope per gli articoli pubblicati.
+Nel model nella sezione `# == Scopes`.
 
-{id: "01-26-01_02", caption: ".../app/models/post.rb -- codice 02", format: ruby, line-numbers: true, number-from: 28}
-```
+***codice 02 - .../app/models/post.rb - line:28***
+
+```ruby
   scope :published, -> { where(published: true) }
 ```
 
-[tutto il codice](#01-26-01_02all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-eg_posts_published/01_02-models-post.rb)
 
 
 
-
-## Aggiorniamo il posts_controller
+## Aggiorniamo il controller
 
 Per limitare la visibilità ai soli articoli pubblicati per una persona non loggata.
-Aggiorniamo l'azione "index".
+Nel controller nell'azione `index`.
 
-{id: "01-26-01_03", caption: ".../app/controllers/eg_posts_controller.rb -- codice 03", format: ruby, line-numbers: true, number-from: 5}
-```
+***codice 03 - .../app/controllers/eg_posts_controller.rb - line:5***
+
+```ruby
     #@eg_posts = EgPost.all
     #@pagy, @eg_posts = pagy(EgPost.all, items: 2)
     #@posts = EgPost.published.order(created_at: "DESC")
     @pagy, @eg_posts = pagy(EgPost.published.order(created_at: "DESC"), items: 2)
 ```
 
-[tutto il codice](#01-26-01_03all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-eg_posts_published/01_03-controllers-eg_posts_controller.rb)
+
 
 Nelle linee di codice commentate si vedono i vari passaggi fino ad arrivare a visualizzare solo gli articoli pubblicati con la paginazione.
 
 
 
+## Impostiamo un articolo come pubblicato
 
-## Impostiamo da terminale un articolo come pubblicato
+Impostiamo da terminale un articolo come pubblicato
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails c
 -> EgPost.first.published
 -> EgPost.first.update(published: true)
 -> EgPost.first.published
+```
 
+Esempio:
 
+```bash
 2.6.3 :007 > EgPost.first.published
   EgPost Load (0.3ms)  SELECT "eg_posts".* FROM "eg_posts" ORDER BY "eg_posts"."id" ASC LIMIT $1  [["LIMIT", 1]]
  => false 
@@ -125,9 +130,9 @@ $ rails s
 
 apriamo il browser sull'URL:
 
-* https://mycloud9path.amazonaws.com/posts
+- http://192.168.64.3:3000/eg_posts
 
-Adesso viene visualizzato solo l'articolo in cui abbiamo impostato "published: true"
+Adesso viene visualizzato solo l'articolo in cui abbiamo impostato `published: true`.
 
 
 
@@ -143,9 +148,11 @@ $ git commit -m "add published to eg_posts"
 ## Pubblichiamo su Heroku
 
 ```bash
-$ git push heroku ui:main
+$ git push heroku pub:main
+$ heroku run rails db:migrate
 ```
 
+> Eseguiamo `db:migrate` perché abbiamo cambiato la struttura del database.
 
 
 
@@ -163,8 +170,9 @@ $ git branch -d pub
 
 ## Facciamo un backup su Github
 
-Lo facciamo nel prossimo capitolo.
-
+```bash
+$ git push origin main
+```
 
 
 
@@ -172,4 +180,4 @@ Lo facciamo nel prossimo capitolo.
 
 [<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/20-organize_models/01_00-organizing-our-models-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-eg_posts_published/01_00-published_seeds-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-eg_posts_published/02_00-publish-form-submit-it.md)

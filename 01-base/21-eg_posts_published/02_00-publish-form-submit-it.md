@@ -1,33 +1,30 @@
-{id: 01-base-26-eg_posts_published-02-publish-form-submit}
-# Cap 26.2 -- Implementiamo un check_box per la pubblicazione
+# <a name="top"></a> Cap 21.2 - Implementiamo un check_box per la pubblicazione
 
-Dentro il partial authors/posts/_form implementiamo un check-box che indica se pubblicato. In seguito possiamo formattare il check-box in stile iphone.
-Nella pagina authors/posts/index implementiamo una semplice indicazione se l'articolo è pubblicato (published) o è in bozza (draft).
+Dentro il partial *eg_posts/_form* implementiamo un check-box che indica se è pubblicato.
+Nella pagina *eg_posts/index* implementiamo una semplice indicazione se l'articolo è pubblicato (published) o è in bozza (draft).
 
-Per approfondimenti vedi capitolo 99-rails_references/data_types/date_time
 
+
+## Risorse interne
+
+- 99-rails_references/data_types/date_time
 
 
  
 ## Verifichiamo dove eravamo rimasti
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git status
 $ git log
 ```
 
 
 
-
 ## Apriamo il branch "Published Submit"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout -b ps
 ```
-
-
 
 
 
@@ -204,66 +201,6 @@ ATTENZIONE: Come possiamo vedere abbiamo già gestito un modo differente di form
 
 
 
-
-## archiviamo su git
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git add -A
-$ git commit -m "add published to views/eg_posts with automatic update of published_at"
-```
-
-
-
-
-## Pubblichiamo su heroku
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git push heroku ps:master
-```
-
-
-
-
-## Chiudiamo il branch
-
-se abbiamo finito le modifiche e va tutto bene:
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git checkout master
-$ git merge ps
-$ git branch -d ps
-```
-
-
-
-
-## Facciamo un backup su Github
-
-Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git push origin master
-```
-
-
-
-
-## Il codice del capitolo
-
-
-
-
-
-
-
----
-
-
-
 ## Verifichiamo preview
 
 ```bash
@@ -273,38 +210,49 @@ $ rails s
 
 apriamolo il browser sull'URL:
 
-* https://mycloud9path.amazonaws.com/users
+- https://mycloud9path.amazonaws.com/users
 
 Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
 
 
 
-## salviamo su git
+## Archiviamo su git
 
 ```bash
 $ git add -A
-$ git commit -m "users_controllers notice messages i18n"
+$ git commit -m "add published to views/eg_posts with automatic update of published_at"
 ```
 
 
 
-## Pubblichiamo su Heroku
+## Pubblichiamo su heroku
 
 ```bash
-$ git push heroku ui:master
+$ git push heroku ps:main
 ```
 
 
 
 ## Chiudiamo il branch
 
-Lo lasciamo aperto per il prossimo capitolo
+se abbiamo finito le modifiche e va tutto bene:
+
+```bash
+$ git checkout main
+$ git merge ps
+$ git branch -d ps
+```
+
 
 
 
 ## Facciamo un backup su Github
 
-Lo facciamo nel prossimo capitolo.
+Dal nostro branch main di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+```bash
+$ git push origin main
+```
 
 
 

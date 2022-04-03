@@ -9,17 +9,18 @@ Lato layouts abbiamo che:
 - chi si logga (autori e amministratori) vede il tema per la gestione: `dashboard.html.erb`
 
 Incapsuliamo una copia di posts dentro il modulo "Authors" in modo da avere tutta la parte di gestione degli articoli protetta da login con devise e con un suo specifico layout tutto dentro uno stesso modulo.
-Si poteva anche gestire il tutto senza usare il modulo ma questa gestione mi piace di più perché è chiaro cosa appartiene alla gestione fatta sulla dashboard ed ho delle ridondanze che posso personalizzare (ad esempio un doppio controller per la stessa tabella posts).
+
+> Si poteva anche gestire il tutto senza usare il modulo ma questa gestione mi piace di più perché è chiaro cosa appartiene alla gestione fatta sulla dashboard ed ho delle ridondanze che posso personalizzare (ad esempio un doppio controller per la stessa tabella posts).
 
 Creiamo il modulo “authors” che ingloba/incapsula una copia di posts.
   permette di isolare un layout tutto per lui senza doverlo fare dal controller posts_controller per ogni singola azione.
   Permette di proteggere tutto il namespace ...authors… con devise senza doverlo fare sul controller posts_controller per ogni singola azione.
 
 
-Risorse interne:
 
-* 99-rails_references/MVC_incapsulation/authos-posts
+## Risorse interne:
 
+- 99-rails_references/MVC_incapsulation/authos-posts
 
 
 

@@ -1,14 +1,13 @@
-# Nella dashboard l'indice di tutti gli articoli varia a secondo di chi è loggato
-
-Adesso che abbiamo creato la dashboard le autorizzazioni sono differenziate.
+# Vediamo le autorizzazioni con Pundit
 
 i post "normali" hanno le autorizzazioni che abbiamo già impostato.
 invece gli "author/posts" hanno delle autorizzazioni differenti.
 
 Infatti dentro la dashboard:
  
-* Se siamo loggati come autore vediamo solo i nostri articoli (non abbiamo bisogno di vedere anche quelli degli altri)
-* Se siamo loggati come amministratore vediamo tutti gli articoli. Inoltre l'amministratore avrà la capacità di cambiare l'autore di un articolo.
+- Se non siamo loggati vediamo tutti gli articoli pubblicati.
+- Se siamo loggati come autore tutti gli articoli pubblicati e i nostri articoli non pubblicati
+- Se siamo loggati come amministratore vediamo tutti gli articoli. Inoltre l'amministratore può cambiare l'autore di un articolo.
 
 Questa condizione l'abbiamo già soddisfatta con il codice al capitolo 01-authors-posts alla linea 228
 [...]

@@ -333,57 +333,6 @@ li posso concatenare come voglio, anche Post.published.most_recent andava bene.
 
 
 
-## archiviamo su git
-
-{title="terminal", lang=bash, line-numbers=off}
-```
-$ git add -A
-$ git commit -m "add published to posts"
-```
-
-
-
-
-## Publichiamo su heroku
-
-{title="terminal", lang=bash, line-numbers=off}
-```
-$ git push heroku pub:master
-```
-
-
-
-
-## Chiudiamo il branch
-
-se abbiamo finito le modifiche e va tutto bene:
-
-{title="terminal", lang=bash, line-numbers=off}
-```
-$ git checkout master
-$ git merge pub
-$ git branch -d pub
-```
-
-
-
-
-## Facciamo un backup su Github
-
-Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
-
-{title="terminal", lang=bash, line-numbers=off}
-```
-$ git push origin master
-```
-
-
-
-
-
----
-
-
 
 ## Verifichiamo preview
 
@@ -400,32 +349,46 @@ Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messag
 
 
 
-## salviamo su git
+## Archiviamo su git
 
-```bash
+{title="terminal", lang=bash, line-numbers=off}
+```
 $ git add -A
-$ git commit -m "users_controllers notice messages i18n"
+$ git commit -m "add published to posts"
 ```
 
 
 
-## Pubblichiamo su Heroku
+## Publichiamo su heroku
 
-```bash
-$ git push heroku ui:master
+{title="terminal", lang=bash, line-numbers=off}
+```
+$ git push heroku pub:main
 ```
 
 
 
 ## Chiudiamo il branch
 
-Lo lasciamo aperto per il prossimo capitolo
+se abbiamo finito le modifiche e va tutto bene:
+
+{title="terminal", lang=bash, line-numbers=off}
+```
+$ git checkout main
+$ git merge pub
+$ git branch -d pub
+```
 
 
 
 ## Facciamo un backup su Github
 
-Lo facciamo nel prossimo capitolo.
+Dal nostro branch main di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+{title="terminal", lang=bash, line-numbers=off}
+```
+$ git push origin main
+```
 
 
 
