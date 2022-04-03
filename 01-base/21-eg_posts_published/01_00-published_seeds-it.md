@@ -1,19 +1,20 @@
-{id: 01-base-26-eg_posts_published-01-published_seeds}
-# Cap 26.1 -- Gestiamo publicazione articoli
+# <a name="top"></a> Cap 21.1 - Gestiamo publicazione articoli
+
+Dividiamo gli articoli già pubblicati da quelli da pubblicare ed impostiamo la data di pubblicazione.
 
 
-filtriamo per gli articoli pubblicati.
 
+## Risorse interne
+
+- []()
 
 
 
 ## Apriamo il branch "PUBlished"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout -b pub
 ```
-
 
 
 
