@@ -89,7 +89,7 @@ Nelle linee di codice commentate si vedono i vari passaggi fino ad arrivare a vi
 
 
 
-## Impostiamo un articolo come pubblicato
+## Pubblichiamo un articolo
 
 Impostiamo da terminale un articolo come pubblicato
 
