@@ -55,7 +55,7 @@ Aggiorniamo il *metodo privato* `eg_post_params` nel controller.
     end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-eg_posts_published/01_02-models-post.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-eg_posts_published/02_01-controllers-eg_posts_controller.rb)
 
 > Su rails 6 il commento era più simpatico: `# Never trust parameters from the scary internet, only allow the white list through.`.
 
