@@ -161,7 +161,7 @@ Allineiamo anche i due gruppi di views:
 
 
 
-## Cominciamo con le *views/eg_posts standard*
+## Cominciamo con le *views standard*
 
 Eliminiamo quelle che non utiliziamo:
 
@@ -172,7 +172,7 @@ Eliminiamo quelle che non utiliziamo:
 
 
 
-## Aggiorniamo *views/eg_posts/index*
+## Aggiorniamo views/eg_posts/index
 
 Togliamo i links_to non più usati.
 
@@ -207,7 +207,7 @@ In alternativa possiamo eliminare completamente il link di Edit.
 
 
 
-## Andiamo alle views/*authors*/eg_posts
+## Andiamo alle views/*authors*
 
 Eliminiamo quelle che non utiliziamo:
 
@@ -215,7 +215,7 @@ Eliminiamo quelle che non utiliziamo:
 
 
 
-## Aggiorniamo views/*authors*/posts/index
+## Aggiorniamo views/*authors*/eg_posts/index
 
 aggiorniamo i vari links su ".../app/views/authors/eg_posts/index.html.erb"
 
@@ -234,6 +234,8 @@ aggiorniamo i vari links su ".../app/views/authors/eg_posts/index.html.erb"
 
 
 le views authors/eg_posts/edit, authors/eg_posts/new e authors/eg_posts/_form le aggiorniamo nei prossimi capitoli
+
+
 
 
 
