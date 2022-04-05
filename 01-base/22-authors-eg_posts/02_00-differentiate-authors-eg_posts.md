@@ -1,6 +1,6 @@
-# <a name="top"></a> Cap 22.2 - Puliamo le due strutture
+# <a name="top"></a> Cap 22.2 - Differenziamo le due strutture
 
-Puliamo i controllers e le views per *eg_posts* e *authors/eg_posts*.
+Differenziamo le due strutture *eg_posts* e *authors/eg_posts*.
 
 
 
@@ -10,16 +10,16 @@ Continuiamo con il branch precedente.
 
 
 
-
-## Puliamo le routes
+## Differenziamo le routes
 
 Restringiamo gli instradamenti alle sole views di nostro interesse:
 
-* Vogliamo che l'utente normale possa solo visualizzare tutti i posts. Tanto l'elenco (index) quanto i singoli articoli (show). Non può crearne, editarli, eliminarli.
-* Vogliamo che l'autore abbia un elenco di "lavoro" dei suoi posts (index). Che possa crearne di nuovi (new), editarli (edit), eliminarli (destroy).
+- Vogliamo che l'utente normale possa solo visualizzare tutti i posts. Tanto l'elenco (index) quanto i singoli articoli (show). Non può crearne, editarli, eliminarli.
+- Vogliamo che l'autore abbia un elenco di "lavoro" dei suoi posts (index). Che possa crearne di nuovi (new), editarli (edit), eliminarli (destroy).
 
-{id: "01-27-01_03", caption: ".../config/routes.rb -- codice 03", format: ruby, line-numbers: true, number-from: 4}
-```
+***codice 01 - .../config/routes.rb - line:3***
+
+```ruby
   namespace :authors do
     resources :eg_posts, :except => [:show] do
       member do
@@ -27,18 +27,22 @@ Restringiamo gli instradamenti alle sole views di nostro interesse:
       end
     end
   end
-  resources :eg_posts, :only => [:index, :show]
+  resources :eg_posts, :only => [:index, :show] 
 ```
 
-[tutto il codice](#01-27-01_03all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/01_01-config-routes.rb)
 
 
-Da notare che abbiamo finalmente distinto le due liste di articoli. Abbiamo due "index" perché quello dell'autore ha una struttura ed un layout diverso da quello del lettore (reader), ossia dell'utente non loggato. Permette di avere un index dedicato alla dashboard che ha tutti i posts dell’autore compresi quelli non pubblicati.
+Abbiamo finalmente distinto le due liste di articoli.
+
+- Lato lettore abbiamo lasciato solo `:index` e `:show`
+- Lato *authors* c'è tutta la parte di modifica ed anche `:index`. Manca solo `:show`.
+- Abbiamo due `:index` perché quello dell'autore (`authors`) ha una struttura ed un layout diverso da quello del lettore (*reader*), ossia dell'*utente non loggato*.
+- Per la visualizzazioe del singolo articolo (`:show`) usiamo sempre la pagina del lettore così l'autore vedrà il suo articolo con lo stesso layout/theme del lettore.
 
 
-Per la visualizzazioe del singolo articolo (show) usiamo sempre la pagina del lettore così l'autore vedrà il suo articolo con lo stesso layout/theme del lettore.
-Possiamo quindi eliminare il view authors/eg_posts/show.
 
+## Verifichiamo gli instradamenti
 
 Verifichiamo i vari percorsi/instradamenti (paths) sul terminale
 
@@ -331,6 +335,6 @@ $ git push origin master
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/01_00-authors-posts-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/01_00-authors-eg_posts-it.md)
  | [top](#top) |
 [next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/03_00-didattic-readers-posts-it.md)
