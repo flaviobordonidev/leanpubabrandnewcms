@@ -12,7 +12,7 @@ Per approcciare questa divisione lavoriamo incapsulando una *"copia"* dei posts 
 Questo ci è utile perché:
 
 - Permette di isolare un layout tutto per lui senza doverlo fare dal controller posts_controller per ogni singola azione. 
-- Permette di proteggere tutto il namespace *authors* con devise senza doverlo fare sul controller posts_controller per ogni singola azione.
+- Permette di proteggere tutto il namespace *authors* con devise senza doverlo fare sul controller `eg_posts_controller` per ogni singola ***azione***.
 
 > Riassumendo:<br/>
 >Incapsuliamo una copia di *eg_posts* dentro il modulo "Authors" in modo da avere tutta la parte di gestione degli articoli protetta da login con devise e con un suo specifico layout tutto dentro uno stesso modulo.
