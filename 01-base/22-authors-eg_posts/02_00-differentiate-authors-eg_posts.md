@@ -84,7 +84,7 @@ Nello specifico lasciamo ai controllers solo le azioni che sono effettivamente u
 
 ## Cominciamo con *eg_posts_controller standard*.
 
-Lavoriamo prima sul controller dei "lettori" (*readers*).
+Lavoriamo prima sul controller "*standard*"; quello dedicato ai lettori (*readers*).
 
 ***codice 02 - .../app/controllers/eg_posts_controller.rb - line:1***
 
