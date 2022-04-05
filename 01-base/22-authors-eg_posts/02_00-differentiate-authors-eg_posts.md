@@ -140,11 +140,11 @@ class Authors::EgPostsController < ApplicationController
 
 Le modifiche su `authors/eg_posts_controller`:
 
-- Tolta l'azione `show` e la sua chiamata in `before_action`.
-- Nelle varie azioni aggiunto `/authors` al *path* nelle linee commentate.
-- Inoltre l'elenco di tutti gli articoli è filtrato a secondo di chi si è loggato:
-  - l'amministratore vede tutti gli articoli; sia pubblicati che non pubblicati e di tutti gli autori. 
-  - l'autore vede solo i suoi articoli; sia pubblicati che non.
+- Togliamo l'azione `show` e la sua chiamata in `before_action`.
+- Nelle varie azioni aggiungiamo `/authors` al *path* nelle linee commentate.
+- Inoltre l'elenco di tutti gli articoli è **filtrato a secondo di chi si è loggato**:
+  - l'**amministratore** vede **tutti gli articoli**; sia pubblicati che non pubblicati e di tutti gli autori. 
+  - l'**autore** vede **solo i suoi articoli**; sia pubblicati che non.
 
 
 
