@@ -84,34 +84,32 @@ Nello specifico lasciamo ai controllers solo le azioni che sono effettivamente u
 
 ## Cominciamo con *eg_posts_controller standard*.
 
-Lavoriamo prima sul controller "*standard*"; quello dedicato ai lettori (*readers*).
+Lavoriamo sul controller "*standard*"; quello dedicato ai lettori (*readers*).
 
 ***codice 02 - .../app/controllers/eg_posts_controller.rb - line:1***
 
 ```ruby
 class EgPostsController < ApplicationController
-  layout 'dashboard'
-
-  # GET /eg_posts
-  # GET /eg_posts.json
+  # GET /eg_posts or /eg_posts.json
   def index
-    #@pagy, @eg_posts = pagy(EgPost.all, items: 2)
-    @pagy, @eg_posts = pagy(EgPost.published.order(created_at: "DESC"), items: 2)
+    #@eg_posts = EgPost.all
+    #@eg_posts = EgPost.published.order(created_at: "DESC")
+    @pagy, @eg_posts = pagy(EgPost.all, items: 2)
+    #@pagy, @eg_posts = pagy(EgPost.published.order(created_at: "DESC"), items: 2)
     authorize @eg_posts
   end
 
-  # GET /eg_posts/1
-  # GET /eg_posts/1.json
+  # GET /eg_posts/1 or /eg_posts/1.json
   def show
-      @eg_post = EgPost.find(params[:id])
-      authorize @eg_post
+    @eg_post = EgPost.find(params[:id])
+    authorize @eg_post
   end
-
 end
 ```
 
 Le modifiche su `eg_posts_controller`:
 
+- Togliamo la necessità di autenticarsi con *devise*: `before_action :authenticate_user!` perché i lettori non hanno necessità di fare login.
 - Non ha più senso avere il codice separato nel metodo private `set_post` chiamato da `before_action` e quindi lo riportiamo dentro l'azione `show`.
 - Non modificando i records non ci serve il metodo private `post_params`.
 - Nell'elenco visualizziamo solo gli **articoli pubblicati** di tutti gli autori.
@@ -120,6 +118,7 @@ Le modifiche su `eg_posts_controller`:
 
 ## Adesso lavoriamo su *authors/eg_posts_controller*
 
+Lavoriamo sul controller authors/eg_posts_controller; quello dedicato agli autori (*authors*).
 
 ***codice 03 - .../app/controllers/authors/eg_posts_controller.rb - line:1***
 
@@ -127,14 +126,19 @@ Le modifiche su `eg_posts_controller`:
 class Authors::EgPostsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_eg_post, only: [:edit, :update, :destroy]
-  layout 'dashboard'
+  #layout 'dashboard'
 
-  # GET /authors/eg_posts
-  # GET /authors/eg_posts.json
+  # GET /authors/eg_posts or /authors/eg_posts.json
   def index
     @pagy, @eg_posts = pagy(EgPost.all.order(created_at: "DESC"), items: 2) if current_user.admin?
     @pagy, @eg_posts = pagy(current_user.eg_posts.order(created_at: "DESC"), items: 2) unless current_user.admin?
+    authorize @eg_posts
+.
+.
+.
 ```
+
+> `layout 'dashboard'` è per assegnare un layout differente 
 
 [tutto il codice](#01-27-01_05all)
 
@@ -142,7 +146,7 @@ Le modifiche su `authors/eg_posts_controller`:
 
 - Togliamo l'azione `show` e la sua chiamata in `before_action`.
 - Nelle varie azioni aggiungiamo `/authors` al *path* nelle linee commentate.
-- Inoltre l'elenco di tutti gli articoli è **filtrato a secondo di chi si è loggato**:
+- Nell'azione `index` l'elenco di tutti gli articoli è **filtrato a secondo di chi si è loggato**:
   - l'**amministratore** vede **tutti gli articoli**; sia pubblicati che non pubblicati e di tutti gli autori. 
   - l'**autore** vede **solo i suoi articoli**; sia pubblicati che non.
 
