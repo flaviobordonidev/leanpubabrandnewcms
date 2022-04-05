@@ -78,56 +78,61 @@ Duplichiamo la cartella *views/eg_posts* ed incapsuliamo la copia dentro la cart
 
 
 
-## Introduciamo il "namespace"
+## Introduciamo il *namespace*
 
-Usando il namespace nel file "routes" inseriamo un elemento padre nell'url.
+Usando il namespace nel file *routes* inseriamo un elemento padre nell'url.
 
-Ad esempio se io ho un 
+Ad esempio se abbiamo: 
 
-{caption: ".../config/routes.rb -- example", format: ruby, line-numbers: true, number-from: 8}
-```
+***codice n/a - .../config/routes.rb - line:n/a***
+
+```ruby
   get 'mockups/login'
 ```
 
-il mio url è "https://mydomain/mockups/login"
+l'url è `https://mydomain/mockups/login`
 
-mettendo il namespace "my_namespace" 
+Mettendo il namespace *my_namespace* abbiamo:
 
-{caption: ".../config/routes.rb -- example", format: ruby, line-numbers: true, number-from: 8}
-```
+***codice n/a - .../config/routes.rb - line:n/a***
+
+```ruby
   namespace :my_namespace do
     get 'mockups/login'
   end
 ```
 
-il mio url diventa "https://mydomain/my_namespace/mockups/login"
+e l'url diventa `https://mydomain/my_namespace/mockups/login`
 
 
-Chiaramente questo vale per tutti i tipi di instradamenti. Se ad esempio abbiamo
+Chiaramente questo vale per tutti i tipi di instradamenti. 
+Se ad esempio abbiamo:
 
-{caption: ".../config/routes.rb -- example", format: ruby, line-numbers: true, number-from: 8}
-```
-  resources :posts
+***codice n/a - .../config/routes.rb - line:n/a***
+
+```ruby
+  resources :eg_posts
 
   namespace :authors do
-    resources :posts
+    resources :eg_posts
   end
 ```
 
-raddoppiamo gli instradamenti e quindi abbiamo
+Raddoppiamo gli instradamenti e quindi abbiamo
 
-* 7 instradamenti restful di tipo "https://mydomain/posts/..."
-* 7 instradamenti restful di tipo "https://mydomain/authors/posts/..."
-
+- 7 instradamenti restful di tipo `https://mydomain/eg_posts/...`
+- 7 instradamenti restful di tipo `https://mydomain/authors/eg_posts/...`
 
 
 
 ## Incapsuliamo lato routes
 
-Instradiamo "authors/eg_posts". Impostiamo l'instradamento attraverso il namespace "authors".
+Instradiamo `authors/eg_posts`. 
+Impostiamo l'instradamento attraverso il namespace *authors*.
 
-{id: "01-27-01_01", caption: ".../config/routes.rb -- codice 01", format: ruby, line-numbers: true, number-from: 8}
-```
+***codice 01 - .../config/routes.rb - line:n/a***
+
+```ruby
   namespace :authors do
     resources :eg_posts do
       member do
@@ -144,11 +149,14 @@ Instradiamo "authors/eg_posts". Impostiamo l'instradamento attraverso il namespa
 
 [tutto il codice](#01-27-01_01all)
 
-Ho doppio resources ":eg_posts" solo che uno è dentro il namespace ":authors" questo vuol dire che sono attivi 16 instradamenti. Ossia tutti i sette instradamenti restful più l'ottavo instradamento ":delete_image_attachment" per ognuno dei due percorsi:
+> Abbiamo doppio resources `:eg_posts` solo che uno è dentro il namespace `:authors`.
+> Questo vuol dire che sono attivi 16 instradamenti. Ossia tutti i sette instradamenti restful più l'ottavo instradamento `:delete_image_attachment` per ognuno dei due percorsi:<br/>
+> - `https://mydomain/eg_posts/...`
+> - `https://mydomain/authors/eg_posts/...`
 
-* https://mydomain/eg_posts/...
-* https://mydomain/authors/eg_posts/...
 
+
+# Verifichiamo gli instradamenti
 
 Verifichiamo i vari percorsi/instradamenti (paths) sul terminale
 
