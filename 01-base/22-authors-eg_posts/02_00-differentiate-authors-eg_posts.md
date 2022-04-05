@@ -110,11 +110,11 @@ class EgPostsController < ApplicationController
 end
 ```
 
-> Non ha più senso avere il codice separato nel metodo private `set_post` chiamato da `before_action` e quindi lo riportiamo dentro l'azione `show`.
->
-> Inoltre non modificando i records non ci serve il metodo private `post_params`.
->
-> Inoltre nell'elenco visualizziamo solo gli articoli pubblicati di tutti gli autori.
+Le modifiche su `eg_posts_controller`:
+
+- Non ha più senso avere il codice separato nel metodo private `set_post` chiamato da `before_action` e quindi lo riportiamo dentro l'azione `show`.
+- Non modificando i records non ci serve il metodo private `post_params`.
+- Nell'elenco visualizziamo solo gli **articoli pubblicati** di tutti gli autori.
 
 
 
@@ -138,8 +138,10 @@ class Authors::EgPostsController < ApplicationController
 
 [tutto il codice](#01-27-01_05all)
 
-- Per `authors/eg_posts_controller` togliamo l'azione `show` e la sua chiamata in `before_action`.
-- Nelle varie azioni aggiungiamo `/authors` al ***path*** nelle linee commentate.
+Le modifiche su `authors/eg_posts_controller`:
+
+- Tolta l'azione `show` e la sua chiamata in `before_action`.
+- Nelle varie azioni aggiunto `/authors` al *path* nelle linee commentate.
 - Inoltre l'elenco di tutti gli articoli è filtrato a secondo di chi si è loggato:
   - l'amministratore vede tutti gli articoli; sia pubblicati che non pubblicati e di tutti gli autori. 
   - l'autore vede solo i suoi articoli; sia pubblicati che non.
