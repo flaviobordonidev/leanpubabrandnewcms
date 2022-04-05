@@ -15,7 +15,7 @@ Questo ci è utile perché:
 - Permette di proteggere tutto il namespace *authors* con devise senza doverlo fare sul controller `eg_posts_controller` per ogni singola ***azione***.
 
 > Riassumendo:<br/>
->Incapsuliamo una copia di `*eg_posts*` dentro il modulo `*Authors*` in modo da avere tutta la parte di gestione degli articoli protetta da login con devise e con un suo specifico layout tutto dentro uno stesso modulo.
+>Incapsuliamo una copia di *`eg_posts`* dentro il modulo *`Authors`* in modo da avere tutta la parte di gestione degli articoli protetta da login con devise e con un suo specifico layout tutto dentro uno stesso modulo.
 >
 > Si poteva anche gestire il tutto senza usare il modulo ma questa gestione mi piace di più perché è chiaro cosa appartiene alla gestione fatta sulla dashboard ed ho delle ridondanze che posso personalizzare (ad esempio un doppio controller per la stessa tabella posts).
 
