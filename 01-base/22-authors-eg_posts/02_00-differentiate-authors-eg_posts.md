@@ -207,7 +207,7 @@ In alternativa possiamo eliminare completamente il link di Edit.
 
 
 
-## Andiamo alle views/**authors**/eg_posts
+## Andiamo alle views/*authors*/eg_posts
 
 Eliminiamo quelle che non utiliziamo:
 
@@ -215,7 +215,7 @@ Eliminiamo quelle che non utiliziamo:
 
 
 
-## Aggiorniamo views/**authors**/posts/index
+## Aggiorniamo views/*authors*/posts/index
 
 aggiorniamo i vari links su ".../app/views/authors/eg_posts/index.html.erb"
 
