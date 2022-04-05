@@ -58,24 +58,24 @@ $ git checkout -b mad
 
 Per dividere i due elenchi di articoli, implementando anche livelli di accesso separati, disegniamo un ambiente per gli eg_posts che è accessibile a tutti ed un ambiente di gestione che è accessibile solo agli **autori** dei rispettivi articoli.
 
-Duplichiamo la cartella "eg_posts" e la mettiamo all'interno di una cartella principale che chiamiamo "authors":
+Duplichiamo la cartella `views/eg_posts` e mettiamo la copia all'interno di una cartella che chiamiamo `views/authors`.
 
-* la cartella "eg_posts" nella posizione originale sarà accessibile da tutti ma lasciamo la sola visualizzazione.
-* la cartella "eg_posts" duplicata dentro la cartella "authors" sarà accessibile solo dai rispettivi autori che potranno gestire i loro articoli (posts); crearne di nuovi, editarli ed eliminarli.
+- la cartella `views/eg_posts`, che è rimasta nella posizione originale, sarà accessibile da tutti ma gli lasciamo solo la visualizzazione.
+- la cartella duplicata `views/authors/eg_posts` sarà accessibile solo dagli autori che potranno gestire i loro articoli (*eg_posts*): visualizzarli, crearne di nuovi, editarli ed eliminarli.
 
-Questa separazione si poteva fare anche senza duplicare la cartella "eg_posts" creando una sovrastruttura ma in questo modo si ha più flessibilità per crescere e diversificare gli ambienti. Inoltre è più netto e facile definire l'ambiente protetto da "devise" a cui possono accedere solo gli utenti loggati (autori e amministratori). Inoltre quest'approccio è utile dal punto di vista didattico perché ci mostra alcuni aspetti del funzionamento di Rails e ci forza a capire un po' di più su come lavora il file "routes.rb".
+> Questa separazione si poteva fare anche senza duplicare la cartella `eg_posts` e creare una sovrastruttura `uthors/eg_posts`. Ma in questo modo si ha più flessibilità per far crescere e diversificare gli ambienti.<br/>
+> Inoltre è più netto e facile definire l'ambiente protetto da *devise* a cui possono accedere solo gli utenti loggati (autori e amministratori). <br/>
+> Inoltre quest'approccio è utile dal punto di vista didattico perché ci mostra alcuni aspetti del funzionamento di Rails e ci forza a capire un po' di più su come lavora il file *routes.rb*.
 
 
 
+## Duplichiamo *views/eg_posts* e lo incapsuliamo in *authors*
 
-## Incapsuliamo lato views
+Duplichiamo la cartella *views/eg_posts* ed incapsuliamo la copia dentro la cartella *views/authors*.
 
-Incapsuliamo le views di "eg_posts" dentro "authors"
-
-Su ".../app/views/" creiamo la cartella "authors" e dentro ci mettiamo una copia della cartella "eg_posts".
-
-* .../app/views/eg_posts/            copia / incolla ->  .../app/views/authors/eg_posts/ 
-
+- creiamo la nuova cartella *.../app/views/authors*
+- spostiamoci un duplicato di *.../app/views/eg_posts/*<br/>
+  .../app/views/eg_posts/            copia / incolla ->  .../app/views/authors/eg_posts/
 
 
 
