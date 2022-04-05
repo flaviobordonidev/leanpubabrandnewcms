@@ -94,8 +94,8 @@ class EgPostsController < ApplicationController
   def index
     #@eg_posts = EgPost.all
     #@eg_posts = EgPost.published.order(created_at: "DESC")
-    @pagy, @eg_posts = pagy(EgPost.all, items: 2)
-    #@pagy, @eg_posts = pagy(EgPost.published.order(created_at: "DESC"), items: 2)
+    #@pagy, @eg_posts = pagy(EgPost.all, items: 2)
+    @pagy, @eg_posts = pagy(EgPost.published.order(created_at: "DESC"), items: 2)
     authorize @eg_posts
   end
 
@@ -140,7 +140,7 @@ class Authors::EgPostsController < ApplicationController
 
 > `layout 'dashboard'` è per assegnare un layout differente 
 
-[tutto il codice](#01-27-01_05all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/02_03-controllers-authors-eg_posts_controller.rb)
 
 Le modifiche su `authors/eg_posts_controller`:
 
@@ -152,25 +152,33 @@ Le modifiche su `authors/eg_posts_controller`:
 
 
 
-## Diversifichiamo le views
+## Differenziamo le views
 
-eliminiamo:
+Allineiamo anche i due gruppi di views: 
 
-* .../app/views/eg_posts/_form.html.erb
-* .../app/views/eg_posts/edit.html.erb
-* .../app/views/eg_posts/new.html.erb
-* .../app/views/authors/eg_posts/show.html.erb
+- `views/eg_posts/`: le pagine *standard* (quelle per i lettori)
+- `views/authors/eg_posts/`: le pagine incapsulate in *authors* (quelle per gli autori)
 
 
 
+## Cominciamo con le *views/eg_posts standard*
 
-## Aggiorniamo views/eg_posts/index
+Eliminiamo quelle che non utiliziamo:
 
-togliamo i links_to non più usati.
-Cancelliamo le seguenti linee di codice:
+- .../app/views/eg_posts/_form.html.erb
+- .../app/views/eg_posts/edit.html.erb
+- .../app/views/eg_posts/new.html.erb
+- .../app/views/authors/eg_posts/show.html.erb
 
-{id: "01-27-01_06", caption: ".../app/views/posts/index.html.erb -- codice 06", format: HTML+Mako, line-numbers: true, number-from: 1}
-```
+
+
+## Aggiorniamo *views/eg_posts/index*
+
+Togliamo i links_to non più usati.
+
+***codice 04 - .../app/views/eg_posts/index.html.erb - line:1***
+
+```html+erb
 <td><%= link_to 'Edit', edit_authors_post_path(post) %></td>
 <td><%= link_to 'Destroy', authors_post_path(post), method: :delete, data: { confirm: 'Are you sure?' } %></td>
 ```
@@ -181,7 +189,6 @@ Cancelliamo le seguenti linee di codice:
 ```
 
 [tutto il codice](#01-27-01_06all)
-
 
 
 
@@ -200,8 +207,15 @@ In alternativa possiamo eliminare completamente il link di Edit.
 
 
 
+## Andiamo alle views/**authors**/eg_posts
 
-## Aggiorniamo views/authors/posts/index
+Eliminiamo quelle che non utiliziamo:
+
+- .../app/views/authors/eg_posts/show.html.erb
+
+
+
+## Aggiorniamo views/**authors**/posts/index
 
 aggiorniamo i vari links su ".../app/views/authors/eg_posts/index.html.erb"
 
