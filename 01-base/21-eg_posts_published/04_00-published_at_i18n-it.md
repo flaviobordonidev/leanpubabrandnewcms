@@ -41,7 +41,7 @@ Aggiorniamo il `## getter method` nella sezione `# == Instance Methods` del mode
 
 > Per mettere gli *helpers* nei model devo puntare ad `ActionController::Base.helpers.` perché non sono direttamente disponibili nel model.
 
-Continuare con l'internazionalizzazione anche per il *"non pubblicato"*.
+Continuiamo con l'internazionalizzazione anche per il *"non pubblicato"*.
 
 ***codice 01 - .../app/models/eg_post.rb - line:31***
 
@@ -146,4 +146,4 @@ $ git push origin main
 
 [<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-eg_posts_published/03_00-virtual_attribute.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-eg_posts_published/04_00-published_at_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-eg_posts_published/05_00-publish-index-buttons-it.md)
