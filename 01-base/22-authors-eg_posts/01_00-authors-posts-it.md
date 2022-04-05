@@ -74,8 +74,7 @@ Duplichiamo la cartella `views/eg_posts` e mettiamo la copia all'interno di una 
 Duplichiamo la cartella *views/eg_posts* ed incapsuliamo la copia dentro la cartella *views/authors*.
 
 - creiamo la nuova cartella *.../app/views/authors*
-- spostiamoci un duplicato di *.../app/views/eg_posts/*<br/>
-  .../app/views/eg_posts/            copia / incolla ->  .../app/views/authors/eg_posts/
+- spostiamoci una copia di *.../app/views/eg_posts/* --> *.../app/views/authors/eg_posts/*
 
 
 
