@@ -25,7 +25,7 @@ Aggiungiamo i18n nella variabile virtuale `published_at_formatted` nel model *Eg
 Ad esempio nel nostro caso ci permette di visualizzare una stringa invece di un *"nil"* nel caso in cui l'articolo non sia pubblicato.<br/>
 Aggiorniamo il `## getter method` nella sezione `# == Instance Methods` del model.
 
-***codice 01 - .../app/models/eg_post.rb - line:31***
+***codice n/a - .../app/models/eg_post.rb - line:31***
 
 ```ruby
   ## getter method
@@ -49,37 +49,55 @@ Continuare con l'internazionalizzazione anche per il *"non pubblicato"*.
   ## getter method
   def published_at_formatted 
     if published_at.present?
-      ActionController::Base.helpers.l published_at, format: :long
+      ActionController::Base.helpers.l published_at, format: :my_long
     else
       ActionController::Base.helpers.t 'eg_posts.not_published'
     end
   end
 ```
 
-Aggiorniamo i *locales*.
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-eg_posts_published/04_01-models-eg_post.rb)
 
-***codice 02 - .../config/locales/it.yml - line:13***
+
+Aggiorniamo `it: -> eg_posts:` nei *locales*.
+
+***codice 02 - .../config/locales/it.yml - line:291***
 
 ```yaml
-  eg_posts:
     not_published: "non è stato ancora pubblicato"
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-eg_posts_published/04_02-config-locales-it.yml)
 
-***codice 03 - .../config/locales/en.yml - line:13***
+
+Aggiorniamo `en: -> eg_posts:` nei *locales*.
+
+***codice 03 - .../config/locales/en.yml - line:291***
 
 ```yaml
-  eg_posts:
     not_published: "It is not published yet"
 ```
 
-> Facciamo una riflessione e valutiamo se, in questo caso, non è forse meglio trovare una visualizzazione che non ha bisogno della *variabile virtuale*.
->
-> Magari giocandocela meglio con la parte di traduzione e l'helper *l*.
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-eg_posts_published/04_03-config-locales-en.yml)
+
+> Facciamo una riflessione e valutiamo se, in questo caso, non è forse meglio trovare una visualizzazione che non ha bisogno della *variabile virtuale*. <br/>
+> Magari giocandocela meglio con la parte di traduzione e l'helper *l*. <br/>
+> Comunque al momento la lasciamo così.
 
 
 
 ## Verifichiamo preview
+
+```bash
+$ sudo service postgresql start
+$ rails s
+```
+
+apriamolo il browser sull'URL:
+
+- http://192.168.64.3:3000/eg_posts
+
+Vediamo la data di pubblicazione passata con la *variabile virtuale* tradotta in più lingue.
 
 
 
@@ -87,7 +105,7 @@ Aggiorniamo i *locales*.
 
 ```bash
 $ git add -A
-$ git commit -m "I18n per published_at"
+$ git commit -m "I18n per published_at_formatted"
 ```
 
 
@@ -97,6 +115,8 @@ $ git commit -m "I18n per published_at"
 ```bash
 $ git push heroku ps:main
 ```
+
+> Non serve `heroku run rails db:migrate` perché non abbiamo cambiato la struttura del database.
 
 
 
@@ -112,7 +132,6 @@ $ git branch -d ps
 
 
 
-
 ## Facciamo un backup su Github
 
 Dal nostro branch main di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
@@ -125,6 +144,6 @@ $ git push origin main
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-eg_posts_published/03_00-virtual_attribute.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-eg_posts_published/04_00-published_at_i18n-it.md)

@@ -22,6 +22,10 @@ Creiamo un `## getter method` nella sezione `# == Instance Methods` del model.
   end
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-eg_posts_published/03_01-models-eg_post.rb)
+
+> ATTENZIONE: Come possiamo vedere nei capitoli precedenti abbiamo già gestito in modo differente la formattazione della data. Un modo che ci permette di includere anche l'internazionalizzazione con lingue differenti. Nel prossimo paragrafo implementeremo questo metodo I18n anche per la data di pubblicazione.
+
 
 
 ## Aggiorniamo index e show
@@ -34,7 +38,8 @@ Aggiorniamo il partial della view.
     <%= eg_post.published_at_formatted %>
 ```
 
-> ATTENZIONE: Come possiamo vedere nei capitoli precedenti abbiamo già gestito in modo differente la formattazione della data. Un modo che ci permette di includere anche l'internazionalizzazione con lingue differenti. Nel prossimo paragrafo implementeremo questo metodo I18n anche per la data di pubblicazione.
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-eg_posts_published/03_02-views-eg_posts-_eg_post.html.erb)
+
 
 
 

@@ -1,20 +1,17 @@
-{id: 01-base-26-eg_posts_published-04-publish-index-buttons}
-# Cap 26.4 -- Pulsanti per pubblicare e togliere la pubblicazione da index
-
-Se seguiamo il tutorial saltiamo questo capitolo.
+# <a name="top"></a> Cap 21.5 - Pulsanti per pubblicare e togliere la pubblicazione da index
 
 Invece di avere un checkbox nel form creiamo due pulsanti nella pagina authors/posts/index per pubblicare/depubblicare l'articolo senza passare per edit.
 
+
+> Possiamo **saltare** questo capitolo.
 
 
 
 ## Apriamo il branch "Published Buttons"
 
-{title="terminal", lang=bash, line-numbers=off}
-```
+```bash
 $ git checkout -b pb
 ```
-
 
 
 
@@ -52,7 +49,6 @@ I> Poiché passiamo i valori nel database direttamente con "@post.update(publish
 
 
 
-
 ## Creiamo i pulsanti publish e unpublish
 
 nella pagina authors/posts/index creiamo due nuovi links per i pulsanti publish e unpublish
@@ -67,7 +63,6 @@ nella pagina authors/posts/index creiamo due nuovi links per i pulsanti publish 
 ```
 
 Il pulsante che pubblica l'articolo lo visualizziamo verde (btn-success), invece quello che "torna in bozza" lo visualizziamo giallo (btn-warning).
-
 
 
 
@@ -392,8 +387,9 @@ $ git push origin main
 
 
 
+
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-eg_posts_published/04_00-published_at_i18n-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/05_00-publish-index-buttons-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/01_00-authors-posts-it.md)
