@@ -168,11 +168,13 @@ Aggiorniamo l'azione `create` nel controller.
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-eg_posts_published/02_04-controllers-eg_posts_controller.rb)
 
 
+> Potevamo metterlo nel metodo privato `def set_eg_post`. In questo modo era più DRY.
+
+
 
 ## Verifichiamo preview
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails s
 ```

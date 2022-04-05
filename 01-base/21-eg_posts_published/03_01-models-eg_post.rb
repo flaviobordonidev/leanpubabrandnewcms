@@ -31,11 +31,9 @@ class EgPost < ApplicationRecord
   ## getter method
   def published_at_formatted 
     if published_at.present?
-      published_at.strftime('%-d %-b %Y')
-      #"Pubblicato il #{published_at.strftime('%-d %-b %Y')}"
+      "Articolo pubblicato il #{published_at.strftime('%-d %-b %Y')}"
     else
       "non pubblicato"
     end
   end
-  
 end

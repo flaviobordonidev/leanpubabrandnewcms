@@ -1,0 +1,72 @@
+<div id="<%= dom_id eg_post %>">
+  <p>
+    <strong>Meta title:</strong>
+    <%= eg_post.meta_title %>
+  </p>
+
+  <p>
+    <strong>Meta description:</strong>
+    <%= eg_post.meta_description %>
+  </p>
+
+  <p>
+    <strong>Headline:</strong>
+    <%= eg_post.headline %>
+  </p>
+
+  <p>
+    <strong>Incipit:</strong>
+    <%= eg_post.incipit %>
+  </p>
+
+  <p>
+    <strong>Price:</strong>
+    <%= eg_post.price %>
+    <br> numero formattato: <%= number_to_currency(eg_post.price) %>
+    <br> numero formattato con 3 decimali: <%= number_to_currency(eg_post.price, precision: 3) %>
+    <br> numero formattato con 4 decimali: <%= number_to_currency(eg_post.price, precision: 4) %>
+    <br> numero formattato con 5 decimali: <%= number_to_currency(eg_post.price, precision: 5) %>
+    (nel database abbiamo dichiarato 4 decimali quindi la quinta cifra decimale sarà sempre zero)
+    <br> numero formattato con frase: <%= t "number.currency.format.price_for_reports", price: number_to_currency(eg_post.price, precision: 2) %>
+    <br> numero formattato descrittivo con frase: <%= t "number.currency.format.price_for_reports", price: number_to_human(eg_post.price) %>
+  </p>
+
+  <% if eg_post.header_image.attached? %>
+    <p><%= image_tag eg_post.header_image %></p>
+    <p><%= image_tag eg_post.header_image.variant(resize_to_limit: [100, 100]) %></p>
+  <% else %>
+    <p>Nessuna immagine presente</p>
+  <% end %>
+
+  <p>
+    <strong>Content:</strong>
+    <%= eg_post.content %>
+  </p>
+
+  <p>
+    <strong>published:</strong>
+    <%= eg_post.published %>
+  </p>
+
+  <p>
+    <strong>published_at:</strong>
+    <%= l eg_post.published_at, format: :my_long if eg_post.published_at.present? %>
+    <%= eg_post.published_at_formatted %>
+  </p>
+
+  <p>
+    <strong>User:</strong>
+    <%= eg_post.user_id %>
+  </p>
+
+  <p>
+    <strong>created_at:</strong>
+    <%= l eg_post.created_at, format: :my_long %>
+  </p>
+
+  <p>
+    <strong>updated_at:</strong>
+    <%= l eg_post.created_at, format: :my_long %>
+  </p>
+
+</div>

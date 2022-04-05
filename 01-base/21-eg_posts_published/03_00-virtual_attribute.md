@@ -6,45 +6,35 @@ Usiamo un attributo virtuale nel model per gestire il campo data formattato.
 
 ## Formattiamo il campo data
 
-creiamo l'attributo virtuale "published_at_formatted".
-Nel model nella sezione " # == Instance Methods ", sottosezione " ## getter method "
+Creiamo l'attributo virtuale `published_at_formatted`.<br/>
+Creiamo un `## getter method` nella sezione `# == Instance Methods` del model.
 
-{id: "01-26-02_05", caption: ".../app/models/eg_post.rb -- codice 05", format: ruby, line-numbers: true, number-from: 13}
-```
+***codice 01 - .../app/models/eg_post.rb - line:31***
+
+```ruby
   ## getter method
   def published_at_formatted 
     if published_at.present?
-      published_at.strftime('%-d %-b %Y')
-      #"Pubblicato il #{published_at.strftime('%-d %-b %Y')}"
+      "Pubblicato il #{published_at.strftime('%-d %-b %Y')}"
     else
       "non pubblicato"
     end
   end
 ```
 
-Aggiorniamo index
-
-{caption: ".../app/views/eg_posts/index.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 38}
-```
-        <td><%= eg_post.published_at_formatted %></td>
-```
 
 
+## Aggiorniamo index e show
 
+Aggiorniamo il partial della view.
 
-## Aggiorniamo show
+***codice 02 - .../app/views/eg_posts/_eg_post.html.erb - line:54***
 
-{id: "01-26-02_06", caption: ".../app/views/eg_posts/show.html.erb -- codice 06", format: HTML+Mako, line-numbers: true, number-from: 22}
-```
-<p>
-  <strong>Pubblicato:</strong>
-  <%= @eg_post.published_at_formatted %>
-</p>
+```html+erb
+    <%= eg_post.published_at_formatted %>
 ```
 
-
-ATTENZIONE: Come possiamo vedere abbiamo già gestito un modo differente di formattazione della data che ci permette di includere anche l'internazionalizzazione con lingue differenti. Nel prossimo paragrafo implementeremo questo metodo I18n anche per la data di pubblicazione.
-
+> ATTENZIONE: Come possiamo vedere nei capitoli precedenti abbiamo già gestito in modo differente la formattazione della data. Un modo che ci permette di includere anche l'internazionalizzazione con lingue differenti. Nel prossimo paragrafo implementeremo questo metodo I18n anche per la data di pubblicazione.
 
 
 
@@ -57,9 +47,9 @@ $ rails s
 
 apriamolo il browser sull'URL:
 
-- https://mycloud9path.amazonaws.com/users
+- http://192.168.64.3:3000/eg_posts
 
-Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
+Vediamo la data di pubblicazione passata con una *variabile virtuale*.
 
 
 
@@ -67,7 +57,7 @@ Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messag
 
 ```bash
 $ git add -A
-$ git commit -m "add published to views/eg_posts with automatic update of published_at"
+$ git commit -m "Add virtual attribute published_at_formatted"
 ```
 
 
@@ -82,29 +72,18 @@ $ git push heroku ps:main
 
 ## Chiudiamo il branch
 
-se abbiamo finito le modifiche e va tutto bene:
-
-```bash
-$ git checkout main
-$ git merge ps
-$ git branch -d ps
-```
-
+Lo chiudiamo nei prossimi capitoli
 
 
 
 ## Facciamo un backup su Github
 
-Dal nostro branch main di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
-
-```bash
-$ git push origin main
-```
+Lo facciamo nei prossimi capitoli
 
 
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-eg_posts_published/02_00-publish-form-submit-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-eg_posts_published/04_00-published_at_i18n-it.md)
