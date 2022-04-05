@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   resources :eg_posts
   resources :eg_users
 
+  #get 'eg_posts', to:'eg_posts#index', as: :user_root #creates user_root_path (default path after sign_in)
+
   get 'sections' => 'mockups#page_a' # Creiamo un link secions_path che è reinstradato su mockups/page_a
   get 'signatures' => 'mockups#page_b'
   get 'mockups/page_a'

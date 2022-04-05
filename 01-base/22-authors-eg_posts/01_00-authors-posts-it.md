@@ -90,9 +90,9 @@ Ad esempio se abbiamo:
   get 'mockups/login'
 ```
 
-l'url è `https://mydomain/mockups/login`
+l'url è `https://mydomain/mockups/login`.
 
-Mettendo il namespace *my_namespace* abbiamo:
+Mettendo il namespace *my_namespace*:
 
 ***codice n/a - .../config/routes.rb - line:n/a***
 
@@ -102,7 +102,7 @@ Mettendo il namespace *my_namespace* abbiamo:
   end
 ```
 
-e l'url diventa `https://mydomain/my_namespace/mockups/login`
+l'url diventa `https://mydomain/my_namespace/mockups/login`.
 
 
 Chiaramente questo vale per tutti i tipi di instradamenti. 
@@ -127,10 +127,10 @@ Raddoppiamo gli instradamenti e quindi abbiamo
 
 ## Incapsuliamo lato routes
 
-Instradiamo `authors/eg_posts`. 
+Aggiungiamo instradamento `authors/eg_posts`. 
 Impostiamo l'instradamento attraverso il namespace *authors*.
 
-***codice 01 - .../config/routes.rb - line:n/a***
+***codice 01 - .../config/routes.rb - line:3***
 
 ```ruby
   namespace :authors do
@@ -147,7 +147,7 @@ Impostiamo l'instradamento attraverso il namespace *authors*.
   end
 ```
 
-[tutto il codice](#01-27-01_01all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/01_01-config-routes.rb)
 
 > Abbiamo doppio resources `:eg_posts` solo che uno è dentro il namespace `:authors`.
 > Questo vuol dire che sono attivi 16 instradamenti. Ossia tutti i sette instradamenti restful più l'ottavo instradamento `:delete_image_attachment` per ognuno dei due percorsi:<br/>
@@ -158,14 +158,16 @@ Impostiamo l'instradamento attraverso il namespace *authors*.
 
 # Verifichiamo gli instradamenti
 
-Verifichiamo i vari percorsi/instradamenti (paths) sul terminale
+Verifichiamo i vari percorsi/instradamenti (paths) da terminale.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails routes
 $ rails routes | egrep "eg_posts"
+```
 
+Esempio:
 
+```bash
 user_fb:~/environment/bl6_0 (mad) $ rails routes | egrep "eg_posts"
 delete_image_attachment_authors_eg_post DELETE /authors/eg_posts/:id/delete_image_attachment(.:format)                                  authors/eg_posts#delete_image_attachment
                        authors_eg_posts GET    /authors/eg_posts(.:format)                                                              authors/eg_posts#index
@@ -188,7 +190,7 @@ delete_image_attachment_authors_eg_post DELETE /authors/eg_posts/:id/delete_imag
 ```
 
 
-Nota: si contano 18 instradamenti, invece di 16, ma in realtà "update" è duplicato perché è riportato sia come "PUT" che come "PATCH".
+> Nota: si contano 18 instradamenti, invece di 16, ma in realtà *update* è duplicato perché è riportato sia come *PUT* che come *PATCH*.
 
 
 
