@@ -35,22 +35,24 @@ Restringiamo gli instradamenti alle sole views di nostro interesse:
 
 Abbiamo finalmente distinto le due liste di articoli.
 
-- Lato lettore abbiamo lasciato solo `:index` e `:show`
+- Lato lettore (*reader*), ossia *utente non loggato*, abbiamo lasciato solo `:index` e `:show`.
 - Lato *authors* c'è tutta la parte di modifica ed anche `:index`. Manca solo `:show`.
-- Abbiamo due `:index` perché quello dell'autore (`authors`) ha una struttura ed un layout diverso da quello del lettore (*reader*), ossia dell'*utente non loggato*.
+- Abbiamo due `:index` perché quello dell'autore (`authors`) ha una struttura ed un layout diverso da quello del lettore.
 - Per la visualizzazioe del singolo articolo (`:show`) usiamo sempre la pagina del lettore così l'autore vedrà il suo articolo con lo stesso layout/theme del lettore.
 
 
 
 ## Verifichiamo gli instradamenti
 
-Verifichiamo i vari percorsi/instradamenti (paths) sul terminale
+Verifichiamo i vari percorsi/instradamenti (paths) da terminale
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails routes | egrep "eg_posts"
+```
 
+Esempio:
 
+```bash
 user_fb:~/environment/bl6_0 (mad) $ rails routes | egrep "eg_posts"
 delete_image_attachment_authors_eg_post DELETE /authors/eg_posts/:id/delete_image_attachment(.:format)                                  authors/eg_posts#delete_image_attachment
                        authors_eg_posts GET    /authors/eg_posts(.:format)                                                              authors/eg_posts#index
