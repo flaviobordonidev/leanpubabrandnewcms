@@ -279,14 +279,23 @@ Aggiorniamo il *path* del link *show* e *new*.
 
 Avendo lasciato la stessa pagina show sia per i lettori che per gli autori dobbiamo inserire del codice per il link che torna all'elenco principale `index` in modo da differenziare la pagina "standard" per i lettori e quella "authors" per gli autori.
 
+> Inoltre attiviamo il link to edit nel caso in cui siamo loggati (author o admin).
+>
+> Inoltre attiviamo il link to destroy nel caso in cui siamo loggati (author o admin).
+
 ***codice 07 - .../app/views/eg_posts/show.html.erb - line:12***
 
 ```html+erb
+  <%= link_to "Edit this eg post", edit_authors_eg_post_path(eg_post) if current_user.present? == true %>
   <%= link_to "Back to eg posts", eg_posts_path if current_user.present? == false %>
   <%= link_to "Back to authors eg posts", authors_eg_posts_path if current_user.present? == true %>
+  <%= button_to "Destroy this eg post", @eg_post, method: :delete if current_user.present? == true %>
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/02_07-views-eg_posts-show.html.erb)
+
+
+> I link `Edit`, `Back to authors eg posts` e `Destroy` usano le azioni di `authors/eg_posts_controller`.
 
 
 

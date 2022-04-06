@@ -1,8 +1,15 @@
 # <a name="top"></a> Cap 22.3 - Differenziamo le due strutture - Parte 2
 
-Continuiamo nel differenziare le due strutture *eg_posts* e *authors/eg_posts*.
-
+Continuiamo nel differenziare le due strutture *eg_posts* e *authors/eg_posts*.<br/>
 Siamo alla parte di modifica degli articoli, parte dedicata ai soli autori e amministratori.
+
+```html+erb
+<%= link_to "Edit this eg post", edit_authors_eg_post_path(eg_post) %>
+<%= link_to "Back to authors eg posts", authors_eg_posts_path %>
+<%= link_to "New eg post", new_authors_eg_post_path %>
+<%= button_to "Destroy this eg post", @eg_post, method: :delete %>
+```
+
 
 
 ## Apriamo il branch
@@ -13,22 +20,19 @@ Continuiamo con il branch precedente.
 
 ## Aggiorniamo views/*authors*/eg_posts/edit
 
+Cambiamo il solo link per tornare indietro ad `authors/index`.
 
+***codice 01 - .../app/views/eg_posts/index.html.erb - line:14***
 
 ```html+erb
-<td><%= link_to 'Show', post %></td>
-<td><%= link_to 'Edit', edit_authors_post_path(post) %></td>
-<td><%= link_to 'Destroy', authors_post_path(post), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  <%= link_to "Show this eg post", @eg_post %> |
+  <%= link_to "Back to eg posts", eg_posts_path %>
 
-
-<%= link_to "New eg post", new_authors_eg_post_path %>
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/03_01-views-authors-eg_posts-edit.html.erb)
 
-
-
-
-
+> il link a `show` lo lasciamo così com'è.
 
 
 
@@ -44,10 +48,14 @@ L'aggiorniamo nei prossimi capitoli.
 
 L'aggiorniamo nei prossimi capitoli.
 
+```html+erb
+<%= link_to "Edit this eg post", edit_authors_eg_post_path(eg_post) %>
+<%= link_to "Back to authors eg posts", authors_eg_posts_path %>
+<%= link_to "New eg post", new_authors_eg_post_path %>
+<%= button_to "Destroy this eg post", @eg_post, method: :delete %>
+```
 
 
-<td><%= link_to 'Edit', edit_authors_post_path(post) %></td>
-<td><%= link_to 'Destroy', authors_post_path(post), method: :delete, data: { confirm: 'Are you sure?' } %></td>
 
 
 
