@@ -165,10 +165,23 @@ Allineiamo anche i due gruppi di views:
 
 Eliminiamo quelle che non utiliziamo:
 
-- .../app/views/eg_posts/_form.html.erb
-- .../app/views/eg_posts/edit.html.erb
-- .../app/views/eg_posts/new.html.erb
-- .../app/views/authors/eg_posts/show.html.erb
+- .../app/views/eg_posts/`_form`.html.erb
+- .../app/views/eg_posts/`edit`.html.erb
+- .../app/views/eg_posts/`new`.html.erb
+
+Ed aggiorniamo quelle che restano `_eg_post`, `index`, `show`.
+
+
+
+## Aggiorniamo views/eg_posts/_eg_post
+
+Togliamo i links_to non più usati.
+
+***codice 04 - .../app/views/eg_posts/index.html.erb - line:1***
+
+```html+erb
+```
+
 
 
 
