@@ -1,8 +1,18 @@
-# <a name="top"></a> Cap 22.2 - Differenziamo le due strutture - Parte 2
+# <a name="top"></a> Cap 22.3 - Differenziamo le due strutture - Parte 2
 
 Continuiamo nel differenziare le due strutture *eg_posts* e *authors/eg_posts*.
 
 Siamo alla parte di modifica degli articoli, parte dedicata ai soli autori e amministratori.
+
+
+## Apriamo il branch
+
+Continuiamo con il branch precedente.
+
+
+
+## Aggiorniamo views/*authors*/eg_posts/edit
+
 
 
 ```html+erb
@@ -16,38 +26,11 @@ Siamo alla parte di modifica degli articoli, parte dedicata ai soli autori e amm
 
 
 
-## Aggiorniamo views/*authors*/eg_posts/index
-
-Aggiorniamo il *path* del link *show* e *new*.
-
-***codice 06 - .../app/views/authors/eg_posts/index.html.erb - line:1***
-
-```html+erb
-      <%= link_to "Show this eg post", authors_eg_post_path(eg_post) %>
-```
 
 
 
-aggiorniamo i vari links su ".../app/views/authors/eg_posts/index.html.erb"
-
-{id: "01-27-01_08", caption: ".../app/views/eg_posts/index.html.erb -- codice 08", format: HTML+Mako, line-numbers: true, number-from: 24}
-```
-        <td><%= link_to 'Edit', edit_authors_post_path(post) %></td>
-        <td><%= link_to 'Destroy', authors_post_path(post), method: :delete, data: { confirm: 'Are you sure?' } %></td>
-```
-
-{caption: ".../app/views/eg_posts/index.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 34}
-```
-<%= link_to 'New Post', new_authors_post_path %>
-```
-
-[tutto il codice](#01-27-01_08all)
 
 
-
-## Aggiorniamo views/*authors*/eg_posts/edit
-
-L'aggiorniamo nei prossimi capitoli.
 
 
 
