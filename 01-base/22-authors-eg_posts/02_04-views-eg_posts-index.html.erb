@@ -1,46 +1,20 @@
 <%# == Meta_data ============================================================ %>
 
-<% provide(:page_title, "All posts") %>
-<% provide(:menu_blog_nav_link, "active") %>
+<% provide(:html_head_title, "#{t 'eg_posts.index.html_head_title'}") %>
 
 <%# == Meta_data - end ====================================================== %>
 
-<p id="notice"><%= notice %></p>
+<p style="color: green"><%= notice %></p>
 
-<h1>Posts</h1>
+<h1>READERS Eg posts</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Incipit</th>
-      <th>Content</th>
-      <th>Type</th>
-      <th>Video youtube</th>
-      <th>Video vimeo</th>
-      <th>Seocontent</th>
-      <th>Date chosen</th>
-      <th>User</th>
-      <th>Autore</th>
-      <th colspan="1"></th>
-    </tr>
-  </thead>
+<div id="eg_posts">
+  <% @eg_posts.each do |eg_post| %>
+    <%= render eg_post %>
+    <p>
+      <%= link_to "Show this eg post", eg_post %>
+    </p>
+  <% end %>
+</div>
 
-  <tbody>
-    <% @posts.each do |post| %>
-      <tr>
-        <td><%= post.title %></td>
-        <td><%= post.incipit %></td>
-        <td><%= post.content %></td>
-        <td><%= post.type %></td>
-        <td><%= post.video_youtube %></td>
-        <td><%= post.video_vimeo %></td>
-        <td><%= post.seocontent %></td>
-        <td><%= post.date_chosen %></td>
-        <td><%= post.user %></td>
-        <td><%= post.user.email %></td>
-        <td><%= link_to 'Show', post %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<%= sanitize pagy_nav(@pagy) %>

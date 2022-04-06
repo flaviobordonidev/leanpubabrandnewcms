@@ -2,6 +2,14 @@
 
 Differenziamo le due strutture *eg_posts* e *authors/eg_posts*.
 
+In questa prima parte iniziamo la differenziazione e completiamo la parte di visualizzazione degli articoli `index` e `show` sia nella struttura "standard" (per i lettori) che in quella "authors" (per gli autrori).
+
+
+
+## Risorse esterne
+
+- [Use dom_id to Generate Ids in HTML](https://williamkennedy.ninja/rails/2021/02/23/use-dom-id-to-clean-up-views/)
+
 
 
 ## Apriamo il branch
@@ -107,6 +115,8 @@ class EgPostsController < ApplicationController
 end
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/02_02-controllers-eg_posts_controller.rb)
+
 Le modifiche su `eg_posts_controller`:
 
 - Togliamo la necessità di autenticarsi con *devise*: `before_action :authenticate_user!` perché i lettori non hanno necessità di fare login.
@@ -175,48 +185,45 @@ Ed aggiorniamo quelle che restano `_eg_post`, `index`, `show`.
 
 ## Aggiorniamo views/eg_posts/_eg_post
 
-Togliamo i links_to non più usati.
-
-***codice 04 - .../app/views/eg_posts/index.html.erb - line:1***
-
-```html+erb
-```
-
+Non ci sono modifiche da fare.
 
 
 
 ## Aggiorniamo views/eg_posts/index
 
-Togliamo i links_to non più usati.
+Togliamo il link *new*.
 
-***codice 04 - .../app/views/eg_posts/index.html.erb - line:1***
+***codice 04 - .../app/views/eg_posts/index.html.erb - line:21***
 
 ```html+erb
-<td><%= link_to 'Edit', edit_authors_post_path(post) %></td>
-<td><%= link_to 'Destroy', authors_post_path(post), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+<br/>
+<br/>
+<%#= link_to "New eg post", new_eg_post_path %>
 ```
 
-{caption: ".../app/views/posts/index.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 1}
-```
-<%= link_to 'New Post', new_post_path %>
-```
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/02_04-views-eg_posts-index.html.erb)
 
-[tutto il codice](#01-27-01_06all)
+> A scopo didattico nel codice visualizzato ho solo commentato la riga ma se andiamo in *tutto il codice* vediamo che la riga l'abbiamo completamente rimossa.
 
 
 
 ## Aggiorniamo views/eg_posts/show
 
-Volendo editare ci riporta alla pagina dell'autore, sempre che ne abbia l'autorizzazione.
+Togliamo il link *edit* e *destroy*.
 
-{id: "01-27-01_07", caption: ".../app/views/eg_posts/show.html.erb -- codice 07", format: HTML+Mako, line-numbers: true, number-from: 1}
+***codice 05 - .../app/views/eg_posts/show.html.erb - line:11***
+
+```html+erb
+<div>
+  <%#= link_to "Edit this eg post", edit_eg_post_path(@eg_post) %> |
+  <%= link_to "Back to eg posts", eg_posts_path %>
+
+  <%#= button_to "Destroy this eg post", @eg_post, method: :delete %>
 ```
-<%= link_to 'Edit', edit_authors_post_path(@post), class: 'btn btn-sm btn-warning' %>
-```
 
-[tutto il codice](#01-27-01_07all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/02_05-views-eg_posts-show.html.erb)
 
-In alternativa possiamo eliminare completamente il link di Edit.
+> A scopo didattico nel codice visualizzato abbiamo solo commentato le righe ma se andiamo in *tutto il codice* vediamo che le righe le abbiamo completamente rimosse.
 
 
 
@@ -224,106 +231,81 @@ In alternativa possiamo eliminare completamente il link di Edit.
 
 Eliminiamo quelle che non utiliziamo:
 
-- .../app/views/authors/eg_posts/show.html.erb
+- .../app/views/authors/eg_posts/`show`.html.erb
+
+Ed aggiorniamo quelle che restano `_eg_post`, `index`, `edit`, `new`, `form`.
+
+
+
+## Aggiorniamo views/*authors*/eg_posts/_eg_post
+
+Non ci sono modifiche da fare.
+
+> Il `<div id="<%= dom_id eg_post %>">` è meglio chiamarlo `<div id="<%= dom_id authors_eg_post %>">`?
+>
+> NO.<br/>
+> Si può lasciare così com'è. Tanto all'interno della pagina i vari *<div>* sono comunque differenziati (es: id="eg_post_27", is="eg_post_28", ...)
 
 
 
 ## Aggiorniamo views/*authors*/eg_posts/index
 
-aggiorniamo i vari links su ".../app/views/authors/eg_posts/index.html.erb"
+Aggiorniamo il *path* del link *show* e *new*.
 
-{id: "01-27-01_08", caption: ".../app/views/eg_posts/index.html.erb -- codice 08", format: HTML+Mako, line-numbers: true, number-from: 24}
-```
-        <td><%= link_to 'Edit', edit_authors_post_path(post) %></td>
-        <td><%= link_to 'Destroy', authors_post_path(post), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+***codice 06 - .../app/views/authors/eg_posts/index.html.erb - line:15***
+
+```html+erb
+      <%= link_to "Show this eg post", eg_post_path(eg_post) %>
 ```
 
-{caption: ".../app/views/eg_posts/index.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 34}
+> Nota: per la pagina di `show` abbiamo deciso di usare quella "standard" (del lettore) quindi non usiamo il path `authors_eg_post_path(eg_post)` ma lasciamo il path "standard" `eg_post_path(eg_post)` o più semplicemente `eg_post`.
+
+***codice 06 - ...continua - line:24***
+
+```html+erb
+<%= link_to "New eg post", new_authors_eg_post_path %>
 ```
-<%= link_to 'New Post', new_authors_post_path %>
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/02_05-views-eg_posts-show.html.erb)
+
+
+
+## Debug su views/eg_posts/show
+
+Avendo lasciato la stessa pagina show sia per i lettori che per gli autori dobbiamo inserire del codice per il link che torna all'elenco principale `index` in modo da differenziare la pagina "standard" per i lettori e quella "authors" per gli autori.
+
+***codice 07 - .../app/views/eg_posts/show.html.erb - line:12***
+
+```html+erb
+  <%= link_to "Back to eg posts", eg_posts_path if current_user.present? == false  %>
+  <%= link_to "Back to authors eg posts", authors_eg_posts_path if current_user.present? == true  %>
 ```
 
 [tutto il codice](#01-27-01_08all)
 
 
-le views authors/eg_posts/edit, authors/eg_posts/new e authors/eg_posts/_form le aggiorniamo nei prossimi capitoli
+
+## Aggiorniamo views/*authors*/eg_posts/edit
+
+L'aggiorniamo nei prossimi capitoli.
 
 
 
+## Aggiorniamo views/*authors*/eg_posts/new
+
+L'aggiorniamo nei prossimi capitoli.
 
 
 
-## Correggiamo i reinstradamenti delle azioni di modifica degli articoli di esempio
+## Aggiorniamo views/*authors*/eg_posts/_form
 
-In tutti i link_to nelle views sotto "authors/eg_posts" aggiungiamo sostituiamo la parte "...eg_post..." con "...authors_eg_post...".
-
-
-
-Nel nostro controller authors/eg_posts_controller correggiamo i reinstradamenti delle azioni update, create e destroy
-
-in realtà mi va bene che dopo la creazione e l'aggiornamento vada sul posts standard. l'unica modifica è per il destroy
-
-{id: "01-27-01_09", caption: ".../app/controllers/authors/eg_posts_controller.rb -- codice 09", format: ruby, line-numbers: true, number-from: 61}
-```
-      format.html { redirect_to authors_eg_posts_url, notice: 'Post was successfully destroyed.' }
-```
-
-
-{id: "01-27-01_09", caption: ".../app/views/layouts/_dashboard_navbar.rb -- codice 10", format: HTML+Mako, line-numbers: true, number-from: 61}
-```
-        <%= link_to 'Eg. Authors Posts', authors_eg_posts_path, class: "nav-link #{yield(:menu_nav_link_authors_eg_posts)}" %>
-```
-
-
-
-## Aggiorniamo il form
-
-```html+erb
-<%= form_with(model: post, local: true, url: authors_url) do |form| %>
-```
-
-
-
-## Correggiamo il sumbit del form
-
-ATTENZIONE al form!
-Perché il form si basa sul model che è **lo stesso** sia per eg_posts_controller che per "authors/eg_posts_controller". Come facciamo ad indicare al partial "authors/eg_posts/_form" di andare sulle azioni di "authors/eg_posts_controller" ?
-
- 
-Di default effettuando il submit siamo reinstradati sulle azioni "create" o "update" di "eg_posts_controller".
-Per farlo andare su "authors/eg_posts_controller" dobbiamo specificare un url. Per far questo basta aggiungere l'opzione "url: my_url" al "form_with.
-
-Ma qui ci troviamo davanti un'altra difficoltà perché lo stesso partial deve indirizzare su due diverse azioni "create" o "update" a seconda se ci troviamo sul form per "new" oppure per "edit".
-
-Siccome l'url è diverso a seconda se sono su edit o su new, gli passiamo una variabile che chiamiamo "authors_url". Il valore di questa variabile lo impostiamo nelle pagine che chiamano il partial. Quindi il nostro partial risulta:
-
-
-{id: "01-27-01_10", caption: ".../app/views/authors/eg_posts/_form.html.erb -- codice 10", format: HTML+Mako, line-numbers: true, number-from: 1}
-```
-<%= form_with(model: eg_post, local: true, url: authors_url) do |form| %>
-```
-
-La chiamata fatta dalla pagina edit risulta:
-
-{id: "01-27-01_11", caption: ".../app/views/authors/eg_posts/edit.html.erb -- codice 11", format: HTML+Mako, line-numbers: true, number-from: 6}
-```
-<%= render 'form', eg_post: @eg_post, authors_url: authors_eg_post_url(@eg_post) %>
-```
-
-La chiamata fatta dalla pagina new risulta:
-
-{id: "01-27-01_12", caption: ".../app/views/authors/eg_posts/new.html.erb -- codice 12", format: HTML+Mako, line-numbers: true, number-from: 1}
-```
-<%= render 'form', eg_post: @eg_post, authors_url: authors_eg_posts_url %>
-```
-
+L'aggiorniamo nei prossimi capitoli.
 
 
 
 ## Verifichiamo preview
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails s
 ```
@@ -336,45 +318,33 @@ apriamo il browser sull'URL:
 
 
 
-salviamo su git
+## Archiviamo su git
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git add -A
-$ git commit -m "Incapsule a copy of eg_posts in the module author"
+$ git commit -m "Incapsule a copy of eg_posts in the module authors"
 ```
-
 
 
 
 ## Pubblichiamo su Heroku
 
-{caption: "terminal", format: bash, line-numbers: false}
+```bash
+$ git push heroku mad:main
 ```
-$ git push heroku mad:master
-```
-
 
 
 
 ## Chiudiamo il branch
 
-se abbiamo finito le modifiche e va tutto bene:
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git checkout master
-$ git merge mad
-$ git branch -d mad
-```
+Lo lasciamo aperto per il prossimo capitolo
 
 
-aggiorniamo github
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git push origin master
-```
+## Facciamo un backup su Github
+
+Lo facciamo nel prossimo capitolo.
+
 
 
 ---
