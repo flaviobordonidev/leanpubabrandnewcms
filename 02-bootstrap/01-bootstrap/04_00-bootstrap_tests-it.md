@@ -3,6 +3,10 @@
 Vediamo che l'installazione di BootStrap è andata a buon fine sia lato *stylesheets (scss)* che *javascript (js)*.
 
 
+- [Bootstrap 5 tutorial - crash course for beginners in 1.5H (stable release May 2021)](https://www.youtube.com/watch?v=rQryOSyfXmI&list=PLl1gkwYU90QkvmT4uLM5jzLsotJZtLHgW)
+- https://github.com/mdbootstrap/mdb-ui-kit
+
+
 ## Apriamo il branch
 
 

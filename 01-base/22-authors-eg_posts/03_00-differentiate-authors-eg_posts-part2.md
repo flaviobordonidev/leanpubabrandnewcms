@@ -26,8 +26,7 @@ Cambiamo il solo link per tornare indietro ad `authors/index`.
 
 ```html+erb
   <%= link_to "Show this eg post", @eg_post %> |
-  <%= link_to "Back to eg posts", eg_posts_path %>
-
+  <%= link_to "Back to authors eg posts", authors_eg_posts_path %>
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/03_01-views-authors-eg_posts-edit.html.erb)
@@ -35,6 +34,16 @@ Cambiamo il solo link per tornare indietro ad `authors/index`.
 > il link a `show` lo lasciamo così com'è.
 
 
+In Rails 6 dovevamo anche indicare l'url degli "authors".
+
+***codice n/a - .../app/views/eg_posts/index.html.erb - line:14***
+
+```html+erb
+<%#= render 'form', eg_post: @eg_post %>
+<%= render 'form', eg_post: @eg_post, authors_url: authors_eg_post_url(@eg_post) %>
+```
+
+> Su Rails 7 sembra non servire.
 
 
 
