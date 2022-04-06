@@ -271,7 +271,7 @@ Aggiorniamo il *path* del link *show* e *new*.
 <%= link_to "New eg post", new_authors_eg_post_path %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/02_05-views-eg_posts-show.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/02_06-views-authors-eg_posts-index.html.erb)
 
 
 
@@ -282,11 +282,11 @@ Avendo lasciato la stessa pagina show sia per i lettori che per gli autori dobbi
 ***codice 07 - .../app/views/eg_posts/show.html.erb - line:12***
 
 ```html+erb
-  <%= link_to "Back to eg posts", eg_posts_path if current_user.present? == false  %>
-  <%= link_to "Back to authors eg posts", authors_eg_posts_path if current_user.present? == true  %>
+  <%= link_to "Back to eg posts", eg_posts_path if current_user.present? == false %>
+  <%= link_to "Back to authors eg posts", authors_eg_posts_path if current_user.present? == true %>
 ```
 
-[tutto il codice](#01-27-01_08all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/02_07-views-eg_posts-show.html.erb)
 
 
 
@@ -317,9 +317,8 @@ $ rails s
 
 apriamo il browser sull'URL:
 
-* https://mycloud9path.amazonaws.com/eg_posts
-* https://mycloud9path.amazonaws.com/authors/eg_posts
-
+- http://192.168.64.3:3000/eg_posts
+- http://192.168.64.3:3000/authors/eg_posts
 
 
 
@@ -327,7 +326,7 @@ apriamo il browser sull'URL:
 
 ```bash
 $ git add -A
-$ git commit -m "Incapsule a copy of eg_posts in the module authors"
+$ git commit -m "Differentiate authors eg_posts part1"
 ```
 
 

@@ -5,6 +5,16 @@ Continuiamo nel differenziare le due strutture *eg_posts* e *authors/eg_posts*.
 Siamo alla parte di modifica degli articoli, parte dedicata ai soli autori e amministratori.
 
 
+```html+erb
+<td><%= link_to 'Show', post %></td>
+<td><%= link_to 'Edit', edit_authors_post_path(post) %></td>
+<td><%= link_to 'Destroy', authors_post_path(post), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+
+
+<%= link_to "New eg post", new_authors_eg_post_path %>
+```
+
+
 
 ## Aggiorniamo views/*authors*/eg_posts/index
 
