@@ -244,7 +244,8 @@ Non ci sono modifiche da fare.
 > Il `<div id="<%= dom_id eg_post %>">` è meglio chiamarlo `<div id="<%= dom_id authors_eg_post %>">`?
 >
 > NO.<br/>
-> Si può lasciare così com'è. Tanto all'interno della pagina i vari *div* sono comunque differenziati (es: id="eg_post_27", is="eg_post_28", ...)
+> Si può lasciare così com'è. Tanto all'interno della pagina i vari `<div>` sono comunque differenziati.<br/>
+>Esempio: `<div id="eg_post_2">`, `<div id="eg_post_28">`, `<div id="eg_post_13">`, ...
 
 
 
