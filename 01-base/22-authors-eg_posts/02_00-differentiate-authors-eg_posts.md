@@ -227,6 +227,10 @@ Togliamo il link *edit* e *destroy*.
 
 
 
+---
+
+
+
 ## Andiamo alle views/*authors*
 
 Eliminiamo quelle che non utiliziamo:
