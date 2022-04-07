@@ -85,13 +85,6 @@ Come facciamo ad indicare al partial `authors/eg_posts/_form` di andare sulle az
 Per farlo andare su `authors/eg_posts_controller` dobbiamo specificare un url. <br/>
 Per far questo aggiungiamo l'opzione `url: my_url` al `form_with`.
 
-Ma qui ci troviamo davanti un'altra difficoltà perché lo stesso partial deve indirizzare su due diverse azioni `create` o `update` a seconda se ci troviamo sul form per `new` oppure per `edit`.
-
-Siccome l'url è diverso a seconda se siamo su edit o su new, gli passiamo una variabile che chiamiamo `authors_url`. 
-Il valore di questa variabile lo impostiamo nelle pagine che chiamano il partial. 
-
-Quindi il nostro partial risulta:
-
 ***codice 02 - .../app/views/authors/eg_posts/_form.html.erb - line:14***
 
 ```html+erb
@@ -100,6 +93,12 @@ Quindi il nostro partial risulta:
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/03_02-views-authors-eg_posts-new.html.erb)
 
+
+Ma che valore diamo alla variabile `authors_url`?
+
+Qui ci troviamo davanti un'altra difficoltà perché lo stesso partial `_form` deve indirizzare su due diverse azioni `create` o `update` a seconda se ci troviamo sul `new` o `edit`.
+
+Il valore di questa variabile lo impostiamo nelle pagine che chiamano il partial.
 
 La chiamata fatta dalla pagina `edit` risulta:
 
@@ -118,6 +117,8 @@ La chiamata fatta dalla pagina `new` risulta:
 ```
 <%= render 'form', eg_post: @eg_post, authors_url: authors_eg_posts_url %>
 ```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/03_02-views-authors-eg_posts-new.html.erb)
 
 
 
