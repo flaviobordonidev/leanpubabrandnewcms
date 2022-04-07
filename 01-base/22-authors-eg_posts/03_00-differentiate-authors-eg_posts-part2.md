@@ -45,7 +45,7 @@ Una volta eliminato l'articolo torniamo sull'elenco degli autori.
 
 Cambiamo il solo link per tornare indietro ad `authors/index`.
 
-***codice 01 - .../app/views/eg_posts/index.html.erb - line:14***
+***codice 02 - .../app/views/eg_posts/index.html.erb - line:14***
 
 ```html+erb
   <%= link_to "Show this eg post", @eg_post %> |
@@ -62,7 +62,7 @@ Cambiamo il solo link per tornare indietro ad `authors/index`.
 
 Cambiamo il solo link per tornare indietro ad `authors/index`.
 
-***codice 02 - .../app/views/eg_posts/new.html.erb - line:14***
+***codice 03 - .../app/views/eg_posts/new.html.erb - line:14***
 
 ```html+erb
   <%= link_to "Back to authors eg posts", authors_eg_posts_path %>
@@ -83,16 +83,17 @@ La modifica principale è nel *submit* del form.
 Come facciamo ad indicare al partial `authors/eg_posts/_form` di andare sulle azioni di `authors/eg_posts_controller`?
  
 Per farlo andare su `authors/eg_posts_controller` dobbiamo specificare un url. <br/>
-Per far questo aggiungiamo l'opzione `url: my_url` al `form_with`.
+Per far questo aggiungiamo l'opzione `url: authors_url` al `form_with`.
 
-***codice 02 - .../app/views/authors/eg_posts/_form.html.erb - line:14***
+***codice 04 - .../app/views/authors/eg_posts/_form.html.erb - line:4***
 
 ```html+erb
-<%= form_with(model: eg_post, local: true, url: authors_url) do |form| %>
+      <%= form_with(model: eg_post, url: authors_url) do |form| %>      
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/03_02-views-authors-eg_posts-new.html.erb)
 
+> Su Rails 6 serviva indicare anche `local: true` ma su Rails 7 è impostato di default e quindi non serve più. (`<%= form_with(model: eg_post, local: true, url: authors_url) do |form| %>`)
 
 Ma che valore diamo alla variabile `authors_url`?
 
