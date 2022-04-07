@@ -1,6 +1,8 @@
-# Readers::Posts - facoltativo
+# <a name="top"></a> Cap 22.4 - Incapsuliamo per i lettori (Readers::EgPosts)
 
-questo capitolo è facoltativo ed ha interessanti finalità didattiche.
+> Facoltativo
+
+Questo capitolo è facoltativo ed ha interessanti finalità didattiche.
 E' interessante vedere come incapsulare posts e farlo sembrare come se non lo fosse.
 
 
