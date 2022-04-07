@@ -91,7 +91,7 @@ Per far questo aggiungiamo l'opzione `url: authors_url` al `form_with`.
       <%= form_with(model: eg_post, url: authors_url) do |form| %>      
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/03_02-views-authors-eg_posts-new.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/03_04-views-authors-eg_posts-_form.html.erb)
 
 > Su Rails 6 serviva indicare anche `local: true` ma su Rails 7 è impostato di default e quindi non serve più. (`<%= form_with(model: eg_post, local: true, url: authors_url) do |form| %>`)
 
@@ -103,23 +103,24 @@ Il valore di questa variabile lo impostiamo nelle pagine che chiamano il partial
 
 La chiamata fatta dalla pagina `edit` risulta:
 
-***codice 02 - .../app/views/authors/eg_posts/edit.html.erb - line:14***
+***codice 05 - .../app/views/authors/eg_posts/edit.html.erb - line:9***
 
 ```html+erb
 <%= render 'form', eg_post: @eg_post, authors_url: authors_eg_post_url(@eg_post) %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/03_02-views-authors-eg_posts-new.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/03_05-views-authors-eg_posts-edit.html.erb)
 
 
 La chiamata fatta dalla pagina `new` risulta:
 
-{id: "01-27-01_12", caption: ".../app/views/authors/eg_posts/new.html.erb -- codice 12", format: HTML+Mako, line-numbers: true, number-from: 1}
-```
+***codice 06 - .../app/views/authors/eg_posts/new.html.erb - line:9***
+
+```html+erb
 <%= render 'form', eg_post: @eg_post, authors_url: authors_eg_posts_url %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/03_02-views-authors-eg_posts-new.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/03_06-views-authors-eg_posts-new.html.erb)
 
 
 
@@ -132,9 +133,7 @@ $ rails s
 
 apriamo il browser sull'URL:
 
-* https://mycloud9path.amazonaws.com/eg_posts
-* https://mycloud9path.amazonaws.com/authors/eg_posts
-
+- http://192.168.64.3:3000/authors/eg_posts
 
 
 
@@ -142,7 +141,7 @@ apriamo il browser sull'URL:
 
 ```bash
 $ git add -A
-$ git commit -m "Incapsule a copy of eg_posts in the module authors"
+$ git commit -m "Differentiate authors eg_posts edit new"
 ```
 
 
