@@ -1,4 +1,4 @@
-# Vediamo le autorizzazioni con Pundit
+# <a name="top"></a> Cap 22.5 - Vediamo le autorizzazioni con Pundit
 
 Le autorizzazioni sono a livello di MODEL ed essendo unico per eg_post ed authors/eg_post le abbiamo già definite nei capitoli precedenti.
 
