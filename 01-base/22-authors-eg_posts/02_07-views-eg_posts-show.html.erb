@@ -9,6 +9,8 @@
 <%= render @eg_post %>
 
 <div>
+  <%= link_to "Edit this eg post", edit_authors_eg_post_path(@eg_post) if current_user.present? == true %> | 
   <%= link_to "Back to eg posts", eg_posts_path if current_user.present? == false %>
-  <%= link_to "Back to authors eg posts", authors_eg_posts_path if current_user.present? == true %>
+  <%= link_to "Back to authors eg posts", authors_eg_posts_path if current_user.present? == true %> |
+  <%= button_to "Destroy this eg post", authors_eg_post_path(@eg_post), method: :delete if current_user.present? == true %>
 </div>
