@@ -38,7 +38,7 @@ Restringiamo gli instradamenti alle sole views di nostro interesse:
   resources :eg_posts, :only => [:index, :show] 
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/01_01-config-routes.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/02_01-config-routes.rb)
 
 
 Abbiamo finalmente distinto le due liste di articoli.
@@ -76,6 +76,10 @@ delete_image_attachment_authors_eg_post DELETE /authors/eg_posts/:id/delete_imag
 
 Adesso invece dei 18 instradamenti (contando gli "update" duplicati), abbiamo solo 10 instradamenti.
 
+
+
+---
+---
 
 
 
@@ -159,6 +163,13 @@ Le modifiche su `authors/eg_posts_controller`:
 - Nell'azione `index` l'elenco di tutti gli articoli è **filtrato a secondo di chi si è loggato**:
   - l'**amministratore** vede **tutti gli articoli**; sia pubblicati che non pubblicati e di tutti gli autori. 
   - l'**autore** vede **solo i suoi articoli**; sia pubblicati che non.
+
+> Le modifiche nelle azioni `edit`, `update`, `new`, `create`, `destroy` le vediamo nel prossimo capitolo.
+
+
+
+---
+---
 
 
 

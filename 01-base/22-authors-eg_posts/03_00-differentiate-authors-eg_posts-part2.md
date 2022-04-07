@@ -34,7 +34,28 @@ Cambiamo il solo link per tornare indietro ad `authors/index`.
 > il link a `show` lo lasciamo così com'è.
 
 
-In Rails 6 dovevamo anche indicare l'url degli "authors".
+
+## Aggiorniamo views/*authors*/eg_posts/new
+
+Cambiamo il solo link per tornare indietro ad `authors/index`.
+
+***codice 02 - .../app/views/eg_posts/new.html.erb - line:14***
+
+```html+erb
+  <%= link_to "Back to authors eg posts", authors_eg_posts_path %>
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/03_02-views-authors-eg_posts-new.html.erb)
+
+
+
+## Aggiorniamo views/*authors*/eg_posts/_form
+
+Eccoci nel cuore della parte di modifica.
+
+
+
+In Rails 6, nel *render del form*, dovevamo anche indicare l'url degli "authors".
 
 ***codice n/a - .../app/views/eg_posts/index.html.erb - line:14***
 
@@ -43,26 +64,14 @@ In Rails 6 dovevamo anche indicare l'url degli "authors".
 <%= render 'form', eg_post: @eg_post, authors_url: authors_eg_post_url(@eg_post) %>
 ```
 
-> Su Rails 7 sembra non servire.
+> `authors_url:` è un parametro aggiuntivo che passiamo per permetterci di ...
 
 
 
-## Aggiorniamo views/*authors*/eg_posts/new
-
-L'aggiorniamo nei prossimi capitoli.
 
 
 
-## Aggiorniamo views/*authors*/eg_posts/_form
 
-L'aggiorniamo nei prossimi capitoli.
-
-```html+erb
-<%= link_to "Edit this eg post", edit_authors_eg_post_path(eg_post) %>
-<%= link_to "Back to authors eg posts", authors_eg_posts_path %>
-<%= link_to "New eg post", new_authors_eg_post_path %>
-<%= button_to "Destroy this eg post", @eg_post, method: :delete %>
-```
 
 
 
