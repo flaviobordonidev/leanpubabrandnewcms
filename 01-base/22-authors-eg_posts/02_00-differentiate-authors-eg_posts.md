@@ -204,9 +204,10 @@ Non ci sono modifiche da fare.
 
 Togliamo il link *new*.
 
-***codice 04 - .../app/views/eg_posts/index.html.erb - line:21***
+***codice 04 - .../app/views/eg_posts/index.html.erb - line:20***
 
 ```html+erb
+<%= sanitize pagy_nav(@pagy) %>
 <br/>
 <br/>
 <%#= link_to "New eg post", new_eg_post_path %>
@@ -214,7 +215,7 @@ Togliamo il link *new*.
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/02_04-views-eg_posts-index.html.erb)
 
-> A scopo didattico nel codice visualizzato ho solo commentato la riga ma se andiamo in *tutto il codice* vediamo che la riga l'abbiamo completamente rimossa.
+> A scopo didattico nel codice visualizzato ho solo commentato la riga ma se andiamo in *tutto il codice* vediamo che abbiamo tolto sia la riga del `link_to` che i due `<br/>`.
 
 
 
