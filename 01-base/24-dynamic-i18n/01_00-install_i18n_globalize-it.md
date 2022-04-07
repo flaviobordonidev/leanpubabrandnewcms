@@ -1,5 +1,4 @@
-{id: 01-base-29-dynamic-i18n-01-install_i18n_globalize}
-# Cap 29.1 -- Globalize
+# <a name="top"></a> Cap 24.1 - Globalize
 
 Implementiamo l'internazionalizzazione sul database (i18n dynamic).
 
