@@ -2,7 +2,6 @@
 
 
 
-
 ## Per eseguire tutti i migrations
 
 Risorse sul web:

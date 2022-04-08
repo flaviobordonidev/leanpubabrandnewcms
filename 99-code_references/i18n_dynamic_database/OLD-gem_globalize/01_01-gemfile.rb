@@ -66,8 +66,8 @@ gem 'pagy', '~> 5.10', '>= 5.10.1'
 # Bootstrap 5 ruby gem for Ruby on Rails (Sprockets)
 gem 'bootstrap', '~> 5.1', '>= 5.1.3'
 
-# Stores and retrieves localized data (translations) through attributes on a Ruby class
-gem 'mobility', '~> 1.2', '>= 1.2.6'
+# Rails I18n de-facto standard library for ActiveRecord model/data translation.
+gem 'globalize', '~> 6.1'
 
 # Integrate SassC-Ruby into Rails.
 gem 'sassc-rails', '~> 2.1', '>= 2.1.2'

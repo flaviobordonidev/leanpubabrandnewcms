@@ -532,7 +532,7 @@ $ git commit -m "ready to public in production on heroku"
 Attenzione! per pubblicare su heroku da un branch si usa il comando " git push heroku yourbranch:master ". [per approfondimenti](https://devcenter.heroku.com/articles/git)
 
 ```bash
-$ git push heroku pp:master
+$ git push heroku pp:main
 ```
 
 Esempio:

@@ -2,39 +2,13 @@
 
 Implementiamo l'internazionalizzazione sul database (i18n dynamic).
 
+Usiamo la gemma `mobility`
+(Contenuto DINAMICO (sul database) con MOBILITY)
+
 > Fino a Rails 6 usavamo GLOBALIZE ma...
 >
 > https://github.com/globalize/globalize <br/>
 > Globalize is not very actively maintained. Pull Requests are welcome, especially for compatibility with new versions of Rails, but none of the maintainers actively use Globalize anymore. If you need a more actively maintained model translation gem, we recommend checking out Mobility, a natural successor of Globalize created by Chris Salzberg (one of Globalize maintainers) and inspired by the ideas discussed around Globalize. 
-
-- https://github.com/shioyama/mobility
-
-
-- https://dejimata.com/2017/3/3/translating-with-mobility
-
-
-
-
-```diff
- Mobility.configure do
-   # PLUGINS
-   plugins do
--    backend :key_value
-+    backend :table
-```
-
-
-*************
-
-FACCIAMO IL DROP dei MIGRATE e poi il DELETE del BRANCH.
-Come abbiamo già fatto in passato.
-
-Archiviamo questa parte in *99-code_references* sotto *i18n_dynamic_database*
-
-*************
-
-
-
 
 
 
@@ -42,6 +16,13 @@ Archiviamo questa parte in *99-code_references* sotto *i18n_dynamic_database*
 
 - 99-rails_references/data_types and i18n/globalize
 - [Cap. 5.2](01-base-05-mockups_i18n-02-default_language).
+
+
+
+## Risorse esterne
+
+- https://github.com/shioyama/mobility
+- https://dejimata.com/2017/3/3/translating-with-mobility
 
 
 
@@ -54,29 +35,28 @@ $ git status
 
 
 
-## Apriamo il branch "Install Gem Globalize"
+## Apriamo il branch "Install Gem Mobility"
 
 ```bash
-$ git checkout -b igg
+$ git checkout -b igm
 ```
 
 
 
-## Installiamo la gemma "Globalize"
+## Installiamo la gemma "mobility"
 
-Per gestire più lingue sul database installiamo la gemma Globalize.
-Contenuto DINAMICO (sul database) con GLOBALIZE
+Per gestire più lingue sul database installiamo la gemma `mobility`.
 
-I> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/globalize)
+I> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/mobility)
 I>
-I> facciamo riferimento al [tutorial github della gemma](https://github.com/globalize/globalize)
+I> facciamo riferimento al [tutorial github della gemma](https://github.com/shioyama/mobility)
 
 
 ***codice 01 - .../Gemfile - line:69***
 
 ```ruby
-# Rails I18n de-facto standard library for ActiveRecord model/data translation.
-gem 'globalize', '~> 6.1'
+# Stores and retrieves localized data (translations) through attributes on a Ruby class
+gem 'mobility', '~> 1.2', '>= 1.2.6'
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/24-dynamic-i18n/01_01-gemfile.rb)
