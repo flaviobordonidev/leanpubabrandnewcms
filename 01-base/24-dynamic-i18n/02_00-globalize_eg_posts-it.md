@@ -90,27 +90,29 @@ $ git commit -m "add i18n to EgPosts"
 ```
 
 
-## Aggiungiamo la colonna `description` agli articoli
+## Aggiungiamo la colonna *content* agli articoli
 
-Siccome vogliamo avere le traduzioni per `description` allora la aggiungiamo direttamente alla tabella delle traduzioni.
+La colonna *content* è quella che abbiamo inserito tramite *Action Text* e non la vediamo su *db/schema* perché è un campo dichiarato direttamenta nel *model* con `has_rich_text :content`.
 
-> Non l'abbiamo aggiunta da subito a scopo didattico, per far vedere come aggiungere successivamente una colonna alla traduzione.
+Per attivare la traduzione anche per questa colonna basta che l'aggiungiamo direttamente alla tabella delle traduzioni.
 
-Aggiungiamo `:description` al model nella sezione `# == Attributes`, sottosezione `## globalize`.
+> Non l'abbiamo aggiunta da subito a scopo didattico, per far vedere come aggiungere successivamente una colonna alla tabella delle traduzioni.
+
+Aggiungiamo `:content` al model nella sezione `# == Attributes`, sottosezione `## globalize`.
 
 ***codice 03 - .../app/models/eg_post.rb - line:14***
 
 ```ruby
   ## globalize
-  translates :meta_title, :meta_description, :headline, :incipit, :description, :fallbacks_for_empty_translations => true
+  translates :meta_title, :meta_description, :headline, :incipit, :content, :fallbacks_for_empty_translations => true
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/24-dynamic-i18n/02_02-db-migrate-xxx_create_eg_post_transaltions.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/24-dynamic-i18n/02_03-models-eg_post.rb)
 
 Poi prepariamo il migrate
 
 ```bash
-$ rails g migration add_description_to_eg_post_translations
+$ rails g migration add_content_to_eg_post_translations
 ```
 
 Lavoriamo sul *migrate* usando il metodo `.add_translation_fields!` inserito nel model "EgPost" e passando i nomi dei campi che devono avere la traduzione.
@@ -118,23 +120,23 @@ Lavoriamo sul *migrate* usando il metodo `.add_translation_fields!` inserito nel
 ***codice 04 - ..../db/migrate/xxx_add_description_to_eg_post_translations.rb - line:1***
 
 ```ruby
-class AddDescriptionToEgPostTranslations < ActiveRecord::Migration[6.0]
+class AddContentToEgPostTranslations < ActiveRecord::Migration[7.0]
   def change
     reversible do |dir|
 
       dir.up do
-        EgPost.add_translation_fields! description: :text
+        EgPost.add_translation_fields! content: :text
       end
 
       dir.down do
-        remove_column :eg_post_translations, :description
+        remove_column :eg_post_translations, :content
       end
     end
   end
 end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/24-dynamic-i18n/02_02-db-migrate-xxx_create_eg_post_transaltions.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/24-dynamic-i18n/02_04-db-migrate-xxx_add_description_to_eg_post_translations.rb)
 
 Eseguiamo il migrate.
 
@@ -149,30 +151,28 @@ $ rails db:migrate
 
 Usiamo la console di rails per popolare la tabella del database.
 
-~~~~~~~~bash
+```bash
 $ sudo service postgresql start
 $ rails c
 
 -> EgPost.all
 -> I18n.locale
--> EgPost.find 1
+-> EgPost.first
 -> I18n.locale = :en
--> EgPost.find 1
--> EgPost.find(1).update(headline: "My first post", incipit: "Why writing this first post", locale: :en)
--> EgPost.find 1
+-> EgPost.first
+-> EgPost.first.update(headline: "My first post", incipit: "Why writing this first post", locale: :en)
+-> EgPost.first
 -> I18n.locale = :it
--> EgPost.find 1
+-> EgPost.first
 
--> EgPost.find(2).update(headline: "My second post", incipit: "I'm getting addicted", locale: :en)
--> EgPost.find(3).update(headline: "My third post", incipit: "Now I'm an expert", locale: :en)
--> EgPost.find(4).update(headline: "I am bob and I am authorized", incipit: "The conference one", locale: :en)
--> EgPost.find(5).update(headline: "The conference number two", incipit: "Why the clouds are forming?", locale: :en)
+-> EgPost.find(3).update(headline: "My second post", incipit: "I'm getting addicted", locale: :en)
 
 -> I18n.locale = :en
 -> EgPost.all
 -> exit
-~~~~~~~~
+```
 
+> Gli altri li inseriamo direttamente da interfaccia grafica.
 
 
 
@@ -222,9 +222,8 @@ o
 $ rake db:setup
 ```
 
-- il "rake db:seed" esegue nuovamente tutti i comandi del file "db/seeds.rb". Quindi dobbiamo commentare tutti i comandi già eseguiti altrimenti si creano dei doppioni. Gli stessi comandi possono essere eseguiti manualmente sulla rails console e si lascia l'esecuzione del seed solo in fase di inizializzazione di tutto l'applicativo.
-- il "rake db:setup" ricrea TUTTO il database e lo ripopola con "db/seeds.rb". Quindi tutto il database è azzerato ed eventuali records presenti sono eliminati.
-
+- il `rake db:seed` esegue nuovamente tutti i comandi del file *db/seeds.rb*. Quindi dobbiamo commentare tutti i comandi già eseguiti altrimenti si creano dei doppioni. Gli stessi comandi possono essere eseguiti manualmente sulla rails console e si lascia l'esecuzione del seed solo in fase di inizializzazione di tutto l'applicativo.
+- il `rake db:setup` ricrea TUTTO il database e lo ripopola con *db/seeds.rb*. Quindi tutto il database è azzerato ed eventuali records presenti sono eliminati.
 
 
 
@@ -237,7 +236,7 @@ $ rails s
 
 apriamolo il browser sull'URL:
 
-- https://bl7-0.herokuapp.com/authors/eg_posts
+- http://192.168.64.3:3000/authors/eg_posts
 
 Le modifiche sono già presenti anche nel preview. Anche la modifica. Possiamo verificarlo cambiando la lingua nella barra di navigazione in alto.
 Se creiamo un articolo in italiano possiamo mettere la versione inglese cambiando prima la lingua e poi sovrascriviamo la parte italiana. Questo farà sì che quando siamo in inglese vediamo l'inglese e se torniamo all'italiano lo rivediamo in italiano.

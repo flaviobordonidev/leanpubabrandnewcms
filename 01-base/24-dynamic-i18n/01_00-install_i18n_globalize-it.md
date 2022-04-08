@@ -2,6 +2,40 @@
 
 Implementiamo l'internazionalizzazione sul database (i18n dynamic).
 
+> Fino a Rails 6 usavamo GLOBALIZE ma...
+>
+> https://github.com/globalize/globalize <br/>
+> Globalize is not very actively maintained. Pull Requests are welcome, especially for compatibility with new versions of Rails, but none of the maintainers actively use Globalize anymore. If you need a more actively maintained model translation gem, we recommend checking out Mobility, a natural successor of Globalize created by Chris Salzberg (one of Globalize maintainers) and inspired by the ideas discussed around Globalize. 
+
+- https://github.com/shioyama/mobility
+
+
+- https://dejimata.com/2017/3/3/translating-with-mobility
+
+
+
+
+```diff
+ Mobility.configure do
+   # PLUGINS
+   plugins do
+-    backend :key_value
++    backend :table
+```
+
+
+*************
+
+FACCIAMO IL DROP dei MIGRATE e poi il DELETE del BRANCH.
+Come abbiamo già fatto in passato.
+
+Archiviamo questa parte in *99-code_references* sotto *i18n_dynamic_database*
+
+*************
+
+
+
+
 
 
 ## Risorse interne
