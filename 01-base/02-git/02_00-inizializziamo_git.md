@@ -239,4 +239,4 @@ ubuntu@ubuntufla:~/bl7_0$
 
 [<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/02-git/01_00-git_story.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/02-git/03_00-daily_routine.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/02-git/03_00-nice_prompt.md)
