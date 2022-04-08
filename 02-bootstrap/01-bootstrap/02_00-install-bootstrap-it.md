@@ -1,6 +1,6 @@
-# <a name="top"></a> Cap 21.2 - Installiamo Bootstrap
+# <a name="top"></a> Cap 1.2 - Installiamo Bootstrap
 
-In rails 7 non c'è più l'esigenza di passare per webpack ed è tornato in auge l'asset-pipe-line.
+In rails 7 non c'è più l'esigenza di passare per webpack ed è tornato in auge l'asset-pipeline.
 
 > Lo spiega bene lo sviluppatore rails *DAVID HEINEMEIER HANSSON (DHH)* nel suo post
 > [Modern web apps without JavaScript bundling or transpiling - August 12, 2021](https://world.hey.com/dhh/modern-web-apps-without-javascript-bundling-or-transpiling-a20f2755)
@@ -31,7 +31,7 @@ Provo quindi con la versione alternativa proposta da questi due articoli che van
 - [GoRails #417 · October 11, 2021 - How to use Bootstrap with CSS bundling in Rails](https://gorails.com/episodes/bootstrap-css-bundling-rails?autoplay=1)
 - [bootstrap sito ufficiale - Install RubyGems](https://getbootstrap.com/docs/5.1/getting-started/download/#rubygems)
 - [How to add bootstrap 5 to an existing Rails 7 app](https://www.uday.net/add-bootstrap-5-to-an-existing-Rails-7-app)
-> [Rails 7.0: Fulfilling a vision](https://rubyonrails.org/2021/12/15/Rails-7-fulfilling-a-vision)
+- [Rails 7.0: Fulfilling a vision](https://rubyonrails.org/2021/12/15/Rails-7-fulfilling-a-vision)
 
 
 Questi due articoli invece vanno controcorrente ed usano `gem 'bootstrap'` e `gem "sassc-rails"`.
@@ -537,6 +537,6 @@ Lo facciamo nel prossimo capitolo.
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/01_00-bootstrap_story-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/01-bootstrap/01_00-bootstrap_story-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/03_00-bootstrap_complete-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/01-bootstrap/03_00-bootstrap_complete-it.md)
