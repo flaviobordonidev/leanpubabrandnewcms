@@ -17,7 +17,6 @@ Indichiamo nel *model* i campi della tabella che vogliamo tradurre.
 
 Aggiorniamo il *model* nella sezione `# == Attributes`, sottosezione `## globalize`.
 
-
 ***codice 01 - .../app/models/eg_post.rb - line:14***
 
 ```ruby
@@ -41,7 +40,7 @@ Lavoriamo sul *migrate* usando il metodo `.create_translation_table` inserito ne
 ***codice 02 - .../db/migrate/xxx_create_eg_post_transaltions.rb - line:1***
 
 ```ruby
-class CreateEgPostTranslations < ActiveRecord::Migration[6.0]
+class CreateEgPostTranslations < ActiveRecord::Migration[7.0]
   def change
     reversible do |dir|
       
