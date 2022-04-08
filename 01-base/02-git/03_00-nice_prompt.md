@@ -93,3 +93,9 @@ export PS1="\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\
 
 That's it.
 
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/02-git/02_00-inizializziamo_git.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/02-git/04_00-daily_routine.md)
