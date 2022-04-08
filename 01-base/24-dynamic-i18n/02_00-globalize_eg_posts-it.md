@@ -27,7 +27,7 @@ Aggiorniamo il *model* nella sezione `# == Attributes`, sottosezione `## globali
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/24-dynamic-i18n/02_01-models-eg_post.rb)
 
 
-I> il `translates ...` dentro il model va messo **prima** di fare il `db:migrate` altrimenti ci da errore!
+> il `translates ...` dentro il model va messo **prima** di fare il `db:migrate` altrimenti ci da errore!
 
 Adesso creiamo un *migration* vuoto perché useremo il metodo di globalize `.create_translation_table`.
 
