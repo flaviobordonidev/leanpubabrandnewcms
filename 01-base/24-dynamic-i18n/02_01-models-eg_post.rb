@@ -34,14 +34,9 @@ class EgPost < ApplicationRecord
   ## getter method
   def published_at_formatted 
     if published_at.present?
-      #published_at.strftime('%-d %-B %Y')
-      #"Pubblicato il #{published_at.strftime('%-d %-b %Y')}"
-      ActionController::Base.helpers.l published_at, format: :long
+      ActionController::Base.helpers.l published_at, format: :my_long
     else
-      #"non pubblicato"
-      #"#{ActionController::Base.helpers.t 'eg_posts.show.published_at'}"
       ActionController::Base.helpers.t 'eg_posts.not_published'
     end
   end
-  
 end

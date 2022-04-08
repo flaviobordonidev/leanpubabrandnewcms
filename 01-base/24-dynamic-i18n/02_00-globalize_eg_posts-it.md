@@ -12,33 +12,35 @@ Continuiamo nel branch aperto nel capitolo precedente
 
 ## Usiamo globalize
 
-Attiviamo l'internazionalizzazione sul database usando la gemma globalize installata precedentemente.
-Indichiamo nel "model" i campi della tabella che vogliamo tradurre. 
-Sezione "# == Attributes" sottosezione "## globalize".
+Attiviamo l'internazionalizzazione sul database usando la gemma `globalize` installata precedentemente.
+Indichiamo nel *model* i campi della tabella che vogliamo tradurre. 
 
-{id: "01-29-02_01", caption: ".../app/models/eg_post.rb -- codice 01", format: ruby, line-numbers: true, number-from: 14}
-```
+Aggiorniamo il *model* nella sezione `# == Attributes`, sottosezione `## globalize`.
+
+
+***codice 01 - .../app/models/eg_post.rb - line:14***
+
+```ruby
   ## globalize
   translates :meta_title, :meta_description, :headline, :incipit, :fallbacks_for_empty_translations => true
 ```
 
-[tutto il codice](#01-29-02_01all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/24-dynamic-i18n/02_01-models-eg_post.rb)
 
 
-I> il "translates ..." dentro il model va messo prima di fare il "db:migrate" altrimenti ci da errore!
+I> il `translates ...` dentro il model va messo **prima** di fare il `db:migrate` altrimenti ci da errore!
 
-adesso creiamo un migration vuoto perché useremo il metodo di globalize ".create_translation_table"
+Adesso creiamo un *migration* vuoto perché useremo il metodo di globalize `.create_translation_table`.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails g migration create_eg_post_translations
 ```
 
+Lavoriamo sul *migrate* usando il metodo `.create_translation_table` inserito nel model `EgPost` e passiamo i nomi dei campi che devono avere la traduzione.
 
-Lavoriamo sul "migrate" usando il metodo ".create_translation_table" inserito nel model "EgPost" e passando i nomi dei campi che devono avere la traduzione.
+***codice 02 - .../db/migrate/xxx_create_eg_post_transaltions.rb - line:1***
 
-{id: "01-29-02_02", caption: ".../db/migrate/xxx_create_eg_post_transaltions.rb -- codice 02", format: ruby, line-numbers: true, number-from: 1}
-```
+```ruby
 class CreateEgPostTranslations < ActiveRecord::Migration[6.0]
   def change
     reversible do |dir|
@@ -64,50 +66,59 @@ class CreateEgPostTranslations < ActiveRecord::Migration[6.0]
 end
 ```
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/24-dynamic-i18n/02_02-db-migrate-xxx_create_eg_post_transaltions.rb)
+
+Eseguiamo il *migrate*.
+
+```bash
 $ sudo service postgresql start
 $ rails db:migrate
 ```
 
-E' fondamentale cancellare dalla tabella principale "eg_posts" i campi per cui abbiamo attivato la traduzione.
-In questo caso i campi: "meta_title, meta_description, headline, incipit".
+> Attenzione!<br/>
+> È fondamentale cancellare dalla tabella principale `eg_posts` i campi per cui abbiamo attivato la traduzione. Nel nostro caso dobbiamo eliminare i campi: `meta_title`, `meta_description`, `headline`, `incipit`.
+>
+> L'opzione `remove_source_columns: true` ci risparmia di farlo manualmente.<br/> 
+> (Possiamo verificare su db/schema)
 
-L'opzione "remove_source_columns: true" ci risparmia di farlo manualmente. (Possiamo verificare su db/schema)
 
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+## Archiviamo su Git
+
+```bash
 $ git add -A
 $ git commit -m "add i18n to EgPosts"
 ```
 
 
+## Aggiungiamo la colonna `description` agli articoli
 
+Siccome vogliamo avere le traduzioni per `description` allora la aggiungiamo direttamente alla tabella delle traduzioni.
 
-## Aggiungiamo anche la colonna "description" agli articoli
+> Non l'abbiamo aggiunta da subito a scopo didattico, per far vedere come aggiungere successivamente una colonna alla traduzione.
 
-Siccome vogliamo avere le traduzioni per "description" allora la aggiungiamo direttamente alla tabella delle traduzioni.
+Aggiungiamo `:description` al model nella sezione `# == Attributes`, sottosezione `## globalize`.
 
-La aggiungiamo prima al model.
+***codice 03 - .../app/models/eg_post.rb - line:14***
 
-{id: "01-29-02_03", caption: ".../app/models/eg_post.rb -- codice 03", format: ruby, line-numbers: true, number-from: 14}
-```
+```ruby
   ## globalize
   translates :meta_title, :meta_description, :headline, :incipit, :description, :fallbacks_for_empty_translations => true
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/24-dynamic-i18n/02_02-db-migrate-xxx_create_eg_post_transaltions.rb)
+
 Poi prepariamo il migrate
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails g migration add_description_to_eg_post_translations
 ```
 
-Lavoriamo sul "migrate" usando il metodo ".add_translation_fields!" inserito nel model "EgPost" e passando i nomi dei campi che devono avere la traduzione.
+Lavoriamo sul *migrate* usando il metodo `.add_translation_fields!` inserito nel model "EgPost" e passando i nomi dei campi che devono avere la traduzione.
 
-{id: "01-29-02_04", caption: ".../db/migrate/xxx_add_description_to_eg_post_translations.rb -- codice 04", format: ruby, line-numbers: true, number-from: 1}
-```
+***codice 04 - ..../db/migrate/xxx_add_description_to_eg_post_translations.rb - line:1***
+
+```ruby
 class AddDescriptionToEgPostTranslations < ActiveRecord::Migration[6.0]
   def change
     reversible do |dir|
@@ -124,12 +135,14 @@ class AddDescriptionToEgPostTranslations < ActiveRecord::Migration[6.0]
 end
 ```
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/24-dynamic-i18n/02_02-db-migrate-xxx_create_eg_post_transaltions.rb)
+
+Eseguiamo il migrate.
+
+```bash
 $ sudo service postgresql start
 $ rails db:migrate
 ```
-
 
 
 
@@ -137,29 +150,28 @@ $ rails db:migrate
 
 Usiamo la console di rails per popolare la tabella del database.
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+~~~~~~~~bash
 $ sudo service postgresql start
 $ rails c
 
-> EgPost.all
-> I18n.locale
-> EgPost.find 1
-> I18n.locale = :en
-> EgPost.find 1
-> EgPost.find(1).update(headline: "My first post", incipit: "Why writing this first post", locale: :en)
-> EgPost.find 1
-> I18n.locale = :it
-> EgPost.find 1
+-> EgPost.all
+-> I18n.locale
+-> EgPost.find 1
+-> I18n.locale = :en
+-> EgPost.find 1
+-> EgPost.find(1).update(headline: "My first post", incipit: "Why writing this first post", locale: :en)
+-> EgPost.find 1
+-> I18n.locale = :it
+-> EgPost.find 1
 
-> EgPost.find(2).update(headline: "My second post", incipit: "I'm getting addicted", locale: :en)
-> EgPost.find(3).update(headline: "My third post", incipit: "Now I'm an expert", locale: :en)
-> EgPost.find(4).update(headline: "I am bob and I am authorized", incipit: "The conference one", locale: :en)
-> EgPost.find(5).update(headline: "The conference number two", incipit: "Why the clouds are forming?", locale: :en)
+-> EgPost.find(2).update(headline: "My second post", incipit: "I'm getting addicted", locale: :en)
+-> EgPost.find(3).update(headline: "My third post", incipit: "Now I'm an expert", locale: :en)
+-> EgPost.find(4).update(headline: "I am bob and I am authorized", incipit: "The conference one", locale: :en)
+-> EgPost.find(5).update(headline: "The conference number two", incipit: "Why the clouds are forming?", locale: :en)
 
-> I18n.locale = :en
-> EgPost.all
-> exit
+-> I18n.locale = :en
+-> EgPost.all
+-> exit
 ~~~~~~~~
 
 
@@ -169,8 +181,9 @@ $ rails c
 
 Di seguito mostriamo come popolare la tabella in automatico ma noi eseguiremo la procedura manuale descritta nel prossimo capitolo.
 
-{title=".../db/seeds.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+***codice 04 - .../db/seeds.rb - line:1***
+
+```ruby
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
@@ -197,99 +210,22 @@ SelectRelated.last.update(name: "contatti", locale: :it)
 
 SelectRelated.new(name: "addresses", metadata: "addresses", bln_homepage: FALSE, bln_people: TRUE, bln_companies: TRUE, locale: :en).save
 SelectRelated.last.update(name: "indirizzi", locale: :it)
-~~~~~~~~
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/24-dynamic-i18n/02_02-db-migrate-xxx_create_eg_post_transaltions.rb)
+
 
 Per popolare il database con i seed si possono usare i comandi:
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```bash
 $ rake db:seed
 o
 $ rake db:setup
-~~~~~~~~
-
-* il "rake db:seed" esegue nuovamente tutti i comandi del file "db/seeds.rb". Quindi dobbiamo commentare tutti i comandi già eseguiti altrimenti si creano dei doppioni. Gli stessi comandi possono essere eseguiti manualmente sulla rails console e si lascia l'esecuzione del seed solo in fase di inizializzazione di tutto l'applicativo.
-* il "rake db:setup" ricrea TUTTO il database e lo ripopola con "db/seeds.rb". Quindi tutto il database è azzerato ed eventuali records presenti sono eliminati.
-
-
-
-
-## Verifichiamo preview
-
-Le modifiche sono già presenti anche nel preview. Anche la modifica. Possiamo verificarlo cambiando la lingua nella barra di navigazione in alto.
-Se creiamo un articolo in italiano possiamo mettere la versione inglese cambiando prima la lingua e poi sovrascriviamo la parte italiana. Questo farà sì che quando siamo in inglese vediamo l'inglese e se torniamo all'italiano lo rivediamo in italiano.
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ git add -A
-$ git commit -m "add i18n eg_posts seeds"
-~~~~~~~~
-
-I> Questo git commit è solo per lasciare un commento perché le modifiche fatte sul database non sono passate tramite git.
-
-
-
-
-
-
-
-## Publichiamo su heroku
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ git push heroku sr:master
-$ heroku run rake db:migrate
-~~~~~~~~
-
-I> Lato produzione su heroku c'è un database indipendente da quello di sviluppo quindi risulta vuoto.
-
-per popolare il database di heroku basta aprire la console con il comando:
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ heroku run rails c
-~~~~~~~~
-
-E rieseguire i passi già fatti nel paragrafo precedentemente
-
-
-
-
-## Chiudiamo il branch
-
-se abbiamo finito le modifiche e va tutto bene:
-
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
-$ git checkout master
-$ git merge sr
-$ git branch -d sr
-~~~~~~~~
-
-
-
-
-## Facciamo un backup su Github
-
-Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git push origin master
 ```
 
+- il "rake db:seed" esegue nuovamente tutti i comandi del file "db/seeds.rb". Quindi dobbiamo commentare tutti i comandi già eseguiti altrimenti si creano dei doppioni. Gli stessi comandi possono essere eseguiti manualmente sulla rails console e si lascia l'esecuzione del seed solo in fase di inizializzazione di tutto l'applicativo.
+- il "rake db:setup" ricrea TUTTO il database e lo ripopola con "db/seeds.rb". Quindi tutto il database è azzerato ed eventuali records presenti sono eliminati.
 
-
-
-## Il codice del capitolo
-
-
-
-
-
-
-
----
 
 
 
@@ -302,17 +238,17 @@ $ rails s
 
 apriamolo il browser sull'URL:
 
-* https://mycloud9path.amazonaws.com/users
+- https://bl7-0.herokuapp.com/authors/eg_posts
 
-Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
+Le modifiche sono già presenti anche nel preview. Anche la modifica. Possiamo verificarlo cambiando la lingua nella barra di navigazione in alto.
+Se creiamo un articolo in italiano possiamo mettere la versione inglese cambiando prima la lingua e poi sovrascriviamo la parte italiana. Questo farà sì che quando siamo in inglese vediamo l'inglese e se torniamo all'italiano lo rivediamo in italiano.
 
 
-
-## salviamo su git
+## Archiviamo su git
 
 ```bash
 $ git add -A
-$ git commit -m "users_controllers notice messages i18n"
+$ git commit -m "add i18n eg_posts seeds"
 ```
 
 
@@ -320,25 +256,46 @@ $ git commit -m "users_controllers notice messages i18n"
 ## Pubblichiamo su Heroku
 
 ```bash
-$ git push heroku ui:master
+$ git push heroku igg:main
+$ heroku run rake db:migrate
 ```
+
+I> Lato produzione su heroku c'è un database indipendente da quello di sviluppo quindi risulta vuoto.
+
+per popolare il database di heroku basta aprire la console con il comando:
+
+```bash
+$ heroku run rails c
+```
+
+E rieseguire i passi già fatti nel paragrafo precedentemente
 
 
 
 ## Chiudiamo il branch
 
-Lo lasciamo aperto per il prossimo capitolo
+se abbiamo finito le modifiche e va tutto bene:
+
+```bash
+$ git checkout main
+$ git merge igg
+$ git branch -d igg
+```
 
 
 
 ## Facciamo un backup su Github
 
-Lo facciamo nel prossimo capitolo.
+Dal nostro branch main di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+```bash
+$ git push origin main
+```
 
 
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03-browser_tab_title_users-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/24-dynamic-i18n/01_00-install_i18n_globalize-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02-users_form_i18n-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/25-nested_forms_with_stimulus/01_00-stimulus-mockup-it.md)

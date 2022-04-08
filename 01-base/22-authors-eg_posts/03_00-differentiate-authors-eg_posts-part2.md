@@ -158,8 +158,7 @@ $ git push heroku mad:main
 
 se abbiamo finito le modifiche e va tutto bene:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout main
 $ git merge mad
 $ git branch -d mad
