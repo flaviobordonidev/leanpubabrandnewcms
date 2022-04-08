@@ -43,7 +43,6 @@ $ git status
 
 
 
-
 ## Apriamo il branch "Modulo Authors per la Dashboard"
 
 {caption: "terminal", format: bash, line-numbers: false}

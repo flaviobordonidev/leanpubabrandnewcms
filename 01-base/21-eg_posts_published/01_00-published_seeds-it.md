@@ -10,6 +10,15 @@ Dividiamo gli articoli già pubblicati da quelli da pubblicare ed impostiamo la 
 
 
 
+## Verifichiamo dove eravamo rimasti
+
+```bash
+$ git log
+$ git status
+```
+
+
+
 ## Apriamo il branch "PUBlished"
 
 ```bash

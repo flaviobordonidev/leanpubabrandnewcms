@@ -1,26 +1,12 @@
-{id: 01-base-29-dynamic-i18n-02-eg_posts_globalize}
-# Cap 29.2 -- Internazionalizziamo gli articoli
+# <a name="top"></a> Cap 24.2 - Internazionalizziamo gli articoli
 
 Usiamo Globalize per avere versioni in più lingue degli articoli di esempio.
 
 
 
-
-## Verifichiamo dove eravamo rimasti
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git log
-$ git status
-```
-
-
-
-
 ## Apriamo il branch 
 
-continuiamo nel branch aperto nel capitolo precedente
-
+Continuiamo nel branch aperto nel capitolo precedente
 
 
 

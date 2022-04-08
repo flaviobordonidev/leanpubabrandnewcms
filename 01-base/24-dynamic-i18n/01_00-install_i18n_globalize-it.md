@@ -3,31 +3,28 @@
 Implementiamo l'internazionalizzazione sul database (i18n dynamic).
 
 
-Risorse interne
 
-* 99-rails_references/data_types and i18n/globalize
+## Risorse interne
 
+- 99-rails_references/data_types and i18n/globalize
+- [Cap. 5.2](01-base-05-mockups_i18n-02-default_language).
 
 
 
 ## Verifichiamo dove eravamo rimasti
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git log
 $ git status
 ```
 
 
 
-
 ## Apriamo il branch "Install Gem Globalize"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout -b igg
 ```
-
 
 
 
@@ -40,54 +37,37 @@ I> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/global
 I>
 I> facciamo riferimento al [tutorial github della gemma](https://github.com/globalize/globalize)
 
-{id: "01-29-01_01", caption: ".../Gemfile -- codice 01", format: ruby, line-numbers: true, number-from: 31}
-```
+
+***codice 01 - .../Gemfile - line:69***
+
+```ruby
 # Rails I18n de-facto standard library for ActiveRecord model/data translation.
-gem 'globalize', '~> 5.3'
+gem 'globalize', '~> 6.1'
 ```
 
-[tutto il codice](#01-29-01_01all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/24-dynamic-i18n/01_01-gemfile.rb)
 
 
 Eseguiamo l'installazione della gemma con bundle
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ bundle install
 ```
 
 
 
-
 ## Parametri di default per l'internazionalizzazione
 
-Lasciamo il default_locale su italiano.
-Attiviamo il fallback sulla lingua di default in caso di mancanza di traduzione. (fallbacks)
+Lasciamo il `default_locale` su italiano.
+Attiviamo il `fallback` sulla lingua di default in caso di mancanza di traduzione.
 
-Entrambe le azioni le abbiamo fatte al [Cap. 5.2](01-base-05-mockups_i18n-02-default_language).
-
-
-
-
-
-
-
----
+Entrambe le azioni le abbiamo fatte al [Cap. 6.2 - default_language](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/02_00-default_language-it.md)
 
 
 
 ## Verifichiamo preview
 
-```bash
-$ sudo service postgresql start
-$ rails s
-```
-
-apriamolo il browser sull'URL:
-
-* https://mycloud9path.amazonaws.com/users
-
-Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messaggi tradotti.
+Ancora non abbiamo cambiamenti da vedere.
 
 
 
@@ -95,7 +75,7 @@ Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messag
 
 ```bash
 $ git add -A
-$ git commit -m "users_controllers notice messages i18n"
+$ git commit -m "Install Globalize - dynamic i18n"
 ```
 
 
@@ -103,7 +83,7 @@ $ git commit -m "users_controllers notice messages i18n"
 ## Pubblichiamo su Heroku
 
 ```bash
-$ git push heroku ui:master
+$ git push heroku igg:main
 ```
 
 
@@ -123,6 +103,6 @@ Lo facciamo nel prossimo capitolo.
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/22-authors-eg_posts/04_00-readers-eg_posts-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/23-trace_read_eg_posts/01_00-todo.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/23-trace_read_eg_posts/01_00-todo.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/24-dynamic-i18n/02_00-globalize_eg_posts-it.md)
