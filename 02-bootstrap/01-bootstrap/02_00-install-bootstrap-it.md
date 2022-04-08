@@ -224,18 +224,11 @@ ubuntu@ubuntufla:~/bl7_0 (bs)$
 
 ## Concludiamo la parte CSS di Bootstrap
 
-You can simply import Bootstrap styles in app/assets/stylesheets/application.scss:
-
-```
-// Custom bootstrap variables must be set or imported *before* bootstrap.
-// here your custom bootstrap variables...
-@import "bootstrap";
-```
-
-That's it for the CSS part. Running rails assets:precompile will generate what you want.
-
+> Importiamo il *Bootstrap style* (`@import "bootstrap";`) in `app/assets/stylesheets/application.scss`.
+> That's it for the CSS part. Running `rails assets:precompile` will generate what you want.
+>
 > The available *bootstrap variables* can be found [here](https://github.com/twbs/bootstrap-rubygem/blob/master/assets/stylesheets/bootstrap/_variables.scss).
-
+>
 > Make sure the file has *.scss* extension. If you have just generated a new Rails app, it may come with a *.css* file instead. If this file exists, it will be served instead of Sass, so rename it:
 >
 > `$ mv app/assets/stylesheets/application.css app/assets/stylesheets/application.scss`
@@ -393,7 +386,7 @@ $ rails s
 
 apriamolo il browser sull'URL:
 
-* http://192.168.64.3:3000/
+- http://192.168.64.3:3000/
 
 Vediamo che il pulsante di *logout* è già in stile bootstrap.
 
