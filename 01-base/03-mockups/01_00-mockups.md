@@ -3,6 +3,9 @@
 I mockups sono delle pagine statiche di esempio usate per verificare la GUI (Graphic User Interface).
 Servono principalmente in fase di sviluppo e sono un buon modo di interfacciamento tra Graphic Designer e Code Developper.
 
+***
+Potremmo chiamarle: `EgPages` invece di "mockups". (Pagine di esempio)
+***
 
  
 ## Verifichiamo dove eravamo rimasti
