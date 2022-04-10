@@ -58,3 +58,8 @@ The rational for inlining the source maps with your minified files is that the b
 
 
 
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/01-install/04_00-bootstrap_icons-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/02-components/01_00-tooltips.md)
