@@ -34,7 +34,7 @@ Per creare un layout usiamo:
 - Row       (viola)
 - Columns   (blu)
 
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/05_fig01-grid_overview.png)
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/02-components/01_fig01-grid_overview.png)
 
 
 
