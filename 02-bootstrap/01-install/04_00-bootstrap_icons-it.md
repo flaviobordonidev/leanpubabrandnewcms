@@ -49,12 +49,12 @@ Bootstrap Icons are SVGs, so you can include them into your HTML in a few ways d
       </svg>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/01-install/04_01-views-mockups-bs_icons.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/01-install/03_00-bootstrap_javascript-it.md)
 
 
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/01-bootstrap/02_00-install-bootstrap-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/01-install/03_00-bootstrap_javascript-it.md)
  | [top](#top) |
 [next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/01-bootstrap/04_00-bootstrap_tests-it.md)
