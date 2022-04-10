@@ -1,6 +1,7 @@
 # <a name="top"></a> Cap 1.3 - Attiviamo il javascript di Bootstrap
 
 Implementiamo la parte javascript di Bootstrap.
+Completiamo la parte di installazione di boostrap aggiungendo la funzionalità "inline" per il css solo lato development perché ci aiuta in fase di debug.
 
 
 
