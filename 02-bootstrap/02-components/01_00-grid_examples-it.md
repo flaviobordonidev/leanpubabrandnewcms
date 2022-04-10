@@ -1,7 +1,11 @@
-{id: 01-base-21-bootstrap-01-bootstrap_story}
-# Cap 21.4 -- Bootstrap Grid
+# <a name="top"></a> Cap 2.1 - Bootstrap Grid
 
-Implementiamo la grid bootstrap nella nostra pagina mockups/page_a
+Implementiamo la grid bootstrap nella nostra pagina `mockups/bs_grid`
+
+
+## Risorse esterne
+
+- esempi dal [sito ufficiale di BootStrap](https://getbootstrap.com/docs).
 
 
 
@@ -13,15 +17,10 @@ continuiamo con il branch aperto nel capitolo precedente
 
 ## La Griglia
 
-Il componente principale di bootstrap: la griglia 'responsive'. Bootstrap include fra i suoi strumenti una griglia responsiva a 12 colonne talmente flessibile e potente che spesso viene utilizzata da sola.
+Il componente principale di bootstrap: la griglia *responsive*. Bootstrap include fra i suoi strumenti una griglia responsiva a 12 colonne talmente flessibile e potente che spesso viene utilizzata da sola.
 
-La griglia è fatta di righe e colonne, le righe (.row) devono essere collocate all’interno di un contenitore che può essere a larghezza fissa (.container)
-o a larghezza fluida (container-fluid), questo garantisce il corretto allineamento e padding degli elementi interni.
-
-Proviamo gli esempi scaricati direttamente dal [sito ufficiale di BootStrap](https://getbootstrap.com/docs).
-
-Andiamo su Layout -> Grid.
-
+La griglia è fatta di righe e colonne, le righe (`.row`) devono essere collocate all’interno di un contenitore che può essere a larghezza fissa (`.container`)
+o a larghezza fluida (`container-fluid`), questo garantisce il corretto allineamento e padding degli elementi interni.
 
 
 La griglia ci permette di creare diversi scenari a seconda della dimensione degli apparati su cui sono visualizzati.
