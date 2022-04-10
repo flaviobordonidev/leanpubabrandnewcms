@@ -99,7 +99,7 @@ ubuntu@ubuntufla:~/bl7_0 (bs)$
 
 
 
-## Verifichiamo il *viewpoint*
+## Verifichiamo il *viewport*
 
 Così come consigliato nel [Bootstrap sito ufficiale: Starter template](https://getbootstrap.com/docs/5.1/getting-started/introduction/#starter-template) è importante assegnare il ***viewport*** perché è questo che gestisce la parte **responsive** di bootstrap.
 
