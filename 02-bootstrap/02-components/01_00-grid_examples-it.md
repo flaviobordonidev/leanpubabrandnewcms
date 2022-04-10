@@ -5,11 +5,9 @@ Implementiamo la grid bootstrap nella nostra pagina mockups/page_a
 
 
 
-
 ## Apriamo il branch
 
 continuiamo con il branch aperto nel capitolo precedente
-
 
 
 

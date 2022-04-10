@@ -3,6 +3,8 @@
 Implementiamo la parte javascript di Bootstrap.
 Completiamo la parte di installazione di boostrap aggiungendo la funzionalità "inline" per il css solo lato development perché ci aiuta in fase di debug.
 
+Vediamo che l'installazione di BootStrap è andata a buon fine sia lato *stylesheets (scss)* che *javascript (js)*.
+
 
 
 ## Inseriamo il nav_bar
