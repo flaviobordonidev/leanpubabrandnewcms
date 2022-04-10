@@ -37,9 +37,6 @@ Per creare un layout usiamo:
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/02-components/01_fig01-grid_overview.png)
 
 
-> Affinché i Breakpoints funzionino è importante che sia presente il *viewport* `<meta name="viewport" content="width=device-width, initial-scale=1">` nella view. (`.../app/views/layouts/application.html.erb`)
-
-
 
 ## Grid: Breakpoints
 
@@ -53,6 +50,11 @@ medium            | md            | ≥ 768 px
 large             | lg            | ≥ 992 px
 extra large       | xl            | ≥ 1200 px
 extra extra large | xxl           | ≥ 1400 px
+
+
+> Affinché i Breakpoints funzionino è importante che sia presente il *viewport* `<meta name="viewport" content="width=device-width, initial-scale=1">` nella view.
+> Quindi lo inseriamo in `.../app/views/layouts/application.html.erb`.
+
 
 
 ## Layouts *empty* e *mockups*
