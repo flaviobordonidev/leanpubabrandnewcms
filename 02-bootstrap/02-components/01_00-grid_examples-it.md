@@ -53,7 +53,7 @@ extra extra large | xxl           | ≥ 1400 px
 
 
 > Affinché i Breakpoints funzionino è importante che sia presente il *viewport* `<meta name="viewport" content="width=device-width, initial-scale=1">` nella view.
-> Quindi lo inseriamo in `.../app/views/layouts/application.html.erb`.
+> Per questo lo abbiamo inserito in *.../app/views/layouts/application.html.erb*.
 
 
 
