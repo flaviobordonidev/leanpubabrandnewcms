@@ -57,4 +57,4 @@ Bootstrap Icons are SVGs, so you can include them into your HTML in a few ways d
 
 [<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/01-install/03_00-bootstrap_javascript-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/01-bootstrap/05_00-inline_source_maps.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/01-install/05_00-inline_source_maps.md)
