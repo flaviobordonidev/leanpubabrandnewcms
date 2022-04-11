@@ -14,8 +14,10 @@ Usiamo la gemma `mobility`
 
 ## Risorse interne
 
-- 99-rails_references/data_types and i18n/globalize
+- [Mobility - sito ufficiale](https://github.com/shioyama/mobility)
+- [Translating with Mobility](https://dejimata.com/2017/3/3/translating-with-mobility)
 - [Cap. 5.2](01-base-05-mockups_i18n-02-default_language).
+- [Migrating from Globalize](https://github.com/shioyama/mobility/wiki/Migrating-from-Globalize)
 
 
 

@@ -57,3 +57,9 @@ Copiamo poi sulla nostra view *page_a* il codice dei quattro pulsanti con *toolt
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/03_01-views-layouts-application.html.erb)
 
+
+
+<h1>Hello World</h1>
+<button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+  Tooltip on top
+</button>

@@ -6,6 +6,7 @@ Implementiamo la grid bootstrap nella nostra pagina `mockups/bs_grid`
 ## Risorse esterne
 
 - esempi dal [sito ufficiale di BootStrap](https://getbootstrap.com/docs).
+- [Bootstrap 5 tutorial - 20:01](https://www.youtube.com/watch?v=rQryOSyfXmI&list=PLl1gkwYU90QkvmT4uLM5jzLsotJZtLHgW)
 
 
 
@@ -19,8 +20,7 @@ continuiamo con il branch aperto nel capitolo precedente
 
 Il componente principale di bootstrap: la griglia *responsive*. Bootstrap include fra i suoi strumenti una griglia responsiva a 12 colonne talmente flessibile e potente che spesso viene utilizzata da sola.
 
-La griglia è fatta di righe e colonne, le righe (`.row`) devono essere collocate all’interno di un contenitore che può essere a larghezza fissa (`.container`)
-o a larghezza fluida (`container-fluid`), questo garantisce il corretto allineamento e padding degli elementi interni.
+La griglia è fatta di righe e colonne, le righe (`.row`) devono essere collocate all’interno di un contenitore che può essere a larghezza fissa (`.container`) o a larghezza fluida (`container-fluid`), questo garantisce il corretto allineamento e padding degli elementi interni.
 
 
 La griglia ci permette di creare diversi scenari a seconda della dimensione degli apparati su cui sono visualizzati.
@@ -57,13 +57,35 @@ extra extra large | xxl           | ≥ 1400 px
 
 
 
+## Esempio bs_grid_a
+
+Primo esempio della griglia di bootstrap.
+
+Prendiamo tutto il codice <html> da un esempio di uso di bootstrap senza Ruby on Rails.
+
+***codice 01 - .../app/views/mockups/bs_grid_a.html.erb - line:1***
+
+```html+erb
+
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/05_01-views-mockups-bs_grid_a.html.erb)
+
+
+Riadattiamo questo codice alla nostra applicazione su Ruby on Rails.
 
 
 
 
-## Esempio 1
+```bash
+$ rails assets:precompile
+```
 
-- [Bootstrap 5 tutorial - 20:01](https://www.youtube.com/watch?v=rQryOSyfXmI&list=PLl1gkwYU90QkvmT4uLM5jzLsotJZtLHgW)
+
+
+##
+
+
 
 Creiamo una nuova views in *mockups*, la inseriamo nel *mockups_controller.rb* e nel *routes.rb*.
 
@@ -87,6 +109,26 @@ Creiamo una nuova views in *mockups*, la inseriamo nel *mockups_controller.rb* e
 
 
 
+## Margine e Padding
+
+Vediamo che il margine è spazio lasciato all'esterno dell'elemento a cui lo applichiamo.
+il padding invece è spazio lasciato all'interno dell'elemento a cui lo applichiamo.
+
+ml-1 = margine left 1 unità
+mt-1 = margine top 1 unità
+mr-1 = margine right 1 unità
+mb-1 = margine bottom 1 unità
+my-1 = margine verticale (top+bottom) 1 unità
+mx-1 = margine orizzontale (left+right) 1 unità
+m-1  = margine globale (left+top+right+bottom) 1 unità
+
+pl-1 = padding left 1 unità
+pt-1 = padding top 1 unità
+pr-1 = padding right 1 unità
+pb-1 = padding bottom 1 unità
+py-1 = padding verticale (top+bottom) 1 unità
+px-1 = padding orizzontale (left+right) 1 unità
+p-1  = padding globale (left+top+right+bottom) 1 unità
 
 
 
@@ -406,7 +448,7 @@ $ git commit -m "Implement bootstrap grid on mockups page_a"
 
 {caption: "terminal", format: bash, line-numbers: false}
 ```
-$ git push heroku bs:master
+$ git push heroku bs:main
 ```
 
 
@@ -418,7 +460,7 @@ se abbiamo finito le modifiche e va tutto bene:
 
 {caption: "terminal", format: bash, line-numbers: false}
 ```
-$ git checkout master
+$ git checkout main
 $ git merge bs
 $ git branch -d bs
 ```
@@ -430,7 +472,7 @@ $ git branch -d bs
 
 {caption: "terminal", format: bash, line-numbers: false}
 ```
-$ git push origin master
+$ git push origin main
 ```
 
 
