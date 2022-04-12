@@ -192,22 +192,23 @@ andiamo con il browser sull'URL:
 Vediamo che il margine è spazio lasciato all'esterno dell'elemento a cui lo applichiamo.
 il padding invece è spazio lasciato all'interno dell'elemento a cui lo applichiamo.
 
-
-- ml-1 = margine left 1 unità
-- mt-1 = margine top 1 unità
-- mr-1 = margine right 1 unità
-- mb-1 = margine bottom 1 unità
-- my-1 = margine verticale (top+bottom) 1 unità
-- mx-1 = margine orizzontale (left+right) 1 unità
-- m-1  = margine globale (left+top+right+bottom) 1 unità
-
-- pl-1 = padding left 1 unità
-- pt-1 = padding top 1 unità
-- pr-1 = padding right 1 unità
-- pb-1 = padding bottom 1 unità
-- py-1 = padding verticale (top+bottom) 1 unità
-- px-1 = padding orizzontale (left+right) 1 unità
-- p-1  = padding globale (left+top+right+bottom) 1 unità
+acronimo | descrizione
+---------|-------------------------------------------------
+ml-1     | margine left 1 unità
+mt-1     | margine top 1 unità
+mr-1     | margine right 1 unità
+mb-1     | margine bottom 1 unità
+my-1     | margine verticale (top+bottom) 1 unità
+mx-1     | margine orizzontale (left+right) 1 unità
+m-1      | margine globale (left+top+right+bottom) 1 unità
+         |   
+pl-1     | padding left 1 unità
+pt-1     | padding top 1 unità
+pr-1     | padding right 1 unità
+pb-1     | padding bottom 1 unità
+py-1     | padding verticale (top+bottom) 1 unità
+px-1     | padding orizzontale (left+right) 1 unità
+p-1      | padding globale (left+top+right+bottom) 1 unità
 
 
 > Se usiamo `my-2` su due righe adiacenti **non** si sommano i margini. Resta sempre di due unità.<br/>
