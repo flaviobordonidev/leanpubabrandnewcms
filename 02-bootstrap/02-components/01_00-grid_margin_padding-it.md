@@ -57,22 +57,135 @@ extra extra large | xxl           | ≥ 1400 px
 
 
 
-## Esempio bs_grid_a
+## Esempio *raw*
 
-Primo esempio della griglia di bootstrap.
+Primo esempio della griglia di bootstrap con tutto il codice <html> da un esempio di uso di bootstrap senza Ruby on Rails.
 
-Prendiamo tutto il codice <html> da un esempio di uso di bootstrap senza Ruby on Rails.
-
-***codice 01 - .../app/views/mockups/bs_grid_a.html.erb - line:1***
+***codice 01 - ...non rails html bs_grid_example.html - line:1***
 
 ```html+erb
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bootstrap 5 Course</title>
 
+    <style>
+      [class*="container"] {
+          background-color: #F433FF;
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/05_01-views-mockups-bs_grid_a.html.erb)
-
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/02-components/01_01-raw_html-bs_grid_example.html.erb)
 
 Riadattiamo questo codice alla nostra applicazione su Ruby on Rails.
+
+
+
+## Prepariamo un layout dedicato
+
+Per gestire la parte `<style> [class*="container"] { ...` che è tra i tags `<head> ... </head>` creiamo un layout dedicato che chiamiamo *bs_demo*.
+
+Duplichiamo il file `.../layouts/application.html.erb` e rinominiamo la copia `.../layouts/bs_demo.html.erb`. 
+
+Inseriamo lo *style* nel view di *layout* personalizzato.
+
+***codice 02 - .../app/views/layouts/bs_demo.html.erb - line:9***
+
+```html+erb
+    <style>
+      [class*="container"] {
+        background-color: #91A181;
+        border: 1px solid #676E5F;
+      }
+      [class*="row"] {
+        background-color: #E5E6D5;
+        border: 1px solid #CCD5AB;
+      }
+      [class*="col"] {
+        background-color: #FCDDFC;
+        border: 1px solid #DA8D6E;
+      }
+    </style>
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/02-components/01_02-views-layouts-bs_demo.html.erb)
+
+
+
+## Creiamo la nuova view
+
+Creiamo la nuova views `bs_grid` ed inseriamo una griglia minima; un container con due righe e due colonne.
+
+***codice 03 - ...views/mockups/bs_grid.html.erb - line:1***
+
+```html+erb
+<div class="container p-3">
+    <div class="row p-2">
+        <div class="col-md-8">Main Content</div>
+        <div class="col-md-4">Sidebar</div>
+    </div>
+    <div class="row p-2 text-center">
+        <div class="col-md-8">Main Content Row2</div>
+        <div class="col-md-4">Sidebar Row2</div>
+    </div>
+</div>
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/02-components/01_01-raw_html-bs_grid_example.html.erb)
+
+
+
+## Attiviamo instradamento
+
+Facciamo in modo che la nuova view `bs_grid` utilizzi il controller layout 
+
+***codice 04 - ...config/routes.rb - line:19***
+
+```ruby
+  get 'mockups/bs_grid'
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/02-components/01_01-raw_html-bs_grid_example.html.erb)
+
+
+
+
+## Attiviamo il nuovo layout sul controller
+
+Facciamo in modo che la nuova view `bs_grid` utilizzi il layout `bs_demo`.
+
+> Con il layout *application* in preview vedremmo le scritte ma non capiremmo la struttura della griglia.
+> Per vederla assegnamo il nuovo layout *bs_demo*.
+
+Aggiorniamo il conroller.
+
+***codice 05 - ...controllers/mockups_controller.rb - line:8***
+
+```ruby
+  def bs_grid
+    render layout: 'bs_demo'
+  end
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/02-components/01_05-controllers-mockups_controller.rb)
+
+
+
+## Verifichiamo preview
+
+```bash
+$ sudo service postgresql start
+$ rails s
+```
+
+andiamo con il browser sull'URL:
+
+- http://192.168.64.3:3000/mockups/bs_grid
+
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/02-components/01_fig02-bs_grid.png)
+
+
 
 
 
@@ -129,6 +242,10 @@ pb-1 = padding bottom 1 unità
 py-1 = padding verticale (top+bottom) 1 unità
 px-1 = padding orizzontale (left+right) 1 unità
 p-1  = padding globale (left+top+right+bottom) 1 unità
+
+
+> Se usiamo `my-2` su due righe adiacenti **non** si sommano i margini. Resta sempre di due unità.<br/>
+> Lo stesso vale se diamo `mb-2` alla riga sopra e `mt-2` a quella sotto. Resta sempre di due unità.
 
 
 
