@@ -1,0 +1,10 @@
+
+
+
+
+
+```bash
+$ rails assets:precompile
+```
+
+

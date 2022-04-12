@@ -132,7 +132,7 @@ Creiamo la nuova views `bs_grid` ed inseriamo una griglia minima; un container c
 </div>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/02-components/01_01-raw_html-bs_grid_example.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/02-components/01_03-views-mockups-bs_grid.html.erb)
 
 
 
@@ -146,7 +146,7 @@ Facciamo in modo che la nuova view `bs_grid` utilizzi il controller layout
   get 'mockups/bs_grid'
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/02-components/01_01-raw_html-bs_grid_example.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/02-components/01_04-config-routes.rb)
 
 
 
@@ -187,41 +187,6 @@ andiamo con il browser sull'URL:
 
 
 
-
-
-
-```bash
-$ rails assets:precompile
-```
-
-
-
-##
-
-
-
-Creiamo una nuova views in *mockups*, la inseriamo nel *mockups_controller.rb* e nel *routes.rb*.
-
-***codice 01 - .../app/views/mockups/bs_grid_a.html.erb - line:1***
-
-```html+erb
-
-```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/05_01-views-mockups-bs_grid_a.html.erb)
-
-
-
-***codice 02 - .../app/controllers/mockups_controller.rb - line:1***
-
-```ruby
-
-```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/21-bootstrap/05_01-views-mockups-bs_grid_a.html.erb)
-
-
-
 ## Margine e Padding
 
 Vediamo che il margine è spazio lasciato all'esterno dell'elemento a cui lo applichiamo.
@@ -246,6 +211,30 @@ p-1  = padding globale (left+top+right+bottom) 1 unità
 
 > Se usiamo `my-2` su due righe adiacenti **non** si sommano i margini. Resta sempre di due unità.<br/>
 > Lo stesso vale se diamo `mb-2` alla riga sopra e `mt-2` a quella sotto. Resta sempre di due unità.
+
+
+Inseriamo margini e padding per rendere più evidente la griglia e per personalizzarci gli spazi tra le varie sezioni che creeremo di volta in volta ed in cui inseriamo vari esempi di griglia.
+
+***codice 06 - ...views/mockups/bs_grid.html.erb - line:1***
+
+```html+erb
+<div class="container p-3">
+    <div class="row p-2">
+        <div class="col-md-8">Main Content</div>
+        <div class="col-md-4">Sidebar</div>
+    </div>
+    <div class="row p-2 text-center">
+        <div class="col-md-8">Main Content Row2</div>
+        <div class="col-md-4">Sidebar Row2</div>
+    </div>
+</div>
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/02-components/01_03-views-mockups-bs_grid.html.erb)
+
+
+
+
 
 
 
