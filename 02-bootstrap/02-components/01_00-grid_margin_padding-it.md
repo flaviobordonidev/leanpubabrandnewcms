@@ -218,21 +218,27 @@ Inseriamo margini e padding per rendere più evidente la griglia e per personali
 ***codice 06 - ...views/mockups/bs_grid.html.erb - line:1***
 
 ```html+erb
+<h1 class="my-3 text-center">Bootstrap Grid</h1>
+<h2 class="my-3 text-center">Example 1</h2>
+<hr class="my-2">
 <div class="container p-3">
     <div class="row p-2">
-        <div class="col-md-8">Main Content</div>
-        <div class="col-md-4">Sidebar</div>
+        <div class="col">Prima colonna della riga uno</div>
+        <div class="col">Seconda colonna della riga uno</div>
     </div>
-    <div class="row p-2 text-center">
-        <div class="col-md-8">Main Content Row2</div>
-        <div class="col-md-4">Sidebar Row2</div>
+    <div class="row p-5 text-center">
+        <div class="col">Prima colonna della riga due</div>
+        <div class="col">Seconda colonna della riga due</div>
+        <div class="col">terza colonna della riga due</div>
     </div>
 </div>
+<hr class="my-2">
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/02-components/01_03-views-mockups-bs_grid.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/02-components/01_06-views-mockups-bs_grid.html.erb)
 
 
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/02-components/01_fig02-bs_grid.png)
 
 
 
