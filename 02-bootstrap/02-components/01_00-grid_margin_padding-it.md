@@ -201,7 +201,7 @@ mb-1     | margine bottom 1 unità
 my-1     | margine verticale (top+bottom) 1 unità
 mx-1     | margine orizzontale (left+right) 1 unità
 m-1      | margine globale (left+top+right+bottom) 1 unità
-         |   
+---      | ---  
 pl-1     | padding left 1 unità
 pt-1     | padding top 1 unità
 pr-1     | padding right 1 unità
