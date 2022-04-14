@@ -1,6 +1,19 @@
+# <a name="top"></a> Cap 2.1 - Bootstrap Gutter
+
+Per completare la gestione della griglia in ambito *responsive* è importante vedere l'uso del parametro *gutter*.
 
 
 
+## Risorse esterne
+
+- esempi dal [sito ufficiale di BootStrap](https://getbootstrap.com/docs).
+- [Bootstrap 5 tutorial - 20:01](https://www.youtube.com/watch?v=rQryOSyfXmI&list=PLl1gkwYU90QkvmT4uLM5jzLsotJZtLHgW)
+
+
+
+## Apriamo il branch
+
+continuiamo con il branch aperto nel capitolo precedente
 
 
 
@@ -10,7 +23,7 @@ Il *gutter* è lo spazio delle ***sole*** colonne all'interno di una riga (row).
 
 > Il *gutter* ***non*** ha effetto nella distanze in verticale tra le righe.
 
-Il gutter verticale si ha solo quando le colonne di una stessa riga si mettono una sotto l'altra in risposta ad un comportamento *responsive*. (Ad esempio stringo il browser o visualizzo su uno smart-phone)
+Il gutter verticale si ha solo quando le colonne di una stessa riga si mettono una sotto l'altra in risposta ad un comportamento *responsive*. (Ad esempio stringo il browser o visualizzo su uno smart-phone.)
 
 acronimo | descrizione
 ---------|-------------------------------------------------
@@ -18,7 +31,7 @@ gy-1     | spazio tra colonne in verticale (top+bottom) 1 unità
 gx-1     | spazio tra colonne in orizzontale (left+right) 1 unità
 g-1      | spazio tra colonne globale (left+top+right+bottom) 1 unità
 
-> In bootstrap 4 si usava la classe *.gutter* invece su bootstrap 5 si usa "*.g\**".
+> In bootstrap 4 si usava la classe *.gutter* invece su bootstrap 5 si usa la classe *.g*.
 
 Prestiamo attenzione quando usiamo il *gutter* perché l'area di influenza della colonna si estende anche al di fuori del container come vediamo nell'esempio in basso con `gy-4`.
 
