@@ -37,7 +37,13 @@ Prestiamo attenzione quando usiamo il *gutter* perché l'area di influenza della
 
 Forziamo due colonne ad andare a capo sulla stessa riga impostando 24 unità invece delle 12 che sono previste sulla griglia da bootstrap.
 
-***codice 06 - ...views/mockups/bs_grid.html.erb - line:1***
+
+
+## Creiamo la nuova view
+
+Creiamo la nuova views `bs_gutter` con degli esempi di *gutter*.
+
+***codice 01 - ...views/mockups/bs_gutter.html.erb - line:1***
 
 ```html+erb
 <h2 class="my-3 text-center">Gutter 1</h2>
@@ -76,10 +82,8 @@ Forziamo due colonne ad andare a capo sulla stessa riga impostando 24 unità inv
 </div>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/02-components/01_06-views-mockups-bs_grid.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/02-components/01_03-views-mockups-bs_grid.html.erb)
 
-
-![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/02-components/02_fig01-bs_grid.png)
 
 
 
@@ -99,4 +103,55 @@ Il seguente esempio è più corretto:
 
 > In questo caso su schermo largo le ho tutte e 4 allineate su schermo medio due sopra e due sotto e su schermo piccolo tutte una sotto l'altra.
 
+
+
+
+## Attiviamo instradamento
+
+Facciamo in modo che la nuova view `bs_grid` utilizzi il controller layout 
+
+***codice 04 - ...config/routes.rb - line:19***
+
+```ruby
+  get 'mockups/bs_gutter'
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/02-components/01_04-config-routes.rb)
+
+
+
+
+## Attiviamo il nuovo layout sul controller
+
+Facciamo in modo che la nuova view `bs_grid` utilizzi il layout `bs_demo`.
+
+> Con il layout *application* in preview vedremmo le scritte ma non capiremmo la struttura della griglia.
+> Per vederla assegnamo il nuovo layout *bs_demo*.
+
+Aggiorniamo il conroller.
+
+***codice 05 - ...controllers/mockups_controller.rb - line:8***
+
+```ruby
+  def bs_gutter
+    render layout: 'bs_demo'
+  end
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/02-components/01_05-controllers-mockups_controller.rb)
+
+
+
+## Verifichiamo preview
+
+```bash
+$ sudo service postgresql start
+$ rails s
+```
+
+andiamo con il browser sull'URL:
+
+- http://192.168.64.3:3000/mockups/bs_grid
+
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/02-bootstrap/02-components/01_fig02-bs_grid.png)
 
