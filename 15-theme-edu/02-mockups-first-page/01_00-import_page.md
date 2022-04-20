@@ -31,7 +31,11 @@ continuiamo con il branch aperto nel capitolo precedente
 
 ## Scegliamo la pagina
 
-La pagina che abbiamo scelto è *index-4* vediamo tutto il codice <html> preso così com'è dal tema Eduport, senza predisposizione per Ruby on Rails.
+La pagina che abbiamo scelto è *index-4*.
+
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_fig01-index-4.png)
+
+Vediamo tutto il codice <html> preso così com'è dal tema Eduport, senza predisposizione per Ruby on Rails.
 
 ***codice 01 - ...non rails html index-4.html - line:1***
 
