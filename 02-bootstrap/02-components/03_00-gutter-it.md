@@ -6,8 +6,7 @@ Per completare la gestione della griglia in ambito *responsive* è importante ve
 
 ## Risorse esterne
 
-- esempi dal [sito ufficiale di BootStrap](https://getbootstrap.com/docs).
-- [Bootstrap 5 tutorial - 20:01](https://www.youtube.com/watch?v=rQryOSyfXmI&list=PLl1gkwYU90QkvmT4uLM5jzLsotJZtLHgW)
+- [sito ufficiale di BootStrap: Gutters](https://getbootstrap.com/docs/5.1/layout/gutters/).
 
 
 

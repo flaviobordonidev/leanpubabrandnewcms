@@ -138,7 +138,7 @@ Creiamo la nuova views `bs_grid` ed inseriamo una griglia minima; un container c
 
 ## Attiviamo instradamento
 
-Facciamo in modo che la nuova view `bs_grid` utilizzi il controller layout 
+Facciamo in modo che la nuova view `bs_grid` utilizzi il controller mockups. 
 
 ***codice 04 - ...config/routes.rb - line:19***
 
