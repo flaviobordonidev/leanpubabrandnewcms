@@ -67,6 +67,7 @@ Il risultato finale è quindi:
       - functions.js
 
 
+
 ## Impostiamo gli helpers per puntare all'asset_pipeline
 
 Le chiamate ai files di stylesheet e di javascript sono diverse tra HTML e Rails. Rails usa gli helpers. Adattiamo quindi le chiamate per rispondere alle convenzioni Rails.
@@ -78,7 +79,8 @@ Inseriamo gli helpers che puntano all'asset_pipeline sia per stylesheets che jav
 - da `<script type="text/javascript" src="js/xxx.js"></script>`  <br/>
   a  `<%= javascript_include_tag 'pofo/js/xxx', 'data-turbolinks-track' => true %>`
 
-Cambiamo il principale.
+
+Impostiamoli da layouts/edu_demo
 
 da 
 
@@ -104,6 +106,53 @@ Copiamo il file *style.css* dal tema alla nostra app.
 
 
 
+## Precompile per lo stylesheets
+
+Nell'asset_pipeline l'unico file che si può chiamare direttamente dalla view è "assets/stylesheets/application.scss" questo file è detto file manifest ed è da questo file che dovremmo chiamare tutti gli altri.
+Nel nostro caso siccome richiamiamo i vari files di style direttamente dalla view dobbiamo dichiararle all'applicazione. Questa "dichiarazione" è chiamata "precompile". 
+
+
+
+Per i nuovi files si può usare tutte le volte che si fanno modifiche il comando
+
+```bash
+$ rails assets:precompile
+```
+
+
+Oppure si può aggiungere al config/application che fa in automatico il precompile.
+
+
+
+{id: "11-02-02_02", caption: ".../config/application.rb -- codice 02", format: ruby, line-numbers: true, number-from: 21}
+```
+    # precompile assets pofo stylesheets                                                             
+    config.assets.precompile += ['pofo/css/animate.css',
+                                 'pofo/css/bootstrap.min.css',
+                                 'pofo/css/et-line-icons.css',
+                                 'pofo/css/font-awesome.min.css',
+                                 'pofo/css/themify-icons.css',
+                                 'pofo/css/swiper.min.css',
+                                 'pofo/css/justified-gallery.min.css',
+                                 'pofo/css/magnific-popup.css',
+                                 'pofo/revolution/css/settings.css',
+                                 'pofo/revolution/css/layers.css',
+                                 'pofo/revolution/css/navigation.css',
+                                 'pofo/css/bootsnav.css',
+                                 'pofo/css/style.css',
+                                 'pofo/css/responsive.css'
+                                ]
+```
+
+Non seguiamo la convenzione Rails dell'asset_pipeline che prevede di passare per i files manifest perché non li vogliamo attivare per tutta l'applicazione, ma vogliamo richiamarli solo dalle pagine in cui è espressamente fatta la chiamata.
+
+I> Attenzione!
+I>
+I> Modificando application.rb è necessario riavviare il server rails (rails s ...) per includere le modifiche.
+
+
+
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/02_fig01-edu_index_4.png)
 
 
 
