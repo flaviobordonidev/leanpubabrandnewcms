@@ -24,80 +24,80 @@ continuiamo con il branch aperto nel capitolo precedente
 
 
 
+## Copiamo i files dell'asset_pipeline (stylesheets e javascripts)
+
+Nel tema *Eduport* all'interno della cartella *template/assets* ci sono le seguenti cartelle:
+
+- ***css*** -> questa cartella **non** ci serve perché ha i sorgenti già compilati
+- ***images*** -> copiamo il contenuto in ***.../app/assets/images/edu/***
+- ***js*** -> copiamo il contenuto in ***.../app/javascript/edu/***
+- ***scss*** -> copiamo il contenuto in ***.../app/assets/stylesheets/edu/scss/***
+- ***vendor*** -> copiamo il contenuto in ***.../app/assets/stylesheets/edu/vendor/***
+
+Una volta copiati tutti i contenuti delle quattro cartelle nelle rispettive cartelle della nostra app siamo pronti per attivarle.
+
+> le varie cartelle ***edu*** le creiamo noi e poi ci copiamo i vari files.
+
+Il risultato finale è quindi:
+
+- app
+  - assets
+    - images
+      - edu
+        - about
+        - avatar
+        - bg
+        - ...
+        - logo.svg
+    - stylesheets
+      - edu
+        - scss
+          - components
+          - custom
+          - dark
+          - ...
+          - style.scss
+        - vendor
+          - animate
+          - aos
+          - ...
+          - tiny-slider
+  - javascript
+    - edu
+      - functions.js
+
+
 ## Impostiamo gli helpers per puntare all'asset_pipeline
 
 Le chiamate ai files di stylesheet e di javascript sono diverse tra HTML e Rails. Rails usa gli helpers. Adattiamo quindi le chiamate per rispondere alle convenzioni Rails.
 
-Inseriamo gli helpers che puntano all'asset_pipeline sia per stylesheets che javascripts.
-Per far questo sostituiamo le chiamate (da -> a):
+Inseriamo gli helpers che puntano all'asset_pipeline sia per stylesheets che javascripts:
 
 - da `<link rel="stylesheet" href="css/xxx.css" />` <br/>
   a  `<%= stylesheet_link_tag 'pofo/css/xxx', media: 'all', 'data-turbolinks-track': 'reload' %>`
 - da `<script type="text/javascript" src="js/xxx.js"></script>`  <br/>
   a  `<%= javascript_include_tag 'pofo/js/xxx', 'data-turbolinks-track' => true %>`
 
-Lo facciamo per tutte le chiamate che incontriamo
+Cambiamo il principale.
 
-{id: "11-02-02_01", caption: ".../views/mockups/blog_clean_full_width.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 1}
-```
-        <!-- animation -->
-        <%= stylesheet_link_tag 'pofo/css/animate', media: 'all', 'data-turbolinks-track': 'reload' %>
-        <!-- bootstrap -->
-        <%= stylesheet_link_tag 'pofo/css/bootstrap.min', media: 'all', 'data-turbolinks-track': 'reload' %>
-        <!-- et line icon --> 
-        <%= stylesheet_link_tag 'pofo/css/et-line-icons', media: 'all', 'data-turbolinks-track': 'reload' %>
-        <!-- font-awesome icon -->
-        <%#= stylesheet_link_tag 'pofo/css/font-awesome.min', media: 'all', 'data-turbolinks-track': 'reload' %>
-        <%= stylesheet_link_tag 'pofo/css/font-awesome-free', media: 'all', 'data-turbolinks-track': 'reload' %>
-        <%#= stylesheet_pack_tag 'application_mockup_pofo', media: 'all', 'data-turbolinks-track': 'reload' %><!-- serve per heroku. In locale non serve perché indichiamo lo stile direttamente da "packs/application.js"-->
-        <!-- themify icon -->
-        <%= stylesheet_link_tag 'pofo/css/themify-icons', media: 'all', 'data-turbolinks-track': 'reload' %>
-        <!-- swiper carousel -->
-        <%= stylesheet_link_tag 'pofo/css/swiper.min', media: 'all', 'data-turbolinks-track': 'reload' %>
-        <!-- justified gallery  -->
-        <%= stylesheet_link_tag 'pofo/css/justified-gallery.min', media: 'all', 'data-turbolinks-track': 'reload' %>
-        <!-- magnific popup -->
-        <%= stylesheet_link_tag 'pofo/css/magnific-popup', media: 'all', 'data-turbolinks-track': 'reload' %>
-        <!-- revolution slider -->
-        <%#= stylesheet_link_tag 'pofo/revolution/css/settings', media: 'screen', 'data-turbolinks-track': 'reload' %>
-        <%#= stylesheet_link_tag 'pofo/revolution/css/layers', media: 'all', 'data-turbolinks-track': 'reload' %>
-        <%#= stylesheet_link_tag 'pofo/revolution/css/navigation', media: 'all', 'data-turbolinks-track': 'reload' %>
-        <!-- bootsnav -->
-        <%= stylesheet_link_tag 'pofo/css/bootsnav', media: 'all', 'data-turbolinks-track': 'reload' %>
-        <!-- style -->
-        <%= stylesheet_link_tag 'pofo/css/style', media: 'all', 'data-turbolinks-track': 'reload' %>
-        <!-- responsive css -->
-        <%= stylesheet_link_tag 'pofo/css/responsive', media: 'all', 'data-turbolinks-track': 'reload' %>
+da 
+
+```html
+	<!-- Theme CSS -->
+	<link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">
 ```
 
+a 
 
-{caption: ".../views/mockups/blog_clean_full_width.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 1}
-```
-        <!-- javascript libraries -->
-        <%= javascript_include_tag 'pofo/js/jquery', 'data-turbolinks-track' => true %>
-        <%= javascript_include_tag 'pofo/js/modernizr', 'data-turbolinks-track' => true %>
-        <%= javascript_include_tag 'pofo/js/bootstrap.min', 'data-turbolinks-track' => true %>
-        <%= javascript_include_tag 'pofo/js/jquery.easing.1.3', 'data-turbolinks-track' => true %>
-        <%= javascript_include_tag 'pofo/js/skrollr.min', 'data-turbolinks-track' => true %>
-        <%= javascript_include_tag 'pofo/js/smooth-scroll', 'data-turbolinks-track' => true %>
-        <%= javascript_include_tag 'pofo/js/jquery.appear', 'data-turbolinks-track' => true %>
-        <!-- menu navigation -->
-        <%= javascript_include_tag 'pofo/js/bootsnav.js', 'data-turbolinks-track' => true %>
-        <%= javascript_include_tag 'pofo/js/jquery.nav.js', 'data-turbolinks-track' => true %>
-
-        <!-- animation -->
-        <%= javascript_include_tag 'pofo/js/wow.min', 'data-turbolinks-track' => true %>
-.
-.
-.
-        <!-- setting -->
-        <%= javascript_include_tag 'pofo/js/main', 'data-turbolinks-track' => true %>
-
+```html+erb
+	<!-- Theme CSS -->
+  <%= stylesheet_link_tag 'edu/css/style.css', media: 'all', 'data-turbolinks-track': 'reload', id: 'style-switch' %>
 ```
 
 [tutto il codice](#11-02-02_01all)
 
 
+Copiamo il file *style.css* dal tema alla nostra app.
 
 
 
