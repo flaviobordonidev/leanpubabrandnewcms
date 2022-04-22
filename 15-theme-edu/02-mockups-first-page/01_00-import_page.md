@@ -156,11 +156,37 @@ Andiamo con il browser sull'URL:
 
 
 
+## Archiviamo su git
+
+```bash
+$ git add -A
+$ git commit -m "Implement Eduport index-4"
+```
+
+
+
+## Pubblichiamo su Heroku
+
+```bash
+$ git push heroku bs:main
+```
+
+
+
+## Chiudiamo il branch
+
+Lo chiudiamo più avanti.
+
+
+
+## Facciamo un backup su Github
+
+Lo facciamo più avanti.
 
 
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_00-steps.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_00-import_page.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_00-steps.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/02_00-theme_stylesheet.md)
