@@ -28,8 +28,8 @@ Adesso reimpostiamo i puntamenti in modo da poterle visualizzare sulle view.
 Su rails per richiamare le immagini che sono sull'asset_pipeline si usano fondamentalmente:
 
 ```html+erb
-- <%= image_tag "...", alt: "Canvas Logo" %>
-- <%= image_path('...') %>
+● <%= image_tag "...", alt: "Canvas Logo" %>
+● <%= image_path('...') %>
 ```
 
 esempi da codice HTML (h :) a codice Rails (r :)
