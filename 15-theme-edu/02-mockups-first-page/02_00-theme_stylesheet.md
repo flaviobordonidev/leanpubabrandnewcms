@@ -158,6 +158,81 @@ I> Modificando application.rb è necessario riavviare il server rails (rails s .
 
 
 
+---
+
+
+
+## Risolviamo un problema su una linea di codice scss
+
+Domanda
+
+I’m installing your theme Eduport on Ruby on Rails.
+
+To make it works I had to comment a row of scss code regarding “box-shadow” otherwise I receive the below error:
+
+```bash
+ubuntu@ubuntufla:~/bl7_0 (bs)$rails assets:precompile
+rails aborted!
+SassC::SyntaxError: Error: Function rgb is missing argument $green.
+    on line 78:7 of app/assets/stylesheets/edu/scss/../vendor/bootstrap/scss/mixins/_breakpoints.scss, in mixin `media-breakpoint-down`
+    from line 133:16 of app/assets/stylesheets/edu/scss/custom/_navbar.scss
+    from line 26:9 of app/assets/stylesheets/edu/scss/style.scss
+
+>>      box-shadow: 0px 10px 30px rgb(83 88 93 / 40%);
+
+  ————————————^
+
+/home/ubuntu/bl7_0/app/assets/stylesheets/edu/scss/custom/_navbar.scss:147
+Tasks: TOP => assets:precompile
+```
+
+If I comment the line as the below code everything works fine.
+
+*** …/scss/custom/_navbar.scss line 145 ***
+
+```scss
+    // Responsive dropdown menu without navbar toggle. Collapse will open on .nav-item 
+
+    .navbar-collapse {
+     //box-shadow: 0px 10px 30px rgb(83 88 93 / 40%);
+     position: absolute;
+     left: 0;
+     right: 0;
+     top: 100%;
+     background: $body-bg;
+     border-top: 1px solid rgba(0, 0, 0, 0.1);
+     }
+
+    .navbar-collapse .navbar-nav .nav-item {
+     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+     padding: 8px 30px;
+    }
+```
+
+How can I solve this issue without commenting the line of code?
+
+Thanks
+
+---
+
+Risposta
+
+Hi Flavio,
+
+Try to replace
+
+`box-shadow: 0px 10px 30px rgb(83 88 93 / 40%);`
+
+to
+
+`box-shadow: 0px 10px 30px rgba(83, 88, 93, 0.4);`
+
+in navbar.scss it will work.
+
+Thanks
+
+
+
 ## Verifichiamo preview
 
 ```bash
