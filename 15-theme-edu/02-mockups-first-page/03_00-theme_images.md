@@ -63,30 +63,34 @@ r3: `<%= image_tag "services/main-fbrowser.png", style: "position: absolute; top
 
 > Ruby non accetta il dash `-` direttamente nei nomi dei simboli. 
 > Non possiamo usare `:vari-able` ma dobbiamo usare `:'vari-able'`.
->
-> How to escape a dash `-` in a Ruby symbol?
-> With single quotes `:'a-b'`
+
+Vediamo altri modi di usare il dash `-` nei simboli di Ruby:
+
+Con apici singole:
+
+- `:'a-b'`
 
 usando stringa:
 
-* a-b => "value" # error
-* "a-b" => "value" # ok
-* 'a-b' => "value" # ok
+- `a-b => "value" # error`
+- `"a-b" => "value" # ok`
+- `'a-b' => "value" # ok`
 
 usando simboli:
 
-* :a-b => "value" # error
-* :"a-b" => "value" # ok
-* :'a-b' => "value" # ok
-* a-b: "value" # error
-* "a-b": "value" # error
-* 'a-b': "value" # ok (con nuova sintassi da ruby 1.9) 
+- `:a-b => "value" # error`
+- `:"a-b" => "value" # ok`
+- `:'a-b' => "value" # ok`
+- `a-b: "value" # error`
+- `"a-b": "value" # error`
+- `'a-b': "value" # ok (con nuova sintassi da ruby 1.9)`
 
 Oppure per i puristi:
 
-<%= link_to "Link", link_path, {data: {something: 'value1', somethingelse: 'value2'}} %>
-Questo genera il seguente codice html:
-<a href="/link" data-something='value1' data-somethingelse='value2'>Link</a>
+`<%= link_to "Link", link_path, {data: {something: 'value1', somethingelse: 'value2'}} %>`
+<br/>Questo genera il seguente codice html:<br/>
+
+`<a href="/link" data-something='value1' data-somethingelse='value2'>Link</a>`
 
 
 > Curiosità:<br/>
