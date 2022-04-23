@@ -64,11 +64,7 @@ r3: `<%= image_tag "services/main-fbrowser.png", style: "position: absolute; top
 > Ruby non accetta il dash `-` direttamente nei nomi dei simboli. 
 > Non possiamo usare `:vari-able` ma dobbiamo usare `:'vari-able'`.
 
-Vediamo altri modi di usare il dash `-` nei simboli di Ruby:
-
-Con apici singole:
-
-- `:'a-b'`
+Vediamo tutti i modi di usare il dash `-` nei nomi delle variabili:
 
 usando stringa:
 
