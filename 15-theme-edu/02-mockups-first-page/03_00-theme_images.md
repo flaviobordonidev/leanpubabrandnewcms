@@ -47,18 +47,22 @@ h : `<img src="images/logo.png" data-rjs="images/logo@2x.png" class="logo-dark" 
 r : `<%= image_tag "pofo/logo.png", 'data-rjs': image_path('pofo/logo@2x.png'), class: "logo-dark", alt: "Pofo" %>`
 ```
 
+```html+erb
 h : `<a href="index.html"><img class="footer-logo" src="images/logo-white.png" data-rjs="images/logo-white@2x.png" alt="Pofo"></a>`<br/>
 r : `<a href="index.html"><<%= image_tag "pofo/logo-white.png", class: "footer-logo", 'data-rjs': image_path('pofo/logo-white@2x.png'), alt: "Pofo" %></a>`
+```
 
-h  : `<img src="images/services/main-fbrowser.png" style="position: absolute; top: 0; left: 0;" data-animate="fadeInUp" data-delay="100" alt="Chrome">`
+```html+erb
+h: `<img src="images/services/main-fbrowser.png" style="position: absolute; top: 0; left: 0;" data-animate="fadeInUp" data-delay="100" alt="Chrome">`
 r1 : `<%= image_tag "services/main-fbrowser.png", style: "position: absolute; top: 0; left: 0;", 'data-animate'=> "fadeInUp", 'data-delay'=> "100", alt: "Chrome" %>`
 r2 : `<%= image_tag "services/main-fbrowser.png", style: "position: absolute; top: 0; left: 0;", 'data-animate': "fadeInUp", 'data-delay': "100", alt: "Chrome" %>`
 r3 : `<%= image_tag "services/main-fbrowser.png", style: "position: absolute; top: 0; left: 0;", data: {animate: "fadeInUp", delay: "100"}, alt: "Chrome" %>`
+```
 
-Ruby non accetta il dash "-" direttamente nei nomi dei simboli. Non posso usare :vari-able ma devo usare :'vari-able'. 
+Ruby non accetta il dash `-` direttamente nei nomi dei simboli. Non possiamo usare `:vari-able` ma dobbiamo usare `:'vari-able'`.
 
-How to escape a dash “-” in a Ruby symbol?
-Usa le apici singole :'a-b'
+How to escape a dash `-` in a Ruby symbol?
+Usando le apici singole `:'a-b'`
 
 usando stringa:
 
