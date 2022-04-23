@@ -32,8 +32,10 @@ Su rails per richiamare le immagini che sono sull'asset_pipeline si usano fondam
 
 esempi da codice HTML (h :) a codice Rails (r :)
 
-h : `<img src="images/logo.png" alt="Canvas Logo">`
-r : `<%= image_tag "logo.png", alt: "Canvas Logo" %>`
+code |
+-----|-------
+h    | `<img src="images/logo.png" alt="Canvas Logo">`
+r    | `<%= image_tag "logo.png", alt: "Canvas Logo" %>`
 	
 h : `<div class="swiper-slide dark" style="background-image: url('images/slider/swiper/1.jpg');">`
 r : `<div class="swiper-slide dark" style="background-image: url(<%= image_path('slider/swiper/1.jpg') %>);">`
