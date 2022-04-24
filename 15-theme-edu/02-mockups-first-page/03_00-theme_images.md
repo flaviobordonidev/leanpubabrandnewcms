@@ -105,39 +105,27 @@ La prima immagine è il logo nel menu.
 
 ***codice n/a - ...views/mockups/edu_index_4.html.erb - line:8***
 
-da
-
 ```html+erb
+da
         <img class="light-mode-item navbar-brand-item" src="assets/images/logo.svg" alt="logo">
         <img class="dark-mode-item navbar-brand-item" src="assets/images/logo-light.svg" alt="logo">
-```
-
 a
-
-```html+erb
         <%= image_tag "edu/logo.svg", class: "light-mode-item navbar-brand-item", alt: "logo" %>
         <%= image_tag "edu/logo-light.svg", class: "dark-mode-item navbar-brand-item", alt: "logo" %>
 ```
 
-
-La seconda immagine 
+La seconda immagine.
 
 ***codice n/a - ...views/mockups/edu_index_4.html.erb - line:85***
 
+```html+erb
 da
-
-```html+erb
                       <img src="assets/images/client/uni-logo-01.svg" class="icon-md" alt="">
-```
-
 a
-
-```html+erb
                       <%= image_tag "edu/client/uni-logo-01.svg", class: "icon-md", alt: "" %>
 ```
 
-
-La terza immagine 
+La terza immagine.
 
 ***codice n/a - ...views/mockups/edu_index_4.html.erb - line:93***
 
@@ -148,9 +136,12 @@ a
                       <%= image_tag "edu/client/uni-logo-02.svg", class: "icon-md", alt: "" %>
 ```
 
+Altre immagini.
 
 ```html+erb
+da
 						<img src="assets/images/about/12.jpg" class="card-img rounded-2" alt="...">
+a
 						<%= image_tag "edu/about/12.jpg", class: "card-img rounded-2", alt: "..." %>
 ```
 
