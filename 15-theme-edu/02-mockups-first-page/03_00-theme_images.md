@@ -140,9 +140,9 @@ Altre immagini.
 
 ```html+erb
 da
-						<img src="assets/images/about/12.jpg" class="card-img rounded-2" alt="...">
+            <img src="assets/images/about/12.jpg" class="card-img rounded-2" alt="...">
 a
-						<%= image_tag "edu/about/12.jpg", class: "card-img rounded-2", alt: "..." %>
+            <%= image_tag "edu/about/12.jpg", class: "card-img rounded-2", alt: "..." %>
 ```
 
 
