@@ -96,10 +96,71 @@ Oppure per i puristi:
 
 ## Impostiamo gli helpers per puntare all'asset_pipeline
 
-Prendiamo la prima riga che richiama un'immagine:
-
+Cambiamo le chiamate alle immagini dallo standard html a quello con gli helpers Rails.
 
 > Per velocizzare la ricerca possiamo fare un "find" per le seguenti parole: "image", "png", "jpg"
+
+
+La prima immagine è il logo nel menu.
+
+***codice n/a - ...views/mockups/edu_index_4.html.erb - line:8***
+
+da
+
+```html+erb
+        <img class="light-mode-item navbar-brand-item" src="assets/images/logo.svg" alt="logo">
+        <img class="dark-mode-item navbar-brand-item" src="assets/images/logo-light.svg" alt="logo">
+```
+
+a
+
+```html+erb
+        <%= image_tag "edu/logo.svg", class: "light-mode-item navbar-brand-item", alt: "logo" %>
+        <%= image_tag "edu/logo-light.svg", class: "dark-mode-item navbar-brand-item", alt: "logo" %>
+```
+
+
+La seconda immagine 
+
+***codice n/a - ...views/mockups/edu_index_4.html.erb - line:85***
+
+da
+
+```html+erb
+                      <img src="assets/images/client/uni-logo-01.svg" class="icon-md" alt="">
+```
+
+a
+
+```html+erb
+                      <%= image_tag "edu/client/uni-logo-01.svg", class: "icon-md", alt: "" %>
+```
+
+
+La terza immagine 
+
+***codice n/a - ...views/mockups/edu_index_4.html.erb - line:93***
+
+```html+erb
+da
+                      <img src="assets/images/client/uni-logo-02.svg" class="icon-md" alt="">
+a
+                      <%= image_tag "edu/client/uni-logo-02.svg", class: "icon-md", alt: "" %>
+```
+
+
+```html+erb
+						<img src="assets/images/about/12.jpg" class="card-img rounded-2" alt="...">
+						<%= image_tag "edu/about/12.jpg", class: "card-img rounded-2", alt: "..." %>
+```
+
+
+
+
+
+
+
+
 
 
 Impostiamo il favicon che si visualizza sul tab del browser
