@@ -7,6 +7,11 @@
 - [99-rails_references/active_storage/add_image-upload_file_aws]()
 
 
+## Risorse esterne
+
+- [Rails 7 adds the ability to use pre-defined variants](https://www.bigbinary.com/blog/rails-7-adds-ability-to-use-predefined-variants)
+
+
 
 ## Lo scenario prima di Rails 5.2
 

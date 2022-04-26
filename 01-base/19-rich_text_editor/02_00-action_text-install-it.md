@@ -8,6 +8,9 @@
 - https://blog.saeloun.com/2019/11/12/attachments-in-action-text-rails-6
 
 
+- [Rails 7: Action Text: forward form: option to hidden input](https://blog.saeloun.com/2022/03/16/action-text-forward-form-option-to-hidden-input.html)
+
+
 
 ## Apriamo il branch "Action Text Install"
 

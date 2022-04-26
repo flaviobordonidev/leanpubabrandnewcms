@@ -8,8 +8,9 @@ UBUNTUDREAM - Il corso di visualizzazione guidata
 
 Questo volume continua a partire da quanto già fatto nei seguenti volumi:
 
-* 01-beginnning
-* 11-theme-pofo
+- 01-base
+- 02-bootstrap
+- 15-theme-edu
 
 
 in questo volume: 
