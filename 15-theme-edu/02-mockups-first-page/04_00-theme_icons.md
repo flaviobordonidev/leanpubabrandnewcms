@@ -87,3 +87,32 @@ ubuntu@ubuntufla:~/bl7_0 (bs)$rails s -b 192.168.64.3
 ```
 
 Le icone sono finalmente visualizzate ^_^.
+
+
+
+## L'altra libreria di icone.
+
+Non c'è solo fontawesome ma ci sono anche le icone di bootstrap.
+Le possiamo inserire con il codice SVG oppure con il riferimento letterale come in questo esempio 
+
+```html
+<i class="bi bi-ui-radios-grid me-2"></i>
+```
+
+ad esempio da:
+
+```html
+						<a class="nav-link bg-primary bg-opacity-10 rounded-3 text-primary px-3 py-3 py-xl-0" href="#" id="categoryMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="bi bi-ui-radios-grid me-2"></i>
+						<span>Category</span></a>
+```
+
+a:
+
+```html
+						<a class="nav-link bg-primary bg-opacity-10 rounded-3 text-primary px-3 py-3 py-xl-0" href="#" id="categoryMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-ui-radios-grid" viewBox="0 0 16 16">
+							<path d="M3.5 15a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm9-9a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm0 9a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zM16 3.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0zm-9 9a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0zm5.5 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zm-9-11a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 2a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+						</svg>
+						<span>Category</span></a>
+```
