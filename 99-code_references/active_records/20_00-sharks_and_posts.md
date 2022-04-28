@@ -896,9 +896,11 @@ To test our other validation, click on New Post again. Leave the post blank and 
 
 With your nested resources and validations working properly, you now have a working Rails application that you can use as a starting point for further development.
 
-Conclusion
+
+
+## Conclusion
 With your Rails application in place, you can now work on things like styling and developing other front-end components. If you would like to learn more about routing and nested resources, the Rails documentation is a great place to start.
 
 To learn more about integrating front-end frameworks with your application, take a look at How To Set Up a Ruby on Rails Project with a React Frontend.
 
-Next in series: How To Add Stimulus to a Ruby on Rails Application ->
+Next in series:è How To Add Stimulus to a Ruby on Rails Application ->](https://www.digitalocean.com/community/tutorials/how-to-add-stimulus-to-a-ruby-on-rails-application)
