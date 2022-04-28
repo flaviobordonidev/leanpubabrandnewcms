@@ -856,46 +856,43 @@ Navigate to your application’s root at http://localhost:3000 or http://your_se
 
 The prerequisite Rails project tutorial walked you through adding and editing a Great White shark entry. If you have not added any further sharks, the application landing page will look like this:
 
-Shark App Landing Page
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/99-code_references/active_records/20_fig01-shark_post_landing_2.png)
 
 Click on Show next to the Great White’s name. This will take you to the show view for this shark. You will see the name of the shark and its facts, and a Posts header with no content. Let’s add a post to populate this part of the form.
 
 Click on Add Post below the Posts header. This will bring you to the post index view, where you will have the chance to select New Post:
 
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/99-code_references/active_records/20_fig02-new_post_landing.png)
-
-Post Index View
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/99-code_references/active_records/20_fig02-new_post_landing.png)
 
 Thanks to the authentication mechanisms you put in place in Step 6 of How To Build a Ruby on Rails Application, you may be asked to authenticate with the username and password you created in that Step, depending on whether or not you have created a new session.
 
 Click on New Post, which will bring you to your post new template:
 
-New Post
+![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/99-code_references/active_records/20_fig03-new_post_form.png)
 
 In the Body field, type, “These sharks are scary!”
 
-New Shark Post
+![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/99-code_references/active_records/20_fig04-new_shark_post_2.png)
 
 Click on Create Post. You will be redirected to the index view for all posts that belong to this shark:
 
-Post Success
+![fig05](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/99-code_references/active_records/20_fig05-post_success.png)
 
 With our post resources working, we can now test our data validations to ensure that only desired data gets saved to the database.
 
 From the index view, click on New Post. In the Body field of the new form, try entering “These sharks are scary!” again:
 
-Repeat Shark Post
+![fig06](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/99-code_references/active_records/20_fig06-new_shark_post_2.png)
 
 Click on Create Post. You will see the following error:
 
-Unique Post Error
+![fig07](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/99-code_references/active_records/20_fig07-post_unique_error.png)
 
 Click on Back to return to the main posts page.
 
 To test our other validation, click on New Post again. Leave the post blank and click Create Post. You will see the following error:
 
-Blank Post Error
+![fig08](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/99-code_references/active_records/20_fig08-post_blank_error.png)
 
 With your nested resources and validations working properly, you now have a working Rails application that you can use as a starting point for further development.
 
