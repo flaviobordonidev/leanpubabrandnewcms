@@ -1,14 +1,15 @@
-{id: 56-ubuntudream-03-lessons-steps-01-lessons_seeds}
-# Cap 03.1 -- Prepariamo le lezioni
+# <a name="top"></a> Cap 3.1 - Prepariamo le lezioni
 
 Le lezioni sono le varie aule di visualizzazione guidata. Nello specifico quelle di livello base, ossia quelle che ci preparano ai percorsi più strutturati.
 
 In questo capitolo lavoreremo principalmente lato database. Creeremo la tabella lezioni, lessons, e metteremo i seed iniziali ed alcuni dati di prova. Non avremo nessuna interazione lato views e quindi non apriremo il browser per usare la web gui.
 Eseguendo gli scaffolds la web gui è creata in automatico ma in questo capitolo non la utilizzeremo. Utilizzeremo invece la console di rails "$ rails c".
 
-Risorse esterne:
 
-* https://www.digitalocean.com/community/tutorials/how-to-create-nested-resources-for-a-ruby-on-rails-application
+
+## Risorse esterne
+
+- [How To Create Nested Resources for a Ruby on Rails Application](https://www.digitalocean.com/community/tutorials/how-to-create-nested-resources-for-a-ruby-on-rails-application)
 
 
 
