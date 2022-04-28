@@ -8,7 +8,7 @@ class Step < ApplicationRecord
   # == Relationships ========================================================
 
   ## many-to-one
-  belongs_to :lesson
+  belongs_to :lesson, dependent: :destroy
 
   # == Validations ==========================================================
 

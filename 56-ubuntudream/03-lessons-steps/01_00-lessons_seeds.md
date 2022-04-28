@@ -3,7 +3,12 @@
 Le lezioni sono le varie aule di visualizzazione guidata. Nello specifico quelle di livello base, ossia quelle che ci preparano ai percorsi più strutturati.
 
 In questo capitolo lavoreremo principalmente lato database. Creeremo la tabella lezioni, lessons, e metteremo i seed iniziali ed alcuni dati di prova. Non avremo nessuna interazione lato views e quindi non apriremo il browser per usare la web gui.
-Eseguendo gli scaffolds la web gui è creata in automatico ma in questo capitolo non la utilizzeremo. Utilizzeremo invece la console di rails "$ rails c".
+Eseguendo gli scaffolds la web gui è creata in automatico ma in questo capitolo non la utilizzeremo. Utilizzeremo invece la console di rails `$ rails c`.
+
+
+## Risorse interne
+
+- [99-code_references/active_records/20_00-sharks_and_posts](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/99-code_references/active_records/20_00-sharks_and_posts.md)
 
 
 
@@ -13,14 +18,11 @@ Eseguendo gli scaffolds la web gui è creata in automatico ma in questo capitolo
 
 
 
-
 ## Apriamo il branch "Lessons Seeds"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout -b ls
 ```
-
 
 
 
@@ -30,25 +32,30 @@ Abbiamo diviso le varie colonne della tabella in principali e secondarie perché
 
 Colonne principali:
 
-* name:string             -> (100 caratteri) Ragione Sociale 
-* note:text               -> (molti caratteri) Note Aggiuntive
+- name:string             -> (255 caratteri) Nome esercizio / aula / lezione  (es: View of mount Vermon, The isle of the death, ...) - Questo appare nelle cards nell'index
+- duration:integer        -> quanto dura l'esercizio in media. (Uso un numero intero che mi rappresenta i **minuti** di durata. es: 90 minuti, 180 minuti, ...)
 
 
 Colonne secondarie:
 
-* meta_title:string       -> Per il SEO
-* meta_description:string -> Per il SEO
-* logo                    -> Lo implemento con activerecord file upload.
+- Categoria/Tag               -> 7. Interpretazione, Dipinto, Suoni ambiente, ...
+                                (vedi gemma taggable)
+- blocco (lucchetto)          -> lock_value_percorsocoach1 (livello a cui devi essere per sbloccarlo?) 
+                              -> lock_value_percorsocoach2 (indipendente dal percorsocoach1 )
+                               Quindi metto tante colonne quanti sono i percorsicoach (attualmente è 1 solo ^_^)
+- note:text               -> (molti caratteri) Note Aggiuntive - questo appare nello show. è un approfondimento sull'esercizio
+- meta_title:string       -> Per il SEO
+- meta_description:string -> Per il SEO
 
 
-Tabelle collegate 1-a-molti (chiavi esterne)
+Tabelle collegate 1-a-molti (non ho campi di chiave esterna perché saranno sull'altra tabella)
 
-*  nessuna
+-  steps    -> una lezione è collegata a vari steps: azioni richieste (spesso sono domande a cui rispondere).
 
 
-Tabelle collegate molti-a-1 (non ho campi di chiave esterna perché saranno sull'altra tabella)
+Tabelle collegate molti-a-1 (chiavi esterne)
 
-*  steps
+-  tags?!?  -> vedi gemma taggable
 
 
 
@@ -60,21 +67,21 @@ Usiamo lo Scaffold che mi imposta già l'applicazione in stile restful con le ul
 
 I> ATTENZIONE: con "rails generate scaffold ..." -> usiamo il SINGOLARE
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ rails g scaffold Lesson name:string note:text
+```bash
+$ rails g scaffold Lesson name:string duration:integer
 ```
 
 
 vediamo il migrate generato
 
-{id: "56-03-01_01", caption: ".../db/migrate/xxx_create_lessons.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
-```
+*** code 01 - .../db/migrate/xxx_create_lessons.rb - line:1 ***
+
+```ruby
 class CreateLessons < ActiveRecord::Migration[6.0]
   def change
     create_table :lessons do |t|
       t.string :name
-      t.text :note
+      t.integer :duration
 
       t.timestamps
     end
@@ -82,24 +89,21 @@ class CreateLessons < ActiveRecord::Migration[6.0]
 end
 ```
 
-[tutto il codice](#56-03-01_01all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/01_01-db-migrate-xxx_create_lessons.rb)
 
 
-Effettuiamo il migrate del database per creare la tabella sul database
+Effettuiamo il migrate del database per creare la tabella sul database.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails db:migrate
 ```
 
 
 
+## Archiviamo su git
 
-## Salviamo su git
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git add -A
 $ git commit -m "add scaffold Lesson"
 ```
@@ -112,26 +116,25 @@ Abbiamo diviso le varie colonne della tabella in principali e secondarie perché
 
 Colonne principali:
 
-* question:string         -> (100 caratteri) Le domande per aiutarti a immaginare
-* answer:text             -> (molti caratteri) Le risposte scritte dall'utente (Attenzione! più avanti si toglierà da qui e si creerà una tabella answers da associare a users perché ogni utente avrà le sue personali risposte.)
+- question:string         -> (100 caratteri) Le domande per aiutarti a immaginare
+- answer:text             -> (molti caratteri) Le risposte scritte dall'utente (Attenzione! più avanti si toglierà da qui e si creerà una tabella answers da associare a users perché ogni utente avrà le sue personali risposte.)
 
 
 Colonne secondarie:
 
-* nessuna
+- nessuna
 
 
-Tabelle collegate 1-a-molti (chiavi esterne)
+Tabelle collegate 1-a-molti (non ho campi di chiave esterna perché saranno sull'altra tabella)
 
-*  lesson:references
+-  nessuna
+
+
+Tabelle collegate molti-a-1 (chiavi esterne)
+
+-  lesson:references
 
 La cosa bella di " user:references " è che, oltre a creare un migration "ottimizzato" per la relazione uno a molti, ci predispone parte della relazione uno-a-molti anche lato model.
-
-
-Tabelle collegate molti-a-1 (non ho campi di chiave esterna perché saranno sull'altra tabella)
-
-*  nessuna
-
 
 
 
@@ -143,18 +146,18 @@ Usiamo lo Scaffold che mi imposta già l'applicazione in stile restful con le ul
 
 I> ATTENZIONE: con "rails generate scaffold ..." -> usiamo il SINGOLARE
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails g scaffold Step question:string answer:text lesson:references
 ```
 
-the :references keyword, which sets up an association between the Lesson and Step models. Specifically, this will ensure that a foreign key representing each lesson entry in the lessons database's table is added to the steps database's table.
-
+l'attributo `:references` imposta un'associazione tra i modelli *Lesson* e *Step*. Nello specifico, assicura che una chiave esterna che rappresenta ogni voce di lezione nella tabella del database delle lezioni venga aggiunta alla tabella del database dei passi.
+(This will ensure that a foreign key representing each lesson entry in the lessons database's table is added to the steps database's table.)
 
 vediamo il migrate generato
 
-{id: "56-03-01_02", caption: ".../db/migrate/xxx_create_steps.rb -- codice 02", format: ruby, line-numbers: true, number-from: 1}
-```
+*** code 02 - .../db/migrate/xxx_create_steps.rb - line:1 ***
+
+```ruby
 class CreateSteps < ActiveRecord::Migration[6.0]
   def change
     create_table :steps do |t|
@@ -168,19 +171,17 @@ class CreateSteps < ActiveRecord::Migration[6.0]
 end
 ```
 
-[tutto il codice](#56-03-01_02all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/01_02-db-migrate-xxx_create_steps.rb)
 
-As you can see, the table includes a column for a lesson foreign key. This key will take the form of model_name_id — in our case, lesson_id.
+Come puoi vedere, la tabella include una colonna per una chiave esterna di lezione (lesson foreign key). Questa chiave assumerà la forma di *[model_name]_id*. (nel nostro caso: *lesson_id*).
 
 
 Effettuiamo il migrate del database per creare la tabella sul database
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails db:migrate
 ```
-
 
 
 
@@ -188,8 +189,9 @@ $ rails db:migrate
 
 Verifichiamo la relazione nel model Step, aggiungiamo i commenti e la mettiamo su "# == Relationships".
 
-{id: "56-03-01_03", caption: ".../app/models/step.rb -- codice 03", format: ruby, line-numbers: true, number-from: 11}
-```
+*** code 03 - .../app/models/step.rb - line:11 ***
+
+```ruby
 class Step < ApplicationRecord
   # == Constants ============================================================
   
@@ -215,15 +217,14 @@ class Step < ApplicationRecord
 end
 ```
 
-[tutto il codice](#56-03-01_03all)
-
-
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/01_03-models-step.rb)
 
 
 Verifichiamo la relazione nel model Lesson, aggiungiamo i commenti e la mettiamo su "# == Relationships".
 
-{id: "56-03-01_04", caption: ".../app/models/lesson.rb -- codice 04", format: ruby, line-numbers: true, number-from: 11}
-```
+*** code 04 - .../app/models/lesson.rb - line:11 ***
+
+```ruby
 class Lesson < ApplicationRecord
   # == Constants ============================================================
   
@@ -245,25 +246,25 @@ class Lesson < ApplicationRecord
   # == Class Methods ========================================================
 
   # == Instance Methods =====================================================
-
 end
 ```
 
-[tutto il codice](#56-03-01_04all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/01_04-models-lesson.rb)
 
 
 Analizziamo il codice:
 
-* dependent: :destroy -> questa opzione fa in modo che quando eliminiamo una lezione in automatico vengano eliminati anche tutti i suoi steps.
+- dependent: :destroy -> questa opzione fa in modo che quando eliminiamo una lezione in automatico vengano eliminati anche tutti i suoi steps.
 
 
 
+## Instradamenti annidati (Nested Routes)
 
-## Nested Routes
+In automatico, con il *generate scaffold...* sono state create due voci distinte per gli instradamenti *Restful*.
 
+*** code 05 - .../config/routes.rb  - line:11 ***
 
-{id: "56-03-01_06", caption: ".../config/routes.rb -- codice 06", format: ruby, line-numbers: true, number-from: 11}
-```
+```ruby
 Rails.application.routes.draw do
   resources :steps
   resources :lessons
@@ -273,16 +274,26 @@ Rails.application.routes.draw do
 end
 ```
 
-[tutto il codice](#56-03-01_06all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/01_05-config-routes.rb)
+
+L'attuale codice stabilisce una relazione indipendente tra i nostri instradamenti (routes), quando ciò che vorremmo esprimere è una relazione di dipendenza tra le lezioni (:lessons) e i loro passi (:steps) associati.
+
+Vogliamo che siano annidate: `lessons/#/steps/#`.
+
+Ad esempio:
+
+- la `lessons/1` ha gli steps da `steps/1` a `steps/7`.
+- la `lessons/2` ha gli steps da `steps/1` e `steps/3`.
+- ... 
+- la `lessons/12` ha gli steps da `steps/1` e `steps/34`.
+- e così via.
 
 
-The current code establishes an independent relationship between our routes, when what we would like to express is a dependent relationship between sharks and their associated posts.
+Aggiorniamo i nostri istradamenti (routes) per rendere `:lessons` il genitore (parent) di `:steps`. 
 
-Let’s update our route declaration to make :lessons the parent of :steps. Update the code in the file to look like the following:
+*** code 06 - .../config/routes.rb  - line:11 ***
 
-
-{id: "56-03-01_07", caption: ".../config/routes.rb -- codice 07", format: ruby, line-numbers: true, number-from: 11}
-```
+```ruby
 Rails.application.routes.draw do
   resources :lessons do
     resources :steps
@@ -292,18 +303,20 @@ Rails.application.routes.draw do
 end
 ```
 
-[tutto il codice](#56-03-01_07all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/01_06-config-routes.rb)
 
 
 
+## Aggiorniamo il controller *steps*
 
+L'associazione tra i nostri modelli ci fornisce metodi che possiamo utilizzare per creare nuove istanze di *steps* associate a specifiche *lessons*. 
+Utiliziamo questi metodi aggiornando il controller *steps*.
 
-## Updating the Steps Controller
+Vediamo prima il controller creato dallo scaffold.
 
-The association between our models gives us methods that we can use to create new step instances associated with particular lessons. To use these methods, we will need to add them to our steps controller.
+*** code 07 - .../app/controllers/steps_controller.rb - line:11 ***
 
-{id: "56-03-01_08", caption: ".../app/controllers/steps_controller.rb -- codice 08", format: ruby, line-numbers: true, number-from: 11}
-```
+```ruby
 class StepsController < ApplicationController
   before_action :set_step, only: [:show, :edit, :update, :destroy]
 
@@ -314,20 +327,20 @@ class StepsController < ApplicationController
   end
 ```
 
-[tutto il codice](#56-03-01_08all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/01_07-controllers-steps_controller.rb)
 
-Like our lessons controller, this controller’s methods work with instances of the associated Step class. For example, the new method creates a new instance of the Step class, the index method grabs all instances of the class, and the set_step method uses find and params to select a particular step by id. If, however, we want our step instances to be associated with particular lesson instances, then we will need to modify this code, since the Step class is currently operating as an independent entity.
+Come il nostro controller delle lezioni (lessons_controller), i metodi di questo controller funzionano con le istanze della classe *Step* associata. Ad esempio, il metodo `new` crea una nuova istanza della classe *Step*, il metodo `index` acquisisce tutte le istanze della classe e il metodo `set_step` usa **find** e **params** per selezionare uno specifico `step` tramite **id**. Se, tuttavia, vogliamo che le nostre istanze di `step` siano associate a particolari istanze di `lesson`, allora dobbiamo modificare questo codice, perché la classe `Step` sta attualmente operando come un'entità indipendente.
 
-Our modifications will make use of two things:
+Le nostre modifiche utilizzeranno due cose:
 
-* The methods that became available to us when we added the belongs_to and has_many associations to our models. Specifically, we now have access to the build method thanks to the has_many association we defined in our Lesson model. This method will allow us to create a collection of step objects associated with a particular lesson object, using the lesson_id foreign key that exists in our steps database's table.
-* The routes and routing helpers that became available when we created a nested posts route. For a full list of example routes that become available when you create nested relationships between resources, see the Rails documentation. For now, it will be enough for us to know that for each specific lesson — say lessons/1 — there will be an associated route for steps related to that lesson: lessons/1/steps. There will also be routing helpers like lesson_steps_path(@lesson) and edit_lessons_steps_path(@lesson) that refer to these nested routes.
+- I metodi (methods) che ci sono diventati disponibili quando abbiamo aggiunto ai nostri modelli le associazioni appartene_a (`belongs_to`) e ha_molti (`has_many`). In particolare, ora abbiamo accesso al metodo `build` grazie all'associazione `has_many` che abbiamo definito nel nostro modello *Lesson*. Questo metodo ci consentirà di creare una collezione di oggetti *step* (collection of step objects) associati a un particolare oggetto *lesson*, utilizzando la chiave esterna `lesson_id` che esiste nella tabella del nostro database di passaggi.
+- Gli instradamenti e gli helper di instradamento che sono diventati disponibili quando abbiamo creato un percorso di *step* annidati. Per ora ci basterà sapere che per ogni lezione specifica — diciamo lessons/1 — ci sarà un instradamento associato per i relativi *step* di quella lesson: `lessons/1/steps`. Ci saranno anche helpers di instradamento come `lesson_steps_path(@lesson)` e `edit_lessons_steps_path(@lesson)` che fanno riferimento a questi percorsi annidati.
 
-In the file, we’ll begin by writing a method, get_lesson, that will run before each action in the controller. This method will create a local @lesson instance variable by finding a lesson instance by lesson_id. With this variable available to us in the file, it will be possible to relate steps to a specific lesson in the other methods.
+Iniziamo scrivendo il metodo, `get_lesson`, che verrà eseguito prima di ogni azione nel controller. Questo metodo creerà una variabile di istanza locale `@lesson` trovando un'istanza di lezione da `lesson_id`. Con questa variabile a nostra disposizione, sarà possibile correlare i passaggi a una lezione specifica negli altri metodi.
 
-Above the other private methods at the bottom of the file, add the following method:
+Aggiungiamo il metodo nella sezione *private*.
 
-```
+```ruby
 private
   def get_lesson
     @lesson = Lesson.find(params[:lesson_id])

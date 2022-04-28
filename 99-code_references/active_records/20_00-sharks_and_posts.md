@@ -904,4 +904,4 @@ With your Rails application in place, you can now work on things like styling an
 
 To learn more about integrating front-end frameworks with your application, take a look at How To Set Up a Ruby on Rails Project with a React Frontend.
 
-Next in series:è How To Add Stimulus to a Ruby on Rails Application ->](https://www.digitalocean.com/community/tutorials/how-to-add-stimulus-to-a-ruby-on-rails-application)
+Next in series: How To Add Stimulus to a Ruby on Rails Application ->](https://www.digitalocean.com/community/tutorials/how-to-add-stimulus-to-a-ruby-on-rails-application)
