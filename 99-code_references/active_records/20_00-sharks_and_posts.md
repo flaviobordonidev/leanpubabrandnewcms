@@ -852,7 +852,7 @@ If you are working on a development server, run the following command instead:
 rails s --binding=your_server_ip
 ```
 
-Navigate to your application’s root at http://localhost:3000 or http://your_server_ip:3000.
+Navigate to your application's root at *http://localhost:3000* or *http://your_server_ip:3000*.
 
 The prerequisite Rails project tutorial walked you through adding and editing a Great White shark entry. If you have not added any further sharks, the application landing page will look like this:
 
