@@ -821,33 +821,49 @@ Open the file where your Post model is defined:
 nano app/models/post.rb
 Here, we want to ensure that posts are not blank and that they don’t duplicate content other users may have posted. To achieve this, add the following line to the file:
 
-~/sharkapp/app/models/post.rb
+*** ~/sharkapp/app/models/post.rb ***
+
+```ruby
 class Post < ApplicationRecord
   belongs_to :shark
   validates :body, presence: true, uniqueness: true
 end
+```
+
 Save and close the file when you are finished editing.
 
 With this last change in place, you are ready to run your migrations and test the application.
 
 First, run your migrations:
 
-rails db:migrate
+```bash 
+$ rails db:migrate
+```
+
 Next, start your server. If you’re working locally, you can do so by running:
 
-rails s
+```bash
+$ rails s
+```
+
 If you are working on a development server, run the following command instead:
 
+```bash
 rails s --binding=your_server_ip
+```
+
 Navigate to your application’s root at http://localhost:3000 or http://your_server_ip:3000.
 
 The prerequisite Rails project tutorial walked you through adding and editing a Great White shark entry. If you have not added any further sharks, the application landing page will look like this:
 
 Shark App Landing Page
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/99-code_references/active_records/20_fig01-shark_post_landing_2.png)
 
 Click on Show next to the Great White’s name. This will take you to the show view for this shark. You will see the name of the shark and its facts, and a Posts header with no content. Let’s add a post to populate this part of the form.
 
 Click on Add Post below the Posts header. This will bring you to the post index view, where you will have the chance to select New Post:
+
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/99-code_references/active_records/20_fig02-new_post_landing.png)
 
 Post Index View
 
