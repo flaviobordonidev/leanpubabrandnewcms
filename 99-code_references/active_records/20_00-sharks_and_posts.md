@@ -816,8 +816,6 @@ You have now made changes to your application’s models, controllers, and views
 
 In Step 5 of How To Build a Ruby on Rails Application, you added validations to your Shark model to ensure uniformity and consistency in the data that gets saved to the sharks database. We’ll now take a similar step to ensure guarantees for the posts database as well.
 
-## Step 6 — Conclusion
-
 Open the file where your Post model is defined:
 
 nano app/models/post.rb
@@ -900,7 +898,7 @@ With your nested resources and validations working properly, you now have a work
 
 
 
-## Conclusion
+## Step 6 — Conclusion
 
 With your Rails application in place, you can now work on things like styling and developing other front-end components. If you would like to learn more about routing and nested resources, the Rails documentation is a great place to start.
 
