@@ -896,9 +896,11 @@ To test our other validation, click on New Post again. Leave the post blank and 
 
 With your nested resources and validations working properly, you now have a working Rails application that you can use as a starting point for further development.
 
+`nonon`
 
 
-## Conclusione
+
+## Conclusion
 
 With your Rails application in place, you can now work on things like styling and developing other front-end components. If you would like to learn more about routing and nested resources, the Rails documentation is a great place to start.
 
