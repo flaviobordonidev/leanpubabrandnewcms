@@ -899,6 +899,7 @@ With your nested resources and validations working properly, you now have a work
 
 
 ## Conclusion
+
 With your Rails application in place, you can now work on things like styling and developing other front-end components. If you would like to learn more about routing and nested resources, the Rails documentation is a great place to start.
 
 To learn more about integrating front-end frameworks with your application, take a look at How To Set Up a Ruby on Rails Project with a React Frontend.
