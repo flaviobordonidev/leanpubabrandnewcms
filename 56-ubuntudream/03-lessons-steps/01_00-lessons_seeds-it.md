@@ -30,7 +30,7 @@ $ git checkout -b ls
 
 Abbiamo diviso le varie colonne della tabella in principali e secondarie perché non implementeremo tutte le colonne da subito ma iniziamo con le principali e poi aggiungiamo le altre di volta in volta facendo dei migrate di aggiunta ed aggiornando controller, model e views.
 
-Colonne principali:
+Colonne principali
 
 Colonna                 | Descrizione
 ----------------------- | -----------------------
@@ -39,7 +39,7 @@ Colonna                 | Descrizione
 
 
 
-Colonne secondarie:
+Colonne secondarie
 
 Colonna                   | Descrizione
 ------------------------- | -----------------------
@@ -50,14 +50,14 @@ Colonna                   | Descrizione
 `meta_description:string` | Per il SEO
 
 
-Tabelle collegate 1-a-molti (non ho campi di chiave esterna perché saranno sull'altra tabella)
+Tabelle collegate 1-a-molti (non c'è *chiave esterna* perché è sull'altra tabella)
 
 Colonna    | Descrizione
 ---------- | -----------------------
 `steps`    | una lezione è collegata a vari steps: azioni richieste (spesso sono domande a cui rispondere).
 
 
-Tabelle collegate molti-a-1 (chiavi esterne)
+Tabelle collegate molti-a-1 (c'è *chiave esterna*)
 
 Colonna                   | Descrizione
 ------------------------- | -----------------------
@@ -65,7 +65,7 @@ Colonna                   | Descrizione
 
 
 
-## Impementiamo tabella lessons
+## Implementiamo tabella lessons
 
 Creiamo la tabella iniziale con le sole colonne principali.
 
@@ -122,8 +122,10 @@ Abbiamo diviso le varie colonne della tabella in principali e secondarie perché
 
 Colonne principali:
 
-- question:string         -> (100 caratteri) Le domande per aiutarti a immaginare
-- answer:text             -> (molti caratteri) Le risposte scritte dall'utente (Attenzione! più avanti si toglierà da qui e si creerà una tabella answers da associare a users perché ogni utente avrà le sue personali risposte.)
+Colonna                 | Descrizione
+----------------------- | -----------------------
+`question:string`       | (100 caratteri) Le domande per aiutarti a immaginare
+`answer:text`           | (molti caratteri) Le risposte scritte dall'utente (Attenzione! più avanti si toglierà da qui e si creerà una tabella answers da associare a users perché ogni utente avrà le sue personali risposte.)
 
 
 Colonne secondarie:
@@ -138,7 +140,10 @@ Tabelle collegate 1-a-molti (non ho campi di chiave esterna perché saranno sull
 
 Tabelle collegate molti-a-1 (chiavi esterne)
 
--  lesson:references
+Colonna                 | Descrizione
+----------------------- | -----------------------
+`lesson:references`     | crea la chiave esterna *lesson_id*
+
 
 > `lesson:references` crea un migration "ottimizzato" perché inserisce un indice per velocizzare la ricerca sulla tabella nella relazione uno a molti. Inoltre imposta anche una parte della relazione uno-a-molti nel model.
 
