@@ -32,8 +32,14 @@ Abbiamo diviso le varie colonne della tabella in principali e secondarie perché
 
 Colonne principali:
 
-- name:string             -> (255 caratteri) Nome esercizio / aula / lezione  (es: View of mount Vermon, The isle of the death, ...) - Questo appare nelle cards nell'index
-- duration:integer        -> quanto dura l'esercizio in media. (Uso un numero intero che mi rappresenta i **minuti** di durata. es: 90 minuti, 180 minuti, ...)
+Colonna                 | Descrizione
+----------------------- | -----------------------
+`name:string`           | (255 caratteri) Nome esercizio / aula / lezione  (es: View of mount Vermon, The isle of the death, ...) - Questo appare nelle cards nell'index
+`duration:integer`      | Quanto dura l'esercizio in media. (Uso un numero intero che mi rappresenta i **minuti** di durata. es: 90 minuti, 180 minuti, ...)
+
+
+- `name:string`             -> (255 caratteri) Nome esercizio / aula / lezione  (es: View of mount Vermon, The isle of the death, ...) - Questo appare nelle cards nell'index
+- `duration:integer`        -> quanto dura l'esercizio in media. (Uso un numero intero che mi rappresenta i **minuti** di durata. es: 90 minuti, 180 minuti, ...)
 
 
 Colonne secondarie:

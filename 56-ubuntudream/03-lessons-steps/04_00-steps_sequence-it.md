@@ -2,6 +2,8 @@
 
 In questo capitolo mettiamo su *steps/show* un pulsante per avanzare allo *step* successivo in modo da avanzare nella *lesson* dal primo *step* fino all'ultimo.
 
+> Abilitiamo i links ed i metodi per spostarsi all'istanza successiva (`next`) o all'istanza precedente (`prev`) di un oggetto. Nel nostro caso dell'oggetto *Step* che ha anche la particolarità di essere un oggetto annidato all'interno dell'oggetto *Lesson*.
+
 
 
 ## Risorse esterne
@@ -22,22 +24,22 @@ Continuiamo con quello aperto nei capitoli precedenti.
 Su *steps/show* inseriamo un link "next" che ci porta allo step successivo.
 Esempio: da lessons/1/steps/1 a lessons/1/steps/2.
 
+*** code 01 - .../views/steps/show.html.erb - line:1 ***
 
-{id: "56-03-02_1", caption: ".../views/steps/show.html.erb -- codice 1", format: HTML+Mako, line-numbers: true, number-from: 1}
-```
+```html+erb
 <br>
 <%= link_to 'Prev', lesson_step_path(@lesson, @step.id-1) if @step.id > @lesson.steps.first.id %>
 <%= link_to 'Next', lesson_step_path(@lesson, @step.id+1) if @step.id < @lesson.steps.last.id %>
 ```
 
-[tutto il codice](#56-03-02_1all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/04_01-views-steps-show.html.erb)
 
 
-Questo approccio ha un *bug*!
-Se cancelliamo una step si crea un "buco" e prendiamo errore!!!
+> Questo approccio ha un *bug*! <br/>
+> Se cancelliamo una step si crea un "buco" e prendiamo errore!!!
 
 
-## Debug il link *next*
+## Debug di link *next*
 
 La soluzione a questo è affidarsi al metodo `.where` nel *Model*.
 
