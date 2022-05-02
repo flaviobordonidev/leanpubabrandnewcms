@@ -22,7 +22,7 @@ $ git checkout -b lp
 
 Aggiorniamo il partial *_lesson* richiamato dalla view *show*.
 
-***code 01 - .../views/lessons/_lesson.html.erb - line:1***
+***code 01 - .../views/lessons/_lesson.html.erb - line:12***
 
 ```html+erb
   <h2>Steps</h2>
@@ -94,7 +94,7 @@ Però in *preview* riceviamo un errore a causa dei due *link_to* sul partial *_l
 
 Correggiamo questo *bug*.
 
-***code 04 - .../views/lessons/_lesson.html.erb - line:1***
+***code 04 - .../views/lessons/_lesson.html.erb - line:19***
 
 ```html+erb
   <%= link_to 'View All Steps with answers', lesson_steps_path(@lesson) if @lesson.present? %> | 
@@ -167,11 +167,11 @@ Aggiorniamo il partial *_form*.
 
 
 
-## Salviamo su git
+## Archiviamo su git
 
 ```bash
 $ git add -A
-$ git commit -m "add seed companies"
+$ git commit -m "Update lessons views"
 ```
 
 
