@@ -203,7 +203,7 @@ $ rails db:migrate
 
 Nel model *Step*, aggiungiamo i commenti e posizioniamo la relazione su *# == Relationships*.
 
-***code 03 - .../app/models/step.rb - line:11***
+***code 03 - .../app/models/step.rb - line:1***
 
 ```ruby
 class Step < ApplicationRecord
@@ -234,7 +234,7 @@ end
 
 Nel model *Lesson*, aggiungiamo i commenti e mettiamo la relazione su "# == Relationships".
 
-*** code 04 - .../app/models/lesson.rb - line:11 ***
+***code 04 - .../app/models/lesson.rb - line:1***
 
 ```ruby
 class Lesson < ApplicationRecord
