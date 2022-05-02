@@ -165,7 +165,7 @@ $ rails g scaffold Step question:string answer:text lesson:references
 
 vediamo il migrate generato
 
-*** code 02 - .../db/migrate/xxx_create_steps.rb - line:1 ***
+***code 02 - .../db/migrate/xxx_create_steps.rb - line:1***
 
 ```ruby
 class CreateSteps < ActiveRecord::Migration[7.0]
@@ -203,7 +203,7 @@ $ rails db:migrate
 
 Nel model *Step*, aggiungiamo i commenti e posizioniamo la relazione su *# == Relationships*.
 
-*** code 03 - .../app/models/step.rb - line:11 ***
+***code 03 - .../app/models/step.rb - line:11***
 
 ```ruby
 class Step < ApplicationRecord
