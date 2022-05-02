@@ -238,6 +238,7 @@ Content Cell  | Content Cell
 Content Cell  | Content Cell
 ```
 
+
 Adding a pipe `|` in a cell :
 
 First Header  | Second Header
@@ -251,6 +252,22 @@ First Header  | Second Header
 Content Cell  | Content Cell
 Content Cell  |  \| 
 ```
+
+
+Adding a newline in a markdown table?
+
+First Header  | Second Header
+------------- | -------------
+Content Cell  | Content Cell <br/> Same Cell but new line
+Content Cell  | Content Cell
+
+```
+First Header  | Second Header
+------------- | -------------
+Content Cell  | Content Cell <br/> Same Cell but new line
+Content Cell  | Content Cell
+```
+
 
 Left, right and center aligned table
 
