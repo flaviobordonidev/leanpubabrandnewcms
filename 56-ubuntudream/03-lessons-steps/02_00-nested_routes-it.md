@@ -427,3 +427,10 @@ Dal nostro branch main di Git facciamo un backup di tutta l'applicazione sulla r
 ```bash
 $ git push origin main
 ```
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/01_00-lessons_seeds-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/03_00-lessons_parent-it.md)

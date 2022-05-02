@@ -274,7 +274,7 @@ Analizziamo il codice:
 
 Prepariamo i "semi" per un inserimento dei records in automatico.
 
-*** code 05 - .../db/seeds.rb - line:29 ***
+***code 05 - .../db/seeds.rb - line:29***
 
 ```ruby
 puts "setting the first Lesson and Steps data"
@@ -393,3 +393,10 @@ Lo chiudiamo nei prossimi capitoli.
 ## Facciamo un backup su Github
 
 Lo facciamo nei prossimi capitoli.
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/01_00-lessons_seeds-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/02_00-nested_routes-it.md)
