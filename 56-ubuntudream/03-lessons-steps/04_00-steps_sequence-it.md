@@ -110,7 +110,7 @@ end
 
 Volendo organizzare in ordine alfabetico di titolo, potremmo usare questa:
 
-*** code: n/a - .../app/models/post.rb - line:x ***
+***code: n/a - .../app/models/post.rb - line:x***
 
 ```ruby
 def previous_post
