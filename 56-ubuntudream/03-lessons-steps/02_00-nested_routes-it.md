@@ -19,7 +19,7 @@ Continuiamo con il branch aperto nei capitoli precedenti.
 
 In automatico, con il *generate scaffold...* sono state create due voci distinte per gli instradamenti *Restful*.
 
-***code 01 - .../config/routes.rb  - line:11***
+***code 01 - .../config/routes.rb  - line:2***
 
 ```ruby
   resources :steps
@@ -34,10 +34,10 @@ Vogliamo che siano annidate: `lessons/#/steps/#`.
 
 Ad esempio:
 
-- la `lessons/1` ha gli steps da `steps/1` a `steps/7`.
-- la `lessons/2` ha gli steps da `steps/1` e `steps/3`.
+- la `lessons/1` ha gli steps da `steps/1` a `steps/17`.
+- la `lessons/2` ha gli steps da `steps/18` e `steps/35`.
 - ... 
-- la `lessons/12` ha gli steps da `steps/1` e `steps/34`.
+- la `lessons/12` ha gli steps da `steps/254` e `steps/276`.
 - e così via.
 
 
