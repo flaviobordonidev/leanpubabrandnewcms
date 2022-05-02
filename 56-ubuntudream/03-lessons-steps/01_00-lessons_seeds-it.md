@@ -1,9 +1,9 @@
 # <a name="top"></a> Cap 3.1 - Prepariamo le lezioni
 
-Le lezioni sono le varie aule di visualizzazione guidata. Nello specifico quelle di livello base, ossia quelle che ci preparano ai percorsi più strutturati.
+Implementiamo le lezioni/esercizi di *visualizzazione guidata* di Ubuntudream.
+In questo capitolo lavoriamo principalmente lato database. Creiamo la tabella lezioni (lessons), e mettiamo i *seeds* iniziali con alcuni dati di prova. 
+Non interagiamo con le views e quindi non apriamo il preview nel browser ma usiamo solo la consolle.
 
-In questo capitolo lavoreremo principalmente lato database. Creeremo la tabella lezioni, lessons, e metteremo i seed iniziali ed alcuni dati di prova. Non avremo nessuna interazione lato views e quindi non apriremo il browser per usare la web gui.
-Eseguendo gli scaffolds la web gui è creata in automatico ma in questo capitolo non la utilizzeremo. Utilizzeremo invece la console di rails `$ rails c`.
 
 
 ## Risorse interne
@@ -77,7 +77,7 @@ vediamo il migrate generato
 *** code 01 - .../db/migrate/xxx_create_lessons.rb - line:1 ***
 
 ```ruby
-class CreateLessons < ActiveRecord::Migration[6.0]
+class CreateLessons < ActiveRecord::Migration[7.0]
   def change
     create_table :lessons do |t|
       t.string :name
@@ -134,7 +134,9 @@ Tabelle collegate molti-a-1 (chiavi esterne)
 
 -  lesson:references
 
-La cosa bella di " user:references " è che, oltre a creare un migration "ottimizzato" per la relazione uno a molti, ci predispone parte della relazione uno-a-molti anche lato model.
+> `lesson:references` crea un migration "ottimizzato" perché inserisce un indice per velocizzare la ricerca sulla tabella nella relazione uno a molti. Inoltre imposta anche una parte della relazione uno-a-molti nel model.
+
+> L'attributo `lesson:references` imposta un'associazione tra i modelli *Lesson* e *Step*. Nello specifico, assicura che una chiave esterna che rappresenta ogni voce di lezione nella tabella del database delle lezioni venga aggiunta alla tabella del database degli *steps*. (This will ensure that a foreign key representing each lesson entry in the lessons database's table is added to the steps database's table.)
 
 
 
@@ -150,15 +152,12 @@ I> ATTENZIONE: con "rails generate scaffold ..." -> usiamo il SINGOLARE
 $ rails g scaffold Step question:string answer:text lesson:references
 ```
 
-l'attributo `:references` imposta un'associazione tra i modelli *Lesson* e *Step*. Nello specifico, assicura che una chiave esterna che rappresenta ogni voce di lezione nella tabella del database delle lezioni venga aggiunta alla tabella del database dei passi.
-(This will ensure that a foreign key representing each lesson entry in the lessons database's table is added to the steps database's table.)
-
 vediamo il migrate generato
 
 *** code 02 - .../db/migrate/xxx_create_steps.rb - line:1 ***
 
 ```ruby
-class CreateSteps < ActiveRecord::Migration[6.0]
+class CreateSteps < ActiveRecord::Migration[7.0]
   def change
     create_table :steps do |t|
       t.string :question
@@ -173,7 +172,9 @@ end
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/01_02-db-migrate-xxx_create_steps.rb)
 
-Come puoi vedere, la tabella include una colonna per una chiave esterna di lezione (lesson foreign key). Questa chiave assumerà la forma di *[model_name]_id*. (nel nostro caso: *lesson_id*).
+
+> Il migration include una colonna per una chiave esterna (foreign_key) di *lesson*. 
+> Questa diventerà in tabella una colonna con nome: *[model_name]_id*. (nel nostro caso: *lesson_id*).<br/>
 
 
 Effettuiamo il migrate del database per creare la tabella sul database
@@ -183,11 +184,13 @@ $ sudo service postgresql start
 $ rails db:migrate
 ```
 
+> Su *.../db/schema.rb* nel `create_table "steps"...` abbiamo `t.bigint "lesson_id", null: false`.
+
 
 
 ## Aggiungiamo la relazione uno-a-molti
 
-Verifichiamo la relazione nel model Step, aggiungiamo i commenti e la mettiamo su "# == Relationships".
+Nel model *Step*, aggiungiamo i commenti e posizioniamo la relazione su "# == Relationships".
 
 *** code 03 - .../app/models/step.rb - line:11 ***
 
@@ -213,14 +216,12 @@ class Step < ApplicationRecord
   # == Class Methods ========================================================
 
   # == Instance Methods =====================================================
-
 end
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/01_03-models-step.rb)
 
-
-Verifichiamo la relazione nel model Lesson, aggiungiamo i commenti e la mettiamo su "# == Relationships".
+Nel model *Lesson*, aggiungiamo i commenti e mettiamo la relazione su "# == Relationships".
 
 *** code 04 - .../app/models/lesson.rb - line:11 ***
 
@@ -234,7 +235,7 @@ class Lesson < ApplicationRecord
 
   # == Relationships ========================================================
 
-  ## many-to-one
+  ## one-to-many
   has_many :steps, dependent: :destroy
 
   # == Validations ==========================================================
@@ -254,72 +255,80 @@ end
 
 Analizziamo il codice:
 
-- dependent: :destroy -> questa opzione fa in modo che quando eliminiamo una lezione in automatico vengano eliminati anche tutti i suoi steps.
+- `dependent: :destroy` -> questa opzione fa in modo che quando eliminiamo una *lesson* in automatico vengano eliminati anche tutti i suoi *steps*.
 
 
 
-
-
-
-## seed 
+## I semi (*seeds*)
 
 Prepariamo i "semi" per un inserimento dei records in automatico.
 
-{id: "01-08-01_01", caption: ".../db/seeds.rb -- codice 03", format: ruby, line-numbers: true, number-from: 29}
-```
-puts "setting the Company data with I18n :en :it"
-Company.new(name: "ABC srl", building: "Roma's office", sector: "Chemical", locale: :en).save
-Company.last.update(building: "Ufficio di Roma", sector: "Chimico", locale: :it)
+*** code 05 - .../db/seeds.rb - line:29 ***
 
-puts "setting the Company data with I18n :en :it"
-Company.new(name: "ABC srl", building: "Roma's office", sector: "Chemical", locale: :en).save
-Company.last.update(building: "Ufficio di Roma", sector: "Chimico", locale: :it)
+```ruby
+puts "setting the first Lesson and Steps data"
+Lesson.new(name: "View of mount Vermon", duration: 90).save
+Lesson.last.steps.build(name: "Domanda1").save
+Lesson.last.steps.build(name: "Domanda2").save
+
+puts "setting the second Lesson and Steps data"
+Lesson.new(name: "The island of death", duration: 90).save
+Lesson.last.steps.build(name: "Domanda1").save
+Lesson.last.steps.build(name: "Domanda2").save
 ```
 
-Possiamo aggiungere il seme/record alla tabella.
+Nel database di sviluppo (*development*) i records li inseriamo manualmente nel prossimo paragrafo.
+
+> Per inserire i semi il comando è `$ rails db:seed`. Questo aggiunge i nuovi records dei *seeds* a quelli attualmente presenti in tabella.
+
+> Nota: il comando `$ rails db:setup` svuota tutta la tabella prima di inserire i records dei *seeds*.
+
+
+
+## Popoliamo manualmente le tabella del database di sviluppo
+
+Usiamo la console di rails per popolare la tabella del database di sviluppo (*development*).
 
 ```bash
-$ rails db:seed
-```
-
-> Nota: `$ rails db:setup` svuoterebbe tutta la tabella prima di inserire i records.
-
-Invece, a scopo didattico, li aggiungiamo manualmente.
-
-
-
-## Popoliamo manualmente la tabella
-
-Usiamo la console di rails per popolare la tabella del database.
-
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
 $ sudo service postgresql start
 $ rails c
-> Company.new(name: "DEF srl", sector: "Pharmaceutical", locale: :en).save
-> Company.last.update(sector: "Farmaceutico", locale: :it)
 
-> Company.all
-> c1 = Company.first
-> c1.sector
-> I18n.locale
-> I18n.locale = :en
-> c1.sector
+> Lesson.new(name: "View of mount Vermon", duration: 90).save
+> Lesson.last.steps.new(question: "Domanda1", answer: "Risposta1").save
+> Lesson.last.steps.new(question: "Domanda2", answer: "Risposta2").save
 
-> Company.new(name:"GHI SpA", sector:"Breweries").save
-> c3 = Company.last
-> c3.sector
-> I18n.locale = :it
-> c3.sector
-> c3.sector = "Birrerie"
-> c3.sector
-> c3.save
+> Lesson.new(name: "The island of death", duration: 90).save
+> Lesson.last.steps.new(question: "Come ti chiami?", answer: "Risposta1").save
+> Lesson.last.steps.new(question: "Domanda2").save
 
-> c2 = Company.find 2
+> Lesson.all
+> Step.all
+> Lesson.first.steps
+> Lesson.second.steps
 
 > exit
 ```
+
+Potreste trovare anche l'uso di `build` al posto di `new` nel creare collections. Questo aveva senso prima di Rails 3 ma da Rails 4 in poi è superato.
+
+Esempio con uso di `build`
+
+```bash
+> Lesson.new(name: "The island of death", duration: 90).save
+> Lesson.last.steps.build(question: "Domanda1").save
+> Lesson.last.steps.build(question: "Domanda2").save
+```
+
+
+> Il metodo `build` è disponibile grazie all'associazione `has_many` che abbiamo definito nel modello *Lesson*. Questo ci consente di creare una *collection* di oggetti *steps* associati ad una specifica istanza di *lesson*, utilizzando la chiave esterna `lesson_id` che esiste nella tabella *steps*.
+
+> `build` and `new` are **aliases** as defined in **ActiveRecord::Relation**.
+> 
+> So if class Foo has_many Bars, the following have identical effects: <br/>
+> `foo.bars.new` <=> `foo.bars.build` <br/>
+> `Bar.where(:foo_id=>foo.id).new` <=> `Bar.where(:foo_id=>foo.id).build` <br/>
+> And `if !foo.new_record?` <br/>
+> `foo.bars.new` <=> `Bar.where(:foo_id=>foo.id).new`
 
 
 
@@ -327,10 +336,8 @@ $ rails c
 
 ```bash
 $ git add -A
-$ git commit -m "add companies Manually"
+$ git commit -m "add scaffold Steps"
 ```
-
-> Nota: Questo git commit è solo per lasciare un commento perché le modifiche fatte sul database non sono passate tramite git.
 
 
 
@@ -346,40 +353,32 @@ $ heroku run rake db:migrate
 per popolare il database di heroku basta aprire la console con il comando:
 
 ```bash
-$ heroku run rails db:seed
 $ heroku run rails c
 ```
 
 E rieseguire i passi già fatti nel paragrafo precedentemente
 
+> Per popolarla attraverso i "semi" eseguiamo il comando: `$ heroku run rails db:seed`
 
-Verifichiamo preview su heroku.
+
+
+## Verifichiamo preview su heroku.
 
 Andiamo all'url:
 
-- https://elisinfo.herokuapp.com/companies
+- https://elisinfo.herokuapp.com/lessons
+- https://elisinfo.herokuapp.com/steps
 
-E verifichiamo che l'elenco delle aziende è popolato.
-
+E verifichiamo che l'elenco delle *lezioni* e degli *steps* è popolato.
 
 
 
 ## Chiudiamo il branch
 
-se abbiamo finito le modifiche e va tutto bene:
-
-```bash
-$ git checkout main
-$ git merge cs
-$ git branch -d cs
-```
+Lo chiudiamo nei prossimi capitoli.
 
 
 
 ## Facciamo un backup su Github
 
-Dal nostro branch main di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
-
-```bash
-$ git push origin main
-```
+Lo facciamo nei prossimi capitoli.

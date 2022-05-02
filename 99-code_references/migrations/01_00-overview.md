@@ -20,9 +20,11 @@ Reference: http://stackoverflow.com/a/5600310
 
 - [](https://makandracards.com/brainchild/48046-rails-generate-migrations-cheat-sheet)
 
-Types
-assignable values: string, text, integer, float, decimal, boolean, datetime, time, date and binary
-default: string
+Types:
+
+- **assignable values:** string, text, integer, float, decimal, boolean, datetime, time, date and binary
+- **default:** string
+
 COPY
 rails g migration create_users name sign_in_count:integer last_sign_in_at:datetime birthday:date comment:text locked:boolean
 

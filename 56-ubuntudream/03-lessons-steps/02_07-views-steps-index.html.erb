@@ -1,31 +1,17 @@
-<p id="notice"><%= notice %></p>
+<p style="color: green"><%= notice %></p>
 
 <h1>Steps</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Question</th>
-      <th>Answer</th>
-      <th>Lesson</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<div id="steps">
+  <% @steps.each do |step| %>
+    <%= render step %>
+    <p>
+      <%#= link_to "Show this step", step %>
+      <%= link_to "Show this step", lesson_step_path(@lesson, step) %>
+      <%= link_to 'Show this Lesson', [@lesson] %>
+    </p>
+  <% end %>
+</div>
 
-  <tbody>
-    <% @steps.each do |step| %>
-      <tr>
-        <td><%= step.question %></td>
-        <td><%= step.answer %></td>
-        <td><%= step.lesson_id %></td>
-        <td><%= link_to 'Show', step %></td>
-        <td><%= link_to 'Edit', edit_step_path(step) %></td>
-        <td><%= link_to 'Destroy', step, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Step', new_step_path %>
+<%#= link_to "New step", new_step_path %>
+<%= link_to 'New Step', new_lesson_step_path(@lesson) %>

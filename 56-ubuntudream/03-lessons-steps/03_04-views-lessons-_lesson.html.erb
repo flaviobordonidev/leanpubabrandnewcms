@@ -1,0 +1,21 @@
+<div id="<%= dom_id lesson %>">
+  <p>
+    <strong>Name:</strong>
+    <%= lesson.name %>
+  </p>
+
+  <p>
+    <strong>Duration:</strong>
+    <%= lesson.duration %>
+  </p>
+
+  <h2>Steps</h2>
+  <% for step in lesson.steps %>
+      <ul>
+        <li><%= step.question %></li>
+    </ul>
+  <% end %>
+
+  <%= link_to 'View All Steps with answers', lesson_steps_path(@lesson) if @lesson.present? %> <%= " | " if @lesson.present? %>
+  <%= link_to 'Add New Step', new_lesson_step_path(@lesson) if @lesson.present? %>
+</div>

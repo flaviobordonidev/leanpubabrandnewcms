@@ -1,5 +1,10 @@
-<h1>New Step</h1>
+<h1>New step</h1>
 
-<%= render 'form', step: @step %>
+<%= render "form", step: @step %>
 
-<%= link_to 'Back', steps_path %>
+<br>
+
+<div>
+  <%#= link_to "Back to steps", steps_path %>
+  <%= link_to "Back to lesson steps", lesson_steps_path(@lesson) %>
+</div>

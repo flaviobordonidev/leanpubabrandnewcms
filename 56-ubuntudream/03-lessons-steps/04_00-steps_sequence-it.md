@@ -1,27 +1,26 @@
-{id: 56-ubuntudream-03-lessons-steps-02-lessons_next}
-# Cap 03.2 -- Da show con la prima lezione andiamo avanti alla prossima
+# <a name="top"></a> Cap 3.4 - Scorriamo tra i passi (*steps*) di una lezione (*lesson*)
 
-In questo capitolo facciamo in modo che pardendo da lessons/1/steps/1 passiamo al successivo step (lessons/1/steps/2) sul submit del form.
-Inseriamo anche un link "next" per saltare il submit del form ed andare direttamente al successivo step.
-
-Risorse esterne:
-
-* 
+In questo capitolo mettiamo su *steps/show* un pulsante per avanzare allo *step* successivo in modo da avanzare nella *lesson* dal primo *step* fino all'ultimo.
 
 
 
+## Risorse esterne
 
-## Apriamo il branch "Lessons Next"
+- [Rails: Get next / previous record](https://stackoverflow.com/questions/7394088/rails-get-next-previous-record)
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git checkout -b ln
-```
+
+## Apriamo il branch
+
+Continuiamo con quello aperto nei capitoli precedenti.
 
 
 
 
-## Inseriamo link next 
+
+## Inseriamo il link *next*
+
+Su *steps/show* inseriamo un link "next" che ci porta allo step successivo.
+Esempio: da lessons/1/steps/1 a lessons/1/steps/2.
 
 
 {id: "56-03-02_1", caption: ".../views/steps/show.html.erb -- codice 1", format: HTML+Mako, line-numbers: true, number-from: 1}
@@ -34,18 +33,54 @@ $ git checkout -b ln
 [tutto il codice](#56-03-02_1all)
 
 
+Questo approccio ha un *bug*!
+Se cancelliamo una step si crea un "buco" e prendiamo errore!!!
 
 
-## Altre soluzioni proposte sul web per Post
+## Debug il link *next*
 
-Cercando su internet sono proposte delle soluzioni pensate per Posts che passano per il model, visto che c'è un solo model principale.
-(non vanno bene per lessons - Steps, perché sono annidate)
+La soluzione a questo è affidarsi al metodo `.where` nel *Model*.
 
-lato model
+*** code: n/a - .../app/models/step.rb - line:21 ***
 
-Prepariamo nel model i riferimenti a next e previous.
+```ruby
+  # == Instance Methods =====================================================
+  def next
+    lesson.steps.where("id > ?", id).first
+  end
 
+  def prev
+    lesson.steps.where("id < ?", id).last
+  end
 ```
+
+
+
+*** code: n/a - .../app/views/steps/show.html.erb - line:6 ***
+
+```html+erb
+  <%#= link_to '<Prev', lesson_step_path(@lesson, @step.id-1) if @step.id > @lesson.steps.first.id %>
+  <%= link_to '<Prev', lesson_step_path(@lesson, @step.prev.id) if @step.prev.present? %>
+  <%= @step.prev.id if @step.prev.present? %>
+  <%#= link_to 'Next>', lesson_step_path(@lesson, @step.id+1) if @step.id < @lesson.steps.last.id %>
+  <%= link_to 'Next>', lesson_step_path(@lesson, @step.next.id) if @step.next.present? %>
+  <%= @step.next.id if @step.next.present? %>
+```
+
+
+
+
+## Altre soluzioni proposte sul web per il link *next*
+
+Sul web sono proposte delle soluzioni per il link *next* che sfruttano il model **non** annidato.
+
+Di seguito ne vediamo un esempio pensato per gli articoli (*Post*) di un blog.
+
+Prepariamo nel model i riferimenti a *next* e *previous*.
+
+*** code: n/a - .../app/models/post.rb - line:x ***
+
+```ruby
 def previous_post
   Post.where(["id < ?", id]).last
   #self.class.where(["id < ?", id]).last
@@ -57,10 +92,14 @@ def next_post
 end
 ```
 
+> Invece di indicare `Post.` si può usare `self.class.` rendendo il codice più "facile da gestire" per revisioni future. Ad esempio se cambiamo nome al model...
 
-oppure possiamo usare quest'altra versione:
 
-```
+Vediamo un secondo esempio.
+
+*** code: n/a - .../app/models/post.rb - line:x ***
+
+```ruby
 def previous_post
   self.class.first(:conditions => ["id < ?", id], :order => "id desc")
 end
@@ -71,10 +110,11 @@ end
 ```
 
 
-
 Volendo organizzare in ordine alfabetico di titolo, potremmo usare questa:
 
-```
+*** code: n/a - .../app/models/post.rb - line:x ***
+
+```ruby
 def previous_post
   self.class.first(:conditions => ["title < ?", title], :order => "title desc")
 end
@@ -84,17 +124,19 @@ def next_post
 end
 ```
 
-You can change title to any unique attribute (created_at, id, etc.) if you need a different sort order.
+> You can change title to any **unique attribute** (eg: `created_at`, `id`, etc.) if you need a different sort order.
 
 
-- Lato view
+Vediamo come presentare nel *view* i metodi creati.
 
+*** code: n/a - .../views/posts/1 - line:x ***
 
-```
+```html+erb
 <%= link_to("Previous Post", @post.previous_post) if @post.previous_post %>
 <%= link_to("Next Post", @post.next_post) if @post.next_post %>
 ```
 
+Fine della digressione. Torniamo alla nostra applicazione.
 
 
 
@@ -102,6 +144,9 @@ You can change title to any unique attribute (created_at, id, etc.) if you need 
 
 Inseriamo il form nello show in modo da permettere agli utenti di dare la risposta.
 A differenza di Edit che ci permette di editare anche la domanda, su show avremo solo la possibilità di inserire la risposta.
+
+Facciamo in modo che pardendo da lessons/1/steps/1 passiamo al successivo step (lessons/1/steps/2) sul submit del form.
+
 Essendo un solo form, perché non c'è "new", non usiamo un partial "_form_answer" ma mettiamo tutto il codice direttamente su show.
 
 {id: "56-03-02_2", caption: ".../views/steps/show.html.erb -- codice 2", format: HTML+Mako, line-numbers: true, number-from: 1}
@@ -182,57 +227,3 @@ Adattiamo anche i links della view *steps/edit*
 
 
 
-
-
-## Salviamo su git
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git add -A
-$ git commit -m "add seed companies"
-```
-
-
-
-## Publichiamo su heroku
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git push heroku cs:master
-$ heroku run rake db:migrate
-```
-
-
-Verifichiamo preview su heroku.
-
-Andiamo all'url:
-
-* https://elisinfo.herokuapp.com/lessons/1/steps/1
-
-E verifichiamo di arrivare al primo step della prima lezione.
-
-
-
-
-## Chiudiamo il branch
-
-se abbiamo finito le modifiche e va tutto bene:
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git checkout master
-$ git merge ln
-$ git branch -d ln
-```
-
-
-
-
-## Facciamo un backup su Github
-
-Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git push origin master
-```

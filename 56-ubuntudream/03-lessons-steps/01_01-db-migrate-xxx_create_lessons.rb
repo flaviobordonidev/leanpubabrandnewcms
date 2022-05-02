@@ -1,8 +1,8 @@
-class CreateLessons < ActiveRecord::Migration[6.0]
+class CreateLessons < ActiveRecord::Migration[7.0]
   def change
     create_table :lessons do |t|
       t.string :name
-      t.text :note
+      t.integer :duration
 
       t.timestamps
     end
