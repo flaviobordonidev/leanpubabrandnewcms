@@ -11,11 +11,10 @@ In questo capitolo mettiamo su *steps/show* un pulsante per avanzare allo *step*
 - [Rails: Get next / previous record](https://stackoverflow.com/questions/7394088/rails-get-next-previous-record)
 
 
+
 ## Apriamo il branch
 
 Continuiamo con quello aperto nei capitoli precedenti.
-
-
 
 
 
@@ -24,7 +23,7 @@ Continuiamo con quello aperto nei capitoli precedenti.
 Su *steps/show* inseriamo un link "next" che ci porta allo step successivo.
 Esempio: da lessons/1/steps/1 a lessons/1/steps/2.
 
-*** code 01 - .../views/steps/show.html.erb - line:1 ***
+***code 01 - .../views/steps/show.html.erb - line:1***
 
 ```html+erb
 <br>
@@ -43,7 +42,7 @@ Esempio: da lessons/1/steps/1 a lessons/1/steps/2.
 
 La soluzione a questo è affidarsi al metodo `.where` nel *Model*.
 
-*** code: n/a - .../app/models/step.rb - line:21 ***
+***code: n/a - .../app/models/step.rb - line:21***
 
 ```ruby
   # == Instance Methods =====================================================
@@ -57,8 +56,7 @@ La soluzione a questo è affidarsi al metodo `.where` nel *Model*.
 ```
 
 
-
-*** code: n/a - .../app/views/steps/show.html.erb - line:6 ***
+***code: n/a - .../app/views/steps/show.html.erb - line:6***
 
 ```html+erb
   <%#= link_to '<Prev', lesson_step_path(@lesson, @step.id-1) if @step.id > @lesson.steps.first.id %>
@@ -71,13 +69,10 @@ La soluzione a questo è affidarsi al metodo `.where` nel *Model*.
 
 
 
-
 ## Altre soluzioni proposte sul web per il link *next*
 
 Sul web sono proposte delle soluzioni per il link *next* che sfruttano il model **non** annidato.
-
 Di seguito ne vediamo un esempio pensato per gli articoli (*Post*) di un blog.
-
 Prepariamo nel model i riferimenti a *next* e *previous*.
 
 *** code: n/a - .../app/models/post.rb - line:x ***
@@ -126,12 +121,12 @@ def next_post
 end
 ```
 
-> You can change title to any **unique attribute** (eg: `created_at`, `id`, etc.) if you need a different sort order.
+> Puoi cambiare `title` con qualsiasi altro **unique attribute** (es: `created_at`, `id`, ecc.) se hai bisogno di un diverso ordinamento (sort order).
 
 
 Vediamo come presentare nel *view* i metodi creati.
 
-*** code: n/a - .../views/posts/1 - line:x ***
+***code: n/a - .../views/posts/1 - line:x***
 
 ```html+erb
 <%= link_to("Previous Post", @post.previous_post) if @post.previous_post %>
@@ -225,7 +220,4 @@ Adattiamo anche i links della view *steps/edit*
 ```
 
 [tutto il codice](#56-03-02_4all)
-
-
-
 
