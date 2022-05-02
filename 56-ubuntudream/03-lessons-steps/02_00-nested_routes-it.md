@@ -19,7 +19,7 @@ Continuiamo con il branch aperto nei capitoli precedenti.
 
 In automatico, con il *generate scaffold...* sono state create due voci distinte per gli instradamenti *Restful*.
 
-*** code 01 - .../config/routes.rb  - line:11 ***
+***code 01 - .../config/routes.rb  - line:11***
 
 ```ruby
   resources :steps
@@ -43,7 +43,7 @@ Ad esempio:
 
 Aggiorniamo i nostri istradamenti (routes) per rendere `:lessons` il genitore (parent) di `:steps`. 
 
-*** code 02 - .../config/routes.rb  - line:11 ***
+***code 02 - .../config/routes.rb  - line:11***
 
 ```ruby
   resources :lessons do
@@ -62,7 +62,7 @@ L'associazione tra i nostri modelli ci fornisce la possibilità di creare nuove 
 
 Vediamo il controller *steps* creato dallo scaffold.
 
-*** code 03 - .../app/controllers/steps_controller.rb - line:1 ***
+***code 03 - .../app/controllers/steps_controller.rb - line:1***
 
 ```ruby
 class StepsController < ApplicationController
@@ -88,7 +88,7 @@ Iniziamo scrivendo il metodo, `set_lesson`, che verrà eseguito prima di ogni az
 
 Aggiungiamo il metodo nella sezione *private*.
 
-*** code n/a - .../app/controllers/steps_controller.rb - line:11 ***
+***code n/a - .../app/controllers/steps_controller.rb - line:11***
 
 ```ruby
 private
@@ -99,7 +99,7 @@ private
 
 Quindi, aggiungiamo il relativo *before_action*.
 
-*** code n/a - .../app/controllers/steps_controller.rb - line:2 ***
+***code n/a - .../app/controllers/steps_controller.rb - line:2***
 
 ```ruby
 class StepsController < ApplicationController
@@ -112,7 +112,7 @@ Successivamente, utilizziamo questa istanza `@lesson` per riscrivere il metodo i
 
 Aggiorniamo l'azione *index*.
 
-*** code n/a - .../app/controllers/steps_controller.rb - line:2 ***
+***code n/a - .../app/controllers/steps_controller.rb - line:2***
 
 ```ruby
   def index
@@ -126,7 +126,7 @@ L'azione `new` ha bisogno di una revisione simile, poiché vogliamo che una nuov
 
 Aggiorniamoa l'azione *new*.
 
-*** code n/a - .../app/controllers/steps_controller.rb - line:2 ***
+***code n/a - .../app/controllers/steps_controller.rb - line:2***
 
 ```ruby
   def new
@@ -140,7 +140,7 @@ Questa azione crea un oggetto `step` che è associato ad una specifica istanza d
 
 Aggiorniamo l'azione *create*.
 
-*** code n/a - .../app/controllers/steps_controller.rb - line:2 ***
+***code n/a - .../app/controllers/steps_controller.rb - line:2***
 
 ```ruby
 def create
@@ -163,7 +163,7 @@ L'azione `create` fa due cose: crea una nuova istanza di *step* usando i paramet
 
 Aggiorniamo l'azione *update*. 
 
-*** code n/a - .../app/controllers/steps_controller.rb - line:2 ***
+***code n/a - .../app/controllers/steps_controller.rb - line:2***
 
 ```ruby
   # PATCH/PUT /steps/1 or /steps/1.json
@@ -181,7 +181,7 @@ In linea con le azioni che abbiamo già aggiornato, aggiorniamo anche questo met
 
 Aggiorniamo il metodo *set_step*.
 
-*** code n/a - .../app/controllers/steps_controller.rb - line:2 ***
+***code n/a - .../app/controllers/steps_controller.rb - line:2***
 
 ```ruby
 private
@@ -196,7 +196,7 @@ Invece di trovare un'istanza specifica dell'intera classe *Step* tramite *id*, c
 
 Aggiorniamo l'azione *update*.
 
-*** code n/a - .../app/controllers/steps_controller.rb - line:2 ***
+***code n/a - .../app/controllers/steps_controller.rb - line:2***
 
 ```ruby
   def update
@@ -217,7 +217,7 @@ Aggiorniamo l'azione *update*.
 
 Aggiorniamo l'azione *destroy*.
 
-*** code n/a - .../app/controllers/steps_controller.rb - line:2 ***
+***code n/a - .../app/controllers/steps_controller.rb - line:2***
 
 ```ruby
   def destroy
@@ -234,7 +234,7 @@ Aggiorniamo l'azione *destroy*.
 
 Vediamo lo *steps_controller* finito.
 
-*** code 04 - .../app/controllers/steps_controller.rb - line:2 ***
+***code 04 - .../app/controllers/steps_controller.rb - line:2***
 
 ```ruby
 class StepsController < ApplicationController
@@ -256,7 +256,7 @@ Quindi aggiorniamo per riflettere l'annidamento `lessons/#/steps/#`.
 
 Iniziamo con il partial *_form*.
 
-*** code 05 - .../views/steps/_form.html.erb - line:1 ***
+***code 05 - .../views/steps/_form.html.erb - line:1***
 
 ```html+erb
 <%#= form_with(model: step, local: true) do |form| %>
@@ -277,7 +277,7 @@ L'unica modifica è da `form_with(model: step)` a `form_with(model: [@lesson, st
 
 Aggiorniamo il partial *_steps*.
 
-*** code 06 - .../views/steps/_steps.html.erb - line:14 ***
+***code 06 - .../views/steps/_steps.html.erb - line:14***
 
 ```html+erb
     <%#= step.lesson_id %>
@@ -291,7 +291,7 @@ Aggiorniamo la view *index*.
 
 > Mostriamo l'elenco, o *collection*, di *steps* associati ad una specifica lezione (*lesson*).
 
-*** code 07 - .../views/steps/index.html.erb - line:9 ***
+***code 07 - .../views/steps/index.html.erb - line:9***
 
 ```html+erb
       <%#= link_to "Show this step", step %>
@@ -304,7 +304,7 @@ Aggiorniamo la view *index*.
 > Inoltre aggiungiamo indirizzamento a `lessons/lesson_id`. 
 
 
-*** code 07 - ...continua - line:15 ***
+***code 07 - ...continua - line:15***
 
 ```html+erb
 <%#= link_to "New step", new_step_path %>
@@ -320,7 +320,7 @@ Aggiorniamo la view *index*.
 
 Aggiorniamo la view *show*.
 
-*** code 08 - .../views/steps/show.html.erb - line:6 ***
+***code 08 - .../views/steps/show.html.erb - line:6***
 
 ```html+erb
   <%#= link_to "Edit this step", edit_step_path(@step) %>
@@ -342,7 +342,7 @@ Aggiorniamo la view *show*.
 
 Aggiorniamo la view *new*.
 
-*** code 09 - .../views/steps/new.html.erb - line:8 ***
+***code 09 - .../views/steps/new.html.erb - line:8***
 
 ```html+erb
   <%#= link_to "Back to steps", steps_path %>
@@ -356,7 +356,7 @@ Aggiorniamo la view *new*.
 
 Aggiorniamo la view *edit*.
 
-*** code 10 - .../views/steps/edit.html.erb - line:8 ***
+***code 10 - .../views/steps/edit.html.erb - line:8***
 
 ```html+erb
   <%#= link_to "Show this step", @step %> |
