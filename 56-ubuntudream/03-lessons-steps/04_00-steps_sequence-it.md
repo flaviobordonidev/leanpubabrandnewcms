@@ -95,7 +95,7 @@ end
 
 Vediamo un secondo esempio.
 
-*** code: n/a - .../app/models/post.rb - line:x ***
+***code: n/a - .../app/models/post.rb - line:x***
 
 ```ruby
 def previous_post
