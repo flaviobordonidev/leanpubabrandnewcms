@@ -35,23 +35,20 @@ Colonne principali:
 Colonna                 | Descrizione
 ----------------------- | -----------------------
 `name:string`           | (255 caratteri) Nome esercizio / aula / lezione  (es: View of mount Vermon, The isle of the death, ...) - Questo appare nelle cards nell'index
-`duration:integer`      | Quanto dura l'esercizio in media. (Uso un numero intero che mi rappresenta i **minuti** di durata. es: 90 minuti, 180 minuti, ...)
+`duration:integer`      | Quanto dura l'esercizio in media. (Uso un numero intero che mi rappresenta quanti **minuti** dura. es: 90 minuti, 180 minuti, ...)
 
-
-- `name:string`             -> (255 caratteri) Nome esercizio / aula / lezione  (es: View of mount Vermon, The isle of the death, ...) - Questo appare nelle cards nell'index
-- `duration:integer`        -> quanto dura l'esercizio in media. (Uso un numero intero che mi rappresenta i **minuti** di durata. es: 90 minuti, 180 minuti, ...)
 
 
 Colonne secondarie:
 
-- Categoria/Tag               -> 7. Interpretazione, Dipinto, Suoni ambiente, ...
+Colonna                   | Descrizione
+------------------------- | -----------------------
+`Categoria/Tag`           | 7. Interpretazione, Dipinto, Suoni ambiente, ...
                                 (vedi gemma taggable)
-- blocco (lucchetto)          -> lock_value_percorsocoach1 (livello a cui devi essere per sbloccarlo?) 
-                              -> lock_value_percorsocoach2 (indipendente dal percorsocoach1 )
-                               Quindi metto tante colonne quanti sono i percorsicoach (attualmente è 1 solo ^_^)
-- note:text               -> (molti caratteri) Note Aggiuntive - questo appare nello show. è un approfondimento sull'esercizio
-- meta_title:string       -> Per il SEO
-- meta_description:string -> Per il SEO
+`blocco (lucchetto)`      | lock_value_percorsocoach1 (livello a cui devi essere per sbloccarlo?) \n -> lock_value_percorsocoach2 (indipendente dal percorsocoach1 ) \n Quindi metto tante colonne quanti sono i percorsicoach (attualmente è 1 solo ^_^)
+`note:text`               | (molti caratteri) Note Aggiuntive - questo appare nello show. è un approfondimento sull'esercizio
+`meta_title:string`       | Per il SEO
+`meta_description:string` | Per il SEO
 
 
 Tabelle collegate 1-a-molti (non ho campi di chiave esterna perché saranno sull'altra tabella)
