@@ -80,7 +80,7 @@ $ rails g scaffold Lesson name:string duration:integer
 
 vediamo il migrate generato
 
-*** code 01 - .../db/migrate/xxx_create_lessons.rb - line:1 ***
+***code 01 - .../db/migrate/xxx_create_lessons.rb - line:1***
 
 ```ruby
 class CreateLessons < ActiveRecord::Migration[7.0]
@@ -147,7 +147,7 @@ Colonna                 | Descrizione
 
 > `lesson:references` crea un migration "ottimizzato" perché inserisce un indice per velocizzare la ricerca sulla tabella nella relazione uno a molti. Inoltre imposta anche una parte della relazione uno-a-molti nel model.
 
-> L'attributo `lesson:references` imposta un'associazione tra i modelli *Lesson* e *Step*. Nello specifico, assicura che una chiave esterna che rappresenta ogni voce di lezione nella tabella del database delle lezioni venga aggiunta alla tabella del database degli *steps*. (This will ensure that a foreign key representing each lesson entry in the lessons database's table is added to the steps database's table.)
+> L'attributo `lesson:references` imposta un'associazione tra i modelli *Lesson* e *Step*. Nello specifico, assicura che una chiave esterna che rappresenta ogni voce di lezione nella tabella del database delle lezioni venga aggiunta alla tabella del database degli *steps*. (This will ensure that a foreign key representing each lesson entry in the lessons databases table is added to the steps database's table.)
 
 
 
@@ -157,7 +157,7 @@ Creiamo la tabella con i vari passi di ogni lezione.
 
 Usiamo lo Scaffold che mi imposta già l'applicazione in stile restful con le ultime convenzioni Rails.
 
-I> ATTENZIONE: con "rails generate scaffold ..." -> usiamo il SINGOLARE
+> ATTENZIONE: con "rails generate scaffold ..." -> usiamo il SINGOLARE
 
 ```bash
 $ rails g scaffold Step question:string answer:text lesson:references
