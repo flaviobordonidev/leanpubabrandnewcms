@@ -142,34 +142,34 @@ Fine della digressione. Torniamo alla nostra applicazione.
 
 Inseriamo un *form* nella view *show* in modo da permettere agli utenti di dare la risposta.
 
-> A differenza di Edit che ci permette di editare anche la domanda, su show avremo solo la possibilità di inserire la risposta.
+> A differenza di *edit* che ci permette di editare anche la domanda, su *show* avremo solo la possibilità di inserire la risposta.
 
 Facciamo in modo che partendo da `lessons/1/steps/1` passiamo al successivo step (`lessons/1/steps/2`) sul *submit* del *form*.
 
-> Essendo il *form* solo per *show*, perché non c'è *new*, non usiamo un partial *_form_answer* ma mettiamo tutto il codice direttamente su show.
+> Essendo il *form* solo per *show*, perché non c'è *new*, non usiamo un partial *_form_answer* ma mettiamo tutto il codice direttamente su *show*.
 
-***code: n/a - .../views/steps/show.html.erb - line:1***
+***code: n/a - .../views/steps/show.html.erb - line:7***
 
-```ruby
-<%= form_with(model: [@lesson, @step], local: true) do |form| %>
+```html+erb
+<%= form_with(model: [@lesson, @step]) do |form| %>
   <% if @step.errors.any? %>
-    <div id="error_explanation">
+    <div style="color: red">
       <h2><%= pluralize(@step.errors.count, "error") %> prohibited this step from being saved:</h2>
 
       <ul>
-        <% @step.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
+        <% @step.errors.each do |error| %>
+          <li><%= error.full_message %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :answer %>
+  <div>
+    <%= form.label :answer, style: "display: block" %>
     <%= form.text_area :answer %>
   </div>
 
-  <div class="actions">
+  <div>
     <%= form.submit %>
   </div>
 <% end %>
@@ -177,19 +177,10 @@ Facciamo in modo che partendo da `lessons/1/steps/1` passiamo al successivo step
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/04_01-views-steps-show.html.erb)
 
-Il codice aggiunto è praticamente lo stesso del partial `steps/_form` con qualche piccola modifica;
-è importante far notare che invece della variabile `step` dobbiamo usare la variabile di istanza `@step`.
-
-Questo perché quando chiamiamo il partial `steps/_form` usiamo questa linea di codice:
-
-***code: n/a - .../views/steps/show.html.erb - line:1***
-
-```html+erb
-<%= render 'form', step: @step %>
-```
-
-Ossia passiamo la variabile di istanza `@step` alla variabile locale `step` che usiamo nel partial.
-Invece su show non usiamo il partial e quindi ci riferiamo direttamente alla variabile di istanza `@step`.
+> Il codice aggiunto è praticamente lo stesso del partial `steps/_form` con qualche piccola modifica.<br/>
+> Ad esempio non essendo su un partial invece della variabile `step` ci riferiamo direttamente alla variabile di istanza `@step`.
+> Questo perché quando chiamiamo il partial `steps/_form` usiamo `<%= render 'form', step: @step %>`.
+> Ossia passiamo la variabile di istanza `@step` alla variabile locale `step` che usiamo nel partial.
 
 
 
