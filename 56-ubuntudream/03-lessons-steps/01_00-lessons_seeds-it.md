@@ -151,7 +151,7 @@ Colonna                 | Descrizione
 
 
 
-## Impementiamo tabella Steps
+## Implementiamo tabella Steps
 
 Creiamo la tabella con i vari passi di ogni lezione.
 
@@ -201,7 +201,7 @@ $ rails db:migrate
 
 ## Aggiungiamo la relazione uno-a-molti
 
-Nel model *Step*, aggiungiamo i commenti e posizioniamo la relazione su "# == Relationships".
+Nel model *Step*, aggiungiamo i commenti e posizioniamo la relazione su *# == Relationships*.
 
 *** code 03 - .../app/models/step.rb - line:11 ***
 
