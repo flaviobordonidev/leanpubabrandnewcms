@@ -22,7 +22,7 @@ $ git checkout -b lp
 
 Aggiorniamo il partial *_lesson* richiamato dalla view *show*.
 
-*** code 01 - .../views/lessons/_lesson.html.erb - line:1 ***
+***code 01 - .../views/lessons/_lesson.html.erb - line:1***
 
 ```html+erb
   <h2>Steps</h2>
@@ -45,7 +45,7 @@ Aggiorniamo il partial *_lesson* richiamato dalla view *show*.
 
 Aggiorniamo la view *show*.
 
-*** code 02 - .../views/lessons/show.html.erb - line:1 ***
+***code 02 - .../views/lessons/show.html.erb - line:1***
 
 ```html+erb
 <p style="color: green"><%= notice %></p>
@@ -67,7 +67,7 @@ Aggiorniamo la view *show*.
 
 Aggiorniamo la view *index*.
 
-*** code 03 - .../views/lessons/index.html.erb - line:1 ***
+***code 03 - .../views/lessons/index.html.erb - line:1***
 
 ```html+erb
 <p style="color: green"><%= notice %></p>
@@ -94,7 +94,7 @@ Però in *preview* riceviamo un errore a causa dei due *link_to* sul partial *_l
 
 Correggiamo questo *bug*.
 
-*** code 04 - .../views/lessons/_lesson.html.erb - line:1 ***
+***code 04 - .../views/lessons/_lesson.html.erb - line:1***
 
 ```html+erb
   <%= link_to 'View All Steps with answers', lesson_steps_path(@lesson) if @lesson.present? %> | 
@@ -109,7 +109,7 @@ Correggiamo questo *bug*.
 
 Aggiorniamo la view *edit*.
 
-*** code 05 - .../views/lessons/edit.html.erb - line:1 ***
+***code 05 - .../views/lessons/edit.html.erb - line:1***
 
 ```html+erb
 <h1>Editing lesson</h1>
@@ -132,7 +132,7 @@ Aggiorniamo la view *edit*.
 
 Aggiorniamo la view *new*.
 
-*** code 06 - .../views/lessons/new.html.erb - line:1 ***
+***code 06 - .../views/lessons/new.html.erb - line:1***
 
 ```html+erb
 <h1>New lesson</h1>
@@ -153,7 +153,7 @@ Aggiorniamo la view *new*.
 
 Aggiorniamo il partial *_form*.
 
-*** code 07 - .../views/lessons/_form_.html.erb - line:1 ***
+***code 07 - .../views/lessons/_form_.html.erb - line:1***
 
 ```html+erb
 <%= form_with(model: lesson) do |form| %>
@@ -178,9 +178,8 @@ $ git commit -m "add seed companies"
 
 ## Publichiamo su heroku
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git push heroku cs:master
+```bash
+$ git push heroku cs:main
 $ heroku run rake db:migrate
 ```
 
@@ -200,13 +199,11 @@ E verifichiamo di arrivare al primo step della prima lezione.
 
 se abbiamo finito le modifiche e va tutto bene:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git checkout master
+```bash
+$ git checkout main
 $ git merge ln
 $ git branch -d ln
 ```
-
 
 
 
@@ -214,9 +211,8 @@ $ git branch -d ln
 
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ git push origin master
+```bash
+$ git push origin main
 ```
 
 
