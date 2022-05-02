@@ -38,6 +38,7 @@ Esempio: da lessons/1/steps/1 a lessons/1/steps/2.
 > Se cancelliamo una step si crea un "buco" e prendiamo errore!!!
 
 
+
 ## Debug di link *next*
 
 La soluzione a questo è affidarsi al metodo `.where` nel *Model*.
@@ -75,7 +76,7 @@ Sul web sono proposte delle soluzioni per il link *next* che sfruttano il model 
 Di seguito ne vediamo un esempio pensato per gli articoli (*Post*) di un blog.
 Prepariamo nel model i riferimenti a *next* e *previous*.
 
-*** code: n/a - .../app/models/post.rb - line:x ***
+***code: n/a - .../app/models/post.rb - line:x***
 
 ```ruby
 def previous_post
@@ -137,17 +138,19 @@ Fine della digressione. Torniamo alla nostra applicazione.
 
 
 
-## Inseriamo il FORM
+## Inseriamo un *form* per le risposte
 
-Inseriamo il form nello show in modo da permettere agli utenti di dare la risposta.
-A differenza di Edit che ci permette di editare anche la domanda, su show avremo solo la possibilità di inserire la risposta.
+Inseriamo un *form* nella view *show* in modo da permettere agli utenti di dare la risposta.
 
-Facciamo in modo che pardendo da lessons/1/steps/1 passiamo al successivo step (lessons/1/steps/2) sul submit del form.
+> A differenza di Edit che ci permette di editare anche la domanda, su show avremo solo la possibilità di inserire la risposta.
 
-Essendo un solo form, perché non c'è "new", non usiamo un partial "_form_answer" ma mettiamo tutto il codice direttamente su show.
+Facciamo in modo che partendo da `lessons/1/steps/1` passiamo al successivo step (`lessons/1/steps/2`) sul *submit* del *form*.
 
-{id: "56-03-02_2", caption: ".../views/steps/show.html.erb -- codice 2", format: HTML+Mako, line-numbers: true, number-from: 1}
-```
+> Essendo il *form* solo per *show*, perché non c'è *new*, non usiamo un partial *_form_answer* ma mettiamo tutto il codice direttamente su show.
+
+***code: n/a - .../views/steps/show.html.erb - line:1***
+
+```ruby
 <%= form_with(model: [@lesson, @step], local: true) do |form| %>
   <% if @step.errors.any? %>
     <div id="error_explanation">
@@ -172,19 +175,21 @@ Essendo un solo form, perché non c'è "new", non usiamo un partial "_form_answe
 <% end %>
 ```
 
-[tutto il codice](#56-03-02_2all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/04_01-views-steps-show.html.erb)
 
-Il codice aggiunto è praticamente lo stesso del partial steps/_form con qualche piccola modifica.
-è importante far notare che invece della variabile *step* dobbiamo usare la variabile di istanza *@step*.
-Questo perché quando chiamiamo il partial steps/_form usiamo questa linea di codice:
+Il codice aggiunto è praticamente lo stesso del partial `steps/_form` con qualche piccola modifica;
+è importante far notare che invece della variabile `step` dobbiamo usare la variabile di istanza `@step`.
 
-```
+Questo perché quando chiamiamo il partial `steps/_form` usiamo questa linea di codice:
+
+***code: n/a - .../views/steps/show.html.erb - line:1***
+
+```html+erb
 <%= render 'form', step: @step %>
 ```
 
-Ossia passiamo la variabile di istanza *@step* alla variabile locale *step* che usiamo nel partial.
-Invece su show non usiamo il partial e quindi ci riferiamo direttamente alla variabile di istanza *@step*.
-
+Ossia passiamo la variabile di istanza `@step` alla variabile locale `step` che usiamo nel partial.
+Invece su show non usiamo il partial e quindi ci riferiamo direttamente alla variabile di istanza `@step`.
 
 
 
@@ -192,8 +197,9 @@ Invece su show non usiamo il partial e quindi ci riferiamo direttamente alla var
 
 Riadattiamo alcuni links per muoverci agevolmente tra lezioni e steps.
 
-{id: "56-03-02_3", caption: ".../views/steps/index.html.erb -- codice 3", format: HTML+Mako, line-numbers: true, number-from: 1}
-```
+***code: n/a - .../views/steps/index.html.erb - line:3***
+
+```html+erb
         <td><%= link_to 'Show Lesson', [@lesson] %></td>
         <td><%= link_to 'Show Step', [@lesson, step] %></td>
         <td><%= link_to 'Edit Step', edit_lesson_step_path(@lesson, step) %></td>
@@ -211,8 +217,9 @@ da notare che avendo aggiunto un altro link abbiamo portato a 4 il colspan dell'
 
 Adattiamo anche i links della view *steps/edit*
 
-{id: "56-03-02_4", caption: ".../views/steps/edit.html.erb -- codice 4", format: HTML+Mako, line-numbers: true, number-from: 1}
-```
+***code: n/a - .../views/steps/edit.html.erb - line:4***
+
+```html+erb
 <%#= link_to 'Show', @step %>
 <%= link_to 'Back to Show', lesson_step_path(@lesson, @step) %> |
 <%#= link_to 'Back', steps_path %>
