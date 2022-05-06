@@ -1,15 +1,19 @@
-{id: 56-ubuntudream-03-lessons-steps-02-lessons_next}
-# Cap 03.4 -- 
+# <a name="top"></a> Cap video_players 1 - Come nascondere e mostrare il player
 
-In questo capitolo ...
+La differenza tra `Display: none` e `Visibility: hidden`.
 
 
-Risorse esterne:
+Comando                | Descrizione
+---------------------- | -------------------------
+`Visibility: hidden;`  | nasconde l'elemento **ma**  the element will still take up the same space as before. The element will be hidden, but still affect the layout.
+`Display: none;`       | The element will be hidden, and the page will be displayed as if the element is not there.
 
-* https://www.w3schools.com/howto/howto_js_toggle_hide_show.asp
-* https://www.w3schools.com/css/css_display_visibility.asp
-* https://stackoverflow.com/questions/6242976/javascript-hide-show-element
 
+## Risorse esterne
+
+- https://www.w3schools.com/howto/howto_js_toggle_hide_show.asp
+- https://www.w3schools.com/css/css_display_visibility.asp
+- https://stackoverflow.com/questions/6242976/javascript-hide-show-element
 
 
 

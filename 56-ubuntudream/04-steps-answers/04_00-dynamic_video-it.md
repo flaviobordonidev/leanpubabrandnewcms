@@ -1,5 +1,4 @@
-{id: 56-ubuntudream-03-lessons-steps-03-users_answers}
-# Cap 5.4 -- Aggiungiamo un campo sulla tabella steps per il link dei video
+# <a name="top"></a> Cap 5.4 - Aggiungiamo un campo sulla tabella steps per il link dei video
 
 Aggiungiamo nella tabella steps un campo per contenere il link dei vari video che carichiamo su youtube.
 
@@ -11,24 +10,25 @@ Siccome vogliamo archiviare l'url da passare al player di youtube (l'id del vide
 
 Colonne da aggiungere:
 
-* youtube_video_id:string           -> (255 caratteri) The video ID will be located in the URL of the video page, right after the v= URL parameter.
-
+Colonna                 | Descrizione
+----------------------- | -----------------------
+youtube_video_id:string | (255 caratteri) The video ID will be located in the URL of the video page, right after the v= URL parameter.
 
 
 
 ## Aggiungiamo il campo del video_id
 
-aggiungiamo il campo per il video_id di youtube nella tabella steps.
+aggiungiamo il campo per il `video_id` di youtube nella tabella steps.
  
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails g migration AddYoutubeVideoIdToSteps youtube_video_id:string
 ```
 
 vediamo il migrate generato
 
-{id: "56-05-02_01", caption: ".../db/migrate/xxx_add_youtube_video_id_to_steps.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
-```
+***code 01 - .../db/migrate/xxx_add_youtube_video_id_to_steps.rb - line:1***
+
+```ruby
 class AddYoutubeVideoIdToSteps < ActiveRecord::Migration[6.0]
   def change
     add_column :steps, :youtube_video_id, :string
@@ -36,13 +36,12 @@ class AddYoutubeVideoIdToSteps < ActiveRecord::Migration[6.0]
 end
 ```
 
-[tutto il codice](#56-05-02_01all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-step-answers/04_01-db-migrate-xxx_add_youtube_video_id_to_steps.rb)
 
 
 eseguiamo il migrate 
 
-{title="terminal", lang=bash, line-numbers=off}
-```
+```bash
 $ sudo service postgresql start
 $ rails db:migrate
 ```
@@ -51,9 +50,10 @@ $ rails db:migrate
 
 ## Aggiorniamo il controller
 
-Aggiungiamo il campo alla withelist per permettere di passare il campo youtube_video_id su submit del form. Altrimenti non verrebbe caricato nel database.
+Aggiungiamo il campo alla withelist per permettere di passare il campo `youtube_video_id` su submit del form. Altrimenti non verrebbe caricato nel database.
 
-{title=".../db/controllers/steps_controller.rb", lang=ruby, line-numbers=on, starting-line-number=84}
+***code 02 - .../db/controllers/steps_controller.rb - line:84***
+
 ```
     # Never trust parameters from the scary internet, only allow the white list through.
     def step_params
@@ -61,19 +61,24 @@ Aggiungiamo il campo alla withelist per permettere di passare il campo youtube_v
     end
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-step-answers/04_02-controllers-steps_controller.rb)
+
 
 
 ## Aggiorniamo la view
 
 aggiungiamo il campo nel partial form della cartella steps
 
-{title=".../app/views/steps/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
+***code 03 - .../app/views/steps/_form.html.erb - line:1***
+
 ```
   <div class="field">
     <%= form.label :youtube_video_id %>
     <%= form.text_field :youtube_video_id %>
   </div>
 ```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-step-answers/04_02-controllers-steps_controller.rb)
 
 Prendiamo il video dal database
 

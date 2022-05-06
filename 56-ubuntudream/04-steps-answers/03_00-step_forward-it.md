@@ -1,17 +1,19 @@
-{id: 56-ubuntudream-03-lessons-steps-03-users_answers}
-# Cap 5.3 -- Facciamo un passo avanti ogni volta che inviamo una risposta
+# <a name="top"></a> Cap 5.3 - Facciamo un passo avanti ogni volta che inviamo una risposta
 
 Ogni volta che inviamo una risposta passiamo al successivo step del video.
 
 
 
-
-## Su submit del form show id+1
+## Su submit del form show andare su next
 
 Per andare avanti usiamo nel controller il codice già usato per il link "next" nel view steps/show.
+
+> vedi capitolo 5.4 (04_00-steps_sequence-it)
+
 Aggiorniamo quindi l'azione update del controller steps:
 
 {id: "56-05-03_01", caption: ".../app/controllers/steps_controller.rb -- codice 01", format: ruby, line-numbers: true, number-from: 70}
+
 ```
   # PATCH/PUT /steps/1
   # PATCH/PUT /steps/1.json
