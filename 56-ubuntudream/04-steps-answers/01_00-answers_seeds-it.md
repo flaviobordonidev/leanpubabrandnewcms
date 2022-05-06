@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 5.1 - Le risposte per ogni utente
+# <a name="top"></a> Cap 4.1 - Le risposte per ogni utente
 
 In questo capitolo usiamo gli utenti ed il login già sviluppato nei capitoli precedenti e creiamo una tabella di risposte in modo che alle varie domande di ogni lezione associamo una risposta differente per ogni utente.
 
@@ -98,7 +98,7 @@ class CreateAnswers < ActiveRecord::Migration[6.0]
 end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-step-answers/01_01-db-migrate-xxx_create_answers.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-step-answers/01_01-db-migrate-xxx_create_answers.rb)
 
 
 Effettuiamo il migrate del database per creare la tabella sul database
@@ -122,7 +122,7 @@ Da Rails 5 il `.references ..., foreign_key: true` aggiunge già le chiavi ester
   end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-step-answers/01_02-db-schema.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-step-answers/01_02-db-schema.rb)
 
 
 
@@ -157,7 +157,7 @@ class Answer < ApplicationRecord
 end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-step-answers/01_03-models-answer.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-step-answers/01_03-models-answer.rb)
 
 
 Lato model *Step* il `has_many :answers` lo inseriamo noi.
@@ -170,7 +170,7 @@ Su # == Relationships nel sottogruppo ## one-to-many.
   accepts_nested_attributes_for :answers, allow_destroy: true, reject_if: proc{ |attr| attr['content'].blank? }
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-step-answers/01_04-models-step.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-step-answers/01_04-models-step.rb)
 
 
 Analizziamo il codice:
@@ -231,7 +231,7 @@ Mostriamo le risposte caricate da console.
 </p>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-step-answers/01_05-views-steps-show.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-step-answers/01_05-views-steps-show.html.erb)
 
 
 Inseriamo il form per inserire una nuova risposta.
@@ -255,7 +255,7 @@ Il form annidato è quello che aggiorna la parte answers, sfruttando le impostaz
 <% end %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-step-answers/01_06-views-steps-show.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-step-answers/01_06-views-steps-show.html.erb)
 
 
 ***code 07 - .../views/steps/_answer_fields.html.erb- line:1***
@@ -269,7 +269,7 @@ Il form annidato è quello che aggiorna la parte answers, sfruttando le impostaz
 </div>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-step-answers/01_07-views-steps-_answer_fields.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-step-answers/01_07-views-steps-_answer_fields.html.erb)
 
 
 Ogni volta che facciamo submit del form aggiungiamo una nuova risposta.
@@ -293,6 +293,6 @@ Per farlo aggiungiamo `answers_attributes[]` al `params.require(:step).permit`. 
     end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-step-answers/01_08-controllers-steps_controller.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-step-answers/01_08-controllers-steps_controller.rb)
 
 Lato server / back-end abbiamo terminato.

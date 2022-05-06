@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 5.4 - Aggiungiamo un campo sulla tabella steps per il link dei video
+# <a name="top"></a> Cap 4.4 - Aggiungiamo un campo sulla tabella steps per il link dei video
 
 Aggiungiamo nella tabella steps un campo per contenere il link dei vari video che carichiamo su youtube.
 
