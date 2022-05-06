@@ -241,7 +241,7 @@ Per questo mi appoggio ad `answers_controller`.
 All'interno del form_with che interagisce con il controller steps_controller, che nel nostro caso ha una route annidata a lessons, inseriamo un form annidato attraverso il codice "form.fields_for".
 Il form annidato è quello che aggiorna la parte answers, sfruttando le impostazioni fatte precedentemente sul controller e il model di Step.
 
-***code 06 - .../views/steps/show.html.erb- line:1***
+***code 06 - .../views/steps/show.html.erb- line:43***
 
 ```html+erb
 <%= form_with(model: [@lesson, @step], local: true) do |form| %>

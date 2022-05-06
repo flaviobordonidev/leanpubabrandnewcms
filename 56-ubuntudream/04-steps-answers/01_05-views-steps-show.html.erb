@@ -1,9 +1,33 @@
-<p id="notice"><%= notice %></p>
+<p style="color: green"><%= notice %></p>
 
-<p>
-  <strong>Question:</strong>
-  <%= @step.question %>
-</p>
+<%= render @step %>
+
+<br/>---------------<br/>
+
+<%= form_with(model: [@lesson, @step]) do |form| %>
+  <% if @step.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(@step.errors.count, "error") %> prohibited this step from being saved:</h2>
+
+      <ul>
+        <% @step.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :answer, style: "display: block" %>
+    <%= form.text_area :answer %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
+
+<br/>---------------<br/>
 
 <p>
   <strong>Answers</strong>
@@ -16,46 +40,20 @@
   </ul>
 </p>
 
+<div>
+  <%#= link_to '<Prev', lesson_step_path(@lesson, @step.id-1) if @step.id > @lesson.steps.first.id %>
+  <%= link_to '<Prev', lesson_step_path(@lesson, @step.prev.id) if @step.prev.present? %>
+  <%= @step.prev.id if @step.prev.present? %>
+  <%#= link_to 'Next>', lesson_step_path(@lesson, @step.id+1) if @step.id < @lesson.steps.last.id %>
+  <%= link_to 'Next>', lesson_step_path(@lesson, @step.next.id) if @step.next.present? %>
+  <%= @step.next.id if @step.next.present? %>
+  <br/>
 
-<%= form_with(model: [@lesson, @step], local: true) do |form| %>
-  <% if @step.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@step.errors.count, "error") %> prohibited this step from being saved:</h2>
+  <%#= link_to "Edit this step", edit_step_path(@step) %>
+  <%= link_to 'Edit this step', edit_lesson_step_path(@lesson, @step) %> |
+  <%#= link_to "Back to steps", steps_path %>
+  <%= link_to 'Back to lesson steps', lesson_steps_path(@lesson) %>
 
-      <ul>
-        <% @step.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :answer %>
-    <%= form.text_area :answer %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
-
-
-<!--da eliminare -->
-<p>
-  <strong>Answer (da eliminare):</strong>
-  <%= @step.answer %>
-</p>
-
-<p>
-  <strong>Lesson:</strong>
-  <%= @step.lesson_id %>
-</p>
-<!--da eliminare -->
-
-<%= link_to 'Edit', edit_lesson_step_path(@lesson, @step) %> |
-<%= link_to 'Back', lesson_steps_path(@lesson) %>
-
-<br>
-<%= link_to 'Prev', lesson_step_path(@lesson, @step.id-1) if @step.id > @lesson.steps.first.id %> --
-<%= link_to 'Next', lesson_step_path(@lesson, @step.id+1) if @step.id < @lesson.steps.last.id %>
+  <%#= button_to "Destroy this step", @step, method: :delete %>
+  <%= button_to "Destroy this step", [@lesson, @step], method: :delete %>
+</div>
