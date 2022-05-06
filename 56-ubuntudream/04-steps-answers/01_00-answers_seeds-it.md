@@ -216,7 +216,7 @@ Sulla pagina *views/steps/show* inseriamo la visualizzazione di tutte le rispost
 
 Mostriamo le risposte caricate da console.
 
-***code 05 - .../views/steps/show.html.erb - line:1***
+***code 05 - .../views/steps/show.html.erb - line:32***
 
 ```html+erb
 <p>
@@ -235,16 +235,13 @@ Mostriamo le risposte caricate da console.
 
 
 Inseriamo il form per inserire una nuova risposta.
-Per questo mi appoggio ad `answers_controller`.
 
-
-All'interno del form_with che interagisce con il controller steps_controller, che nel nostro caso ha una route annidata a lessons, inseriamo un form annidato attraverso il codice "form.fields_for".
-Il form annidato è quello che aggiorna la parte answers, sfruttando le impostazioni fatte precedentemente sul controller e il model di Step.
+> All'interno del `form_with(model: [@lesson, @step]) do` che interagisce con il controller `steps_controller` e che ha una route annidata *lessons/#/steps/#*, inseriamo un **form annidato** per le *answers* attraverso il comando `.fields_for :answers`.
 
 ***code 06 - .../views/steps/show.html.erb- line:43***
 
 ```html+erb
-<%= form_with(model: [@lesson, @step], local: true) do |form| %>
+<%= form_with(model: [@lesson, @step]) do |form| %>
   <!-- Creiamo nuovo Record -->
   <%= form.fields_for :answers, Answer.new do |answer| %>
     <%= render "answer_fields", form: answer %>
@@ -256,6 +253,9 @@ Il form annidato è quello che aggiorna la parte answers, sfruttando le impostaz
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-steps-answers/01_06-views-steps-show.html.erb)
+
+
+> Si può anche scrivere `form_with(model: [@lesson, @step], local: true) do |form|` ma il parametro `local: true` da Rails 7 è l'opzione di default e quindi si può omettere.
 
 
 ***code 07 - .../views/steps/_answer_fields.html.erb- line:1***
@@ -296,3 +296,71 @@ Per farlo aggiungiamo `answers_attributes[]` al `params.require(:step).permit`. 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-steps-answers/01_08-controllers-steps_controller.rb)
 
 Lato server / back-end abbiamo terminato.
+
+
+## Verifichiamo preview
+
+```bash
+$ rails s -b 192.168.64.3
+```
+
+Andiamo all'url:
+
+- http://192.168.64.3:3000/lessons/1/steps/1
+
+E verifichiamo che modificando le risposte andiamo avanti al prossimo step fino alla fine della lezione.
+
+
+
+## Archiviamo su git
+
+```bash
+$ git add -A
+$ git commit -m "Add answer table"
+```
+
+
+
+## Publichiamo su heroku
+
+```bash
+$ git push heroku cs:main
+$ heroku run rake db:migrate
+```
+
+Verifichiamo preview su heroku.
+
+Andiamo all'url:
+
+* https://bl7-0.herokuapp.com/lessons/1/steps
+
+E diamo le risposte ai vari steps della prima lezione.
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+```bash
+$ git checkout main
+$ git merge ln
+$ git branch -d ln
+```
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+```bash
+$ git push origin main
+```
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/04_00-steps_sequence-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-steps-answers/02_00-users_answers-it.md)
