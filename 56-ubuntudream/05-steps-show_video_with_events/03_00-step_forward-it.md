@@ -8,7 +8,7 @@ Ogni volta che inviamo una risposta passiamo al successivo step del video.
 
 Per andare avanti usiamo nel controller il codice già usato per il link "next" nel view steps/show.
 
-> vedi capitolo 5.4 (04_00-steps_sequence-it)
+> vedi capitolo 3.4 (04_00-steps_sequence-it)
 
 Aggiorniamo quindi l'azione update del controller steps:
 
