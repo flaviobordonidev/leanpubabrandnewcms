@@ -194,7 +194,7 @@ Possiamo commentare il punto in cui è impostata a `true` alla riga 45.
       }
 ```
 
-Oppure puliamo il codice togliendo la variabile ed i punti in cui è usata.
+Ma noi puliamo il codice togliendo la variabile ed i punti in cui è usata.
 
 ***code n/a - .../views/mockups/youtube_player.html.erb - line:41***
 
@@ -383,3 +383,71 @@ Comando                | Descrizione
 
 Abbiamo completato a livello di mockup. Ora non ci resta che implementarlo.
 
+
+
+## Verifichiamo preview
+
+```bash
+$ rails s -b 192.168.64.3
+```
+
+Andiamo all'url:
+
+- http://192.168.64.3:3000/lessons/1/steps/1
+
+
+Effettuiamo il login ed inseriamo alcune risposte. Poi andiamo sulla console e verifichiamo le risposte date dall'utente loggato.
+
+
+
+## Archiviamo su git
+
+```bash
+$ git add -A
+$ git commit -m "Mockup youtube_player"
+```
+
+
+
+## Publichiamo su heroku
+
+Come fatto per il database locale di sviluppo (*bl7_development*), prima di eseguire il migrate su heroku cancelliamo tutti i records dalla tabella *answers* altrimenti riceviamo errore perché nella tabella *answers* la chiave esterna *user_id*, che serve per la relazione uno-a-molti fra *users* ed *answers*, non può essere vuota.
+
+```bash
+$ git push heroku iv:main
+```
+
+Verifichiamo preview su heroku.
+
+Andiamo all'url:
+
+- https://bl7-0.herokuapp.com/mockups/youtube_player
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+```bash
+$ git checkout main
+$ git merge iv
+$ git branch -d iv
+```
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+```bash
+$ git push origin main
+```
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-steps-answers/02_00-users_answers-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-steps-show_video_with_events/02_00-steps_youtube_player-it.md)

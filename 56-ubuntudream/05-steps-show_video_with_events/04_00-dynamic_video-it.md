@@ -10,9 +10,9 @@ Siccome vogliamo archiviare l'url da passare al player di youtube (l'id del vide
 
 Colonne da aggiungere:
 
-Colonna                 | Descrizione
------------------------ | -----------------------
-youtube_video_id:string | (255 caratteri) The video ID will be located in the URL of the video page, right after the v= URL parameter.
+Colonna                   | Descrizione
+------------------------- | -----------------------
+`youtube_video_id:string` | (255 caratteri) The video ID will be located in the URL of the video page, right after the v= URL parameter.
 
 
 

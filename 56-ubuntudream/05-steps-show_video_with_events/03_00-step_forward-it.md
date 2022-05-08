@@ -44,14 +44,16 @@ Abbiamo già visto come far partire un video sfruttando il player di youtube nei
 Adesso lo usiamo partendo al caricamento della pagina ed alla fine del video mostriamo il form per rispondere alla domanda.
 Per non avere sempre lo stesso video nelle varie pagine creiamo una certa dinamicità popolando la variabile *fbvalue* con tre identificativi differenti di video di youtube a seconda dello step in cui ci troviamo.
 
-{id: "56-05-03_02", caption: ".../views/steps/show.html.erb -- codice 2", format: HTML+Mako, line-numbers: true, number-from: 1}
+***code 01 - .../views/steps/show.html.erb - line:1***
+
 ```
 <% fbvalue = "QwG30ZZFSyI" if @step.id == 1 %>
 <% fbvalue = "0Nm5AvhKpQQ" if @step.id == 2 %>
 <% fbvalue = "5ZKcIbWxhh0" if @step.id == 3 %>
 ```
 
-{caption: ".../views/steps/show.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 1}
+***code 01 - ...continua - line:1***
+
 ```
   function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
@@ -60,13 +62,14 @@ Per non avere sempre lo stesso video nelle varie pagine creiamo una certa dinami
       videoId: '<%= fbvalue %>',
 ```
 
-[tutto il codice](#56-05-03_02all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-step-show_video_with_events/01_02-controllers-mockups_controller.rb)
 
 
 
 ## Alla fine del video nascondiamo il video e mostriamo il form per la risposta
 
-{id: "56-05-03_03", caption: ".../views/steps/show.html.erb -- codice 3", format: HTML+Mako, line-numbers: true, number-from: 1}
+***code 01 - .../views/steps/show.html.erb - line:1***
+
 ```
 <%= form_with(model: [@lesson, @step], local: true, id: "test-form", class: "fbhidden") do |form| %>
   <div class="field">
@@ -82,12 +85,14 @@ Per non avere sempre lo stesso video nelle varie pagine creiamo una certa dinami
 <% end %>
 ```
 
-{caption: ".../views/steps/show.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 1}
+***code 01 - ...continua - line:1***
+
 ```
     if (event.data == YT.PlayerState.ENDED) {          
 ```
 
-{caption: ".../views/steps/show.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 1}
+***code 01 - ...continua - line:1***
+
 ```
       let playerDiv = document.getElementById('player') // prendiamo il tag con id="player"
       playerDiv.style.display = "none" //Nascondiamo il player
@@ -96,7 +101,7 @@ Per non avere sempre lo stesso video nelle varie pagine creiamo una certa dinami
     }
 ```
 
-[tutto il codice](#56-05-03_03all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-step-show_video_with_events/01_02-controllers-mockups_controller.rb)
 
 
 Per far partire il form nascosto abbiamo inserito questo codice nello stylesheet
@@ -112,7 +117,7 @@ Per far partire il form nascosto abbiamo inserito questo codice nello stylesheet
 .fbhidden {display: none;}
 ```
 
-La cosa più corretta è fare uno stylesheet custom dedicato all'applicazione e non andare a modificare lo stilesheet del template.
+La cosa più corretta è fare uno stylesheet custom dedicato all'applicazione e non andare a modificare lo stylesheet del template.
 
 
 
@@ -139,7 +144,8 @@ In questo caso il submit ci fa tornare all'index del nostro sito rails ma abbiam
 
 Iniziamo reindirizzando alla pagina https://www.google.it/
 
-{id: "56-05-03_04", caption: ".../app/controllers/steps_controller.rb -- codice 04", format: ruby, line-numbers: true, number-from: 70}
+***code 01 - .../app/controllers/steps_controller.rb - line:70***
+
 ```
           if @step.id < @lesson.steps.last.id
             redirect_to lesson_step_path(@lesson, @step.id+1), notice: 'Passo successivo'
@@ -149,12 +155,13 @@ Iniziamo reindirizzando alla pagina https://www.google.it/
           end
 ```
 
-[tutto il codice](#56-05-03_04all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-step-show_video_with_events/01_02-controllers-mockups_controller.rb)
 
 
 altrimenti la pagina finale è sulla ns app e mettiamo un link alla nuova pagina.
 
-{caption: ".../app/controllers/steps_controller.rb -- alternativa", format: ruby, line-numbers: true, number-from: 70}
+***code 01 - .../app/controllers/steps_controller.rb [alternativa] - line:70***
+
 ```
           if @step.id < @lesson.steps.last.id
             redirect_to lesson_step_path(@lesson, @step.id+1), notice: 'Passo successivo'
@@ -164,15 +171,15 @@ altrimenti la pagina finale è sulla ns app e mettiamo un link alla nuova pagina
           end
 ```
 
-
 aggiungiamo il link all'URL esterno
 
-{id: "56-05-03_03", caption: ".../views/steps/show.html.erb -- codice 3", format: HTML+Mako, line-numbers: true, number-from: 1}
+***code 01 - .../views/steps/show.html.erb - line:1***
+
 ```
 <%= link_to 'Google', 'https://www.google.it/', :target => '_blank' %>
 ```
 
-[tutto il codice](#56-05-03_03all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-step-show_video_with_events/01_02-controllers-mockups_controller.rb)
 
 Quello che funziona meglio è andare direttamente alla pagina esterna ma è fondamentale avere poi la possibilità di tornare alla nostra applicazione.
 Ad esempio se invece della pagina di google andiamo su una nostra landing-page fatta ad esempio su getresponse (o sendinblue o aweber o mailerlite o altre) possiamo far lasciare l'email e sul submit avere un backlink alla nostra applicazione.
