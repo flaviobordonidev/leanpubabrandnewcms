@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= yield(:html_head_title) %> | Baseline7_0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <style>
+    /*form-hidden*/
+    #test-form {
+      width: 100%;
+      padding: 50px 0;
+      text-align: center;
+      background-color: lightblue;
+      margin-top: 20px;
+      display: none; /*non visualizziamo il form*/
+    }
+    #test-form .form-control {
+      width: 90%;
+      margin: 0 auto;
+      margin-bottom: 10px;
+      /*float: none;*/
+    }
+    #test-form .btn {
+      width: 90%;
+    }
+    </style>
+    
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "actiontext", "data-turbo-track": "reload" %> <!--to fix broken UI adding bootstrap-->
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <% if notice %><p class="alert alert-info"><%= notice %></p><% end %>
+    <% if alert %><p class="alert alert-warning"><%= alert %></p><% end %>
+    <%= yield %>
+  </body>
+</html>

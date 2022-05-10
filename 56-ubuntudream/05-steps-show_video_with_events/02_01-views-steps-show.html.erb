@@ -1,0 +1,123 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @step %>
+
+    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+    <div id="player"></div>
+
+    <ul id="player-commands-list"></ul>
+
+    <%#= form_tag "", method: "get", id: "test-form", class: "bottom-pad" do %>
+      <%#= text_field_tag :search, params[:search], class: "form-control", placeholder: "rispondi..." %>
+      <%#= content_tag :button, type: "submit", class: "btn btn-primary" do %>Invia<%# end %>
+    <%# end %>
+
+    <script>
+      // 2. This code loads the IFrame Player API code asynchronously.
+      var tag = document.createElement('script');
+
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      // 3. This function creates an <iframe> (and YouTube player)
+      //    after the API code downloads.
+      var player;
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          height: '390',
+          width: '640',
+          videoId: 'M7lc1UVf-VE',
+          playerVars: {
+            'playsinline': 1
+          },
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+      }
+
+      // 4. The API will call this function when the video player is ready.
+      function onPlayerReady(event) {
+        event.target.playVideo();
+      }
+
+      // 5. The API calls this function when the player's state changes.
+      function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.PLAYING) {
+          console.log("PLAYING");
+          let pcl = document.getElementById('player-commands-list'); // mettiamo su una variabile il tag <ul id="player-commands-list"></ul>
+          let li = document.createElement('li'); // creiamo un nuovo tag <li></li>
+          li.textContent = 'PLAYING'; // inseriamo il valore tra il tag <li></li>
+          pcl.insertBefore(li, pcl.firstElementChild); // insert a new node before the first list item
+        }
+        if (event.data == YT.PlayerState.PAUSED) {          
+          console.log("PAUSED");
+          let pcl = document.getElementById('player-commands-list'); // mettiamo su una variabile il tag <ul id="player-commands-list"></ul>
+          let li = document.createElement('li'); // creiamo un nuovo tag <li></li>
+          li.textContent = 'PAUSED'; // inseriamo il valore tra il tag <li></li>
+          pcl.insertBefore(li, pcl.firstElementChild); // insert a new node before the first list item
+        }
+        if (event.data == YT.PlayerState.ENDED) {          
+          console.log("ENDED - Evviva ^_^");
+          let pcl = document.getElementById('player-commands-list'); // prendiamo il tag <ul id="player-commands-list"></ul>
+          let li = document.createElement('li'); // creiamo un nuovo tag <li></li>
+          li.textContent = 'ENDED'; // inseriamo il valore tra il tag <li></li>
+          pcl.insertBefore(li, pcl.firstElementChild); // insert a new node before the first list item
+          let playerDiv = document.getElementById('player') // prendiamo il tag con id="player"
+          playerDiv.style.display = "none" //Nascondiamo il player
+          let formTest = document.getElementById('test-form') // prendiamo il tag con id="test-form"
+          formTest.style.display = "block" //Mostriamo il form
+        }
+      }
+    </script>
+
+
+
+
+<br/>---------------<br/>
+
+<%= form_with(model: [@lesson, @step]) do |form| %>
+  <% if @step.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(@step.errors.count, "error") %> prohibited this step from being saved:</h2>
+
+      <ul>
+        <% @step.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :answer, style: "display: block" %>
+    <%= form.text_area :answer %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
+
+<br/>---------------<br/>
+
+
+<div>
+  <%#= link_to '<Prev', lesson_step_path(@lesson, @step.id-1) if @step.id > @lesson.steps.first.id %>
+  <%= link_to '<Prev', lesson_step_path(@lesson, @step.prev.id) if @step.prev.present? %>
+  <%= @step.prev.id if @step.prev.present? %>
+  <%#= link_to 'Next>', lesson_step_path(@lesson, @step.id+1) if @step.id < @lesson.steps.last.id %>
+  <%= link_to 'Next>', lesson_step_path(@lesson, @step.next.id) if @step.next.present? %>
+  <%= @step.next.id if @step.next.present? %>
+  <br/>
+
+  <%#= link_to "Edit this step", edit_step_path(@step) %>
+  <%= link_to 'Edit this step', edit_lesson_step_path(@lesson, @step) %> |
+  <%#= link_to "Back to steps", steps_path %>
+  <%= link_to 'Back to lesson steps', lesson_steps_path(@lesson) %>
+
+  <%#= button_to "Destroy this step", @step, method: :delete %>
+  <%= button_to "Destroy this step", [@lesson, @step], method: :delete %>
+</div>
