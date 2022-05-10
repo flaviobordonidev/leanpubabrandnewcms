@@ -178,7 +178,7 @@ Possiamo commentare il punto in cui è impostata a `true` alla riga 45.
 
 ***code n/a - .../views/mockups/youtube_player.html.erb - line:38***
 
-```html+erb
+```javascript
       // 5. The API calls this function when the player's state changes.
       //    The function indicates that when playing a video (state=1),
       //    the player should play for six seconds and then stop.
@@ -198,7 +198,7 @@ Ma noi puliamo il codice togliendo la variabile ed i punti in cui è usata.
 
 ***code n/a - .../views/mockups/youtube_player.html.erb - line:41***
 
-```html+erb
+```javascript
       // 5. The API calls this function when the player's state changes.
       //    The function indicates that when playing a video (state=1),
       //    the player should play for six seconds and then stop.
@@ -217,7 +217,7 @@ Inoltre non siamo interessati ad interrompere il video ma ad intercettare quando
 
 ***code 04 - .../views/mockups/youtube_player.html.erb - line:38***
 
-```html+erb
+```javascript
       // 5. The API calls this function when the player's state changes.
       function onPlayerStateChange(event) {
         if (event.data == YT.PlayerState.PLAYING) {
