@@ -284,11 +284,9 @@ Adesso invece di scrivere a console quando parte o si interrompe un video inseri
 
 Prepariamo il form generico per la risposta
 
-***code 06 - .../views/mockups/youtube_player.html.erb - line:1***
+***code 06 - .../views/mockups/youtube_player.html.erb - line:25***
 
 ```html+erb
-<!DOCTYPE html>
-<html>
   <body>
     <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
     <div id="player"></div>
@@ -303,9 +301,10 @@ Prepariamo il form generico per la risposta
 
 Diamogli un po' di stile e non lo visualizziamo inizialmente `display: none;`.
 
-***code 06 - ...continua - line:1***
+***code 06 - ...continua - line:2***
 
 ```html+erb
+<html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
@@ -327,7 +326,7 @@ Diamogli un po' di stile e non lo visualizziamo inizialmente `display: none;`.
     width: 90%;
   }
   </style>
-</head>
+</head> 
 ```
 
 Quando finisce il video nascondiamo il player e visualizziamo il form *"test-form"*.
