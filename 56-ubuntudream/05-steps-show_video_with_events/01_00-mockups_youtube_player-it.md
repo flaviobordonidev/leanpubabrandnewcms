@@ -129,7 +129,7 @@ Mettiamo la chiamata a questa view specificando il layout di tipo "mockup" che Ã
   end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-step-show_video_with_events/01_02-controllers-mockups_controller.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-steps-show_video_with_events/01_02-controllers-mockups_controller.rb)
 
 
 
