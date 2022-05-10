@@ -33,7 +33,7 @@ Mettiamo il codice del player su *steps/show*.
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-steps-show_video_with_events/02_01-views-steps-show.html.erb)
 
-Mettiamo l'*id "test-form"* al form_with su *steps/_step*.
+Mettiamo l'***id "test-form"*** al `form_with` su *steps/_step*.
 
 ***code 02 - .../app/views/steps/_step.html.erb - line:1***
 
@@ -73,85 +73,20 @@ Mettiamo **temporaneamente** su *layouts/application* lo stile che nasconde il f
     </style>
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-steps-show_video_with_events/02_03-views-layouts-application.html.erb)
 
 
+***Altro modo per far partire Form nascosto in partenza***
 
-
-
-
-
-
-
-
-## Attiviamo un nuovo video all'avvio di una nuova pagina
-
-Abbiamo già visto come far partire un video sfruttando il player di youtube nei capitoli precedenti.
-Adesso lo usiamo partendo al caricamento della pagina ed alla fine del video mostriamo il form per rispondere alla domanda.
-Per non avere sempre lo stesso video nelle varie pagine creiamo una certa dinamicità popolando la variabile *fbvalue* con tre identificativi differenti di video di youtube a seconda dello step in cui ci troviamo.
-
-***code 01 - .../views/steps/show.html.erb - line:1***
-
-```
-<% fbvalue = "QwG30ZZFSyI" if @step.id == 1 %>
-<% fbvalue = "0Nm5AvhKpQQ" if @step.id == 2 %>
-<% fbvalue = "5ZKcIbWxhh0" if @step.id == 3 %>
-```
-
-***code 01 - ...continua - line:1***
-
-```
-  function onYouTubeIframeAPIReady() {
-    player = new YT.Player('player', {
-      height: '390',
-      width: '640',
-      videoId: '<%= fbvalue %>',
-```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-step-show_video_with_events/01_02-controllers-mockups_controller.rb)
-
-
-
-## Alla fine del video nascondiamo il video e mostriamo il form per la risposta
-
-***code 01 - .../views/steps/show.html.erb - line:1***
+***code n/a - .../views/steps/show.html.erb - line:1***
 
 ```
 <%= form_with(model: [@lesson, @step], local: true, id: "test-form", class: "fbhidden") do |form| %>
-  <div class="field">
-    <%= @step.question %>
-  </div>
-  <!-- Creiamo nuovo Record -->
-  <%= form.fields_for :answers, Answer.new do |answer| %>
-    <%= render "answer_fields", form: answer %>
-  <% end %>
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
 ```
-
-***code 01 - ...continua - line:1***
-
-```
-    if (event.data == YT.PlayerState.ENDED) {          
-```
-
-***code 01 - ...continua - line:1***
-
-```
-      let playerDiv = document.getElementById('player') // prendiamo il tag con id="player"
-      playerDiv.style.display = "none" //Nascondiamo il player
-      let formTest = document.getElementById('test-form') // prendiamo il tag con id="test-form"
-      formTest.style.display = "block" //Mostriamo il form
-    }
-```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-step-show_video_with_events/01_02-controllers-mockups_controller.rb)
-
 
 Per far partire il form nascosto abbiamo inserito questo codice nello stylesheet
 
-/elisinfo/app/assets/stylesheets/pofo/css/style.css
+***code n/a - .../app/assets/stylesheets/pofo/css/style.css - line:1***
 
 ```
 /* ===================================
@@ -166,17 +101,111 @@ La cosa più corretta è fare uno stylesheet custom dedicato all'applicazione e 
 
 
 
+## Verifichiamo preview
+
+```bash
+$ rails s -b 192.168.64.3
+```
+
+Andiamo all'url:
+
+- http://192.168.64.3:3000/lessons/1/steps/1
+
+
+Notiamo il comportamento:
+
+- usando il link_to *next* il player **non** si vede.
+- usando il submit del form il player **non** si vede.
+- se facciamo il refresh della pagina il video si mostra ma non parte in automatico.
+- se cambiamo il numero dello step direttamente nell'url si comporta come se facessimo il refresh.
+
+Vediamo che il player è visualizzato ed il form per la risposta non è presente.
+Facciamo partire il video e alla fine del video il player scompare ed appare il form per rispondere alla domanda.
+
+
+
+## Aggiungiamo tre video
+
+Per non avere sempre lo stesso video nelle varie pagine creiamo una certa dinamicità popolando la variabile *fbvalue* con tre identificativi differenti di video di youtube a seconda dello step in cui ci troviamo.
+
+***code 04 - .../app/views/steps/show.html.erb - line:5***
+
+```html+erb
+<% fbvalue = "QwG30ZZFSyI" if @step.id == 1 %>
+<% fbvalue = "0Nm5AvhKpQQ" if @step.id == 2 %>
+<% fbvalue = "5ZKcIbWxhh0" if @step.id == 3 %>
+```
+
+***code 04 - ...continua - line:25***
+
+```javascript
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+      height: '390',
+      width: '640',
+      //videoId: 'M7lc1UVf-VE',
+      videoId: '<%= fbvalue %>',
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-steps-show_video_with_events/02_04-views-steps-show.html.erb)
+
+
+> Si presenta un *bug* causato da *turbo*. Facendo click sul link_to *next* il player resta non visibile.
+> Per visualizzarlo siamo costretti a fare un refresh della pagina.
+
+
+
+## Debug - evitare refresh pagina
+
+Per evitare di dover rifare il refresh della pagina una prima soluzione *temporanea* è quella di disabilitare "turbo" nel link_to specifico.
+
+***code 05 - .../views/steps/show.html.erb - line:109***
+
+```
+  <%= link_to 'Next>', lesson_step_path(@lesson, @step.next.id), data: { turbo: false } if @step.next.present? %>
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-steps-show_video_with_events/02_04-views-steps-show.html.erb)
+
+> per disabilitare turbo usiamo `data: { turbo: false }`.
+>
+> Potevamo usare anche `'data-turbo' => "false"` o `'data-turbo': "false"`.
+
+Lo stesso problema lo abbiamo nel submit del form con la risposta.
+Anche in questo caso interveniamo in prima battuta con un workaround disattivando turbo nel submit del form
+
+***code 06 - .../views/steps/_step.html.erb - line:2***
+
+```
+  <%= form_with(model: [@lesson, step], local: true, id: "test-form", html: {'data-turbo' => "false"}) do |form| %>
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-steps-show_video_with_events/02_04-views-steps-show.html.erb)
+
+> per disabilitare turbo usiamo `html: {'data-turbo' => "false"}`.
+>
+> Potevamo usare anche `html: {data: { turbo: false }}` o `html: {'data-turbo': "false"}`.
+
+
+
+## Verifichiamo preview
+
+
+```bash
+$ rails s -b 192.168.64.3
+```
+
+Andiamo all'url:
+
+- http://192.168.64.3:3000/lessons/1/steps/1
 
 
 Notiamo il comportamento differente:
 
-* se usiamo il link in basso va avanti ma il video non si mostra (o forse non si crea)
-* se usiamo il submit del form il video si crea e parte anche in automatico anche se non è in mute.
-* se facciamo il refresh della pagina il video si mostra ma non parte in automatico
-* se cambiamo il numero dello step direttamente nell'url si comporta come se facessimo il refresh 
-
-A noi ci dice bene perché usiamo il submit del form per andare avanti ^_^ 
-
+- usando il link_to *next* il player si vede ma il video **non** parte in automatico.
+- usando il submit del form il player si vede e il video parte in automatico anche se non è in mute.
+- se facciamo il refresh della pagina il video si mostra ma non parte in automatico
+- se cambiamo il numero dello step direttamente nell'url si comporta come se facessimo il refresh.
 
 
 
