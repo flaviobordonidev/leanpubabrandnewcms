@@ -301,7 +301,7 @@ Prepariamo il form generico per la risposta
     <ul id="player-commands-list"><li></li></ul>
 ```
 
-Diamogli un po' di stile
+Diamogli un po' di stile e non lo visualizziamo inizialmente `display: none;`.
 
 ***code 06 - ...continua - line:1***
 
@@ -330,11 +330,11 @@ Diamogli un po' di stile
 </head>
 ```
 
-Quando finisce il video nascondiamo il player e visualizziamo il form
+Quando finisce il video nascondiamo il player e visualizziamo il form *"test-form"*.
 
-***code 06 - ...continua - line:1***
+***code 06 - ...continua - line:83***
 
-```html+erb
+```javascript
         if (event.data == YT.PlayerState.ENDED) {          
           console.log("ENDED - Evviva ^_^");
           let pcl = document.getElementById('player-commands-list'); // prendiamo il tag <ul id="player-commands-list"></ul>
