@@ -3,7 +3,12 @@
 Portiamo il player di youtube nella view *steps*.
 
 
-## Apri branch
+
+## Apriamo il branch "Video Player su Steps"
+
+```bash
+$ git checkout -b vps
+```
 
 
 
