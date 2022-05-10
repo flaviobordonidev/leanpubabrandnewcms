@@ -239,17 +239,17 @@ Aprendo sul browser la **javascript console**, ad esempio nel menu di Chrome è 
 
 ## Interagiamo con JavaScript nel DOM HTML
 
-Adesso invece di scrivere a console quando parte o si interrompe un video inseriamo dei tag <li> all'interno di un <ul> che preimpostiamo.
+Adesso invece di scrivere a console quando parte o si interrompe un video inseriamo da javascript dei tags `<li></li>` all'interno di una *unordered list* `<ul></ul` che preimpostiamo.
 
 ***code 05 - .../views/mockups/youtube_player.html.erb - line:7***
 
 ```html+erb
-    <ul id="player-commands-list"><li></li></ul>
+    <ul id="player-commands-list"></ul>
 ```
 
 ***code 05 - ...continua - line:40***
 
-```html+erb
+```javascript
       // 5. The API calls this function when the player's state changes.
       function onPlayerStateChange(event) {
         if (event.data == YT.PlayerState.PLAYING) {
@@ -274,30 +274,6 @@ Adesso invece di scrivere a console quando parte o si interrompe un video inseri
           pcl.insertBefore(li, pcl.firstElementChild); // insert a new node before the first list item
         }
       }
-
-
----
-        if (event.data == YT.PlayerState.PLAYING) {
-          console.log("PLAYING");
-          let pcl = document.getElementById('player-commands-list'); // mettiamo su una variabile il tag <ul id="player-commands-list"></ul>
-          let li = document.createElement('li'); // creiamo un nuovo tag <li></li>
-          li.textContent = 'PLAYING'; // inseriamo il valore tra il tag <li></li>
-          menu.insertBefore(li, menu.firstElementChild); // insert a new node before the first list item
-        }
-        if (event.data == YT.PlayerState.PAUSED) {          
-          console.log("PAUSED");
-          let pcl = document.getElementById('player-commands-list'); // mettiamo su una variabile il tag <ul id="player-commands-list"></ul>
-          let li = document.createElement('li'); // creiamo un nuovo tag <li></li>
-          li.textContent = 'PAUSED'; // inseriamo il valore tra il tag <li></li>
-          menu.insertBefore(li, menu.firstElementChild); // insert a new node before the first list item
-        }
-        if (event.data == YT.PlayerState.ENDED) {          
-          console.log("ENDED - Evviva ^_^");
-          let pcl = document.getElementById('player-commands-list'); // mettiamo su una variabile il tag <ul id="player-commands-list"></ul>
-          let li = document.createElement('li'); // creiamo un nuovo tag <li></li>
-          li.textContent = 'ENDED - Evvaaai *_*'; // inseriamo il valore tra il tag <li></li>
-          menu.insertBefore(li, menu.firstElementChild); // insert a new node before the first list item
-        }
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-steps-show_video_with_events/01_05-views-mockups-youtube_player.html.erb)
