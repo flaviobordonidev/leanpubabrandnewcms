@@ -112,7 +112,7 @@ Mettiamo il codice preso direttamente dalla documentazione di Youtube in un view
 </html>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-step-show_video_with_events/01_01-views-mockups-youtube_player.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-step-show_video_with_events/01_01-views-mockups-youtube_player.html.erb)
 
 
 
@@ -129,7 +129,7 @@ Mettiamo la chiamata a questa view specificando il layout di tipo "mockup" che �
   end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-step-show_video_with_events/01_02-controllers-mockups_controller.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-step-show_video_with_events/01_02-controllers-mockups_controller.rb)
 
 
 
@@ -143,7 +143,7 @@ Mettiamo adesso nella routes la chiamata alla view.
   get 'mockups/youtube_player'
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-step-show_video_with_events/01_03-config-routes.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-step-show_video_with_events/01_03-config-routes.rb)
 
 
 
@@ -170,11 +170,11 @@ Cambiamo il codice del punto 5:
 
 `// 5. The API calls this function when the player's state changes.`
 
-Eliminiamo la parte di codice che esegue lo stop dopo sei secondi solo la prima volta.
-Facciamo in modo che lo esegua sempre solo per sei secondi.
+Lo modifichiamo togliendo la parte di codice che inserisce lo stop al video solo la prima volta che viene riprodotto. Facciamo in modo che riproduca sempre il video per solo sei secondi.
 
-Per questo agiamo sulla variabile `done`.
-Possiamo commentare il punto in cui è impostata a `true` alla riga 45.
+Per far questo agiamo sulla variabile `done`.
+
+Potremmo commentare il punto in cui la variabile è impostata a `true` alla riga 45.
 
 ***code n/a - .../views/mockups/youtube_player.html.erb - line:38***
 
@@ -194,7 +194,7 @@ Possiamo commentare il punto in cui è impostata a `true` alla riga 45.
       }
 ```
 
-Ma noi puliamo il codice togliendo la variabile ed i punti in cui è usata.
+Invece preferiamo pulire il codice togliendo la variabile ed i punti in cui è usata.
 
 ***code n/a - .../views/mockups/youtube_player.html.erb - line:41***
 
@@ -213,7 +213,7 @@ Ma noi puliamo il codice togliendo la variabile ed i punti in cui è usata.
 ```
 
 
-Inoltre non siamo interessati ad interrompere il video ma ad intercettare quando il video finisce quindi modifichiamo anche questa parte di codice.
+Inoltre non siamo interessati ad interrompere il video dopo 6 secondi, ma ad intercettare quando il video finisce quindi modifichiamo anche questa parte di codice.
 
 ***code 04 - .../views/mockups/youtube_player.html.erb - line:38***
 
@@ -231,7 +231,7 @@ Inoltre non siamo interessati ad interrompere il video ma ad intercettare quando
         }
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-step-show_video_with_events/01_04-views-mockups-youtube_player.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-step-show_video_with_events/01_04-views-mockups-youtube_player.html.erb)
 
 Aprendo sul browser la **javascript console**, ad esempio nel menu di Chrome è su ***view/Developer/JavaScript Console***, vediamo loggate tutte le azioni di pausa, start e fine del video.
 
@@ -300,7 +300,7 @@ Adesso invece di scrivere a console quando parte o si interrompe un video inseri
         }
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-step-show_video_with_events/01_05-views-mockups-youtube_player.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-step-show_video_with_events/01_05-views-mockups-youtube_player.html.erb)
 
 
 
@@ -372,7 +372,7 @@ Quando finisce il video nascondiamo il player e visualizziamo il form
         }
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-step-show_video_with_events/01_06-views-mockups-youtube_player.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-step-show_video_with_events/01_06-views-mockups-youtube_player.html.erb)
 
 
 Comando                | Descrizione
