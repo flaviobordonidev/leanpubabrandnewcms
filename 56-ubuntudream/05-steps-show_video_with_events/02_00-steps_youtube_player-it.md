@@ -14,23 +14,39 @@ $ git checkout -b vps
 
 ## Portiamo video player su *step*
 
-Mettiamo il codice dal player su *steps/show* ed il form su *steps/_step*.
+Mettiamo il codice del player su *steps/show*.
 
 ***code 01 - .../app/views/steps/show.html.erb - line:1***
 
 ```html+erb
+<%= render @step %>
 
+    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+    <div id="player"></div>
+
+    <ul id="player-commands-list"></ul>
+
+    <script>
+      // 2. This code loads the IFrame Player API code asynchronously.
+      var tag = document.createElement('script');
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-steps-show_video_with_events/02_01-views-steps-show.html.erb)
+
+Mettiamo l'*id "test-form"* al form_with su *steps/_step*.
 
 ***code 02 - .../app/views/steps/_step.html.erb - line:1***
 
 ```html+erb
-
+<div id="<%= dom_id step %>">
+  <%= form_with(model: [@lesson, step], local: true, id: "test-form") do |form| %>
 ```
 
-Inoltre mettiamo lo stile che nasconde il form inizialmente in *layouts/application*.
-Questo è **temporaneo** perché layouts/application è per tutta l'applicazione e molte altre views non hanno niente a che fare con la formattazione che stiamo mettendo.
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-steps-show_video_with_events/02_02-views-steps-_step.html.erb)
+
+Mettiamo **temporaneamente** su *layouts/application* lo stile che nasconde il form *"test-form"*.
+
+> Questo è **temporaneo** perché *layouts/application* è per tutta l'applicazione e molte altre views non hanno niente a che fare con la formattazione che stiamo mettendo.
 
 ***code 03 - .../app/views/layouts/application.html.erb - line:9***
 
