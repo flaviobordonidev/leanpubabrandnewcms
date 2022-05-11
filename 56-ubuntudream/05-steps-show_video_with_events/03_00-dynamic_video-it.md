@@ -15,6 +15,11 @@ Colonna                   | Descrizione
 `youtube_video_id:string` | (255 caratteri) The video ID will be located in the URL of the video page, right after the v= URL parameter.
 
 
+In questa nuova colonna della tabella inseriamo dei valori legati al video di youtube.
+Ad esempio per il video *UbuntuDream1-01* usiamo il seguente id: "https://youtu.be/c35p-hPFiE4".
+
+Di seguito due screen-shots in cui vediamo dove prendere il "Video link" o "Video id" che ci interessa.
+
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-steps-show_video_with_events/03_fig01-youtube_video_id.png)
 
 
