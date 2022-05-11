@@ -42,7 +42,7 @@ aggiungiamo il link all'URL esterno
 
 ***code 01 - .../views/steps/show.html.erb - line:1***
 
-```
+```html+erb
 <%= link_to 'Google', 'https://www.google.it/', :target => '_blank' %>
 ```
 
@@ -51,3 +51,9 @@ aggiungiamo il link all'URL esterno
 Quello che funziona meglio è andare direttamente alla pagina esterna ma è fondamentale avere poi la possibilità di tornare alla nostra applicazione.
 Ad esempio se invece della pagina di google andiamo su una nostra landing-page fatta ad esempio su getresponse (o sendinblue o aweber o mailerlite o altre) possiamo far lasciare l'email e sul submit avere un backlink alla nostra applicazione.
 Ma questo lo implementeremo più avanti.
+
+
+```html+erb
+<%= link_to 'New Step', new_lesson_step_path(@lesson) %>
+<%= link_to 'Google', 'https://www.google.it/', :target => '_blank' %>
+```

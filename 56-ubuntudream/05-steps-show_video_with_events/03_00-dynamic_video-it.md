@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 4.4 - Aggiungiamo un campo sulla tabella steps per il link dei video
+# <a name="top"></a> Cap 5.3 - Aggiungiamo un campo sulla tabella steps per il link dei video
 
 Aggiungiamo nella tabella steps un campo per contenere il link dei vari video che carichiamo su youtube.
 
@@ -6,13 +6,19 @@ Aggiungiamo nella tabella steps un campo per contenere il link dei vari video ch
 
 ## Progettiamo i campi da aggiungere
 
-Siccome vogliamo archiviare l'url da passare al player di youtube (l'id del video per la precisione), valutiamo se è utile anche archiviare degli altri parametri.
+Siccome vogliamo archiviare l'url del video di youtube da passare al player-video (l'id del video per la precisione), definiamo il nuovo campo da inserire nella tabella *steps*.
 
 Colonne da aggiungere:
 
 Colonna                   | Descrizione
 ------------------------- | -----------------------
 `youtube_video_id:string` | (255 caratteri) The video ID will be located in the URL of the video page, right after the v= URL parameter.
+
+
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-steps-show_video_with_events/03_fig01-youtube_video_id.png)
+
+
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-steps-show_video_with_events/03_fig02-youtube_video_id.png)
 
 
 

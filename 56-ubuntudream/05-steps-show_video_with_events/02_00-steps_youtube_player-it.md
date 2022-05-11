@@ -136,6 +136,11 @@ Per non avere sempre lo stesso video nelle varie pagine creiamo una certa dinami
 <% fbvalue = "5ZKcIbWxhh0" if @step.id == 3 %>
 ```
 
+> Attenzione: <br/>
+> Assicurarsi che i tre steps consecutivi della *lessons/1* abbiano gli *id* riportati nel codice.
+
+
+
 ***code 04 - ...continua - line:25***
 
 ```javascript
