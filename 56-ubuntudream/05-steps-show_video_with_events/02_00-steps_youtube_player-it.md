@@ -213,3 +213,10 @@ Notiamo il comportamento differente:
 - se cambiamo il numero dello step direttamente nell'url si comporta come se facessimo il refresh.
 
 
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-steps-show_video_with_events/01_00-mockups_youtube_player-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-steps-show_video_with_events/03_00-dynamic_video-it.md)
