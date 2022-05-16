@@ -1,87 +1,15 @@
-<!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
-<div id="player"></div>
+<p style="color: green"><%= notice %></p>
 
-<%= form_with(model: [@lesson, @step], local: true, id: "test-form", class: "fbhidden") do |form| %>
-  <div class="field">
-    <%= @step.question %>
-  </div>
-  <!-- Creiamo nuovo Record -->
-  <%= form.fields_for :answers, Answer.new do |answer| %>
-    <%= render "answer_fields", form: answer %>
-  <% end %>
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
-
-
-<p>----------------------DEBUG---------------------------</p>
-<p>Utente loggato: <%= current_user.name %> - Aula: <%= @lesson.id %> Step: <%= @step.id %></p>
-
-<p id="notice"><%= notice %></p>
-
-<ul id="player-commands-list"></ul>
-
-<!--<p>
-  <strong>Answers di tutti</strong>
-  <ul>
-    <%# @step.answers.each do |answer| %>
-      <li>
-        <%#= answer.content %> - by <%#= answer.user.name %>
-      </li>
-    <%# end %>
-  </ul>
-</p>-->
-
-<!--<p>
-  <strong>Answers dell'utente loggato</strong>
-  <ul>
-    <%# @step.answers.each do |answer| %>
-      <%# if answer.user_id == current_user.id %>  
-        <li>
-          <%#= answer.content %> - by <%#= answer.user.name %>
-        </li>
-      <%# end %>
-    <%# end %>
-  </ul>
-</p>-->
-
-
-<!--  
-<%#= form_with(model: [@lesson, @step], local: true) do |form| %>
-  <%# if @step.errors.any? %>
-    <div id="error_explanation">
-      <h2><%#= pluralize(@step.errors.count, "error") %> prohibited this step from being saved:</h2>
-
-      <ul>
-        <%# @step.errors.full_messages.each do |message| %>
-          <li><%#= message %></li>
-        <%# end %>
-      </ul>
-    </div>
-  <%# end %>
-
-  <div class="field">
-    <%#= form.label :answer %>
-    <%#= form.text_area :answer %>
-  </div>
-
-  <div class="actions">
-    <%#= form.submit %>
-  </div>
-<%# end %>
--->
-
-<%= link_to 'Edit', edit_lesson_step_path(@lesson, @step) %> |
-<%= link_to 'Back', lesson_steps_path(@lesson) %>
-
-<br>
-<%= link_to 'Prev', lesson_step_path(@lesson, @step.id-1) if @step.id > @lesson.steps.first.id %> --
-<%= link_to 'Next', lesson_step_path(@lesson, @step.id+1) if @step.id < @lesson.steps.last.id %>
+<%= render @step %>
 
 <% fbvalue = "QwG30ZZFSyI" if @step.id == 1 %>
 <% fbvalue = "0Nm5AvhKpQQ" if @step.id == 2 %>
 <% fbvalue = "5ZKcIbWxhh0" if @step.id == 3 %>
+
+<!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+<div id="player"></div>
+
+<ul id="player-commands-list"></ul>
 
 <script>
   // 2. This code loads the IFrame Player API code asynchronously.
@@ -98,9 +26,9 @@
     player = new YT.Player('player', {
       height: '390',
       width: '640',
+      //videoId: 'M7lc1UVf-VE',
+      //videoId: '<%= fbvalue %>',
       videoId: '<%= @step.youtube_video_id %>',
-      //videoId: '<%#= fbvalue %>',
-      //videoId: 'QwG30ZZFSyI',
       playerVars: {
         'playsinline': 1
       },
@@ -118,7 +46,6 @@
 
   // 5. The API calls this function when the player's state changes.
   function onPlayerStateChange(event) {
-    <%# Rails.logger.debug "FLAVIO DEBUG: #{fbvalue}" %>
     if (event.data == YT.PlayerState.PLAYING) {
       console.log("PLAYING");
       let pcl = document.getElementById('player-commands-list'); // mettiamo su una variabile il tag <ul id="player-commands-list"></ul>
@@ -146,3 +73,49 @@
     }
   }
 </script>
+
+<br/>---------------<br/>
+
+<%= form_with(model: [@lesson, @step]) do |form| %>
+  <% if @step.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(@step.errors.count, "error") %> prohibited this step from being saved:</h2>
+
+      <ul>
+        <% @step.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :answer, style: "display: block" %>
+    <%= form.text_area :answer %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
+
+<br/>---------------<br/>
+
+
+<div>
+  <%#= link_to '<Prev', lesson_step_path(@lesson, @step.id-1) if @step.id > @lesson.steps.first.id %>
+  <%= link_to '<Prev', lesson_step_path(@lesson, @step.prev.id) if @step.prev.present? %>
+  <%= @step.prev.id if @step.prev.present? %>
+  <%#= link_to 'Next>', lesson_step_path(@lesson, @step.id+1) if @step.id < @lesson.steps.last.id %>
+  <%= link_to 'Next>', lesson_step_path(@lesson, @step.next.id), data: { turbo: false } if @step.next.present? %>
+  <%= @step.next.id if @step.next.present? %>
+  <br/>
+
+  <%#= link_to "Edit this step", edit_step_path(@step) %>
+  <%= link_to 'Edit this step', edit_lesson_step_path(@lesson, @step) %> |
+  <%#= link_to "Back to steps", steps_path %>
+  <%= link_to 'Back to lesson steps', lesson_steps_path(@lesson) %>
+
+  <%#= button_to "Destroy this step", @step, method: :delete %>
+  <%= button_to "Destroy this step", [@lesson, @step], method: :delete %>
+</div>

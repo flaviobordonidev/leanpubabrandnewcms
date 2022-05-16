@@ -1,4 +1,9 @@
-# <a name="top"></a> Cap 2.1 - Vediamo la pagina iniziale
+# <a name="top"></a> Cap 2.2 - Vediamo la pagina iniziale
+
+Qui visualizziamo la lezione delle 3 cose per cui sei grato, che cambia ogni giorno.
+Inoltre l'ultima lezione dove eri arrivato per continuare il tuo percorso.
+Inoltre qualche altra informazione che devo ancora inquadrare.
+
 
 mockups/edu_ud_homepage
 

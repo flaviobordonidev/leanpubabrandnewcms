@@ -11,12 +11,13 @@ Nel campo archiviamo semplicemente un numero ma nel menu a cascata visualizziamo
 Evitiamo una nuova tabella con relazione uno-a-molti per tenere le cose semplici; tanto l'elenco è fisso e non varia.
 
 {title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
               <%= form.select :select_media, h_options_for_media, {}, prompt: 'Scegline uno', class: 'form-control' %>
-~~~~~~~~
+```
+
 
 {title=".../app/helpers/application_helper.rb", lang=ruby, line-numbers=on, starting-line-number=70}
-~~~~~~~~
+```
   def h_options_for_media
     [
       ["immagine",1],
@@ -24,7 +25,8 @@ Evitiamo una nuova tabella con relazione uno-a-molti per tenere le cose semplici
       ["video vimeo",3]
     ]
   end
-~~~~~~~~
+```
+
 
 
 
@@ -38,16 +40,17 @@ Impostiamo l'icona corrispondente alla scelta fatta in select_media
 mostriamo solo o l'immagine o il video youtube o il video vimeo a seconda della scelta fatta in select_media
 
 {title=".../app/views/posts/_post_single.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=24}
-~~~~~~~~
+```
                   <% if post.select_media == 1 %>
                     <li><a href="#"><i class="icon-camera-retro"></i></a></li>
                   <% elsif post.select_media == 2 or post.select_media == 3 %>
                     <li><a href="#"><i class="icon-film"></i></a></li>
                   <% end %>
-~~~~~~~~
+```
+
 
 {title=".../app/views/posts/_post_single.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=31}
-~~~~~~~~
+```
                 <% if post.select_media == 1 %> <!-- image -->
                   <% if post.image.present? %>
                     <!-- Entry Image
@@ -78,14 +81,16 @@ mostriamo solo o l'immagine o il video youtube o il video vimeo a seconda della 
                     </div><!-- .entry-image end -->
                   <% end %>
                 <% end %>
-~~~~~~~~
+```
+
 
 verifichiamo 
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ rails s -b $IP -p $PORT
-~~~~~~~~
+```
+
 
 
 
@@ -100,7 +105,7 @@ $ rails s -b $IP -p $PORT
 
 
 {title=".../app/helpers/application_helper.rb", lang=ruby, line-numbers=on, starting-line-number=70}
-~~~~~~~~
+```
   def h_options_for_media
     [
       [t("application.company_status.one"),1],
@@ -113,38 +118,42 @@ $ rails s -b $IP -p $PORT
       [t("application.company_status.eight"),8]
     ]
   end
-~~~~~~~~
+```
+
 
 implementiamo la traduzione in italiano
 
 {title="config/locales/it.yml", lang=yaml, line-numbers=on, starting-line-number=27}
-~~~~~~~~
+```
   people:
     show:
       breadcrumbs: "Persona"
       
       'Scegline uno'
-~~~~~~~~
+```
+
 
 implementiamo la traduzione in inglese
 
 {title="config/locales/en.yml", lang=yaml, line-numbers=on, starting-line-number=27}
-~~~~~~~~
+```
   people:
     show:
       breadcrumbs: "Person"
       
       'Select One'
-~~~~~~~~
+```
+
 
 
 aggiorniamo git 
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "add companies edit"
-~~~~~~~~
+```
+
 
 
 
@@ -152,12 +161,13 @@ $ git commit -m "add companies edit"
 ## Per visualizzarlo
 
 show
-~~~~~~~~
+```
       <%= content_tag :p,"#{h_company_status(@company.status)} - #{@company.sector}" %>
-~~~~~~~~
+```
+
 
 helper
-~~~~~~~~
+```
   def h_company_status(status)
     status = 6 if status.blank?
     case status
@@ -182,4 +192,4 @@ helper
       raise "NON DOVEVI ARRIVARE QUI. Cosa succede?"
     end
   end
-~~~~~~~~
+```

@@ -15,7 +15,8 @@ Questo volume continua a partire da quanto già fatto nei seguenti volumi:
 
 in questo volume: 
 
-* Blabla
+- Selezioniamo le pagine dal tema *edu* che sono le più vicine alla nostra applicazione
+- Creiamo le lezioni con Aula -> Passi con video e domanda -> risposta dell'utente
 
 L'origine del nome.
 Ubuntu perché vuol dire noi siamo perché gli altri sono e dream da sogno in inglese. 
