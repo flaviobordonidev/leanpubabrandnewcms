@@ -240,7 +240,7 @@ Completed 200 OK in 38ms (Views: 26.0ms | ActiveRecord: 1.2ms | Allocations: 175
 
 
 
-## salviamo su git
+## Archiviamo su git
 
 ```bash
 $ git add -A

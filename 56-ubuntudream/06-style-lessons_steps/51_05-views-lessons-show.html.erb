@@ -8,7 +8,12 @@ Page banner video START -->
 		<div class="row g-3">
 			<!-- Course video START -->
 			<div class="col-12">
-        <%= image_tag "mockups/paint_view_of_mount_vernon.png", class: "light-mode-item navbar-brand-item", alt: "painting" %> 
+				<% if @lesson.header_image.attached? %>
+					<p><%= image_tag @lesson.header_image %></p>
+				<% else %>
+					<p>Nessuna immagine presente</p>
+					<%#= image_tag "mockups/paint_view_of_mount_vernon.png", class: "light-mode-item navbar-brand-item", alt: "painting" %> 
+				<% end %>
 			</div>
 			<!-- Course video END -->
 
@@ -38,7 +43,8 @@ Page content START -->
 					<!-- Course title START -->
 					<div class="col-12">
 						<!-- Title -->
-						<h1>Joachim Ferdinand Richardt - de Young museum - view of mount Vernon</h1>
+						<%# <h1>Joachim Ferdinand Richardt - de Young museum - view of mount Vernon</h1> %>
+						<h1><%= @lesson.name %></h1>
 						<!-- Content -->
 						<ul class="list-inline mb-0">
 							<li class="list-inline-item h6 me-3 mb-1 mb-sm-0"><i class="fas fa-star text-warning me-2"></i>4.5/5.0</li>
@@ -50,7 +56,6 @@ Page content START -->
 
 					<!-- Button "begin lesson" START -->
 					<div class="col-12 d-grid">
-						<%#= link_to "iniziamo la lezione", "#", class: "btn btn-primary btn-lg" %>
 						<%= link_to 'Iniziamo la lezione', lesson_step_path(@lesson, @lesson.steps.first), class: "btn btn-primary btn-lg" if @lesson.steps.first.present? %>
 					</div>
 					<!-- Button "begin lesson" END -->
@@ -447,24 +452,25 @@ Page content END -->
 
 
 
+
 <p style="color: green"><%= notice %></p>
+
+
 
 
 
 <!-- Back to top -->
 <div class="back-top"><i class="bi bi-arrow-up-short position-absolute top-50 start-50 translate-middle"></i></div>
 
+<!-- Bootstrap JS -->
+<script src="assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Vendors -->
+<script src="assets/vendor/choices/js/choices.min.js"></script>
+<script src="assets/vendor/aos/aos.js"></script>
+<script src="assets/vendor/plyr/plyr.js"></script>
+
+<!-- Template Functions -->
+<script src="assets/js/functions.js"></script>
 
 
-<!-- SCRIPTS da eliminare perché sono riportati su layouts/application START -->
-  <!-- Bootstrap JS -->
-  <script src="assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Vendors -->
-  <script src="assets/vendor/choices/js/choices.min.js"></script>
-  <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/plyr/plyr.js"></script>
-
-  <!-- Template Functions -->
-  <script src="assets/js/functions.js"></script>
-<!-- SCRIPTS da eliminare perché sono riportati su layouts/application END -->

@@ -11,7 +11,7 @@ Vediamo che l'installazione di BootStrap è andata a buon fine sia lato *stylesh
 
 Questo componente di bootstrap ha bisogno di javascript per funzionare.
 
-***codice 04 - .../app/views/mockups/page_a.html.erb - line:1***
+***codice 01 - .../app/views/mockups/page_a.html.erb - line:1***
 
 ```html+erb
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -39,7 +39,7 @@ For the javascript part we need to do three things:
 
 Precompile the *bootstrap.min.js* that comes with the gem, by adding to *config/initializers/assets.rb*
 
-***codice 05 - .../config/initializers/assets.rb - line:13***
+***codice 02 - .../config/initializers/assets.rb - line:13***
 
 ```ruby
 Rails.application.config.assets.precompile += %w( bootstrap.min.js popper.js )
@@ -50,7 +50,7 @@ Rails.application.config.assets.precompile += %w( bootstrap.min.js popper.js )
 
 pin the compiled asset in *config/importmap.rb*.
 
-***codice 06 - .../config/importmap.rb - line:10***
+***codice 03 - .../config/importmap.rb - line:10***
 
 ```ruby
 pin "popper", to: 'popper.js', preload: true
@@ -62,7 +62,7 @@ pin "bootstrap", to: 'bootstrap.min.js', preload: true
 
 Include bootstrap in your *app/javascript/application.js*.
 
-***codice 07 - .../app/javascript/application.js - line:6***
+***codice 04 - .../app/javascript/application.js - line:6***
 
 ```javascript
 import "popper"
