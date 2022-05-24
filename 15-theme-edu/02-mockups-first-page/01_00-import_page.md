@@ -4,10 +4,10 @@ Importiamo una pagina del tema ed implementiamo tutto lo stile ed il codice java
 
 I passaggi per importare il tema Edu sulla nostra app Rails:
 
-1. Scegliamo una pagina html da importare. Ad esempio: *index-4.html*
-2. La importiamo su *mockups/edu_index_4.html.erb*
-3. Predisponiamo il layouts/yield in modo da lasciare tutto il codice html sulla view.
-    [il punto 3 è da rivedere. vedi il layout fatto per bootstrap]
+1. Scegliamo una pagina html da importare. Ad esempio: *index.html*
+2. Usiamo un nuovo layout che chiamiamo "edu_demo" su cui mettiamo quello di default "application".
+   (rivedi parte boostrap)
+3. Importiamo tutto il codice tra i tags <body>...</body> su *mockups/edu_index.html.erb*
 4. Aggiorniamo controllers/mockups_controller.rb e config/routes.rb
 5. Nel preview vediamo il testo senza stylesheets, images e javascripts
 6. copiamo i files stylesheets (css, scss) su "assets/stylesheets/pofo"
@@ -61,9 +61,32 @@ Per gestire la parte che è tra i tags `<head> ... </head>` creiamo un layout de
 
 Duplichiamo il file `.../layouts/application.html.erb` e rinominiamo la copia `.../layouts/edu_demo.html.erb`. 
 
-Iniziamo inserendo poche cose e poi aumentiamo.
+Iniziamo con il codice base creato in automatico da Rails.
 
-***codice 02 - .../app/views/layouts/edu_demo.html.erb - line:9***
+***codice 02 - .../app/views/layouts/edu_demo.html.erb - line:1***
+
+```html+erb
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Eduport</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <%= yield %>
+  </body>
+</html>
+```
+
+Ed aggiungiamo alcune righe 
+
+***codice 02 - .../app/views/layouts/edu_demo.html.erb - line:6***
 
 ```html+erb
   	<!-- Meta Tags -->
@@ -79,9 +102,9 @@ Iniziamo inserendo poche cose e poi aumentiamo.
 
 ## Creiamo la nuova view
 
-Creiamo la nuova views `edu_index_4` ed inseriamo il codice del nostro file del tema che è dentro i tags `<body>...</body>`.
+Creiamo la nuova views `edu_index` ed inseriamo il codice del nostro file del tema che è dentro i tags `<body>...</body>`.
 
-***codice 03 - ...views/mockups/edu_index_4.html.erb - line:1***
+***codice 03 - ...views/mockups/edu_index.html.erb - line:1***
 
 ```html+erb
 <!-- Header START -->
@@ -111,12 +134,12 @@ Creiamo la nuova views `edu_index_4` ed inseriamo il codice del nostro file del 
 
 ## Attiviamo instradamento
 
-Facciamo in modo che la nuova view `edu_index_4` utilizzi il controller mockups. 
+Facciamo in modo che la nuova view `edu_index` utilizzi il controller mockups. 
 
 ***codice 04 - ...config/routes.rb - line:20***
 
 ```ruby
-  get 'mockups/edu_index_4'
+  get 'mockups/edu_index'
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_04-config-routes.rb)
@@ -153,6 +176,40 @@ Andiamo con il browser sull'URL:
 - http://192.168.64.3:3000/mockups/edu_index_4
 
 ![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_fig02-edu_index_4.png)
+
+
+
+## Iniziamo ad aggiungere righe di codice al layer edu_demo
+
+Aggiungiamo alcune righe 
+
+***codice 02 - .../app/views/layouts/edu_demo.html.erb - line:6***
+
+```html+erb
+  	<!-- Meta Tags -->
+  	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  	<meta name="author" content="Flavio Bordoni">
+  	<meta name="description" content="Eduport- LMS, Education and Course Theme">
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_02-views-layouts-edu_demo.html.erb)
+
+
+
+## Verifichiamo preview
+
+```bash
+$ sudo service postgresql start
+$ rails s
+```
+
+Andiamo con il browser sull'URL:
+
+- http://192.168.64.3:3000/mockups/edu_index_4
+
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_fig02-edu_index_4.png)
+
 
 
 

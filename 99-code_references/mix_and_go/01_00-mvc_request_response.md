@@ -114,3 +114,64 @@ class SiteController < ApplicationController
 end
 ```
 
+
+
+## Virtual attribute in Model
+
+
+*** models/user.rb ***
+
+```ruby
+class User < ApplicationRecord
+  def how_old
+    age || "Can't tell"
+  end
+end  
+```
+
+```bash
+$ rails c
+> u1 = User.new
+> u1.how_old 
+# => "Can't tell"
+```
+
+
+
+## Object Relational Mapping (ORM) -> ActiveRecord
+
+è la tecnica che associa l'oggetto rails (model) alle tabelle del database.
+
+The model object is related with a table in the database.
+The table's columns are mapped are the object's attributes (of the model)
+
+Rails usa il framework **ActiveRecord** per effettuare questo *mapping* (l'ORM).
+
+Il framework Active Record provides:
+
+- Mapping
+- Associations (tables relationships via Models)
+- Validation
+- DB -> OOP (via Models)
+
+
+
+## Validations
+
+
+*** models/user.rb ***
+
+```ruby
+class User < ApplicationRecord
+  validates: :enauk, presence: true
+end  
+```
+
+```bash
+$ Rails c
+> u = User.new
+> u.valid?
+# => false
+> u.errors
+> u.errors.messages
+```

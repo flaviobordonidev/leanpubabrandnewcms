@@ -233,6 +233,23 @@ Thanks
 
 
 
+## Altro debug
+
+Mi è arrivato un nuovo messaggio di errore dicendo che non era precompilato. 
+potevamo eseguire `$ rails asset:precompile` oppure seguire il consigli dell'errore ed aggiungere la riga `//= link edu/scss/style.css` ad `.../app/assets/config/manifest.js`
+
+***codice n/a - .../app/assets/config/manifest.js - line:1***
+
+```javascript
+//= link_tree ../images
+//= link_directory ../stylesheets .css
+//= link_tree ../../javascript .js
+//= link_tree ../../../vendor/javascript .js
+//= link edu/scss/style.css
+```
+
+
+
 ## Verifichiamo preview
 
 ```bash
