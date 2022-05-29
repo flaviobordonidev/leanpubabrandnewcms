@@ -112,7 +112,7 @@ Inizialmente guardiamo se c'è il valore archiviato ed eventualmente lo prendiam
 - Se non è presente o è `light`, allora eseguiamo la funzione `changeThemeToLight()`
 
 
-> In queto tema l'eventual attributo `dir` sul tag `<html>` è usato per i siti con la scrittura da destra a sinistra (rtl) as esempio quelli arabi.
+> In queto tema l'eventuale attributo `dir` sul tag `<html>` è usato per i siti con la scrittura da destra a sinistra (rtl) as esempio quelli arabi.
 
 **Vediamo la funzione `changeThemeToDark()`**
 
@@ -123,10 +123,10 @@ Fa tre cose:
 - archivia nel `localStorage` del browser la variabile `data-theme` con valore `dark`.
 
 
-> Document.documentElement returns the Element that is the root element of the document 
-> (for example, the `<html>` element for HTML documents). <br>
-> document.documentElement returns the `<html>` element. <br>
-> document.body returns the `<body>` element.
+> `Document.documentElement` returns the Element that is the root element of the document. 
+> For example for HTML documents: <br>
+> `document.documentElement` returns the `<html>` element. <br>
+> `document.body` returns the `<body>` element.
 
 
 
