@@ -8,6 +8,8 @@ Il nuovo helper "form_with" sostituisce entrambe le vecchie versioni "form_tag" 
 
 Rivediamo i vecchi codici con content_tag, form_tag, ... con i nuovi metodi di Rails
 
+- [api.rubyonrails.org: form_with](https://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_with)
+
 - https://www.justinweiss.com/articles/the-lesser-known-features-in-rails-5-dot-1/
 - https://blog.engineyard.com/using_form_with-vs-form_for-vs-form_tag
 
