@@ -17,16 +17,16 @@ prendiamo la pagina index nel menu il pulsante per cambiare in dark mode
 ***codice 08 - .../app/views/mockups/edu_index.html.erb - line: 583***
 
 ```html
-					<!-- Dark mode switch START -->
-					<li>
-						<div class="modeswitch-wrap" id="darkModeSwitch">
-							<div class="modeswitch-item">
-								<div class="modeswitch-icon"></div>
-							</div>
-							<span>Darku mode</span>
-						</div>
-					</li> 
-					<!-- Dark mode switch END -->
+        <!-- Dark mode switch START -->
+        <li>
+          <div class="modeswitch-wrap" id="darkModeSwitch">
+            <div class="modeswitch-item">
+              <div class="modeswitch-icon"></div>
+            </div>
+            <span>Darku mode</span>
+          </div>
+        </li> 
+        <!-- Dark mode switch END -->
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/03-javascript/01_01-views-mockups-edu_index.html.erb)
@@ -102,27 +102,31 @@ Read Data from Local Storage     | let lastname = localStorage.getItem(key);
 Remove Data from Local Storage   | localStorage.removeItem(key);
 Remove All (Clear Local Storage) | localStorage.clear();
 
+Nel nostro casu usiamo la key: `data-theme` per archiviare il valore `dark` o il valore `light`.
 
-
-
-Quello che fa è vedere se nel tag <html> c'è l'attributo `data-theme` ed eventualmente vedere che valore ha.
+Inizialmente guardiamo se c'è il valore archiviato ed eventualmente lo prendiamo:
 
 > `theme = localStorage.getItem('data-theme')`
 
-Se c'è ed è dark allora usegui la funzione di cambiare in tema dark
+- Se è presente ed è `dark`, allora eseguiamo la funzione `changeThemeToDark()`
+- Se non è presente o è `light`, allora eseguiamo la funzione `changeThemeToLight()`
 
-> `if(theme === 'dark')` -> `changeThemeToDark()`
 
-Altrimenti esegui la funzione di cambiare in tema light
+> In queto tema l'eventual attributo `dir` sul tag `<html>` è usato per i siti con la scrittura da destra a sinistra (rtl) as esempio quelli arabi.
 
-> `else if (theme == null || theme === 'light')` -> `changeThemeToLight()`
+**Vediamo la funzione `changeThemeToDark()`**
+
+Fa tre cose:
+
+- imposta sul tag `<html>` l'attributo `data-theme="dark`
+- imposta lo stylesheet a `style-dark-rtl.css` (o `tyle-dark-rtl.css` nel caso di siti arabi)
+- archivia nel `localStorage` del browser la variabile `data-theme` con valore `dark`.
 
 
 > Document.documentElement returns the Element that is the root element of the document 
-> (for example, the <html> element for HTML documents).
-
-- document.documentElement returns the <html> element.
-- document.body returns the <body> element
+> (for example, the `<html>` element for HTML documents). <br>
+> document.documentElement returns the `<html>` element. <br>
+> document.body returns the `<body>` element.
 
 
 
