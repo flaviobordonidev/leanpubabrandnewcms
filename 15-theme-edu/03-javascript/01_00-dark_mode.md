@@ -123,7 +123,7 @@ Fa tre cose:
 - archivia nel `localStorage` del browser la variabile `data-theme` con valore `dark`.
 
 
-> `Document.documentElement` returns the Element that is the root element of the document. 
+> **Document.documentElement** returns the Element that is the root element of the document. 
 > For example for HTML documents: <br>
 > `document.documentElement` returns the `<html>` element. <br>
 > `document.body` returns the `<body>` element.
