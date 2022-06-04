@@ -1,6 +1,6 @@
 # <a name="top"></a> Cap 2.2 - Attiviamo le icone del tema
 
-Il tema Eduport usa Font Awesom icons. 
+Il tema Eduport usa Font Awesome icons. 
 
 <i class="fas fa-shopping-cart text-danger"></i>
 
@@ -90,9 +90,11 @@ Le icone sono finalmente visualizzate ^_^.
 
 
 
-## L'altra libreria di icone.
+## La libreria Bootstrap Icons
 
 Non c'è solo fontawesome ma ci sono anche le icone di bootstrap.
+
+Bootstrap ci offre due possibilità di inserimento delle icone.
 Le possiamo inserire con il codice SVG oppure con il riferimento letterale come in questo esempio 
 
 ```html
@@ -116,3 +118,65 @@ a:
 						</svg>
 						<span>Category</span></a>
 ```
+
+
+
+## Installiamo ed implementiamo Bootstrap Icons
+
+Install bootstrap-icons.
+
+```bash
+npm i bootstrap-icons
+```
+
+Add this line to app/assets/stylesheets/application.bootstrap.scss.
+
+
+***codice 01 - .../app/assets/stylesheets/application.scss - line:8***
+
+```scss
+//@import "bootstrap-icons/font/bootstrap-icons";
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css");
+```
+
+> per usare la riga commentata possiamo scaricare il file dall'url della seconda riga...
+
+
+Edit config/initializers/assets.rb.
+
+***codice 02 - .../config/initializers/assets.rb - line:8***
+
+```ruby
+Rails.application.config.assets.paths << Rails.root.join("node_modules/bootstrap-icons/font")
+```
+
+Start up server with bin/dev command. That's all!
+
+
+
+
+Precompiliamo il tutto ed attiviamo il preview.
+
+```bash
+$ rails assets:precompile
+$ rails s -b 192.168.64.3
+```
+
+Esempio
+
+```bash
+ubuntu@ubuntufla:~/bl7_0 (bs)$rails assets:precompile
+I, [2022-04-25T17:54:32.583780 #62954]  INFO -- : Writing /home/ubuntu/bl7_0/public/assets/application-fd160c89b391e8d4d5b3fc55211e23d654138ef31496a267185c1be97adcdd8e.js
+I, [2022-04-25T17:54:32.584907 #62954]  INFO -- : Writing /home/ubuntu/bl7_0/public/assets/application-fd160c89b391e8d4d5b3fc55211e23d654138ef31496a267185c1be97adcdd8e.js.gz
+ubuntu@ubuntufla:~/bl7_0 (bs)$rails s -b 192.168.64.3
+```
+
+Le icone sono finalmente visualizzate ^_^.
+
+
+
+## Le frecce in basso nei megamenu
+
+Qualche icona nel thema eduport è ancora rimasta fuori. Ad esempio le freccette nel megamenu sono impostate in un modo differente e per quelle dobbiamo lavorare in maniera differente.
+
+LASCIAMO QUESTA PARTE APERTA per concentrarci sul resto dell'applicazione.
