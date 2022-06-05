@@ -2,7 +2,7 @@
 
 Importiamo una pagina del tema ed implementiamo tutto lo stile ed il codice javascript per visualizzarla correttamente.
 
-I passaggi per importare il tema Edu sulla nostra app Rails:
+I passaggi per importare il tema Eduport sulla nostra app Rails:
 
 1. Scegliamo una pagina html da importare. Ad esempio: *course-list.html*
 2. Usiamo un nuovo layout che chiamiamo "edu_demo" su cui mettiamo quello di default "application".
@@ -38,7 +38,7 @@ La pagina che abbiamo scelto è *course-list*.
 
 Vediamo tutto il codice <html> preso così com'è dal tema Eduport, senza predisposizione per Ruby on Rails.
 
-***codice 01 - ...non rails html index-4.html - line:1***
+***codice 01 - ...non rails html course-list.html - line:1***
 
 ```html
 <!DOCTYPE html>
@@ -56,13 +56,42 @@ Riadattiamo questo codice alla nostra applicazione su Ruby on Rails.
 
 
 
-## Prepariamo un layout dedicato
+## Verifichiamo il layout dedicato `edu_demo`
 
 Per gestire la parte tra i tags `<head> ... </head>` usiamo il layout *edu_demo* creato nel capitolo precedente di *02-index_4*.
 
-Duplichiamo il file `.../layouts/application.html.erb` e rinominiamo la copia `.../layouts/edu_demo.html.erb`. 
+Verifichiamo che la parte tra i tags `<head> ... </head>` di *course-list.html* sia pienamente rappresentata nel layout *edu_demo*.
 
-Verifichiamo che il codice sia analogo 
+***codice n/a - ...non rails html course-list.html - line:1***
+
+```html+erb
+<head>
+	<title>Eduport - LMS, Education and Course Theme</title>
+
+	<!-- Meta Tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="Webestica.com">
+	<meta name="description" content="Eduport- LMS, Education and Course Theme">
+
+	<!-- Favicon -->
+	<link rel="shortcut icon" href="assets/images/favicon.ico">
+
+	<!-- Google Font -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap">
+
+	<!-- Plugins CSS -->
+	<link rel="stylesheet" type="text/css" href="assets/vendor/font-awesome/css/all.min.css">
+	<link rel="stylesheet" type="text/css" href="assets/vendor/bootstrap-icons/bootstrap-icons.css">
+	<link rel="stylesheet" type="text/css" href="assets/vendor/choices/css/choices.min.css">
+
+	<!-- Theme CSS -->
+	<link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+</head>
+```
 
 ***codice 02 - .../app/views/layouts/edu_demo.html.erb - line:1***
 
@@ -70,34 +99,30 @@ Verifichiamo che il codice sia analogo
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Eduport</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+    <title><%= yield(:html_head_title) %> | Baseline7_0</title>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
-  </head>
-
-  <body>
-    <%= yield %>
-  </body>
-</html>
-```
-
-Ed aggiungiamo alcune righe 
-
-***codice 02 - .../app/views/layouts/edu_demo.html.erb - line:6***
-
-```html+erb
   	<!-- Meta Tags -->
   	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   	<meta name="author" content="Flavio Bordoni">
   	<meta name="description" content="Eduport- LMS, Education and Course Theme">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "actiontext", "data-turbo-track": "reload" %> <!--to fix broken UI adding bootstrap-->
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <% if notice %><p class="alert alert-info"><%= notice %></p><% end %>
+    <% if alert %><p class="alert alert-warning"><%= alert %></p><% end %>
+    <%= yield %>
+  </body>
+</html>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_02-views-layouts-edu_demo.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/04-course-list/01_02-views-layouts-edu_demo.html.erb)
 
 
 
@@ -105,42 +130,43 @@ Ed aggiungiamo alcune righe
 
 Creiamo la nuova views `edu_index` ed inseriamo il codice del nostro file del tema che è dentro i tags `<body>...</body>`.
 
-***codice 03 - ...views/mockups/edu_index.html.erb - line:1***
+***codice 03 - ...views/mockups/eduport_course_list.html.erb - line:1***
 
 ```html+erb
 <!-- Header START -->
-<header class="navbar-light navbar-sticky navbar-transparent">
-  <!-- Logo Nav START -->
-  <nav class="navbar navbar-expand-xl">
-    <div class="container">
-      <!-- Logo START -->
-      <a class="navbar-brand" href="index.html">
-        <img class="light-mode-item navbar-brand-item" src="assets/images/logo.svg" alt="logo">
-        <img class="dark-mode-item navbar-brand-item" src="assets/images/logo-light.svg" alt="logo">
-      </a>
-      <!-- Logo END -->
-  
-      <!-- Responsive navbar toggler -->
-      <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-        aria-controls="navbarCollapse" aria-expanded="true" aria-label="Toggle navigation">
-        <span class="me-2"><i class="fas fa-search fs-5"></i></span>
-      </button>
-  
-      <!-- Category menu START -->
+<header class="navbar-light navbar-sticky">
+	<!-- Logo Nav START -->
+	<nav class="navbar navbar-expand-xl">
+		<div class="container">
+			<!-- Logo START -->
+			<a class="navbar-brand" href="index.html">
+				<img class="light-mode-item navbar-brand-item" src="assets/images/logo.svg" alt="logo">
+				<img class="dark-mode-item navbar-brand-item" src="assets/images/logo-light.svg" alt="logo">
+			</a>
+			<!-- Logo END -->
+
+			<!-- Responsive navbar toggler -->
+			<button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-animation">
+					<span></span>
+					<span></span>
+					<span></span>
+				</span>
+			</button>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_03-views-mockups-edu_index_4.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/04-course-list/01_03-views-mockups-eduport_course_list.html.erb)
 
 
 
 ## Attiviamo instradamento
 
-Facciamo in modo che la nuova view `edu_index` utilizzi il controller mockups. 
+Facciamo in modo che la nuova view `course_list` utilizzi il controller mockups. 
 
 ***codice 04 - ...config/routes.rb - line:20***
 
 ```ruby
-  get 'mockups/edu_index'
+  get 'mockups/course_list'
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_04-config-routes.rb)
@@ -149,15 +175,15 @@ Facciamo in modo che la nuova view `edu_index` utilizzi il controller mockups.
 
 ## Aggiorniamo il controller con nuova view e nuovo layout
 
-Facciamo in modo che la nuova view `edu_index_4` utilizzi il layout `edu_demo`.
+Facciamo in modo che la nuova view `eduport_course_list` utilizzi il layout `eduport`.
 
 Aggiorniamo il conroller.
 
-***codice 05 - ...controllers/mockups_controller.rb - line:8***
+***codice 05 - ...controllers/mockups_controller.rb - line:6***
 
 ```ruby
-  def edu_index_4
-    render layout: 'edu_demo'
+  def eduport_course_list
+    render layout: "eduport"
   end
 ```
 
@@ -177,40 +203,6 @@ Andiamo con il browser sull'URL:
 - http://192.168.64.3:3000/mockups/edu_index_4
 
 ![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_fig02-edu_index_4.png)
-
-
-
-## Iniziamo ad aggiungere righe di codice al layer edu_demo
-
-Aggiungiamo alcune righe 
-
-***codice 02 - .../app/views/layouts/edu_demo.html.erb - line:6***
-
-```html+erb
-  	<!-- Meta Tags -->
-  	<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  	<meta name="author" content="Flavio Bordoni">
-  	<meta name="description" content="Eduport- LMS, Education and Course Theme">
-```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_02-views-layouts-edu_demo.html.erb)
-
-
-
-## Verifichiamo preview
-
-```bash
-$ sudo service postgresql start
-$ rails s
-```
-
-Andiamo con il browser sull'URL:
-
-- http://192.168.64.3:3000/mockups/edu_index_4
-
-![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_fig02-edu_index_4.png)
-
 
 
 
