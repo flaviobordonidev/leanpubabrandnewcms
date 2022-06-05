@@ -1,4 +1,6 @@
-# <a name="top"></a> Cap *fonts_icons*.4 - BootStrap Icons
+# <a name="top"></a> Cap 2.2 - Attiviamo le icone del tema
+
+Il tema Eduport usa Bootstrap Icons. 
 
 Esempio di BootStrap icon: `<i class="bi bi-ui-radios-grid me-2"></i>`
 
@@ -6,13 +8,7 @@ Esempio di BootStrap icon: `<i class="bi bi-ui-radios-grid me-2"></i>`
 
 ## Risorse interne
 
-- [15-theme-edu/02-index_4-stylesheet/04_00-theme_icons]()
-
-
-
-## Risorse esterne
-
-- [How to use bootstrap-icons with Rails 7.0?](https://stackoverflow.com/questions/70526113/how-to-use-bootstrap-icons-with-rails-7-0)
+- [References: fonts icons](99-code_references/fonts_icons/04_00-bs_icons-it.md)
 
 
 
@@ -98,12 +94,9 @@ ubuntu@ubuntufla:~/bl7_0 (bs)$rails s -b 192.168.64.3
 Le icone sono finalmente visualizzate ^_^.
 
 
-## Esempio Eduport
 
+## Le frecce in basso nei megamenu
 
-***codice 03 - .../app/views/layouts/application.html.erb - line:81***
+Qualche icona nel thema eduport è ancora rimasta fuori. Ad esempio le freccette nel megamenu sono impostate in un modo differente e per quelle dobbiamo lavorare in maniera differente.
 
-```ruby
-								<a class="dropdown-item dropdown-toggle" href="#">Development <i class="fas fa-ellipsis-h"></i></a>
-```
-
+LASCIAMO QUESTA PARTE APERTA per concentrarci sul resto dell'applicazione.
