@@ -58,11 +58,11 @@ Riadattiamo questo codice alla nostra applicazione su Ruby on Rails.
 
 ## Prepariamo un layout dedicato
 
-Per gestire la parte che è tra i tags `<head> ... </head>` creiamo un layout dedicato che chiamiamo *edu_demo*.
+Per gestire la parte tra i tags `<head> ... </head>` usiamo il layout *edu_demo* creato nel capitolo precedente di *02-index_4*.
 
 Duplichiamo il file `.../layouts/application.html.erb` e rinominiamo la copia `.../layouts/edu_demo.html.erb`. 
 
-Iniziamo con il codice base creato in automatico da Rails.
+Verifichiamo che il codice sia analogo 
 
 ***codice 02 - .../app/views/layouts/edu_demo.html.erb - line:1***
 
