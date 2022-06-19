@@ -25,7 +25,7 @@ Stimulus continuously watches the page, kicking in as soon as **attributes** app
 
 Stimulus è un'alternativa a Jquery.
 Stimulus si concentra solo sull'intercettare ed il rispondere agli *eventi*.
-Non fa *ajax requests*, non *handles states*, non *render html*. (Queste sono cose di *turbo* e *hot wire*)
+**Non** fa *ajax requests*, non *handles states*, non *render html*. (Queste sono cose di *turbo* e *hot wire*)
 
 
 
