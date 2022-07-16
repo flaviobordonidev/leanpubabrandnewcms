@@ -1,19 +1,23 @@
-{id: 99-rails_references-502-link_to-02-link_to-pre_params}
-# Ref 502.1 -- Passiamo alla nuova pagina i parametri della pagina in cui siamo
+# <a name="top"></a> Cap link_to.1 - Passiamo i parametri
 
 
-Risorse interne:
 
-* views/company_person_map/_parent_company.html.erb 
+## Risorse interne
+
+- views/company_person_map/_parent_company.html.erb 
   line 43:  <%= link_to person_path(company_person_map.person, h_prev_params.merge(key1: "valore1")), class: "btn image-button btn-rounded btn-transparent-dark-gray margin-10px-bottom" do %>
 
+- {id: 99-rails_references-502-link_to-02-link_to-pre_params}
+  Ref 502.1 -- Passiamo alla nuova pagina i parametri della pagina in cui siamo
 
 
-Risorse web:
 
-* [how to add new item to hash](https://stackoverflow.com/questions/9571768/how-to-add-new-item-to-hash)
-* [pass and read url parameters](https://www.developer.com/lang/rubyrails/article.php/3804081/techniques-to-pass-and-read-url-parameters-using-rails.htm)
-* [nested params via link_to](https://stackoverflow.com/questions/19308459/merge-nested-params-via-link-to)
+## Risorse esterne
+
+- [Rails params](https://www.rubyguides.com/2019/06/rails-params/)
+- [how to add new item to hash](https://stackoverflow.com/questions/9571768/how-to-add-new-item-to-hash)
+- [pass and read url parameters](https://www.developer.com/lang/rubyrails/article.php/3804081/techniques-to-pass-and-read-url-parameters-using-rails.htm)
+- [nested params via link_to](https://stackoverflow.com/questions/19308459/merge-nested-params-via-link-to)
 
 
 
@@ -29,6 +33,117 @@ views/page1
 Vediamo che sull'url avremo:
 
 * https://dominiomyapp.com/page2?param1=valore1&param2=valore2
+
+
+
+
+
+
+
+https://github.com/flaviobordonidev/yesnormalis/blob/master/app/views/company_person_maps/edit/_tab_edit.html.erb
+
+<%#= link_to company_person_maps_select_path(id: params[:id], company_person_maps: {person_id: @company_person_map.person_id, company_id: @company_person_map.company_id}, related: "companies", page: 1, search: ""), :class => "list-group-item" do %>
+<%#= link_to [@company_person_map.company, related: "companies", page: 1, search: ""], :class => "list-group-item" do %>
+<%= link_to companies_path(related: "companies", page: 1, search: ""), :class => "list-group-item" do %>
+
+
+
+---
+
+se passo i parametri con session[] sul controller uso ** after_action :set_session_last_front ** (vedi yesnormalis)
+
+
+Quindi sul controller togliamo index dall'after_action.
+Iniziamo dal lato people
+
+{title="controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=3}
+~~~~~~~~
+after_action :set_session_last_front, only: [:show]
+~~~~~~~~
+
+
+
+
+## Alcuni metodi utili nella gestione dei parametri
+
+* request.params.
+  prende l'url attuale e tutti i parametri ed i loro valori.
+
+* .merge()
+  aggiunge o modifica i valori dei parametri dell'url.
+
+* params.permit()
+  prende l'url attuale ed aggiunge i soli parametri dichiarati in permit()
+
+
+
+# Link_to con params
+
+Risorse web:
+
+* [Go Rail link_to current page with params](https://gorails.com/episodes/rails-link-to-current-page-with-params)
+* [Go Rail link_to current page with params - link alternativo](https://www.youtube.com/watch?v=FT-yVFiq9ZQ)
+
+
+## Esempio sul cambio lingua
+
+<%= link_to params.permit(:locale).merge(locale: 'en') %>
+
+
+
+## Esempio hard coded
+
+<%= link_to "Customers", root_path %>
+
+<%= link_to "Paid Customers", root_path(paid: true) %>
+
+<%= link_to "Customers Date Range", root_path(start: params[:start], end: params[:end]) %>
+
+<%= link_to "Customers Date Range", request.params.except(:paid) %>
+
+<%= link_to "Paid Customers Data Range", root_path(paid: true) %>
+
+
+
+
+## Esempio passando un hash
+
+Non indicando il "path" viene utilizzato lo stesso path/URL e vengono passati i parametri
+
+<%= link_to "Customers Date Range", { start: params[:start], end: params[:end] } %>
+
+
+
+
+## Prendiamo tutti i parametri
+
+<%= link_to "Customers Date Range", request.params %>
+
+
+
+
+### Escludiamo qualche parametro
+
+
+<%= link_to "Customers Date Range", request.params.except(:paid) %>
+
+
+
+### Includiamo qualche parametro
+
+<%= link_to "Customers Date Range", request.params.merge(paid: true) %>
+
+
+
+## Link to multiple params
+
+<%= link_to "game " + g.game_number.to_s, :action => "gametemplate", :id => 1, :season => 'winter', :year => 2007 %>
+
+These will be accessible from the controller as 
+  params[:id], params[:year] etc...
+
+
+
 
 
 

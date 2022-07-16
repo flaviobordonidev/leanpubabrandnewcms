@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 2.2 - Attiviamo stylesheet del tema
+# <a name="top"></a> Cap 2.3 - Attiviamo immagini
 
 Non ci resta che rivedere le chiamate alle immagini che ci sono sulla view ed adattarle alle convenzioni dell'asset_pipeline.
 
@@ -116,7 +116,7 @@ a
 
 La seconda immagine.
 
-***codice n/a - ...views/mockups/edu_index_4.html.erb - line:85***
+***codice n/a - ...views/mockups/edu_index_4.html.erb - line:88***
 
 ```html+erb
 da

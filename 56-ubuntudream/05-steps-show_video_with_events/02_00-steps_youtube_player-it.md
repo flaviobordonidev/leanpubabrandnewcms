@@ -214,6 +214,26 @@ Notiamo il comportamento differente:
 
 
 
+## Altro modo di nascondere il form iniziale
+
+Possiamo mettere `style: "display: none;"` direttamente nel tag del form
+
+***code n/a - .../app/views/steps/_step.html.erb - line:3***
+
+```html+erb
+  <%= form_with(model: [@lesson, step], local: true, id: "test-form", html: {'data-turbo' => "false", style: "display: none;" }) do |form| %>
+```
+
+e poi lo togliamo tramite javascript nel codice dello youtube player al termine del video
+
+***code n/a - .../app/views/steps/show.html.erb - line:79***
+
+```javascript
+							let formTest = document.getElementById('test-form') // prendiamo il tag con id="test-form"
+							formTest.style.display = "block" //Mostriamo il form
+```
+
+
 
 ---
 

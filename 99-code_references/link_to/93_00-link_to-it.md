@@ -1,24 +1,14 @@
-# link_to
+# <a name="top"></a> Cap link_to.1 - Overview
 
-
-Risorse web:
-
-* [](https://www.rubyguides.com/2019/06/rails-params/)
-* [Articolo simpatico per LINK_TO](https://mixandgo.com/blog/how-to-use-link_to-in-rails)
-* [GoRails Link to Current Page in Rails with Params](https://www.youtube.com/watch?v=FT-yVFiq9ZQ)
-
-il comando link_to per creare dei link è uno dei più usati su rails. Ci sono molti esempi sugli usi ma in questo capitolo scopriremo degli usi meno noti nei forum ma molto usati nella vita reale.
+Il comando link_to per creare dei link è uno dei più usati su rails. Ci sono molti esempi sugli usi ma in questo capitolo scopriremo degli usi meno noti nei forum ma molto usati nella vita reale.
 
 
 
-* request.params.
-  prende l'url attuale e tutti i parametri ed i loro valori.
+## Risorse esterne
 
-* .merge()
-  aggiunge o modifica i valori dei parametri dell'url.
+- [Articolo simpatico per LINK_TO](https://mixandgo.com/blog/how-to-use-link_to-in-rails)
+- [GoRails Link to Current Page in Rails with Params](https://www.youtube.com/watch?v=FT-yVFiq9ZQ)
 
-* params.permit()
-  prende l'url attuale ed aggiunge i soli parametri dichiarati in permit()
 
 
 
@@ -26,6 +16,8 @@ il comando link_to per creare dei link è uno dei più usati su rails. Ci sono m
 ## Esempio nel cambio della lingua
 
 Nel seguente codice il pulsante per Italiano ha "request.params" invece il pulsante per Inglese ha "params.permit"
+
+***code 1 - .../app/views/ - line:1***
 
 ```
   <%= link_to request.params.merge(locale: 'it'), class: "btn btn-medium #{(params[:locale] == 'it' or params[:locale] == nil) ? 'btn-dark-gray disabled' : 'btn-transparent-dark-gray'} margin-10px-bottom" do %>
@@ -45,7 +37,22 @@ Se clicco su italiano mi mantiene anche tutti gli altri parametri. (ad esempio t
 
 ## Link_to con "anchor"
 
-link_to can also produce links with anchors:
+When we need to have a hyper link to an id in the same page (anchor)
+
+given that your html id is #my_id
+
+<%= link_to('Click here to do to my_id', :anchor => 'my_id') %>
+<div id="my_id"></div>
+
+https://mixandgo.com/blog/how-to-use-link_to-in-rails
+
+Anchors with link_to
+You might need to point to a specific section (anchor) in the page which you can identify by it’s dom ID. So let’s say on the target page we have a section that has the id="interesting-section". In order to point our link to that section, we’ll need to add the anchor to the generated link.
+
+<%= link_to "Section", root_path(:anchor => "interesting-section") %>
+# => <a href="/#interesting-section">Section</a>
+
+
 
 ```
 link_to "Comment wall", profile_path(@profile, :anchor => "wall")
@@ -66,39 +73,22 @@ oppure
 
 
 
-
-## When we need to have a hyper link to an id in the same page (anchor)
-
-given that your html id is #my_id
-
-<%= link_to('Click here to do to my_id', :anchor => 'my_id') %>
-<div id="my_id"></div>
-
-https://mixandgo.com/blog/how-to-use-link_to-in-rails
-
-Anchors with link_to
-You might need to point to a specific section (anchor) in the page which you can identify by it’s dom ID. So let’s say on the target page we have a section that has the id="interesting-section". In order to point our link to that section, we’ll need to add the anchor to the generated link.
-
-<%= link_to "Section", root_path(:anchor => "interesting-section") %>
-# => <a href="/#interesting-section">Section</a>
-
-
 ## Esempio di anchor nell'elenco delle persone
 
 Da views/people/show ho il link di chiusura che torna a views/people/index e scende fino alla persona che avevamo visualizzato.
 Per fare questo mettiamo in "index" uno specifico "id" al "div". <div id="anchor_id"></div>
 
----
+```
           <% @people.each do |person| %>
             <li>
               <div class="display-table width-100" id="anchor_<%= person.id %>">
----
+```
 
 e nel link in "show" mettiamo
 
----
+```
 <%= link_to 'Go Back To People Index', people_path(page: params[:previous][:page], anchor: "anchor_#{@person.id}") %> |
----
+```
 
 Non mi viene passato l'id della persona come params[:previous] perché nella pagina index non è nell'url. Potrei aggiungere al link che mi porta su show di passare anche un params[:person_id] ma è superfluo. Ho già "@person.id".
 
@@ -106,8 +96,9 @@ Non mi viene passato l'id della persona come params[:previous] perché nella pag
 
 ## Links che puntano a azione specifica
 
-  questo paragrafo è interessante per creare dei links che puntano ad un'azione specifica da far fare al controller. Potrebbe essere anche non legata alla view.
-  Ad esempio si può mettere un link per fare un aggiornamento dei dati " get 'data_sync' => 'transactions#sync_db_via_ftp' (vedi Donamat Dashboard)
+Questo paragrafo è interessante per creare dei links che puntano ad un'azione specifica da far fare al controller. Potrebbe essere anche non legata alla view.
+
+Ad esempio si può mettere un link per fare un aggiornamento dei dati " get 'data_sync' => 'transactions#sync_db_via_ftp' (vedi Donamat Dashboard)
   
   ## Verifichiamo gli instradamenti dei links
   
@@ -172,99 +163,6 @@ Pretty simple:
 ## Altri esempi da sistemare
 
 
-
-https://github.com/flaviobordonidev/yesnormalis/blob/master/app/views/company_person_maps/edit/_tab_edit.html.erb
-
-<%#= link_to company_person_maps_select_path(id: params[:id], company_person_maps: {person_id: @company_person_map.person_id, company_id: @company_person_map.company_id}, related: "companies", page: 1, search: ""), :class => "list-group-item" do %>
-<%#= link_to [@company_person_map.company, related: "companies", page: 1, search: ""], :class => "list-group-item" do %>
-<%= link_to companies_path(related: "companies", page: 1, search: ""), :class => "list-group-item" do %>
-
-
-
----
-
-se passo i parametri con session[] sul controller uso ** after_action :set_session_last_front ** (vedi yesnormalis)
-
-
-Quindi sul controller togliamo index dall'after_action.
-Iniziamo dal lato people
-
-{title="controllers/people_controller.rb", lang=ruby, line-numbers=on, starting-line-number=3}
-~~~~~~~~
-after_action :set_session_last_front, only: [:show]
-~~~~~~~~
-
-
-
-
-
-# Link_to con params
-
-Risorse web:
-
-* [Go Rail link_to current page with params](https://gorails.com/episodes/rails-link-to-current-page-with-params)
-* [Go Rail link_to current page with params - link alternativo](https://www.youtube.com/watch?v=FT-yVFiq9ZQ)
-
-
-## Esempio sul cambio lingua
-
-<%= link_to params.permit(:locale).merge(locale: 'en') %>
-
-
-
-## Esempio hard coded
-
-<%= link_to "Customers", root_path %>
-
-<%= link_to "Paid Customers", root_path(paid: true) %>
-
-<%= link_to "Customers Date Range", root_path(start: params[:start], end: params[:end]) %>
-
-<%= link_to "Customers Date Range", request.params.except(:paid) %>
-
-<%= link_to "Paid Customers Data Range", root_path(paid: true) %>
-
-
-
-
-## Esempio passando un hash
-
-Non indicando il "path" viene utilizzato lo stesso path/URL e vengono passati i parametri
-
-<%= link_to "Customers Date Range", { start: params[:start], end: params[:end] } %>
-
-
-
-
-## Prendiamo tutti i parametri
-
-<%= link_to "Customers Date Range", request.params %>
-
-
-
-
-### Escludiamo qualche parametro
-
-
-<%= link_to "Customers Date Range", request.params.except(:paid) %>
-
-
-
-### Includiamo qualche parametro
-
-<%= link_to "Customers Date Range", request.params.merge(paid: true) %>
-
-
-
-## Link to multiple params
-
-<%= link_to "game " + g.game_number.to_s, :action => "gametemplate", :id => 1, :season => 'winter', :year => 2007 %>
-
-These will be accessible from the controller as 
-  params[:id], params[:year] etc...
-
-
-
 ## Pass custom variables to the link_to
 
 I basically want to pass my own custom variables to the link_to function
@@ -276,22 +174,26 @@ link_to example:
 
 Code:
 
+```
 <% for g in @games %>
    <%= link_to "game " + g.game_number.to_s, :action => "gametemplate"%>
 <% end %>
-
+```
 
 controller example code:
 Code:
 
+```
   def gametemplate
     b = Batter.new()
     @batter_stats = b.find_game_stats 1, 2007, "winter"
   end
-
+```
 
 I can then pass the @batter_stats to my view. However, how do I get the:
 Code:
+
+```
  1, 2007, "winter"
 arguments from my link_to function?
 

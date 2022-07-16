@@ -130,7 +130,9 @@ Colonna                 | Descrizione
 
 Colonne secondarie:
 
-- nessuna
+Colonna                   | Descrizione
+------------------------- | -----------------------
+`youtube_video_id:string` | (255 caratteri) The video ID will be located in the URL of the video page, right after the v= URL parameter.
 
 
 Tabelle collegate 1-a-molti (non ho campi di chiave esterna perché saranno sull'altra tabella)

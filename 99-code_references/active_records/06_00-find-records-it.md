@@ -7,6 +7,8 @@
 - [API Rails - find](https://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html#method-i-find)
 - [API Rails - order](https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-order)
 - [14 Dynamic Finders](http://guides.rubyonrails.org/active_record_querying.html)
+- [How to Use The Rails Where Method (With Examples)](https://www.rubyguides.com/2019/07/rails-where-method/)
+
 
 
 ***code 01 - .../db/migrate/xxx_create_lessons.rb - line:1***
@@ -147,3 +149,189 @@ User.where(email: "abc@xyz.com").first
 ```
 
 Per contare tutti i records è preferibile usare `.size`.
+
+
+
+## The `where` method
+
+In Rails, you can query the database through your models to access your data.
+You can do this using ActiveRecord methods.
+
+Like `where`, `find`, or `find_by`.
+
+- `find_by` -> a single record or **nil**
+- `where`   -> **ActiveRecord::Relation** object
+- `find`    -> a single record, found by its primary column (usually **id**), raises an exception if not found
+
+
+
+## Basic Where Conditions
+
+The purpose of using where is to build a query that filters the information in your database, so you only get the rows you want.
+
+For example: Given a Book model, with title, author & category. You may want to find out all the books by a specific author, or all the books filed under a particular category.
+
+Here’s a query:
+
+```ruby
+Book.where(category: "Ruby")
+```
+
+This returns all the books with a category of “Ruby”.
+
+You can also combine conditions.
+
+Like this:
+
+```ruby
+Book.where(category: "Ruby", author: "Jesus Castello")
+```
+
+
+This returns books that match both category & author.
+
+And you can combine where with a scope.
+
+```ruby
+# scope definition
+class Book
+  scope :long_title, -> { where("LENGTH(title) > 20") }
+end
+
+# controller code
+@books = Book.long_title.where(category: "Ruby")
+```
+
+Using a hash (fruit: "apple"), allows you to check if a column is equal to something.
+
+But what if you aren’t looking for equality?
+
+Then you’ll have to use a string.
+
+## Rails Where: Greater Than & Less Than
+
+If you want to check for “greater than”, “less than”, or something like that…
+
+Do it like this:
+
+```ruby
+Book.where("LENGTH(title) > 20")
+```
+
+If you need to interpolate values…
+
+Do it like this:
+
+```ruby
+Book.where("LENGTH(title) > ?", params[:min_length])
+```
+
+This ? is called a “placeholder”, and it’s used for security to avoid “SQL injection” attacks.
+
+Another option is to use named placeholders.
+
+Example:
+
+```ruby
+Book.where("LENGTH(title) > :min", min: params[:min_length])
+```
+
+I find this less common than the question mark placeholder, but it could be useful for queries involving many interpolated values.
+
+
+
+## How to Use Where Not & Where Or Conditions
+
+Let’s look at more complex queries.
+
+If you want to check that a condition is NOT true, then you can combine where with the not method.
+
+Here’s an example:
+
+```ruby
+Book.where.not(category: "Java")
+```
+
+Another example:
+
+```ruby
+Book.where.not(title: nil)
+```
+
+This finds Books with a title that’s not nil.
+
+What about an OR condition?
+
+You can combine where with the or method to get rows that match ANY of two or more conditions.
+
+Here’s how it works:
+
+```ruby
+Book.where(category: "Programming").or(Book.where(category: "Ruby"))
+```
+
+This combines two where queries into one.
+
+Give it a try!
+
+## Rails Where IN Array Example
+
+All the examples we have seen look for one specific value.
+
+But you can look for multiple values.
+
+How?
+
+Using an array!
+
+Example:
+
+```ruby
+Book.where(id: [1,2,3])
+```
+
+This generates an “IN” query that will search, at the same time, all these ids.
+
+```ruby
+SELECT "books".* FROM "books" WHERE "books"."id" IN (1, 2, 3)
+```
+
+You’ll find this query in the rails logs.
+
+## Rails Joins Association Condition
+
+If you’re looking to match based on an association value, you’ll have to make that association available with the joins method.
+
+Then you can do this:
+
+```ruby
+Book.joins(:comments).where(comments: { id: 2 })
+```
+
+With this query you get all the books, which have a comment, and the comment id is 2.
+
+For the string version:
+
+```ruby
+Book.joins(:comments).where("comments.id = 2")
+```
+
+Where comments is the table name, and id is column name.
+
+
+
+## How to Search Inside Text With A Where LIKE Condition
+
+If you want to implement a search function, you may want to allow for a partial match.
+
+You can do this with a “LIKE” query.
+
+Here’s an example:
+
+```ruby
+Book.where("title LIKE ?", "%" + params[:q] + "%")
+```
+
+This finds all the titles that have the search text, provided by the params (params[:q]), anywhere inside the title.
+
+> In SQL, % is a wildcard character.

@@ -2,25 +2,13 @@
 
 Importiamo i files stylesheets
 
-Continuiamo con i passaggi per importare il tema Edu sulla nostra app Rails:
-
-6. copiamo i files stylesheets (css, scss) su "assets/stylesheets/edu"
-7. copiamo le immagini (png, jpg) su "assets/images/edu"
-8. copiamo i files javascripts (js) su "assets/javascripts/edu"
-9. su mockups/edu_index_4.html.erb aggiustiamo i "puntamenti" per richiamare stylesheets, images e javascripts.
-
-
-
-## Risorse esterne
-
-- [file di esempio preso dal tema Eduport](file:///Users/FB/eduport_v1.2.0/template/index-4.html).
-- [indice della documentazione dentro il tema Eduport](file:///Users/FB/eduport_v1.2.0/template/docs/index.html)
+Continuiamo con i passaggi per importare il tema Edu sulla nostra app Rails.
 
 
 
 ## Apriamo il branch
 
-continuiamo con il branch aperto nel capitolo precedente
+Continuiamo con il branch aperto nel capitolo precedente
 
 
 
@@ -68,50 +56,10 @@ Il risultato finale è quindi:
 
 
 
-## Impostiamo gli helpers per puntare all'asset_pipeline
-
-Le chiamate ai files di stylesheet e di javascript sono diverse tra HTML e Rails. Rails usa gli helpers. Adattiamo quindi le chiamate per rispondere alle convenzioni Rails.
-
-Inseriamo gli helpers che puntano all'asset_pipeline sia per stylesheets che javascripts:
-
-- da `<link rel="stylesheet" href="css/xxx.css" />` <br/>
-  a  `<%= stylesheet_link_tag 'pofo/css/xxx', media: 'all', 'data-turbolinks-track': 'reload' %>`
-- da `<script type="text/javascript" src="js/xxx.js"></script>`  <br/>
-  a  `<%= javascript_include_tag 'pofo/js/xxx', 'data-turbolinks-track' => true %>`
-
-
-Impostiamoli da layouts/edu_demo
-
-da 
-
-```html
-	<!-- Theme CSS -->
-	<link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">
-```
-
-a 
-
-```html+erb
-	<!-- Theme CSS -->
-  <%= stylesheet_link_tag 'edu/css/style.css', media: 'all', 'data-turbolinks-track': 'reload', id: 'style-switch' %>
-```
-
-[tutto il codice](#11-02-02_01all)
-
-
-Copiamo il file *style.css* dal tema alla nostra app.
-
-
-
-
-
-
 ## Precompile per lo stylesheets
 
 Nell'asset_pipeline l'unico file che si può chiamare direttamente dalla view è "assets/stylesheets/application.scss" questo file è detto file manifest ed è da questo file che dovremmo chiamare tutti gli altri.
 Nel nostro caso siccome richiamiamo i vari files di style direttamente dalla view dobbiamo dichiararle all'applicazione. Questa "dichiarazione" è chiamata "precompile". 
-
-
 
 Per i nuovi files si può usare tutte le volte che si fanno modifiche il comando
 
@@ -119,13 +67,11 @@ Per i nuovi files si può usare tutte le volte che si fanno modifiche il comando
 $ rails assets:precompile
 ```
 
-
 Oppure si può aggiungere al config/application che fa in automatico il precompile.
 
+***code n/a - .../config/application.rb - line:21***
 
-
-{id: "11-02-02_02", caption: ".../config/application.rb -- codice 02", format: ruby, line-numbers: true, number-from: 21}
-```
+```ruby
     # precompile assets pofo stylesheets                                                             
     config.assets.precompile += ['pofo/css/animate.css',
                                  'pofo/css/bootstrap.min.css',
@@ -153,8 +99,6 @@ I> Modificando application.rb è necessario riavviare il server rails (rails s .
 
 
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/02_fig01-edu_index_4.png)
-
-
 
 
 

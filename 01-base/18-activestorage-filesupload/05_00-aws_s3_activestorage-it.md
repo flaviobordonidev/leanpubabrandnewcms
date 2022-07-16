@@ -116,7 +116,7 @@ Loading development environment (Rails 7.0.2.2)
 2.6.3 :005 > 
 ```
 
-Proviamo a leggere il contenuto del bucket "s5beginning-dev"
+Proviamo a leggere il contenuto del bucket "bl7-0-dev"
 
 ```bash
 -> resp = s3.list_objects(bucket: 'bl7-0-dev', max_keys: 2)
@@ -268,9 +268,19 @@ Se su aws S3, entriamo nel bucket "bl6-0-dev" vediamo il file di cui abbiamo app
 
 
 
-## Implementiamo AWS S3 per la produzione sul serve locale
+## Impleme AWS S3 per la produzione
 
-Questo paragrafo non serve per la produzione su Heroku. Lo implementiamo a scopo didattico per far vedere come implementare l'ambiente di produzione sullo stesso server dello sviluppo.
+Al momento quando facciamo il "git push" su heroku non sfruttiamo il bucket che abbiamo creato su amazon ma salviamo i files in locale. 
+Questo non va bene. Per due motivi:
+
+- Potrebbe non funzionare e se funziona i files sono cancellati dopo alcune ore.
+- Se non fossero cancellati prenderebbero molto spazio su heroku che è meglio lasciare al solo codice.
+
+Quindi è bene impostare anche per l'ambiente di produzione (quello su heroku) che l'upload dei files sia fatto su AWS S3, nel bucket dedicato `bl7-0-prod`.
+
+
+
+## Settiamo config production per Amazon S3
 
 Settiamo config production per Amazon S3. (Al posto di ":local" usiamo ":amazonprod")
 
@@ -282,9 +292,10 @@ Settiamo config production per Amazon S3. (Al posto di ":local" usiamo ":amazonp
   config.active_storage.service = :amazonprod
 ```
 
-[tutto il codice](#01-18-04_04all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/05_03-config-storage.yml)
 
-Aggiorniamo lo storage.yml aggiungendo ":amazonprod" con relativa configurazione. (al momento con le stesse credentials di ":amazondev". Ma in seguito creeremo un utente IAM per la produzione e qui metteremo le sue credenziali. Oppure lasciamo il solo utente IAM "bot_myapp" con accesso ai due buckets "myapp-dev" e "myapp-prod")
+
+Aggiorniamo lo storage.yml aggiungendo `:amazonprod` con relativa configurazione. 
 
 ***codice 05 - .../app/config/storage.yml - line: 5***
 
@@ -295,21 +306,22 @@ amazonprod:
   access_key_id: <%= Rails.application.credentials.dig(:aws, :access_key_id) %>
   secret_access_key: <%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
   region: us-east-1
-  bucket: bl6-0-prod
+  bucket: bl7-0-prod
 ```
 
-[tutto il codice](#01-18-04_05all)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/05_03-config-storage.yml)
 
-
-Nel frattempo avremmo già creato il nuovo bucket "bl6-0-prod" su AWS S3 per mantenere distinte le immagini caricate come development da quelle caricate in produzione. (I passaggi sono gli stessi fatti per bl6-0-dev)
+> Nella nostra app la configurazione ha le stesse credentials di `:amazondev`. <br/>
+> In pratica lasciamo il solo utente IAM `botbl7_0` con accesso ai due buckets `bl7-0-dev` e `bl7-0-prod`. <br/>
+> Volendo potremmo creare un diverso utente IAM da usare solo per la produzione e qui metteremo le sue credenziali (access_key_id e secret_access_key).
 
 
 
 ## Implementiamo AWS S3 per la produzione su Heroku
 
-Creiamo il nuovo bucket "bl7-0-prod" su AWS S3 per mantenere distinte le immagini caricate come development da quelle caricate in produzione. (I passaggi sono gli stessi fatti per bl7-0-dev).
+Abbiamo già creato nel capitolo precedente anche il bucket `bl7-0-prod` su AWS S3 per mantenere distinte le immagini caricate come development da quelle caricate in produzione.
 
-Adesso passiamo la nuova gemma in produzione caricando tutto il codice con "git push" e successivamente passiamo le chiavi di accesso al bucket "bl6-0-prod" di aws S3 .
+Adesso passiamo la nuova gemma in produzione caricando tutto il codice con `git push` e successivamente passiamo le chiavi di accesso al bucket `bl7-0-prod` di aws S3.
 
 
 
@@ -342,7 +354,7 @@ Questo perché non abbiamo ancora passato ad heroku le variabili per collegarsi 
 
 ## Passiamo ad Heroku variabili per collegamento ad aws S3
 
-Heroku non ha le variabili per accedere al bucket "myapp-prod" che abbiamo creato su aws S3.
+Heroku non ha le variabili per accedere al bucket `bl7-0-prod` che abbiamo creato su aws S3.
 Passiamo le variabile d'ambiente ad heroku via terminale
 
 ```bash
