@@ -31,20 +31,40 @@ end
 ## Esempio2: Add corporate column to companies table
 
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails g migration AddCorporateToCompanies corporate:string
 ```
 
-{caption: ".../db/migrate/xxx_add_corporate_to_company.rb", format: ruby, line-numbers: true, number-from: 1}
-```
+***code: n/a - .../db/migrate/xxx_add_corporate_to_companies.rb - line:1***
+
+```ruby
   add_column :companies, :corporate, :string
 ```
 
 
 
+## Esempio3: Add user columns to posts table as external_key
 
-## Esempio3: Add address columns to kiosks table
+```bash
+$ rails g migration AddUserToPosts user:references
+```
+
+***code: n/a - .../db/migrate/xxx_add_user_to_posts.rb - line:1***
+
+```ruby
+class AddUserToPosts < ActiveRecord::Migration[7.0]
+  def change
+    add_reference :posts, :user, null: false, foreign_key: true
+  end
+end
+```
+
+> Nota: `add_reference` invece di `add_column`.</br>
+> questo aggiunge anche l'indice in automatico.
+
+
+
+## Esempio4: Add address columns to kiosks table
 
 {title="terminal", lang=bash, line-numbers=off}
 ~~~~~~~~

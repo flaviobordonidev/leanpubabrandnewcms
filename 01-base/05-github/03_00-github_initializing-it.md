@@ -27,7 +27,7 @@ Se lo abbiamo già logghiamoci.
 
 
 
-## Github connessione con aws Cloud9
+## Github connessione con ubuntu multipass
 
 Inizializziamo GitHub che useremo principalmente come repositroy remoto di backup del codice.
 
