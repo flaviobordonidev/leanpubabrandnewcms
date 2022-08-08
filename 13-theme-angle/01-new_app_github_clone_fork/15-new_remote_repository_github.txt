@@ -15,7 +15,8 @@ Risorse interne:
 abbiamo già eliminato il puntamento a Github in un capitolo precedente quindi non risultano repositories remote di GitHub
 
 {caption: "terminal", format: bash, line-numbers: false}
-```
+
+```bash
 $ git remote -v
 
 user_fb:~/environment/angletheme (master) $ git remote -v

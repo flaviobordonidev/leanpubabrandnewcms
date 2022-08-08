@@ -1,10 +1,32 @@
-# Turbo Streams
+# <a name="top"></a> Cap hotwire.4 - Turbo Streams examples
 
-Approfondiamo
+
 
 ## Risorse esterne
 
 - [hotwire inline crud table](bit.ly/inline-crud)
+
+
+
+## Turbostrems le basi
+
+```html
+  <turbo-stream action="update" target="someid">
+    <template>
+      <div>New content for the target</div>
+    </template>
+  </turbo-stream>
+```
+
+Le "actions" possibili con turbo-stream sono:
+
+- append
+- prepend
+- replace
+- update
+- remove
+- before
+- after
 
 
 

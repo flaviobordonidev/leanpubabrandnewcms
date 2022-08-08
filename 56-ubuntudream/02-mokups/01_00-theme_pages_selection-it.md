@@ -29,3 +29,14 @@ La selezione delle pagine dal tema *edu*:
 
 - per registrarsi come nuovo utente
   - file:///Users/FB/eduport_v1.2.0/template/sign-up.html
+
+- per account utente
+  - file:///Users/FB/eduport_v1.2.0/template/instructor-edit-profile.html
+  - 
+
+- per AUTHOR per costruire il corso
+  - file:///Users/FB/eduport_v1.2.0/template/admin-edit-course-detail.html
+  - file:///Users/FB/eduport_v1.2.0/template/instructor-create-course.html
+  - file:///Users/FB/eduport_v1.2.0/template/instructor-quiz.html
+
+

@@ -102,7 +102,7 @@ Read Data from Local Storage     | let lastname = localStorage.getItem(key);
 Remove Data from Local Storage   | localStorage.removeItem(key);
 Remove All (Clear Local Storage) | localStorage.clear();
 
-Nel nostro casu usiamo la key: `data-theme` per archiviare il valore `dark` o il valore `light`.
+Nel nostro caso usiamo la key: `data-theme` per archiviare il valore `dark` o il valore `light`.
 
 Inizialmente guardiamo se c'è il valore archiviato ed eventualmente lo prendiamo:
 
