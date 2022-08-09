@@ -41,7 +41,7 @@ Mettiamo la parte che ci interessa su users/edit
 
 ***code 02 - .../app/views/users/edit.html.erb - line:1***
 
-```html-erb
+```html+erb
 <%# == Meta_data ============================================================ %>
 
 <% provide(:html_head_title, "#{t 'users.edit.html_head_title'} #{@user.name}") %>
