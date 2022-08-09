@@ -81,7 +81,7 @@ Inseriamo la sola parte del form nel partial
 
 Vediamo l'immagine del risultato:
 
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/08-user/01_03-views-users.png)
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/08-user/01_fig01-user_edit_edu_style.png)
 
 
 Il primo elemento che abbiamo è l'immagine dell'utente che al momento non è implementata.
