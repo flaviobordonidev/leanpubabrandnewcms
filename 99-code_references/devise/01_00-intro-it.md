@@ -6,7 +6,7 @@
 
 - [01-base/07-authentication/04_00-devise-login_logout-it]()
 - [01-base/15-authorization/04_00-devise-login_logout-it]()
-
+- [01-base/09-manage_users/02_00-users_protected-it.md - Working Around Rails 7’s Turbo]()
 
 ## Risorse esterne
 
