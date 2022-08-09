@@ -12,10 +12,10 @@ Più specificamente permettere all'utente loggato di modificare il suo profilo.
 
 
 
-
 ## Risorse esterne
 
 - []()
+
 
 
 ## Scegliamo la pagina dal tema eduport
@@ -35,54 +35,73 @@ Abbiamo selezionato "instructor-edit-profile.html"
 
 
 
+## Primo inserimento su users/edit
 
-## Progettiamo le colonne per la tabela users
+Mettiamo la parte che ci interessa su users/edit
 
-La tabella avrà le seguenti colonne:
+***code 02 - .../app/views/users/edit.html.erb - line:1***
 
-* first_name        -> (65 caratteri) il Nome della persona
-* last_name         -> (65 caratteri) il Cognome della persona
-* username          -> (65 caratteri) il Nome/Nick name mostrato nell'app
-* email_id          -> (65 caratteri) l'email con cui fai login
-* location          -> (65 caratteri) La nazione dove sei
-* bio / about_me    -> (160 caratteri) Una Bio / Una descrizione dell'utente. (Brief description for your profile.)
+```html-erb
+<%# == Meta_data ============================================================ %>
 
-* profile_image     -> immagine caricata con active_storage su aws S3
+<% provide(:html_head_title, "#{t 'users.edit.html_head_title'} #{@user.name}") %>
 
-* password          -> (65 caratteri) La password
+<%# == Meta_data - end ====================================================== %>
 
-* phone_number      -> (20 caratteri) questo andrebbe nella tabella morphic "telephonable"
+<!-- **************** MAIN CONTENT START **************** -->
+<main>
+	
+<!-- =======================
+Page Banner START -->
+<section class="pt-0">
+	<!-- Main banner background image -->
+		<!--<div class="bg-blue h-100px h-md-200px rounded-0" style="background:url(assets/images/pattern/04.png) no-repeat center center; background-size:cover;">-->
+		<div class="bg-blue h-100px h-md-200px rounded-0" style="background:url(<%= image_path('edu/pattern/04.png') %>) no-repeat center center; background-size:cover;">
+		</div>
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/08-user/01_02-views-users-edit.html.erb)
 
 
+Inseriamo la sola parte del form nel partial
+
+***code 03 - .../app/views/users/_form.html.erb - line:1***
+
+```html+erb
+<!-- Form -->
+<form class="row g-4">
+
+  <!-- Profile picture -->
+  <div class="col-12 justify-content-center align-items-center">
+    <label class="form-label">Profile picture</label>
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/08-user/01_03-views-users-_form.html.erb)
 
 
-## Progettiamo la tabela lessons
+Vediamo l'immagine del risultato:
 
-Abbiamo diviso le varie colonne della tabella in principali e secondarie perché non implementeremo tutte le colonne da subito ma iniziamo con le principali e poi aggiungiamo le altre di volta in volta facendo dei migrate di aggiunta ed aggiornando controller, model e views.
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/08-user/01_03-views-users.png)
 
-Colonne principali
 
-Colonna                 | Descrizione
------------------------ | -----------------------
-`name:string`           | (255 caratteri) Nome esercizio / aula / lezione  (es: View of mount Vermon, The isle of the death, ...) - Questo appare nelle cards nell'index
-`duration:integer`      | Quanto dura l'esercizio in media. (Uso un numero intero che mi rappresenta quanti **minuti** dura. es: 90 minuti, 180 minuti, ...)
+Il primo elemento che abbiamo è l'immagine dell'utente che al momento non è implementata.
 
 
 
 ## Attiviamo upload immagine per il model user
 
-Implementiamo un campo in cui carichiamo le immagini per i nostri articoli usando *has_one_attached* di active_storage.
+Implementiamo il campo `profile_image` in cui carichiamo l'immagine dell'utente usando *has_one_attached* di active_storage.
 
-***codice 04 - .../app/models/eg_post.rb - line:2***
+***codice 04 - .../app/models/user.rb - line:2***
 
 ```ruby
-  has_one_attached :header_image
+  has_one_attached :profile_image
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/02_04-models-eg_post.rb)
 
 
-Ogni volta che facciamo l'upload di un'immagine come *header_image* questa chiamata aggiorna in automatico i metatdata della tabella blobs ed il collegamento della tabella attachments. 
+Ogni volta che facciamo l'upload di un'immagine come *profile_image* questa chiamata aggiorna in automatico i metatdata della tabella blobs ed il collegamento della tabella attachments. 
 
 
 

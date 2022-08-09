@@ -4,11 +4,9 @@ Non ci resta che rivedere le chiamate alle immagini che ci sono sulla view ed ad
 
 
 
-# Risorse esterne
+# Risorse interne
 
-- [](https://medium.com/@cindyk09/implementing-boostrap-theme-into-your-rails-app-55bb9085feae)
-- [how-to-escape-a-dash-in-a-ruby-symbol](https://stackoverflow.com/questions/8482024/how-to-escape-a-dash-in-a-ruby-symbol)
-- [ruby-1-9-hash-with-a-dash-in-a-key](https://stackoverflow.com/questions/2134702/ruby-1-9-hash-with-a-dash-in-a-key)
+- [99-code_references/image]()
 
 
 
