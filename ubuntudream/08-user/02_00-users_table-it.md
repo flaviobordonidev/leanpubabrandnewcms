@@ -24,16 +24,98 @@ Colonna                        | Descrizione
 ------------------------------ | -----------------------
 `first_name:string`            | (65 caratteri) il Nome della persona
 `last_name:string`             | (65 caratteri) il Cognome della persona
-`username:string`              | (65 caratteri) il Nome/Nick name mostrato nell'app
-`email_id:string`              | (65 caratteri) l'email con cui fai login
+`username:string`              | (65 caratteri) Il "nick name" mostrato nell'app
+`email:string`                 | (65 caratteri) l'email con cui fai login
 `location:string`              | (65 caratteri) La nazione dove sei
-`bio:string` or `about_me:string`  | (160 caratteri) Una Bio / Una descrizione dell'utente. (Brief description for your profile.)
+`bio:string`                   | (160 caratteri) Una breve descrizione dell'utente. (`about_me`)
 `profile_image` -> in model    | immagine caricata con active_storage su aws S3
 `password:string`              | (65 caratteri) La password
 `phone_number:string`          | (20 caratteri) questo andrebbe nella tabella morphic "telephonable"
 
 
+> Attenzione!<br/>
+> Se volete rinominare il campo `email` dovete agire anche a livello di ***devise*** 
 
+
+
+## I migrates
+
+Rinominiamo:
+
+- `name` in `username`
+
+***code n/a - "terminal" - line:n/a***
+
+```ruby
+$ rails g migration RenameNameInUsers
+```
+
+***code 01 - .../db/migrate/xxx_rename_name_in_users.rb - line:n/a***
+
+```ruby
+rename_column :users, :name, :username
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/08-user/02_01-db-migrate-xxx_rename_name_and_email_in_users.rb)
+
+
+Aggiungiamo le colonne `first_name`, `last_name`, `location`, `bio`, `phone_number`.
+
+***code n/a - "terminal" - line:n/a***
+
+```ruby
+$ rails g migration AddColumnsToUsers first_name:string last_name:string location:string bio:string phone_number:string
+```
+
+***code 02 - .../db/migrate/xxx_add_columns_to_users.rb - line:n/a***
+
+```ruby
+    add_column :users, :first_name, :string
+    add_column :users, :last_name, :string
+    add_column :users, :location, :string
+    add_column :users, :bio, :string
+    add_column :users, :phone_number, :string
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/08-user/02_02-db-migrate-xxx_add_columns_to_users.rb)
+
+
+***code n/a - "terminal" - line:n/a***
+
+```ruby
+$ rails db:migrate
+```
+
+
+
+## Aggiorniamo il Controller e le views
+
+Avendo modificato ed aggiunto delle nuove colonne alla tabella users andiamo ad aggiornare il codice nel controller e nelle views.
+
+***code 03 - .../app/controllers/users_controller.rb - line:85***
+
+```ruby
+    # Only allow a list of trusted parameters through.
+    def user_params
+      if params[:user][:password].blank?
+        params.require(:user).permit(:name_id, :email_id, :language, :role, :profile_image, :first_name, :last_name, :location, :bio, :phone_number)
+      else
+        params.require(:user).permit(:name_id, :email_id, :password, :password_confirmation, :language, :role, :profile_image, :first_name, :last_name, :location, :bio, :phone_number)
+      end
+    end
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/08-user/02_03-controllers-users_controller.rb)
+
+
+***code 04 - .../app/views/users/_form.html.erb - line:8***
+
+```html+erb
+
+```
+
+
+[DAFA]
 
 
 
@@ -44,8 +126,8 @@ Prepariamo i "semi" per un inserimento dei records in automatico.
 ***code 05 - .../db/seeds.rb - line:29***
 
 ```ruby
-puts "setting the first Lesson and Steps data"
-Lesson.new(name: "View of mount Vermon", duration: 90).save
+puts "setting the first User data"
+User.new(name: "View of mount Vermon", duration: 90).save
 Lesson.last.steps.build(name: "Domanda1").save
 Lesson.last.steps.build(name: "Domanda2").save
 

@@ -1,41 +1,46 @@
-{id: 99-rails_references-migrations-08-change_column}
-# Cap 99.x -- Aggiungi colonna (Add column)
+# <a name="top"></a> Cap migrate.8 - Aggiungi colonna (Add column)
 
-Nel migration usiamo il codice:
 
+
+## La sintassi
+
+***code n/a - .../db/migrate/....rb - line:n/a***
+
+```ruby
 add_column :table_name, :column_name, type, options
-
+```
 
 
 
 ## Esempio1: Add price column to eg_posts table
 
+***code n/a - "terminal" - line:n/a***
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```ruby
 $ rails g migration AddPriceToEgPosts price:decimal
 ```
 
-{caption: ".../db/migrate/xxx_add_price_to_eg_posts.rb", format: ruby, line-numbers: true, number-from: 1}
-```
-class AddPriceToEgPosts < ActiveRecord::Migration[6.0]
-  def change
+***code 01 - .../db/migrate/xxx_add_price_to_eg_posts.rb - line:n/a***
+
+```ruby
     add_column :eg_posts, :price, :decimal, precision: 19, scale: 4, default: 0
-  end
-end
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/99-code_references/migrate/06_01-db-migrate-xxx_add_price_to_eg_posts.rb)
+
+> Nota: I parametri messi di "precision" e "scale" sono basati su varie ricerche fatte nel web e coprono la maggior parte dei casi di uso comune.
 
 
 
 ## Esempio2: Add corporate column to companies table
 
+***code n/a - "terminal" - line:n/a***
 
-```bash
+```ruby
 $ rails g migration AddCorporateToCompanies corporate:string
 ```
 
-***code: n/a - .../db/migrate/xxx_add_corporate_to_companies.rb - line:1***
+***code: n/a - .../db/migrate/xxx_add_corporate_to_companies.rb - line:n/a***
 
 ```ruby
   add_column :companies, :corporate, :string
@@ -43,9 +48,11 @@ $ rails g migration AddCorporateToCompanies corporate:string
 
 
 
-## Esempio3: Add user columns to posts table as external_key
+## Esempio3: Add user columns to posts table ***as external_key***
 
-```bash
+***code n/a - "terminal" - line:n/a***
+
+```ruby
 $ rails g migration AddUserToPosts user:references
 ```
 
@@ -66,15 +73,17 @@ end
 
 ## Esempio4: Add address columns to kiosks table
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+***code n/a - "terminal" - line:n/a***
+
+```ruby
 $ rails g migration AddAddressColumnsToKiosk line1:string line2:string line3:string locality:string region:string postcode:string country:string latitude:string longitude:string
-~~~~~~~~
+```
 
 
-{lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
-class AddAddressCokumnsToKiosk < ActiveRecord::Migration[5.0]
+***code: n/a - .../db/migrate/xxx_add_address_columns_to_kiosk.rb - line:1***
+
+```ruby
+class AddAddressColumnsToKiosk < ActiveRecord::Migration[5.0]
   def change
     add_column :kiosks, :line1, :string
     add_column :kiosks, :line2, :string
@@ -87,63 +96,62 @@ class AddAddressCokumnsToKiosk < ActiveRecord::Migration[5.0]
     add_column :kiosks, :longitude, :string
   end
 end
-~~~~~~~~
-
+```
 
 
 
 ## Esempio 4: Aggiungiamo le colonne video_id e select_media nella tabella posts 
 
-* video_id      : string
-* select_media  : integer -> youtube-video, vimeo-video, foto, audio, quote)
+- video_id      : string
+- select_media  : integer -> youtube-video, vimeo-video, foto, audio, quote)
 
+***code n/a - "terminal" - line:n/a***
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```ruby
 $ rails g migration AddVideoIdAndSocialMediaToPosts video_id:string select_media:integer
-~~~~~~~~
+```
 
 questo crea il migrate:
 
-{title=".../db/migrate/xxx_add_video_id_and_social_media_to_posts.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+***code: n/a - .../db/migrate/xxx_add_video_id_and_social_media_to_posts.rb - line:1***
+
+```ruby
 class AddVideoIdAndSocialMediaToPosts < ActiveRecord::Migration[5.1]
   def change
     add_column :posts, :video_id, :string
     add_column :posts, :select_media, :integer
   end
 end
-~~~~~~~~
-
+```
 
 eseguiamo il migrate 
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails db:migrate
-~~~~~~~~
-
+```
 
 Aggiorniamo il controller
 
 aggiungiamo i campi nella withelist di authors/posts
 
-{title=".../db/controllers/authors/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=84}
-~~~~~~~~
+***code: n/a - .../db/controllers/authors/posts_controller.rb - line:1***
+
+```ruby
       # Never trust parameters from the scary internet, only allow the white list through.
       def post_params
         params.require(:post).permit(:title, :body, :description, :author_id, :image, :incipit, :sharing_image, :sharing_description, :tag_list, :video_id, :select_media)
       end
-~~~~~~~~
+```
 
 
 Aggiorniamo la view
 
 aggiungiamo i due campi nel partial form della cartella authors/posts
 
-{title=".../app/views/authors/posts/_form.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+***code: n/a - .../app/views/authors/posts/_form.html.erb - line:1***
+
+```html+erb
           <li class="list-group-item">
             <div class="field">
               <%= form.label :select_media %><!-- menu a cascata -->
@@ -156,4 +164,4 @@ aggiungiamo i due campi nel partial form della cartella authors/posts
               <%= form.text_field :video_id, id: :video_id, class: "form-control" %>
             </div>
           </li>
-~~~~~~~~
+```
