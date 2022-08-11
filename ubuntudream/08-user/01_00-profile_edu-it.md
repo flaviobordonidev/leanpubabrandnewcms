@@ -31,7 +31,7 @@ Abbiamo selezionato "instructor-edit-profile.html"
 	<title>Eduport - LMS, Education and Course Theme</title>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/08-user/01_01-instructor-edit-profile.html)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/01_01-instructor-edit-profile.html)
 
 
 
@@ -60,7 +60,7 @@ Page Banner START -->
 		</div>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/08-user/01_02-views-users-edit.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/01_02-views-users-edit.html.erb)
 
 
 Inseriamo la sola parte del form nel partial
@@ -76,12 +76,12 @@ Inseriamo la sola parte del form nel partial
     <label class="form-label">Profile picture</label>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/08-user/01_03-views-users-_form.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/01_03-views-users-_form.html.erb)
 
 
 Vediamo l'immagine del risultato:
 
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/08-user/01_fig01-user_edit_edu_style.png)
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/01_fig01-user_edit_edu_style.png)
 
 
 Il primo elemento che abbiamo è l'immagine dell'utente che al momento non è implementata.
@@ -99,7 +99,7 @@ Nel model in `# == Attributes`, `## ActiveStorage`
   has_one_attached :profile_image
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/08-user/01_04-models-user.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/01_04-models-user.rb)
 
 
 Ogni volta che facciamo l'upload di un'immagine come *profile_image* questa chiamata aggiorna in automatico i metatdata della tabella blobs ed il collegamento della tabella attachments. 
@@ -123,7 +123,7 @@ Inseriamo il nostro nuovo campo *profile_image* nella whitelist.
     end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/08-user/01_05-controllers-users_controller.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/01_05-controllers-users_controller.rb)
 
 
 
@@ -138,7 +138,7 @@ Inseriamo il nostro nuovo campo *profile_image* nella whitelist.
   </div>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/08-user/01_06-views-users-_form.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/01_06-views-users-_form.html.erb)
 
 
 Per visualizzare l'immagine basta `image_tag @user.profile_image` ma per sicurezza mettiamo anche un controllo.
@@ -155,7 +155,7 @@ Per visualizzare l'immagine basta `image_tag @user.profile_image` ma per sicurez
   </p>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/08-user/01_07-views-users-_user.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/01_07-views-users-_user.html.erb)
 
 > INFO: non usiamo `.present?` perché darebbe sempre *true*. Per verificare la presenza del file allegato dobbiamo usare `.attached?`.
 
@@ -222,7 +222,7 @@ Creiamo la nuova azione *delete_image_attachment* sul controller
   end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/08-user/01_08-controllers-users_controller.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/01_08-controllers-users_controller.rb)
 
 
 Creiamo il percorso per eseguire l'azione.
@@ -237,7 +237,7 @@ Creiamo il percorso per eseguire l'azione.
   end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/08-user/01_09-config-routes.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/01_09-config-routes.rb)
 
 > BUG: Dovremmo usare `delete` e non `get` ma se usiamo `delete` nella view dobbiamo usare `button_to` e facendolo mi cancella tutto il record dell'utente e non la sola immagine! <br/>
 > Per questo motivo usiamo il "workaround" con `get` e nella view `link_to`.
@@ -297,7 +297,7 @@ Inseriamo l'immagine nello style eduport
   </div>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/08-user/01_09-config-routes.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/01_09-config-routes.rb)
 
 
 Nei prossimi capitoli inseriamo le nuove colonne nella tabella users e mettiamo tutto il contenuto del `form_with` con lo stile di eduport.

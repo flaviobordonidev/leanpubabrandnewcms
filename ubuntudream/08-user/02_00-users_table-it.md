@@ -56,7 +56,7 @@ $ rails g migration RenameNameInUsers
 rename_column :users, :name, :username
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/08-user/02_01-db-migrate-xxx_rename_name_and_email_in_users.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/02_01-db-migrate-xxx_rename_name_and_email_in_users.rb)
 
 
 Aggiungiamo le colonne `first_name`, `last_name`, `location`, `bio`, `phone_number`.
@@ -77,7 +77,7 @@ $ rails g migration AddColumnsToUsers first_name:string last_name:string locatio
     add_column :users, :phone_number, :string
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/08-user/02_02-db-migrate-xxx_add_columns_to_users.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/02_02-db-migrate-xxx_add_columns_to_users.rb)
 
 
 ***code n/a - "terminal" - line:n/a***
@@ -105,7 +105,7 @@ Avendo modificato ed aggiunto delle nuove colonne alla tabella users andiamo ad 
     end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/08-user/02_03-controllers-users_controller.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/02_03-controllers-users_controller.rb)
 
 
 ***code 04 - .../app/views/users/_form.html.erb - line:8***
