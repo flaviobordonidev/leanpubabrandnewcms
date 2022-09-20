@@ -10,18 +10,25 @@ Tratto da mix_and_go. Un clone di instagram
 
 ## Risorse esterne
 
-- [L3: Hotwire - Turbo Streams](https://school.mixandgo.com/targets/259)
-
-- [L3: Hotwire - Turbo Streams](https://school.mixandgo.com/targets/259)
+- [L3: Hotwire - Planning](https://school.mixandgo.com/targets/262)
+- [L3: Hotwire - Authentication with Devise](https://school.mixandgo.com/targets/261)
+- [L3: Hotwire - Adding sign in / sign out links](https://school.mixandgo.com/targets/263)
 
 
 
 ## Creiamo una nuova app
 
 ```bash
-$ rails new hotwireexample
-$ cd hotwireexample
+$ rails new instaclone
+$ cd instaclone
 ```
+
+
+## Progettiamo la nuova app
+
+Vogliamo fare un'app che assomiglia ad instagram. Disegnamo come l'immaginiamo.
+
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/instaclone/01-new_app/01_fig01-planning_sketch.png)
 
 
 
@@ -174,6 +181,9 @@ Il passo 1
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/instaclone/01-new_app/01_01-config-environments-development.rb)
+
+
 Il passo 2
 
 ***code: 02 - .../config/routes.rb - line:5***
@@ -181,6 +191,9 @@ Il passo 2
 ```ruby
    root "site#index"
 ```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/instaclone/01-new_app/01_02-config-routes.rb)
+
 
 Il passo 3
 
@@ -191,11 +204,19 @@ Il passo 3
     <p class="alert"><%= alert %></p>
 ```
 
-Il passo 4 è opzionale ma lo facciamo
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/instaclone/01-new_app/01_03-views-layouts-application.html.erb)
+
+
+Il passo 4 è opzionale ma lo facciamo.
+Serve per poter personalizzare i templates / le views con cui viene devise.
+
+> Attenzione! questo passaggio può essere più utile posticiparlo come abbiamo visto nel libro "01-base".
+> Ma per instaclone possiamo effettuarlo subito.
 
 ```bash
 $ rails g devise:views
 ```
+
 
 
 
@@ -282,12 +303,16 @@ class SiteController < ApplicationController
 end
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/instaclone/01-new_app/01_04-controllers-site_controller.rb)
+
 
 ***code 05 - .../app/views/site/index.html.erb - line:1***
 
 ```html+erb
 Welcome
 ```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/instaclone/01-new_app/01_05-views-site-index.html.erb)
 
 
 

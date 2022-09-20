@@ -98,9 +98,9 @@ Avendo modificato ed aggiunto delle nuove colonne alla tabella users andiamo ad 
     # Only allow a list of trusted parameters through.
     def user_params
       if params[:user][:password].blank?
-        params.require(:user).permit(:name_id, :email_id, :language, :role, :profile_image, :first_name, :last_name, :location, :bio, :phone_number)
+        params.require(:user).permit(:username, :email, :language, :role, :profile_image, :first_name, :last_name, :location, :bio, :phone_number)
       else
-        params.require(:user).permit(:name_id, :email_id, :password, :password_confirmation, :language, :role, :profile_image, :first_name, :last_name, :location, :bio, :phone_number)
+        params.require(:user).permit(:username, :email, :password, :password_confirmation, :language, :role, :profile_image, :first_name, :last_name, :location, :bio, :phone_number)
       end
     end
 ```

@@ -82,9 +82,13 @@ Nella view `first` inseriamo una tabella ed un form per aggiungere una nuova rig
 <% end %>
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/hotwire/04_01-views-site-first.html.erb)
+
 
 > Nel form inseriamo l'attributo `scope: "person"` per avere una struttura simile a quella che si ha quando il form è legato ad un Model (in questo caso sarebbe il model Person).
-> Nello specifico tutti i campi che dichiariamo nel form saranno annidati dentro la variabile dello `scope`, quindi nel nostro caso nella variabile `person`.
+> Nello specifico tutti i campi che dichiariamo nel form saranno annidati dentro la variabile dello `scope`, quindi nel nostro caso nella variabile `person`.<br/>
+> Esempio di annidamento:<br/>
+> `"person"=>{"name"=>"", "email"=>"", "age"=>""}`
 
 
 Nell'azione `third` assegniamo i valori alle variabili di istanza (instance variables) @name, @email e @age, che useremo nella view. E prendiamo i valori dall'attributo "params[]".
@@ -98,11 +102,13 @@ Nell'azione `third` assegniamo i valori alle variabili di istanza (instance vari
   end
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/hotwire/04_02-controllers-site_controller.rb)
+
 Attenzione!
 Da notare che la risposta POST al submit del form è di tipo **TURBO_STREAM**.
 Mentre invece la prima risposta della pagina `first` era di tipo **HTML**
 
-```
+```ruby
 Started GET "/site/first" for 192.168.64.1 at 2022-08-08 12:22:39 +0200
 Cannot render console from 192.168.64.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
 Processing by SiteController#first as HTML
@@ -121,34 +127,192 @@ No template found for SiteController#third, rendering head :no_content
 Completed 204 No Content in 43ms (Allocations: 650)
 ```
 
-Quindi la view che dobbiamo utilizzare avrà un'estensione, o meglio un "file format", di tipo `turbo_stream`.
+> Da Rails 7.0 (che integra hot wire), tutte le risposte ai submit dei forms sono di tipo **TURBO_STREAM**.
+>
+> O più precisamente, questo avviene automaticamente ogni volta che inviamo un modulo (un form) che utilizza uno dei seguenti metodi: POST, PUT, PATCH o DELETE.
+>
+> The way it happens is, Turbo injects `text/vnd.turbo-stream.html` in the request's `Accept` header.
+
+
+Quindi la view che dobbiamo utilizzare avrà un'estensione, o meglio un *formato file (file format)*, di tipo `turbo_stream`.
 In altre parole il nome del file della view sarà `third.tubo_stream.erb` e non `third.html.erb`.
 
-***code 01 - .../app/views/site/third.html.erb - line:3***
+***code 03 - .../app/views/site/third.tubo_stream.erb - line:3***
 
 ```html+erb
-
+<%= turbo_stream.prepend "people" do %>
+  <tr>
+    <td><%= @name %></td>
+    <td><%= @email %></td>
+    <td><%= @age %></td>
+  </tr>
+<% end %>
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/hotwire/04_03-views-site-third.tubo_stream.erb)
+
+
+
+## Verifichiamo preview
+
+Vediamo come si comporta il codice nel browser.
+
+***code n/a - Terminal -line:n/a***
+
+```ruby
+$ rails s -b 192.168.64.3
+```
+
+Riempiamo il form e facciamo submit. Come si vede dalla seconda immagine siamo rimasti nella stessa pagina ed è stato aggiunto una nuova riga alla tabella. Nella prima riga della tabella (prepend).
+
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/99-code_references/hotwire/04_fig01-example1_1.png)
+
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/99-code_references/hotwire/04_fig02-example1_2.png)
+
+
+The request from the form goes to the controller which picks up the params, initializes some instance variables and sends them to the view. And the view creates a new creates a new table's row and prepends it to the table's body.
+
+In the network tab of the "browser inspect" (response tab) you see there is a turbo stream tag with an action of prepend: `<turbo-stream action="prepend" target="people">...</turbo-stream>`.
+Inoltre il `target` è impostato a "people" che è il *DOM ID* del *table's body*.
+
+E dentro il `<turbo-stream...` tag c'è il `<template>` tag che contiene la *table's row* to prepend.
+
+> Come si vede Turbo-Stream è molto più "granulare" rispetto a Turbo-Frame; contiene solo ra riga che vogliamo aggiungere e non l'intera tabella, come avresti in turbo-frame.
+
+
+
+## Aggiungiamo un "contatore (counter)" con Turbo-Stream
+
+Aggiungiamo un elemento in fondo alla pagina per mostrare il counter.
+
+
+***code 04 - .../app/views/site/first.html.erb - line:38***
+
+```html+erb
+  Total: <span id="counter"><%= @count %></span>
+```
+
+aggiungiamo anche un campo nascosto al form per passare il valore del counter.
+
+***code 04 - ...continua - line:31***
+
+```html+erb
+  <%= hidden_field_tag :count, nil, id: "hidden-counter", value: @count %>
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/hotwire/04_04-views-site-first.html.erb)
+
+
+Aggiorniamo il controller inserendo la variabile d'istanza `@count`.
+
+***code 05 - .../app/controllers/site_controller.rb - line:3***
+
+```ruby
+  def first 
+    @count = 3
+  end
+
+  def third
+    ...
+    @count = params[:count].to_i + 1
+  end
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/hotwire/04_05-controllers-site_controller.rb)
+
+
+***code 06 - .../app/views/site/third.tubo_stream.erb - line:3***
+
+```html+erb
+<%= turbo_stream.replace "hidden-counter" do %>
+  <%= hidden_field_tag :count, nil, id: "hidden-counter", value: @count %>
+<% end %>
+
+
+<%= turbo_stream.update "counter" do %>
+  <%= @count %>
+<% end %>
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/hotwire/04_06-views-site-third.tubo_stream.erb)
+
+
+
+## Verifichiamo preview
+
+Vediamo come si comporta il codice nel browser.
+
+***code n/a - Terminal -line:n/a***
+
+```ruby
+$ rails s -b 192.168.64.3
+```
+
+Adesso il counter in basso è aggiornato insieme al prepend della riga nella tabella.
+
+
+
+## Reference to multiple elements by Tag names
+
+You can also target multiple elements with one message by using the class name instead of an id.
+And the `_all` suffix for the action. 
+
+Let's say we want to display the total counter at the top of the page as well. 
+Aggiungiamo anche li uno span tag e cambiamo da id a class name.
+
+***code 07 - .../app/views/site/first.html.erb - line:3***
+
+```html+erb
+  Total: <span class="counter"><%= @count %></span>
+```
+
+Mettiamo *class* anche nel total counter in fondo alla pagina.
+
+***code 07 - ...continua - line:40***
+
+```html+erb
+  Total: <span class="counter"><%= @count %></span>
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/hotwire/04_07-views-site-first.html.erb)
+
+Per far riferimento alla "class" (to target the class name) usiamo `.update_all` invece di `.update` e ci riferiamo alla classe mettendo il "." come prefisso; quindi `.counter` invece di `counter`.
+
+***code 08 - .../app/views/site/third.tubo_stream.erb - line:3***
+
+```html+erb
+<%= turbo_stream.update_all ".counter" do %>
+  <%= @count %>
+<% end %>
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/hotwire/04_08-views-site-third.tubo_stream.erb)
+
+
+
+## Verifichiamo preview
+
+Vediamo come si comporta il codice nel browser.
+
+***code n/a - Terminal -line:n/a***
+
+```ruby
+$ rails s -b 192.168.64.3
+```
+
+Adesso entrambi i counters, in alto e in basso, sono aggiornati insieme al prepend della riga nella tabella.
+
+> Nell'inspector del browser, nel tab "Network" adesso il "Response" della pagina "third" ha come attributo di turbo-stream il parametro `targets` (al plurale).</br>
+> `<turbo-stream action="update" targets=".counter"><template>...`
 
 
 
 
+## Rivediamo come funziona Turbo Streams
 
+Adesso che lo abbiamo usato rivediamo un esempio di funzionamento di Turbo Streams usando solo codice <html>.
 
-
-
-
-
-
-
-
-
-## Vediamo come funziona Turbo Streams
-
-Facciamo un esempio di funzionamento usando solo codice <html>.
-
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/99-code_references/hotwire/04_fig01-turbo_streams_code.png)
+![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/99-code_references/hotwire/04_fig04-turbo_streams_code.png)
 
 Abbiamo un div con un id univoco che sarà usato da Turbo Streams:`<div id="some-id">`.
 Questo div contiene un form `<form action="/create" method="POST">` che sarà il *target* per Turbo Streams.
@@ -178,11 +342,12 @@ Il controller genera il seguente codice <html> che manda come response:
 ```
 
 
+
 ## Esempio inline crud table with Turbo Streams
 
 In questo esempio c'è una tabella con i record ed interagiamo creando, modificando o eliminando i records senza refresh della pagina. (in modo molto *responsive*)
 
-![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/99-code_references/hotwire/04_fig02-turbo_streams_code_example.png)
+![fig05](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/99-code_references/hotwire/04_fig05-turbo_streams_code_example.png)
 
 Il codice per il controller non è molto complesso. Vediamo le tre azioni coinvolte.
 
@@ -230,6 +395,4 @@ end
 
 
 
-
-## Turbo Streams Broadcast
 

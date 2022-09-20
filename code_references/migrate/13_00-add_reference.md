@@ -1,60 +1,64 @@
-# Aggiungi colonna di riferimento (Add reference column)
+# <a name="top"></a> Cap migrate.13 - Aggiungiamo una chiave esterna (references)
 
-add_column :table_name, :reference_column_id, :integer
-add_index :table_name, :reference_column_id
+Aggiungi colonna di riferimento (Add reference column)
 
-
-Esempio: Adding reference column
-
-A> rails g migration AddUserReferenceToTesters
-
-[db/migration/xxx_add_user_reference_to_testers.rb](#code/models-migrations/12-db-migration-xxx_add_user_reference_to_testers.rb)
-
-{lang=ruby, line-numbers=on, starting-line-number=3}
-~~~~~~~~
-add_column :testers, :user_id, :integer
-add_index :testers, :user_id
-~~~~~~~~
-
-Then add a belongs_to to the tester model:
-
-[models/tester.rb](#code/models-migrations/13-models-tester.rb)
-
-{lang=ruby, line-numbers=on, starting-line-number=3}
-~~~~~~~~
-belongs_to :user
-~~~~~~~~
+`add_column :table_name, :reference_column_id, :integer`
+`add_index :table_name, :reference_column_id`
 
 
-Nota:
-Se creo una nuova migrazione
 
-A> rails g migration testers title:tester user:references
+## Esempio: Adding reference column
 
-tutto funziona bene. Ma se aggiungo una colonna di riferimento successivamente
+```bash
+$ rails g migration AddUserReferenceToTesters user_id:integer
+```
 
-A> rails g migration add_user_to_testers user:references
+rails g migration AddUserReferenceToPosts user_id:integer
 
-La colonna di riferimento non è riconosciuta. Questo perché quando stai modificando una tabella esistente, il reference non funziona. E in realtà, non è veramente necessario perché integer funziona. Il vantaggio di usare reference invece di integer è che il model viene predefinito con belongs_to e poiché il model è già stato creato e non sarà modificato dalla migrazione il vantaggio non c'è più. Quindi dovresti usare:
+***code n/a - .../db/migration/xxx_add_user_reference_to_testers.rb - line:1***
 
-A> rails g migration add_user_id_to_testers user_id:integer
+```ruby
+  add_column :testers, :user_id, :integer
+  add_index :testers, :user_id
+```
 
-And then manually add belongs_to :user in the Tester model. Please note that you will most likely need an index on that column too.
+Then add a `belongs_to` to the tester model.
 
-[db/migration/xxx_add_user_id_to_testers.rb](#code/models-migrations/14-db-migration-xxx_add_user_id_to_testers.rb)
+***code n/a - .../app/models/tester.rb - line:1***
 
-{lang=ruby, line-numbers=on, starting-line-number=3}
-~~~~~~~~
-add_column :testers, :user_id, :integer
-add_index :testers, :user_id
-~~~~~~~~
+```ruby
+  belongs_to :user
+```
 
-# Then add a belongs_to to the tester model:
+> Nota:</br>
+> Se creo una **nuova migrazione** `rails g migration testers title:tester user:references`
+> tutto funziona bene. </br>
+> Ma se aggiungo una colonna di riferimento successivamente
+> `rails g migration add_user_to_testers user:references`
+> La colonna di riferimento non è riconosciuta. 
+>
+> Questo perché quando stai modificando una tabella esistente, il reference non funziona. E in realtà, non è veramente necessario perché integer funziona. Il vantaggio di usare reference invece di integer è che il model viene predefinito con `belongs_to` e poiché il model è già stato creato e non sarà modificato dalla migrazione il vantaggio non c'è più. Quindi dovresti usare:
+> `rails g migration add_user_id_to_testers user_id:integer`
+
+And then manually add `belongs_to :user` in the Tester model. Please note that you will most likely need an index on that column too.
+
+***code: n/a - .../db/migration/xxx_add_user_id_to_testers.rb - line:1***
+
+```ruby
+  add_column :testers, :user_id, :integer
+  add_index :testers, :user_id
+```
+
+> Rispetto a `references` manca il parametro `null: false` nel db/schema.rb.</br>
+> `t.integer "user_id", null: false`
 
 
-[models/tester.rb](#code/models-migrations/15-models-tester.rb)
 
-{lang=ruby, line-numbers=on, starting-line-number=3}
-~~~~~~~~
-belongs_to :user
-~~~~~~~~
+## Then add a belongs_to to the tester model
+
+
+***code n/a - .../app/models/tester.rb - line:3***
+
+```ruby
+  belongs_to :user
+```

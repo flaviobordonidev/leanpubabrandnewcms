@@ -6,10 +6,13 @@ Abbiamo preparato tutto l'ambiente e adesso creaimo una nuova app Rails.
 
 ## Risorse interne:
 
-- 
+- [code_references/new_rails_app]()
+
 
 
 ## Risorse esterne:
+
+- [Heroku devcenter - Getting Started on Heroku with Rails 7.x](https://devcenter.heroku.com/articles/getting-started-with-rails7)
 
 
 
@@ -326,7 +329,7 @@ $ cd bl7_0
 $ rails s -b 192.168.64.3
 ```
 
-> Se usavamo solo `$ rails s` la pagina web era raggiungibile solo in locale ed invece noi il browser lo apriamo nella pc con macOS. Quindi per renderlo raggiungibile da un altro pc gli facciamo esporre un indirizzo ip e nello specifico lo stesso della VM.
+> Se usavamo solo `$ rails s` la pagina web era raggiungibile solo in locale ed invece noi il browser lo apriamo nel pc con macOS. Quindi per renderlo raggiungibile da un altro pc gli facciamo esporre un indirizzo ip e nello specifico lo stesso della VM.
 
 Di default va sulla porta 3000 se volevamo spostarlo sulla porta 8080 avremmo fatto:
 

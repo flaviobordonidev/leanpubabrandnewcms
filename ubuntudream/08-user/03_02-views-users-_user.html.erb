@@ -1,0 +1,93 @@
+<div id="<%= dom_id user %>">
+
+  <!-- =======================
+  Page content START -->
+  <section class="pt-5 pb-0">
+    <div class="container">
+      <div class="row g-0 g-lg-5">
+
+        <!-- Left sidebar START -->
+        <div class="col-lg-4">
+          <div class="row">
+            <div class="col-md-6 col-lg-12">
+              <!-- Instructor image START -->
+              <div class="card shadow p-2 mb-4 text-center">
+                <div class="rounded-3">
+                  <!-- Image -->
+                  <%# <img src="assets/images/instructor/07.jpg" class="card-img" alt="course image"> %>
+                  <% if user.profile_image.attached? %>
+                    <%#= image_tag user.profile_image.variant(resize_to_limit: [100, 100]).processed.url %>
+                    <%#= image_tag user.profile_image.variant(resize_to_limit: [150, 150]) %>
+                    <%#= image_tag user.profile_image %>
+                    <%= image_tag user.profile_image.variant(resize_to_fit: [250, 250]).processed.url, class: "card-img", alt: "user image" %>
+                  <% else %>
+                    Nessuna immagine presente
+                  <% end %>
+                </div>      
+              </div>
+              <!-- Instructor image END -->
+            </div>
+
+          </div> <!-- Row End -->
+        </div>
+        <!-- Left sidebar END -->
+          
+        <!-- Main content START -->
+        <div class="col-lg-8">
+        
+          <!-- Title -->
+          <h5 class="mb-0">Hi, I am</h5>
+          <h1 class="mb-0"><%= user.username %></h1>
+          <p>Graphic Designer</p>
+          <!-- Content -->
+          <p class="mt-4"><%= user.bio %></p>
+          <!-- Personal info -->
+          <ul class="list-group list-group-borderless">
+            <li class="list-group-item px-0">
+              <span class="h6 fw-light"><i class="fas fa-fw fa-map-marker-alt text-primary me-1 me-sm-3"></i>Address:</span>
+              <span>2002 Horton Ford Rd, Eidson, TN, 37731</span>
+            </li>
+            <li class="list-group-item px-0">
+              <span class="h6 fw-light"><i class="fas fa-fw fa-envelope text-primary me-1 me-sm-3"></i>Email:</span>
+              <span>example@gmail.com</span>
+            </li>
+            <li class="list-group-item px-0">
+              <span class="h6 fw-light"><i class="fas fa-fw fa-headphones text-primary me-1 me-sm-3"></i>Phone number:</span>
+              <span>+896-789-546</span>
+            </li>
+            <li class="list-group-item px-0">
+              <span class="h6 fw-light"><i class="fas fa-fw fa-globe text-primary me-1 me-sm-3"></i>Website:</span>
+              <span>https://eduport.webestica.com/</span>
+            </li>
+          </ul>
+
+        </div>
+        <!-- Main content END -->
+
+      </div><!-- Row END -->
+    </div>
+  </section>
+  <!-- =======================
+  Page content END -->
+
+  <p>
+    <strong>Email:</strong>
+    <%= user.email %>
+  </p>
+
+  <p>
+    <strong>Language:</strong>
+    <%= user.language %>
+  </p>
+
+  <p>
+    <strong>Role:</strong>
+    <%= user.role %>
+  </p>
+
+  <p>
+    <strong>Encrypted password:</strong>
+    <%= user.encrypted_password %>
+  </p>
+
+</div> <!-- end Rails dom_id user (usefull for hotwire) -->
