@@ -12,16 +12,43 @@ Before deploying any serious application in production, some minor tweaks are re
 
 ## Risorse esterne
 
--[]()
+- [Update Your App For Render](https://render.com/docs/deploy-rails#update-your-app-for-render)
 
 
 
-## Go Production-Ready
+## App with PostgreSql
+
+In order for your Rails project to be ready for production, you will need to make a few adjustments. 
+You will be required update your project to use a Render PostgreSQL database instead of a SQLite database.
+
+Lo abbiamo già fatto. Possiamo solo verificare che sia tutto apposto su config/database.yml.
+
+***code 01 - .../config/database.yml - line:18***
+
+```yaml
+  adapter: postgresql
+...
+  #username: ubuntudream
+...
+  #password:
+...
+  #host: localhost
+...
+  #port: 5432
+...
+production:
+  <<: *default
+  database: ubuntudream_production
+  username: ubuntudream
+  password: <%= ENV["UBUNTUDREAM_DATABASE_PASSWORD"] %>
+```
 
 
-Open config/database.yml and find the production section. Modify it to gather the database configuration from the DATABASE_URL environment variable:
+Aggiorniamo il file per il deployment in produzione su render.
 
-***code 01 - .../config/database.yml - line:82***
+Open `config/database.yml` and find the `production section`. Modify it to gather the database configuration from the `DATABASE_URL` **environment variable**.
+
+***code 02 - .../config/database.yml - line:82***
 
 ```yaml
 production:
@@ -29,9 +56,13 @@ production:
   url: <%= ENV['DATABASE_URL'] %>
 ```
 
-Open config/puma.rb and uncomment the following lines:
 
-***code 02 - .../config/puma.rb - line:01***
+
+## Aggiorniamo il webserver Puma
+
+Open `config/puma.rb` and uncomment the following lines:
+
+***code 03 - .../config/puma.rb - line:27***
 
 ```ruby
 # Specifies the number of `workers` to boot in clustered mode.
@@ -50,10 +81,13 @@ workers ENV.fetch("WEB_CONCURRENCY") { 4 }
 preload_app!
 ```
 
-Open config/environments/production.rb and enable the public file server when the RENDER environment variable is present (which always is on Render):
 
 
-***code 03 - .../config/environments/production.rb - line:01***
+## I settaggi di produzione (public_file_server)
+
+Open `config/environments/production.rb` and enable the public file server when the `RENDER` **environment variable** is present (which always is on Render).
+
+***code 04 - .../config/environments/production.rb - line:01***
 
 ```ruby
 # Disable serving static files from the `/public` folder by default since
@@ -64,9 +98,10 @@ config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present? || 
 
 
 ## Create a Build Script
-You will need to run a series of commands to build your app. This can be done using a build script. Create a script called bin/render-build.sh at the root of your repository:
 
-***code 04 - .../bin/render-build.sh - line:01***
+You will need to run a series of commands to build your app. This can be done using a build script. Create a script called `bin/render-build.sh` at the root of your repository.
+
+***code 05 - .../bin/render-build.sh - line:01***
 
 ```bash
 #!/usr/bin/env bash
@@ -85,39 +120,41 @@ Make sure the script is executable before checking it into Git:
 $ chmod a+x bin/render-build.sh
 ```
 
+Esempio:
+
+```bash
+ubuntu@ubuntufla:~/ubuntudream (main)$ls -l bin/render-build.sh
+-rw-rw-r-- 1 ubuntu ubuntu 159 Sep 21 01:46 bin/render-build.sh
+ubuntu@ubuntufla:~/ubuntudream (main)$chmod a+x bin/render-build.sh
+ubuntu@ubuntufla:~/ubuntudream (main)$ls -l bin/render-build.sh
+-rwxrwxr-x 1 ubuntu ubuntu 159 Sep 21 01:46 bin/render-build.sh
+ubuntu@ubuntufla:~/ubuntudream (main)$
+```
+
 We will configure Render to call this script on every push to the Git repository.
 
 Commit all changes and push them to your GitHub repository. Now your application is ready to be deployed on Render!
 
 
 
-## Deploy to Render
+## Deploy Manually to Render
 
-There are two ways to deploy your application on Render, either by declaring your services within your repository in a render.yaml file, or by manually setting up your services using the dashboard. In the following steps, we will walk you through both options.
+Riseguiamo i passi che abbiamo già fatto nei capitoli precedenti aggiungendo qualche modifica.
 
-### Use render.yaml to Deploy
+- Abbiamo già creato un nuovo database PostgreSQL su Render 
+  (e ci siamo appuntati l'`internal database URL`).
 
-Create a file named render.yaml at the root of your directory with the following content. The file will include information about your Rails Web Service and the Database that is used by your application. Don’t forget to commit and push it to your remote repository.
+- Aggiorniamo il Web Service creato precedentemente.
 
-***code 05 - .../render.yaml - line:01***
 
-```yaml
-databases:
-  - name: mysite
-    databaseName: mysite
-    user: mysite
 
-services:
-  - type: web
-    name: mysite
-    env: ruby
-    buildCommand: "./bin/render-build.sh"
-    startCommand: "bundle exec puma -C config/puma.rb"
-    envVars:
-      - key: DATABASE_URL
-        fromDatabase:
-          name: mysite
-          property: connectionString
-      - key: RAILS_MASTER_KEY
-        sync: false
-```
+### Aggiorniamo il Web Service
+
+Andiamo nel nostro Web Service su `Settings -> Build & Deploy` ed aggiorniamo le seguenti proprietà:
+
+PROPERTY        |	VALUE
+-----------------------------------------------------
+`Build Command` |	`./bin/render-build.sh`
+`Start Command` |	`bundle exec puma -C config/puma.rb`
+
+That’s it! You can now finalize your service deployment. It will be live on your .onrender.com URL as soon as the build finishes.

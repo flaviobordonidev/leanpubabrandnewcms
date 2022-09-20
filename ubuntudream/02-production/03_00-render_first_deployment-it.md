@@ -33,7 +33,7 @@ Create a new PostgreSQL database on Render. Note your database internal database
 
 Che nome diamo al database?
 
-Usiamo quello che abbiamo già usato nella nostra app.
+Usiamo quello che abbiamo già nella nostra app su (`config/database.yml`).
 Abbiamo già i database PostgreSQL per lo sviluppo (`ubuntudream_development`) e per i test (`ubuntudream_test`).
 
 Adesso creiamo su Render il database di produzione (`ubuntudream_production`).
@@ -43,7 +43,7 @@ New PostgreSQL
 
 - `Name`: ubuntudream_production
 - `Database`: ubuntudream_production
-- `user`: ubuntu
+- `user`: ubuntudream
 - `Region`: Frankfurt EU Central
 - `PostgreSQL Version`: 14
 
@@ -89,9 +89,12 @@ Select `Ruby` for the `environment`.
 
 ![fig06](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-production/03_fig06-render_deploy2.png)
 
-Add the following `environment variables` under the `Advanced section`:
+> Le variabili `Build Command` e `Start Command` nei prossimi capitoli le cambieremo inserendo i files della nostra applicazione Rails con le ottimizzazioni per la produzione.
 
-KEY	VALUE
+
+Add the following `Environment Variables` under the `Advanced section`:
+
+KEY	VALUE of `Environment Variables`
 - DATABASE_URL      :	the internal database URL for the database you created above
 - RAILS_MASTER_KEY  :	the content of the config/master.key file
 
@@ -106,3 +109,11 @@ That’s it! You can now finalize your service deployment. It will be live on yo
 ## Verifichiamo
 
 A volte ci può volere qualche minuto prima che le modifiche siano visibili.
+
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-production/02_00-github_initializing-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-production/04_00-render_second_deployment-it.md)

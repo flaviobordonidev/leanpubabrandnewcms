@@ -15,7 +15,7 @@ $ rails g controller Mockups index
 
 > *mockups* è una directory in cui mettiamo delle pagine statiche con dei segnaposto invece dei dati presi dal database.
 
-***Code 01 - .../app/mockups/index.html.erb - line:4***
+***Code 01 - .../app/mockups/index.html.erb - line:1***
 
 ```html+erb
 <h1>Hello world</h1>
