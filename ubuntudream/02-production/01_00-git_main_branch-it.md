@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 1b.1 - Inizializiamo git
+# <a name="top"></a> Cap 2.1 - Inizializiamo git
 
 Creiamo il nostro repository locale su Git.
 

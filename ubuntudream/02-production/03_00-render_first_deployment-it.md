@@ -58,7 +58,7 @@ Creiamo il database.
 ![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-production/03_fig04-render_postgresql_info3.png)
 
 
-Prendiamo l'`Internal Database URL`: `postgres://ubuntu:03...f-k/ubuntudream_production`.
+Prendiamo l'`Internal Database URL`: `postgres://ubuntu:06...f-k/ubuntudream_production`.
 
 
 
@@ -82,3 +82,27 @@ f458b1a6862a56b7474b9e734d7b01c4
 ## Creiamo il Web Service su render.com
 
 Create a new Web Service, pointing it to your application repository (make sure Render has a permission to access it).
+
+Select `Ruby` for the `environment`.
+
+![fig05](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-production/03_fig05-render_deploy1.png)
+
+![fig06](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-production/03_fig06-render_deploy2.png)
+
+Add the following `environment variables` under the `Advanced section`:
+
+KEY	VALUE
+- DATABASE_URL      :	the internal database URL for the database you created above
+- RAILS_MASTER_KEY  :	the content of the config/master.key file
+
+![fig07](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-production/03_fig07-render_deploy3.png)
+
+That’s it! You can now finalize your service deployment. It will be live on your .onrender.com URL as soon as the build finishes.
+
+- https://ubuntudream.onrender.com/
+
+
+
+## Verifichiamo
+
+A volte ci può volere qualche minuto prima che le modifiche siano visibili.

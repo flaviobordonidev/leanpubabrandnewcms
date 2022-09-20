@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 1b.1 - Inizializzazione di Github
+# <a name="top"></a> Cap 2.2 - Inizializiamo Github
 
 Creiamo il nostro repository remoto su GitHub.
 Lo facciamo perché render.com ha github come repository principale per caricare la nostra app.
@@ -15,8 +15,6 @@ Si può anche caricare da un'altra repository pubblica di Git ma con GitHub è p
 ## Logghiamoci su Github
 
 Logghiamoci su Github.
-
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-production/02_fig01-github_ubuntudream_repository.png)
 
 
 
