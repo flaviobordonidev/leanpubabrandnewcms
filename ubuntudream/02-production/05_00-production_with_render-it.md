@@ -158,3 +158,29 @@ PROPERTY        |	VALUE
 `Start Command` |	`bundle exec puma -C config/puma.rb`
 
 That’s it! You can now finalize your service deployment. It will be live on your .onrender.com URL as soon as the build finishes.
+
+
+## Archiviamo su Git e su GitHub
+
+```bash
+$ git add -A
+$ git commit -m "App ready for production"
+$ git push origin main
+```
+
+
+
+## Pubblichiamo su render.com
+
+Dal nostro Web Service su render.com selezioniamo Manual Deploy -> `Deploy latest commit`.
+
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-production/04_fig01-deploy_latest_commit.png)
+
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-production/03_00-render_first_deployment-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-production/05_00-production_with_render-it.md)
+
