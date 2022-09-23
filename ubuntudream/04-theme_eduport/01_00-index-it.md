@@ -40,7 +40,7 @@ $ git checkout -b ep
 
 Spesso nei temi la pagina *index* è quella che contiene la maggior parte delle caratteristiche del tema ed è quindi una buona scelta iniziare da questa.
 
-Vdeiamo la pagina *index*.
+Vediamo la pagina *index*.
 
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_fig01-index1.png)
 
@@ -50,9 +50,13 @@ Vdeiamo la pagina *index*.
 
 ![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_fig04-index4.png)
 
-Vediamo tutto il codice <html> preso così com'è dal tema Eduport, senza predisposizione per Ruby on Rails.
+![fig05](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_fig05-index5.png)
 
-***code 01 - ...non rails html index-4.html - line:1***
+![fig06](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_fig06-index6.png)
+
+Vediamo tutto il codice *<html>* preso così com'è dal tema Eduport, senza predisposizione per Ruby on Rails.
+
+***code 01 - .../theme-eduport/index-4.html - line:1***
 
 ```html
 <!DOCTYPE html>
@@ -64,7 +68,9 @@ Vediamo tutto il codice <html> preso così com'è dal tema Eduport, senza predis
 	<meta charset="utf-8">
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_01-index-4.html)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_01-index.html)
+
+> `theme-eduport` è una cartella del tema eduport **fuori** dalla nostra applicazione Rails.
 
 Riadattiamo questo codice alla nostra applicazione su Ruby on Rails.
 
