@@ -127,12 +127,10 @@ Impostiamoli da layouts/edu_base
 ***code n/a - layouts/edu_base - line:51***
 
 ```html+erb
-da•
-	<!-- Theme CSS -->
-	<link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">
-a•
-	<!-- Theme CSS -->
-  <%= stylesheet_link_tag 'edu/css/style.css', media: 'all', 'data-turbolinks-track': 'reload', id: 'style-switch' %>
+h• <!-- Theme CSS -->
+   <link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">
+r• <!-- Theme CSS -->
+   <%= stylesheet_link_tag 'edu/css/style.css', media: 'all', 'data-turbolinks-track': 'reload', id: 'style-switch' %>
 ```
 
 [tutto il codice](#11-02-02_01all)
