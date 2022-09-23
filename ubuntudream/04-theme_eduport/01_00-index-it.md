@@ -110,13 +110,13 @@ Copiamo ed incolliamo la parte tra `<head> ... </head>` del codice `theme-edupor
 
 Vediamo che la nostra view usa il controllr *mockups*.
 
-***codice 04 - ...config/routes.rb - line:20***
+***codice 03 - ...config/routes.rb - line:20***
 
 ```ruby
   get 'mockups/index'
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_04-config-routes.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_03-config-routes.rb)
 
 
 
@@ -124,7 +124,7 @@ Vediamo che la nostra view usa il controllr *mockups*.
 
 Facciamo in modo che la nuova view `index` utilizzi il layout `edu_demo`.
 
-***codice 05 - ...controllers/mockups_controller.rb - line:8***
+***codice 04 - ...controllers/mockups_controller.rb - line:8***
 
 ```ruby
   def index
@@ -132,7 +132,7 @@ Facciamo in modo che la nuova view `index` utilizzi il layout `edu_demo`.
   end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_05-controllers-mockups_controller.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_04-controllers-mockups_controller.rb)
 
 
 
@@ -142,7 +142,7 @@ Creiamo la nuova views `mockups/index` ed inseriamo il codice del nostro file de
 
 Inoltre commentiamo le chiamate a javascript in fondo al codice perché tanto non funzionerebbero perché non hanno i puntamenti corretti all'asset-pipeline e darebbero solo errore nella java console del browser.
 
-***codice 03 - ...views/mockups/index.html.erb - line:1***
+***codice 05 - ...views/mockups/index.html.erb - line:1***
 
 ```html+erb
 <!-- Header START -->
@@ -166,6 +166,8 @@ Inoltre commentiamo le chiamate a javascript in fondo al codice perché tanto no
       <!-- Category menu START -->
 ```
 
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_05-views-mockups-edu_index.html.erb)
+
 
 
 ## Verifichiamo preview
@@ -176,20 +178,14 @@ $ rails s -b 192.168.64.3
 
 Andiamo con il browser sull'URL:
 
-- http://192.168.64.3:3000/mockups/edu_index
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_03-views-mockups-edu_index.html.erb)
-
-
+- http://192.168.64.3:3000
+- oppure: http://192.168.64.3:3000/mockups/index
 
 ![fig06](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_fig06-index1.png)
 
-
 ![fig07](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_fig07-index2.png)
 
-
 ![fig08](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_fig08-index3.png)
-
 
 ![fig09](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_fig09-index4.png)
 
