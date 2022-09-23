@@ -12,6 +12,77 @@ Continuiamo con il branch aperto nel capitolo precedente
 
 
 
+
+
+
+
+
+
+
+## Impostiamo gli helpers per puntare all'asset_pipeline
+
+
+[DAFA]
+
+Ho fatto uno studio per questa parte ed alla fine avevo scelto di visualizzare il "da .. a" su delle tabelle perché si capiva meglio su github.
+
+USIAMO LE CHIAMATE STYLESHEET di DEFAULT di layouts/application. quelle che puntano a stylesheets/application.scss
+
+Migriamo poi piano piano il codice dal tema alla nostra app popolando application.scss con quanto riportato su `...eduport/scss/stylesheet`
+
+> NON CI COPIAMO TUTTE LE CARTELLE COSì come sono perché perderemmo molto senza rendercene conto.
+
+
+
+
+Le chiamate ai files di stylesheet e di javascript sono diverse tra HTML e Rails. Rails usa gli helpers. Adattiamo quindi le chiamate per rispondere alle convenzioni Rails.
+
+Inseriamo gli helpers che puntano all'asset_pipeline sia per stylesheets che javascripts:
+
+da codice HTML `h•` a codice Rails `r•`.
+
+***code n/a - - line:01***
+
+```html+erb
+h• <link rel="stylesheet" href="css/xxx.css" />
+r• <%= stylesheet_link_tag 'pofo/css/xxx', media: 'all', 'data-turbolinks-track': 'reload' %>
+```
+
+***code n/a - - line:51***
+
+```html+erb
+h• <script type="text/javascript" src="js/xxx.js"></script>
+r• <%= javascript_include_tag 'pofo/js/xxx', 'data-turbolinks-track' => true %>
+```
+
+
+Impostiamoli da layouts/edu_base
+
+***code n/a - layouts/edu_base - line:51***
+
+```html+erb
+h• <!-- Theme CSS -->
+   <link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">
+r• <!-- Theme CSS -->
+   <%= stylesheet_link_tag 'edu/css/style.css', media: 'all', 'data-turbolinks-track': 'reload', id: 'style-switch' %>
+```
+
+[tutto il codice](#11-02-02_01all)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Copiamo i files dell'asset_pipeline (stylesheets e javascripts)
 
 Nel tema *Eduport* all'interno della cartella *template/assets* ci sono le seguenti cartelle:

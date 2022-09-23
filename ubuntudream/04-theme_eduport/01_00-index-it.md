@@ -106,6 +106,36 @@ Copiamo ed incolliamo la parte tra `<head> ... </head>` del codice `theme-edupor
 
 
 
+## Verifichiamo instradamento
+
+Vediamo che la nostra view usa il controllr *mockups*.
+
+***codice 04 - ...config/routes.rb - line:20***
+
+```ruby
+  get 'mockups/index'
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_04-config-routes.rb)
+
+
+
+## Aggiorniamo il controller con nuova view e nuovo layout
+
+Facciamo in modo che la nuova view `index` utilizzi il layout `edu_demo`.
+
+***codice 05 - ...controllers/mockups_controller.rb - line:8***
+
+```ruby
+  def index
+    render layout: 'edu_demo'
+  end
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_05-controllers-mockups_controller.rb)
+
+
+
 ## Aggiorniamo la mockups/index 
 
 Creiamo la nuova views `mockups/index` ed inseriamo il codice del nostro file del tema che è dentro i tags `<body>...</body>`. 
@@ -136,6 +166,18 @@ Inoltre commentiamo le chiamate a javascript in fondo al codice perché tanto no
       <!-- Category menu START -->
 ```
 
+
+
+## Verifichiamo preview
+
+```bash
+$ rails s -b 192.168.64.3
+```
+
+Andiamo con il browser sull'URL:
+
+- http://192.168.64.3:3000/mockups/edu_index
+
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_03-views-mockups-edu_index.html.erb)
 
 
@@ -153,139 +195,12 @@ Inoltre commentiamo le chiamate a javascript in fondo al codice perché tanto no
 
 
 
-
-
-
-
-
-
-
-## Impostiamo gli helpers per puntare all'asset_pipeline
-
-
-[DAFA]
-
-Ho fatto uno studio per questa parte ed alla fine avevo scelto di visualizzare il "da .. a" su delle tabelle perché si capiva meglio su github.
-
-USIAMO LE CHIAMATE STYLESHEET di DEFAULT di layouts/application. quelle che puntano a stylesheets/application.scss
-
-Migriamo poi piano piano il codice dal tema alla nostra app popolando application.scss con quanto riportato su `...eduport/scss/stylesheet`
-
-> NON CI COPIAMO TUTTE LE CARTELLE COSì come sono perché perderemmo molto senza rendercene conto.
-
-
-
-
-Le chiamate ai files di stylesheet e di javascript sono diverse tra HTML e Rails. Rails usa gli helpers. Adattiamo quindi le chiamate per rispondere alle convenzioni Rails.
-
-Inseriamo gli helpers che puntano all'asset_pipeline sia per stylesheets che javascripts:
-
-da codice HTML `h•` a codice Rails `r•`.
-
-***code n/a - - line:01***
-
-```html+erb
-h• <link rel="stylesheet" href="css/xxx.css" />
-r• <%= stylesheet_link_tag 'pofo/css/xxx', media: 'all', 'data-turbolinks-track': 'reload' %>
-```
-
-***code n/a - - line:51***
-
-```html+erb
-h• <script type="text/javascript" src="js/xxx.js"></script>
-r• <%= javascript_include_tag 'pofo/js/xxx', 'data-turbolinks-track' => true %>
-```
-
-
-Impostiamoli da layouts/edu_base
-
-***code n/a - layouts/edu_base - line:51***
-
-```html+erb
-h• <!-- Theme CSS -->
-   <link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">
-r• <!-- Theme CSS -->
-   <%= stylesheet_link_tag 'edu/css/style.css', media: 'all', 'data-turbolinks-track': 'reload', id: 'style-switch' %>
-```
-
-[tutto il codice](#11-02-02_01all)
-
-
-
-## Aggiorniamo instradamento
-
-Facciamo in modo che la nuova view `index` utilizzi il controller mockups. 
-
-***codice 04 - ...config/routes.rb - line:20***
-
-```ruby
-  get 'mockups/index'
-```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_04-config-routes.rb)
-
-
-
-## Aggiorniamo il controller con nuova view e nuovo layout
-
-Facciamo in modo che la nuova view `index` utilizzi il layout `edu_base`.
-
-Aggiorniamo il conroller.
-
-***codice 05 - ...controllers/mockups_controller.rb - line:8***
-
-```ruby
-  def index
-    render layout: 'edu_base'
-  end
-```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_05-controllers-mockups_controller.rb)
-
-
-
-## Verifichiamo preview
-
-```bash
-$ sudo service postgresql start
-$ rails s
-```
-
-Andiamo con il browser sull'URL:
-
-- http://192.168.64.3:3000/mockups/edu_index
-
-![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_fig02-edu_index.png)
-
-
-
 ## Archiviamo su git
 
 ```bash
 $ git add -A
 $ git commit -m "Implement Eduport index"
 ```
-
-
-
-## Pubblichiamo su Heroku
-
-```bash
-$ git push heroku bs:main
-```
-
-
-
-## Chiudiamo il branch
-
-Lo chiudiamo più avanti.
-
-
-
-## Facciamo un backup su Github
-
-Lo facciamo più avanti.
-
 
 
 ---
