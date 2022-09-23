@@ -52,11 +52,9 @@ Vediamo la pagina *index*.
 
 ![fig05](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_fig05-index5.png)
 
-![fig06](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_fig06-index6.png)
-
 Vediamo tutto il codice *<html>* preso così com'è dal tema Eduport, senza predisposizione per Ruby on Rails.
 
-***code 01 - .../theme-eduport/index-4.html - line:1***
+***code 01 - .../theme-eduport/index.html - line:1***
 
 ```html
 <!DOCTYPE html>
@@ -78,23 +76,87 @@ Riadattiamo questo codice alla nostra applicazione su Ruby on Rails.
 
 ## Prepariamo un layout dedicato
 
-Per gestire la parte che è tra i tags `<head> ... </head>` creiamo un layout dedicato che chiamiamo *edu_base*.
+Per gestire la parte che è tra i tags `<head> ... </head>` creiamo un layout dedicato che chiamiamo *edu_demo*.
 
 Duplichiamo il file `.../layouts/application.html.erb` e rinominiamo la copia `.../layouts/edu_demo.html.erb`. 
 
-Aggiungiamo sul layout *edu_demo* le linee di codice tra i tags <head>...</head> che non sono già presenti ed adattiamo i "puntamenti" per richiamare stylesheets e javascripts.
+Copiamo ed incolliamo la parte tra `<head> ... </head>` del codice `theme-eduport//index.html` al layout *edu_demo* commentando le parti che al momento non usiamo.
 
-***codice 02 - .../app/views/layouts/edu_demo.html.erb - line:6***
+***codice 02 - .../app/views/layouts/edu_demo.html.erb - line:04***
 
 ```html+erb
-  	<!-- Meta Tags -->
-  	<meta charset="utf-8">
+    <!--<title>Ubuntudream</title>-->
+    <title>Eduport - LMS, Education and Course Theme</title>
+
+    <!-- Meta Tags -->
+    <meta charset="utf-8">
+    <!--<meta name="viewport" content="width=device-width,initial-scale=1">-->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  	<meta name="author" content="Flavio Bordoni">
-  	<meta name="description" content="Eduport- LMS, Education and Course Theme">
+    <meta name="author" content="Webestica.com">
+    <meta name="description" content="Eduport- LMS, Education and Course Theme">
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_02-views-layouts-edu_demo.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_02-views-layouts-edu_demo.html.erb)
+
+
+
+## Aggiorniamo la mockups/index 
+
+Creiamo la nuova views `mockups/index` ed inseriamo il codice del nostro file del tema che è dentro i tags `<body>...</body>`. 
+
+Inoltre commentiamo le chiamate a javascript in fondo al codice perché tanto non funzionerebbero perché non hanno i puntamenti corretti all'asset-pipeline e darebbero solo errore nella java console del browser.
+
+***codice 03 - ...views/mockups/index.html.erb - line:1***
+
+```html+erb
+<!-- Header START -->
+<header class="navbar-light navbar-sticky navbar-transparent">
+  <!-- Logo Nav START -->
+  <nav class="navbar navbar-expand-xl">
+    <div class="container">
+      <!-- Logo START -->
+      <a class="navbar-brand" href="index.html">
+        <img class="light-mode-item navbar-brand-item" src="assets/images/logo.svg" alt="logo">
+        <img class="dark-mode-item navbar-brand-item" src="assets/images/logo-light.svg" alt="logo">
+      </a>
+      <!-- Logo END -->
+  
+      <!-- Responsive navbar toggler -->
+      <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+        aria-controls="navbarCollapse" aria-expanded="true" aria-label="Toggle navigation">
+        <span class="me-2"><i class="fas fa-search fs-5"></i></span>
+      </button>
+  
+      <!-- Category menu START -->
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_03-views-mockups-edu_index.html.erb)
+
+
+
+![fig06](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_fig06-index1.png)
+
+
+![fig07](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_fig07-index2.png)
+
+
+![fig08](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_fig08-index3.png)
+
+
+![fig09](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_fig09-index4.png)
+
+
+
+
+
+
+
 
 
 
@@ -148,37 +210,6 @@ r• <!-- Theme CSS -->
 
 [tutto il codice](#11-02-02_01all)
 
-
-
-## Creiamo la nuova view
-
-Creiamo la nuova views `mockups/index` ed inseriamo il codice del nostro file del tema che è dentro i tags `<body>...</body>`. Inoltre commentiamo le chiamate a javascript in fondo al codice perché tanto non funzionerebbero perché non hanno i puntamenti corretti all'asset-pipeline e darebbero solo errore nella java console del browser.
-
-***codice 03 - ...views/mockups/index.html.erb - line:1***
-
-```html+erb
-<!-- Header START -->
-<header class="navbar-light navbar-sticky navbar-transparent">
-  <!-- Logo Nav START -->
-  <nav class="navbar navbar-expand-xl">
-    <div class="container">
-      <!-- Logo START -->
-      <a class="navbar-brand" href="index.html">
-        <img class="light-mode-item navbar-brand-item" src="assets/images/logo.svg" alt="logo">
-        <img class="dark-mode-item navbar-brand-item" src="assets/images/logo-light.svg" alt="logo">
-      </a>
-      <!-- Logo END -->
-  
-      <!-- Responsive navbar toggler -->
-      <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-        aria-controls="navbarCollapse" aria-expanded="true" aria-label="Toggle navigation">
-        <span class="me-2"><i class="fas fa-search fs-5"></i></span>
-      </button>
-  
-      <!-- Category menu START -->
-```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_03-views-mockups-edu_index.html.erb)
 
 
 ## Aggiorniamo instradamento
