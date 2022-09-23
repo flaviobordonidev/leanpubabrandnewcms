@@ -107,12 +107,10 @@ La prima immagine è il logo nel menu.
 ***codice n/a - ...views/mockups/edu_index_4.html.erb - line:8***
 
 ```html+erb
-da
-  <img class="light-mode-item navbar-brand-item" src="assets/images/logo.svg" alt="logo">
-  <img class="dark-mode-item navbar-brand-item" src="assets/images/logo-light.svg" alt="logo">
-a
-  <%= image_tag "edu/logo.svg", class: "light-mode-item navbar-brand-item", alt: "logo" %>
-  <%= image_tag "edu/logo-light.svg", class: "dark-mode-item navbar-brand-item", alt: "logo" %>
+h• <img class="light-mode-item navbar-brand-item" src="assets/images/logo.svg" alt="logo">
+   <img class="dark-mode-item navbar-brand-item" src="assets/images/logo-light.svg" alt="logo">
+r• <%= image_tag "edu/logo.svg", class: "light-mode-item navbar-brand-item", alt: "logo" %>
+   <%= image_tag "edu/logo-light.svg", class: "dark-mode-item navbar-brand-item", alt: "logo" %>
 ```
 
 La seconda immagine.
@@ -120,10 +118,8 @@ La seconda immagine.
 ***codice n/a - ...views/mockups/edu_index_4.html.erb - line:88***
 
 ```html+erb
-da
-                      <img src="assets/images/client/uni-logo-01.svg" class="icon-md" alt="">
-a
-                      <%= image_tag "edu/client/uni-logo-01.svg", class: "icon-md", alt: "" %>
+h• <img src="assets/images/client/uni-logo-01.svg" class="icon-md" alt="">
+r• <%= image_tag "edu/client/uni-logo-01.svg", class: "icon-md", alt: "" %>
 ```
 
 La terza immagine.
@@ -131,19 +127,15 @@ La terza immagine.
 ***codice n/a - ...views/mockups/edu_index_4.html.erb - line:93***
 
 ```html+erb
-da
-                      <img src="assets/images/client/uni-logo-02.svg" class="icon-md" alt="">
-a
-                      <%= image_tag "edu/client/uni-logo-02.svg", class: "icon-md", alt: "" %>
+h• <img src="assets/images/client/uni-logo-02.svg" class="icon-md" alt="">
+r• <%= image_tag "edu/client/uni-logo-02.svg", class: "icon-md", alt: "" %>
 ```
 
 Altre immagini.
 
 ```html+erb
-da
-            <img src="assets/images/about/12.jpg" class="card-img rounded-2" alt="...">
-a
-            <%= image_tag "edu/about/12.jpg", class: "card-img rounded-2", alt: "..." %>
+h• <img src="assets/images/about/12.jpg" class="card-img rounded-2" alt="...">
+r• <%= image_tag "edu/about/12.jpg", class: "card-img rounded-2", alt: "..." %>
 ```
 
 
