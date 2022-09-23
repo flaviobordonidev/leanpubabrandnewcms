@@ -26,15 +26,15 @@ Adesso reimpostiamo i puntamenti in modo da poterle visualizzare sulle view.
 Su rails per richiamare le immagini che sono sull'asset_pipeline si usano fondamentalmente:
 
 ```html+erb
-● <%= image_tag "...", alt: "Canvas Logo" %>
-● <%= image_path('...') %>
+• <%= image_tag "...", alt: "Canvas Logo" %>
+• <%= image_path('...') %>
 ```
 
 esempi da codice HTML `h:` a codice Rails `r:`.
 
 ```html+erb
-h: <img src="images/logo.png" alt="Canvas Logo">
-r: <%= image_tag "logo.png", alt: "Canvas Logo" %>
+h• <img src="images/logo.png" alt="Canvas Logo">
+r• <%= image_tag "logo.png", alt: "Canvas Logo" %>
 ```
 
 ```html+erb
@@ -43,8 +43,8 @@ r: `<div class="swiper-slide dark" style="background-image: url(<%= image_path('
 ```
 
 ```html+erb
-h: `<img src="images/logo.png" data-rjs="images/logo@2x.png" class="logo-dark" alt="Pofo">`<br/>
-r: `<%= image_tag "pofo/logo.png", 'data-rjs': image_path('pofo/logo@2x.png'), class: "logo-dark", alt: "Pofo" %>`
+[h] `<img src="images/logo.png" data-rjs="images/logo@2x.png" class="logo-dark" alt="Pofo">`<br/>
+[r] `<%= image_tag "pofo/logo.png", 'data-rjs': image_path('pofo/logo@2x.png'), class: "logo-dark", alt: "Pofo" %>`
 ```
 
 ```html+erb
@@ -53,10 +53,10 @@ r: `<a href="index.html"><<%= image_tag "pofo/logo-white.png", class: "footer-lo
 ```
 
 ```html+erb
-h● `<img src="images/services/main-fbrowser.png" style="position: absolute; top: 0; left: 0;" data-animate="fadeInUp" data-delay="100" alt="Chrome">`
-r1● `<%= image_tag "services/main-fbrowser.png", style: "position: absolute; top: 0; left: 0;", 'data-animate'=> "fadeInUp", 'data-delay'=> "100", alt: "Chrome" %>`
-r2● `<%= image_tag "services/main-fbrowser.png", style: "position: absolute; top: 0; left: 0;", 'data-animate': "fadeInUp", 'data-delay': "100", alt: "Chrome" %>`
-r3● `<%= image_tag "services/main-fbrowser.png", style: "position: absolute; top: 0; left: 0;", data: {animate: "fadeInUp", delay: "100"}, alt: "Chrome" %>`
+h• `<img src="images/services/main-fbrowser.png" style="position: absolute; top: 0; left: 0;" data-animate="fadeInUp" data-delay="100" alt="Chrome">`
+r1• `<%= image_tag "services/main-fbrowser.png", style: "position: absolute; top: 0; left: 0;", 'data-animate'=> "fadeInUp", 'data-delay'=> "100", alt: "Chrome" %>`
+r2• `<%= image_tag "services/main-fbrowser.png", style: "position: absolute; top: 0; left: 0;", 'data-animate': "fadeInUp", 'data-delay': "100", alt: "Chrome" %>`
+r3• `<%= image_tag "services/main-fbrowser.png", style: "position: absolute; top: 0; left: 0;", data: {animate: "fadeInUp", delay: "100"}, alt: "Chrome" %>`
 ```
 
 > Ruby non accetta il dash `-` direttamente nei nomi dei simboli. 
