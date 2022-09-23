@@ -76,12 +76,12 @@ usando simboli:
 - `:"a-b" => "value" # ok`
 - `:'a-b' => "value" # ok`
 - `a-b: "value" # error`
-- `"a-b": "value" # error`
-- `'a-b': "value" # ok (con nuova sintassi da ruby 1.9)`
+- `"a-b": "value"` # error
+- `'a-b': "value"` # ok (con nuova sintassi da ruby 1.9)`
 
 Oppure per i puristi:
 
-- {a: {b: "value}}
+- `{a: {b: "value}}` # ok
 
 Esempio:
 
