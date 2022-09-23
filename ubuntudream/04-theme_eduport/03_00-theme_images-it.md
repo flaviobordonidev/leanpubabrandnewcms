@@ -81,9 +81,12 @@ usando simboli:
 
 Oppure per i puristi:
 
-`<%= link_to "Link", link_path, {data: {something: 'value1', somethingelse: 'value2'}} %>`
-<br/>Questo genera il seguente codice html:<br/>
+- {a: {b: "value}}
 
+Esempio:
+
+`<%= link_to "Link", link_path, {data: {something: 'value1', somethingelse: 'value2'}} %>`<br/>
+Questo genera il seguente codice html:<br/>
 `<a href="/link" data-something='value1' data-somethingelse='value2'>Link</a>`
 
 
