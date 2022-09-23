@@ -27,10 +27,11 @@ Nei seguenti capitoli riportiamo nella nostra applicazione alcune pagine del tem
 - [Sito web dello sviluppatore di Eduport](https://eduport.webestica.com/)
 
 
-## Apriamo il branch
 
-```
-$ git checkout -b eduport
+## Apriamo il branch "EduPost"
+
+```bash
+$ git checkout -b ep
 ```
 
 
@@ -41,7 +42,13 @@ Spesso nei temi la pagina *index* è quella che contiene la maggior parte delle 
 
 Vdeiamo la pagina *index*.
 
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_fig01-index-4.png)
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_fig01-index1.png)
+
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_fig02-index2.png)
+
+![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_fig03-index3.png)
+
+![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_fig04-index4.png)
 
 Vediamo tutto il codice <html> preso così com'è dal tema Eduport, senza predisposizione per Ruby on Rails.
 
