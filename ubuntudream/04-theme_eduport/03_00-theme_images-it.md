@@ -66,16 +66,16 @@ Vediamo tutti i modi di usare il dash `-` nei nomi delle variabili:
 
 usando stringa:
 
-- `a-b => "value" # error`
-- `"a-b" => "value" # ok`
-- `'a-b' => "value" # ok`
+- `a-b => "value"` # error
+- `"a-b" => "value"` # ok
+- `'a-b' => "value"` # ok
 
 usando simboli:
 
-- `:a-b => "value" # error`
-- `:"a-b" => "value" # ok`
-- `:'a-b' => "value" # ok`
-- `a-b: "value" # error`
+- `:a-b => "value"` # error
+- `:"a-b" => "value"` # ok
+- `:'a-b' => "value"` # ok
+- `a-b: "value"` # error
 - `"a-b": "value"` # error
 - `'a-b': "value"` # ok (con nuova sintassi da ruby 1.9)`
 
