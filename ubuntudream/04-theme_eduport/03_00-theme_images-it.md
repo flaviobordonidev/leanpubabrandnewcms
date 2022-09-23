@@ -30,7 +30,7 @@ Su rails per richiamare le immagini che sono sull'asset_pipeline si usano fondam
 • <%= image_path('...') %>
 ```
 
-esempi da codice HTML `h:` a codice Rails `r:`.
+esempi da codice HTML `h•` a codice Rails `r•`.
 
 ```html+erb
 h• <img src="images/logo.png" alt="Canvas Logo">
@@ -38,18 +38,18 @@ r• <%= image_tag "logo.png", alt: "Canvas Logo" %>
 ```
 
 ```html+erb
-h: `<div class="swiper-slide dark" style="background-image: url('images/slider/swiper/1.jpg');">`<br/>
-r: `<div class="swiper-slide dark" style="background-image: url(<%= image_path('slider/swiper/1.jpg') %>);">`
+h• `<div class="swiper-slide dark" style="background-image: url('images/slider/swiper/1.jpg');">`<br/>
+r• `<div class="swiper-slide dark" style="background-image: url(<%= image_path('slider/swiper/1.jpg') %>);">`
 ```
 
 ```html+erb
-[h] `<img src="images/logo.png" data-rjs="images/logo@2x.png" class="logo-dark" alt="Pofo">`<br/>
-[r] `<%= image_tag "pofo/logo.png", 'data-rjs': image_path('pofo/logo@2x.png'), class: "logo-dark", alt: "Pofo" %>`
+h• `<img src="images/logo.png" data-rjs="images/logo@2x.png" class="logo-dark" alt="Pofo">`<br/>
+r• `<%= image_tag "pofo/logo.png", 'data-rjs': image_path('pofo/logo@2x.png'), class: "logo-dark", alt: "Pofo" %>`
 ```
 
 ```html+erb
-h: `<a href="index.html"><img class="footer-logo" src="images/logo-white.png" data-rjs="images/logo-white@2x.png" alt="Pofo"></a>`<br/>
-r: `<a href="index.html"><<%= image_tag "pofo/logo-white.png", class: "footer-logo", 'data-rjs': image_path('pofo/logo-white@2x.png'), alt: "Pofo" %></a>`
+h• `<a href="index.html"><img class="footer-logo" src="images/logo-white.png" data-rjs="images/logo-white@2x.png" alt="Pofo"></a>`<br/>
+r• `<a href="index.html"><<%= image_tag "pofo/logo-white.png", class: "footer-logo", 'data-rjs': image_path('pofo/logo-white@2x.png'), alt: "Pofo" %></a>`
 ```
 
 ```html+erb

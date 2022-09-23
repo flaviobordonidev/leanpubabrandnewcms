@@ -87,6 +87,20 @@ Aggiungiamo sul layout *edu_demo* le linee di codice tra i tags <head>...</head>
 
 ## Impostiamo gli helpers per puntare all'asset_pipeline
 
+
+[DAFA]
+
+Ho fatto uno studio per questa parte ed alla fine avevo scelto di visualizzare il "da .. a" su delle tabelle perché si capiva meglio su github.
+
+USIAMO LE CHIAMATE STYLESHEET di DEFAULT di layouts/application. quelle che puntano a stylesheets/application.scss
+
+Migriamo poi piano piano il codice dal tema alla nostra app popolando application.scss con quanto riportato su `...eduport/scss/stylesheet`
+
+> NON CI COPIAMO TUTTE LE CARTELLE COSì come sono perché perderemmo molto senza rendercene conto.
+
+
+
+
 Le chiamate ai files di stylesheet e di javascript sono diverse tra HTML e Rails. Rails usa gli helpers. Adattiamo quindi le chiamate per rispondere alle convenzioni Rails.
 
 Inseriamo gli helpers che puntano all'asset_pipeline sia per stylesheets che javascripts:
