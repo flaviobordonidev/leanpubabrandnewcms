@@ -1,15 +1,21 @@
-# <a name="top"></a> Cap 2.1 - Selezioniamo le pagine dal tema edu
+# <a name="top"></a> Cap 5.1 - Overview
+
+In questi capitoli creeremo i mockups della nostra app. Ossia delle pagine statiche con i dati inseriti direttamente nel codice, i "segnaposto", per definire la grafica della nostra app.
+
+Quindi modifichiamo e rielaboriamo le pagine html del tema eduport adattandole alle nostre esigenze.
+
+
+
+## Selezioniamo le pagine dal tema edu
 
 Selezioniamo le pagine che più si avvicinano a quello che sarà la nostra applicazione.
 
-
-
-La selezione delle pagine dal tema *edu*:
+La selezione delle pagine dal tema *eduport*:
 
 - per l'elenco di tutte le alule (che non è la homepage) lessons_index o edu_ud_list
+  - file:///Users/FB/eduport_v1.2.0/template/index.html
   - file:///Users/FB/eduport_v1.2.0/template/course-list.html
   - file:///Users/FB/eduport_v1.2.0/template/course-grid.html
-  - file:///Users/FB/eduport_v1.2.0/template/index.html#
 
 - per la presentazione della lezione (ho scelto una lezione e mi si presenta una pagina prima dei vari *steps*)
   - file:///Users/FB/eduport_v1.2.0/template/course-detail-min.html
@@ -38,5 +44,4 @@ La selezione delle pagine dal tema *edu*:
   - file:///Users/FB/eduport_v1.2.0/template/admin-edit-course-detail.html
   - file:///Users/FB/eduport_v1.2.0/template/instructor-create-course.html
   - file:///Users/FB/eduport_v1.2.0/template/instructor-quiz.html
-
 

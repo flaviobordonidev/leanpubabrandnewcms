@@ -1,19 +1,21 @@
-# <a name="top"></a> Cap 2.1 - Importiamo una pagina dal tema
+# <a name="top"></a> Cap 2.1 - Il tema eduport
 
-Importiamo una pagina del tema ed implementiamo tutto lo stile ed il codice javascript per visualizzarla correttamente.
+Tema che usiamo per UbuntuDream.
+Dopo una grande ricerca ho finalmente trovato un tema che mi soddisfa per UbuntuDream.
 
-I passaggi per importare il tema Edu sulla nostra app Rails:
+La grafica dell'interfaccia utente (User Interface) che mi piace simulare è quella usata nell'app [Headspace](https://www.headspace.com/).
 
-1. Scegliamo una pagina html da importare. Ad esempio: *index.html*
-2. Usiamo un nuovo layout che chiamiamo "edu_base" e copiamo tutto il contenuto del layout di default "application".
-3. Importiamo sul layout *edu_base* le linee di codice tra i tags <head>...</head> che non sono già presenti ed adattiamo i "puntamenti" per richiamare stylesheets e javascripts
-4. Importiamo tutto il codice tra i tags <body>...</body> su *mockups/edu_index.html.erb*
-5. Aggiorniamo controllers/mockups_controller.rb e config/routes.rb
-6. Nel preview vediamo il testo senza stylesheets, images e javascripts
-7. copiamo i files stylesheets (css, scss) su "assets/stylesheets/edu"
-8. copiamo le immagini (png, jpg) su "assets/images/edu"
-9. copiamo i files javascripts (js) su "assets/javascripts/edu"
-10. su *mockups/edu_index.html.erb* aggiustiamo i "puntamenti" per richiamare stylesheets, images e javascripts
+Il tema che ci si avvicina è [eduport](https://eduport.webestica.com/). 
+Inoltre questo tema è un [tema *ufficiali* di bootstrap](https://themes.getbootstrap.com/product/eduport-lms-education-and-course-theme/)
+
+
+Nei seguenti capitoli riportiamo nella nostra applicazione alcune pagine del tema eduport esattamente così come sono. Questo ci permette di importare ed adattare tutto lo stylesheets ed il javascript degli elementi che ci interessano per la nostra app. Questo comprende anche le librerie di icone.
+
+
+
+## Risorse interne
+
+- []()
 
 
 
@@ -21,23 +23,29 @@ I passaggi per importare il tema Edu sulla nostra app Rails:
 
 - [file di esempio preso dal tema Eduport](file:///Users/FB/eduport_v1.2.0/template/index.html).
 - [indice della documentazione dentro il tema Eduport](file:///Users/FB/eduport_v1.2.0/template/docs/index.html)
-
+- [Sito per acquistare Eduport](https://themes.getbootstrap.com/store/webestica/)
+- [Sito web dello sviluppatore di Eduport](https://eduport.webestica.com/)
 
 
 ## Apriamo il branch
 
-continuiamo con il branch aperto nel capitolo precedente
+```
+$ git checkout -b eduport
+```
 
 
-## Scegliamo la pagina
 
-La pagina che abbiamo scelto è *index*.
+## Partiamo dalla pagina index
+
+Spesso nei temi la pagina *index* è quella che contiene la maggior parte delle caratteristiche del tema ed è quindi una buona scelta iniziare da questa.
+
+Vdeiamo la pagina *index*.
 
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_fig01-index-4.png)
 
 Vediamo tutto il codice <html> preso così com'è dal tema Eduport, senza predisposizione per Ruby on Rails.
 
-***codice 01 - ...non rails html index-4.html - line:1***
+***code 01 - ...non rails html index-4.html - line:1***
 
 ```html
 <!DOCTYPE html>
@@ -61,9 +69,9 @@ Per gestire la parte che è tra i tags `<head> ... </head>` creiamo un layout de
 
 Duplichiamo il file `.../layouts/application.html.erb` e rinominiamo la copia `.../layouts/edu_demo.html.erb`. 
 
-Aggiungiamo sul layout *edu_base* le linee di codice tra i tags <head>...</head> che non sono già presenti ed adattiamo i "puntamenti" per richiamare stylesheets e javascripts.
+Aggiungiamo sul layout *edu_demo* le linee di codice tra i tags <head>...</head> che non sono già presenti ed adattiamo i "puntamenti" per richiamare stylesheets e javascripts.
 
-***codice 02 - .../app/views/layouts/edu_base.html.erb - line:6***
+***codice 02 - .../app/views/layouts/edu_demo.html.erb - line:6***
 
 ```html+erb
   	<!-- Meta Tags -->

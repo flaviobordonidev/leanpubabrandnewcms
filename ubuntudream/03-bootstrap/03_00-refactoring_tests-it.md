@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 3.2 - Refactoring dei Tests
+# <a name="top"></a> Cap 3.3 - Refactoring dei Tests
 
 Riportiamo sotto **stimulus** il codice dei tests BootStrap.
 
@@ -28,6 +28,20 @@ Per popover facciamo il refactoring inserendo **stimulus**.
 
 [DAFA]
 
+Creiamo uno *stimulus controller* da terminale.
+
+```bash
+$ rails g stimulus popover
+```
+
+
+Enable popovers 
+As mentioned above, you must initialize popovers before they can be used. One way to initialize all popovers on a page would be to select them by their `data-bs-toggle` attribute, like so:
+
+```javascript
+const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+```
 
 
 ## Toasts

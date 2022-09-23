@@ -53,10 +53,10 @@ r: `<a href="index.html"><<%= image_tag "pofo/logo-white.png", class: "footer-lo
 ```
 
 ```html+erb
-h: `<img src="images/services/main-fbrowser.png" style="position: absolute; top: 0; left: 0;" data-animate="fadeInUp" data-delay="100" alt="Chrome">`
-r1: `<%= image_tag "services/main-fbrowser.png", style: "position: absolute; top: 0; left: 0;", 'data-animate'=> "fadeInUp", 'data-delay'=> "100", alt: "Chrome" %>`
-r2: `<%= image_tag "services/main-fbrowser.png", style: "position: absolute; top: 0; left: 0;", 'data-animate': "fadeInUp", 'data-delay': "100", alt: "Chrome" %>`
-r3: `<%= image_tag "services/main-fbrowser.png", style: "position: absolute; top: 0; left: 0;", data: {animate: "fadeInUp", delay: "100"}, alt: "Chrome" %>`
+h● `<img src="images/services/main-fbrowser.png" style="position: absolute; top: 0; left: 0;" data-animate="fadeInUp" data-delay="100" alt="Chrome">`
+r1● `<%= image_tag "services/main-fbrowser.png", style: "position: absolute; top: 0; left: 0;", 'data-animate'=> "fadeInUp", 'data-delay'=> "100", alt: "Chrome" %>`
+r2● `<%= image_tag "services/main-fbrowser.png", style: "position: absolute; top: 0; left: 0;", 'data-animate': "fadeInUp", 'data-delay': "100", alt: "Chrome" %>`
+r3● `<%= image_tag "services/main-fbrowser.png", style: "position: absolute; top: 0; left: 0;", data: {animate: "fadeInUp", delay: "100"}, alt: "Chrome" %>`
 ```
 
 > Ruby non accetta il dash `-` direttamente nei nomi dei simboli. 
