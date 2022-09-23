@@ -174,8 +174,7 @@ Creiamo la nuova views `mockups/index` ed inseriamo il codice del nostro file de
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_03-views-mockups-edu_index.html.erb)
 
 
-
-## Attiviamo instradamento
+## Aggiorniamo instradamento
 
 Facciamo in modo che la nuova view `index` utilizzi il controller mockups. 
 
