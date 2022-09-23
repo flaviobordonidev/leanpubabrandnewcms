@@ -105,18 +105,20 @@ Le chiamate ai files di stylesheet e di javascript sono diverse tra HTML e Rails
 
 Inseriamo gli helpers che puntano all'asset_pipeline sia per stylesheets che javascripts:
 
+da codice HTML `h•` a codice Rails `r•`.
+
 ***code n/a - - line:01***
 
 ```html+erb
-da• `<link rel="stylesheet" href="css/xxx.css" />`
- a• `<%= stylesheet_link_tag 'pofo/css/xxx', media: 'all', 'data-turbolinks-track': 'reload' %>`
+h• <link rel="stylesheet" href="css/xxx.css" />
+r• <%= stylesheet_link_tag 'pofo/css/xxx', media: 'all', 'data-turbolinks-track': 'reload' %>
 ```
 
 ***code n/a - - line:51***
 
 ```html+erb
-da• `<script type="text/javascript" src="js/xxx.js"></script>`
- a• `<%= javascript_include_tag 'pofo/js/xxx', 'data-turbolinks-track' => true %>`
+h• <script type="text/javascript" src="js/xxx.js"></script>
+r• <%= javascript_include_tag 'pofo/js/xxx', 'data-turbolinks-track' => true %>
 ```
 
 
