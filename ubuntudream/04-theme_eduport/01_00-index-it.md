@@ -122,19 +122,15 @@ r• <%= javascript_include_tag 'pofo/js/xxx', 'data-turbolinks-track' => true %
 ```
 
 
-
 Impostiamoli da layouts/edu_base
 
-da 
-
-```html
-	<!-- Theme CSS -->
-	<link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">
-```
-
-a 
+***code n/a - layouts/edu_base - line:51***
 
 ```html+erb
+da•
+	<!-- Theme CSS -->
+	<link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">
+a•
 	<!-- Theme CSS -->
   <%= stylesheet_link_tag 'edu/css/style.css', media: 'all', 'data-turbolinks-track': 'reload', id: 'style-switch' %>
 ```
