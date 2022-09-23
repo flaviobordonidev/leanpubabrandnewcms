@@ -108,11 +108,11 @@ La prima immagine è il logo nel menu.
 
 ```html+erb
 da
-        <img class="light-mode-item navbar-brand-item" src="assets/images/logo.svg" alt="logo">
-        <img class="dark-mode-item navbar-brand-item" src="assets/images/logo-light.svg" alt="logo">
+  <img class="light-mode-item navbar-brand-item" src="assets/images/logo.svg" alt="logo">
+  <img class="dark-mode-item navbar-brand-item" src="assets/images/logo-light.svg" alt="logo">
 a
-        <%= image_tag "edu/logo.svg", class: "light-mode-item navbar-brand-item", alt: "logo" %>
-        <%= image_tag "edu/logo-light.svg", class: "dark-mode-item navbar-brand-item", alt: "logo" %>
+  <%= image_tag "edu/logo.svg", class: "light-mode-item navbar-brand-item", alt: "logo" %>
+  <%= image_tag "edu/logo-light.svg", class: "dark-mode-item navbar-brand-item", alt: "logo" %>
 ```
 
 La seconda immagine.
