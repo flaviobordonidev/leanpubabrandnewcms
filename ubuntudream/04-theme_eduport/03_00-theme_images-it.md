@@ -159,206 +159,534 @@ r• <%= image_tag "edu/client/science.svg", alt: "Icon" %>
 
 Immagine 2: "icona angular" alla destra del titolo "Limitless learning at your fingertips".
 
-***codice n/a - ...continua - line:567***
+***codice n/a - ...continua - line:817***
 
 ```html+erb
 h• <img src="assets/images/client/angular.svg" alt="Icon">
 r• <%= image_tag "edu/client/angular.svg", alt: "Icon" %>
 ```
 
+Immagine 3: "icona figma" alla destra del titolo "Limitless learning at your fingertips".
 
-
-
-
-
-
-
-
-
-
-Altre immagini.
+***codice n/a - ...continua - line:820***
 
 ```html+erb
-h• <img src="assets/images/about/12.jpg" class="card-img rounded-2" alt="...">
-r• <%= image_tag "edu/about/12.jpg", class: "card-img rounded-2", alt: "..." %>
+h• <img src="assets/images/client/figma.svg" alt="Icon">
+r• <%= image_tag "edu/client/figma.svg", alt: "Icon" %>
+```
+
+Immagine 4: background verde a strisce gialle dentro il rettangolo con i visi degli studenti.
+
+***codice n/a - ...continua - line:838***
+
+```html+erb
+h• <div class="p-3 bg-success d-inline-block rounded-4 shadow-lg position-absolute top-50 end-0 translate-middle-y mt-n7 z-index-1 d-none d-md-block" style="background:url(assets/images/pattern/01.png) no-repeat center center; background-size:cover;">
+r• <div class="p-3 bg-success d-inline-block rounded-4 shadow-lg position-absolute top-50 end-0 translate-middle-y mt-n7 z-index-1 d-none d-md-block" style="background:url(<%= image_path('edu/pattern/01.png') %>) no-repeat center center; background-size:cover;">
+```
+
+Immagine 5: "viso alunno" dentro il rettangolo con i visi degli studenti.
+
+***codice n/a - ...continua - line:843***
+
+```html+erb
+h• <img class="avatar-img rounded-circle border-white" src="assets/images/avatar/01.jpg" alt="avatar">
+r• <%= image_tag "edu/avatar/01.jpg", class: "avatar-img rounded-circle border-white", alt: "avatar" %>
+```
+
+Immagine 6: "viso alunno" dentro il rettangolo con i visi degli studenti.
+
+***codice n/a - ...continua - line:846***
+
+```html+erb
+h• <img class="avatar-img rounded-circle border-white" src="assets/images/avatar/02.jpg" alt="avatar">
+r• <%= image_tag "edu/avatar/02.jpg", class: "avatar-img rounded-circle border-white", alt: "avatar" %>
+```
+
+Immagine 7: "viso alunno" dentro il rettangolo con i visi degli studenti.
+
+***codice n/a - ...continua - line:849***
+
+```html+erb
+h• <img class="avatar-img rounded-circle border-white" src="assets/images/avatar/03.jpg" alt="avatar">
+r• <%= image_tag "edu/avatar/03.jpg", class: "avatar-img rounded-circle border-white", alt: "avatar" %>
+```		
+
+Immagine 8: "viso alunno" dentro il rettangolo con i visi degli studenti.
+
+***codice n/a - ...continua - line:852***
+
+```html+erb
+h• <img class="avatar-img rounded-circle border-white" src="assets/images/avatar/04.jpg" alt="avatar">
+r• <%= image_tag "edu/avatar/04.jpg", class: "avatar-img rounded-circle border-white", alt: "avatar" %>
+```
+
+Immagine 9: "alunno grande con cappello giallo".
+
+***codice n/a - ...continua - line:863***
+
+```html+erb
+h• <img src="assets/images/element/07.png" alt="">
+r• <%= image_tag "edu/element/07.png", alt: "" %>
+```
+
+
+- - - -
+
+***POPULAR COURSES***
+
+Immagine 1: corso con rubino giallo.
+
+***codice n/a - ...continua - line:984***
+
+```html+erb
+h• <img src="assets/images/courses/4by3/08.jpg" class="card-img-top" alt="course image">
+r• <%= image_tag "edu/courses/4by3/08.jpg", class: "card-img-top", alt: "course image" %>
+```
+
+Immagine 2: corso con logo photoshop (PS).
+
+***codice n/a - ...continua - line:1021***
+
+```html+erb
+h• <img src="assets/images/courses/4by3/08.jpg" class="card-img-top" alt="course image">
+r• <%= image_tag "edu/courses/4by3/08.jpg", class: "card-img-top", alt: "course image" %>
+```
+
+Immagine 3: corso con logo figma (i pallini colorati).
+
+***codice n/a - ...continua - line:1057***
+
+```html+erb
+h• <img src="assets/images/courses/4by3/03.jpg" class="card-img-top" alt="course image">
+r• <%= image_tag "edu/courses/4by3/03.jpg", class: "card-img-top", alt: "course image" %>
+```
+
+Immagine 4: corso con logo react (atomo azzurro).
+
+***codice n/a - ...continua - line:1093***
+
+```html+erb
+h• <img src="assets/images/courses/4by3/07.jpg" class="card-img-top" alt="course image">
+r• <%= image_tag "edu/courses/4by3/07.jpg", class: "card-img-top", alt: "course image" %>
+```
+
+Immagine 5: corso con logo html5 (scudo con lettera H).
+
+***codice n/a - ...continua - line:1129***
+
+```html+erb
+h• <img src="assets/images/courses/4by3/11.jpg" class="card-img-top" alt="course image">
+r• <%= image_tag "edu/courses/4by3/11.jpg", class: "card-img-top", alt: "course image" %>
+```
+
+Immagine 6: corso con logo CSS (scudo con numero 3).
+
+***codice n/a - ...continua - line:1165***
+
+```html+erb
+h• <img src="assets/images/courses/4by3/12.jpg" class="card-img-top" alt="course image">
+r• <%= image_tag "edu/courses/4by3/12.jpg", class: "card-img-top", alt: "course image" %>
+```
+
+Immagine 7: corso con logo invision (lettere in).
+
+***codice n/a - ...continua - line:1201***
+
+```html+erb
+h• <img src="assets/images/courses/4by3/04.jpg" class="card-img-top" alt="course image">
+r• <%= image_tag "edu/courses/4by3/04.jpg", class: "card-img-top", alt: "course image" %>
+```
+
+Immagine 8: corso con logo JavaScript (lettere JS).
+
+***codice n/a - ...continua - line:1201***
+
+```html+erb
+h• <img src="assets/images/courses/4by3/09.jpg" class="card-img-top" alt="course image">
+r• <%= image_tag "edu/courses/4by3/09.jpg", class: "card-img-top", alt: "course image" %>
+```
+
+Immagine 9: corso con logo Pyton.
+
+***codice n/a - ...continua - line:1279***
+
+```html+erb
+h• <img src="assets/images/courses/4by3/05.jpg" class="card-img-top" alt="course image">
+r• <%= image_tag "edu/courses/4by3/05.jpg", class: "card-img-top", alt: "course image" %>
+```
+
+Immagine 10: corso con logo Angular.
+
+***codice n/a - ...continua - line:1315***
+
+```html+erb
+h• <img src="assets/images/courses/4by3/06.jpg" class="card-img-top" alt="course image">
+r• <%= image_tag "edu/courses/4by3/06.jpg", class: "card-img-top", alt: "course image" %>
+```
+
+Immagine 11: corso con logo React.
+
+***codice n/a - ...continua - line:1351***
+
+```html+erb
+h• <img src="assets/images/courses/4by3/06.jpg" class="card-img-top" alt="course image">
+r• <%= image_tag "edu/courses/4by3/06.jpg", class: "card-img-top", alt: "course image" %>
+```
+
+Immagine 12: corso con logo JavaScript.
+
+***codice n/a - ...continua - line:1387***
+
+```html+erb
+h• <img src="assets/images/courses/4by3/09.jpg" class="card-img-top" alt="course image">
+r• <%= image_tag "edu/courses/4by3/09.jpg", class: "card-img-top", alt: "course image" %>
+```
+
+Immagine 13: corso con logo Bootstrap.
+
+***codice n/a - ...continua - line:1423***
+
+```html+erb
+h• <img src="assets/images/courses/4by3/10.jpg" class="card-img-top" alt="course image">
+r• <%= image_tag "edu/courses/4by3/10.jpg", class: "card-img-top", alt: "course image" %>
+```
+
+Immagine 14: corso con logo PHP.
+
+***codice n/a - ...continua - line:1423***
+
+```html+erb
+h• <img src="assets/images/courses/4by3/13.jpg" class="card-img-top" alt="course image">
+r• <%= image_tag "edu/courses/4by3/13.jpg", class: "card-img-top", alt: "course image" %>
+```
+
+Immagine 15: corso con logo rubino giallo.
+
+***codice n/a - ...continua - line:1501***
+
+```html+erb
+h• <img src="assets/images/courses/4by3/08.jpg" class="card-img-top" alt="course image">
+r• <%= image_tag "edu/courses/4by3/08.jpg", class: "card-img-top", alt: "course image" %>
+```
+
+Immagine 16: corso con logo invision.
+
+***codice n/a - ...continua - line:1537***
+
+```html+erb
+h• <img src="assets/images/courses/4by3/04.jpg" class="card-img-top" alt="course image">
+r• <%= image_tag "edu/courses/4by3/04.jpg", class: "card-img-top", alt: "course image" %>
+```
+
+Immagine 17: corso con logo PhotoShop.
+
+***codice n/a - ...continua - line:1573***
+
+```html+erb
+h• <img src="assets/images/courses/4by3/02.jpg" class="card-img-top" alt="course image">
+r• <%= image_tag "edu/courses/4by3/02.jpg", class: "card-img-top", alt: "course image" %>
+```
+
+Immagine 18: corso con logo figma.
+
+***codice n/a - ...continua - line:1609***
+
+```html+erb
+h• <img src="assets/images/courses/4by3/03.jpg" class="card-img-top" alt="course image">
+r• <%= image_tag "edu/courses/4by3/03.jpg", class: "card-img-top", alt: "course image" %>
+```
+
+Immagine 19: corso con logo Digital Marketing.
+
+***codice n/a - ...continua - line:1651***
+
+```html+erb
+h• <img src="assets/images/courses/4by3/01.jpg" class="card-img-top" alt="course image">
+r• <%= image_tag "edu/courses/4by3/01.jpg", class: "card-img-top", alt: "course image" %>
+```
+
+Immagine 20: corso con logo App Designer.
+
+***codice n/a - ...continua - line:1687***
+
+```html+erb
+h• <img src="assets/images/courses/4by3/08.jpg" class="card-img-top" alt="course image">
+r• <%= image_tag "edu/courses/4by3/08.jpg", class: "card-img-top", alt: "course image" %>
+```
+
+Immagine 21: corso con logo invision.
+
+***codice n/a - ...continua - line:1729***
+
+```html+erb
+h• <img src="assets/images/courses/4by3/08.jpg" class="card-img-top" alt="course image">
+r• <%= image_tag "edu/courses/4by3/08.jpg", class: "card-img-top", alt: "course image" %>
+```
+
+Immagine 22: corso con logo JavaScript.
+
+***codice n/a - ...continua - line:1765***
+
+```html+erb
+h• <img src="assets/images/courses/4by3/09.jpg" class="card-img-top" alt="course image">
+r• <%= image_tag "edu/courses/4by3/09.jpg", class: "card-img-top", alt: "course image" %>
+```
+
+Immagine 23: Trending Courses (nello "slider") con foto.
+
+***codice n/a - ...continua - line:1873***
+
+```html+erb
+h• <img src="assets/images/courses/4by3/14.jpg" class="card-img-top" alt="course image">
+r• <%= image_tag "edu/courses/4by3/14.jpg", class: "card-img-top", alt: "course image" %>
+```
+
+Immagine 24: Trending Courses (nello "slider") avatar.
+
+***codice n/a - ...continua - line:1913***
+
+```html+erb
+h• <img class="avatar-img rounded-1" src="assets/images/avatar/10.jpg" alt="avatar">
+r• <%= image_tag "edu/avatar/10.jpg", class: "avatar-img rounded-1", alt: "avatar" %>
+```									
+
+Immagine 25: Trending Courses (nello "slider") con foto.
+
+***codice n/a - ...continua - line:1932***
+
+```html+erb
+h• <img src="assets/images/courses/4by3/15.jpg" class="card-img-top" alt="course image">
+r• <%= image_tag "edu/courses/4by3/15.jpg", class: "card-img-top", alt: "course image" %>
+```
+
+Immagine 26: Trending Courses (nello "slider") avatar.
+
+***codice n/a - ...continua - line:1970***
+
+```html+erb
+h• <img class="avatar-img rounded-1" src="assets/images/avatar/10.jpg" alt="avatar">
+r• <%= image_tag "edu/avatar/10.jpg", class: "avatar-img rounded-1", alt: "avatar" %>
+```									
+
+Immagine 27: Trending Courses (nello "slider") con foto.
+
+***codice n/a - ...continua - line:1989***
+
+```html+erb
+h• <img src="assets/images/courses/4by3/17.jpg" class="card-img-top" alt="course image">
+r• <%= image_tag "edu/courses/4by3/17.jpg", class: "card-img-top", alt: "course image" %>
+```
+
+Immagine 28: Trending Courses (nello "slider") avatar.
+
+***codice n/a - ...continua - line:2027***
+
+```html+erb
+h• <img class="avatar-img rounded-1" src="assets/images/avatar/10.jpg" alt="avatar">
+r• <%= image_tag "edu/avatar/10.jpg", class: "avatar-img rounded-1", alt: "avatar" %>
+```									
+
+Immagine 29: Trending Courses (nello "slider") con foto.
+
+***codice n/a - ...continua - line:2046***
+
+```html+erb
+h• <img src="assets/images/courses/4by3/16.jpg" class="card-img-top" alt="course image">
+r• <%= image_tag "edu/courses/4by3/16.jpg", class: "card-img-top", alt: "course image" %>
+```
+
+Immagine 30: Trending Courses (nello "slider") avatar.
+
+***codice n/a - ...continua - line:2084***
+
+```html+erb
+h• <img class="avatar-img rounded-1" src="assets/images/avatar/01.jpg" alt="avatar">
+r• <%= image_tag "edu/avatar/01.jpg", class: "avatar-img rounded-1", alt: "avatar" %>
+```
+
+Immagine 31: avatar nel commento Carolyn Ortiz.
+
+***codice n/a - ...continua - line:2126***
+
+```html+erb
+h• <img class="avatar-img rounded-circle" src="assets/images/avatar/01.jpg" alt="avatar">
+r• <%= image_tag "edu/avatar/01.jpg", class: "avatar-img rounded-circle", alt: "avatar" %>
+```
+
+Immagine 32: avatar nel rettangolo "100+ Verified Mentors".
+
+***codice n/a - ...continua - line:2126***
+
+```html+erb
+h• <img class="avatar-img rounded-1" src="assets/images/avatar/09.jpg" alt="avatar">
+r• <%= image_tag "edu/avatar/09.jpg", class: "avatar-img rounded-1", alt: "avatar" %>
+```
+
+Immagine 33: avatar nel rettangolo "100+ Verified Mentors".
+
+***codice n/a - ...continua - line:2175***
+
+```html+erb
+h• <img class="avatar-img rounded-1" src="assets/images/avatar/04.jpg" alt="avatar">
+r• <%= image_tag "edu/avatar/04.jpg", class: "avatar-img rounded-1", alt: "avatar" %>
+```
+
+Immagine 34: avatar nel rettangolo "100+ Verified Mentors".
+
+***codice n/a - ...continua - line:2188***
+
+```html+erb
+h• <img class="avatar-img rounded-1" src="assets/images/avatar/02.jpg" alt="avatar">
+r• <%= image_tag "edu/avatar/02.jpg", class: "avatar-img rounded-1", alt: "avatar" %>
+```
+
+Immagine 35: background blu a strisce bianche dentro il rettangolo con voto "4.5/5.0".
+
+***codice n/a - ...continua - line:2254***
+
+```html+erb
+h• <div class="p-3 bg-primary d-inline-block rounded-4 shadow-lg text-center" style="background:url(assets/images/pattern/02.png) no-repeat center center; background-size:cover;">
+r• <div class="p-3 bg-primary d-inline-block rounded-4 shadow-lg text-center" style="background:url(<%= image_path('edu/pattern/02.png') %>) no-repeat center center; background-size:cover;">
+
+```
+
+Immagine 36: avatar nel commento Dennis Barrett.
+
+***codice n/a - ...continua - line:2274***
+
+```html+erb
+h• <img class="avatar-img rounded-circle" src="assets/images/avatar/03.jpg" alt="avatar">
+r• <%= image_tag "edu/avatar/03.jpg", class: "avatar-img rounded-circle", alt: "avatar" %>
+```
+
+Immagine 37: il logo "Eduport" nel footer.
+
+***codice n/a - ...views/mockups/edu_index.html.erb - line:2324***
+
+```html+erb
+h• <img class="light-mode-item h-40px" src="assets/images/logo.svg" alt="logo">
+<img class="dark-mode-item h-40px" src="assets/images/logo-light.svg" alt="logo">
+r• <%= image_tag "edu/logo.svg", class: "light-mode-item h-40px", alt: "logo" %>
+<%= image_tag "edu/logo-light.svg", class: "dark-mode-item h-40px", alt: "logo" %>
+```
+
+Immagine 38: "icona Google play" nel footer.
+
+***codice n/a - ...continua - line:2391***
+
+```html+erb
+h• <a href="#"> <img src="assets/images/client/google-play.svg" alt="google-store"> </a>
+r• <a href="#"> <%= image_tag "edu/client/google-play.svg", alt: "google-store" %> </a>
+```
+
+Immagine 39: "icona Apple store" nel footer.
+
+***codice n/a - ...continua - line:2395***
+
+```html+erb
+h• <a href="#"> <img src="assets/images/client/app-store.svg" alt="app-store"> </a>
+r• <a href="#"> <%= image_tag "edu/client/app-store.svg", alt: "app-store" %> </a>
+```
+
+Immagine 40: "Language switcher English" nel footer.
+
+***codice n/a - ...continua - line:2421***
+
+```html+erb
+h• <li><a class="dropdown-item me-4" href="#"><img class="fa-fw me-2" src="assets/images/flags/uk.svg" alt="">English</a></li>
+r• <li><a class="dropdown-item me-4" href="#"><%= image_tag "edu/flags/uk.svg", class: "fa-fw me-2", alt: "" %>English</a></li>
+```
+
+Immagine 41: "Language switcher German" nel footer.
+
+***codice n/a - ...continua - line:2421***
+
+```html+erb
+h• <li><a class="dropdown-item me-4" href="#"><img class="fa-fw me-2" src="assets/images/flags/gr.svg" alt="">German</a></li>
+r• <li><a class="dropdown-item me-4" href="#"><%= image_tag "edu/flags/uk.svg", class: "fa-fw me-2", alt: "" %>German</a></li>
+```
+
+Immagine 42: "Language switcher French" nel footer.
+
+***codice n/a - ...continua - line:2421***
+
+```html+erb
+h• <li><a class="dropdown-item me-4" href="#"><img class="fa-fw me-2" src="assets/images/flags/sp.svg" alt="">French</a></li>
+r• <li><a class="dropdown-item me-4" href="#"><%= image_tag "edu/flags/sp.svg", class: "fa-fw me-2", alt: "" %>French</a></li>
 ```
 
 
 
+## Verifichiamo preview
 
+Verifichiamo preview
 
-
-
-
-
-
-Impostiamo il favicon che si visualizza sul tab del browser
-
-{id: "11-02-04_01", caption: ".../app/views/layouts/mockup_pofo.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 18}
-```
-  <!-- favicon -->
-  <link rel="shortcut icon" href="<%=image_path('pofo/favicon.png')%>">
-  <link rel="apple-touch-icon" href="<%=image_path('pofo/apple-touch-icon-57x57.png')%>">
-  <link rel="apple-touch-icon" sizes="72x72" href="<%=image_path('pofo/apple-touch-icon-72x72.png')%>">
-  <link rel="apple-touch-icon" sizes="114x114" href="<%=image_path('pofo/apple-touch-icon-114x114.png')%>">
+```bash
+$ rails s -b 192.168.64.3
 ```
 
+Andiamo con il browser sull'URL:
 
-Impostiamo il logo sulla barra del menu
-
-{id: "11-02-04_01", caption: ".../app/views/mockups/blog_clean_full_width.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 63}
-```
-  <a href="index.html" title="Pofo" class="logo"><%= image_tag "pofo/logo.png", 'data-rjs': image_path('pofo/logo@2x.png'), class: "logo-dark", alt: "Pofo" %><%= image_tag "pofo/logo-white.png", 'data-rjs': image_path('pofo/logo-white@2x.png'), alt: "Pofo", class: "logo-light default" %></a>
-```
+- http://192.168.64.3:3000
 
 
-Impostiamo le due immagini dentro il mega-menu alla voce "PORTFOLIO"
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/03_fig01-index1.png)
 
-{caption: ".../app/views/mockups/blog_clean_full_width.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 294}
-```
-  <a href="home-creative-studio.html" class="menu-banner-image"><%= image_tag "pofo/menu-banner-01.png", alt: "portfolio" %></a>
-```
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/03_fig02-index2.png)
 
-{caption: ".../app/views/mockups/blog_clean_full_width.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 297}
-```
-  <a href="home-creative-business.html" class="menu-banner-image"><%= image_tag "pofo/menu-banner-02.png", alt: "portfolio" %></a>
-```
+![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/03_fig03-index3.png)
+
+![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/03_fig04-index4.png)
+
+![fig05](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/03_fig05-index5.png)
+
+![fig06](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/03_fig06-index6.png)
+
+![fig07](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/03_fig07-index7.png)
+
+![fig08](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/03_fig08-index8.png)
+
+![fig09](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/03_fig09-index9.png)
+
+![fig10](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/03_fig10-index10.png)
 
 
-Impostiamo l'immagine del titolo, quella subito sotto il mega-menu.
-Già la vediamo, è il rettangolo grigio con scritto 1920x1100, immagine presa online da http://placehold.it/1920x1100
 
-{caption: ".../app/views/mockups/blog_clean_full_width.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 602}
-```
-  <section class="wow fadeIn parallax" data-stellar-background-ratio="0.5" style="background-image:url('<%= image_path('http://placehold.it/1920x1100') %>');">
-OPPURE
-  <section class="wow fadeIn parallax" data-stellar-background-ratio="0.5" style="background-image:url('<%= image_path('pofo/parallax-bg33.jpg') %>');">
-```
+## Archiviamo su git
 
-La cambiamo con un'immagine 1920x1100 che scarichiamo dal web, ad esempio ho preso: Image by S. Hermann & F. Richter from Pixabay 
-
-{caption: ".../app/views/mockups/blog_clean_full_width.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 602}
-```
-  <section class="wow fadeIn parallax" data-stellar-background-ratio="0.5" style="background-image:url('<%= image_path('pofo/hamster-shopping-1920x1133.jpg') %>');">
+```bash
+$ git add -A
+$ git commit -m "Implement Eduport index style"
 ```
 
 
-Impostiamo la prima immagine della griglia degli articoli
-Già la vediamo, è il rettangolo grigio con scritto 750x500, immagine presa online da "http://placehold.it/750x500". Noi la sostituiamo con un'altra immagine scaricata dal web.
+## Chiudiamo il branch
 
-{caption: ".../app/views/mockups/blog_clean_full_width.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 626}
-```
-  <%= image_tag "pofo/web-fox-640x403.jpg", alt: "" %>
-```
+se abbiamo finito le modifiche e va tutto bene:
 
-
-Impostiamo l'immagine dell'autore del primo articolo
-Già la vediamo, è il cerchietto grigio con scritto 149x149 (<img src="http://placehold.it/149x149" alt="" class="rounded-circle">).
-
-{caption: ".../app/views/mockups/blog_clean_full_width.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 633}
-
-```
-  <%#= image_tag "pofo/web-avatar-lady-red-hair.jpg", alt: "", class: "border-radius-100" %>
-  <%= image_tag "pofo/web-avatar-lady-red-hair.png", alt: "", class: "rounded-circle" %>
-  <!--<img src="http://placehold.it/149x149" alt="" class="rounded-circle">-->
-```
-
-
-Discorso analogo per il 2° articolo (immagine articolo e immagine autore)
-
-{caption: ".../app/views/mockups/blog_clean_full_width.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 626}
-```
-  <%= image_tag "pofo/web-fox-640x403.jpg", alt: "" %>
-```
-
-{caption: ".../app/views/mockups/blog_clean_full_width.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 633}
-
-```
-  <%= image_tag "pofo/web-avatar-lady-red-hair.png", alt: "", class: "rounded-circle" %>
-```
-
-
-Discorso analogo per il 3° articolo (immagine articolo e immagine autore)
-
-{caption: ".../app/views/mockups/blog_clean_full_width.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 626}
-```
-  <%= image_tag "pofo/web-fox-640x403.jpg", alt: "" %>
-```
-
-{caption: ".../app/views/mockups/blog_clean_full_width.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 633}
-
-```
-  <%= image_tag "pofo/web-avatar-lady-red-hair.png", alt: "", class: "rounded-circle" %>
-```
-
-
-Discorso analogo per il 4° articolo (immagine articolo e immagine autore)
-
-{caption: ".../app/views/mockups/blog_clean_full_width.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 626}
-```
-  <%= image_tag "pofo/web-fox-640x403.jpg", alt: "" %>
-```
-
-{caption: ".../app/views/mockups/blog_clean_full_width.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 633}
-
-```
-  <%= image_tag "pofo/web-avatar-lady-red-hair.png", alt: "", class: "rounded-circle" %>
-```
-
-
-Discorso analogo per gli articoli da 5° a 8° (immagine articolo e immagine autore)
-
-
-Impostiamo l'immagine del logo di Pofo nel footer.
- 
-{caption: ".../app/views/mockups/blog_clean_full_width.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 804}
-```
-  <a href="index.html"><<%= image_tag "pofo/logo-white.png", class: "footer-logo", 'data-rjs': image_path('pofo/logo-white@2x.png'), alt: "Pofo" %></a>
-```
-
-
-Impostiamo le immagini nel footer nella sezione "LATEST BLOG POST"
-
-{caption: ".../app/views/mockups/blog_clean_full_width.html.erb -- continua", format: HTML+Mako, line-numbers: true, number-from: 838}
-```
-  <a href="blog-post-layout-01.html"><%= image_tag "pofo/web-camels-640x427.jpg", alt: "" %></a>
-  ...
-  <a href="blog-post-layout-02.html"><%= image_tag "pofo/web-camels-640x427.jpg", alt: "" %></a>
-  ...
-  <a href="blog-post-layout-03.html"><%= image_tag "pofo/web-camels-640x427.jpg", alt: "" %></a>
+```bash
+$ git checkout main
+$ git merge ep
+$ git branch -d ep
 ```
 
 
 
+## Facciamo un backup su Github
 
-
-
-
-
-
-
-
-
-
-## Apriamo il branch "Import Images"
-
-Continuiamo con il branch aperto
-
-
-
-## importiamo le immagini dal tema Pofo all'asset_pipeline
-
-E' arrivato il momento di importare le immagini dal tema alla nostra app Rails. 
-
-
-
-## Seguiamo l'ordine delle chiamate sul file posts_index
-
-{id: "11-02-04_01", caption: ".../app/views/mockups/blog_clean_full_width.html.erb -- codice 01", format: HTML+Mako, line-numbers: true, number-from: 15}
-```
-        <link rel="shortcut icon" href="images/favicon.png">
-        <link rel="apple-touch-icon" href="images/apple-touch-icon-57x57.png">
-        <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
-        <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+```bash
+$ git push origin main
 ```
 
+
+## Andiamo in produzione con render.com
+
+Eseguiamo il deploy manuale scegliendo "da ultimo commit".
+
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_00-index-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/03_00-theme_images-it.md)
