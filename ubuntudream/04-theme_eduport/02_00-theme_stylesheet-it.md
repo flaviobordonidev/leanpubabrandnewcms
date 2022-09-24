@@ -1,75 +1,107 @@
 # <a name="top"></a> Cap 2.2 - Attiviamo stile del tema
 
-Importiamo i files stylesheets
+Attiviamo lo stylesheets.
 
-Continuiamo con i passaggi per importare il tema Edu sulla nostra app Rails.
+Possiamo avere due approcci:
 
+- aggiungere piano piano -> copiare un po' di codice alla volta.
+- togliere piano piano -> mettere tutto il codice e togliere quello che non usiamo.
 
-
-## Apriamo il branch
-
-Continuiamo con il branch aperto nel capitolo precedente
-
-
-
+Il primo approccio ci fa capire meglio come è strutturato il codice dello stylesheets ma è più complesso da implementare.
+Il secondo è più semplice sia come implementazione iniziale che dei successivi upgrade del tema.
+Noi scegliamo il secondo approccio.
 
 
 
+## Copiamo tutta la cartella *assets* dal tema *eduport*
+
+Copiamo tutta la cartella contenente lo stylesheets e javascripts dal tema eduport alla nostra applicazione Rails.
+
+```bash
+da• .../theme_eduport/assets
+ a• .../app/assets/stylesheets/edu/
+```
 
 
 
 
-## Impostiamo gli helpers per puntare all'asset_pipeline
 
 
-[DAFA]
 
-Ho fatto uno studio per questa parte ed alla fine avevo scelto di visualizzare il "da .. a" su delle tabelle perché si capiva meglio su github.
 
-USIAMO LE CHIAMATE STYLESHEET di DEFAULT di layouts/application. quelle che puntano a stylesheets/application.scss
+## Vediamo i files stylesheet da usare
 
-Migriamo poi piano piano il codice dal tema alla nostra app popolando application.scss con quanto riportato su `...eduport/scss/stylesheet`
+Nella parte "header" del file abbiamo Le chiamate ai files stylesheets. La principale è al file `assets/css/style`. Partiamo da qui.
 
+***code n/a - .../app/views-layouts-edu_demo.html - line:34***
+
+```html+erb
+  <!-- Theme CSS -->
+  <link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">
+```
+
+Ma nel tema c'è anche la cartella `scss` con il file `style.scss` e questa la preferiamo perché utilizza SAS (scss), che è meglio del semplice `css`. Quindi usiamo quest'ultima.
+
+***code 01 - .../theme_eduport/assets/scss/style.scss - line:1***
+
+```scss
+// Bootstrap variables
+@import "../vendor/bootstrap/scss/functions";
+@import "../vendor/bootstrap/scss/variables";
+
+// Theme variables
+@import "variables";
+
+// User variables
+@import "user-variables";
+
+// Bootstrap core
+@import "../vendor/bootstrap/scss/bootstrap";
+```
+
+Potremmo copiare il file nella nostra applicazione Rails in `.../app/assets/stylesheets/scss/` ed aggiungere la chiamata sul layout.
+
+> Le chiamate ai files di stylesheet e di javascript sono diverse tra HTML e Rails.<br/>
+> Rails, per convenzione usa gli helpers.<br/>
+> da codice HTML `h•` a codice Rails `r•`.
+
+***code n/a - .../app/views-layouts-edu_demo.html - line:34***
+
+```html+erb
+h• <link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">
+r• <%= stylesheet_link_tag 'scss/style', id: "style-switch", 'data-turbolinks-track': 'reload' %>
+```
+
+Ma preferiamo spostare un po' alla volta il codice da `scss/style.scss` alla nostra `stylesheets/application.scss`, che è il file di default in cui abbiamo già fatto anche la chiamata `import` per bootstrap.
+
+> USIAMO LE CHIAMATE STYLESHEET di DEFAULT di layouts/application. quelle che puntano a stylesheets/application.scss
+>
+> Migriamo poi piano piano il codice dal tema alla nostra app popolando application.scss con quanto riportato su `...eduport/scss/stylesheet`
+>
 > NON CI COPIAMO TUTTE LE CARTELLE COSì come sono perché perderemmo molto senza rendercene conto.
 
 
 
+## Cominciamo a spostare il codice di style.scss
 
-Le chiamate ai files di stylesheet e di javascript sono diverse tra HTML e Rails. Rails usa gli helpers. Adattiamo quindi le chiamate per rispondere alle convenzioni Rails.
+Copiamo le prime righe di codice ma "Bootstrap core" lo abbiamo già implementato in Rails, quindi quella linea la commentiamo.
 
-Inseriamo gli helpers che puntano all'asset_pipeline sia per stylesheets che javascripts:
+***code 02 - .../app/assets/stylesheets/application.scss - line:1***
 
-da codice HTML `h•` a codice Rails `r•`.
+```scss
+// Bootstrap variables
+@import "../vendor/bootstrap/scss/functions";
+@import "../vendor/bootstrap/scss/variables";
 
-***code n/a - - line:01***
+// Theme variables
+@import "variables";
 
-```html+erb
-h• <link rel="stylesheet" href="css/xxx.css" />
-r• <%= stylesheet_link_tag 'pofo/css/xxx', media: 'all', 'data-turbolinks-track': 'reload' %>
+// User variables
+@import "user-variables";
+
+// Bootstrap core
+@import "../vendor/bootstrap/scss/bootstrap";
 ```
-
-***code n/a - - line:51***
-
-```html+erb
-h• <script type="text/javascript" src="js/xxx.js"></script>
-r• <%= javascript_include_tag 'pofo/js/xxx', 'data-turbolinks-track' => true %>
-```
-
-
-Impostiamoli da layouts/edu_base
-
-***code n/a - layouts/edu_base - line:51***
-
-```html+erb
-h• <!-- Theme CSS -->
-   <link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">
-r• <!-- Theme CSS -->
-   <%= stylesheet_link_tag 'edu/css/style.css', media: 'all', 'data-turbolinks-track': 'reload', id: 'style-switch' %>
-```
-
-[tutto il codice](#11-02-02_01all)
-
-
 
 
 

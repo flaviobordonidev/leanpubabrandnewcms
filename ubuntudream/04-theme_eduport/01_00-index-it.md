@@ -54,7 +54,7 @@ Vediamo la pagina *index*.
 
 Vediamo tutto il codice *<html>* preso così com'è dal tema Eduport, senza predisposizione per Ruby on Rails.
 
-***code 01 - .../theme-eduport/index.html - line:1***
+***code 01 - .../theme_eduport/index.html - line:1***
 
 ```html
 <!DOCTYPE html>
@@ -66,7 +66,7 @@ Vediamo tutto il codice *<html>* preso così com'è dal tema Eduport, senza pred
 	<meta charset="utf-8">
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_01-index.html)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_01-theme_eduport-index.html)
 
 > `theme-eduport` è una cartella del tema eduport **fuori** dalla nostra applicazione Rails.
 
@@ -108,7 +108,7 @@ Copiamo ed incolliamo la parte tra `<head> ... </head>` del codice `theme-edupor
 
 ## Verifichiamo instradamento
 
-Vediamo che la nostra view usa il controllr *mockups*.
+Vediamo che la nostra view usa il controller *mockups*.
 
 ***codice 03 - ...config/routes.rb - line:20***
 
@@ -118,11 +118,13 @@ Vediamo che la nostra view usa il controllr *mockups*.
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_03-config-routes.rb)
 
+> inoltre è anche impostata come root: `root 'mockups#index'`
 
 
-## Aggiorniamo il controller con nuova view e nuovo layout
 
-Facciamo in modo che la nuova view `index` utilizzi il layout `edu_demo`.
+## Aggiorniamo il controller
+
+Facciamo in modo che la view `index` utilizzi il layout `edu_demo`.
 
 ***codice 04 - ...controllers/mockups_controller.rb - line:8***
 
