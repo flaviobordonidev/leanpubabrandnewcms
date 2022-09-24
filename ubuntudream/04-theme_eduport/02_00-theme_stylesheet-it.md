@@ -49,15 +49,15 @@ copia da                          | incolla in
 
 Vediamo il risultato finale.
 | :---
-- .../app/assets/images/edu/ 
+.../app/assets/images/edu/ 
   - about
   - avatar
   - bg
   - ...
   - logo.svg
-- .../app/javascript/edu/
-- .../app/assets/stylesheets/edu/scss/
-- .../app/assets/stylesheets/edu/vendor/
+.../app/javascript/edu/
+.../app/assets/stylesheets/edu/scss/
+.../app/assets/stylesheets/edu/vendor/
 
 
 - app
