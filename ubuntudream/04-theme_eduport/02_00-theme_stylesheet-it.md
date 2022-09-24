@@ -41,6 +41,8 @@ copy folder• .../theme_eduport/assets/
 paste it in• .../app/assets/stylesheets/edu/
 ```
 
+tabella
+
 copia da                  | incolla in
 ------------------------------------------------------------
 .../theme_eduport/assets/ | .../app/assets/stylesheets/edu/
