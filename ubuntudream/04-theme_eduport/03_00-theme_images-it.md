@@ -21,9 +21,9 @@ Adesso reimpostiamo i puntamenti in modo da poterle visualizzare sulle view.
 Cambiamo le chiamate alle immagini dallo standard html a quello con gli helpers Rails.
 Adattiamo da codice HTML `h•` a codice Rails `r•`.
 
-***MENU***
-
 - - - -
+
+***NAVIGATION MENU (navbar)***
 
 Immagine 1: il logo "Eduport" in alto a destra nel menu.
 
@@ -144,9 +144,9 @@ h• <img class="avatar-img rounded-circle shadow" src="assets/images/avatar/01.
 r• <%= image_tag "edu/avatar/01.jpg", class: "avatar-img rounded-circle shadow", alt: "avatar" %>
 ```
 
-***MAIN CONTENT START***
-
 - - - -
+
+***MAIN CONTENT START***
 
 Immagine 1: "icona atomo" alla destra del titolo "Limitless learning at your fingertips".
 
