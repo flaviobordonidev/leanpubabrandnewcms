@@ -56,7 +56,7 @@ Cartella copiata            | sottocartelle
 
 
 
-## AttiviVediamo i files stylesheet da usare
+## Attiviamo i files stylesheet da usare
 
 Nella parte "header" del file abbiamo Le chiamate ai files stylesheets. La principale è al file `assets/css/style`. Partiamo da qui.
 
@@ -96,7 +96,7 @@ Quindi abbiamo:
 
 
 
-## preview
+## Verifichiamo preview
 
 ```bash
 $ rails s -b 192.168.64.3
@@ -166,17 +166,27 @@ potevamo eseguire `$ rails asset:precompile` oppure seguire il consigli dell'err
 ```
 
 
+## Variante di debug
+
+Si può risolvere anche in un punto diverso di Rails: su config/initializers/assets.rb.
+
+***codice n/a - .../config/initializers/assets.rb - line:1***
+
+```ruby
+Rails.application.config.assets.precompile += %w( bootstrap.min.js popper.js edu/scss/style.css)
+```
+
+
 
 ## Verifichiamo preview
 
 ```bash
-$ sudo service postgresql start
-$ rails s
+$ rails s -b 192.168.64.3
 ```
 
 Andiamo con il browser sull'URL:
 
-- http://192.168.64.3:3000/mockups/edu_index_4
+- http://192.168.64.3:3000
 
 ![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_fig02-edu_index_4.png)
 
@@ -186,17 +196,8 @@ Andiamo con il browser sull'URL:
 
 ```bash
 $ git add -A
-$ git commit -m "Implement Eduport index-4"
+$ git commit -m "Implement Eduport index style"
 ```
-
-
-
-## Pubblichiamo su Heroku
-
-```bash
-$ git push heroku bs:main
-```
-
 
 
 ## Chiudiamo il branch
@@ -205,8 +206,8 @@ se abbiamo finito le modifiche e va tutto bene:
 
 ```bash
 $ git checkout main
-$ git merge bs
-$ git branch -d bs
+$ git merge ep
+$ git branch -d ep
 ```
 
 
@@ -218,8 +219,14 @@ $ git push origin main
 ```
 
 
+## Andiamo in produzione con render.com
+
+Eseguiamo il deploy manuale scegliendo "da ultimo commit".
+
+
+
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_00-import_page.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_00-index-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/01_00-steps.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/03_00-theme_images-it.md)
