@@ -41,17 +41,15 @@ copy folder• .../theme_eduport/assets/
 paste it in• .../app/assets/stylesheets/edu/
 ```
 
-tabella
 
-testo   | tesino
-----------------
-bla     | cla
-cool    | roplo
-
+Left aligned Header | Right aligned Header | Center aligned Header
+| :---              | ---:                 | :---:
+Content Cell        | Content Cell         | Content Cell <br/> seconda riga
+Content Cell        | Content Cell         | Content Cell
 
 
 copia da                  | incolla in
-------------------------------------------------------------
+------------------------- | --------------------------------
 .../theme_eduport/assets/ | .../app/assets/stylesheets/edu/
 
 
