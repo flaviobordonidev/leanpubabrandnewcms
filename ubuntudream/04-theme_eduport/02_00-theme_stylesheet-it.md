@@ -12,16 +12,40 @@ Il secondo è più semplice sia come implementazione iniziale che dei successivi
 Noi scegliamo il secondo approccio.
 
 
+## Vediamo la struttura del tema Eduport
+
+Nella documentazione vediamo questa struttura di cartelle/directories dentro il tema Eduport.
+Vediamo la struttura dentro la cartella "template", che noi chiamiamo "theme_eduport", perché questoa cartella contiene tutti i files e gli "assets" (stylesheets e javascripts) che usa il tema.
+
+- docs
+  Includes theme's documentation files (on theme editing and setup).
+- assets
+  Includes all assets files, like CSS, Images, JS, SCSS and plugins used in theme
+  - css
+    Includes .css file, used in theme
+  - images
+    Includes all images, used in .html files.
+  - js
+    Includes plugin's initialization file
+  - scss
+    Includes all of raw source files that are used to create the final CSS that is included in theme
+  - vendor
+    Includes all plugins files.
+- index.html
+  You will find here all .html files used in theme
+
+
 
 ## Copiamo tutta la cartella *assets* dal tema *eduport*
 
 Copiamo tutta la cartella contenente lo stylesheets e javascripts dal tema eduport alla nostra applicazione Rails.
 
 ```bash
-da• .../theme_eduport/assets
- a• .../app/assets/stylesheets/edu/
+copy folder• .../theme_eduport/assets/
+paste it in• .../app/assets/stylesheets/edu/
 ```
 
+Nel tema *Eduport* all'interno della cartella *template/assets* ci sono le seguenti cartelle:
 
 
 
