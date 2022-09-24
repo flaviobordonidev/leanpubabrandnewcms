@@ -178,7 +178,9 @@ Rails.application.config.assets.precompile += %w( bootstrap.min.js popper.js edu
 
 
 
-## Verifichiamo preview
+## Verifica
+
+Verifichiamo preview
 
 ```bash
 $ rails s -b 192.168.64.3
