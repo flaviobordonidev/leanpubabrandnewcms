@@ -17,21 +17,21 @@ Noi scegliamo il secondo approccio.
 Nella documentazione vediamo questa struttura di cartelle/directories dentro il tema Eduport.
 Vediamo la struttura dentro la cartella "template", che noi chiamiamo "theme_eduport", perché questoa cartella contiene tutti i files e gli "assets" (stylesheets e javascripts) che usa il tema.
 
-- docs
+- `docs/`<br/>
   Includes theme's documentation files (on theme editing and setup).
-- assets
+- `assets/`<br/>
   Includes all assets files, like CSS, Images, JS, SCSS and plugins used in theme
-  - css
+  - `css/`<br/>
     Includes .css file, used in theme
-  - images
+  - `images/`<br/>
     Includes all images, used in .html files.
-  - js
+  - `js/`<br/>
     Includes plugin's initialization file
-  - scss
+  - `scss/`<br/>
     Includes all of raw source files that are used to create the final CSS that is included in theme
-  - vendor
+  - `vendor/`<br/>
     Includes all plugins files.
-- index.html
+- `index.html`<br/>
   You will find here all .html files used in theme
 
 
