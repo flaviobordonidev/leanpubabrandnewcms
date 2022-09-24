@@ -12,13 +12,11 @@ Il secondo è più semplice sia come implementazione iniziale che dei successivi
 Noi scegliamo il secondo approccio.
 
 
-## Vediamo la struttura del tema Eduport
+## Vediamo la cartella *assets* del tema Eduport
 
 Nella documentazione vediamo questa struttura di cartelle/directories dentro il tema Eduport.
-Vediamo la struttura dentro la cartella "template", che noi chiamiamo "theme_eduport", perché questoa cartella contiene tutti i files e gli "assets" (stylesheets e javascripts) che usa il tema.
+Vediamo la struttura dentro la cartella "assets/", che contiene tutti i files degli "assets" (stylesheets e javascripts) che usa il tema.
 
-- `docs/`<br/>
-  Includes theme's documentation files (on theme editing and setup).
 - `assets/`<br/>
   Includes all assets files, like CSS, Images, JS, SCSS and plugins used in theme
   - `css/`<br/>
@@ -31,12 +29,10 @@ Vediamo la struttura dentro la cartella "template", che noi chiamiamo "theme_edu
     Includes all of raw source files that are used to create the final CSS that is included in theme
   - `vendor/`<br/>
     Includes all plugins files.
-- `index.html`<br/>
-  You will find here all .html files used in theme
 
 
 
-## Copiamo tutta la cartella *assets* dal tema *eduport*
+## Copiamo le sottocartelle di *assets* che ci interessano
 
 Copiamo tutta la cartella contenente lo stylesheets e javascripts dal tema eduport alla nostra applicazione Rails.
 
@@ -45,7 +41,54 @@ copy folder• .../theme_eduport/assets/
 paste it in• .../app/assets/stylesheets/edu/
 ```
 
+copia da                  | incolla in
+------------------------------------------------------------
+.../theme_eduport/assets/ | .../app/assets/stylesheets/edu/
+
+
+**Copiamo i files dell'asset_pipeline (stylesheets e javascripts)**
+
 Nel tema *Eduport* all'interno della cartella *template/assets* ci sono le seguenti cartelle:
+
+- ***css*** -> questa cartella **non** ci serve perché ha i sorgenti già compilati
+- ***images*** -> copiamo il contenuto in ***.../app/assets/images/edu/***
+- ***js*** -> copiamo il contenuto in ***.../app/javascript/edu/***
+- ***scss*** -> copiamo il contenuto in ***.../app/assets/stylesheets/edu/scss/***
+- ***vendor*** -> copiamo il contenuto in ***.../app/assets/stylesheets/edu/vendor/***
+
+Una volta copiati tutti i contenuti delle quattro cartelle nelle rispettive cartelle della nostra app siamo pronti per attivarle.
+
+> le varie cartelle ***edu*** le creiamo noi e poi ci copiamo i vari files.
+
+Il risultato finale è quindi:
+
+- app
+  - assets
+    - images
+      - edu
+        - about
+        - avatar
+        - bg
+        - ...
+        - logo.svg
+    - stylesheets
+      - edu
+        - scss
+          - components
+          - custom
+          - dark
+          - ...
+          - style.scss
+        - vendor
+          - animate
+          - aos
+          - ...
+          - tiny-slider
+  - javascript
+    - edu
+      - functions.js
+
+
 
 
 
@@ -137,49 +180,6 @@ Copiamo le prime righe di codice ma "Bootstrap core" lo abbiamo già implementat
 
 
 
-
-
-## Copiamo i files dell'asset_pipeline (stylesheets e javascripts)
-
-Nel tema *Eduport* all'interno della cartella *template/assets* ci sono le seguenti cartelle:
-
-- ***css*** -> questa cartella **non** ci serve perché ha i sorgenti già compilati
-- ***images*** -> copiamo il contenuto in ***.../app/assets/images/edu/***
-- ***js*** -> copiamo il contenuto in ***.../app/javascript/edu/***
-- ***scss*** -> copiamo il contenuto in ***.../app/assets/stylesheets/edu/scss/***
-- ***vendor*** -> copiamo il contenuto in ***.../app/assets/stylesheets/edu/vendor/***
-
-Una volta copiati tutti i contenuti delle quattro cartelle nelle rispettive cartelle della nostra app siamo pronti per attivarle.
-
-> le varie cartelle ***edu*** le creiamo noi e poi ci copiamo i vari files.
-
-Il risultato finale è quindi:
-
-- app
-  - assets
-    - images
-      - edu
-        - about
-        - avatar
-        - bg
-        - ...
-        - logo.svg
-    - stylesheets
-      - edu
-        - scss
-          - components
-          - custom
-          - dark
-          - ...
-          - style.scss
-        - vendor
-          - animate
-          - aos
-          - ...
-          - tiny-slider
-  - javascript
-    - edu
-      - functions.js
 
 
 
