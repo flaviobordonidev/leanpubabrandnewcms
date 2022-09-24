@@ -38,18 +38,29 @@ Copiamo i files dell'asset_pipeline (stylesheets e javascripts) dal tema Eduport
 
 copia da                          | incolla in
 | :---                            | :---
-.../theme_eduport/assets/css/     | questa cartella **non** la copiamo perché ha i sorgenti già compilati
+.../theme_eduport/assets/css/     | *questa cartella **non** la copiamo perché ha i sorgenti già compilati*
 .../theme_eduport/assets/images/  | .../app/assets/images/edu/
 .../theme_eduport/assets/js/      | .../app/javascript/edu/
 .../theme_eduport/assets/scss/    | .../app/assets/stylesheets/edu/scss/
 .../theme_eduport/assets/vendor/  | .../app/assets/stylesheets/edu/vendor/
 
 
-Una volta copiati tutti i contenuti delle quattro cartelle nelle rispettive cartelle della nostra app siamo pronti per attivarle.
+> Le varie sottocartelle ***edu/*** le creiamo noi.
 
-> le varie cartelle ***edu*** le creiamo noi e poi ci copiamo i vari files.
+Vediamo il risultato finale.
 
-Il risultato finale è quindi:
+.../app/
+| :---
+.../app/assets/images/edu/ <br/> 
+  about <br/>
+  avatar <br/>
+  bg  <br/>
+  ...  <br/>
+  logo.svg
+.../app/javascript/edu/
+.../app/assets/stylesheets/edu/scss/
+.../app/assets/stylesheets/edu/vendor/
+
 
 - app
   - assets
