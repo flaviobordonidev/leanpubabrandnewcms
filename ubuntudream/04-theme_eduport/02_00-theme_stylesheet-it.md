@@ -56,55 +56,22 @@ Cartella copiata            | sottocartelle
 
 
 
-
-
-
-
-
-
-  - javascript
-    - edu
-      - functions.js
-
-
-
-
-
-
-
-
-
-## Vediamo i files stylesheet da usare
+## AttiviVediamo i files stylesheet da usare
 
 Nella parte "header" del file abbiamo Le chiamate ai files stylesheets. La principale è al file `assets/css/style`. Partiamo da qui.
 
 ***code n/a - .../app/views-layouts-edu_demo.html - line:34***
 
 ```html+erb
-  <!-- Theme CSS -->
-  <link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <!-- Theme CSS -->
+    <!--<link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">-->
 ```
 
 Ma nel tema c'è anche la cartella `scss` con il file `style.scss` e questa la preferiamo perché utilizza SAS (scss), che è meglio del semplice `css`. Quindi usiamo quest'ultima.
 
-***code 01 - .../theme_eduport/assets/scss/style.scss - line:1***
+> Tra l'altro la cartella `.../theme_eduport/assets/css/` non l'abbiamo neanche copiata.
 
-```scss
-// Bootstrap variables
-@import "../vendor/bootstrap/scss/functions";
-@import "../vendor/bootstrap/scss/variables";
-
-// Theme variables
-@import "variables";
-
-// User variables
-@import "user-variables";
-
-// Bootstrap core
-@import "../vendor/bootstrap/scss/bootstrap";
-```
-
-Potremmo copiare il file nella nostra applicazione Rails in `.../app/assets/stylesheets/scss/` ed aggiungere la chiamata sul layout.
+Per usare il file `style.scss` lo richiamiamo nel layout/edu_demo usando il relativo helper come da convenzione Rails.
 
 > Le chiamate ai files di stylesheet e di javascript sono diverse tra HTML e Rails.<br/>
 > Rails, per convenzione usa gli helpers.<br/>
@@ -114,110 +81,37 @@ Potremmo copiare il file nella nostra applicazione Rails in `.../app/assets/styl
 
 ```html+erb
 h• <link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">
-r• <%= stylesheet_link_tag 'scss/style', id: "style-switch", 'data-turbolinks-track': 'reload' %>
+r• <%= stylesheet_link_tag 'edu/scss/style', id: "style-switch", 'data-turbolinks-track': 'reload' %>
 ```
 
-Ma preferiamo spostare un po' alla volta il codice da `scss/style.scss` alla nostra `stylesheets/application.scss`, che è il file di default in cui abbiamo già fatto anche la chiamata `import` per bootstrap.
+Quindi abbiamo:
 
-> USIAMO LE CHIAMATE STYLESHEET di DEFAULT di layouts/application. quelle che puntano a stylesheets/application.scss
->
-> Migriamo poi piano piano il codice dal tema alla nostra app popolando application.scss con quanto riportato su `...eduport/scss/stylesheet`
->
-> NON CI COPIAMO TUTTE LE CARTELLE COSì come sono perché perderemmo molto senza rendercene conto.
+***code 01 - .../app/views-layouts-edu_demo.html - line:34***
 
-
-
-## Cominciamo a spostare il codice di style.scss
-
-Copiamo le prime righe di codice ma "Bootstrap core" lo abbiamo già implementato in Rails, quindi quella linea la commentiamo.
-
-***code 02 - .../app/assets/stylesheets/application.scss - line:1***
-
-```scss
-// Bootstrap variables
-@import "../vendor/bootstrap/scss/functions";
-@import "../vendor/bootstrap/scss/variables";
-
-// Theme variables
-@import "variables";
-
-// User variables
-@import "user-variables";
-
-// Bootstrap core
-@import "../vendor/bootstrap/scss/bootstrap";
+```html+erb
+    <!-- Theme CSS -->
+    <!--<link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">-->
+    <%= stylesheet_link_tag 'edu/scss/style', id: "style-switch", 'data-turbolinks-track': 'reload' %>
 ```
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-## Precompile per lo stylesheets
-
-Nell'asset_pipeline l'unico file che si può chiamare direttamente dalla view è "assets/stylesheets/application.scss" questo file è detto file manifest ed è da questo file che dovremmo chiamare tutti gli altri.
-Nel nostro caso siccome richiamiamo i vari files di style direttamente dalla view dobbiamo dichiararle all'applicazione. Questa "dichiarazione" è chiamata "precompile". 
-
-Per i nuovi files si può usare tutte le volte che si fanno modifiche il comando
+## preview
 
 ```bash
-$ rails assets:precompile
+$ rails s -b 192.168.64.3
 ```
 
-Oppure si può aggiungere al config/application che fa in automatico il precompile.
+facendo refresh dell'url `https://192.168.64.3:3000` abbiamo un errore sull'asset precopile.
 
-***code n/a - .../config/application.rb - line:21***
-
-```ruby
-    # precompile assets pofo stylesheets                                                             
-    config.assets.precompile += ['pofo/css/animate.css',
-                                 'pofo/css/bootstrap.min.css',
-                                 'pofo/css/et-line-icons.css',
-                                 'pofo/css/font-awesome.min.css',
-                                 'pofo/css/themify-icons.css',
-                                 'pofo/css/swiper.min.css',
-                                 'pofo/css/justified-gallery.min.css',
-                                 'pofo/css/magnific-popup.css',
-                                 'pofo/revolution/css/settings.css',
-                                 'pofo/revolution/css/layers.css',
-                                 'pofo/revolution/css/navigation.css',
-                                 'pofo/css/bootsnav.css',
-                                 'pofo/css/style.css',
-                                 'pofo/css/responsive.css'
-                                ]
-```
-
-Non seguiamo la convenzione Rails dell'asset_pipeline che prevede di passare per i files manifest perché non li vogliamo attivare per tutta l'applicazione, ma vogliamo richiamarli solo dalle pagine in cui è espressamente fatta la chiamata.
-
-I> Attenzione!
-I>
-I> Modificando application.rb è necessario riavviare il server rails (rails s ...) per includere le modifiche.
+> lo stesso errore lo vediamo se forziamo l'asset precompile da terminale con il comando:<br/>
+> `$ rails asset:precompile`
 
 
 
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/15-theme-edu/02-mockups-first-page/02_fig01-edu_index_4.png)
+## Risolviamo l'errore di asset precompile
 
-
-
----
-
-
-
-## Risolviamo un problema su una linea di codice scss
-
-Domanda
-
-I’m installing your theme Eduport on Ruby on Rails.
-
-To make it works I had to comment a row of scss code regarding “box-shadow” otherwise I receive the below error:
+L'errore che riceviamo è il seguente:
 
 ```bash
 ubuntu@ubuntufla:~/bl7_0 (bs)$rails assets:precompile
@@ -235,7 +129,7 @@ SassC::SyntaxError: Error: Function rgb is missing argument $green.
 Tasks: TOP => assets:precompile
 ```
 
-If I comment the line as the below code everything works fine.
+Commentiamo la riga che ci dà l'errore e la sostituiamo con un comando analogo che non da l'errore.
 
 *** …/scss/custom/_navbar.scss line 145 ***
 
@@ -244,6 +138,7 @@ If I comment the line as the below code everything works fine.
 
     .navbar-collapse {
      //box-shadow: 0px 10px 30px rgb(83 88 93 / 40%);
+     box-shadow: 0px 10px 30px rgba(83, 88, 93, 0.4);
      position: absolute;
      left: 0;
      right: 0;
@@ -251,34 +146,7 @@ If I comment the line as the below code everything works fine.
      background: $body-bg;
      border-top: 1px solid rgba(0, 0, 0, 0.1);
      }
-
-    .navbar-collapse .navbar-nav .nav-item {
-     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-     padding: 8px 30px;
-    }
 ```
-
-How can I solve this issue without commenting the line of code?
-
-Thanks
-
----
-
-Risposta
-
-Hi Flavio,
-
-Try to replace
-
-`box-shadow: 0px 10px 30px rgb(83 88 93 / 40%);`
-
-to
-
-`box-shadow: 0px 10px 30px rgba(83, 88, 93, 0.4);`
-
-in navbar.scss it will work.
-
-Thanks
 
 
 
