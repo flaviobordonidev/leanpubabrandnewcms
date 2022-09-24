@@ -50,7 +50,7 @@ copia da                          | incolla in
 Vediamo il risultato finale.
 
 Cartella copiata            | sottocartelle
-| :---
+| :---                      | :---
 .../app/assets/images/edu/  | - about <br/> - avatar <br/> - bg <br/> - ... <br/> - logo.svg
 .../app/javascript/edu/     | - bla
 .../app/assets/stylesheets/edu/scss/    | -bla
