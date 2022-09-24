@@ -40,10 +40,9 @@ copia da                          | incolla in
 | :---                            | :---
 .../theme_eduport/assets/css/     | *questa cartella **non** la copiamo perché ha i sorgenti già compilati*
 .../theme_eduport/assets/images/  | .../app/assets/images/edu/
-.../theme_eduport/assets/js/      | .../app/javascript/edu/
+.../theme_eduport/assets/js/      | *questa carrella la copiamo più avanti*
 .../theme_eduport/assets/scss/    | .../app/assets/stylesheets/edu/scss/
 .../theme_eduport/assets/vendor/  | .../app/assets/stylesheets/edu/vendor/
-
 
 > Le varie sottocartelle ***edu/*** le creiamo noi.
 
@@ -52,33 +51,17 @@ Vediamo il risultato finale.
 Cartella copiata            | sottocartelle
 | :---                      | :---
 .../app/assets/images/edu/  | - about <br/> - avatar <br/> - bg <br/> - ... <br/> - logo.svg
-.../app/javascript/edu/     | - bla
-.../app/assets/stylesheets/edu/scss/    | -bla
-.../app/assets/stylesheets/edu/vendor/  | -bla
+.../app/assets/stylesheets/edu/scss/    | - components <br/> - custom <br/> - dark <br/> - ... <br/> - style.scss
+.../app/assets/stylesheets/edu/vendor/  | - animate <br/> - aos <br/> - ... <br/> - tiny-slider
 
 
-- app
-  - assets
-    - images
-      - edu
-        - about
-        - avatar
-        - bg
-        - ...
-        - logo.svg
-    - stylesheets
-      - edu
-        - scss
-          - components
-          - custom
-          - dark
-          - ...
-          - style.scss
-        - vendor
-          - animate
-          - aos
-          - ...
-          - tiny-slider
+
+
+
+
+
+
+
   - javascript
     - edu
       - functions.js
