@@ -51,7 +51,7 @@ Vediamo il risultato finale.
 
 .../app/
 | :---
-.../app/assets/images/edu/ <br/>    about <br/>     avatar <br/>    bg  <br/>     ... <br/>     logo.svg
+- .../app/assets/images/edu/ <br/>  - about <br/>     avatar <br/>    bg  <br/>     ... <br/>     logo.svg
 .../app/javascript/edu/
 .../app/assets/stylesheets/edu/scss/
 .../app/assets/stylesheets/edu/vendor/
