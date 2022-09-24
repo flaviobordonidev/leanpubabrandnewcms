@@ -49,7 +49,7 @@ copia da                          | incolla in
 
 Vediamo il risultato finale.
 | :---
-.../app/assets/images/edu/ 
+.../app/assets/images/edu/ <br/>
   - about
   - avatar
   - bg
