@@ -48,16 +48,13 @@ copia da                          | incolla in
 > Le varie sottocartelle ***edu/*** le creiamo noi.
 
 Vediamo il risultato finale.
+
+Cartella copiata            | sottocartelle
 | :---
-.../app/assets/images/edu/ <br/>
-  - about
-  - avatar
-  - bg
-  - ...
-  - logo.svg
-.../app/javascript/edu/
-.../app/assets/stylesheets/edu/scss/
-.../app/assets/stylesheets/edu/vendor/
+.../app/assets/images/edu/  | - about <br/> - avatar <br/> - bg <br/> - ... <br/> - logo.svg
+.../app/javascript/edu/     | - bla
+.../app/assets/stylesheets/edu/scss/    | -bla
+.../app/assets/stylesheets/edu/vendor/  | -bla
 
 
 - app
