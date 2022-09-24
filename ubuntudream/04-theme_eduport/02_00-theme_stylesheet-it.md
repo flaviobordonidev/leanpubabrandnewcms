@@ -34,34 +34,16 @@ Vediamo la struttura dentro la cartella "assets/", che contiene tutti i files de
 
 ## Copiamo le sottocartelle di *assets* che ci interessano
 
-Copiamo tutta la cartella contenente lo stylesheets e javascripts dal tema eduport alla nostra applicazione Rails.
+Copiamo i files dell'asset_pipeline (stylesheets e javascripts) dal tema Eduport alla nostra applicazione Rails.
 
-```bash
-copy folder• .../theme_eduport/assets/
-paste it in• .../app/assets/stylesheets/edu/
-```
+copia da                          | incolla in
+| :---                            | :---
+.../theme_eduport/assets/css/     | questa cartella **non** la copiamo perché ha i sorgenti già compilati
+.../theme_eduport/assets/images/  | .../app/assets/images/edu/
+.../theme_eduport/assets/js/      | .../app/javascript/edu/
+.../theme_eduport/assets/scss/    | .../app/assets/stylesheets/edu/scss/
+.../theme_eduport/assets/vendor/  | .../app/assets/stylesheets/edu/vendor/
 
-
-Left aligned Header | Right aligned Header | Center aligned Header
-| :---              | ---:                 | :---:
-Content Cell        | Content Cell         | Content Cell <br/> seconda riga
-Content Cell        | Content Cell         | Content Cell
-
-
-copia da                  | incolla in
-------------------------- | --------------------------------
-.../theme_eduport/assets/ | .../app/assets/stylesheets/edu/
-
-
-**Copiamo i files dell'asset_pipeline (stylesheets e javascripts)**
-
-Nel tema *Eduport* all'interno della cartella *template/assets* ci sono le seguenti cartelle:
-
-- ***css*** -> questa cartella **non** ci serve perché ha i sorgenti già compilati
-- ***images*** -> copiamo il contenuto in ***.../app/assets/images/edu/***
-- ***js*** -> copiamo il contenuto in ***.../app/javascript/edu/***
-- ***scss*** -> copiamo il contenuto in ***.../app/assets/stylesheets/edu/scss/***
-- ***vendor*** -> copiamo il contenuto in ***.../app/assets/stylesheets/edu/vendor/***
 
 Una volta copiati tutti i contenuti delle quattro cartelle nelle rispettive cartelle della nostra app siamo pronti per attivarle.
 
