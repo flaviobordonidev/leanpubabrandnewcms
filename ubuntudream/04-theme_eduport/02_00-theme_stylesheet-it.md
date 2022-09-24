@@ -43,6 +43,13 @@ paste it in• .../app/assets/stylesheets/edu/
 
 tabella
 
+testo   | tesino
+----------------
+bla     | cla
+cool    | roplo
+
+
+
 copia da                  | incolla in
 ------------------------------------------------------------
 .../theme_eduport/assets/ | .../app/assets/stylesheets/edu/
