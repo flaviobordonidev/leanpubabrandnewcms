@@ -52,34 +52,8 @@ Pinning "@fortawesome/free-regular-svg-icons" to vendor/javascript/@fortawesome/
 Pinning "@fortawesome/free-solid-svg-icons" to vendor/javascript/@fortawesome/free-solid-svg-icons.js via download from https://ga.jspm.io/npm:@fortawesome/free-solid-svg-icons@6.2.0/index.mjs
 ubuntu@ubuntufla:~/ubuntudream (main)$
 
-
-
-
-ubuntu@ubuntufla:~/ubuntudream (main)$./bin/importmap pin @fortawesome/fontawesome-free \
->                     @fortawesome/fontawesome-svg-core \
->                     @fortawesome/free-brands-svg-icons \
->                     @fortawesome/free-regular-svg-icons \
->                     @fortawesome/free-solid-svg-icons
-Pinning "@fortawesome/fontawesome-free" to https://ga.jspm.io/npm:@fortawesome/fontawesome-free@6.2.0/js/fontawesome.js
-Pinning "@fortawesome/fontawesome-svg-core" to https://ga.jspm.io/npm:@fortawesome/fontawesome-svg-core@6.2.0/index.mjs
-Pinning "@fortawesome/free-brands-svg-icons" to https://ga.jspm.io/npm:@fortawesome/free-brands-svg-icons@6.2.0/index.mjs
-Pinning "@fortawesome/free-regular-svg-icons" to https://ga.jspm.io/npm:@fortawesome/free-regular-svg-icons@6.2.0/index.mjs
-Pinning "@fortawesome/free-solid-svg-icons" to https://ga.jspm.io/npm:@fortawesome/free-solid-svg-icons@6.2.0/index.mjs
-ubuntu@ubuntufla:~/ubuntudream (main)$
 ```
 
-Questo inserisce le seguenti linee di codice su *importmap.rb*.
-E questo importam le librerie nella nostra app.
-
-***codice 01 - .../config/importmap.rb - line:10***
-
-```ruby
-pin "@fortawesome/fontawesome-free", to: "https://ga.jspm.io/npm:@fortawesome/fontawesome-free@6.2.0/js/fontawesome.js"
-pin "@fortawesome/fontawesome-svg-core", to: "https://ga.jspm.io/npm:@fortawesome/fontawesome-svg-core@6.2.0/index.mjs"
-pin "@fortawesome/free-brands-svg-icons", to: "https://ga.jspm.io/npm:@fortawesome/free-brands-svg-icons@6.2.0/index.mjs"
-pin "@fortawesome/free-regular-svg-icons", to: "https://ga.jspm.io/npm:@fortawesome/free-regular-svg-icons@6.2.0/index.mjs"
-pin "@fortawesome/free-solid-svg-icons", to: "https://ga.jspm.io/npm:@fortawesome/free-solid-svg-icons@6.2.0/index.mjs"
-```
 
 Per poter usare le librerie importate nella nostra app dobbiamo importarle in *application.js*.
 
@@ -94,12 +68,18 @@ import "@fortawesome/fontawesome-free"
 library.add(far, fas, fab)
 ```
 
+
+
+## Verifichiamo in preview
+
 Precompiliamo il tutto ed attiviamo il preview.
 
 ```bash
 $ rails assets:precompile
 $ rails s -b 192.168.64.3
 ```
+
+> la precompilazione è opzionale.
 
 Esempio
 
@@ -114,40 +94,85 @@ Le icone sono finalmente visualizzate ^_^.
 
 
 
+## Alternativa - importmap tramite CDN
 
+Il file di importmap lo avremmo potuto aggiornare con delle chiamate CDN omettendo l'opzione `--download`.
 
+```bash
+$ ./bin/importmap pin @fortawesome/fontawesome-free \
+                    @fortawesome/fontawesome-svg-core \
+                    @fortawesome/free-brands-svg-icons \
+                    @fortawesome/free-regular-svg-icons \
+                    @fortawesome/free-solid-svg-icons
+```
 
+Esempio
 
+```bash
+ubuntu@ubuntufla:~/ubuntudream (main)$./bin/importmap pin @fortawesome/fontawesome-free \
+>                     @fortawesome/fontawesome-svg-core \
+>                     @fortawesome/free-brands-svg-icons \
+>                     @fortawesome/free-regular-svg-icons \
+>                     @fortawesome/free-solid-svg-icons
+Pinning "@fortawesome/fontawesome-free" to https://ga.jspm.io/npm:@fortawesome/fontawesome-free@6.2.0/js/fontawesome.js
+Pinning "@fortawesome/fontawesome-svg-core" to https://ga.jspm.io/npm:@fortawesome/fontawesome-svg-core@6.2.0/index.mjs
+Pinning "@fortawesome/free-brands-svg-icons" to https://ga.jspm.io/npm:@fortawesome/free-brands-svg-icons@6.2.0/index.mjs
+Pinning "@fortawesome/free-regular-svg-icons" to https://ga.jspm.io/npm:@fortawesome/free-regular-svg-icons@6.2.0/index.mjs
+Pinning "@fortawesome/free-solid-svg-icons" to https://ga.jspm.io/npm:@fortawesome/free-solid-svg-icons@6.2.0/index.mjs
+ubuntu@ubuntufla:~/ubuntudream (main)$
+```
 
+Questo inserirebbe le seguenti linee di codice su *importmap.rb*.
+E questo mette a disposizione le librerie nella nostra app attraverso CDN (ossia repositories esterni).
 
-***code n/a - .../config/importmap.rb - line:10***
+***codice n/a - .../config/importmap.rb - line:10***
 
 ```ruby
 pin "@fortawesome/fontawesome-free", to: "https://ga.jspm.io/npm:@fortawesome/fontawesome-free@6.2.0/js/fontawesome.js"
-```
-
-Aggiorniamolo per includere tutti i files (all).
-
-***code 01 - .../config/importmap.rb - line:10***
-
-```ruby
-pin "@fortawesome/fontawesome-free", to: "https://ga.jspm.io/npm:@fortawesome/fontawesome-free@6.2.0/js/all.js"
-```
-
-
-## Aggiorniamo javascript/application
-
-***code 02 - .../app/javascripts/application.js - line:08***
-
-```javascript
-import "@fortawesome/fontawesome-free"
+pin "@fortawesome/fontawesome-svg-core", to: "https://ga.jspm.io/npm:@fortawesome/fontawesome-svg-core@6.2.0/index.mjs"
+pin "@fortawesome/free-brands-svg-icons", to: "https://ga.jspm.io/npm:@fortawesome/free-brands-svg-icons@6.2.0/index.mjs"
+pin "@fortawesome/free-regular-svg-icons", to: "https://ga.jspm.io/npm:@fortawesome/free-regular-svg-icons@6.2.0/index.mjs"
+pin "@fortawesome/free-solid-svg-icons", to: "https://ga.jspm.io/npm:@fortawesome/free-solid-svg-icons@6.2.0/index.mjs"
 ```
 
 
 
+## Archiviamo su git
+
+```bash
+$ git add -A
+$ git commit -m "Implement Eduport index style"
+```
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+```bash
+$ git checkout main
+$ git merge ep
+$ git branch -d ep
+```
 
 
 
+## Facciamo un backup su Github
+
+```bash
+$ git push origin main
+```
 
 
 
+## Andiamo in produzione con render.com
+
+Eseguiamo il deploy manuale scegliendo "da ultimo commit".
+
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_00-index-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/03_00-theme_images-it.md)

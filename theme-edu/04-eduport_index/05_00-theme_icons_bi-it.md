@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 2.2 - Attiviamo le icone del tema
+# <a name="top"></a> Cap 2.2 - Attiviamo le icone Bootstrap icons (bi)
 
 Il tema Eduport usa Bootstrap Icons. 
 

@@ -1,9 +1,23 @@
-# <a name="top"></a> Cap 5.1 - Overview
+# <a name="top"></a> Cap 1.2 - Selezione delle pagine
 
 In questi capitoli creeremo i mockups della nostra app. Ossia delle pagine statiche con i dati inseriti direttamente nel codice, i "segnaposto", per definire la grafica della nostra app.
 
 Quindi modifichiamo e rielaboriamo le pagine html del tema eduport adattandole alle nostre esigenze.
 
+
+## La struttura della nostra applicazione
+
+Di seguito, in ordine alfabetico, le varie pagine della nostra applicazione `ubuntudream`.
+
+Nome file     | Descrizione
+| :--         | :--
+login         | per mettere utente e password ed accedere all'applicazione.
+lessons_index | l'elenco di tutte le alule (che non è la homepage).
+lessons_show  | la presentazione della lezione <br/> (ho scelto una lezione e mi si presenta una pagina prima dei vari *steps*)
+lessons_stesps_show | i vari video della lezione con seguente modulo per la risposta. <br/> Per esecuzione esercizio.
+lessons_show_end  | pagina per il completamento dell'esercizio
+sign_up           | per registrarsi come nuovo utente
+users_show        | per account utente
 
 
 ## Selezioniamo le pagine dal tema edu
@@ -12,31 +26,30 @@ Selezioniamo le pagine che più si avvicinano a quello che sarà la nostra appli
 
 La selezione delle pagine dal tema *eduport*:
 
-- per l'elenco di tutte le alule (che non è la homepage) lessons_index o edu_ud_list
+- lessons_index
   - file:///Users/FB/eduport_v1.2.0/template/index.html
   - file:///Users/FB/eduport_v1.2.0/template/course-list.html
   - file:///Users/FB/eduport_v1.2.0/template/course-grid.html
 
-- per la presentazione della lezione (ho scelto una lezione e mi si presenta una pagina prima dei vari *steps*)
+- lessons_show  
   - file:///Users/FB/eduport_v1.2.0/template/course-detail-min.html
   - file:///Users/FB/eduport_v1.2.0/template/course-detail.html
   - file:///Users/FB/eduport_v1.2.0/template/course-detail-adv.html
   - file:///Users/FB/eduport_v1.2.0/template/admin-course-detail.html
 
-- per esecuzione esercizio
+- lessons_stesps_show
   - file:///Users/FB/eduport_v1.2.0/template/course-video-player.html
 
-- per completamento lezione/esercizio
+- lessons_show_end
   - file:///Users/FB/eduport_v1.2.0/template/course-added.html
 
-
-- per fare login
+- login
   - file:///Users/FB/eduport_v1.2.0/template/sign-in.html
 
-- per registrarsi come nuovo utente
+- sign_up
   - file:///Users/FB/eduport_v1.2.0/template/sign-up.html
 
-- per account utente
+- users_show
   - file:///Users/FB/eduport_v1.2.0/template/instructor-edit-profile.html
   - 
 
