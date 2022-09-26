@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 2.2 - pagina di login
+# <a name="top"></a> Cap 2.2 - Mockup login
 
 Prima di entrare nella nostra applicazione si presenta la sola pagina di login.
 Questo ci permette di filtrare tutti i "curiosi" che soddisferanno la loro curiosità sul sito web `ubuntudream.com`. Invece chi arriva sulla nostra applicazione Rails `ubuntudream` sono utenti che hanno già la password di accesso ed entrano per fare gli esercizi di visualizzazione.

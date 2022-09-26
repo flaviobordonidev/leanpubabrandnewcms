@@ -24,3 +24,22 @@ Vediamo la prima modifica.
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/01_01-db-migrate-xxx_create_lessons.rb)
 
+
+
+
+
+Alla riga 321 metto l'icona con il simbolo del *play* al posto del carrello sull'hover.
+
+***code 01 - .../app/views/mockups/lessons_index.html.erb - line:321***
+
+```html+erb
+									<%# <i class="fas fa-shopping-cart text-danger"></i> %>
+									<i class="fa-solid fa-play"></i>
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/02-mokups/02_01-views-mockups-edu_ud_list.html.erb)
+
+
+Questa pagina ha l'elenco di tutte le lezioni che possiamo ricercare con il find.
+
+Ci dobbiamo tornare su per lavorarci ancora ma la struttura è presente.

@@ -1,15 +1,23 @@
-# <a name="top"></a> Cap 2.2 - Vediamo la pagina iniziale
+# <a name="top"></a> Cap 2.2 - Mockup homepage
 
 Qui visualizziamo la lezione delle 3 cose per cui sei grato, che cambia ogni giorno.
 Inoltre l'ultima lezione dove eri arrivato per continuare il tuo percorso.
-Inoltre qualche altra informazione che devo ancora inquadrare.
+
+Abbiamo anche i due pulsanti delle lezioni *favorite* e di quelle *più recenti*.
 
 
-mockups/edu_ud_homepage
+
+## Pagina iniziale (homepage)
+
+vediamo uno sketch della nostra homepage.
+
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-mockups/03_fig01-home_sketch.png)
+
+
 
 Alla riga 321 metto l'icona con il simbolo del *play* al posto del carrello sull'hover.
 
-***code 01 - .../app/views/mockups/edu_ud_list.html.erb - line:321***
+***code 01 - .../app/views/mockups/homepage.html.erb - line:321***
 
 ```html+erb
 									<%# <i class="fas fa-shopping-cart text-danger"></i> %>
