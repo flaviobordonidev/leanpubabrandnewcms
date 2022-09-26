@@ -42,7 +42,7 @@ Andiamo con il browser sull'URL:
 - http://192.168.64.3:3000
 - oppure: http://192.168.64.3:3000/mockups/index
 
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-mokups/02_fig01-mockup_login.png)
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-mockups/02_fig01-mockup_login.png)
 
 
 
