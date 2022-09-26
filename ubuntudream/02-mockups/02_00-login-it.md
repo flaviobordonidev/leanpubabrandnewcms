@@ -30,8 +30,9 @@ Questa è la pagina di mockup che nella nostra applicazione diventerà `views/us
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-mokups/02_01-mockups-login.html.erb)
 
 
+## Verifichiamo preview
 
-## Verifichiamo preview
+Verifichiamo preview
 
 ```bash
 $ rails s -b 192.168.64.3
