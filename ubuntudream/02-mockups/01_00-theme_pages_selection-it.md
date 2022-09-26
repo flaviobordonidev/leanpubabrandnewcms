@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 1.2 - Selezione delle pagine
+# <a name="top"></a> Cap 2.1 - Selezione delle pagine
 
 In questi capitoli creeremo i mockups della nostra app. Ossia delle pagine statiche con i dati inseriti direttamente nel codice, i "segnaposto", per definire la grafica della nostra app.
 
