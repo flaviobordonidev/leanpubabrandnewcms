@@ -14,6 +14,30 @@ vediamo uno sketch della nostra homepage.
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-mockups/03_fig01-home_sketch.png)
 
 
+Elaboriamo il nostro mockup a partire dalla pagina di Eduport ...
+
+
+
+## Pagine dal tema
+
+Per la nostra homepage ci rifacciamo a due pagine del tema Eduport:
+
+Pagina tema   | Uso nella nostra app
+| :--         | :--
+eduport_v1.2.0/template/student_bookmark.html 	| Struttura iniziale 
+eduport_v1.2.0/template/faq.html 								| Prendiamo solo i pulsanti "User Guide", "Assistance", ...<br/> li facciamo diventare i due pulsanti "Favorites" e "Recent".
+
+
+
+## Prepariamo la struttura iniziale
+
+
+
+
+
+
+
+
 
 Alla riga 321 metto l'icona con il simbolo del *play* al posto del carrello sull'hover.
 
@@ -25,8 +49,3 @@ Alla riga 321 metto l'icona con il simbolo del *play* al posto del carrello sull
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/02-mokups/02_01-views-mockups-edu_ud_list.html.erb)
-
-
-Questa pagina ha l'elenco di tutte le lezioni che possiamo ricercare con il find.
-
-Ci dobbiamo tornare su per lavorarci ancora ma la struttura è presente.
