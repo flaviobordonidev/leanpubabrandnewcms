@@ -17,7 +17,7 @@ Prendiamo la pagina *index* già importata su Rails del tema Eduport.
 Questo mockups è fatto a partire dalla pagina *index* di Eduport.
 Vediamo la prima modifica.
 
-***code 01 - .../views/mockups/.rb - line:1***
+***code 01 - .../views/mockups/lessons_show_steps_show.rb - line:1***
 
 ```html+erb
 
