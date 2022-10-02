@@ -1,5 +1,6 @@
 # Git ssh
 
+Colleghiamo il git sul nostro sistema operativo ad un repository remoto.
 
 Risorse interne:
 

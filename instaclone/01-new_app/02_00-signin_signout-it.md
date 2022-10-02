@@ -124,3 +124,11 @@ body {
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/instaclone/01-new_app/02_04-assets-stylesheets-application.css)
 
+
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/08_00-gemfile_ruby_version.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/02-git/02_00-inizializziamo_git.md)

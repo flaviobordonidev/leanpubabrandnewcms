@@ -31,3 +31,12 @@ Mettiamo un po di stile.
 ```html+erb
   <%= post.title %>
 ```
+
+
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app/08_00-gemfile_ruby_version.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/02-git/02_00-inizializziamo_git.md)
