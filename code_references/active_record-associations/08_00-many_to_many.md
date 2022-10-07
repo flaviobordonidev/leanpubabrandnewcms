@@ -29,48 +29,48 @@ Risorse web:
 
 This is the simplest many-to-many association. Two models are associated by simple virtue of their existence. A Book can be written by many authors and an Author may write many books. It is a direct association and there is a direct dependency between the two models. We can’t really have one without the other. In ActiveRecord this can easily be modeled with the has_and_belongs_to_many (HABTM) association. We can create the models and migrations for this relationship in Rails by running the following commands:
 
-~~~~~~~~
+```
 rails g model Author name:string
 rails g model Book title:string
 rails g migration CreateJoinTableAuthorsBooks authors books
-~~~~~~~~
+```
 
-We need to define the HABTM association in our models like this:
+We need to define the HABTM (Has And Below To Many) association in our models like this:
 
-~~~~~~~~
+```
 class Book < ApplicationRecord
   has_and_belongs_to_many :authors
 end
-~~~~~~~~
+```
 
-~~~~~~~~
+```
 class Author < ApplicationRecord
   has_and_belongs_to_many :books
 end
-~~~~~~~~
+```
 
 Then, we can create our database tables by running:
 
-~~~~~~~~
+```
 rails db:migrate
-~~~~~~~~
+```
 
 Finally, we can populate our database:
 
-~~~~~~~~
+```
 herman = Author.create name: 'Herman Melville'
 moby = Book.create title: 'Moby Dick'
 herman.books << moby
-~~~~~~~~
+```
 
 We can now, among other things, access: a book’s Authors, all Books written by an Author and all Authors that have written a specific book:
 
-~~~~~~~~
+```
 moby.authors
 herman.books
 herman.books.where(title: 'Moby Dick')
 Book.where(title: 'Moby Dick').authors
-~~~~~~~~
+```
 
 Nice and simple.
 
@@ -81,56 +81,56 @@ Nice and simple.
 
 A transitive association that can be best described with the addition of a single extra model. Take the example of a Student. A Student can be taught by many Tutors and a Tutor can teach many Students, but we can’t fully express the relationship unless we include another entity: Class (to avoid Ruby reserved-name conflicts, let’s name it Klass)
 
-~~~~~~~~
+```
 rails g model Student name:string
 rails g model Tutor name:string
 rails g model Klass subject:string student:references tutor:references
-~~~~~~~~
+```
 
 We can say that a Student is taught through attending Klasses and that a Tutor teaches Students through giving Klasses. The word through is important here, as we use the same term in ActiveRecord to define the association:
 
-~~~~~~~~
+```
 class Student < ApplicationRecord
   has_many :klasses
   has_many :tutors, through: :klasses
 end
-~~~~~~~~
+```
 
-~~~~~~~~
+```
 class Tutor < ApplicationRecord
   has_many :klasses
   has_many :students, through: :klasses
 end
-~~~~~~~~
+```
 
-~~~~~~~~
+```
 class Klass < ApplicationRecord
   belongs_to :student
   belongs_to :tutor
 end
-~~~~~~~~
+```
 
 Now we can create our database tables by running:
 
-~~~~~~~~
+```
 rails db:migrate
-~~~~~~~~
+```
 
 We can then populate the database:
 
-~~~~~~~~
+```
 bart = Student.create name: 'Bart Simpson'
 edna = Tutor.create name: 'Mrs Krabapple'
 Klass.create subject: 'Maths', student: bart, tutor: edna
-~~~~~~~~
+```
 
 As well as the usual simple finds we can also create some more complex queries:
 
-~~~~~~~~
+```
 Student.find_by(name: 'Bart Simpson').tutors  # find all Bart's tutors
 Student.joins(:klasses).where(klasses: {subject: 'Maths'}).distinct.pluck(:name) # get all students who attend the Maths class
 Student.joins(:tutors).joins(:klasses).where(klasses: {subject: 'Maths'}, tutors: {name: 'Mrs Krabapple'}).distinct.map {|x| puts x.name} # get all students who attend Maths taught by Mrs Krabapple
-~~~~~~~~
+```
 
 As in most cases of mono-transitive associations, the existing model names reflect the association implicitly (i.e. X has_many Z through Y), there is no need for us to do anything more and ActiveRecord will model our association perfectly.
 
@@ -152,25 +152,25 @@ posting at forums	Forum
 attending events	Event
 Now let’s go ahead and create the models we need:
 
-~~~~~~~~
+```
 rails g model Community name:string
 rails g model Developer name:string
 rails g model Repo url:string comment:string developer:references community:references
 rails g model Forum url:string post:text developer:references community:references
 rails g model Event location:string name:string developer:references community:references
 rails db:migrate
-~~~~~~~~
+```
 
 Let’s also create some Developers and Communities:
 
-~~~~~~~~
+```
 devs = %w(joe sue fred mary).map {|dev| Developer.create name: dev}
 comms = %w(rails nosql javascript postgres).map {|comm| Community.create name: comm}
-~~~~~~~~
+```
 
 We then can define the associations between our models. At this point we may be tempted to use the same technique we used in the mono-transitive example and repeat the has_many..through invocation for each association:
 
-~~~~~~~~
+```
 class Developer < ApplicationRecord
   has_many :events
   has_many :forums
@@ -179,11 +179,11 @@ class Developer < ApplicationRecord
   has_many :postings, through: :forums #FAIL
   has_many :contributions, through: :repos #FAIL
 end
-~~~~~~~~
+```
 
 However, this won’t work as ActiveRecord will try to infer the name of the association’s source model from the association name (e.g appearance) and it will fail. For this reason we need to specify the source model name using the :source option:
 
-~~~~~~~~
+```
 class Developer < ApplicationRecord
   has_many :events
   has_many :forums
@@ -192,11 +192,11 @@ class Developer < ApplicationRecord
   has_many :postings, through: :forums, source: :community
   has_many :contributions, through: :repos, source: :community
 end
-~~~~~~~~
+```
 
 Similarly, we do the same for Communities:
 
-~~~~~~~~
+```
 class Community < ApplicationRecord
   has_many :events
   has_many :forums
@@ -205,13 +205,13 @@ class Community < ApplicationRecord
   has_many :discussions, through: :forums, source: :developer
   has_many :contributions, through: :repos, source: :developer
 end
-~~~~~~~~
+```
 
 As you may have noticed, on the Community model we are changing the names of some associations to reflect their nature from this side of the relationship. For instance, a Developer makes appearances at events, while a Community hosts events. A Developer posts at forums, while a Community fosters discussions at forums. This way, we are ensuring that our method names (that AR will dynamically create based on our associations) are meaningful and clear.
 
 We can now create some events, forums, and repos:
 
-~~~~~~~~
+```
 Repo.create url: 'www.gitlab.com/342', comment: 'ruby code', developer: devs[0], community: comms[0]
 Repo.create url: 'www.gitlab.com/662', comment: 'callbacks sample', developer: devs[0], community: comms[2]
 Repo.create url: 'www.jsfiddle.com/abcg3', comment: 'reactive sample', developer: devs[1], community: comms[3]
@@ -220,17 +220,17 @@ Forum.create url: 'www.stackoverflow.com/mongodb', post: 'this is what I think..
 Forum.create url: 'www.redis.com/563', post: 'my opinion is...', developer: devs[3], community: comms[1]
 Event.create location: 'Bath, UK', name: 'Bath Ruby', developer: devs[2], community: comms[0]
 Event.create location: 'Tech Institute', name: 'London NoSQL Meetup', developer: devs[2], community: comms[1]
-~~~~~~~~
+```
 
 We can then start extracting useful information from our models:
 
-~~~~~~~~
+```
 devs.find_by(name: 'fred').appearances # events a developer has appeared at
 Event.find_by(community: comms[0]) # all events for the Rails community
 Forum.where(developer: Developer.find_by(name: 'fred') # all forums where a specific developer has posted
 Community.find_by(name: 'rails').hostings + Community.find_by(name: 'rails').discussions + Community.find_by(name: 'rails').contributions # get all events, forums and repositories for a specific community
 Developer.select('distinct developers.name').joins(:repos).joins(:events).joins(:forums) # find developers who have appeared in Events, contributed to Repos and chatted on Forums, for any Community
-~~~~~~~~
+```
 
 We can use the associations directly and/or join the through models in an endless variety of permutations to retrieve the data we need.
 

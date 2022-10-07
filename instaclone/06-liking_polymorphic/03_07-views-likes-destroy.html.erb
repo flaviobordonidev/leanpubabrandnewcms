@@ -1,0 +1,15 @@
+<%= turbo_frame_tag "post-likes" do %>
+  <% if @comment.present? %>
+    <%= button_to "", post_comment_likes_path(@post, @comment), class: "post-actions-like" %>
+  <% else %>
+    <%= button_to "", post_likes_path(@post), class: "post-actions-like" %>
+  <% end %>
+<% end %>
+
+<%= turbo_frame_tag "comment-likes" do %>
+  <% if @comment.present? %>
+    <%= button_to "", post_comment_likes_path(@post, @comment), class: "post-actions-like" %>
+  <% else %>
+    <%= button_to "", post_likes_path(@post), class: "post-actions-like" %>
+  <% end %>
+<% end %>

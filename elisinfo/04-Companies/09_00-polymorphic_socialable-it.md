@@ -114,7 +114,7 @@ Permettiamo che siano passati i parametri del form annidato per i socials.
 
 Analizziamo il codice:
 
-* , socials_attributes: [:_destroy, :id, :name, :address] -> permette il passaggio dei parametri dei socials su form annidati.
+- `, socials_attributes: [:_destroy, :id, :name, :address]` -> permette il passaggio dei parametri dei socials su form annidati.
 
 
 Lato server / back-end abbiamo terminato.

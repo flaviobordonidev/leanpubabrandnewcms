@@ -1,15 +1,19 @@
-# Enum
+# <a name="top"></a> Cap 4.2 - Enum
 
 Nella generazione della tabella abbiamo indicato i campi :client_type e :supplier_type per la scelta di "cosa" forniamo o ci forniscono; se è un prodotto, un servizio, entrambi o nessuno.
 Li abbiamo definiti semplicemente come :integer perché li avremmo poi trattati con ENUM.
 In questo capitolo implementiamo il tutto fino a visualizzare il menu a cascata (drop-down list) nella view di modifica dell'articolo.
 Ed in fine rendiamo il menu a cascada multilingua (Enum with i18n)
 
-Risorse web:
 
-* [Easily make enum compatible with i18n without gem in Rails](https://qiita.com/daichirata/items/9495e2548417a4507fec)
-* [Rails i18n - How to translate enum of a model](https://stackoverflow.com/questions/43116134/rails-i18n-how-to-translate-enum-of-a-model/43156292)
-* [Guida Rails per i18n](http://guides.rubyonrails.org/i18n.html)
+
+## Risorse esterne
+
+- [Easily make enum compatible with i18n without gem in Rails](https://qiita.com/daichirata/items/9495e2548417a4507fec)
+- [Rails i18n - How to translate enum of a model](https://stackoverflow.com/questions/43116134/rails-i18n-how-to-translate-enum-of-a-model/43156292)
+- [Guida Rails per i18n](http://guides.rubyonrails.org/i18n.html)
+
+
 
 ## Gestione ELENCO per ENUM -- OLD
 
@@ -32,14 +36,11 @@ Mi resta da risolvere il problema dell'internazionalizzazione ma lo risolvo in m
 
 
 
-
 ## Apriamo il branch "Type Enum I18n"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout -b tei
 ```
-
 
 
 
@@ -48,8 +49,9 @@ $ git checkout -b tei
 Attiviamo i campi ENUM nel Model Company per i campi :client_type e :supplier_type
 Nel model nella sezione " # == Attributes "
 
-{id: "01-08-01_02", caption: ".../app/models/company.rb -- codice 01", format: ruby, line-numbers: true, number-from: 13}
-```
+***code 01 - .../app/models/company.rb - line:13***
+
+```ruby
   enum client_type: {c_none: 0, c_goods: 1, c_services: 2, c_goods_and_services: 3}
   enum supplier_type: {s_none: 0, s_goods: 1, s_services: 2, s_goods_and_services: 3}
 ```
@@ -60,11 +62,9 @@ Abbiamo messo i prefissi "c_" e "s_" perché i nomi degli indici non possono ess
 
 
 
-
 ## Aggiorniamo il Controller
 
-I campi "client_type" e "supplier_type" sono già presenti nella whitelist del controller perché li abbiamo inseriti durante il "generate scaffold"
-
+I campi `client_type` e `supplier_type` sono già presenti nella whitelist del controller perché li abbiamo inseriti durante il `generate scaffold`.
 
 
 
@@ -73,14 +73,14 @@ I campi "client_type" e "supplier_type" sono già presenti nella whitelist del c
 Nel migrate iniziale non abbiamo impostato al meglio le colonne :client_type e :supplier_type per ENUM. Recuperiamo.
 Creiamo un migrate di modifica per mettere un valore di "default" ed un indice per velocizzare queries che usano :client_type e :supplier_type.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails g migration ChangeClientSupplierTypeAndAddIndexToCompanies
 ```
 
 aggiorniamo il migrate
 
-{id: "01-08-01_01", caption: ".../db/migrate/xxx_change_client_supplier_type_and_add_index_to_companies.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
+***code 02 - .../db/migrate/xxx_change_client_supplier_type_and_add_index_to_companies.rb - line:01***
+
 ```
 class ChangeClientSupplierTypeAndAddIndexToCompanies < ActiveRecord::Migration[6.0]
   def change
@@ -97,8 +97,7 @@ end
 
 eseguiamo il migrate
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails db:migrate
 
 
@@ -117,13 +116,13 @@ user_fb:~/environment/elisinfo (tei) $ rails db:migrate
 
 
 
-
 ## Verifichiamo lo schema del database
 
 Lo schema del nostro database passa da 
 
-{id: "01-08-01_01", caption: ".../db/schema.rb -- codice 03", format: ruby, line-numbers: true, number-from: 49}
-```
+***code 03 - .../db/schema.rb - line:49***
+
+```ruby
   create_table "companies", force: :cascade do |t|
     t.string "name"
     t.string "building"
@@ -141,8 +140,9 @@ Lo schema del nostro database passa da
 
 a
 
-{id: "01-08-01_01", caption: ".../db/schema.rb -- codice 04", format: ruby, line-numbers: true, number-from: 49}
-```
+***code 04 - .../db/schema.rb - line:49***
+
+```ruby
   create_table "companies", force: :cascade do |t|
     t.string "name"
     t.string "building"
@@ -167,8 +167,9 @@ a
 
 Implementiamo il menu a cascata
 
-{id: "01-03-01_01", caption: ".../views/companies/_form.html.erb -- codice 05", format: HTML+Mako, line-numbers: true, number-from: 1}
-```
+***code 05 - .../app/views/companies/_form.html.erb - line:01***
+
+```html+erb
   <div class="field">    
     <%= form.label :client_type %>
     <%= form.select(:client_type, Company.client_types.keys.map {|client_type| [client_type.titleize,client_type]}) %>
@@ -186,16 +187,13 @@ I nomi visualizzati in elenco li miglioriamo nei prossimi capitoli con l'interna
 
 
 
-
-
-
-
 ## Rendiamo il menu a cascada multilingua (Enum with i18n)
 
 Per impostare la lingua italiana lavoriamo nei files yaml. Istintivamente ci verrebbe da inserirli in questo modo:
 
-{id: "01-03-01_01", caption: ".../config/locales/it.yml -- codice 06", format: yaml, line-numbers: true, number-from: 1}
-```
+***code 06 - .../config/locales/it.yml - line:01***
+
+```yaml
   activerecord:
     models:
       company: "azienda"
@@ -215,8 +213,9 @@ Per impostare la lingua italiana lavoriamo nei files yaml. Istintivamente ci ver
 
 Invece dobbiamo definirli nella stessa gerarchia del modello nella seguente forma:
 
-{caption: ".../config/locales/it.yml -- continua", format: yaml, line-numbers: true, number-from: 1}
-```
+***code 06 - continua - line:100***
+
+```yaml
   activerecord:
     models:
       company: "azienda"
@@ -240,14 +239,13 @@ Invece dobbiamo definirli nella stessa gerarchia del modello nella seguente form
 
 
 
-
-
 ## Completiamo la traduzione anche in inglese
 
 Per completezza manteniamo allineato anche il file per la traduzione in inglese.
 
-{id: "01-03-01_01", caption: ".../config/locales/en.yml -- codice 07", format: yaml, line-numbers: true, number-from: 1}
-```
+***code 07 - .../config/locales/en.yml - line:01***
+
+```yaml
   activerecord:
     models:
       company: "company"
@@ -271,24 +269,17 @@ Per completezza manteniamo allineato anche il file per la traduzione in inglese.
 
 
 
-
-
-
-
-
 ## Creiamo i metodi da usare nelle view
 
 Con questa struttura possiamo usare i metodi:
 
-* Model.model_name.human 
-* Model.human_attribute_name("attribute")
-* Model.human_attribute_name("attribute.nested_attribute")
+- Model.model_name.human 
+- Model.human_attribute_name("attribute")
+- Model.human_attribute_name("attribute.nested_attribute")
 
 per cercare in modo trasparente le traduzioni per il modello e i nomi degli attributi. Nel caso in cui sia necessario accedere ad attributi nidificati all'interno di un determinato modello, è necessario nidificarli sotto modello / attributo a livello di modello nel file di traduzione (locales/xx.yml).
 
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails c
 > Company.model_name.human
 > Company.human_attribute_name("client_type")
@@ -297,8 +288,11 @@ $ rails c
 > Company.human_attribute_name("supplier_type")
 > Company.human_attribute_name("supplier_type.s_goods")
 > Company.human_attribute_name("supplier_type.s_services")
+```
 
+Esempio:
 
+```bash
 user_fb:~/environment/elisinfo (tei) $ rails c
 Running via Spring preloader in process 16390
 Loading development environment (Rails 6.0.0)
@@ -321,12 +315,9 @@ Loading development environment (Rails 6.0.0)
 
 
 
-
 ## Vediamo come gestire la traduzione
 
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails c
 > Company.client_types
 > Company.client_types.map
@@ -337,8 +328,11 @@ $ rails c
 > Company.supplier_types.map
 > Company.supplier_types.map{ |k,v| [k, Company.human_attribute_name("supplier_type.#{k}")]}
 > Company.supplier_types.map{ |k,v| [k, Company.human_attribute_name("supplier_type.#{k}")]}.to_h
+```
 
+Esempio:
 
+```bash
 2.6.3 :009 > 
 2.6.3 :010 > Company.client_types
  => {"c_no"=>0, "c_goods"=>1, "c_services"=>2, "c_goods_and_services"=>3} 
@@ -360,10 +354,8 @@ $ rails c
 2.6.3 :019 > 
 ```
 
-I> al posto di xxx.to_h si poteva usare Hash[xxx]
-I>
-I> quindi avremmo avuto Hash[Post.content_types.map{ |k,v| [k, Post.human_attribute_name("content_type.#{k}")]}]
-
+> al posto di xxx.to_h si poteva usare Hash[xxx] <br/>
+> Quindi avremmo avuto: `Hash[Post.content_types.map{ |k,v| [k, Post.human_attribute_name("content_type.#{k}")]}]`
 
 
 
@@ -371,13 +363,14 @@ I> quindi avremmo avuto Hash[Post.content_types.map{ |k,v| [k, Post.human_attrib
 
 Ora che conosciamo la definizione e come accedervi possiamo inserirli nel view (da -> a).
 
-* da <%= form.select(:client_type, Company.client_types.keys.map {|client_type| [client_type.titleize, client_type]}) %>
-* a  <%= form.select(:client_type, Company.client_types.keys.map {|client_type| [Company.human_attribute_name("client_type.#{client_type}"), client_type]}) %>
+- da <%= form.select(:client_type, Company.client_types.keys.map {|client_type| [client_type.titleize, client_type]}) %>
+- a  <%= form.select(:client_type, Company.client_types.keys.map {|client_type| [Company.human_attribute_name("client_type.#{client_type}"), client_type]}) %>
 
 Aggiorniamo la view.
 
-{id: "01-03-01_01", caption: ".../views/companies/_form.html.erb -- codice 05", format: HTML+Mako, line-numbers: true, number-from: 1}
-```
+***code 05 - .../app/views/companies/_form.html.erb - line:01***
+
+```html+erb
   <div class="field">    
     <%= form.label :client_type %>
     <%#= form.select(:client_type, Company.client_types.keys.map {|client_type| [client_type.titleize,client_type]}) %>
@@ -399,11 +392,11 @@ Aggiorniamo la view.
 
 Volendo possiamo anche visualizzarli come radio_buttons
 
-{id: "01-03-01_01", caption: ".../views/companies/_form.html.erb -- codice 05", format: HTML+Mako, line-numbers: true, number-from: 1}
-```
+***code n/a - .../app/views/companies/_form.html.erb - line:01***
+
+```html+erb
     <%= form.collection_radio_buttons :supplier_type, Hash[Company.supplier_types.map { |k,v| [k, Company.human_attribute_name("supplier_type.#{k}")] }], :first, :second %>
 ```
-
 
 
 
@@ -411,19 +404,21 @@ Volendo possiamo anche visualizzarli come radio_buttons
 
 volendo si può creare un helper
 
-{title=".../app/helpers/companies_helper.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+***code n/a - .../app/helpers/companies_helper.rb - line:01***
+
+```ruby
 module CompaniesHelper
   def h_human_attribute_supplier_types
     Hash[Company.supplier_types.map { |k,v| [k, Company.human_attribute_name("supplier_type.#{k}")] }]
   end
 end
-~~~~~~~~
+```
 
 in modo da avere un view più "dry"
 
-{id: "01-03-01_01", caption: ".../views/companies/_form.html.erb -- codice 05", format: HTML+Mako, line-numbers: true, number-from: 1}
-```
+***code n/a - .../app/views/companies/_form.html.erb - line:01***
+
+```html+erb
     <%= form.collection_radio_buttons :supplier_type, h_human_attribute_supplier_types, :first, :second %>
 ```
 
@@ -431,12 +426,11 @@ Un altro modo è quello di creare una variabile virtuale nel Model.
 
 
 
+## Implementiamo virtual variable nel Model
 
-## Implementiamo nel Model
+***code n/a - .../app/models/post.rb - line:13***
 
-
-{id: "01-08-01_02", caption: ".../app/models/post.rb -- codice 01", format: ruby, line-numbers: true, number-from: 13}
-```
+```ruby
 (vedi virtual attribute con get_read, get_write ....)
 
   Post.content_types.map{ |k,v| [k, Post.human_attribute_name("content_type.#{k}")]}.to_h
@@ -444,6 +438,7 @@ Un altro modo è quello di creare una variabile virtuale nel Model.
 
 [tutto il codice](#01-08-01_01all)
 
+```ruby
   # def self.human_attribute_enum_value(attr_name, value)
   #   human_attribute_name("#{attr_name}.#{value}")
   # end
@@ -451,3 +446,4 @@ Un altro modo è quello di creare una variabile virtuale nel Model.
   # def human_attribute_enum(attr_name)
   #   self.class.human_attribute_enum_value(attr_name, self[attr_name])
   # end
+```

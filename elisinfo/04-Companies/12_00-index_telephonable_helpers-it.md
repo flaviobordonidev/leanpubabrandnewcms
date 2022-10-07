@@ -3,22 +3,25 @@
 
 DA METTERE SU COMPANY
 
-views/company_person_maps/_master_company
-```
+***code n/a - .../app/views/company_person_maps/_master_company.html.erb - line:n/a***
+
+```html+erb
 <p><%= company.address %> | <%= "#{company.telephones.first.name}: #{company.telephones.first.prefix} #{company.telephones.first.number} " if company.telephones.first.present? %> | Email: info@peroni.it</p>
 ```
 
-creiamo un helper
+inseriamo un nuovo helper
 
-views/company_person_maps/_master_company
-```
+***code n/a - .../app/views/company_person_maps/_master_company.html.erb - line:n/a***
+
+```html+erb
 <p><%= company.address %> | <%= h_company_telefones_first(company.telephones) %> | Email: info@peroni.it</p>
 ```
 
-creiamo l'helper
+creiamo il nuovo helper
 
-helpers/company_person_maps_helper
-```
+***code n/a - .../app/helpers/company_person_maps_helper.rb - line:01***
+
+```ruby
 module CompanyPersonMapsHelper
   
   def h_company_telefones_first(telephones)
@@ -35,11 +38,10 @@ module CompanyPersonMapsHelper
 end
 ```
 
+Volendo visualizzare tutti i numeri archiviati usiamo il metodo `h_company_telefones_all`.
 
+***code n/a - .../app/views/company_person_maps/_master_company.html.erb - line:n/a***
 
-Volendo visualizzare tutti i numeri archiviati usiamo il metodo "h_company_telefones_all"
-
-views/company_person_maps/_master_company
-```
+```html+erb
 <p><%= company.address %> | <%= h_company_telefones_all(company.telephones) %> | Email: info@peroni.it</p>
 ```

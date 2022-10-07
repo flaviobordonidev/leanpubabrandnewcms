@@ -143,6 +143,61 @@ Loading development environment (Rails 7.0.3.1)
 > Abbiamo un array vuoto `=> []` perché non ci sono likes associati a nessun utente `WHERE "likes"."user_id" = ?`.
 
 
+Associamo un like facendo i vari passaggi
+
+```ruby
+$ rails c
+> u = User.first
+> u.posts << Post.first
+> u.posts
+> u.posts[0].likes.new
+```
+
+Esempio:
+
+```ruby
+ubuntu@ubuntufla:~/instaclone (main)$rails c
+Loading development environment (Rails 7.0.3.1)                                                    
+3.1.1 :001 > u = User.first
+   (0.4ms)  SELECT sqlite_version(*)
+  User Load (0.3ms)  SELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT ?  [["LIMIT", 1]]
+ => #<User id: 2, email: "ann@test.abc", created_at: "2022-08-07 02:00:44.782149000 +0000", updated_at: "2022-09-11 21:49:08.859127000 +0000", user... 
+3.1.1 :002 > Post.all
+  Post Load (0.2ms)  SELECT "posts".* FROM "posts"
+ =>                                                                                                
+[#<Post:0x00007f54a04fa2f8                                                    
+  id: 38,                                                                     
+  title: "Primo post",                                                        
+  created_at: Sun, 11 Sep 2022 20:57:14.474264000 UTC +00:00,                 
+  updated_at: Sun, 11 Sep 2022 20:57:14.474264000 UTC +00:00,                 
+  user_id: 3>]                                                                
+3.1.1 :003 > u.posts << Post.first
+  Post Load (0.2ms)  SELECT "posts".* FROM "posts" ORDER BY "posts"."id" ASC LIMIT ?  [["LIMIT", 1]]
+  TRANSACTION (0.1ms)  begin transaction                                      
+  Post Update (0.7ms)  UPDATE "posts" SET "updated_at" = ?, "user_id" = ? WHERE "posts"."id" = ?  [["updated_at", "2022-10-02 19:59:54.515777"], ["user_id", 2], ["id", 38]]                                                           
+  TRANSACTION (7.1ms)  commit transaction                                     
+  Post Load (0.2ms)  SELECT "posts".* FROM "posts" WHERE "posts"."user_id" = ?  [["user_id", 2]]
+ =>                                                                    
+[#<Post:0x00007f54a06b6c68                                             
+  id: 38,                                                              
+  title: "Primo post",                                                 
+  created_at: Sun, 11 Sep 2022 20:57:14.474264000 UTC +00:00,          
+  updated_at: Sun, 02 Oct 2022 19:59:54.515777000 UTC +00:00,          
+  user_id: 2>]                                                         
+3.1.1 :004 > u.posts
+ => 
+[#<Post:0x00007f54a06b6c68                                         
+  id: 38,                                                          
+  title: "Primo post",                                             
+  created_at: Sun, 11 Sep 2022 20:57:14.474264000 UTC +00:00,      
+  updated_at: Sun, 02 Oct 2022 19:59:54.515777000 UTC +00:00,      
+  user_id: 2>]                                                     
+3.1.1 :009 > u.posts[0].likes.new
+ => #<Like:0x00007f54a06a7e98 user_id: nil, likeable_id: 38, likeable_type: "Post"> 
+3.1.1 :010 > exit
+```
+
+
 
 ## Creiamo l'associazione
 

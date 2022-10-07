@@ -1,13 +1,12 @@
-# Polimorphic telephone
+# <a name="top"></a> Cap 4.6 - Table polymorphic
 
-rendiamo polimorfica la tabella "telephone".
+Rendiamo polimorfica la tabella "telephone".
 
 
 
 ## Branch
 
 continuiamo con il branch aperto precedentemente
-
 
 
 
@@ -26,29 +25,29 @@ Per capire meglio i vantaggi della tabella polimorfica facciamo un esempio.
 
 La tabella "telephone" con relazioni uno-a-molit ad Aziende, Persone, Offerte, Ordini e Banche
 
-Nome        | numero        | company_id | person_id | offer_id | order_id | bank_id |
---------------------------------------------------------------------------------------
-centralino  | 06123456789   | 4156       |           |          |          |         |
-cellulare   | 34976337652   |            | 7346      |          |          |         |
-ufficio     | 02976337652   |            | 9374      |          |          |         |
-ufficio     | 02976337652   |            |           | 3918     |          |         |
-ufficio     | 02976337652   |            |           |          |          | 1517    |
-ufficio     | 02976337652   |            |           |          | 5182     |         |
-ufficio     | 02976337652   | 7283       |           |          |          |         |
+Nome        | numero        | company_id | person_id | offer_id | order_id | bank_id
+| :--       | :--           | :--        | :--       | :--      | :--      | :--
+centralino  | 06123456789   | 4156       |           |          |          |      
+cellulare   | 34976337652   |            | 7346      |          |          |      
+ufficio     | 02976337652   |            | 9374      |          |          |      
+ufficio     | 02976337652   |            |           | 3918     |          |      
+ufficio     | 02976337652   |            |           |          |          | 1517 
+ufficio     | 02976337652   |            |           |          | 5182     |      
+ufficio     | 02976337652   | 7283       |           |          |          |      
 
 
 
 La tabella "telephone" con relazione polimorfica ad Aziende, Persone, Offerte, Ordini e Banche
 
-Nome        | numero        | record_id | table_name |
-------------------------------------------------------
-centralino  | 06123456789   | 4156      | company    |
-cellulare   | 34976337652   | 7346      | person     |
-ufficio     | 02976337652   | 9374      | person     |
-ufficio     | 02976337652   | 3918      | offer      |
-ufficio     | 02976337652   | 1517      | bank       |
-ufficio     | 02976337652   | 5182      | order      |
-ufficio     | 02976337652   | 7283      | company    |
+Nome        | numero        | record_id | table_name
+| :--       | :--           | :--        | :--
+centralino  | 06123456789   | 4156      | company
+cellulare   | 34976337652   | 7346      | person
+ufficio     | 02976337652   | 9374      | person
+ufficio     | 02976337652   | 3918      | offer 
+ufficio     | 02976337652   | 1517      | bank  
+ufficio     | 02976337652   | 5182      | order 
+ufficio     | 02976337652   | 7283      | company
 
 
 Come si può vedere da queste due tabelle, la relazione polimorfica ci evita di dover aggiungere una nuova colonna con chiave esterna per ogni nuova tabella uno-a-molti che aggiungiamo. Inoltre le colonne delle chiavi esterne della tabella senza relazione polimorfica, sono tutte riempite parzialmente. Questo lo evitiamo con la relazione polimorfica.
@@ -60,32 +59,28 @@ Come si può vedere da queste due tabelle, la relazione polimorfica ci evita di 
 
 Cancelliamo i records che abbiamo inserito precedentemente.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```ruby
 $ rails console
 > Telephone.destroy_all
 ```
 
-Nota: ".destroy_all" checks dependencies and callbacks, and takes a little longer. Si può usare ".delete_all" che è una più veloce straight SQL query.
-Attenzione: This solution resets the table entries, but not the primary key.
 
+> Nota: `.destroy_all` checks dependencies and callbacks, and takes a little longer. <br/>
+> Per saltare i controlli e le dipendenze si può usare `.delete_all` che è una *straight SQL query* più veloce ma più "rischiosa".
 
-Se vogliamo che la "primary key" ricominci di nuovo da 1 dobbiamo:
+Questa soluzione resetta l'intera tabella (resets the table entries), ma non resetta al *primary key*.
+Se vogliamo che la *primary key* ricominci di nuovo da 1 dobbiamo aggiungere il comando:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ rails console
-> Telephone.destroy_all
+```ruby
 > ActiveRecord::Base.connection.reset_pk_sequence!('telephones')
 ```
 
-In alternativa si poteva usare "> Telephone.connection.execute('delete from telephones' )"
+> In alternativa si poteva usare `> Telephone.connection.execute('delete from telephones')`.
 
 
 Per verificare possiamo vedere tutti i records e crearne uno nuovo per vedere che "id" è assegnato.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```ruby
 $ rails console
 > Telephone.all
 > Telephone.new(company_id: 1, number: "unoduetre").save
@@ -94,28 +89,29 @@ $ rails console
 
 
 
-
 ## Rendiamo polimorfica la tabella telephones
 
 Eliminiamo la colonna della chiave esterna ed aggiungiamo i due campi per il polimorfismo:
 
-* telephoneable_id:integer per la chiave esterna (lato molti della relazione uno-a-molti)
-* telephoneable_type:string per identificare la tabella esterna 
+Colonna name:type         | Descrizione
+| :--                     | :--
+telephoneable_id:integer  | per la chiave esterna (lato molti della relazione uno-a-molti)
+telephoneable_type:string | per identificare la tabella esterna 
 
-Nota: per i nomi delle due colonne polimorfiche si può usare qualsiasi nome ma è un "best-practise" (quasi una convenzione) aggiungere il suffisso "able" al nome della tabella al singolare (ossia al nome del Model).
+Nota: per i nomi delle due colonne polimorfiche si può usare qualsiasi nome ma è un *"best-practise"* (quasi una **convenzione**) aggiungere il suffisso `"able"` al nome della tabella al singolare (ossia al ***nome del Model**).
 
 
 Generiamo il migrate per eliminare la colonna della chiave esterna 
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails g migration RemoveCompanyIdFieldFromTelephones company_id:integer
 ```
 
 vediamo il migrate generato
 
-{id: "01-08-01_01", caption: ".../db/migrate/xxx_remove_company_id_field_from_telephones.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
-```
+***code 01 - .../db/migrate/xxx_remove_company_id_field_from_telephones.rb - line:01***
+
+```ruby
 class RemoveCompanyIdFieldFromTelephones < ActiveRecord::Migration[6.0]
   def change
 
@@ -128,8 +124,7 @@ end
 
 eseguiamo il migrate
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails db:migrate
 ```
@@ -139,15 +134,15 @@ Come possiamo vedere nel db/schema.rb è stato rimosso anche l'indice.
 
 Generiamo il migrate per aggiungere le due colonne per il polimorfismo
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails g migration AddPolimorphicColumnsToTelephones telephoneable_id:integer telephoneable_type:string
 ```
 
 vediamo il migrate generato
 
-{id: "01-08-01_01", caption: ".../db/migrate/xxx_add_polimorphic_columns_to_telephones.rb -- codice 02", format: ruby, line-numbers: true, number-from: 1}
-```
+***code 02 - .../db/migrate/xxx_add_polimorphic_columns_to_telephones.rb - line:01***
+
+```ruby
 class AddPolimorphicColumnsToTelephones < ActiveRecord::Migration[6.0]
   def change
     add_column :telephones, :telephoneable_id, :integer
@@ -166,21 +161,20 @@ NOTA / APPUNTO / TODO: Verifichiamo se è bene aggiungere un index
 
 eseguiamo il migrate
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails db:migrate
 ```
 
 
 
-
 ## Creiamo le associazioni polimorfiche ed aggiungiamo il nested models per i forms annidati
 
-Nel model Telephone su "# == Relationships", togliamo la relazione "belongs_to :company" ed aggiungiamo la relazione polimorfica.
+Nel model `Telephone` su *# == Relationships*, togliamo la relazione `belongs_to :company` ed aggiungiamo la relazione polimorfica.
 
-{id: "01-08-01_02", caption: ".../app/models/telephone.rb -- codice 03", format: ruby, line-numbers: true, number-from: 13}
-```
+***code 03 - .../app/models/telephone.rb - line:13***
+
+```ruby
   ## polymorphic
   belongs_to :telephoneable, polymorphic: true
 ```
@@ -188,29 +182,28 @@ Nel model Telephone su "# == Relationships", togliamo la relazione "belongs_to :
 [tutto il codice](#01-08-01_01all)
 
 
-Nel model Company su "# == Relationships", togliamo la relazione diretta a "telephones" ed aggiungiamo la relazione polimorfica.
+Nel model `Company` su *# == Relationships*, togliamo la relazione diretta a `telephones` ed aggiungiamo la relazione polimorfica.
 
 La relazione polimorfica semplice sarebbe
 
-{caption: ".../app/models/company.rb -- senza codice", format: ruby, line-numbers: true, number-from: 13}
-```
+***code n/a - .../app/models/company.rb - line:13***
+
+```ruby
   ## polymorphic
   has_many :telephones, as: :telephoneable
 ```
 
-Rispetto alla relazione uno-a-molti semplice aggiungiamo il parametro ", as: :telephoneable".
+Rispetto alla relazione uno-a-molti semplice aggiungiamo il parametro `, as: :telephoneable`.
 
 Siccome noi abbiamo una relazione per nested forms la relazione diventa
 
-{id: "01-08-01_02", caption: ".../app/models/company.rb -- codice 04", format: ruby, line-numbers: true, number-from: 13}
-```
+***code 04 - .../app/models/company.rb - line:13***
+
+```ruby
   ## nested-forms + polymorphic
   has_many :telephones, dependent: :destroy, as: :telephoneable
   accepts_nested_attributes_for :telephones, allow_destroy: true, reject_if: proc{ |attr| attr['number'].blank? }
 ```
-
-In pratica abbiamo semplicemente aggiunto il parametro ", as: :telephoneable".
-
 
 
 
@@ -221,8 +214,7 @@ Usiamo la tabella telephones per dare due numeri di telefono alla prima azienda.
 - Inseriamo il centralino 023459876 alla prima azienda.
 - Inseriamo il fax 023459871 alla prima azienda.
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```ruby
 $ rails c
 > c = Company.first
 > Telephone.all
@@ -236,19 +228,17 @@ $ rails c
 > ct2.save
 > c.telephones
 > Telephone.all
-~~~~~~~~
+```
 
 Per vedere l'altro lato dell'associazione non possiamo chiamare "ct1.company" perché sono creati dinamicamente a partire dalla stessa tabella polimorfica "telephonable". Invece possiamo chiamare:
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```ruby
 > ct1.company --> ERROR
 > ct1.telephoneable
 > ct2.telephoneable
-~~~~~~~~
+```
 
 Dal punto di vista del polimorfismo abbiamo finito.
-
 
 
 
@@ -258,11 +248,9 @@ non c'è necessità di nessun aggiornamento.
 
 
 
-
 ## Aggiorniamo le Views
 
 non c'è necessità di nessun aggiornamento
-
 
 
 
@@ -270,51 +258,44 @@ non c'è necessità di nessun aggiornamento
 
 Vediamo la nostra applicazione rails funzionante. Attiviamo il webserver
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails s
 ```
 
 e vediamo sul nostro browser:
 
-* https://mycloud9path.amazonaws.com
-* https://mycloud9path.amazonaws.com/companies
+- https://mycloud9path.amazonaws.com
+- https://mycloud9path.amazonaws.com/companies
 
 Andiamo su edit dell'azienda con id 1 e vediamo che ha i due numeri di telefono. Possiamo inserirne di nuovi e cancellarne di esistenti.
 Funziona tutto.
 
 
 
-
 ## Salviamo su Git
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git add -A
 $ git commit -m "Implement polymorphic telephonable"
 ```
 
 
 
-
 ## Pubblichiamo su Heroku
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git push heroku tei:master
 $ heroku run rails db:migrate
 ```
 
 
 
-
 ## Chiudiamo il branch
 
-se abbiamo finito le modifiche e va tutto bene:
+Se abbiamo finito le modifiche e va tutto bene:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout master
 $ git merge tei
 $ git branch -d tei
@@ -322,20 +303,10 @@ $ git branch -d tei
 
 
 
-
 ## Facciamo un backup su Github
 
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git push origin master
 ```
-
-
-
-
-## Il codice del capitolo
-
-
-

@@ -1,5 +1,25 @@
 # <a name="TOP"></a> Markdown Cheatsheet
 
+
+
+## Risorse esterne
+
+- [daringfireball: markdown/syntax](https://daringfireball.net/projects/markdown/syntax)
+- [How do I escape a "backtick"](https://meta.stackexchange.com/questions/82718/how-do-i-escape-a-backtick-within-in-line-code-in-markdown)
+
+
+
+## Cheatsheet
+
+How do I escape a "backtick" within a code block?
+
+```markdown
+`` foo` `` produces foo`
+`` `foo `` produces `foo
+`` ` `` produces single backtick `
+```
+
+
 Indentando di 4 spazi (o 1 TAB) diventa codice.
 
     Indentando di 4 spazi (o 1 TAB) diventa codice.

@@ -1,8 +1,10 @@
-{id: 01-base-11-eg_pages-01-eg_posts-seeds}
-# Cap 11.1 -- Tabelle di esempio per gli articoli
+# <a name="top"></a> Cap 4.1 - Tabella aziende (companies)
 
 In questo capitolo lavoreremo principalmente lato database. Creeremo la tabella aziende e metteremo i seed iniziali ed alcuni dati di prova. Non avremo nessuna interazione lato views e quindi non apriremo il browser per usare la web gui.
-Eseguendo gli scaffolds la web gui è creata in automatico ma in questo capitolo non la utilizzeremo. Utilizzeremo invece la console di rails "$ rails c".
+
+> Eseguendo gli scaffolds la web gui è creata in automatico ma in questo capitolo non la utilizzeremo. 
+
+Utilizzeremo invece la console di rails "$ rails c".
 
 Per le traduzioni:
 
@@ -14,11 +16,9 @@ Per le traduzioni:
 
 ## Apriamo il branch "Companies Seeds"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout -b cs
 ```
-
 
 
 
@@ -28,51 +28,51 @@ Abbiamo diviso le varie colonne della tabella in principali e secondarie perché
 
 Colonne principali:
 
-* name:string             -> (100 caratteri) Ragione Sociale 
-* building:string         -> (100 caratteri) Edificio / Dipartimento
-* address:string          -> (255 caratteri) Indirizzo. (Non è una nested_form perché voglio 1 solo indirizzo ogni building per scopi di usabilità. Se un edificio ha due indirizzi il secondo lo metto nel campo note)
-* sector:string           -> il settore merceologico dell'azienda
-* client_type:integer     -> (lista ENUM) Cliente (no, servizi, beni, beni e servizi)
-* client_rate:integer     -> (numero 1..6) Cliente_punteggio (3 stelle compresi riempimenti a metà)
-* supplier_type:integer   -> (lista ENUM) Fornitore (no, servizi, beni, beni e servizi)
-* supplier_rate:integer   -> (numero 1..6) Fornitore_punteggio (3 stelle compresi riempimenti a metà)
-* note:text               -> (molti caratteri) Note Aggiuntive
-* tax_number_1:string     -> in italiano è la P.IVA. In inglese è il VAT number. In Brasile è il CNPJ.
-* tax_number_2:string     -> in italiano è il Codice Fiscale. In inglese è Company Registration Number.
+- name:string             -> (100 caratteri) Ragione Sociale 
+- building:string         -> (100 caratteri) Edificio / Dipartimento
+- address:string          -> (255 caratteri) Indirizzo. (Non è una nested_form perché voglio 1 solo indirizzo ogni building per scopi di usabilità. Se un edificio ha due indirizzi il secondo lo metto nel campo note)
+- sector:string           -> il settore merceologico dell'azienda
+- client_type:integer     -> (lista ENUM) Cliente (no, servizi, beni, beni e servizi)
+- client_rate:integer     -> (numero 1..6) Cliente_punteggio (3 stelle compresi riempimenti a metà)
+- supplier_type:integer   -> (lista ENUM) Fornitore (no, servizi, beni, beni e servizi)
+- supplier_rate:integer   -> (numero 1..6) Fornitore_punteggio (3 stelle compresi riempimenti a metà)
+- note:text               -> (molti caratteri) Note Aggiuntive
+- tax_number_1:string     -> in italiano è la P.IVA. In inglese è il VAT number. In Brasile è il CNPJ.
+- tax_number_2:string     -> in italiano è il Codice Fiscale. In inglese è Company Registration Number.
 
 
 Colonne secondarie:
 
-* meta_title:string       -> Per il SEO
-* meta_description:string -> Per il SEO
-* logo                    -> Lo implemento con activerecord file upload.
+- meta_title:string       -> Per il SEO
+- meta_description:string -> Per il SEO
+- logo                    -> Lo implemento con activerecord file upload.
 
 
 Possibili colonne che però non usiamo:
 
-* corporate:string        -> Appartenenza ad una corporate. La metto nel campo note. In futuro sviluppo una relazione 1-a-molti tra la stessa tabella companies (self-references); questo è fatto nel model.
+- corporate:string        -> Appartenenza ad una corporate. La metto nel campo note. In futuro sviluppo una relazione 1-a-molti tra la stessa tabella companies (self-references); questo è fatto nel model.
 
 
 Tabelle nested_form:
 
-* Telefono [nested_form]
-* Email [nested_form]
-* Social [nested_form]
+- Telefono [nested_form]
+- Email [nested_form]
+- Social [nested_form]
 
 
 Tabelle collegate 1-a-molti (chiavi esterne)
 
-*  user:references
-*  person:references
+-  user:references
+-  person:references
 
 La cosa bella di " user:references " è che, oltre a creare un migration "ottimizzato" per la relazione uno a molti, ci predispone parte della relazione uno-a-molti anche lato model.
 
 
 Per le traduzioni:
 
-* più avanti traduciamo la parte enum con i files yaml in config/locale
-* per le note interne non è necessario implementare la traduzione
-* per il resto dei campi sono informazioni che restano uguali nelle varie lingue (nomi propri, numeri, indirizzi, ...)
+- più avanti traduciamo la parte enum con i files yaml in config/locale
+- per le note interne non è necessario implementare la traduzione
+- per il resto dei campi sono informazioni che restano uguali nelle varie lingue (nomi propri, numeri, indirizzi, ...)
 
 
 
@@ -84,15 +84,15 @@ Usiamo lo Scaffold che mi imposta già l'applicazione in stile restful con le ul
 
 I> ATTENZIONE: con "rails generate scaffold ..." -> usiamo il SINGOLARE
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails g scaffold Company name:string building:string address:string client_type:integer client_rate:integer supplier_type:integer supplier_rate:integer note:text sector:string tax_number_1:string tax_number_2:string
 ```
 
 
 vediamo il migrate generato
 
-{id: "01-08-01_01", caption: ".../db/migrate/xxx_create_companies.rb -- codice 01", format: ruby, line-numbers: true, number-from: 1}
+***code 01 - .../db/migrate/xxx_create_companies.rb - line:01***
+
 ```
 class CreateCompanies < ActiveRecord::Migration[6.0]
   def change
@@ -120,23 +120,19 @@ end
 
 Effettuiamo il migrate del database per creare la tabella sul database
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails db:migrate
 ```
 
 
 
-
 ## Salviamo su git
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git add -A
 $ git commit -m "add scaffold Company"
 ```
-
 
 
 
@@ -147,7 +143,8 @@ prima ancora di iniziare i semi mi attivo per l'internazionalizzazione sul datab
 Attiviamo l'internazionalizzazione sul database usando la gemma globalize che abbiamo già installato nei capitoli precedenti. (vedi: 01-base/29-dynamic-i18n/01-install_i18n_globalize)
 Indichiamo sul modello i campi della tabella che vogliamo tradurre. 
 
-{id: "01-08-01_02", caption: ".../app/models/company.rb -- codice 02", format: ruby, line-numbers: true, number-from: 7}
+***code 02 - .../app/models/company.rb - line:07***
+
 ```
   ## globalize required
   translates :building, :note, :sector, :fallbacks_for_empty_translations => true
@@ -160,16 +157,15 @@ I> il "translates" dentro il model va messo prima di fare il db:migrate altrimen
 adesso creiamo un migration vuoto perché useremo il metodo di globalize ".create_translation_table"
 
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails g migration create_companies_translations
 ```
 
 Lavoriamo sulla migration usando il metodo .create_translation_table sul model "Company" e passando i nomi dei campi che devono avere la traduzione.
 
+***code 03 - .../db/migrate/xxx_create_companies_transaltions.rb - line:01***
 
-{id: "01-08-01_01", caption: ".../db/migrate/xxx_create_companies_transaltions.rb -- codice 03", format: ruby, line-numbers: true, number-from: 1}
-```
+```ruby
 class CreateCompaniesTranslations < ActiveRecord::Migration[6.0]
   def change
     reversible do |dir|
@@ -195,8 +191,7 @@ end
 ```
 
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rake db:migrate
 ```
@@ -206,16 +201,12 @@ L'opzione "remove_source_columns: true" ci risparmia di farlo manualmente.
 
 
 
-
 ## Salviamo su git
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git add -A
 $ git commit -m "add Company I18n"
 ```
-
-
 
 
 
@@ -223,8 +214,9 @@ $ git commit -m "add Company I18n"
 
 Popolare la tabella in automatico con un solo record. Nel prossimo paragrafo aggiungiamo altri records manualmente.
 
-{id: "01-08-01_01", caption: ".../db/seeds.rb -- codice 03", format: ruby, line-numbers: true, number-from: 29}
-```
+***code n/a - .../db/seeds.rb - line:29***
+
+```ruby
 puts "setting the Company data with I18n :en :it"
 Company.new(name: "ABC srl", building: "Roma's office", sector: "Chemical", locale: :en).save
 Company.last.update(building: "Ufficio di Roma", sector: "Chimico", locale: :it)
@@ -233,8 +225,7 @@ Company.last.update(building: "Ufficio di Roma", sector: "Chimico", locale: :it)
 
 Aggiungiamo il seme/record alla tabella.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ rails db:seed
 ```
 
@@ -242,15 +233,12 @@ I> Nota: "$ rails db:setup" avrebbe svuotato la tabella prima di inserire il rec
 
 
 
-
 ## Salviamo su git
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git add -A
 $ git commit -m "add seed companies"
 ```
-
 
 
 
@@ -258,9 +246,7 @@ $ git commit -m "add seed companies"
 
 Usiamo la console di rails per popolare la tabella del database.
 
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ sudo service postgresql start
 $ rails c
 > Company.new(name: "DEF srl", sector: "Pharmaceutical", locale: :en).save
@@ -289,11 +275,9 @@ $ rails c
 
 
 
-
 ## Salviamo su git
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git add -A
 $ git commit -m "add companies Manually"
 ```
@@ -302,11 +286,9 @@ I> Nota: Questo git commit è solo per lasciare un commento perché le modifiche
 
 
 
-
 ## Publichiamo su heroku
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git push heroku cs:master
 $ heroku run rake db:migrate
 ```
@@ -315,8 +297,7 @@ I> Lato produzione su heroku c'è un database indipendente da quello di sviluppo
 
 per popolare il database di heroku basta aprire la console con il comando:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ heroku run rails db:seed
 $ heroku run rails c
 ```
@@ -328,10 +309,9 @@ Verifichiamo preview su heroku.
 
 Andiamo all'url:
 
-* https://elisinfo.herokuapp.com/companies
+- https://elisinfo.herokuapp.com/companies
 
 E verifichiamo che l'elenco delle aziende è popolato.
-
 
 
 
@@ -339,8 +319,7 @@ E verifichiamo che l'elenco delle aziende è popolato.
 
 se abbiamo finito le modifiche e va tutto bene:
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout master
 $ git merge cs
 $ git branch -d cs
@@ -348,12 +327,10 @@ $ git branch -d cs
 
 
 
-
 ## Facciamo un backup su Github
 
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git push origin master
 ```
