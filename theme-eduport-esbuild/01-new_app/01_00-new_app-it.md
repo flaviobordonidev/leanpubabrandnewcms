@@ -5,6 +5,9 @@
 ***Nel tempo l'applicazione che svilupperemo (nello specifico ubuntudream) sarà spostata su una soluzione con `importmap` e `Propshaft`.***
 
 
+***PROGETTO CANCELLATO PERCHE' ANCHE QUI NON RIESCO A FAR FUNZIONARE FACILMENTE IL JAVASCRIPT DEL TEMA EDUPORT***
+
+
 Creiamo la nuova applicazione Eduport tramite node js con esbuild.
 
 > Lo scopo di questo progetto è vedere se usando questo approccio più "tradizionale" l'importazione del tema eduport risulti più facile.<br/>

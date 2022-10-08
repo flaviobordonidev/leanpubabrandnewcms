@@ -1,7 +1,6 @@
 # <a name="top"></a> Cap 8.1 - User profile
 
-Mettiamo lo stile eduport alla gestione dell'utente.
-Più specificamente permettere all'utente loggato di modificare il suo profilo.
+Permettere all'utente loggato di modificare il suo profilo.
 
 
 ## Risorse interne
@@ -15,23 +14,6 @@ Più specificamente permettere all'utente loggato di modificare il suo profilo.
 ## Risorse esterne
 
 - []()
-
-
-
-## Scegliamo la pagina dal tema eduport
-
-Abbiamo selezionato "instructor-edit-profile.html"
-
-***code 01 - eduport_v1.2.0/template/instructor-edit-profile.html - line:1***
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<title>Eduport - LMS, Education and Course Theme</title>
-```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/01_01-instructor-edit-profile.html)
 
 
 

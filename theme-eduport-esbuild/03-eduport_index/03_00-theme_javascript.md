@@ -1,17 +1,48 @@
-# <a name="top"></a> Cap 2.2 - Attiviamo stylesheet del tema
+# <a name="top"></a> Cap 2.3 - Attiviamo la parte javascript
 
-Questa parte è più rognosa visti i vari tutorials e Turbolinks che rompe le scatole...
+La libreria è già instllata tramite jsbuilder
+Dobbiamo solo importare/attivare il codice javascript del tema eduport.
+
 
 
 # Risorse esterne
 
-- [Rails 7 Import Maps - import folder with custom scripts](https://stackoverflow.com/questions/70969937/rails-7-import-maps-import-folder-with-custom-scripts)
--[Where to place Javascript used in one page only in Rails 7 with importmap](https://stackoverflow.com/questions/70690025/where-to-place-javascript-used-in-one-page-only-in-rails-7-with-importmap)
+- []())
 
+
+
+## Blalba
 
 
 
   - javascript
     - edu
       - functions.js
+
+
+
+
+## Copiamo le sottocartelle di *javascript* che ci interessano
+
+Copiamo i files del javascripts dal tema Eduport alla nostra applicazione Rails.
+
+copia da                          | incolla in
+| :---                            | :---
+.../theme_eduport/assets/js/      | .../app/javascript/edu/
+
+
+> La sottocartella ***edu/*** le creiamo noi.
+
+Vediamo il risultato finale.
+
+Cartella copiata         | sottocartelle
+| :---                   | :---
+.../app/javascript/edu/  | *nessuna*
+
+> In pratica la parte javascript è un unico file `functions.js`
+
+
+
+## Definiamolo su *application.js*
+
 
