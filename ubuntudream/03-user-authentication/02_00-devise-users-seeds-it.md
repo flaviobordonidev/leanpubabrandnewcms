@@ -1,65 +1,98 @@
-# <a name="top"></a> Cap 7.3 - Users seeds
+# <a name="top"></a> Cap 3.2 - Users seeds
 
-Creiamo la tabella *users* tramite devise e la popoliamo.
+Creiamo la tabella `users` tramite devise e la popoliamo.
 
 
 
 ## Creiamo la tabella users con devise
 
-Implementiamo il *MODEL* di devise, ossia **User** e allo stesso tempo creiamo la tabella *users* usando il comando `rails generate devise MyModel`.
+Usiamo il *rails generate* richiamando lo script di *devise* per creare il suo *Model* con il comando `rails generate devise MyModel`.<br/>
+Il model lo chiamiamo *User*. 
 
 ```bash
 $ rails g devise User
 ```
 
+> Questo script genera anche la tabella `users`.
+
 Esempio:
   
 ```bash
-ubuntu@ubuntufla:~/bl7_0 (ldi)$rails g devise User
+ubuntu@ubuntufla:~/ubuntudream (ldi)$rails g devise User
       invoke  active_record
-      create    db/migrate/20220307163946_devise_create_users.rb
+      create    db/migrate/20221008202526_devise_create_users.rb
       create    app/models/user.rb
       invoke    test_unit
       create      test/models/user_test.rb
       create      test/fixtures/users.yml
       insert    app/models/user.rb
        route  devise_for :users
-ubuntu@ubuntufla:~/bl7_0 (ldi)$
+ubuntu@ubuntufla:~/ubuntudream (ldi)$
 ```
 
-> La maggior parte delle volte il *MyModel* usato è **User**, ma esistono situazioni in cui si preferisce dare un nome più esplicito. 
-> Ad esempio per gli utenti di un *Blog* si può usare **Author** invece di **User**. Questo per evidenziare che sono gli autori degli articoli che si loggano. 
-> Ma come *"best practise"* è meglio restare su un generico **User** che più avanti prenderà un *"ruolo"* a seguito dell'**autenticazione**.
+Prima di fare il migrate valutiamo che campi aggiungere.
 
 
-Aggiungiamo una colonna di tipo string al migrate; aggiungiamogli anche che non può avere un valore *null* e che di default ha una stringa vuota *""*.
+
+## Progettiamo le colonne per la tabela users
+
+Colonna                        | Descrizione
+------------------------------ | -----------------------
+`first_name:string`            | (65 caratteri) il Nome della persona
+`last_name:string`             | (65 caratteri) il Cognome della persona
+`username:string`              | (65 caratteri) Il "nick name" mostrato nell'app
+`email:string`                 | (65 caratteri) l'email con cui fai login
+`location:string`              | (65 caratteri) La nazione dove sei
+`bio:string`                   | (160 caratteri) Una breve descrizione dell'utente. (`about_me`)
+`profile_image` -> in model    | immagine caricata con active_storage su aws S3
+`password:string`              | (65 caratteri) La password
+`phone_number:string`          | (20 caratteri) questo andrebbe nella tabella morphic "telephonable"
+
+
+> Attenzione!<br/>
+> Se volessimo rinominare il campo `email` dovremmo intervenire anche a livello di *devise*.
 
 ***codice 01 - .../db/migrate/xxx_devise_create_users.rb - line: 6***
 
 ```ruby
-      t.string :name,               null: false, default: ""
+      t.string :username, null: false, default: ""
+      t.string :first_name
+      t.string :last_name
+      t.string :location
+      t.string :bio
+      t.string :phone_number
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/03_01-db-migrate-xxx_devise_create_users.rb)
 
+> Alla colonna `username` aggiungiamo che non può avere un valore *null* e che di default ha una stringa vuota *""*.
+
+
+
+## Verifichiamo il Model 
+
 Prima di effettuare il *migrate* verifichiamo il *MODEL* per eventuali ulteriori opzioni di configurazione che potremmo aggiungere.
+
 Ad esempio *confirmable* o *lockable*. 
-Se aggiungiamo un'opzione, assicuriamoci di ispezionare il file di *migrate* (creato dal *generator*) e *decommentiamo* la sezione appropriata. 
-Ad esempio, se si aggiunge l'opzione *confirmable* nel modello, è necessario togliere il commento alla sezione *Confirmable* nel migrate.
+
+> Se aggiungiamo un'opzione, assicuriamoci di ispezionare il file di *migrate* (creato dal *generator*) e *decommentiamo* la sezione appropriata. <br/>
+> Ad esempio, se si aggiunge l'opzione *confirmable* nel modello, è necessario togliere il commento alla sezione *Confirmable* nel migrate.
 
 Questa è la lista dei moduli Devise che sono attivi per questo modello:
 
-- *database_authenticatable* – Gli utenti saranno in grado di autenticarsi con un login e una password che sono memorizzati nel database. La password è memorizzata in forma di "digest" (Digest access authentication).
-- *registerable* – Gli utenti saranno in grado di registrare, aggiornare e distruggere i loro profili.
-- *recoverable* – Fornisce un meccanismo per reimpostare le password dimenticate.
-- *rememberable* – Abilita la funzionalità "ricordami(remember me)" che utilizza i cookie.
-- *trackable* – Tiene traccia del conteggio dei sign in, dei timestamps, e degli indirizzi IP.
-- *validatable* – Valida e-mail e password (possono essere usati validatori personalizzati).
-- *confirmable* – Gli utenti dovranno confermare le loro e-mail dopo la registrazione prima di poter accedere.
-- *lockable* – Gli account degli utenti verranno bloccati dopo un numero di tentativi di autenticazione non riusciti.
+nome modulo                   | Descrizione
+|:-                           |:-
+`database_authenticatable`    | Gli utenti saranno in grado di autenticarsi con un login e una password che sono memorizzati nel database. La password è memorizzata in forma di "digest" (Digest access authentication).
+`registerable` | Gli utenti saranno in grado di registrare, aggiornare e distruggere i loro profili.
+`recoverable`  | Fornisce un meccanismo per reimpostare le password dimenticate.
+`rememberable` | Abilita la funzionalità "ricordami(remember me)" che utilizza i cookie.
+`trackable`    | Tiene traccia del conteggio dei sign in, dei timestamps, e degli indirizzi IP.
+`validatable`  | Valida e-mail e password (possono essere usati validatori personalizzati).
+`confirmable`  | Gli utenti dovranno confermare le loro e-mail dopo la registrazione prima di poter accedere.
+`lockable`     | Gli account degli utenti verranno bloccati dopo un numero di tentativi di autenticazione non riusciti.
 
 
-Commentiamo *:registerable* nel model perché non vogliamo che sia possibile per gli utenti registrarsi come utente.
+Commentiamo *:registerable* nel model perché non vogliamo che sia possibile per gli utenti registrarsi.
 
 ***codice 02 - .../app/models/user.rb - line: 1***
 

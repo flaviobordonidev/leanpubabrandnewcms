@@ -12,82 +12,6 @@ Vediamo tutte le colonne presenti nella tabella ed anche quelle virtuali present
 
 
 
-## Risorse esterne
-
-- []()
-
-
-
-## Progettiamo le colonne per la tabela users
-
-Colonna                        | Descrizione
------------------------------- | -----------------------
-`first_name:string`            | (65 caratteri) il Nome della persona
-`last_name:string`             | (65 caratteri) il Cognome della persona
-`username:string`              | (65 caratteri) Il "nick name" mostrato nell'app
-`email:string`                 | (65 caratteri) l'email con cui fai login
-`location:string`              | (65 caratteri) La nazione dove sei
-`bio:string`                   | (160 caratteri) Una breve descrizione dell'utente. (`about_me`)
-`profile_image` -> in model    | immagine caricata con active_storage su aws S3
-`password:string`              | (65 caratteri) La password
-`phone_number:string`          | (20 caratteri) questo andrebbe nella tabella morphic "telephonable"
-
-
-> Attenzione!<br/>
-> Se volete rinominare il campo `email` dovete agire anche a livello di ***devise*** 
-
-
-
-## I migrates
-
-Rinominiamo:
-
-- `name` in `username`
-
-***code n/a - "terminal" - line:n/a***
-
-```ruby
-$ rails g migration RenameNameInUsers
-```
-
-***code 01 - .../db/migrate/xxx_rename_name_in_users.rb - line:n/a***
-
-```ruby
-rename_column :users, :name, :username
-```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/02_01-db-migrate-xxx_rename_name_and_email_in_users.rb)
-
-
-Aggiungiamo le colonne `first_name`, `last_name`, `location`, `bio`, `phone_number`.
-
-***code n/a - "terminal" - line:n/a***
-
-```ruby
-$ rails g migration AddColumnsToUsers first_name:string last_name:string location:string bio:string phone_number:string
-```
-
-***code 02 - .../db/migrate/xxx_add_columns_to_users.rb - line:n/a***
-
-```ruby
-    add_column :users, :first_name, :string
-    add_column :users, :last_name, :string
-    add_column :users, :location, :string
-    add_column :users, :bio, :string
-    add_column :users, :phone_number, :string
-```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/02_02-db-migrate-xxx_add_columns_to_users.rb)
-
-
-***code n/a - "terminal" - line:n/a***
-
-```ruby
-$ rails db:migrate
-```
-
-
-
 ## Aggiorniamo il Controller e le views
 
 Avendo modificato ed aggiunto delle nuove colonne alla tabella users andiamo ad aggiornare il codice nel controller e nelle views.
@@ -107,12 +31,6 @@ Avendo modificato ed aggiunto delle nuove colonne alla tabella users andiamo ad 
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/02_03-controllers-users_controller.rb)
 
-
-***code 04 - .../app/views/users/_form.html.erb - line:8***
-
-```html+erb
-
-```
 
 
 [DAFA]
@@ -189,34 +107,3 @@ Esempio con uso di `build`
 > `Bar.where(:foo_id=>foo.id).new` <=> `Bar.where(:foo_id=>foo.id).build` <br/>
 > And `if !foo.new_record?` <br/>
 > `foo.bars.new` <=> `Bar.where(:foo_id=>foo.id).new`
-
-
-
-## Archiviamo su git
-
-```bash
-$ git add -A
-$ git commit -m "add scaffold Steps"
-```
-
-
-
-## Publichiamo su heroku
-
-```bash
-$ git push heroku cs:main
-$ heroku run rake db:migrate
-```
-
-> Lato produzione su heroku c'è un database indipendente da quello di sviluppo quindi risulta vuoto.
-
-per popolare il database di heroku basta aprire la console con il comando:
-
-```bash
-$ heroku run rails c
-```
-
-E rieseguire i passi già fatti nel paragrafo precedentemente
-
-> Per popolarla attraverso i "semi" eseguiamo il comando: `$ heroku run rails db:seed`
-
