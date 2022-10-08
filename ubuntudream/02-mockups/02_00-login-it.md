@@ -8,9 +8,12 @@ In questo modo non appesantiamo l'applicazione con persone solo curiose e rendia
 
 ## Pagina di login
 
-Questa è la pagina di mockup che nella nostra applicazione diventerà `views/users/sessions/new.html.erb` perché questa è creata da *devise*.
+Questa è la pagina di mockup che nella nostra applicazione diventerà la pagina `views/users/sessions/new.html.erb` perché creata da *devise*.
+Nel mockups invece la chiamiamo `sign_in`.
 
-***code 01 - .../app/views/mockups/login.html.erb - line:321***
+> Non la chiamiamo `login` perché la pagina di registrazione è `sign_up` e quindi abbiamo scelto `sign_in` per mantenere la simiglianza.
+
+***code 01 - .../app/views/mockups/sign_in.html.erb - line:321***
 
 ```html+erb
 <!-- **************** MAIN CONTENT START **************** -->
@@ -27,7 +30,8 @@ Questa è la pagina di mockup che nella nostra applicazione diventerà `views/us
 							<h2 class="fw-bold">Welcome to our largest community</h2>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-mokups/02_01-mockups-login.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-mokups/02_01-mockups-sign_in.html.erb)
+
 
 
 ## Verifichiamo preview

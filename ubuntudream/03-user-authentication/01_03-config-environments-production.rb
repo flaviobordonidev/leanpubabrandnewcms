@@ -22,7 +22,7 @@ Rails.application.configure do
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
-  config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
+  config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present? || ENV['RENDER'].present?
 
   # Compress CSS using a preprocessor.
   # config.assets.css_compressor = :sass
@@ -60,7 +60,7 @@ Rails.application.configure do
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter     = :resque
-  # config.active_job.queue_name_prefix = "bl7_0_production"
+  # config.active_job.queue_name_prefix = "ubuntudream_production"
 
   config.action_mailer.perform_caching = false
 
@@ -69,8 +69,8 @@ Rails.application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   # Devise config
-  config.action_mailer.default_url_options = { host: 'bl7-0.herokuapp.com', port: 3000 }
-  
+  config.action_mailer.default_url_options = { host: 'ubuntudream.onrender.com', port: 3000 }
+
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
   config.i18n.fallbacks = true
