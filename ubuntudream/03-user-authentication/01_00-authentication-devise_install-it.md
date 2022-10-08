@@ -1,8 +1,7 @@
 # <a name="top"></a> Cap 3.1 - Login con Devise - installazione
 
-Ogni utente ha un *SUO* ambiente di lavoro personalizzato.
-Per far questo dobbiamo autenticare l'utente per mezzo di un login con user e password.
-Questa autenticazione, ossia il login, lo facciamo usando la gemma ***devise***.
+Ogni utente ha un *SUO* ambiente di lavoro personalizzato.<br/>
+Per far questo dobbiamo *autenticare* l'utente tramite una pagina di *login* che richiede `utente` e `password`. Questa autenticazione la gestiamo con la gemma ***devise***.
 
 
 
