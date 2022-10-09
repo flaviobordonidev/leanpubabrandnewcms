@@ -1,7 +1,12 @@
-# Rinominiamo i databases
+# <a name="top"></a> Cap postgresql.3 - Rinominiamo i databases
 
-Per approfondimenti rimandiamo al capitolo 01-beginning/01-new_app/06-pg_app_databases
+Rinominiamo i databases su PostgreSQL
 
+
+
+## Risorse interne
+
+- [01-beginning/01-new_app/06-pg_app_databases]()
 
 
 
@@ -11,8 +16,7 @@ Rinominiamo i due database di "S5beginning" direttamente su postgreSQL.
 
 Colleghiamoci a postgreSQL ed elenchiamo tutti i databases.
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ psql postgres
 -> \list
 
@@ -39,14 +43,13 @@ postgres=#
 
 Verifichiamo se ci sono delle connessioni attive sui databases "s5beginning_development" e "s5beginning_test"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
--> SELECT
-->     *
--> FROM
-->     pg_stat_activity
--> WHERE
-->     datname = 's5beginning_development';
+```sql
+> SELECT
+>     *
+> FROM
+>     pg_stat_activity
+> WHERE
+>     datname = 's5beginning_development';
 
 
 postgres=# SELECT
@@ -108,8 +111,7 @@ postgres=#
 
 Verifichiamo il cambio di nome ed usciamo da postgreSQL
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```sql
 -> \list
 -> \q
 
@@ -129,91 +131,5 @@ postgres=# \list
 postgres=# \q
 ubuntu:~/environment/s5cmsbeginning (master) $ 
 ```
-
-
-
-
-## Rinominiamo i databases nella nostra app Rails
-
-Se provassimo adesso la connessione tra la nostra applicazione ed i databases avremmo ovviamente un errore 
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ rails db:migrate
-
-
-ubuntu:~/environment/s5cmsbeginning (master) $ rails db:migrate
-rails aborted!
-ActiveRecord::NoDatabaseError: FATAL:  database "s5beginning_development" does not exist
-```
-
-Questo perché dobbiamo aggiornare anche config-database.yml
-
-{id="02-03-02_01", title=".../config/database.yml", lang=yaml, line-numbers=on, starting-line-number=24}
-```
-development:
-  <<: *default
-  database: s5cmsbeginning_development
-```
-
-{title=".../config/database.yml", lang=yaml, line-numbers=on, starting-line-number=58}
-```
-test:
-  <<: *default
-  database: s5cmsbeginning_test
-```
-
-{title=".../config/database.yml", lang=yaml, line-numbers=on, starting-line-number=81}
-```
-production:
-  <<: *default
-  database: s5cmsbeginning_production
-  username: s5cmsbeginning
-  password: <%= ENV['S5BEGINNING_DATABASE_PASSWORD'] %>
-```
-
-[Codice 01](#02-03-02_01all)
-
-
-
-
-## Verifichiamo connessione
-
-Anche se già visto nel preview, verifichiamo da terminale che non c'è comunicazione con il database.
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ rails db:migrate
-
-ubuntu:~/environment/s5cmsbeginning (master) $ rails db:migrate
-ubuntu:~/environment/s5cmsbeginning (master) $ 
-```
-
-c'è comunicazione perché il comando si completa senza errori.
-
-
-
-
-### Verifichiamo preview
-
-{caption: "terminal", format: bash, line-numbers: false}
-```
-$ sudo service postgresql start
-$ rails s
-```
-
-il preview ci apre il browser sull'URL del root_path:
-
-* https://mycloud9path.amazonaws.com/
-* https://mycloud9path.amazonaws.com/eg_posts
-
-
-
-
-
-
-## Il codice del capitolo
-
-
 
 

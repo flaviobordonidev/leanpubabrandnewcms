@@ -16,30 +16,29 @@ Risorse web:
 
 ## Installiamo PostgreSQL su piattaforma Ubuntu
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```bash
 $ sudo apt update
 $ sudo apt install postgresql postgresql-contrib libpq-dev
---> y
+-> y
+```
 
 oppure
 
+```bash
 $ sudo su - 
--> apt update
--> apt install postgresql postgresql-contrib libpq-dev
---> y
--> exit
+> apt update
+> apt install postgresql postgresql-contrib libpq-dev
+-> y
+> exit
+```
 
 
 oppure ?!?
 
+```bash
 $ sudo su - 
--> sudo apt update
--> sudo apt install postgresql postgresql-contrib libpq-dev
---> y
--> exit
-~~~~~~~~
-
-
-
-
+> sudo apt update
+> sudo apt install postgresql postgresql-contrib libpq-dev
+-> y
+> exit
+```

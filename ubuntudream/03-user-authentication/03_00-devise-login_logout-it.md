@@ -1,6 +1,6 @@
-# <a name="top"></a> Cap 7.4 - devise login logout
+# <a name="top"></a> Cap 3.3 - devise login logout
 
-La struttura base di devise è pronta, adesso implementiamo quelle piccole modifiche per personalizzare l'esperienza dell'autenticazione. 
+La struttura base di `devise` è pronta, adesso implementiamo quelle piccole modifiche per personalizzare l'esperienza dell'autenticazione. 
 Cambiamo l'url, attiviamo il pulsante di logout, implementiamo il css, implementiamo l'internazionalizzazione e molto altro.
 
 Rifiniamo la parte di autenticazione con devise:
