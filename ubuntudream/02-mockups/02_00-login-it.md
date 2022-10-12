@@ -9,11 +9,8 @@ In questo modo non appesantiamo l'applicazione con persone solo curiose e rendia
 ## Pagina di login
 
 Questa è la pagina di mockup che nella nostra applicazione diventerà la pagina `views/users/sessions/new.html.erb` perché creata da *devise*.
-Nel mockups invece la chiamiamo `sign_in`.
 
-> Non la chiamiamo `login` perché la pagina di registrazione è `sign_up` e quindi abbiamo scelto `sign_in` per mantenere la simiglianza.
-
-***code 01 - .../app/views/mockups/sign_in.html.erb - line:321***
+***code 01 - .../app/views/mockups/login.html.erb - line:321***
 
 ```html+erb
 <!-- **************** MAIN CONTENT START **************** -->
@@ -44,8 +41,7 @@ $ rails s -b 192.168.64.3
 
 Andiamo con il browser sull'URL:
 
-- http://192.168.64.3:3000
-- oppure: http://192.168.64.3:3000/mockups/index
+- http://192.168.64.3:3000/mockups/login
 
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-mockups/02_fig01-mockup_login.png)
 

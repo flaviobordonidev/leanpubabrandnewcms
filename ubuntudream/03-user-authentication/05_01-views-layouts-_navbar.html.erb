@@ -1,0 +1,152 @@
+<!-- Header START -->
+<header class="navbar-light navbar-sticky">
+	<!-- Logo Nav START -->
+	<nav class="navbar navbar-expand-xl">
+		<div class="container">
+			<!-- Logo START -->
+      <%= link_to root_path, class: "navbar-brand" do %>
+        <%= image_tag "edu/logo.svg", class: "light-mode-item navbar-brand-item", alt: "logo" %>
+        <%= image_tag "edu/logo-light.svg", class: "dark-mode-item navbar-brand-item", alt: "logo" %>
+			<% end %>
+			<!-- Logo END -->
+
+			<!-- Responsive navbar toggler -->
+			<button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-animation">
+					<span></span>
+					<span></span>
+					<span></span>
+				</span>
+			</button>
+
+			<!-- Main navbar START -->
+			<div class="navbar-collapse w-100 collapse" id="navbarCollapse">
+
+        <!-- Nav Main menu START -->
+				<ul class="navbar-nav navbar-nav-scroll mx-auto">
+
+					<!-- Nav item 1 Gratitude -->
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="gratitudeMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Gratitude</a>
+						<ul class="dropdown-menu" aria-labelledby="gratitudeMenu">
+							<li> <a class="dropdown-item" href="index.html">All</a></li>
+							<li> <a class="dropdown-item" href="index-2.html">Lunapark - Tenda di Kiro</a></li>
+							<li> <a class="dropdown-item" href="index-3.html">Passeggiando al parco</a></li>
+							<li> <a class="dropdown-item" href="index-4.html">Oasi nel deserto</a></li>
+							<li> <a class="dropdown-item" href="index-5.html">Nello spazio</a></li>
+							<li> <a class="dropdown-item" href="index-6.html">Castello scozzese</a></li>
+							<li> <hr class="dropdown-divider"></li>
+							<li> <a class="dropdown-item" href="index-7.html">Altre ambientazioni <span class="badge bg-success ms-2 smaller">New</span></a></li>
+						</ul>
+					</li>
+
+					<!-- Nav item 2 Training -->
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="trainingMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Training</a>
+						<ul class="dropdown-menu" aria-labelledby="trainingMenu">
+							<li> <a class="dropdown-item" href="index.html">All painting</a></li>
+							<li> <a class="dropdown-item" href="index-2.html">All audio</a></li>
+							<li> <a class="dropdown-item" href="index-3.html">nature</a></li>
+							<li> <a class="dropdown-item" href="index-4.html">city</a></li>
+							<li> <a class="dropdown-item" href="index-5.html">home</a></li>
+						</ul>
+					</li>
+
+
+					<!-- Nav item 3 Dissociation -->
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="dissociationMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dissociation</a>
+						<ul class="dropdown-menu" aria-labelledby="dissociationMenu">
+							<li> <a class="dropdown-item" href="index.html">All</a></li>
+							<li> <a class="dropdown-item" href="index-2.html">vincere la paura</a></li>
+							<li> <a class="dropdown-item" href="index-3.html">vedersi da fuori</a></li>
+						</ul>
+					</li>
+
+					<!-- Nav item 4 Introspection -->
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="introspectionMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Introspection</a>
+						<ul class="dropdown-menu" aria-labelledby="introspectionMenu">
+							<li> <a class="dropdown-item" href="index.html">All</a></li>
+							<li> <a class="dropdown-item" href="index-2.html">1 - Tornare a sognare</a></li>
+							<li> <a class="dropdown-item" href="index-3.html">2 - Chiarezza</a></li>
+							<li> <a class="dropdown-item" href="index-3.html">3 - Proposito e Motivazione</a></li>
+							<li> <a class="dropdown-item" href="index-3.html">4 - Identità</a></li>
+							<li> <a class="dropdown-item" href="index-3.html">5 - Valori</a></li>
+							<li> <a class="dropdown-item" href="index-3.html">6 - Convinzioni ed Emozioni</a></li>
+							<li> <a class="dropdown-item" href="index-3.html">7 - Interpretare</a></li>
+							<li> <a class="dropdown-item" href="index-3.html">8 - Liberare</a></li>
+							<li> <a class="dropdown-item" href="index-3.html">9 - Potenziare</a></li>
+							<li> <a class="dropdown-item" href="index-3.html">10 - Pianificare</a></li>
+							<li> <a class="dropdown-item" href="index-3.html">11 - Decidere ed Agire</a></li>
+							<li> <a class="dropdown-item" href="index-3.html">12 - Verificare e Celebrare</a></li>
+						</ul>
+					</li>
+
+				</ul>
+				<!-- Nav Main menu END -->
+
+				<!-- Nav Search START -->
+				<div class="nav my-3 my-xl-0 px-4 flex-nowrap align-items-center">
+					<div class="nav-item w-100">
+						<form class="position-relative">
+							<input class="form-control pe-5 bg-transparent" type="search" placeholder="Search" aria-label="Search">
+							<button class="btn bg-transparent px-2 py-0 position-absolute top-50 end-0 translate-middle-y" type="submit"><i class="fas fa-search fs-6 "></i></button>
+						</form>
+					</div>
+				</div>
+				<!-- Nav Search END -->
+
+			</div>
+			<!-- Main navbar END -->
+
+			<!-- Profile navbar START -->
+			<div class="dropdown ms-1 ms-lg-0">
+				<a class="avatar avatar-sm p-0" href="#" id="profileDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
+					<%= image_tag "edu/avatar/01.jpg", class: "avatar-img rounded-circle", alt: "avatar" %>
+				</a>
+				<ul class="dropdown-menu dropdown-animation dropdown-menu-end shadow pt-3" aria-labelledby="profileDropdown">
+					<!-- Profile info -->
+					<li class="px-3">
+						<div class="d-flex align-items-center">
+							<!-- Avatar -->
+							<div class="avatar me-3">
+								<%= image_tag "edu/avatar/01.jpg", class: "avatar-img rounded-circle", alt: "avatar" %>
+							</div>
+							<div>
+								<a class="h6" href="#"><%= current_user.username %></a>
+								<p class="small m-0"><%= current_user.email %></p>
+							</div>
+						</div>
+						<hr>
+					</li>
+					<!-- Links -->
+					<li><a class="dropdown-item" href="#"><i class="bi bi-person fa-fw me-2"></i>Edit Profile</a></li>
+					<li><a class="dropdown-item" href="#"><i class="bi bi-gear fa-fw me-2"></i>Account Settings</a></li>
+					<li><a class="dropdown-item" href="#"><i class="bi bi-info-circle fa-fw me-2"></i>Languages</a></li>
+					<li><a class="dropdown-item" href="#"><i class="bi bi-info-circle fa-fw me-2"></i>Help</a></li>
+					<%# <li><a class="dropdown-item bg-danger-soft-hover" href="#"><i class="bi bi-power fa-fw me-2"></i>Sign Out</a></li> %>
+          <li>
+            <%= button_to destroy_user_session_path, method: :delete, class: 'dropdown-item bg-danger-soft-hover' do %>
+              <i class="bi bi-power fa-fw me-2"></i>Logout
+            <% end %>
+          </li>
+					<li> <hr class="dropdown-divider"></li>
+					<!-- Dark mode switch START -->
+					<li>
+						<div class="modeswitch-wrap" id="darkModeSwitch">
+							<div class="modeswitch-item">
+								<div class="modeswitch-icon"></div>
+							</div>
+							<span>Dark mode</span>
+						</div>
+					</li> 
+          <!-- Dark mode switch END -->
+				</ul>
+			</div>
+			<!-- Profile navbar END -->
+		</div>
+	</nav>
+	<!-- Logo Nav END -->
+</header>
+<!-- Header END -->

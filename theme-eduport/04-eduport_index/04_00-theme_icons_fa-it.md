@@ -22,7 +22,7 @@ Il tema Eduport usa Font Awesome icons.
 
 ## Installazione con importmap
 
-Per installare ed attivare fontawesome è aggiorniamo files:
+Per installare ed attivare fontawesome aggiorniamo i seguenti files:
 
 - `.../config/importmap.rb`
 - `.../app/javascript/application.js`
@@ -40,7 +40,7 @@ $ ./bin/importmap pin @fortawesome/fontawesome-free \
 Esempio
 
 ```bash
-ubuntu@ubuntufla:~/ubuntudream (main)$./bin/importmap pin @fortawesome/fontawesome-free \
+ubuntu@ubuntufla:~/ubuntudream (nb)$./bin/importmap pin @fortawesome/fontawesome-free \
 >                     @fortawesome/fontawesome-svg-core \
 >                     @fortawesome/free-brands-svg-icons \
 >                     @fortawesome/free-regular-svg-icons \
@@ -50,8 +50,7 @@ Pinning "@fortawesome/fontawesome-svg-core" to vendor/javascript/@fortawesome/fo
 Pinning "@fortawesome/free-brands-svg-icons" to vendor/javascript/@fortawesome/free-brands-svg-icons.js via download from https://ga.jspm.io/npm:@fortawesome/free-brands-svg-icons@6.2.0/index.mjs
 Pinning "@fortawesome/free-regular-svg-icons" to vendor/javascript/@fortawesome/free-regular-svg-icons.js via download from https://ga.jspm.io/npm:@fortawesome/free-regular-svg-icons@6.2.0/index.mjs
 Pinning "@fortawesome/free-solid-svg-icons" to vendor/javascript/@fortawesome/free-solid-svg-icons.js via download from https://ga.jspm.io/npm:@fortawesome/free-solid-svg-icons@6.2.0/index.mjs
-ubuntu@ubuntufla:~/ubuntudream (main)$
-
+ubuntu@ubuntufla:~/ubuntudream (nb)$
 ```
 
 

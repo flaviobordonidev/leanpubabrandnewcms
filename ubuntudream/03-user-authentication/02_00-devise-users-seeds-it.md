@@ -229,7 +229,7 @@ $ rails s -b 192.168.64.3
 
 Per verificarlo dobbiamo andare alla pagina **/users/sign_in** quindi all'URL:
 
-- https://mycloud9path.amazonaws.com/users/sign_in
+- http://192.168.64.3:3000/users/sign_in
 
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/07-authentication/03_fig01-url-users-sign_in.png)
 

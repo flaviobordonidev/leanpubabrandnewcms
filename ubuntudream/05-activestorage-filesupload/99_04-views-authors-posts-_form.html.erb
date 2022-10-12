@@ -1,0 +1,228 @@
+<%= form_with(model: post, local: true, url: authors_url) do |form| %>
+  
+  <!-- Hidden fields -->
+  <%= form.text_field :user_id, style: 'display:none' %><!-- :user_id è fondamentale per l'azione new -->
+  <!-- Hidden fields end -->
+
+  <div class="row">
+    <div class="col-md-4">
+      <!--<div class="card" style="width: 18rem;">-->
+      <div class="card">
+        <div class="card-body">
+            <h5 class="card-title"><%= yield(:card_title) %></h5>
+          <div class="field">
+            <%= form.label :title %>
+            <%= form.text_field :title, class: "form-control" %>
+          </div>
+        </div>
+        <ul class="list-group list-group-flush">
+
+          <li class="list-group-item">
+            <div class="form-group">
+              <%= form.label :content_type %>
+              <%#= form.select(:content_type, Post.content_types.keys.map {|content_type| [Post.human_attribute_name("content_type.#{content_type}"), content_type]}, {}, {class: "form-control"}) %>
+              <%= form.select(:content_type, Post.content_types.keys.map {|key| [Post.human_attribute_name("content_type.#{key}"), key]}, {}, {class: "form-control"}) %>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :main_image %>
+              <% if post.main_image.attached? %>
+                <p><%= image_tag post.main_image.variant(resize: "200x200") %></p>
+                <p><%= link_to 'Remove', delete_image_attachment_authors_post_path(post.main_image.id), method: :delete, data: { confirm: 'Are you sure?' } %></p>
+              <% else %>
+                <p>Nessuna immagine presente</p>
+              <% end %>
+              <%= form.file_field :main_image, class: "form-control-file" %>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :video_youtube %>
+              <%= form.text_field :video_youtube, class: "form-control" %><!-- parte di URL youtube che identifica il video -->
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :video_vimeo %>
+              <%= form.text_field :video_vimeo, class: "form-control" %><!-- parte di URL vimeo che identifica il video -->
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <label class="control-label">Immagine per i social. (476x249px)</label>
+              <br><img src="https://images.pexels.com/photos/634843/pexels-photo-634843.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=476&w=249" alt="Immagine demo presa da pexels.com" width="200" height="200"><br>
+              <input type="file" name="myFile"><!-- image 476x249 px -->
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :seocontent %><!-- Descrizione per i social -->
+              <%= form.text_area :seocontent, rows: "3", class: "form-control" %><!-- max 160 caratteri -->
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :tag_list %><!-- separati da virgola -->
+              <%= form.text_area :tag_list, id: :tag_list, class: "form-control" %>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :published %>
+              <%= form.check_box :published, class: "form-control" %>
+              <%#= f.check_box :remove_logo, "data-size" => "medium", "data-on-color" => "primary", "data-on-text" => "SI", "data-off-color" => "default", "data-off-text" => "NO" %>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="field">
+              <%= form.label :published_at %>
+              <%= form.text_field :published_at, class: "form-control" %>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="actions">
+              <%= form.submit "Crea/Modifica articolo", class: "btn btn-success btn-lg btn-block" %>
+            </div>
+          </li>
+        </ul>
+      </div><!--.card -->
+    </div><!--.col-md-4 -->
+    
+    <div class="col-md-8">
+      <div class="field">
+        <%= form.label :incipit %>
+        <%= form.text_area :incipit, rows: "3", class: "form-control" %>
+      </div>
+      <div class="field"><br/><h6>---Read More---</h6></div>
+      <div class="field">
+        <%= form.label :content %>
+        <%#= form.text_area :content, rows: "49", class: "form-control" %>
+        <%= form.trix_editor :content, required: true, autofocus: true %>
+      </div>
+
+      <div class="field"><br/><h6>---Central paragraph---</h6></div>
+
+      <div class="field">
+        <%= form.label :paraghraph_title1 %>
+        <%= form.text_area :paraghraph_title1, rows: "3", class: "form-control" %>
+      </div>
+      <div class="field">
+        <%= form.label :paragraph_content1 %>
+        <%= form.trix_editor :paragraph_content1, required: true, autofocus: true %>
+      </div>
+      <div class="field">
+        <%= form.label :paragraph_image1 %>
+        <% if post.paragraph_image1.attached? %>
+          <p><%= image_tag post.paragraph_image1.variant(resize: "100x100") %></p>
+        <% else %>
+          <p>Nessuna immagine presente</p>
+        <% end %>
+        <%= form.file_field :paragraph_image1, class: "form-control-file" %>
+      </div>
+      <div class="field">
+        <%= form.label :paragraph_title2 %>
+        <%= form.text_area :paragraph_title2, rows: "3", class: "form-control" %>
+      </div>
+      <div class="field">
+        <%= form.label :paragraph_content2 %>
+        <%= form.trix_editor :paragraph_content2, required: true, autofocus: true %>
+      </div>
+      <div class="field">
+        <%= form.label :paragraph_title3 %>
+        <%= form.text_area :paragraph_title3, rows: "3", class: "form-control" %>
+      </div>
+      <div class="field">
+        <%= form.label :paragraph_content3 %>
+        <%= form.trix_editor :paragraph_content3, required: true, autofocus: true %>
+      </div>
+
+
+      <div class="field"><br/><h6>---Parallax paragraph---</h6></div>
+
+      <div class="field">
+        <%= form.label :paragraph_title4 %>
+        <%= form.text_area :paragraph_title4, rows: "3", class: "form-control" %>
+      </div>
+      <div class="field">
+        <%= form.label :paragraph_content4 %>
+        <%= form.trix_editor :paragraph_content4, required: true, autofocus: true %>
+      </div>
+      <div class="field">
+        <%= form.label :paragraph_image4 %>
+        <% if post.paragraph_image4.attached? %>
+          <p><%= image_tag post.paragraph_image4.variant(resize: "100x100") %></p>
+        <% else %>
+          <p>Nessuna immagine presente</p>
+        <% end %>
+        <%= form.file_field :paragraph_image4, class: "form-control-file" %>
+      </div>
+
+
+      <div class="field"><br/><h6>---Default paragraph 1---</h6></div>
+
+      <div class="field">
+        <%= form.label :paragraph_title5 %>
+        <%= form.text_area :paragraph_title5, rows: "3", class: "form-control" %>
+      </div>
+      <div class="field">
+        <%= form.label :paragraph_content5 %>
+        <%= form.trix_editor :paragraph_content5, required: true, autofocus: true %>
+      </div>
+      <div class="field">
+        <%= form.label :paragraph_image5 %>
+        <% if post.paragraph_image5.attached? %>
+          <p><%= image_tag post.paragraph_image5.variant(resize: "100x100") %></p>
+        <% else %>
+          <p>Nessuna immagine presente</p>
+        <% end %>
+        <%= form.file_field :paragraph_image5, class: "form-control-file" %>
+      </div>
+      <div class="field">
+        <%= form.label :paragraph_image_label5 %>
+        <%= form.text_area :paragraph_image_label5, class: "form-control" %>
+      </div>
+
+      <div class="field"><br/><h6>---Default paragraph 2---</h6></div>
+
+      <div class="field">
+        <%= form.label :paragraph_title6 %>
+        <%= form.text_area :paragraph_title6, rows: "3", class: "form-control" %>
+      </div>
+      <div class="field">
+        <%= form.label :paragraph_content6 %>
+        <%= form.trix_editor :paragraph_content6, required: true, autofocus: true %>
+      </div>
+      <div class="field">
+        <%= form.label :paragraph_image6 %>
+        <% if post.paragraph_image6.attached? %>
+          <p><%= image_tag post.paragraph_image6.variant(resize: "100x100") %></p>
+        <% else %>
+          <p>Nessuna immagine presente</p>
+        <% end %>
+        <%= form.file_field :paragraph_image6, class: "form-control-file" %>
+      </div>
+      <div class="field">
+        <%= form.label :paragraph_image_label6 %>
+        <%= form.text_area :paragraph_image_label6, class: "form-control" %>
+      </div>
+
+    </div><!--.col-md-8 -->
+
+  </div><!--.row -->
+
+
+
+  <% if post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul>
+      <% post.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<% end %>
