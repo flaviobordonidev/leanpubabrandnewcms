@@ -238,7 +238,8 @@ Aiutandoci con `views/eg_users/show.html.erb` implementiamo la view *users/show*
 $ rails s -b 192.168.64.3
 ```
 
-- https://mycloud9path.amazonaws.com/users/1
+- http://192.168.64.3:3000/users/1
+
 
 
 
@@ -443,7 +444,7 @@ Aiutandoci con `views/eg_users/new.html.erb` implementiamo la view *users/new*.
 $ rails s -b 192.168.64.3
 ```
 
-- https://mycloud9path.amazonaws.com/users/new
+- http://192.168.64.3:3000/users/new
 
 Oltre Ann creiamo altri utenti in modo da averne 6 come da seguente tabella:
 
