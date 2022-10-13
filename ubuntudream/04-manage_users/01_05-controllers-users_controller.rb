@@ -7,7 +7,7 @@ class UsersController < ApplicationController
     @users = User.all
   end
 
-  # GET /eg_users/1 or /eg_users/1.json
+  # GET /users/1 or /users/1.json
   def show
   end
 

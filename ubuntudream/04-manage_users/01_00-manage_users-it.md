@@ -60,7 +60,7 @@ Inizializiamo con la sola azione *index* perché le altre le aggiungiamo di volt
 
 Le vediamo sullo schema del database.
 
-***codice 01 - .../db/schema.rb - line: 45***
+***Codice 01 - .../db/schema.rb - linea:45***
 
 ```ruby
   create_table "users", force: :cascade do |t|
@@ -97,7 +97,7 @@ Usiamo il comando `generate scaffold` che non abbiamo potuto usare prima per cre
 > Nota che `EgUser` è **singolare** perché stiamo usando lo *scaffold*. 
 
 ```bash
-$ rails g scaffold EgUser username:string first_name:string last_name:string location:string bio:string phone_number:string email:string encrypted_password:string reset_password_token:string remember_created_at:datetime
+$ rails g scaffold EgUser username:string first_name:string last_name:string location:string bio:string phone_number:string email:string encrypted_password:string
 ```
 
 > Il comando *scaffold* oltre alla tabella crea tutta l'infrastruttura *restfull* con controllers e views con già del codice coerente con le convenzioni rails.
@@ -114,7 +114,7 @@ $ rails g scaffold EgUser username:string first_name:string last_name:string loc
 
 Aiutandoci con *eg_users_controler* implementiamo l'azione *index*.
 
-***Code 02 - .../app/controllers/users_controller.rb - line:02***
+***Codice 02 - .../app/controllers/users_controller.rb - linea:02***
 
 ```ruby
   # GET /users or /users.json
@@ -131,17 +131,18 @@ Aiutandoci con *eg_users_controler* implementiamo l'azione *index*.
 
 Aiutandoci con `views/eg_users/index.html.erb` implementiamo la view *users/index*.
 
-***Code 03 - .../app/views/users/index.html.erb - line:05***
+***Codice 03 - .../app/views/users/index.html.erb - linea:05***
 
 ```html+erb
 <div id="users">
   <% @users.each do |user| %>
     <%= render user %>
 ```
+
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-manage_users/01_03-views-users-index.html.erb)
 
 
-***codice 08 - .../app/views/users/_user.html.erb - line: 1***
+***Codice 04 - .../app/views/users/_user.html.erb - linea:01***
 
 ```html+erb
 <div id="<%= dom_id user %>">
@@ -150,6 +151,7 @@ Aiutandoci con `views/eg_users/index.html.erb` implementiamo la view *users/inde
     <%= user.username %>
   </p>
 ```
+
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-manage_users/01_04-views-users-_user.html.erb)
 
 > Il codice rails `dom_id user` permette di dare un *id* per ogni utente: `<div id="user_1">`, `<div id="user_2">`, ...
@@ -174,7 +176,7 @@ $ rails s -b 192.168.64.3
 Aggiorniamo il controller implementando l'azione *show* per visualizzare il singolo utente.
 Copiamo ed implementiamo la parte di codice per l'azione *show*, il *before_action* lo lasciamo perché ci è utile per le prossime azioni che implementeremo.
 
-***codice 05 - .../app/controllers/users_controller.rb - line: 2***
+***Codice 05 - .../app/controllers/users_controller.rb - linea:02***
 
 ```ruby
   before_action :set_user, only: %i[ show ]
@@ -183,7 +185,7 @@ Copiamo ed implementiamo la parte di codice per l'azione *show*, il *before_acti
 > Su rails 6 si usava `before_action :set_user, only: [:show]`
 > Su rails 7 si è scelto `before_action :set_user, only: %i[ show ]`
 
-***codice 05 - ...continua - line: 10***
+***Codice 05 - ...continua - linea:10***
 
 ```ruby
   # GET /eg_users/1 or /eg_users/1.json
@@ -197,21 +199,17 @@ Copiamo ed implementiamo la parte di codice per l'azione *show*, il *before_acti
     end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_09-controllers-users_controller.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-manage_users/01_05-controllers-users_controller.rb)
 
+Per la sola azione *show* si poteva evitare il metodo privato *before_action*.
 
-Per la sola azione *show* si poteva fare senza il metodo privato *before_action*.
-
-***codice n/a - .../app/controllers/users_controller.rb - line: 2***
+***codice n/a - .../app/controllers/users_controller.rb - line:n/a***
 
 ```ruby
-  # GET /eg_users/1 or /eg_users/1.json
   def show
       @user = User.find(params[:id])
   end
 ```
-
-> Il codice ***n/a*** non lo usiamo nella nostra app.
 
 Ma è utile estrarre `@user = User.find(params[:id])` in un metodo private perché questo è chiamato anche da altre azioni (:show, :edit, :update e :destroy).
 
@@ -219,27 +217,24 @@ Ma è utile estrarre `@user = User.find(params[:id])` in un metodo private perch
 
 ## Creiamo la view show
 
-Creiamo il nuovo file *show.html.erb* dentro la cartella *views/users*. Ci copiamo il contenuto di *views/example_users/show.html.erb* e lo riadattiamo.
+Aiutandoci con `views/eg_users/show.html.erb` implementiamo la view *users/show*.
 
-***codice 10 - .../app/views/users/show.html.erb - line: 1***
+***Codice 06 - .../app/views/users/show.html.erb - linea:03***
 
 ```html+erb
-<p id="notice"><%= notice %></p>
+<%= render @user %>
 
-<p>
-  <strong>Name:</strong>
-  <%= @user.name %>
-</p>
+<div>
+  <%= link_to "Edit this user", edit_user_path(@user) %> |
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_10-views-users-show.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-manage_users/01_06-views-users-show.html.erb)
 
 
 
 ## Verifichiamo preview
 
 ```bash
-$ sudo service postgresql start
 $ rails s -b 192.168.64.3
 ```
 
@@ -252,17 +247,13 @@ $ rails s -b 192.168.64.3
 Aggiorniamo il controller implementando le azioni *edit* ed *update* per editare i campi del singolo utente.
 Copiamo da *eg_users_controller.rb* la parte di codice per le azioni *edit* ed *update* e la implementiamo.
 
-***codice 11 - .../app/controllers/users_controller.rb - line: 2***
+***Codice 07 - .../app/controllers/users_controller.rb - linea:02***
 
 ```ruby
   before_action :set_user, only: %i[ show edit update ]
 ```
 
-> Su rails 6 si usava `before_action :set_user, only: [:show, :edit, :update]`
-> Su rails 7 si è scelto `before_action :set_user, only: %i[ show edit update ]`
-
-
-***codice 11 - ...continua - line: 13***
+***Codice 07 - ...continua - linea:13***
 
 ```ruby
   # GET /users/1/edit
@@ -284,68 +275,66 @@ Copiamo da *eg_users_controller.rb* la parte di codice per le azioni *edit* ed *
 ```
 
 > Su rails 6 si usava `redirect_to @user, notice: 'User was successfully updated.'`
-> Su rails 7 si è scelto `redirect_to user_url(@user), notice: "User was successfully updated."`
-
+> Su rails 7 si usa `redirect_to user_url(@user), notice: "User was successfully updated."`
 
 > Su rails 6 si usava `render :edit`
-> Su rails 7 si è scelto `render :edit, status: :unprocessable_entity`
+> Su rails 7 si usa `render :edit, status: :unprocessable_entity` per via di turbo_drive.
 
-***codice 11 - ...continua - line: 36***
+***Codice 07 - ...continua - linea:36***
 
 ```ruby
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:name, :email, :encrypted_password)
+      params.require(:user).permit(:username, :first_name, :last_name, :location, :bio, :phone_number, :email, :encrypted_password)
     end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_11-controllers-users_controller.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-manage_users/01_07-controllers-users_controller.rb)
 
 
 
 ## Creiamo la view edit
 
-Creiamo i nuovi files *edit.html.erb* e *_form.html.erb* dentro la cartella *views/users*. 
-Ci copiamo il contenuto dei files su *views/eg_users/...* e lo riadattiamo.
+Aiutandoci con `views/eg_users/edit.html.erb` implementiamo la view *users/edit*.
 
-***codice 12 - .../app/views/users/edit.html.erb - line: 3***
+***Codice 08 - .../app/views/users/edit.html.erb - linea:03***
 
 ```html+erb
 <%= render "form", user: @user %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_12-views-users-edit.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-manage_users/01_08-views-users-edit.html.erb)
 
-***codice 13 - .../app/views/users/_form.html.erb - line: 1***
+
+***Codice 09 - .../app/views/users/_form.html.erb - linea:01***
 
 ```html+erb
 <%= form_with(model: user) do |form| %>
 ```
 
-***codice 13 - ...continua - line: 14***
+***Codice 09 - ...continua - linea:14***
 
 ```html+erb
   <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
+    <%= form.label :username, style: "display: block" %>
+    <%= form.text_field :username %>
   </div>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_13-views-users-_form.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-manage_users/01_09-views-users-_form.html.erb)
 
 > Su rails 6 si usava `<%= form_with(model: user, local: true) do |form| %>`
-> Su rails 7 si è scelto `<%= form_with(model: user) do |form| %>`
+> Su rails 7 si usa `<%= form_with(model: user) do |form| %>` perché *local: true* è diventato di default.
 
 
 
 ## Verifichiamo preview
 
 ```bash
-$ sudo service postgresql start
 $ rails s -b 192.168.64.3
 ```
 
-- https://mycloud9path.amazonaws.com/users/1/edit
+- http://192.168.64.3:3000/users/1/edit
 
 Con questo form possiamo cambiare il nome e l'email ma non possiamo cambiare la password perché è criptata. 
 O meglio, se cambiamo la password criptata non possiamo più loggarci perché non possiamo risalire alla password in chiaro.
@@ -359,7 +348,7 @@ Quindi usiamo questi campi al posto del campo *encrypted_password*.
 
 > Non dobbiamo avere questi campi nella tabella *users*. devise la cripta e l'archivia nel campo *encrypted_password*.
 
-***codice 14 - .../app/views/users/_form.html.erb - line: 24***
+***Codice 10 - .../app/views/users/_form.html.erb - linea:49***
 
 ```html+erb
   <div>
@@ -373,23 +362,25 @@ Quindi usiamo questi campi al posto del campo *encrypted_password*.
   </div>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_14-views-users-_form.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-manage_users/01_10-views-users-_form.html.erb)
 
-Ed aggiorniamo la white-list del controller 
+Ed aggiorniamo la *white-list* del controller 
 
-***codice 15 - .../app/controllers/users_controller.rb - line: 36***
+***Codice 11 - .../app/controllers/users_controller.rb - linea:36***
 
 ```ruby
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation)
+      params.require(:user).permit(:username, :first_name, :last_name, :location, :bio, :phone_number, :email, :password, :password_confirmation, :encrypted_password)
     end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_15-controllers-users_controller.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-manage_users/01_11-controllers-users_controller.rb)
 
 Adesso L'update funziona per tutti i campi ma abbiamo un problema di sicurezza perché ogni utente può cambiare nome, email e password a tutti gli utenti.
 Questo problema di sicurezza lo risolveremo nei prossimi capitoli.
+
+> Nei prossimi capitoli toglieremo anche `:encrypted_password` sia dalla *white-list* che dalla view.
 
 
 
@@ -397,7 +388,7 @@ Questo problema di sicurezza lo risolveremo nei prossimi capitoli.
 Aggiorniamo il controller implementando le azioni *new* e *create* per creare un nuovo utente.
 Copiamo ed implementiamo la parte di codice per le azioni *new* e *create*.
 
-***codice 16 - .../app/controllers/users_controller.rb - line: 13***
+***Codice 12 - .../app/controllers/users_controller.rb - linea:14***
 
 ```ruby
   # GET /users/new
@@ -406,7 +397,7 @@ Copiamo ed implementiamo la parte di codice per le azioni *new* e *create*.
   end
 ```
 
-***codice 16 - ...continua - line: 22***
+***Codice 12 - ...continua - linea:23***
 
 ```ruby
   # POST /users or /users.json
@@ -425,21 +416,21 @@ Copiamo ed implementiamo la parte di codice per le azioni *new* e *create*.
   end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_16-controllers-users_controller.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-manage_users/01_12-controllers-users_controller.rb)
 
 
 
 ## Creiamo la view new
 
-Creiamo il nuovo file "new.html.erb" dentro la cartella "views/users". Ci copiamo il contenuto del file su "views/example_users/..." e lo riadattiamo.
+Aiutandoci con `views/eg_users/new.html.erb` implementiamo la view *users/new*.
 
-***codice 17 - .../app/views/users/new.html.erb - line: 3***
+***Codice 13 - .../app/views/users/new.html.erb - linea:03***
 
 ```html+erb
 <%= render 'form', user: @user %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_17-views-users-new.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-manage_users/01_13-views-users-new.html.erb)
 
 > Il file *_form.html.erb* lo abbiamo già creato implementando l'azione *edit*.
 > In pratica la differenza tra *edit* e *new* è tutta nelle azioni del controller.
@@ -449,29 +440,28 @@ Creiamo il nuovo file "new.html.erb" dentro la cartella "views/users". Ci copiam
 ## Verifichiamo preview
 
 ```bash
-$ sudo service postgresql start
 $ rails s -b 192.168.64.3
 ```
 
 - https://mycloud9path.amazonaws.com/users/new
 
-Oltre Ann creiamo altri cinque utenti in modo da avere 6 utenti come seguente tabella:
+Oltre Ann creiamo altri utenti in modo da averne 6 come da seguente tabella:
 
 name  | email           | password
------ | --------------- | ----------------
+:-    | :-              |:-
 Ann	  | ann@test.abc    | passworda
 Bob	  | bob@test.abc    | passwordb
 Carl	| carl@test.abc   | passwordc
 David	| david@test.abc  | passwordd
 Elvis	| elvis@test.abc  | passworde
-Flav  | flav@test.abc   | passwordf
+Flav	| flav@test.abc   | passwordf
 
 
 
 ## Definiamo le autenticazioni
 
 Le autenticazioni con devise sono implementate in fase di creazione degli utenti. 
-Quindi gli utenti che abbiamo già creato hanno tutti il processo di autenticazione con devise.
+Quindi tutti gli utenti che creiamo hanno già il processo di autenticazione con *devise*.
 
 ```bash
 $ rails c
@@ -500,8 +490,8 @@ In altre parole è accettato ad entrare.
 
 Una volta dentro sarà ***autorizzato*** o meno a seconda dei ruoli che gli vengono assegnati.
 
-> l'autenticazione certifica che sei tu e normalmente ti fa entrare.
-> l'autorizzazione è quello che puoi fare una volta entrato.
+> l'***autenticazione*** certifica ***che sei tu*** e normalmente ti fa entrare.
+> l'***autorizzazione*** è quello ***che puoi fare*** una volta entrato.
 
 
 
@@ -511,13 +501,13 @@ Aggiorniamo il controller implementando l'azione destroy per eliminare un utente
 Copiamo ed implementiamo la parte di codice per l'azione destroy.
 
 
-***codice 18 - .../app/controllers/users_controller.rb - line: 2***
+***Codice 14 - .../app/controllers/users_controller.rb - linea:02***
 
 ```ruby
   before_action :set_user, only: %i[ show edit update destroy ]
 ```
 
-***codice 18 - ...continua - line: 15***
+***Codice 14 - ...continua - linea:51***
 
 ```ruby
   # DELETE /users/1 or /users/1.json
@@ -531,7 +521,7 @@ Copiamo ed implementiamo la parte di codice per l'azione destroy.
   end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_18-controllers-users_controller.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-manage_users/01_14-controllers-users_controller.rb)
 
 L'azione *destroy* appena aggiunta è attivata dal pulsante che è su *views/users/show*.
 
@@ -542,7 +532,7 @@ L'azione *destroy* appena aggiunta è attivata dal pulsante che è su *views/use
 ```
 
 > Su rails 6 si usava `<%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %>`
-> Su rails 7 si è scelto `<%= button_to "Destroy this user", @user, method: :delete %>`
+> Su rails 7 si usa `<%= button_to "Destroy this user", @user, method: :delete %>`
 > Quindi non abbiamo più la richiesta di conferma di eliminazione.
 
 
@@ -550,16 +540,14 @@ L'azione *destroy* appena aggiunta è attivata dal pulsante che è su *views/use
 ## Verifichiamo preview
 
 ```bash
-$ sudo service postgresql start
 $ rails s -b 192.168.64.3
 ```
 
-- https://mycloud9path.amazonaws.com/users
+- http://192.168.64.3:3000/users
 
-- Eliminiamo l'ultimo utente "flav" (id: 6)
-- Ricreiamo di nuovo l'utente "flav" che prenderà id: 7.
+Eliminiamo l'ultimo utente "flav".
 
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/01_fig01-user_successfully_destroyed.png)
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-manage_users/01_fig01-user_successfully_destroyed.png)
 
 
 ## Salviamo su git
@@ -568,27 +556,6 @@ $ rails s -b 192.168.64.3
 $ git add -A
 $ git commit -m "Implement views to manage users"
 ```
-
-
-
-## Pubblichiamo su Heroku
-
-```bash
-$ git push heroku gu:main
-$ heroku run rails db:migrate
-```
-
-popoliamo con i 6 utenti anche il database remoto su heroku
-
-Lo potremmo fare da console con
-
-```bash
-$ heroku run rails c
-```
-
-Ma visto che abbiamo implementato l'interfaccia grafica lo facciamo a partire dall'URL:
-
-- https://bl7-0.herokuapp.com/users
 
 
 
@@ -614,8 +581,22 @@ $ git push origin main
 
 
 
+## Pubblichiamo su render.com
+
+Da https://dashboard.render.com/ -> Manual Deploy -> Deploy latest commit.
+
+(il db:migrate lo fa in automatico ^_^)
+
+Popoliamo con i 6 utenti anche il database remoto. Lo facciamo a partire dall'URL:
+
+- https://ubuntudream.onrender.com/users
+
+> se non siamo loggati abbiamo un errore.
+
+
+
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/08-authentication_i18n/01_00-devise_i18n-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/03-user-authentication/05_00-navbar-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/02_00-users_protected-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-manage_users/02_00-users_protected-it.md)
