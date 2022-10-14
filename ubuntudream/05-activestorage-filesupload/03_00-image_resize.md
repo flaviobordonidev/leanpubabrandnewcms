@@ -29,10 +29,8 @@ Per ridimensionare l'immagine possiamo chiamare il metodo `.variant(...)`.
 > Attenzione! per funzionare il metodo `.variant(...)` necessita di *MiniMagick* o *Vips*.
 
 Non si visualizza l'immagine ma un'icona di immagine rotta e nella log vediamo l'errore: <br/>
-`LoadError (Generating image variants require the image_processing gem. Please add ```gem 'image_processing', '~> 1.2'``` to your Gemfile.):`
+`LoadError (Generating image variants require the image_processing gem. Please add ``gem 'image_processing', '~> 1.2'`` to your Gemfile.):`
 
-
- `rescue in <main>': Generating image variants require the image_processing gem. Please add "gem 'image_processing', '~> 1.2'" to your Gemfile. (LoadError)`
 
 > Da notare che nell'errore sulla log Rails ci suggerisce di installare la gemma *image_processing*.
 > Cosa che faremo fra poco.
