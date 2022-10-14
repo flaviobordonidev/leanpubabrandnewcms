@@ -12,17 +12,19 @@
 # Turbo doesn't work with devise by default.
 # Keep tabs on https://github.com/heartcombo/devise/issues/5446 for a possible fix
 # Fix from https://gorails.com/episodes/devise-hotwire-turbo
-class TurboFailureApp < Devise::FailureApp
-  def respond
-    if request_format == :turbo_stream
-      redirect
-    else
-      super
+Rails.application.reloader.to_prepare do
+  class TurboFailureApp < Devise::FailureApp
+    def respond
+      if request_format == :turbo_stream
+        redirect
+      else
+        super
+      end
     end
-  end
 
-  def skip_format?
-    %w(html turbo_stream */*).include? request_format.to_s
+    def skip_format?
+      %w(html turbo_stream */*).include? request_format.to_s
+    end
   end
 end
 

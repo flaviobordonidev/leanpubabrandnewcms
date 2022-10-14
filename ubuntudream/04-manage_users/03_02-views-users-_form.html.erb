@@ -1,0 +1,77 @@
+<%= form_with(model: user) do |form| %>
+  <% if user.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+        <% user.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- Manteniamo sull'url alcuni params - start --> 
+  <%= hidden_field_tag(:shown_fields, params[:shown_fields]) %>
+  <!-- Manteniamo sull'url alcuni params - end --> 
+
+  <p> ON "RENDER" MANTIENI my custom params - shown_fields = <%= params[:shown_fields] %> </p>
+
+  <% if params[:shown_fields] == 'account' or params[:shown_fields] == 'all' %>
+    <div>
+      <%= form.label :username, style: "display: block" %>
+      <%= form.text_field :username %>
+    </div>
+
+    <div>
+      <%= form.label :first_name, style: "display: block" %>
+      <%= form.text_field :first_name %>
+    </div>
+
+    <div>
+      <%= form.label :last_name, style: "display: block" %>
+      <%= form.text_field :last_name %>
+    </div>
+
+    <div>
+      <%= form.label :location, style: "display: block" %>
+      <%= form.text_field :location %>
+    </div>
+
+    <div>
+      <%= form.label :bio, style: "display: block" %>
+      <%= form.text_field :bio %>
+    </div>
+
+    <div>
+      <%= form.label :phone_number, style: "display: block" %>
+      <%= form.text_field :phone_number %>
+    </div>
+
+    <div>
+      <%= form.label :email, style: "display: block" %>
+      <%= form.text_field :email %>
+    </div>
+  <% end %>
+
+  <% if params[:shown_fields] == 'password' or params[:shown_fields] == 'all' %>
+    <div>
+      <%= form.label :password, style: "display: block" %>
+      <%= form.password_field :password %>
+    </div>
+
+    <div>
+      <%= form.label :password_confirmation, style: "display: block" %>
+      <%= form.password_field :password_confirmation %>
+    </div>
+
+    <div>
+      <%= form.label :encrypted_password, style: "display: block" %>
+      <%= form.text_field :encrypted_password %>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

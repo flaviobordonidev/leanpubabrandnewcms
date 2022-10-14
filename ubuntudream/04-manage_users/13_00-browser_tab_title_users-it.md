@@ -109,17 +109,6 @@ $ git commit -m "Dynamic title on browser tabs"
 
 
 
-## Pubblichiamo su Heroku
-
-```bash
-$ git push heroku dtbt:main
-$ heroku run rails db:migrate
-```
-
-> Possiamo anche non eseguire `$ heroku run rails db:migrate` perché non tocchiamo il database
-
-
-
 ## Chiudiamo il branch
 
 se abbiamo finito le modifiche e va tutto bene:
@@ -138,6 +127,14 @@ Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla
 
 ```bash
 $ git push origin main
+```
+
+
+## Pubblichiamo su render.com
+
+```bash
+$ git push heroku dtbt:main
+$ heroku run rails db:migrate
 ```
 
 

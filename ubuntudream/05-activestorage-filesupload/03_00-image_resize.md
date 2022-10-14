@@ -15,21 +15,24 @@ In questo capitolo attiviamo la possibilità di lavorare con le immagini ed impl
 
 ## Ridimensioniamo l'immagine
 
-Per ridimensionare l'immagine possiamo chiamare il metodo ".variant(...)"
+Per ridimensionare l'immagine possiamo chiamare il metodo `.variant(...)`.
 
-***codice n/a - .../app/views/eg_posts/_eg_post.html.erb - line: 62***
+***codice n/a - .../app/views/users/_user.html.erb - line: 62***
 
 ```html+erb
-  <p><%= image_tag @eg_post.header_image.variant(resize: "400x400") %></p>
+  <p><%= image_tag @user.avatar_image.variant(resize: "400x400") %></p>
 
-     <%= image_tag user.avatar.variant(resize_to_limit: [100, 100]) %>
     <%= image_tag user.avatar.variant(resize_to_limit: [100, 100]) %>
 
 ```
 
-> Attenzione! per funzionare il *.variant* necessita di *MiniMagick* o *Vips*.
+> Attenzione! per funzionare il metodo `.variant(...)` necessita di *MiniMagick* o *Vips*.
 
-Non si visualizza l'immagine ma un'icona di immagine rotta e nella log vediamo l'errore `rescue in <main>': Generating image variants require the image_processing gem. Please add "gem 'image_processing', '~> 1.2'" to your Gemfile. (LoadError)`
+Non si visualizza l'immagine ma un'icona di immagine rotta e nella log vediamo l'errore: <br/>
+`LoadError (Generating image variants require the image_processing gem. Please add ```gem 'image_processing', '~> 1.2'``` to your Gemfile.):`
+
+
+ `rescue in <main>': Generating image variants require the image_processing gem. Please add "gem 'image_processing', '~> 1.2'" to your Gemfile. (LoadError)`
 
 > Da notare che nell'errore sulla log Rails ci suggerisce di installare la gemma *image_processing*.
 > Cosa che faremo fra poco.
