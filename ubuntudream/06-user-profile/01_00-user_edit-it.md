@@ -1,8 +1,8 @@
 # <a name="top"></a> Cap 6.1 - User profile - Show User profile / account
 
-Permettiamo all'utente loggato di modificare il suo profilo.
+Inseriamo lo stile del tema eduport nella modifica del profile dell'utente loggato (users/edit).
 
-> Lo *show* del profilo utente lo facciamo nel prossimo capitolo. Iniziamo prima dall'*edit* così possiamo riempire tutti i campi che visualizziamo successivamente.
+> Lo *show* del profilo utente lo facciamo nel prossimo capitolo.
 
 
 
@@ -20,35 +20,11 @@ Permettiamo all'utente loggato di modificare il suo profilo.
 
 
 
-## Primo inserimento su users/show
-
-Mettiamo la parte che ci interessa su users/show
-
-***code 02 - .../app/views/users/_user.html.erb - line:1***
-
-```html+erb
-<div id="<%= dom_id user %>">
-
-  <!-- =======================
-  Page content START -->
-  <section class="pt-5 pb-0">
-    <div class="container">
-      <div class="row g-0 g-lg-5">
-```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/03_02-views-users-_user.html.erb)
-
-
-
-
----
-
-
-## Primo inserimento su users/edit
+## Importiamo il mockup users_edit
 
 Mettiamo la parte che ci interessa su users/edit
 
-***code 02 - .../app/views/users/edit.html.erb - line:1***
+***Codice 01 - .../app/views/users/edit.html.erb - linea:01***
 
 ```html+erb
 <%# == Meta_data ============================================================ %>
@@ -64,17 +40,21 @@ Mettiamo la parte che ci interessa su users/edit
 Page Banner START -->
 <section class="pt-0">
 	<!-- Main banner background image -->
-		<!--<div class="bg-blue h-100px h-md-200px rounded-0" style="background:url(assets/images/pattern/04.png) no-repeat center center; background-size:cover;">-->
-		<div class="bg-blue h-100px h-md-200px rounded-0" style="background:url(<%= image_path('edu/pattern/04.png') %>) no-repeat center center; background-size:cover;">
-		</div>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/01_02-views-users-edit.html.erb)
+***Codice 01 - ...continua - linea:120***
+
+```html+erb
+            <%= render "form", user: @user %>
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/06-user-profile/01_01-views-users-edit.html.erb)
 
 
-Inseriamo la sola parte del form nel partial
 
-***code 03 - .../app/views/users/_form.html.erb - line:1***
+Spostiamo la parte del tema relativa al form nel partial
+
+***code 02 - .../app/views/users/_form.html.erb - line:1***
 
 ```html+erb
 <!-- Form -->
@@ -85,262 +65,144 @@ Inseriamo la sola parte del form nel partial
     <label class="form-label">Profile picture</label>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/01_03-views-users-_form.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/06-user-profile/01_02-views-users-_form.html.erb)
 
+
+
+## Verifichiamo anteprima
 
 Vediamo l'immagine del risultato:
+
+```bash
+$ rails s -b 192.168.64.3
+```
 
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/01_fig01-user_edit_edu_style.png)
 
 
-Il primo elemento che abbiamo è l'immagine dell'utente che al momento non è implementata.
+Abbiamo preparato le posizioni e adesso lavoriamo per spostare il tema nei campi attivi.
 
 
 
-## Attiviamo upload immagine per il model user
+## Inseriamo la griglia nel form
 
-Implementiamo il campo `profile_image` in cui carichiamo l'immagine dell'utente usando *has_one_attached* di active_storage.
-Nel model in `# == Attributes`, `## ActiveStorage`
+Inseriamo la riga nel form `class: "row g-4"`.
 
-***codice 04 - .../app/models/user.rb - line:21***
-
-```ruby
-  has_one_attached :profile_image
-```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/01_04-models-user.rb)
-
-
-Ogni volta che facciamo l'upload di un'immagine come *profile_image* questa chiamata aggiorna in automatico i metatdata della tabella blobs ed il collegamento della tabella attachments. 
-
-
-
-## Aggiorniamo il controller
-
-Inseriamo il nostro nuovo campo *profile_image* nella whitelist.
-
-***codice 05 - .../app/controllers/users_controller.rb - line: 72***
-
-```ruby
-    # Only allow a list of trusted parameters through.
-    def user_params
-      if params[:user][:password].blank?
-        params.require(:user).permit(:name, :email, :language, :role, :profile_image)
-      else
-        params.require(:user).permit(:name, :email, :password, :password_confirmation, :language, :role, :profile_image)
-      end
-    end
-```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/01_05-controllers-users_controller.rb)
-
-
-
-
-
----
-
-
-
-## Aggiorniamo il Controller e le views
-
-***code 03 - .../app/controllers/users_controller.rb - line:85***
-
-```ruby
-    # Only allow a list of trusted parameters through.
-    def user_params
-      if params[:user][:password].blank?
-        params.require(:user).permit(:username, :email, :language, :role, :profile_image, :first_name, :last_name, :location, :bio, :phone_number)
-      else
-        params.require(:user).permit(:username, :email, :password, :password_confirmation, :language, :role, :profile_image, :first_name, :last_name, :location, :bio, :phone_number)
-      end
-    end
-```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/02_03-controllers-users_controller.rb)
-
-
-
-
----
-
-
-
-
-
-
-## Implementiamo la view
-
-***codice 06 - .../app/views/users/_form.html.erb - line:84***
+***Codice n/a - .../app/views/users/_form.html.erb - linea:01***
 
 ```html+erb
-  <div>
-    <%= form.label :profile_image, style: "display: block" %>
-    <%= form.file_field :profile_image %>
-  </div>
+<%= form_with(model: user, class: "row g-4") do |form| %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/01_06-views-users-_form.html.erb)
 
 
-Per visualizzare l'immagine basta `image_tag @user.profile_image` ma per sicurezza mettiamo anche un controllo.
-
-***codice 07 - .../app/views/users/_user.html.erb - line:3***
-
-```html+erb
-  <p>
-    <% if @user.profile_image.attached? %>
-      <%= image_tag @user.profile_image %>
-    <% else %>
-      Nessuna immagine presente
-    <% end %>
-  </p>
-```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/01_07-views-users-_user.html.erb)
-
-> INFO: non usiamo `.present?` perché darebbe sempre *true*. Per verificare la presenza del file allegato dobbiamo usare `.attached?`.
-
-
-
-## Resize dell'immagine con variant
-
-- [vedi 01-base/18-activestorage-filesupload/03_00-image_resize]()
-- [vedi api.rubyonrails.org - ActiveStorage/Variant](https://api.rubyonrails.org/v7.0.3/classes/ActiveStorage/Variant.html)
-- [Rails 7 adds the ability to use pre-defined variants](https://www.bigbinary.com/blog/rails-7-adds-ability-to-use-predefined-variants)
-
-
-***codice n/a - .../app/views/users/_user.html.erb - line:3***
-
-```html+erb
-  <p>
-    <% if @user.profile_image.attached? %>
-      <%= image_tag @user.profile_image.variant(resize_to_limit: [100, 100]).processed.url %>
-      <%= image_tag @user.profile_image.variant(resize_to_limit: [100, 100]) %>
-      <%= image_tag @user.profile_image %>
-      <%= image_tag @user.profile_image.variant(resize_to_fit: [250, 250]).processed.url %>
-    <% else %>
-      Nessuna immagine presente
-    <% end %>
-  </p>
-```
-
-> Non so perché ma `.variant(resize: "100x100")` non funziona. <br/>
-> Al suo posto usiamo `.variant(resize_to_fit: [100, 100])`.
->
-> Esiste anche `.variant(resize_to_limit: [100, 100])` che lascia l'immagine com'è se è minore del limit ed invece la riduce fino al limit se è maggiore.
-
----
-DAFA: Nel models/user.rb
-
-class User < ActiveRecord::Base
-  has_one_attached :display_picture, variants: {
-    thumb: { resize: "100x100" },
-    medium: { resize: "300x300" }
-  }
-end
-
-To display we can use the variant method.
-
-# app/views/users/_user_.html.erb
-<%= image_tag user.display_picture.variant(:thumb) %>
----
-
-
-
-## Eliminiamo immagine
-
-- [vedi 01-base/18-activestorage-filesupload/06_00-remove_uploaded_file]()
-
-Creiamo la nuova azione *delete_image_attachment* sul controller
-
-***codice 08 - .../app/controllers/users_controller.rb - line:72***
-
-```ruby
-  def delete_image_attachment
-    @image_to_delete = ActiveStorage::Attachment.find(params[:id])
-    @image_to_delete.purge
-    redirect_back(fallback_location: request.referer)
-  end
-```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/01_08-controllers-users_controller.rb)
-
-
-Creiamo il percorso per eseguire l'azione.
-
-***codice 09 - .../config/routes.rb - line:7***
-
-```ruby
-  resources :users do
-    member do
-      get :delete_image_attachment
-    end
-  end
-```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/01_09-config-routes.rb)
-
-> BUG: Dovremmo usare `delete` e non `get` ma se usiamo `delete` nella view dobbiamo usare `button_to` e facendolo mi cancella tutto il record dell'utente e non la sola immagine! <br/>
-> Per questo motivo usiamo il "workaround" con `get` e nella view `link_to`.
-
-
-Ed inseriamo il link nella pagina di edit dell'utente.
-
-***codice n/a - .../views/users/_form_.rb - line:7***
-
-```html+erb
-      <%= link_to 'Remove', delete_image_attachment_user_path(user.profile_image.id), method: :get if user.profile_image.attached? %>
-```
-
-> `, method: :get` si può anche togliere perché è l'azione di default di link_to.
-
-
-
-## Inseriamo l'immagine nello style eduport
+## Inseriamo l'immagine dell'utente nello style eduport
 
 Inseriamo l'immagine nello style eduport
 
-***codice 10 - .../views/users/_form_.rb - line:4***
+***Codice n/a - .../app/views/users/_form.html.erb - linea:01***
 
 ```html+erb
-  <!-- Profile picture -->
-  <div class="col-12 justify-content-center align-items-center">
-    <% if user.profile_image.attached? %>
-
-      <%= form.label :profile_image, class: "form-label" %>
+    <!-- Profile picture -->
+    <div class="col-12 justify-content-center align-items-center">
+      <%= form.label :avatar_image, class: "form-label" %>
       <div class="d-flex align-items-center">
         <label class="position-relative me-4" for="uploadfile-1" title="Replace this pic">
-          <!-- Avatar place holder -->
-          <span class="avatar avatar-xl">
-            <%= image_tag user.profile_image.variant(resize_to_fit: [100, 100]), id: "uploadfile-1-preview", class: "avatar-img rounded-circle border border-white border-3 shadow", alt: "" %>
-          </span>
-          <!-- Remove btn -->
-          <%= link_to delete_image_attachment_user_path(user.profile_image.id), class: "uploadremove" do %>
-            <i class="bi bi-x text-white"></i>
+          <% if user.avatar_image.attached? %>            
+            <!-- Avatar image -->
+            <span class="avatar avatar-xl">
+              <%= image_tag user.avatar_image.variant(resize_to_fit: [100, 100]), id: "uploadfile-1-preview", class: "avatar-img rounded-circle border border-white border-3 shadow", alt: "avatar" %>
+              <%#= image_tag "edu/avatar/07.jpg", id: "uploadfile-1-preview", class: "avatar-img rounded-circle border border-white border-3 shadow", alt: "avatar" %>
+            </span>
+            <!-- Remove btn -->
+            <%= link_to delete_image_attachment_user_path(user.avatar_image.id), method: :get, class: "uploadremove" do %>
+              <i class="fa-solid fa-xmark fa-sm text-white"></i>
+            <% end %>
+            <%# <button type="button" class="uploadremove"><i class="fa-solid fa-xmark fa-sm text-white"></i></button> %>
+          <% else %>
+            <!-- Avatar place holder -->
+            <span class="avatar avatar-xl">
+              <%= image_tag "edu/avatar/07.jpg", id: "uploadfile-1-preview", class: "avatar-img rounded-circle border border-white border-3 shadow", alt: "avatar" %>
+            </span>
           <% end %>
         </label>
         <!-- Upload button -->
         <label class="btn btn-primary-soft mb-0" for="uploadfile-fla">Scegli nuova immagine (sarà applicata su Aggiorna utente)</label>
-        <%= form.file_field :profile_image, id: "uploadfile-fla", style: "visibility:hidden;" %>
+        <%= form.file_field :avatar_image, id: "uploadfile-fla", class: "form-control d-none" %>
+        <%#= form.file_field :avatar_image, id: "uploadfile-fla", style: "visibility:hidden;" %>
       </div>
-    <% else %>
-        <p>Nessuna immagine presente</p>
-        <!-- Avatar place holder -->
-        <span class="avatar avatar-xl">
-          <%= image_tag "edu/avatar/07.jpg", id: "uploadfile-1-preview", class: "avatar-img rounded-circle border border-white border-3 shadow", alt:"" %>
-        </span>
-
-        <!-- Upload button -->
-        <label class="btn btn-primary-soft mb-0" for="uploadfile-fla">Scegli nuova immagine (sarà applicata su Aggiorna utente)</label>
-        <%#= form.file_field :profile_image, class: "form-control d-none" %>
-        <%= form.file_field :profile_image, id: "uploadfile-fla", style: "visibility:hidden;" %>
-    <% end %>
-  </div>
+    </div>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/01_09-config-routes.rb)
 
 
-Nei prossimi capitoli inseriamo le nuove colonne nella tabella users e mettiamo tutto il contenuto del `form_with` con lo stile di eduport.
+## Mettiamo gli altri campi nello style eduport
 
+Finiamo di mettere lo stile del tema anche agli altri campi
+
+***Codice 03 - .../app/views/users/_form.html.erb - linea:01***
+
+```html+erb
+<%= form_with(model: user, class: "row g-4") do |form| %>
+...
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/06-user-profile/01_03-views-users-_form.html.erb)
+
+
+
+## Verifichiamo anteprima
+
+Vediamo l'immagine del risultato:
+
+```bash
+$ rails s -b 192.168.64.3
+```
+
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-user/01_fig01-user_edit_edu_style.png)
+
+Adesso la nostra form di edit è integrata nel tema scelto.
+
+
+
+## Attiviamo i links del menu a sinistra tra `Edit Profile` e `Update password`
+
+Abbiamo simulato due pagine/views differenti a seconda di come è impostato il `params[:shown_fields]`.
+
+Quindi lo usiamo anche per selezionare la voce del menu sulla sinistra.
+
+***Codice 04 - .../app/views/users/edit.html.erb - linea:83***
+
+```html+erb
+								<!-- Dashboard menu -->
+								<div class="list-group list-group-dark list-group-borderless">
+                	<a class="list-group-item" href="instructor-dashboard.html"><i class="fa-solid fa-list fa-fw me-2"></i>Dashboard</a>
+									<a class="list-group-item" href="instructor-earning.html"><i class="fa-solid fa-chart-line fa-fw me-2"></i>Statistiche</a>
+									<% params[:shown_fields] == 'account' ? account_active = 'active' : account_active = '' %>
+									<%= link_to edit_user_path(@user, shown_fields: 'account'), class: "list-group-item #{account_active}" do %>
+										<i class="fa-solid fa-pen-to-square fa-fw me-2"></i>Edit Profile
+									<% end %>
+									<% params[:shown_fields] == 'password' ? password_active = 'active' : password_active = '' %>
+									<%= link_to edit_user_path(@user, shown_fields: 'password'), class: "list-group-item #{password_active}" do %>
+										<i class="fa-solid fa-key fa-fw me-2"></i>Update password
+									<% end %>
+```
+
+***Codice 04 - ...continua - linea:118***
+
+```html+erb
+					<div class="card-header bg-transparent border-bottom">
+						<% if params[:shown_fields] == 'account' %>
+							<h3 class="card-header-title mb-0">Edit Profile</h3>
+						<% elsif params[:shown_fields] == 'password' %>
+							<h3 class="card-header-title mb-0">Update password</h3>
+						<% end %>
+```
+
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/04_00-aws_s3-iam_full_access-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/06_00-remove_uploaded_file-it.md)

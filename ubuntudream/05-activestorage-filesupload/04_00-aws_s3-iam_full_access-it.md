@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 18.4 - Amazon Web Services S3 - IAM user full access
+# <a name="top"></a> Cap 5.4 - Amazon Web Services S3 - IAM user full access
 
 Iniziamo a dialogare con AWS - S3. Creiamo un utente IAM e gli diamo il permesso (CORS) pieno accesso a tutti i buckets di S3, ossia a tutta la parte di archiviazione.
 Successivamente restringeremo i permessi (CORS) ai soli buckets produzione e sviluppo della nostra applicazione.
@@ -52,9 +52,9 @@ AWS -> Service -> IAM -> Users
 
 ## Step1
 
-Come nome dell'utente usiamo [bot]_[nome_app_rails]. Nel nostro caso `bot_bl7_0`.
+Come nome dell'utente usiamo [bot]_[nome_app_rails]. Nel nostro caso `bot_ubuntudream`.
 
-User name   : bot_bl7_0
+User name   : bot_ubuntudream
 Access type : Programmatic access
 
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/04_fig01-new-iam_user-step1.png)
@@ -94,8 +94,8 @@ Visualizza il riepilogo delle scelte fatte
 
 Una volta creato facciamo il download delle "user security credentials". E' un file csv dove abbiamo
 
-- access_key_id : UL...WGERY
-- secret_access_key : zx3I...ela+hg
+- access_key_id : `UL...WGERY`
+- secret_access_key : `zx3I...ela+hg`
 
 Salviamoci i dati nel nostro programma di gestione delle passwords o comunque in un luogo sicuro.
 Se torniamo sullo IAM user possiamo solo rivisualizzare la access_key_id. Per la secret_access_key dobbiamo eliminarlo e crearne uno nuovo.
@@ -133,23 +133,23 @@ Facciamo click su create bucket.
 Che nome gli diamo?
 Per i nomi dei buckets possiamo rifarci ai nomi dei databases della nostra app: 
 
-- bl7_0_development  
-- bl7_0_production
+- ubuntudream_development  
+- ubuntudream_production
 
 Quindi avremo i seguenti due buckets:
 
-- bl7-0-dev
-- bl7-0-prod
+- ubuntudream-dev
+- ubuntudream-prod
 
-(l'underscore "_" non è accettato nel nome del bucket.)
+> L'underscore "_" non è accettato nel nome del bucket.
 
 Iniziamo con 
 
-Bucket name : bl6-0-dev
-Region      : US East (N. Virginia)
+Bucket name : `ubuntudream-dev`
+Region      : `US East (N. Virginia)`
 
-Nota:
-la "Region: EU (Ireland)" sarebbe la scelta più saggia dal punto di vista delle prestazioni perché è più vicina all'Italia ma costa di più quindi, per risparmiare, preferisco usare US East.
+> Nota: <br/>
+> la "Region: EU (Ireland)" sarebbe la scelta più saggia dal punto di vista delle prestazioni perché è più vicina all'Italia ma costa di più quindi, per risparmiare, preferisco usare US East.
 
 ![fig06](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/04_fig06-new-bucket-step1.png)
 
@@ -182,59 +182,28 @@ Accettiamo e creiamo il bucket.
 ![fig10](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/04_fig10-new-bucket-done.png)
 
 
+
 ## Per recuperare la s3_region del bucket appena creato
 
 AWS -> Service -> S3 -> Bucket name -> Properties -> Static website hosting -> Endpoint 
 
-Una volta fatto login dalla ConsoleHome AWS fare click sul service "S3". Ci si presenterà un elenco con tutti i bucket creati con relativo nome. Facciamo click sul bucket, andiamo sul tab "properties" e facciamo click sul "quadrato" Static web hosting. Lì troveremo un Endpoint simile al seguente:
+Una volta fatto login dalla ConsoleHome AWS fare click sul service "S3". Ci si presenterà un elenco con tutti i bucket creati con relativo nome. 
+Facciamo click sul bucket, andiamo sul tab "properties" e nella voce **Bucket overview** troviamo:
 
-Endpoint : http://bl6-0-dev.s3-website-us-east-1.amazonaws.com
+AWS Region <br/>
+US East (N. Virginia) us-east-1
 
-La region in questo caso è "us-east-1" e corrisponde alla region US East (N. Virginia)
+![fig12](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/04_fig11-bucket_endpoint.png)
 
-![fig11](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/18-activestorage-filesupload/04_fig11-bucket_endpoint.png)
+La region in questo caso è `us-east-1` e corrisponde alla region US East (N. Virginia)
 
-(
-se avessimo usato "Region: EU (Ireland)" sarebbe stato "http://s5beginning-dev.s3-website-eu-west-1.amazonaws.com
-La region in questo caso sarebbe stata "eu-west-1" e corrisponde alla region di UE (Irlanda)
-)
-
-(
-Se avessimo scelto la region di Frankfurt avremmo avuto La nostra s3_region è "eu-central-1" e l'endpoint sarebbe stato:
-Endpoint : http://s5beginning-dev.s3-website-eu-central-1.amazonaws.com
-)
-
+> Se avessimo usato "Region: EU (Ireland)" la region sarebbe stata `eu-west-1` <br/>
+> Se avessimo usato "Region: Frankfurt" la nostra s3_region sarebbe stata `eu-central-1`
 
 E con questo abbiamo tutti i dati che ci servono per collegarci. Nel prossimo capitolo ci collegheremo tramite Rails.
 
 
-
-## Verifichiamo preview
-
-nessun preview da visualizzare
-
-
-
-## salviamo su git
-
-nessuna modifica fatta al codice
-
-
-## Pubblichiamo su Heroku
-
-niente di nuovo da pubblicare
-
-
-## Chiudiamo il branch
-
-Lo lasciamo aperto per il prossimo capitolo
-
-
-
-## Facciamo un backup su Github
-
-Lo facciamo nel prossimo capitolo.
-
+> Gli stessi steps vanno fatti anche per il bucket dei dati di produzione `ubuntudream-prod`.
 
 
 ---

@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "3.1.1"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 7.0.2", ">= 7.0.2.2"
+gem "rails", "~> 7.0.3", ">= 7.0.3.1"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
@@ -28,7 +28,7 @@ gem "stimulus-rails"
 gem "jbuilder"
 
 # Use Redis adapter to run Action Cable in production
-# gem "redis", "~> 4.0"
+gem "redis", "~> 4.0"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -42,20 +42,18 @@ gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
-# Use Sass to process CSS
-# gem "sassc-rails"
+# HTML, CSS, and JavaScript framework 
+gem 'bootstrap', '~> 5.2', '>= 5.2.1'
 
-# Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-gem 'image_processing', '~> 1.12', '>= 1.12.2'
+# Use Sass to process CSS
+gem "sassc-rails"
 
 # Flexible authentication solution for Rails with Warden 
 gem 'devise', '~> 4.8', '>= 4.8.1'
 
-# Object oriented authorization for Rails applications
-gem 'pundit', '~> 2.2'
-
-# Agnostic pagination in plain ruby
-gem 'pagy', '~> 5.10', '>= 5.10.1'
+# Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
+#gem "image_processing", "~> 1.2"
+gem 'image_processing', '~> 1.12', '>= 1.12.2'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

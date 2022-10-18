@@ -1,74 +1,4 @@
-<!-- Form -->
-<form class="row g-4">
-
-  <!-- Profile picture -->
-  <div class="col-12 justify-content-center align-items-center">
-    <label class="form-label">Profile picture</label>
-    <div class="d-flex align-items-center">
-      <label class="position-relative me-4" for="uploadfile-1" title="Replace this pic">
-        <!-- Avatar place holder -->
-        <span class="avatar avatar-xl">
-          <img id="uploadfile-1-preview" class="avatar-img rounded-circle border border-white border-3 shadow" src="assets/images/avatar/07.jpg" alt="">
-        </span>
-        <!-- Remove btn -->
-        <button type="button" class="uploadremove"><i class="bi bi-x text-white"></i></button>
-      </label>
-      <!-- Upload button -->
-      <label class="btn btn-primary-soft mb-0" for="uploadfile-1">Change</label>
-      <input id="uploadfile-1" class="form-control d-none" type="file">
-    </div>
-  </div>
-
-  <!-- Full name -->
-  <div class="col-12">
-    <label class="form-label">Full name</label>
-    <div class="input-group">
-      <input type="text" class="form-control" value="Lori" placeholder="First name">
-      <input type="text" class="form-control" value="Stevens" placeholder="Last name">
-    </div>
-  </div>
-
-  <!-- Username -->
-  <div class="col-md-6">
-    <label class="form-label">Username</label>
-    <div class="input-group">
-      <span class="input-group-text">Eduport.com</span>
-      <input type="text" class="form-control" value="loristev">
-    </div>
-  </div>
-
-  <!-- Email id -->
-  <div class="col-md-6">
-    <label class="form-label">Email id</label>
-    <input class="form-control" type="email" value="example@gmail.com"  placeholder="Email">
-  </div>
-
-  <!-- Phone number -->
-  <div class="col-md-6">
-    <label class="form-label">Phone number</label>
-    <input type="text" class="form-control" value="1234567890" placeholder="Phone number">
-  </div>
-
-  <!-- Location -->
-  <div class="col-md-6">
-    <label class="form-label">Location</label>
-    <input class="form-control" type="text" value="California">
-  </div>
-  
-  <!-- About me -->
-  <div class="col-12">
-    <label class="form-label">About me</label>
-    <textarea class="form-control" rows="3">I’ve found a way to get paid for my favorite hobby, and do so while following my dream of traveling the world.</textarea>
-    <div class="form-text">Brief description for your profile.</div> 
-  </div>
-
-  <!-- Save button -->
-  <div class="d-sm-flex justify-content-end">
-    <button type="button" class="btn btn-primary mb-0">Save changes</button>
-  </div>
-</form>
-
-<%= form_with(model: user) do |form| %>
+<%= form_with(model: user, class: "row g-4") do |form| %>
   <% if user.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
@@ -81,50 +11,116 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name, placeholder: true %>
-  </div>
+  <!-- Manteniamo sull'url alcuni params - start --> 
+  <%= hidden_field_tag(:shown_fields, params[:shown_fields]) %>
+  <!-- Manteniamo sull'url alcuni params - end --> 
 
-  <div>
-    <%= form.label :email, style: "display: block" %>
-    <%= form.text_field :email, placeholder: true %>
-  </div>
+  <% if params[:shown_fields] == 'account' or params[:shown_fields] == 'all' %>
 
-  <div>
-    <%= form.label :password, style: "display: block" %>
-    <%= form.password_field :password, placeholder: true %>
-  </div>
+    <!-- Profile picture -->
+    <div class="col-12 justify-content-center align-items-center">
+      <%= form.label :avatar_image, class: "form-label" %>
+      <div class="d-flex align-items-center">
+        <label class="position-relative me-4" for="uploadfile-1" title="Replace this pic">
+          <% if user.avatar_image.attached? %>            
+            <!-- Avatar image -->
+            <span class="avatar avatar-xl">
+              <%= image_tag user.avatar_image.variant(resize_to_fit: [100, 100]), id: "uploadfile-1-preview", class: "avatar-img rounded-circle border border-white border-3 shadow", alt: "avatar" %>
+              <%#= image_tag "edu/avatar/07.jpg", id: "uploadfile-1-preview", class: "avatar-img rounded-circle border border-white border-3 shadow", alt: "avatar" %>
+            </span>
+            <!-- Remove btn -->
+            <%= link_to delete_image_attachment_user_path(user.avatar_image.id), method: :get, class: "uploadremove" do %>
+              <i class="fa-solid fa-xmark fa-sm text-white"></i>
+            <% end %>
+            <%# <button type="button" class="uploadremove"><i class="fa-solid fa-xmark fa-sm text-white"></i></button> %>
+          <% else %>
+            <!-- Avatar place holder -->
+            <span class="avatar avatar-xl">
+              <%= image_tag "edu/avatar/07.jpg", id: "uploadfile-1-preview", class: "avatar-img rounded-circle border border-white border-3 shadow", alt: "avatar" %>
+            </span>
+          <% end %>
+        </label>
+        <!-- Upload button -->
+        <label class="btn btn-primary-soft mb-0" for="uploadfile-fla">Scegli nuova immagine (sarà applicata su Aggiorna utente)</label>
+        <%= form.file_field :avatar_image, id: "uploadfile-fla", class: "form-control d-none" %>
+        <%#= form.file_field :avatar_image, id: "uploadfile-fla", style: "visibility:hidden;" %>
+      </div>
+    </div>
 
-  <div>
-    <%= form.label :password_confirmation, style: "display: block" %>
-    <%= form.password_field :password_confirmation, placeholder: true %>
-  </div>
 
-  <div>    
-    <%= form.label :language %>
-    <%#= form.text_field :language %>
-    <%#= form.select(:language, [["Lingua Italiana", "it"], ["Lingua Inglese", "en"]]) %>
-    <%= form.select(:language, User.languages.keys.map {|language| [language,language]}) %>
-    <%#= form.select(:language, User.languages.keys.map {|language| [language.titleize,language]}) %>
-  </div>
+    <!-- First Name -->
+    <div class="col-md-6">
+      <%= form.label :first_name, class: "form-label" %>
+      <%= form.text_field :first_name, class: "form-control" %>
+    </div>
 
-  <%# if user_signed_in? and current_user.admin? %>
-  <% if current_user.present? and current_user.admin? and @user != current_user %>
+    <!-- Last Name -->
+    <div class="col-md-6">
+      <%= form.label :last_name, class: "form-label" %>
+      <%= form.text_field :last_name, class: "form-control" %>
+    </div>
+
+    <!-- Username -->
+    <div class="col-md-6">
+      <%= form.label :username, class: "form-label" %>
+      <%= form.text_field :username, class: "form-control" %>
+    </div>
+
+    <!-- Email -->
+    <div class="col-md-6">
+      <%= form.label :email, class: "form-label" %>
+      <%= form.text_field :email, class: "form-control" %>
+    </div>
+
+    <!-- Location -->
+    <div class="col-md-6">
+      <%= form.label :location, class: "form-label" %>
+      <%= form.text_field :location, class: "form-control" %>
+    </div>
+
+    <!-- Phone number -->
+    <div class="col-md-6">
+      <%= form.label :phone_number, class: "form-label" %>
+      <%= form.text_field :phone_number, class: "form-control" %>
+    </div>
+
+    <!-- Bio -->
+    <div class="col-12">
+      <%= form.label :bio, class: "form-label" %>
+      <%= form.text_area :bio, class: "form-control", rows: "3" %>
+      <div class="form-text">Brief description for your profile.</div> 
+    </div>
+
+  <% end %>
+
+  <% if params[:shown_fields] == 'password' or params[:shown_fields] == 'all' %>
+
+    <!-- New password -->
+    <div class="col-12 mb-3">
+      <%= form.label :password, class: "form-label" %>
+      <div class="input-group">
+        <%= form.password_field :password, class: "form-control", placeholder: "Enter new password" %>
+        <span class="input-group-text p-0 bg-transparent">
+          <i class="far fa-eye cursor-pointer p-2 w-40px"></i>
+        </span>
+      </div>
+      <div class="rounded mt-1" id="psw-strength"></div>
+    </div>
+
+    <!-- Confirm password -->
+    <div class="col-12">
+      <%= form.label :password_confirmation, class: "form-label" %>
+      <%= form.password_field :password_confirmation, class: "form-control", placeholder: "Enter new password" %>
+    </div>
+
     <div>
-      <%= form.label :role %>
-      <%#= form.select(:role, User.roles.keys.map {|role| [role.titleize,role]}) %>
-      <%= form.select(:role, User.roles.keys.map {|role| [User.human_attribute_name("role.#{role}"), role]}) %>
-      <%#= form.collection_radio_buttons :role, Hash[User.roles.map { |k,v| [k, User.human_attribute_name("role.#{k}")] }], :first, :second %>
+      <%= form.label :encrypted_password, style: "display: block" %>
+      <%= form.text_field :encrypted_password %>
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :encrypted_password, style: "display: block" %>
-    <%= form.text_field :encrypted_password %>
-  </div>
-
-  <div>
-    <%= form.submit %>
+  <!-- Save button -->
+  <div class="d-sm-flex justify-content-end">
+    <%= form.submit class: "btn btn-primary mb-0" %>
   </div>
 <% end %>

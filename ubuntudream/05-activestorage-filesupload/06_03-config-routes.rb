@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   resources :eg_companies
   resources :eg_posts do
     member do
-      delete :delete_image_attachment
+      get :delete_image_attachment
     end
   end
   resources :eg_users
