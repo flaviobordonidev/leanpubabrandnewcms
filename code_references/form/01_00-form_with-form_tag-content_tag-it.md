@@ -74,14 +74,19 @@ Il vecchio metodo è usare form_tag e content_tag come in questo esempio:
 
 If you don't pass a model, form_with behaves like form_tag.
 
+```
 <%= form_with url: messages_path do |form| %>
   <%= form.text_field :subject %>
 <% end %>
+```
+
 would generate
 
+```
 <form action="/messages" method="post" data-remote="true">
   <input type="text" name="subject">
 </form>
+```
 
 
 

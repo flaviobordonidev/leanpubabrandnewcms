@@ -1,0 +1,76 @@
+<nav class="navbar navbar-expand-lg bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#"><%= t "mockups.page_a.navbar_title" %></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#"><%= t "mockups.page_a.navbar_home" %></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"><%= t "mockups.page_a.navbar_link" %></a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <%= t "mockups.page_a.navbar_dropdown" %>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#"><%= t "mockups.page_a.navbar_action" %></a></li>
+            <li><a class="dropdown-item" href="#"><%= t "mockups.page_a.navbar_another_action" %></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#"><%= t "mockups.page_a.navbar_something_else_here" %></a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled"><%= t "mockups.page_a.navbar_disabled" %></a>
+        </li>
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="<%= t("mockups.page_a.navbar_search") %>" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit"><%= t "mockups.page_a.navbar_search" %></button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+
+<!--<h1>Hello world</h1>-->
+<!--<p>Welcome to this application made by Flavio. ^_^</p>-->
+<h1><%= t "mockups.page_a.headline" %></h1>
+<p><%= t "mockups.page_a.first_paragraph" %></p>
+
+<hr/>
+
+<p><%= t "mockups.page_a.current_user" %>: <%= current_user.present? == true ? current_user.email : t("mockups.page_a.no_logged_user") %></p> 
+<p> 
+  <%= button_to t("mockups.page_a.logout"), destroy_user_session_path, method: :delete, class: 'btn btn-danger' if current_user.present? %>
+  <%= link_to t("mockups.page_a.login"), new_user_session_path, class: 'btn btn-primary' unless current_user.present? %>
+</p>
+
+
+<hr/>
+<br/>
+
+<button type="button" class="btn btn-lg btn-danger" data-bs-toggle="popover" data-bs-title="<%= t("mockups.page_a.popover_title") %>" data-bs-content="<%= t("mockups.page_a.amazing_content") %>"><%= t("mockups.page_a.click_to_toggle_popover") %></button>
+
+<br/>
+<br/>
+
+<!--<button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button>-->
+<button type="button" data-controller="toast" data-action="click->toast#notify" class="btn btn-primary" id="liveToastBtn"><%= t("mockups.page_a.show_toast") %></button>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <img src="..." class="rounded me-2" alt="...">
+      <strong class="me-auto"><%= t("mockups.page_a.toast_title") %></strong>
+      <small><%= t("mockups.page_a.toast_time_ago") %></small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      <%= t("mockups.page_a.toast_message") %>
+    </div>
+  </div>
+</div>

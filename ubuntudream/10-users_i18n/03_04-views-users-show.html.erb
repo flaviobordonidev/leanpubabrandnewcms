@@ -1,0 +1,16 @@
+<%# == Meta_data ============================================================ %>
+
+<% provide(:html_head_title, @user.name) %>
+
+<%# == Meta_data - end ====================================================== %>
+
+<p style="color: green"><%= notice %></p>
+
+<%= render @user %>
+
+<div>
+  <%= link_to "Edit this user", edit_user_path(@user) %> |
+  <%= link_to "Back to users", users_path %>
+
+  <%= button_to "Destroy this user", @user, method: :delete unless @user == current_user %>
+</div>

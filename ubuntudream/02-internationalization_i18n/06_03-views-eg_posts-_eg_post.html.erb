@@ -1,0 +1,37 @@
+<div id="<%= dom_id eg_post %>">
+  <p>
+    <strong>Meta title:</strong>
+    <%= eg_post.meta_title %>
+  </p>
+
+  <p>
+    <strong>Meta description:</strong>
+    <%= eg_post.meta_description %>
+  </p>
+
+  <p>
+    <strong>Headline:</strong>
+    <%= eg_post.headline %>
+  </p>
+
+  <p>
+    <strong>Incipit:</strong>
+    <%= eg_post.incipit %>
+  </p>
+
+  <p>
+    <strong>User:</strong>
+    <%= eg_post.user_id %>
+  </p>
+
+  <p>
+    <strong>created_at:</strong>
+    <%= eg_post.created_at.strftime("day %d %^B %Y") %>
+  </p>
+
+  <p>
+    <strong>updated_at:</strong>
+    <%= eg_post.updated_at.strftime("%A %d %^B %Y at %H:%M and %S seconds") %>
+  </p>
+
+</div>

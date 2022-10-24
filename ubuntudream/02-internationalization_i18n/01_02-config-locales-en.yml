@@ -1,0 +1,56 @@
+# Files in the config/locales directory are used for internationalization
+# and are automatically loaded by Rails. If you want to use locales other
+# than English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t "hello"
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t("hello") %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# The following keys must be escaped otherwise they will not be retrieved by
+# the default I18n backend:
+#
+# true, false, on, off, yes, no
+#
+# Instead, surround them with single quotes.
+#
+# en:
+#   "true": "foo"
+#
+# To learn more, please read the Rails Internationalization guide
+# available at https://guides.rubyonrails.org/i18n.html.
+
+en:
+  mockups:
+    page_a:
+      navbar_title: "Navbar"
+      navbar_home: "Home"
+      navbar_link: "Link"
+      navbar_dropdown: "Dropdown menu"
+      navbar_action: "Action"
+      navbar_another_action: "Another action"
+      navbar_something_else_here: "Something else here"
+      navbar_disabled: "Link disabled"
+      navbar_search: "Search here"
+      headline: "This is the homepage"
+      first_paragraph: "The text showed here is passed via a 'translation file' and this means that our application is ready to support more languages."
+      current_user: "User logged in"
+      no_logged_user: "No users have logged in!"
+      logout: "Logout"
+      login: "Login"
+      popover_title: "Popover title"
+      amazing_content: "And here's some amazing content. It's very engaging. Right?"
+      click_to_toggle_popover: "Click to toggle popover"
+      show_toast: "Show live toast"
+      toast_title: "This is the toast title"
+      toast_time_ago: "11 mins ago"
+      toast_message: "Hello, world! This is a toast message."
