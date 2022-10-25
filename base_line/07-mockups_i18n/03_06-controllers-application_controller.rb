@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   #-----------------------------------------------------------------------------
   private
 
+    #keep the locale through links
     def default_url_options(options = {})
       {locale: I18n.locale}
     end

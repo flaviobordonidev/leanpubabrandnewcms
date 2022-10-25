@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 6.1 - Internazionalizzazione (i18n)
+# <a name="top"></a> Cap 2.1 - Internazionalizzazione (i18n)
 
 
 Per internazionalizzazione si intende la traduzione dell'applicazione nelle varie lingue.

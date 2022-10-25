@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 6.2 - Lingua di default
+# <a name="top"></a> Cap 2.2 - Lingua di default
 
 Nel precedente capitolo eravamo rimasti con il web server attivo e la visualizzazione della lingua inglese.
 In questo capitolo impostiamo come lingua di default l'italiano.
@@ -98,25 +98,9 @@ $ git commit -m "set i18n default_locale = :it"
 
 
 
-## publichiamo su heroku
+## publichiamo su render.com
 
-```bash
-$ git push heroku mi:master
-```
-
-
-
-## Verifichiamo in produzione
-
-- https://myapp-1-blabla.herokuapp.com/
-
-![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/02_fig02-heroku_i18n_page_a.png)
-
-
-
-## Chiudiamo il branch
-
-Lo chiudiamo nel prossimo capitolo
+Facciamo login sulla web GUI e premiamo il pulsante per fare il deploy.
 
 
 
