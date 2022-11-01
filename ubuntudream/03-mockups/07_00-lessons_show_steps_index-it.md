@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 2.1 - Prima pagina della lezione
+# <a name="top"></a> Cap 3.7 - Elenco passi della lezione
 
 Questa pagina è solo per la creazione dei contenuti. Per gli "insegnanti".
 

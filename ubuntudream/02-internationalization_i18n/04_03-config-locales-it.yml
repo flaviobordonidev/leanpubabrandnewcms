@@ -29,6 +29,9 @@
 # To learn more, please read the Rails Internationalization guide
 # available at https://guides.rubyonrails.org/i18n.html.
 
+# Customized by Flavio
+# https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/it.yml
+
 it:
   activerecord:
     attributes:
@@ -43,8 +46,24 @@ it:
         restrict_dependent_destroy:
           has_one: Il record non può essere cancellato perchè esiste un %{record} dipendente
           has_many: Il record non può essere cancellato perchè esistono %{record} dipendenti
+      #models:
+        # user:
+        #   attributes:
+        #     name:
+        #       blank: ": campo obbligatorio"
+        #     email:
+        #       blank: ": campo obbligatorio"
+        #       invalid: ": non valida"
+        #     password:
+        #       blank: ": campo obbligatorio"
+        #       too_short: ": troppo corta"
+        #     password_confirmation:
+        #       confirmation: ": non corrisponde con password"
     models:
       user: "utente"
+  form_errors_message:
+    one: "1 errore ha impedito il salvataggio"
+    other: "%{count} errori hanno impedito il salvataggio"
   date:
     abbr_day_names:
     - dom
@@ -201,7 +220,6 @@ it:
       create: Crea %{model}
       submit: Invia %{model}
       update: Aggiorna %{model}
-    #submit:
       user:
         create: "Crea %{model}"
         update: "Aggiorna %{model}"
@@ -215,7 +233,7 @@ it:
         significant: false
         strip_insignificant_zeros: false
         unit: "€"
-        price_for_reports: "Questo ci costa %{price} di soldini"
+        #unit: "" #Customized
     format:
       delimiter: "."
       precision: 2
@@ -267,26 +285,49 @@ it:
       default: "%a %d %b %Y, %H:%M:%S %z"
       long: "%d %B %Y %H:%M"
       short: "%d %b %H:%M"
-      my_long: "%A %d %^B %Y alle %H:%M e %S secondi"
+      long_phrase: "%A %d %^B %Y alle %H:%M e %S secondi"
+      short_phrase: "il giorno %d %^B %Y"
+      my_custom_long: "Questa è la mia data personalizzata %A %d %^B %Y alle %H:%M e %S secondi"
     pm: pm
 
 #-------------------------------------------------------------------------------
 # Controllers (in ordine alfabetico)
 
   eg_posts:
+    not_published: "non è stato ancora pubblicato"
     index:
       html_head_title: "Tutti gli articoli"
     show:
       html_head_title: "Art. %{id}"
+      price_fomatted: "Questo costa %{price} di soldini"
     edit:
       html_head_title: "Modifica Art. %{id}"
     new:
       html_head_title: "Nuovo articolo"
   mockups:
     page_a:
-      headline: "Questa è l'homepage"
-      first_paragraph: "Il testo mostrato è o passato da un 'file di traduzione' e questo significa che la nostra applicazione è pronta a supportare più lingue."
-      link_to_page_B: "Andiamo alla pagina B"
+      navbar_title: "Barra di navigazione"
+      navbar_home: "Casa (home) ^_^"
+      navbar_link: "Collegamento"
+      navbar_dropdown: "Menu a discesa"
+      navbar_action: "Azione"
+      navbar_another_action: "Un'altra azione"
+      navbar_something_else_here: "Qualcos'altro qui"
+      navbar_disabled: "Collegamento disabilitato"
+      navbar_search: "Cerca qui"
+      headline: "Questa è la pagina principale"
+      first_paragraph: "Il testo mostrato qui viene passato tramite un 'file di traduzione' e questo significa che la nostra applicazione è pronta per supportare più lingue."
+      current_user: "Utente attivo"
+      no_logged_user: "Nessun utente ha effettuato l'accesso!"
+      logout: "Disconnettersi"
+      login: "Accedere"
+      popover_title: "Titolo del popover"
+      amazing_content: "Ed ecco alcuni contenuti sorprendenti. È molto coinvolgente. Vero?"
+      click_to_toggle_popover: "Cliccare per attivare il popover"
+      show_toast: "Mostra il toast in basso a destra"
+      toast_title: "Questo è il titolo del toast"
+      toast_time_ago: "11 minuti fa"
+      toast_message: "Ciao mondo! Questo è un messaggio del toast."
   users:
     index:
       html_head_title: "Tutti gli utenti"

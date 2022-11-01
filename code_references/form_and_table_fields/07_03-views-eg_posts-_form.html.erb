@@ -33,7 +33,8 @@
 
   <div>
     <%= form.label :price, style: "display: block" %>
-    <%= form.text_field :price %>
+    <%#= form.text_field :price %>
+    <%= form.number_field :price, step: :any %>
   </div>
 
   <div>

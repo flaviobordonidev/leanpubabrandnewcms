@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 12.1 - Lo formattazioni base nelle varie lingue
+# <a name="top"></a> Cap 2.4 - Lo formattazioni base nelle varie lingue
 
 Per la formattazione in più lingue di date, monete, numeri ed altro ...
 
@@ -39,7 +39,7 @@ Noi scarichiamo quello per la lingua inglese e quello per la lingua italiana.
 - [Italiano - svenfuchs-it](https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/it.yml)
 - [Inglese - svenfuchs-en-US](https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/en-US.yml)
 
-> Anche se di default ho già in Rails le traduzioni in inglese le prendiamo comunque perché nel prossimo paragrafo allineeremo i due files *.yml*.
+> Anche se di default ho già in Rails le traduzioni in inglese le prendiamo comunque perché nel prossimo paragrafo allineeremo i due files `.yml`.
 
 > I files sono stati presi da https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale <br/>
 > Ci siamo arrivati tramite il link https://guides.rubyonrails.org/i18n.html che è riportato sia nel file iniziale locale/en.yml, sia nella guida ufficiale di Rails al Capitolo "9 Contributing to Rails I18n". 
@@ -158,28 +158,6 @@ Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messag
 $ git add -A
 $ git commit -m "implement format_i18n"
 ```
-
-
-
-## Pubblichiamo su Heroku
-
-```bash
-$ git push heroku fin:main
-```
-
-> Il comando `$ heroku run rails db:migrate` non serve perché non ho cambiato la struttura del database.
-
-
-
-## Chiudiamo il branch
-
-Lo lasciamo aperto per il prossimo capitolo
-
-
-
-## Facciamo un backup su Github
-
-Lo facciamo nel prossimo capitolo.
 
 
 

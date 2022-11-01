@@ -1,8 +1,9 @@
-# <a name="top"></a> Cap 2.1 - Selezione delle pagine
+# <a name="top"></a> Cap 3.1 - Selezione delle pagine
 
 In questi capitoli creeremo i mockups della nostra app. Ossia delle pagine statiche con i dati inseriti direttamente nel codice, i "segnaposto", per definire la grafica della nostra app.
 
 Quindi modifichiamo e rielaboriamo le pagine html del tema eduport adattandole alle nostre esigenze.
+
 
 
 ## La struttura della nostra applicazione
@@ -40,3 +41,10 @@ sign_up             | eduport_v1.2.0/template/sign-up.html
 users_show          | eduport_v1.2.0/template/instructor-edit-profile.html
 AUTHOR              | eduport_v1.2.0/template/admin-edit-course-detail.html<br/> eduport_v1.2.0/template/instructor-create-course.html<br/> eduport_v1.2.0/template/instructor-quiz.html
 
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/03-mockups/01_00-theme_pages_selection-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/03-mockups/02_00-login-it.md)

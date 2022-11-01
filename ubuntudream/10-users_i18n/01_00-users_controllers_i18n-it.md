@@ -1,13 +1,12 @@
 # <a name="top"></a> Cap 10.1 - Internazionalizzazione dei messaggi
 
-Al momento abbiamo lasciato dei messaggi scritti direttamente nel codice ma questo non ci permette di gestire più lingue. Passiamo i messaggi attraverso i files "locales".
+Al momento abbiamo lasciato dei messaggi scritti direttamente nel codice ma questo non ci permette di gestire più lingue. Passiamo i messaggi attraverso i files `locales`.
 
 
 
 ## Apriamo il branch "Users_controllers I18n"
 
-{caption: "terminal", format: bash, line-numbers: false}
-```
+```bash
 $ git checkout -b ui
 ```
 
@@ -46,12 +45,18 @@ Internazionalizziamo l'azione *destroy*.
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/01_01-controllers-users_controller.rb)
 
 
-Aggiorniamo i files locales
+Aggiorniamo i files locales.
 
-***codice 02 - .../config/locales/it.yml - line:38***
+***codice 02 - .../config/locales/it.yml - line:337***
 
 ```yaml
   users:
+    index:
+      html_head_title: "Tutti gli utenti"
+    new:
+      html_head_title: "Nuovo utente"
+    edit:
+      html_head_title: "Modifica"
     create:
       notice: "L'utente è stato creato con successo."
     update:
@@ -64,10 +69,16 @@ Aggiorniamo i files locales
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/01_02-config-locales-it.yml)
 
 
-***codice 03 - .../config/locales/en.yml - line:38***
+***codice 03 - .../config/locales/en.yml - line:337***
 
 ```yaml
   users:
+    index:
+      html_head_title: "All users"
+    new:
+      html_head_title: "New post"
+    edit:
+      html_head_title: "Edit"
     create:
       notice: 'User was successfully created.'
     update:
@@ -85,7 +96,6 @@ Aggiorniamo i files locales
 
 ```bash
 $ sudo service postgresql start
-$ rails s -b 192.168.64.3
 ```
 
 apriamolo il browser sull'URL:
@@ -102,29 +112,6 @@ Creando un nuovo utente o aggiornando un utente esistente vediamo i nuovi messag
 $ git add -A
 $ git commit -m "users_controllers notice messages i18n"
 ```
-
-
-
-## Pubblichiamo su Heroku
-
-```bash
-$ git push heroku ui:main
-$ heroku run rails db:migrate
-```
-
-> Possiamo anche non eseguire `$ heroku run rails db:migrate` perché non tocchiamo il database
-
-
-
-## Chiudiamo il branch
-
-Lo lasciamo aperto per il prossimo capitolo
-
-
-
-## Facciamo un backup su Github
-
-Lo facciamo nel prossimo capitolo.
 
 
 

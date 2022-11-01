@@ -8,7 +8,7 @@ In questo modo non appesantiamo l'applicazione con persone solo curiose e rendia
 
 ## Pagina di login
 
-Questa è la pagina di mockup che nella nostra applicazione diventerà la pagina `views/users/sessions/new.html.erb` perché creata da *devise*.
+Questa è la pagina con il mockup del login.
 
 ***code 01 - .../app/views/mockups/login.html.erb - line:321***
 
@@ -29,11 +29,7 @@ Questa è la pagina di mockup che nella nostra applicazione diventerà la pagina
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-mokups/02_01-mockups-sign_in.html.erb)
 
-
-
-## Login i18n
-
-Attiviamo l'internazionalizzazione
+>  Nella nostra applicazione diventerà la pagina creata da *devise*: `views/users/sessions/new.html.erb`.
 
 
 
@@ -64,6 +60,6 @@ $ git commit -m "Mockup login"
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_00-import_page.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/03-mockups/01_00-theme_pages_selection-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/02_00-theme_stylesheet-it.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/03-mockups/03_00-homepage-it.md)

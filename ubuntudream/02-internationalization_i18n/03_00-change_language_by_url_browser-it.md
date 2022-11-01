@@ -212,6 +212,27 @@ Vediamo che cambiando la lingua in inglese otteniamo la traduzione in inglese, p
 
 
 
+## Manteniamo il parametro :locale attraverso i links
+
+Facciamo in modo che cliccando su un nuovo link ci portiamo appresso il parametro :locale.
+
+***Codice 05 - .../app/controllers/application_controller.rb - linea:14***
+
+```ruby
+    #keep the locale through links
+    def default_url_options(options = {})
+      {locale: I18n.locale}
+    end
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-internationalization_i18n/03_06-controllers-application_controller.rb)
+
+> queste linee di codice mantengono il parametro :locale nell'url anche se clicchiamo su un link che non lo richiama specificamente.
+
+> Per verificarlo dobbiamo creare un link che ci manda ad esempio alla pagina mockups/page_b e vediamo che senza il codice in alto ci perdiamo la lingua impostata, invece con il codice in alto è mantenuta la lingua impostata.
+
+
+
 ## Salviamo su Git
 
 ```bash
@@ -226,8 +247,8 @@ se abbiamo finito le modifiche e va tutto bene:
 
 ```bash
 $ git checkout main
-$ git merge mi
-$ git branch -d mi
+$ git merge cl
+$ git branch -d cl
 ```
 
 

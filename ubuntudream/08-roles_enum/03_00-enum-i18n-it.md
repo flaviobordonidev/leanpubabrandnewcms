@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 14.1 - enum con internazionalizzazione
+# <a name="top"></a> Cap 8.3 - enum con internazionalizzazione
 
 
 
@@ -43,7 +43,7 @@ Sapendo che i campi del *_form* li ritrovo in *activerecord:* istintivamente ci 
           user: "utente"
 ```
 
-Invece le voci dell'elenco vanno sotto *user/role:* che è nella *stessa gerarchia del modello* ossia con la stessa indentatura di *user:*.
+Invece le voci dell'elenco vanno sotto ***user/role:*** che è nella *stessa gerarchia del modello* ossia con la stessa indentatura di *user:*.
 
 ***codice 01 - .../config/locales/it.yml - line: 33***
 
@@ -89,19 +89,19 @@ Per completezza manteniamo allineato anche il file per la traduzione in inglese.
 
 Con questa struttura possiamo usare i metodi:
 
-- *[Model].model_name.human*
-- *[Model].human_attribute_name("[attribute]")*
-- *[Model].human_attribute_name("[attribute].[nested_attribute]")*
+- `[Model].model_name.human`
+- `[Model].human_attribute_name("[attribute]")`
+- `[Model].human_attribute_name("[attribute].[nested_attribute]")`
 
 per cercare in modo trasparente le traduzioni per *il modello* e *i nomi degli attributi*. 
 Nel caso in cui sia necessario accedere ad attributi nidificati all'interno di un determinato modello, è necessario nidificarli sotto *modello/attributo* a livello di modello nel file di traduzione (*locales/xx.yml*).
 
 ```bash
 $ rails c
--> User.model_name.human
--> User.human_attribute_name("role")
--> User.human_attribute_name("role.admin")
--> User.human_attribute_name("role.moderator")
+> User.model_name.human
+> User.human_attribute_name("role")
+> User.human_attribute_name("role.admin")
+> User.human_attribute_name("role.moderator")
 ```
 
 Esempio:
@@ -126,10 +126,10 @@ Vediamo come gestire la traduzione
 
 ```bash
 $ rails c
--> User.roles
--> User.roles.map
--> User.roles.map{ |k,v| [k, User.human_attribute_name("role.#{k}")]}
--> User.roles.map{ |k,v| [k, User.human_attribute_name("role.#{k}")]}.to_h
+> User.roles
+> User.roles.map
+> User.roles.map{ |k,v| [k, User.human_attribute_name("role.#{k}")]}
+> User.roles.map{ |k,v| [k, User.human_attribute_name("role.#{k}")]}.to_h
 ```
 
 > al posto di `xxx.to_h` si può usare `Hash[xxx]`. <br/>
@@ -164,7 +164,8 @@ Ora che conosciamo la definizione e come accedervi possiamo inserirla nel view.
   <div>
     <%= form.label :role %>
     <%#= form.select(:role, User.roles.keys.map {|role| [role.titleize,role]}) %>
-    <%= form.select(:role, User.roles.keys.map {|role| [User.human_attribute_name("role.#{role}"), role]}) %>
+    <%#= form.select(:role, User.roles.keys.map {|role| [User.human_attribute_name("role.#{role}"), role]}) %>
+    <%= form.select :role, User.roles.keys.map {|role| [User.human_attribute_name("role.#{role}"), role]}, {}, class: "form-control" %>
   </div>
 ```
 
@@ -256,16 +257,6 @@ $ git commit -m "users_controllers notice messages i18n"
 
 
 
-## Pubblichiamo su Heroku
-
-```bash
-$ git push heroku ein:main
-```
-
-> Non serve `$ heroku run rails db:migrate` perché non abbiamo modificato la struttura del database.
-
-
-
 ## Chiudiamo il branch
 
 Se abbiamo finito le modifiche e va tutto bene:
@@ -285,6 +276,12 @@ Dal nostro branch main di Git facciamo un backup di tutta l'applicazione sulla r
 ```bash
 $ git push origin main
 ```
+
+
+
+## Pubblichiamo su render.com
+
+Lo fa in automatico prendendo il backup fatto su Github. ^_^
 
 
 

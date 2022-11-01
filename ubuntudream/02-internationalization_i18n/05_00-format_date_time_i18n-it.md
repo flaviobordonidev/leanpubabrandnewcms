@@ -1,6 +1,6 @@
-# <a name="top"></a> Cap 12.2 - la formattazione delle date nelle varie lingue
+# <a name="top"></a> Cap 2.5 - la formattazione delle date nelle varie lingue
 
-Abbiamo aggiunto i due files *it* e *en* con le formattazioni già impostate. 
+Abbiamo aggiunto i due files `it` e `en` con le formattazioni già impostate. 
 Adesso entriamo più in profondità nella formattazione delle **date**.
 
 
@@ -18,60 +18,23 @@ Già aperto nel capitolo precedente.
 
 
 
-## Visualizziamo il campo ultimo aggiornamento degli articoli
+## Usiamo le date del timestamp su mockups/page_a
 
-Di default il codice *t.timestamps* nei migrations crea le due colonne *created_at* e *updated_at* come possiamo vedere nello schema del database.
+Inseriamo alcune date su mockups/page_a.
 
-***codice 01 - .../db/schema.rb - line: 54***
+> Ad esempio possiamo copiare i valori della colonna `created_at` o `updated_at` della tabella `users`.
 
-```ruby
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/02_01-db-schema.rb)
-
-Possiamo usare quelli di *eg_posts* nel partial *_eg_post*, delle pagine *show* e *index*, per visualizzare la data di creazione e quella dell'ultimo aggiornamento.
-
-***codice 02 - .../app/views/eg_posts/_eg_post.html.erb - line: 27***
+***Codice 01 - .../app/views/mockups/page_a.html.erb - linea:27***
 
 ```html+erb
-<p>
-  <strong>created_at:</strong>
-  <%= eg_post.created_at %>
-</p>
+<p> data: Sat, 08 Oct 2022 23:30:28.257872000 UTC +00:00  </p>
 
-<p>
-  <strong>updated_at:</strong>
-  <%= eg_post.updated_at %>
-</p>
-```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/02_02-views-eg_posts-_eg_post.html.erb)
-
-
-
-## Formattiamo la data
-
-Diamo un formato alla data con il metodo *.strftime()*. 
-Per la *data di creazione* visualizziamo solo il giorno il mese e l'anno.
-Invece per la *data dell'ultimo aggiornamento* visualizziamo anche ore e minuti.
-
-***codice 03 - .../app/views/eg_posts/_eg_post.html.erb - line: 27***
-
-```html+erb
-<p>
-  <strong>created_at:</strong>
-  <%= eg_post.created_at.strftime("day %d %^B %Y") %>
-</p>
-
-<p>
-  <strong>updated_at:</strong>
-  <%= eg_post.updated_at.strftime("%A %d %^B %Y at %H:%M and %S seconds") %>
-</p>
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/02_03-views-eg_posts-_eg_post.html.erb)
+
+
 
 Di seguito i parametri più usati di *.strftime()*.
 
@@ -111,7 +74,7 @@ Code | Description                                              | Esempio
 %S  | Second of the minute (00..59)                             | cinquantasei secondi sono "56"
 %L  | Millisecond of the second (000..999)                      | cento millisecondi sono "100"
 
-Per una lista completa dei formati per il metodo *.strftime* visitiamo [APIDock](http://apidock.com/ruby/DateTime/strftime)
+> Per una lista completa dei formati per il metodo *.strftime* visitiamo [APIDock](http://apidock.com/ruby/DateTime/strftime)
 
 
 
@@ -220,76 +183,8 @@ Non ci resta che richiamare la formattazione con l'helper *l*.
 
 
 
-## Verifichiamo preview
-
-```bash
-$ sudo service postgresql start
-$ rails s
-```
-
-apriamolo il browser sull'URL:
-
-- https://mycloud9path.amazonaws.com/eg_posts
 
 
-
-## Aggiungiamo nostri formati personalizzati
-
-Aggiungiamo `my_long: "%A %d %^B %Y at %H:%M and %S seconds"` alle traduzioni in inglese.
-
-***codice 05 - .../config/locales/en.yml - line: 263***
-
-```yaml
-  time:
-    am: am
-    formats:
-      default: "%a, %d %b %Y %I:%M:%S %p %Z"
-      long: "%B %d, %Y %I:%M %p"
-      short: "%d %b %I:%M %p"
-      my_long: "%A %d %^B %Y at %H:%M and %S seconds"
-```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/02_05-config-locales-en.yml)
-
-
-Aggiungiamo `my_long: "%A %d %^B %Y alle %H:%M e %S secondi"` alle traduzioni in italiano.
-
-***codice 06 - .../config/locales/it.yml - line: 263***
-
-```yaml
-  time:
-    am: am
-    formats:
-      default: "%a %d %b %Y, %H:%M:%S %z"
-      long: "%d %B %Y %H:%M"
-      short: "%d %b %H:%M"
-      my_long: "%A %d %^B %Y alle %H:%M e %S secondi"
-```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/02_06-config-locales-it.yml)
-
-
-***codice 07 - .../app/views/eg_posts/_eg_post.html.erb - line: 27***
-
-```html+erb
-<p>
-  <strong>created_at:</strong>
-  <br>
-  <%= eg_post.created_at.strftime("day %d %^B %Y") %>
-  <br>
-  <%= l eg_post.created_at, format: :my_long %>
-</p>
-
-<p>
-  <strong>updated_at:</strong>
-  <br>
-  <%= eg_post.updated_at.strftime("%A %d %^B %Y at %H:%M and %S seconds") %>
-  <br>
-  <%= l eg_post.created_at, format: :my_long %>
-</p>
-```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/02_07-views-eg_posts-_eg_post.html.erb)
 
 
 
@@ -299,17 +194,6 @@ Aggiungiamo `my_long: "%A %d %^B %Y alle %H:%M e %S secondi"` alle traduzioni in
 $ git add -A
 $ git commit -m "Format with i18n the date fields created_at and updated_at on eg_posts"
 ```
-
-
-
-## Pubblichiamo su Heroku
-
-```bash
-$ git push heroku fin:main
-```
-
-> Il comando `$ heroku run rails db:migrate` non serve perché non abbiamo modificato la struttura del databasa.
-
 
 
 ## Chiudiamo il branch
@@ -329,6 +213,14 @@ $ git branch -d fin
 ```bash
 $ git push origin main
 ```
+
+
+
+## Pubblichiamo su render.com
+
+Dalla web gui premiamo il pulsante per il "deploy".
+
+> In realtà non serve perché quando sente il backup fatto su Github in automatico effettua il deploy
 
 
 

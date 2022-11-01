@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 13.3 - Gestiamo i *ruoli* con *enum*
+# <a name="top"></a> Cap 8.1 - Gestiamo i *ruoli* con *enum*
 
 I ruoli da assegnare alle persone che si autenticano con Devise (ossia che fanno login). 
 A seconda del ruolo si avranno delle autorizzazioni ad operare.
@@ -60,28 +60,30 @@ Modifichiamo il migrate aggiungendo un default e l'indice per velocizzare querie
     add_index :users, :role, unique: false
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/03_01-xxxx_add_role_to_users.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-roles_enum/01_01-xxxx_add_role_to_users.rb)
 
 
 Effettuiamo il migrate del database per creare la tabella sul database
 
 ```bash
-$ sudo service postgresql start
 $ rails db:migrate
 ```
 
 Esempio:
 
 ```bash
-user_fb:~/environment/bl7_0 (re) $ rails db:migrate
-== 20220217162110 AddRoleToUsers: migrating ===================================
+ubuntu@ubuntufla:~/ubuntudream (re)$rails g migration add_role_to_users role:integer
+      invoke  active_record
+      create    db/migrate/20221030105444_add_role_to_users.rb
+ubuntu@ubuntufla:~/ubuntudream (re)$rails db:migrate
+== 20221030105444 AddRoleToUsers: migrating ===================================
 -- add_column(:users, :role, :integer, {:default=>0})
-   -> 0.0596s
+   -> 0.1645s
 -- add_index(:users, :role, {:unique=>false})
-   -> 0.0083s
-== 20220217162110 AddRoleToUsers: migrated (0.0693s) ==========================
+   -> 0.0993s
+== 20221030105444 AddRoleToUsers: migrated (0.2655s) ==========================
 
-user_fb:~/environment/bl7_0 (re) $ 
+ubuntu@ubuntufla:~/ubuntudream (re)$
 ```
 
 ed otteniamo le seguenti modifiche alla tabella *users*.
@@ -90,15 +92,19 @@ ed otteniamo le seguenti modifiche alla tabella *users*.
 
 ```ruby
   create_table "users", force: :cascade do |t|
-    t.string "name", default: "", null: false
+    t.string "username", default: "", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.string "location"
+    t.string "bio"
+    t.string "phone_number"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at", precision: 6
-    t.datetime "remember_created_at", precision: 6
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.integer "language", default: 0
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "role", default: 0
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -106,7 +112,7 @@ ed otteniamo le seguenti modifiche alla tabella *users*.
   end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/03_02-db-schema.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/08-roles_enum/01_02-db-schema.rb)
 
 
 Avremmo potuto aggiungere l'indice anche in un secondo momento.
@@ -134,21 +140,6 @@ $ rails g migration add_index_to_role_to_users
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/03_03-models-users.rb)
 
 
-Se non avessimo voluto usare il default lato database con *default: 0* avremmo potuto farlo nel model.
-
-***codice n/a - .../models/user.rb - line: 7***
-
-```ruby
-  after_initialize :set_default_role, :if => :new_record?
-
-  def set_default_role
-    self.role ||= :user
-  end
-```
-
-Ma lato database è più pulito e più prestazionale.
-
-
 
 ## Assegnamo un ruolo ai nostri utenti da terminale rails
 
@@ -158,38 +149,38 @@ Apriamo il terminale
 $ rails c
 
 # verifichiamo tutti i ruoli presenti nella colonna "role" assegnata ad enum.
--> User.roles
+> User.roles
 
 # verifichiamo che tutti gli utenti hanno il campo della colonna role con il valore di default "0", che per enum corrisponde al valore "user".
--> User.all
+> User.all
 
 # rendiamo il primo utente amministratore.
--> User.first.admin!
+> User.first.admin!
 
 # rendiamo il primo utente moderator.
--> User.first.update(role: :moderator)
+> User.first.update(role: :moderator)
 
 # rendiamo il primo utente amministratore.
--> u = User.first 
--> u.role = :admin 
--> u.save 
+> u = User.first 
+> u.role = :admin 
+> u.save 
 
 # verifichiamo che ruolo hanno il primo ed il secondo utente
--> User.first.role
--> User.second.role
--> User.first.admin?
--> User.second.admin?
--> User.second.user?
+> User.first.role
+> User.second.role
+> User.first.admin?
+> User.second.admin?
+> User.second.user?
 
 
 # prendiamo una lista di tutti gli :admin
--> User.admin
+> User.admin
 
 # prendiamo una lista di tutti gli :user
--> User.user
+> User.user
 
 # prendiamo una lista di tutti i :moderator
--> User.moderator
+> User.moderator
 ```
 
 
@@ -327,36 +318,6 @@ ActiveRecord::RecordInvalid (translation missing: it.activerecord.errors.message
 $ git add -A
 $ git commit -m "Add role:enum to table users"
 ```
-
-
-
-## Pubblichiamo su Heroku
-
-```bash
-$ git push heroku re:main
-$ heroku run rails db:migrate
-```
-
-> Dobbiamo usare `$ heroku run rails db:migrate` perché abbiamo modificato la struttura del database con `$ rails db:migrate` che ha eseguito il *migrate* di aggiunta della colonna *role* alla tabella *users*.
-
-Rendiamo il primo utente amministratore.
-
-```bash
-$ heroku run rails c
--> User.first.admin!
-```
-
-
-
-## Chiudiamo il branch
-
-Lo lasciamo aperto per il prossimo capitolo
-
-
-
-## Facciamo un backup su Github
-
-Lo facciamo nel prossimo capitolo.
 
 
 

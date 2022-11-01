@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 12.4 - Formattiamo le valute
+# <a name="top"></a> Cap 2.6 - Formattiamo le valute
 
 Formattiamo i prezzi per le varie valute.
 
@@ -26,17 +26,15 @@ $ git checkout -b fic
 
 ## Formattiamo/Traduciamo i prezzi
 
-Il nuovo campo lavora correttamente ma non ha una buona formattazione. 
-Gestiamola in questo paragrafo. 
+Gestiamo la formattazione per la valuta.
 Inoltre la formattazione la rendiamo flessibile per le varie lingue.
 
-In Italia per dividere le migliaia si usa il *"."* e per le cifre decimali si usa la *","*. 
-Negli USA è il contrario. Ad esempio:
+> In Italia per dividere le migliaia si usa il punto `.` e per le cifre decimali si usa la virgola `,`. 
+> Negli USA è il contrario. Ad esempio:
+>
+> - Italia: 1.123.450,50
+> - USA: 1,123,450.50
 
-- Italia: 1.123.450,50
-- USA: 1,123,450.50
-
-Quindi formattiamo in maniera diversa il numero a seconda della lingua che usiamo.
 Queste formattazioni le abbiamo già acquisite con i files *.yml* che abbiamo scaricato nei capitoli precedenti.
 
 ***codice n/a - .../config/locales/en.yml - line: 208***
@@ -182,16 +180,6 @@ $ git commit -m "Format i18n price field on eg_posts"
 ```
 
 
-
-## Pubblichiamo su Heroku
-
-```bash
-$ git push heroku fic:main
-```
-
-> Il comando `$ heroku run rails db:migrate` non serve perché non abbiamo modificato la struttura del database.
-
-
 ## Chiudiamo il branch
 
 Se abbiamo finito le modifiche e va tutto bene:
@@ -209,6 +197,16 @@ $ git branch -d fic
 ```bash
 $ git push origin main
 ```
+
+
+
+## Pubblichiamo su Heroku
+
+```bash
+$ git push heroku fic:main
+```
+
+> Il comando `$ heroku run rails db:migrate` non serve perché non abbiamo modificato la struttura del database.
 
 
 

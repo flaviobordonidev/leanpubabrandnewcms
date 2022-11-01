@@ -15,7 +15,6 @@ Prendiamo la pagina *index* già importata su Rails del tema Eduport.
 ## Mockups *lessons_show*
 
 Questo mockups è fatto a partire dalla pagina *index* di Eduport.
-Vediamo la prima modifica.
 
 ***code 01 - .../views/mockups/lessons_show.rb - line:1***
 
@@ -25,3 +24,19 @@ Vediamo la prima modifica.
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/02-mokups/04_00-lessons_show-it.rb)
 
+
+
+## Archiviamo su git
+
+```bash
+$ git add -A
+$ git commit -m "Mockup Lessons Show"
+```
+
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/03-mockups/03_00-homepage-it)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/03-mockups/05_00-lessons_show_steps_show-it.md)

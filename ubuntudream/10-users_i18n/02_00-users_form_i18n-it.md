@@ -2,9 +2,9 @@
 
 
 
-## Apriamo il branch 
+## Risorse interne
 
-Continuiamo con lo stesso branch del capitolo precedente
+- []()
 
 
 
@@ -19,7 +19,8 @@ Possiamo dire a Rails di usare *i18n placeholder* passando il parametro `placeho
 <%= form_with(model: user) do |form| %>
 ```
 
-> Su Rails 6 usavo `<%= form_with(model: user, local: true) do |form| %>`.
+> Su Rails 6 usavo `<%= form_with(model: user, local: true) do |form| %>`.<br/>
+> Da Rails 7 non serve più inserire `local: true` perché è l'opzione di default.
 
 ***codice 01 - ...continua - line: 14***
 

@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_user, only: %i[ show edit update destroy ]
+  #before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # GET /users or /users.json
   def index
@@ -18,15 +19,16 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+    #raise "shown_fields = #{params[:shown_fields]}"
   end
-
+ 
   # POST /users or /users.json
   def create
     @user = User.new(user_params)
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to user_url(@user), notice: t(".notice") } # notice: "User was successfully created."
+        format.html { redirect_to user_url(@user), notice: "User was successfully created." }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -39,7 +41,7 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to user_url(@user), notice: t(".notice") } # notice: "User was successfully updated."
+        format.html { redirect_to user_url(@user), notice: "User was successfully updated." }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -50,15 +52,18 @@ class UsersController < ApplicationController
 
   # DELETE /users/1 or /users/1.json
   def destroy
-    @user.destroy unless @user == current_user
+    @user.destroy
 
     respond_to do |format|
-      format.html do 
-        redirect_to users_url, notice: t(".notice") unless @user == current_user # notice: "User was successfully destroyed."
-        redirect_to users_url, notice: t(".notice_logged_in") if @user == current_user #  notice: "The logged in user cannot be destroyed."
-      end
+      format.html { redirect_to users_url, notice: "User was successfully destroyed." }
       format.json { head :no_content }
     end
+  end
+
+  def delete_image_attachment
+    @image_to_delete = ActiveStorage::Attachment.find(params[:id])
+    @image_to_delete.purge
+    redirect_back(fallback_location: request.referer)
   end
 
   private
@@ -69,10 +74,6 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      if params[:user][:password].blank?
-        params.require(:user).permit(:name, :email, :language, :role)
-      else
-        params.require(:user).permit(:name, :email, :password, :password_confirmation, :language, :role)
-      end
+      params.require(:user).permit(:avatar_image, :username, :first_name, :last_name, :location, :bio, :phone_number, :email, :password, :password_confirmation, :shown_fields, :role)
     end
 end
