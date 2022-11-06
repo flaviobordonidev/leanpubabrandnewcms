@@ -219,18 +219,6 @@ $ git commit -m "Install gem devise"
 
 
 
-## Chiudiamo il branch
-
-Lo chiudiamo in seguito
-
-
-
-## Facciamo un backup su Github
-
-Lo facciamo in seguito. Dopo la chiusura del branch.
-
-
-
 ---
 
 [<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/03-user-authentication/01_00-authentication-devise_install-it.md)
