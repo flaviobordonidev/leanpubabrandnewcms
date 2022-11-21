@@ -65,13 +65,11 @@ class StepsController < ApplicationController
   end
 
   private
-  
     # Use callbacks to share common setup or constraints between actions.
     def set_lesson
       @lesson = Lesson.find(params[:lesson_id])
     end
 
-    # Use callbacks to share common setup or constraints between actions.
     def set_step
       #@step = Step.find(params[:id])
       @step = @lesson.steps.find(params[:id])

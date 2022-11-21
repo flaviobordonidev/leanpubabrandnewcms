@@ -1,34 +1,35 @@
-<%= form_with(model: [@lesson, step], local: true) do |form| %>
+<%#= form_with(model: step) do |form| %>
+<%= form_with(model: [@lesson, step]) do |form| %>
   <% if step.errors.any? %>
-    <div id="error_explanation">
+    <div style="color: red">
       <h2><%= pluralize(step.errors.count, "error") %> prohibited this step from being saved:</h2>
 
       <ul>
-        <% step.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
+        <% step.errors.each do |error| %>
+          <li><%= error.full_message %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :question %>
+  <div>
+    <%= form.label :question, style: "display: block" %>
     <%= form.text_field :question %>
   </div>
 
-  <div class="field">
-    <%= form.label :answer %>
+  <div>
+    <%= form.label :answer, style: "display: block" %>
     <%= form.text_area :answer %>
   </div>
 
   <!-- da eliminare -->
-  <div class="field">
-    <%= form.label :lesson_id %>
+  <div>
+    <%= form.label :lesson_id, style: "display: block" %>
     <%= form.text_field :lesson_id %>
   </div>
   <!-- da eliminare -->
 
-  <div class="actions">
+  <div>
     <%= form.submit %>
   </div>
 <% end %>

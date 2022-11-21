@@ -3,10 +3,11 @@
 <%= render @step %>
 
 <div>
-  <%= link_to '<Prev', lesson_step_path(@lesson, @step.id-1) if @step.id > @lesson.steps.first.id %>
-  <%= @step.id-1 %>
-  <%= link_to 'Next>', lesson_step_path(@lesson, @step.id+1) if @step.id < @lesson.steps.last.id %>
-  <%= @step.id+1 %>
+  <%= @step.prev.id if @step.prev.present? %>
+  <%= link_to '<Prev', lesson_step_path(@lesson, @step.prev.id) if @step.prev.present? %>
+  <%= @step.id %>
+  <%= link_to 'Next>', lesson_step_path(@lesson, @step.next.id) if @step.next.present? %>
+  <%= @step.next.id if @step.next.present? %>
   <br/>
 
   <%#= link_to "Edit this step", edit_step_path(@step) %>

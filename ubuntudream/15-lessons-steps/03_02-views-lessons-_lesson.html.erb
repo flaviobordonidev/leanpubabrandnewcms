@@ -11,11 +11,12 @@
 
   <h2>Steps</h2>
   <% for step in lesson.steps %>
-      <ul>
-        <li><%= step.question %></li>
+    <ul>
+      <li><%= step.question %></li>
     </ul>
   <% end %>
 
-  <%= link_to 'View All Steps with answers', lesson_steps_path(@lesson) %> | 
-  <%= link_to 'Add New Step', new_lesson_step_path(@lesson) %>
+  <%= link_to "Show all steps of this lesson", lesson_steps_path(lesson) %> | 
+  <%= link_to 'Add New Step', new_lesson_step_path(lesson) %>
+  <h2>- - -</h2>
 </div>

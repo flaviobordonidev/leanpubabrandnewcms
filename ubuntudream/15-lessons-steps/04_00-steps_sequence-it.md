@@ -6,24 +6,19 @@ In questo capitolo mettiamo su *steps/show* un pulsante per avanzare allo *step*
 
 
 
-## Risorse esterne
+## Risorse interne
 
-- [Rails: Get next / previous record](https://stackoverflow.com/questions/7394088/rails-get-next-previous-record)
-
-
-
-## Apriamo il branch
-
-Continuiamo con quello aperto nei capitoli precedenti.
+- [code_references/pagination/03_00-get_next_previous-it.md]()
 
 
 
-## Inseriamo il link *next*
+## Inseriamo i links *prev/next*
 
-Su *steps/show* inseriamo un link "next" che ci porta allo step successivo.
+Su *steps/show* inseriamo un link "next" che ci porta allo step successivo ed un link "prev" che ci porta allo step precedente.
+
 Esempio: da lessons/1/steps/1 a lessons/1/steps/2.
 
-***code 01 - .../views/steps/show.html.erb - line:6***
+***Codice n/a - .../views/steps/show.html.erb - linea:06***
 
 ```html+erb
   <%= link_to '<Prev', lesson_step_path(@lesson, @step.id-1) if @step.id > @lesson.steps.first.id %>
@@ -40,11 +35,11 @@ Esempio: da lessons/1/steps/1 a lessons/1/steps/2.
 
 
 
-## Debug di link *next*
+## Debug dei links *prev/next*
 
-La soluzione a questo è affidarsi al metodo `.where` nel *Model*.
+La soluzione è quella di affidarsi al metodo `.where` nel *Model*.
 
-***code: 02 - .../app/models/step.rb - line:21***
+***Codice: 01 - .../app/models/step.rb - linea:21***
 
 ```ruby
   # == Instance Methods =====================================================
@@ -57,22 +52,21 @@ La soluzione a questo è affidarsi al metodo `.where` nel *Model*.
   end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/04_02-models-step.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/15-lessons-steps/04_01-models-step.rb)
 
 Usiamolo nella view *show*.
 
-***code: 03 - .../app/views/steps/show.html.erb - line:6***
+***Codice: 02 - .../app/views/steps/show.html.erb - linea:06***
 
 ```html+erb
-  <%#= link_to '<Prev', lesson_step_path(@lesson, @step.id-1) if @step.id > @lesson.steps.first.id %>
-  <%= link_to '<Prev', lesson_step_path(@lesson, @step.prev.id) if @step.prev.present? %>
   <%= @step.prev.id if @step.prev.present? %>
-  <%#= link_to 'Next>', lesson_step_path(@lesson, @step.id+1) if @step.id < @lesson.steps.last.id %>
+  <%= link_to '<Prev', lesson_step_path(@lesson, @step.prev.id) if @step.prev.present? %>
+  <%= @step.id %>
   <%= link_to 'Next>', lesson_step_path(@lesson, @step.next.id) if @step.next.present? %>
   <%= @step.next.id if @step.next.present? %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/04_03-views-steps-show.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/04_02-views-steps-show.html.erb)
 
 
 
@@ -130,7 +124,7 @@ end
 > Puoi cambiare `title` con qualsiasi altro **unique attribute** (es: `created_at`, `id`, ecc.) se hai bisogno di un diverso ordinamento (sort order).
 
 
-Vediamo come presentare nel *view* i metodi creati.
+Questi metodi si presenterebbero nel *view* in questo modo:
 
 ***code: n/a - .../views/posts/1 - line:x***
 
@@ -153,7 +147,7 @@ Facciamo in modo che partendo da `lessons/1/steps/1` passiamo al successivo step
 
 > Essendo il *form* solo per *show*, perché non c'è *new*, non usiamo un partial *_form_answer* ma mettiamo tutto il codice direttamente su *show*.
 
-***code: 04 - .../views/steps/show.html.erb - line:7***
+***Codice: 03 - .../views/steps/show.html.erb - linea:07***
 
 ```html+erb
 <%= form_with(model: [@lesson, @step]) do |form| %>
@@ -180,7 +174,7 @@ Facciamo in modo che partendo da `lessons/1/steps/1` passiamo al successivo step
 <% end %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/04_04-views-steps-show.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/15-lessons-steps/04_03-views-steps-show.html.erb)
 
 > Il codice aggiunto è praticamente lo stesso del partial `steps/_form` con qualche piccola modifica.<br/>
 > Ad esempio non essendo su un partial invece della variabile `step` ci riferiamo direttamente alla variabile di istanza `@step`.
@@ -191,9 +185,9 @@ Facciamo in modo che partendo da `lessons/1/steps/1` passiamo al successivo step
 
 ## Aggiorniamo il controller
 
-Aggiorniamo l'azione update facendo in modo che il render vada alla pagina seguente.
+Aggiorniamo l'azione `update` facendo in modo che il render vada alla pagina seguente.
 
-***code: 05 - .../app/controllers/step_controller - line:48***
+***Codice: 04 - .../app/controllers/step_controller - linea:48***
 
 ```ruby
         format.html do 
@@ -205,9 +199,11 @@ Aggiorniamo l'azione update facendo in modo che il render vada alla pagina segue
         end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/04_05-controllers-steps_controller.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/15-lessons-steps/04_05-controllers-steps_controller.rb)
 
-> Più avanti lo miglioriamo perché al momento è mischiato tra la preparazione della lezione in cui l'update dovrebbe tornare alla stessa istanza di *step* e l'assistere della lezione in cui al seguito della risposta si va al nuovo *step*. Inoltre sul *submit* dell'ultima risposta dovremmo essere instradati su una pagina di fine lezione oppure su *lessons/show* con il flag di lezione conclusa.
+> Più avanti lo miglioriamo perché al momento è mischiato tra la preparazione della lezione, in cui l'update dovrebbe tornare alla stessa istanza di *step*, e l'assistere alla lezione, in cui al seguito della risposta si va al nuovo *step*.
+> Inoltre nella fase di assistere alla lezione, sul *submit* dell'ultima risposta dovremmo essere instradati su una pagina di fine lezione oppure su *lessons/show* con il flag di lezione conclusa.
+
 
 
 ## Verifichiamo preview
@@ -233,44 +229,40 @@ $ git commit -m "Update lessons views"
 
 
 
-## Publichiamo su heroku
-
-```bash
-$ git push heroku cs:main
-$ heroku run rake db:migrate
-```
-
-
-Verifichiamo preview su heroku.
-
-Andiamo all'url:
-
-* https://elisinfo.herokuapp.com/lessons/1/steps/1
-
-E verifichiamo di arrivare al primo step della prima lezione.
-
-
-
-
 ## Chiudiamo il branch
 
 se abbiamo finito le modifiche e va tutto bene:
 
 ```bash
 $ git checkout main
-$ git merge ln
-$ git branch -d ln
+$ git merge lss
+$ git branch -d lss
 ```
 
 
 
 ## Facciamo un backup su Github
 
-Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+Dal nostro branch **main** di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 ```bash
 $ git push origin main
 ```
+
+
+
+## Publichiamo su render.com
+
+Aggiorna la pubblicazione in automatico prendendola dal backup su Github.
+
+Verifichiamo preview.
+
+Andiamo all'url:
+
+* https://ubuntudream.render.com/lessons/1/steps/1
+
+E verifichiamo di arrivare al primo step della prima lezione.
+
 
 
 ---

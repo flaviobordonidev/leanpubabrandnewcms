@@ -8,10 +8,9 @@ Adattiamo la parte dinamica della nostra pagina posts/index al tema pofo
 
 ## Apriamo il branch "Posts Index"
 
-{title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```bash
 $ git checkout -b pi
-~~~~~~~~
+```
 
 
 
@@ -21,9 +20,9 @@ $ git checkout -b pi
 Passiamo i dati della tabella al partial
 
 {id="02-06-01_01", title=".../app/views/posts/show.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=2}
-~~~~~~~~
+```
         <%= render "pofo_posts_content_section", posts: @posts %>
-~~~~~~~~
+```
 
 [Codice 01](#02-06-01_01all)
 
@@ -37,9 +36,9 @@ In questo caso il nome della variabile è al plurale " posts " perché è un ele
 Per rendere dinamici i contenuti del tema pofo passiamo al partial pofo_posts_content_section la variabile d'istanza @posts che è un oggetto contenente l'elenco degli articoli pubblicati.
 
 {title=".../app/views/posts/index.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <%= render "pofo_posts_content_section", posts: @posts %>
-~~~~~~~~
+```
 
 
 
@@ -51,28 +50,28 @@ Facciamo un passaggio intermedio prima di passare alla gestione dinamica dell'el
 Mettiamo l'immagine dal database se presente.
 
 {title=".../app/views/posts/_pofo_posts_content_section.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=11}
-~~~~~~~~
+```
                                     <%#= image_tag "pofo/blog-img98.jpg", alt: "" %>
                                     <%= image_tag posts.first.main_image if posts.first.main_image.attached?  %>
-~~~~~~~~
+```
 
 {title=".../app/views/posts/_pofo_posts_content_section.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=32}
-~~~~~~~~
+```
                                     <%#= image_tag "pofo/blog-img99.jpg", alt: "" %>
                                     <%= image_tag posts.second.main_image if posts.second.main_image.attached?  %>
-~~~~~~~~
+```
 
 Mettiamo l'incipit dal database del primo e del secondo articolo
 
 {title=".../app/views/posts/_pofo_posts_content_section.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=16}
-~~~~~~~~
+```
                                 <a href="blog-post-layout-01.html" class="post-title text-medium text-extra-dark-gray width-90 display-block md-width-100"><%= posts.first.incipit %></a>
-~~~~~~~~
+```
 
 {title=".../app/views/posts/_pofo_posts_content_section.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=37}
-~~~~~~~~
+```
                                 <a href="blog-post-layout-02.html" class="post-title text-medium text-extra-dark-gray width-90 display-block md-width-100"><%= posts.second.incipit %></a>
-~~~~~~~~
+```
 
 
 
@@ -83,7 +82,7 @@ Isoliamo la parte di codice che descrive il singolo articolo e la mettiamo all'i
 E' come se preparassimo dei partials per rendere DRY il codice ed avessimo "_post1", "_post2", "_post3", etc.
 
 {title=".../app/views/posts/_pofo_posts_content_section.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=37}
-~~~~~~~~
+```
                   <% posts.each do |post| %>
                     <!-- start post item -->
                     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 margin-80px-bottom sm-margin-50px-bottom xs-margin-30px-bottom wow fadeInUp">
@@ -106,17 +105,17 @@ E' come se preparassimo dei partials per rendere DRY il codice ed avessimo "_pos
                     </div>
                     <!-- end post item -->
                   <% end %>
-~~~~~~~~
+```
 
 Evidenziamo gli elementi dinamici:
 
 {title=".../app/views/posts/_pofo_posts_content_section.html.erb", lang=HTML+Mako, line-numbers=off}
-~~~~~~~~
+```
 <% posts.each do |post| %>
   <%= image_tag post.main_image if post.main_image.attached?  %>
   <%= post.incipit %>
 <% end %>
-~~~~~~~~
+```
 
 
 

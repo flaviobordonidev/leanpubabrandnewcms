@@ -355,11 +355,11 @@ end
 
 ## Organiziamo *User*
 
-Nel model User abbiamo del codice nella:
+Nel model `User` abbiamo del codice nella:
 
-- sezione *"*# == Extensions*, sottosezione *## devise*
-- sezione *"*# == Attributes*, sottosezione *## enum*
-- sezione *"*# == Relationships*, sottosezione *## association one-to-many*
+- sezione `# == Extensions`, sottosezione `## devise`
+- sezione `# == Attributes`, sottosezione `## enum`
+- sezione `# == Relationships`, sottosezione `## association one-to-many`
 
 ***codice 05 - .../app/models/user.rb - line:3***
 

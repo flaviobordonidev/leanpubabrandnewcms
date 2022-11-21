@@ -8,7 +8,13 @@ https://www.digitalocean.com/community/tutorials/how-to-create-nested-resources-
 
 ## Risorse interne
 
-- Questo articolo lo abbiamo usato per lessons->steps su UbuntuDreams
+- [ubuntudream-15-lessons_steps]()
+
+
+
+## Risorse esterne
+
+- [How To Create Nested Resources for a Ruby on Rails Application](https://www.digitalocean.com/community/tutorials/how-to-create-nested-resources-for-a-ruby-on-rails-application)
 
 
 

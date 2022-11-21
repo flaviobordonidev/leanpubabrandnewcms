@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 3.1 - Prepariamo le lezioni
+# <a name="top"></a> Cap 15.1 - Prepariamo le lezioni
 
 Implementiamo le lezioni/esercizi di *visualizzazione guidata* di Ubuntudream.
 In questo capitolo lavoriamo principalmente lato database. Creiamo la tabella lezioni (lessons), e mettiamo i *seeds* iniziali con alcuni dati di prova. 
@@ -8,13 +8,7 @@ Non interagiamo con le views e quindi non apriamo il preview nel browser ma usia
 
 ## Risorse interne
 
-- [99-code_references/active_records/20_00-sharks_and_posts](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/99-code_references/active_records/20_00-sharks_and_posts.md)
-
-
-
-## Risorse esterne
-
-- [How To Create Nested Resources for a Ruby on Rails Application](https://www.digitalocean.com/community/tutorials/how-to-create-nested-resources-for-a-ruby-on-rails-application)
+- [code_references/active_records-associations/20_00-sharks_and_posts](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/active_records-associations/20_00-sharks_and_posts.md)
 
 
 
@@ -33,7 +27,7 @@ Abbiamo diviso le varie colonne della tabella in principali e secondarie perché
 Colonne principali
 
 Colonna                 | Descrizione
------------------------ | -----------------------
+|:-                     | :-
 `name:string`           | (255 caratteri) Nome esercizio / aula / lezione  (es: View of mount Vermon, The isle of the death, ...) - Questo appare nelle cards nell'index
 `duration:integer`      | Quanto dura l'esercizio in media. (Uso un numero intero che mi rappresenta quanti **minuti** dura. es: 90 minuti, 180 minuti, ...)
 
@@ -42,7 +36,7 @@ Colonna                 | Descrizione
 Colonne secondarie
 
 Colonna                   | Descrizione
-------------------------- | -----------------------
+|:-                       | :-
 `Categoria/Tag`           | 7. Interpretazione, Dipinto, Suoni ambiente, ... <br/> (vedi gemma taggable)
 `blocco (lucchetto)`      | -> lock_value_percorsocoach1 (livello a cui devi essere per sbloccarlo?) <br/> -> lock_value_percorsocoach2 (indipendente dal percorsocoach1 ) <br/> Quindi metto tante colonne quanti sono i percorsicoach (attualmente è 1 solo ^_^)
 `note:text`               | (molti caratteri) Note Aggiuntive - questo appare nello show. è un approfondimento sull'esercizio
@@ -53,14 +47,14 @@ Colonna                   | Descrizione
 Tabelle collegate 1-a-molti (non c'è *chiave esterna* perché è sull'altra tabella)
 
 Colonna    | Descrizione
----------- | -----------------------
+|:-        | :-
 `steps`    | una lezione è collegata a vari steps: azioni richieste (spesso sono domande a cui rispondere).
 
 
 Tabelle collegate molti-a-1 (c'è *chiave esterna*)
 
 Colonna                   | Descrizione
-------------------------- | -----------------------
+|:-                       | :-
 `tags?!?`                 | vedi gemma taggable
 
 
@@ -101,7 +95,6 @@ end
 Effettuiamo il migrate del database per creare la tabella sul database.
 
 ```bash
-$ sudo service postgresql start
 $ rails db:migrate
 ```
 
@@ -123,7 +116,7 @@ Abbiamo diviso le varie colonne della tabella in principali e secondarie perché
 Colonne principali:
 
 Colonna                 | Descrizione
------------------------ | -----------------------
+|:-                     | :-
 `question:string`       | (100 caratteri) Le domande per aiutarti a immaginare
 `answer:text`           | (molti caratteri) Le risposte scritte dall'utente (Attenzione! più avanti si toglierà da qui e si creerà una tabella answers da associare a users perché ogni utente avrà le sue personali risposte.)
 
@@ -131,7 +124,7 @@ Colonna                 | Descrizione
 Colonne secondarie:
 
 Colonna                   | Descrizione
-------------------------- | -----------------------
+|:-                       | :-
 `youtube_video_id:string` | (255 caratteri) The video ID will be located in the URL of the video page, right after the v= URL parameter.
 
 
@@ -143,7 +136,7 @@ Tabelle collegate 1-a-molti (non ho campi di chiave esterna perché saranno sull
 Tabelle collegate molti-a-1 (chiavi esterne)
 
 Colonna                 | Descrizione
------------------------ | -----------------------
+|:-                     | :-
 `lesson:references`     | crea la chiave esterna *lesson_id*
 
 
@@ -193,7 +186,6 @@ end
 Effettuiamo il migrate del database per creare la tabella sul database
 
 ```bash
-$ sudo service postgresql start
 $ rails db:migrate
 ```
 
@@ -303,15 +295,14 @@ Nel database di sviluppo (*development*) i records li inseriamo manualmente nel 
 Usiamo la console di rails per popolare la tabella del database di sviluppo (*development*).
 
 ```bash
-$ sudo service postgresql start
 $ rails c
 
 > Lesson.new(name: "View of mount Vermon", duration: 90).save
 > Lesson.last.steps.new(question: "Domanda1", answer: "Risposta1").save
 > Lesson.last.steps.new(question: "Domanda2", answer: "Risposta2").save
 
-> Lesson.new(name: "The island of death", duration: 90).save
-> Lesson.last.steps.new(question: "Come ti chiami?", answer: "Risposta1").save
+> Lesson.new(name: "The island of death", duration: 60).save
+> Lesson.last.steps.new(question: "Come ti chiami?", answer: "Flavio").save
 > Lesson.last.steps.new(question: "Domanda2").save
 
 > Lesson.all
@@ -352,49 +343,6 @@ $ git add -A
 $ git commit -m "add scaffold Steps"
 ```
 
-
-
-## Publichiamo su heroku
-
-```bash
-$ git push heroku cs:main
-$ heroku run rake db:migrate
-```
-
-> Lato produzione su heroku c'è un database indipendente da quello di sviluppo quindi risulta vuoto.
-
-per popolare il database di heroku basta aprire la console con il comando:
-
-```bash
-$ heroku run rails c
-```
-
-E rieseguire i passi già fatti nel paragrafo precedentemente
-
-> Per popolarla attraverso i "semi" eseguiamo il comando: `$ heroku run rails db:seed`
-
-
-
-## Verifichiamo preview su heroku.
-
-Andiamo all'url:
-
-- https://elisinfo.herokuapp.com/lessons
-- https://elisinfo.herokuapp.com/steps
-
-E verifichiamo che l'elenco delle *lezioni* e degli *steps* è popolato.
-
-
-
-## Chiudiamo il branch
-
-Lo chiudiamo nei prossimi capitoli.
-
-
-
-## Facciamo un backup su Github
-
-Lo facciamo nei prossimi capitoli.
 
 
 ---

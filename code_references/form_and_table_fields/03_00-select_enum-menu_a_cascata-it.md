@@ -20,6 +20,8 @@
 - [apidock FormBuilder/select](http://apidock.com/rails/ActionView/Helpers/FormBuilder/select)
 - [apidock FormOptionsHelper/select](http://apidock.com/rails/ActionView/Helpers/FormOptionsHelper/select)
 
+- [bootstrap - select: examples](https://thdoan.github.io/bootstrap-select/examples.html)
+
 
 
 ## Boolean Select
@@ -213,3 +215,79 @@ Instead, you may want to do some form validation to ensure that the value of the
 And to keep future Ruby developers happy (and to keep yourself in line with conventions and best practices), keep in mind that Ruby endorses snake_casing your variables :)
 
 according to api.rubyonrails.org/classes/ActionView/Helpers/… you can pass the values into the arguments under the disabled key, like, f.select :store_type_id, options_for_select(StoreType.options, :disabled => %w{0 1 2 3 4 5}) 
+
+
+
+## bootstrap select examples
+
+Single Select
+
+```html
+<select title="Pick a number" class="selectpicker">
+  <option>Select...</option>
+  <option>One</option>
+  <option>Two</option>
+  <option>Three</option>
+</select>
+```
+
+Multi-Select
+
+```html
+<select multiple title="Colors" class="selectpicker">
+  <option>Red</option>
+  <option>Green</option>
+  <option>Blue</option>
+</select>
+```
+
+Select with Option Tooltip
+
+```html
+<select class="selectpicker">
+  <option>Select...</option>
+  <option>LEGO&reg; 21103 The DeLorean Time Machine</option>
+  <option>LEGO&reg; 21303 WALL&bull;E</option>
+  <option disabled title="Out of stock">LEGO&reg; 76023 The Tumbler</option>
+</select>
+```
+
+Select with Icons
+
+```html
+<select title="Select your spell" class="selectpicker">
+  <option>Select...</option>
+  <option data-icon="glyphicon glyphicon-eye-open" data-subtext="petrification">Eye of Medusa</option>
+  <option data-icon="glyphicon glyphicon-fire" data-subtext="area damage">Rain of Fire</option>
+</select>
+```
+
+Select with Thumbnails
+
+```html
+<select title="Select your surfboard" class="selectpicker">
+  <option>Select...</option>
+  <option data-thumbnail="images/icon-chrome.png">Chrome</option>
+  <option data-thumbnail="images/icon-firefox.png">Firefox</option>
+  <option data-thumbnail="images/icon-ie.png">IE</option>
+  <option data-thumbnail="images/icon-opera.png">Opera</option>
+  <option data-thumbnail="images/icon-safari.png">Safari</option>
+</select>
+```
+
+Select with Option Groups
+
+```html
+<select title="Choose game" class="selectpicker">
+  <optgroup label="Classics">
+    <option>Asteroids</option>
+    <option>Donkey Kong</option>
+    <option>Pac-Man</option>
+  </optgroup>
+  <optgroup label="Fighting">
+    <option>Mortal Kombat</option>
+    <option>Street Fighter</option>
+    <option>Tekken</option>
+  </optgroup>
+</select>
+```

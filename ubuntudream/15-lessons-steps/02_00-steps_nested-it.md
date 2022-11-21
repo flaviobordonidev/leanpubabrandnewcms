@@ -1,17 +1,17 @@
-# <a name="top"></a> Cap 3.2 - Instradamenti annidati
+# <a name="top"></a> Cap 15.2 - Annidiamo gli steps
 
-In questo capitolo creiamo degli instradamneti annidati `lessons/#/steps/#` ed aggiorniamo i relativi controllers e le views.
+In questo capitolo creiamo gli instradamneti annidati `lessons/:id/steps/:id` ed aggiorniamo i relativi controllers e le views.
+
+In pratica:
+
+- le `lessons` diventano i *parents* degli `steps`.
+- gli `steps` diventano i *children* delle `lessons`.
+
 
 
 ## Risorse interne
 
-- [99-code_references/active_records/20_00-sharks_and_posts](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/99-code_references/active_records/20_00-sharks_and_posts.md)
-
-
-
-## Apriamo il branch "Lessons Seeds"
-
-Continuiamo con il branch aperto nei capitoli precedenti.
+- [code_references/active_records-associations/20_00-sharks_and_posts](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/active_records-associations/20_00-sharks_and_posts.md)
 
 
 
@@ -19,7 +19,7 @@ Continuiamo con il branch aperto nei capitoli precedenti.
 
 In automatico, con il *generate scaffold...* sono state create due voci distinte per gli instradamenti *Restful*.
 
-***code 01 - .../config/routes.rb  - line:2***
+***Codice 01 - .../config/routes.rb  - linea:02***
 
 ```ruby
   resources :steps
@@ -30,7 +30,7 @@ In automatico, con il *generate scaffold...* sono state create due voci distinte
 
 L'attuale codice stabilisce una relazione indipendente tra i nostri instradamenti (routes), quando ciò che vorremmo esprimere è una relazione di dipendenza tra le lezioni (:lessons) e i loro passi (:steps) associati.
 
-Vogliamo che siano annidate: `lessons/#/steps/#`.
+Vogliamo che siano annidate: `lessons/:id/steps/:id`.
 
 Ad esempio:
 
@@ -41,9 +41,9 @@ Ad esempio:
 - e così via.
 
 
-Aggiorniamo i nostri istradamenti (routes) per rendere `:lessons` il genitore (parent) di `:steps`. 
+Aggiorniamo i nostri istradamenti (routes) per rendere `:lessons` il *genitore* (parent) di `:steps`. 
 
-***code 02 - .../config/routes.rb  - line:11***
+***Codice 02 - .../config/routes.rb  - linea:11***
 
 ```ruby
   resources :lessons do
@@ -57,12 +57,12 @@ Aggiorniamo i nostri istradamenti (routes) per rendere `:lessons` il genitore (p
 
 ## Aggiorniamo il controller *steps*
 
-Implementiamo l'associazione "figlio" di *steps* rispetto a *lessons*.
-L'associazione tra i nostri modelli ci fornisce la possibilità di creare nuove istanze di *steps* associate a specifiche *lessons*.
+Implementiamo l'associazione *figlio* (child) di `steps` rispetto a `lessons`.
+L'associazione tra i nostri modelli ci fornisce la possibilità di creare nuove istanze di `steps` associate a specifiche `lessons`.
 
-Vediamo il controller *steps* creato dallo scaffold.
+Vediamo il controller `steps` creato dallo scaffold.
 
-***code 03 - .../app/controllers/steps_controller.rb - line:1***
+***Codice 03 - .../app/controllers/steps_controller.rb - linea:01***
 
 ```ruby
 class StepsController < ApplicationController
@@ -74,8 +74,8 @@ class StepsController < ApplicationController
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/02_03-controllers-steps_controller.rb)
 
-I metodi del controller, chiamati *azioni*, funzionano con le istanze della classe *Step* associata. 
-Ad esempio, l'azione `new` crea una nuova istanza della classe *Step*, l'azione `index` acquisisce tutte le istanze della classe e l'azione `set_step` usa **find** e **params** per selezionare uno specifica istanza di `step` tramite **id**. 
+Le *azioni* del controller, ossia i suoi *metodi*, agiscono sulle istanze della classe *Step* associata. 
+Ad esempio, l'azione `new` crea una nuova istanza della classe *Step*, l'azione `index` acquisisce tutte le istanze della classe e l'azione `set_step` usa **find** e **params** per selezionare una specifica istanza di `step` tramite l'**id**. 
 
 Ma noi vogliamo che le istanze di `step` siano associate a specifiche istanze di `lesson`, quindi dobbiamo modificare questo codice, perché la classe `Step` sta attualmente operando come un'entità indipendente.
 
@@ -88,18 +88,17 @@ Iniziamo scrivendo il metodo, `set_lesson`, che verrà eseguito prima di ogni az
 
 Aggiungiamo il metodo nella sezione *private*.
 
-***code n/a - .../app/controllers/steps_controller.rb - line:11***
+***Codice 04 - .../app/controllers/steps_controller.rb - linea:67***
 
 ```ruby
-private
-  def set_lesson
-    @lesson = Lesson.find(params[:lesson_id])
-  end
+    def set_lesson
+      @lesson = Lesson.find(params[:lesson_id])
+    end
 ```
 
 Quindi, aggiungiamo il relativo *before_action*.
 
-***code n/a - .../app/controllers/steps_controller.rb - line:2***
+***Codice 04 - ...continua - linea:02***
 
 ```ruby
 class StepsController < ApplicationController
@@ -110,137 +109,135 @@ Ciò garantirà che `set_lesson` sia eseguito prima di ogni altra azione.
 
 Successivamente, utilizziamo questa istanza `@lesson` per riscrivere il metodo index. Invece di acquisire tutte le istanze della classe `Step`, vogliamo che questo metodo restituisca tutte le istanze di `step` **associate** a una specifica istanza di `lesson`.
 
-Aggiorniamo l'azione *index*.
+Aggiorniamo l'azione `index`.
 
-***code n/a - .../app/controllers/steps_controller.rb - line:2***
+***Codice 04 - ...continua - linea:05***
 
 ```ruby
+  # GET /steps or /steps.json
   def index
+    #@steps = Step.all
     @steps = @lesson.steps
   end
 ```
 
-L'azione `new` ha bisogno di una revisione simile, poiché vogliamo che una nuova istanza di `step` sia associata a una particolare `lesson`. Per ottenere ciò, possiamo utilizzare il metodo `build`, insieme alla nostra variabile di istanza locale `@lesson`.
-
-> Da Rails 4 `build` è un alias di `new` quindi possiamo usare `new`
+L'azione `new` ha bisogno di una revisione simile, poiché vogliamo che una nuova istanza di `step` sia associata a una particolare `lesson`. 
 
 Aggiorniamoa l'azione *new*.
 
-***code n/a - .../app/controllers/steps_controller.rb - line:2***
+***Codice 04 - ...continua - linea:15***
 
 ```ruby
+  # GET /steps/new
   def new
-    #@step = @lesson.steps.build
+    #@step = Step.new
     @step = @lesson.steps.new
   end
 ```
 
 Questa azione crea un oggetto `step` che è associato ad una specifica istanza di `lesson` richiamata con il metodo `set_lesson`.
 
+> Potevamo utilizzare il metodo `build`, insieme alla nostra variabile di istanza locale `@lesson`: <br/>
+> `@step = @lesson.steps.build` <br/>
+> Da Rails 4 `build` è un alias di `new` quindi possiamo usare `new`.
 
-Aggiorniamo l'azione *create*.
 
-***code n/a - .../app/controllers/steps_controller.rb - line:2***
+
+## Aggiorniamo l'azione ***create***.
+
+Controller: `steps` - azione:`create`
+
+***Codice 04 - ...continua - linea:25***
 
 ```ruby
-def create
-  #@step = @lesson.steps.build(step_params)
-  @step = @lesson.steps.new(step_params)
+  # POST /steps or /steps.json
+  def create
+    #@step = Step.new(step_params)
+    @step = @lesson.steps.new(step_params)
+
     respond_to do |format|
       if @step.save
+        #format.html { redirect_to step_url(@step), notice: "Step was successfully created." }
         format.html { redirect_to lesson_steps_path(@lesson), notice: 'Step was successfully created.' }
         format.json { render :show, status: :created, location: @step }
       else
-        format.html { render :new }
+        format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @step.errors, status: :unprocessable_entity }
       end
     end
   end
-end
 ```
+
+> Potevamo usare `.build`: `@step = @lesson.steps.build(step_params)` ma preferisco `.new`
 
 L'azione `create` fa due cose: crea una nuova istanza di *step* usando i parametri che gli utenti hanno inserito nel *form new* e, se non ci sono errori, salva quell'istanza e usa il route helper `redirect_to` per reindirizzare gli utenti a dove possono vedere il nuovo *step*. In caso di errori, esegue nuovamente il rendering del *form new*.
 
-Aggiorniamo l'azione *update*. 
 
-***code n/a - .../app/controllers/steps_controller.rb - line:2***
+
+## Aggiorniamo l'azione ***update***
+
+Controller: `steps` - azione:`update`
+
+***Codice 04 - ...continua - linea:02***
 
 ```ruby
   # PATCH/PUT /steps/1 or /steps/1.json
   def update
     respond_to do |format|
       if @step.update(step_params)
+        #format.html { redirect_to step_url(@step), notice: "Step was successfully updated." }
+        format.html { redirect_to lesson_step_path(@lesson), notice: 'Step was successfully updated.' }
 ```
 
-L'aggiornamento lo facciamo nel metodo `set_step`. L'azione *update* (come show, edit, and destroy) accetta una variabile `@step` dal metodo `set_step` che è richiamato dal *before_action*.
+> `lesson_step_path(@lesson)` reindirizza alla view *index* di *steps* della *lesson* selezionata.
 
-- `before_action :set_step, only: [:show, :edit, :update, :destroy]`
-- `set_step` -> `@step = Step.find(params[:id])`
+
+Inoltre modifichiamo il metodo `set_step`. 
+L'azione *update* (come show, edit, and destroy) accetta una variabile `@step` dal metodo `set_step` che è richiamato dal *before_action*: `before_action :set_step, only: [:show, :edit, :update, :destroy]`.
 
 In linea con le azioni che abbiamo già aggiornato, aggiorniamo anche questo metodo in modo che `@step` si riferisca a un'istanza specifica della *collection* di *steps* che è associata ad una specifica *lesson*. 
 
-Aggiorniamo il metodo *set_step*.
+Controller: `steps` - metodo: `private` -> `set_step`.
 
-***code n/a - .../app/controllers/steps_controller.rb - line:2***
+***Codice 04 - ...continua - linea:02***
 
 ```ruby
-private
-...
   def set_step
+    #@step = Step.find(params[:id])
     @step = @lesson.steps.find(params[:id])
   end
 ```
 
-Invece di trovare un'istanza specifica dell'intera classe *Step* tramite *id*, cerchiamo un *id* corrispondente alla collection di *steps* associati ad una specifica *lesson*.
+> Invece di trovare un'istanza specifica dell'intera classe *Step* tramite *id*, cerchiamo un *id* corrispondente alla collection di *steps* associati ad una specifica *lesson*.
+>
+> Questa parte potevamo anche lasciarla com'era tanto lo step-id su params[:id] è univoco per ogni step.
+>
+> Facciamo questa "forzatura" `@lesson.steps.` per allineare il codice e crea anche un minimo di sicurezza in più perché se passiamo uno step-id di un'altra lezione ci da errore.
 
 
-Aggiorniamo l'azione *update*.
 
-***code n/a - .../app/controllers/steps_controller.rb - line:2***
+## Aggiorniamo l'azione ***destroy***
 
-```ruby
-  def update
-    respond_to do |format|
-      if @step.update(step_params)
-        format.html { redirect_to lesson_step_path(@lesson), notice: 'Step was successfully updated.' }
-        format.json { render :show, status: :ok, location: @step }
-      else
-        format.html { render :edit }
-        format.json { render json: @step.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-```
+Controller: `steps` - azione:`destroy`
 
-> `lesson_step_path(@lesson)` reindirizza alla view *index* di *steps* della *lesson* selezionata.
-          steps
-
-Aggiorniamo l'azione *destroy*.
-
-***code n/a - .../app/controllers/steps_controller.rb - line:2***
+***Codice 04 - ...continua - linea:02***
 
 ```ruby
+  # DELETE /steps/1 or /steps/1.json
   def destroy
     @step.destroy
-     respond_to do |format|
+
+    respond_to do |format|
+      #format.html { redirect_to steps_url, notice: "Step was successfully destroyed." }
       format.html { redirect_to lesson_steps_path(@lesson), notice: 'Step was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 ```
 
-> `lesson_steps_path(@lesson)` reindirizza alla view *index* di *steps* della *lesson* selezionata.
-
-
-Vediamo lo *steps_controller* finito.
-
-***code 04 - .../app/controllers/steps_controller.rb - line:2***
-
-```ruby
-class StepsController < ApplicationController
-```
-
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/02_04-controllers-steps_controller.rb)
+
+> `lesson_steps_path(@lesson)` reindirizza alla view *index* di *steps* della *lesson* selezionata.
 
 Il nostro controller ora riflette la relazione tra i modelli Lesson e Step, in cui gli steps sono associate a specidiche *lessons*.
 
@@ -252,18 +249,22 @@ Possiamo passare ad aggiornare le views.
 
 Il comando `rails generate scaffold`, ha generato delle views che trattano gli *steps* come entità indipendenti.
 
-Quindi aggiorniamo per riflettere l'annidamento `lessons/#/steps/#`.
+Quindi aggiorniamo per riflettere l'annidamento `lessons/:id/steps/:id`.
 
 Iniziamo con il partial *_form*.
 
-***code 05 - .../views/steps/_form.html.erb - line:1***
+
+
+## Aggiorniamo `steps/_form`
+
+***Codice 05 - .../views/steps/_form.html.erb - linea:1***
 
 ```html+erb
-<%#= form_with(model: step, local: true) do |form| %>
-<%= form_with(model: [@lesson, step], local: true) do |form| %>
+<%#= form_with(model: step) do |form| %>
+<%= form_with(model: [@lesson, step]) do |form| %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/02_05-views-steps-_form.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/15-lessons-steps/02_05-views-steps-_form.html.erb)
 
 L'unica modifica è da `form_with(model: step)` a `form_with(model: [@lesson, step])`.
 
@@ -271,27 +272,34 @@ L'unica modifica è da `form_with(model: step)` a `form_with(model: [@lesson, st
 
 > Prima di rails 7 era importante inserire il parametro `local: true`: <br/>
 > `<%= form_with(model: step, local: true) do |form| %>` <br/>
+> `<%= form_with(model: [@lesson, step], local: true) do |form| %>` <br/>
 > Ma da rails 7 questo parametro è impostato di default quindi si può evitare di inserirlo.
 
+> Su Rails 6 lo style di base era leggermente diverso: <br/>
+> `<div id="error_explanation">` vs `<div style="color: red">` <br/>
+> e nei campi dentro il form `<div class="field">` <br/>
+> e per il submit `<div class="actions">`.
 
 
-Aggiorniamo il partial *_steps*.
 
-***code 06 - .../views/steps/_steps.html.erb - line:14***
+## Aggiorniamo `steps/_step`
+
+***Codice 06 - .../views/steps/_step.html.erb - linea:14***
 
 ```html+erb
     <%#= step.lesson_id %>
     <%= step.lesson.name %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/02_06-views-steps-_steps.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/15-lessons-steps/02_06-views-steps-_step.html.erb)
 
 
-Aggiorniamo la view *index*.
+
+## Aggiorniamo `steps/index`
 
 > Mostriamo l'elenco, o *collection*, di *steps* associati ad una specifica lezione (*lesson*).
 
-***code 07 - .../views/steps/index.html.erb - line:9***
+***Codice 07 - .../views/steps/index.html.erb - linea:09***
 
 ```html+erb
       <%#= link_to "Show this step", step %>
@@ -304,21 +312,22 @@ Aggiorniamo la view *index*.
 > Inoltre aggiungiamo indirizzamento a `lessons/lesson_id`. 
 
 
-***code 07 - ...continua - line:15***
+***Code 07 - ...continua - linea:15***
 
 ```html+erb
 <%#= link_to "New step", new_step_path %>
 <%= link_to 'New Step', new_lesson_step_path(@lesson) %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/02_07-views-steps-index.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/15-lessons-steps/02_07-views-steps-index.html.erb)
 
 
 > Invece di indirizzare a `steps/new`, indirizziamo a `lessons/lesson_id/steps/new`. 
 > Per farlo usiamo l'helper di routing `new_lesson_step_path(@lesson)`.
 
 
-Aggiorniamo la view *show*.
+
+## Aggiorniamo `steps/show`
 
 ***code 08 - .../views/steps/show.html.erb - line:6***
 
@@ -332,7 +341,7 @@ Aggiorniamo la view *show*.
   <%= button_to "Destroy this step", [@lesson, @step], method: :delete %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/02_08-views-steps-show.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/15-lessons-steps/02_08-views-steps-show.html.erb)
 
 > Invece di indirizzare a `steps/step_id/edit`, indirizziamo a `lessons/lesson_id/steps/step_id/edit`. 
 > Per farlo usiamo l'helper di routing `lesson_step_path`.
@@ -340,7 +349,8 @@ Aggiorniamo la view *show*.
 > Impostiamo il percorso annidato corretto per il link *Destroy*.
 
 
-Aggiorniamo la view *new*.
+
+## Aggiorniamo `steps/new`
 
 ***code 09 - .../views/steps/new.html.erb - line:8***
 
@@ -349,31 +359,34 @@ Aggiorniamo la view *new*.
   <%= link_to "Back to lesson steps", lesson_steps_path(@lesson) %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/02_09-views-steps-new.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/15-lessons-steps/02_09-views-steps-new.html.erb)
 
 > Aggiorniamo i riferimenti `link_to` per riflettere le modifiche che abbiamo apportato al nostro *partial _form*. Utilizziamo l'helper `lesson_steps_path(@lesson)`.
 
 
-Aggiorniamo la view *edit*.
 
-***code 10 - .../views/steps/edit.html.erb - line:8***
+## Aggiorniamo `steps/edit`
+
+***Codice 10 - .../views/steps/edit.html.erb - linea:08***
 
 ```html+erb
-  <%#= link_to "Show this step", @step %> |
+  <%#= link_to "Show this step", @step %>
   <%= link_to "Show this step", [@lesson, @step] %> |
   <%#= link_to "Back to steps", steps_path %>
   <%= link_to "Back to steps", lesson_steps_path(@lesson) %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/03-lessons-steps/02_10-views-steps-edit.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/15-lessons-steps/02_10-views-steps-edit.html.erb)
 
 
 
 ## Visualizziamo preview
 
-I links non sono ancora completamente attivi...
-
 Attiviamo il preview
+
+```bash
+$ rails s -b 192.168.64.3
+```
 
 Andando sugli specifici urls vediamo l'annidamento
 
@@ -393,41 +406,7 @@ $ git add -A
 $ git commit -m "Nest routes lessons-steps"
 ```
 
-
-
-## Andiamo in produzione
-
-```bash
-$ git push heroku lp:main
-```
-
-
-
-## Chiudiamo il branch
-
-Lo chiudiamo nel prossimo capitolo.
-
-
-se abbiamo finito le modifiche e va tutto bene:
-
-```bash
-$ git checkout main
-$ git merge cs
-$ git branch -d cs
-```
-
-
-
-## Facciamo un backup su Github
-
-Lo facciamo nel prossimo capitolo.
-
-Dal nostro branch main di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
-
-```bash
-$ git push origin main
-```
-
+Adesso spostiamoci lato *lessons* per aggiornare le sue views come *parent* di steps
 
 ---
 

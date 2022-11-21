@@ -8,9 +8,9 @@ adattiamo la paginazione con lo stesso stile del tema pofo
 ## Apriamo il branch "Pagy to Pofo"
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout -b pp
-~~~~~~~~
+```
 
 
 
@@ -20,9 +20,9 @@ $ git checkout -b pp
 Abbiamo già installato la gemma "pagy" nei capitoli precedenti. Adesso la usiamo per posts.
 
 {id="03-04-03_01", title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
     @pagy, @posts = pagy(Post.all.published.order(created_at: 'DESC'), items: 8)
-~~~~~~~~
+```
 
 [Codice 01](#03-04-03_01all)
 
@@ -34,7 +34,7 @@ Limitiamo ogni pagina ad otto articoli.
 ### Applichiamola al nostro caso che ha già i tags
 
 {id="03-04-03_01", title=".../app/controllers/posts_controller.rb", lang=ruby, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
     if params[:tag].present?
       @pagy, @posts = pagy(Post.published.tagged_with(params[:tag]).order(created_at: 'DESC'), items: 2)
       #@posts = Post.published.tagged_with(params[:tag]).order(created_at: "DESC")
@@ -42,7 +42,7 @@ Limitiamo ogni pagina ad otto articoli.
       @pagy, @posts = pagy(Post.published.order(created_at: 'DESC'), items: 2)
       #@posts = Post.published.order(created_at: "DESC")
     end
-~~~~~~~~
+```
 
 [Codice 01](#03-04-03_01all)
 
@@ -55,11 +55,11 @@ Limitiamo ogni pagina ad otto articoli.
 Possiamo usare l'helper "pagy_nav()" messo a disposizione da pagy nel partial degli articoli.
 
 {title="views/posts/pofo_posts_content_section.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=28}
-~~~~~~~~
+```
     <!-- start pagination -->
     <%= sanitize pagy_bootstrap_nav(@pagy) %>
     <!-- end pagination -->
-~~~~~~~~
+```
 
 
 
@@ -70,16 +70,18 @@ Possiamo usare l'helper "pagy_nav()" messo a disposizione da pagy nel partial de
 
 Invece di usare un helper di pagy, usiamo un nostro partial. La chiamata risulta la seguente
 
-{title="views/posts/pofo_posts_content_section.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=28}
-~~~~~~~~
+***Codice 01 - .../app/views/posts/pofo_posts_content_section.html.erb - linea:28***
+
+```
                 <!-- start pagination -->
                 <%= render 'pagy/nav_pofo', pagy: @pagy %>
-~~~~~~~~
+```
 
 adesso creiamo la cartella pagy e dentro creiamo il file "_nav_pofo.html.erb" copiandoci il contenuto di [bootstrap_nav.html.erb](https://github.com/ddnexus/pagy/blob/master/lib/templates/bootstrap_nav.html.erb)
 
-{title="views/pagy/_nav_pofo.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+***Codice 02 - .../app/views/pagy/_nav_pofo.html.erb - linea:01***
+
+```html+erb
 <%#
   This template is i18n-ready: if you don't use i18n, then you can replace the pagy_t
   calls with the actual strings ("&lsaquo; Prev", "Next &rsaquo;", "&hellip;").
@@ -103,7 +105,7 @@ adesso creiamo la cartella pagy e dentro creiamo il file "_nav_pofo.html.erb" co
 <% end                         -%>
 <%#                            -%>  </ul>
 <%#                            -%></nav>
-~~~~~~~~
+```
 
 Abbiamo adesso il partial "nav_pofo" che ha lo stesso comportamento e stile dell'helper pagy_bootstrap_nav, la sola differenza è che è leggermente più lento.
 
@@ -114,7 +116,7 @@ Abbiamo adesso il partial "nav_pofo" che ha lo stesso comportamento e stile dell
 
 
 {title="views/pagy/_nav_pofo.html.erb", lang=HTML+Mako, line-numbers=on, starting-line-number=1}
-~~~~~~~~
+```
 <%#
   This template is i18n-ready: if you don't use i18n, then you can replace the pagy_t
   calls with the actual strings ("&lsaquo; Prev", "Next &rsaquo;", "&hellip;").
@@ -145,7 +147,7 @@ Abbiamo adesso il partial "nav_pofo" che ha lo stesso comportamento e stile dell
     <% end %>
   </ul>
 </div>
-~~~~~~~~
+```
 
 
 
@@ -153,10 +155,10 @@ Abbiamo adesso il partial "nav_pofo" che ha lo stesso comportamento e stile dell
 ## Verifichiamo preview
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ sudo service postgresql start
 $ rails s
-~~~~~~~~
+```
 
 apriamo il browser sull'URL:
 
@@ -170,10 +172,10 @@ E vediamo la paginazione.
 ## archiviamo su git
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git add -A
 $ git commit -m "pagination with pofo style"
-~~~~~~~~
+```
 
 
 
@@ -181,9 +183,9 @@ $ git commit -m "pagination with pofo style"
 ## Pubblichiamo su heroku
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push heroku pp:master
-~~~~~~~~
+```
 
 
 
@@ -193,11 +195,11 @@ $ git push heroku pp:master
 se abbiamo finito le modifiche e va tutto bene:
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git checkout master
 $ git merge pp
 $ git branch -d pp
-~~~~~~~~
+```
 
 
 
@@ -207,9 +209,9 @@ $ git branch -d pp
 Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
 
 {title="terminal", lang=bash, line-numbers=off}
-~~~~~~~~
+```
 $ git push origin master
-~~~~~~~~
+```
 
 
 

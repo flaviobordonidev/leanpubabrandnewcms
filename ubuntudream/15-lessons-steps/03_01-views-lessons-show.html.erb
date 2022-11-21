@@ -1,9 +1,11 @@
 <p style="color: green"><%= notice %></p>
 
 <%= render @lesson %>
-<br/>
 
 <div>
+  <%= link_to "Show all steps of this lesson", lesson_steps_path(@lesson) %> | 
+  <%= link_to 'Add New Step', new_lesson_step_path(@lesson) %> || 
+
   <%= link_to "Edit this lesson", edit_lesson_path(@lesson) %> |
   <%= link_to "Back to lessons", lessons_path %>
 
