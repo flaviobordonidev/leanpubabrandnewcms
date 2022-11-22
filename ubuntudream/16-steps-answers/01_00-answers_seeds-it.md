@@ -1,9 +1,9 @@
-# <a name="top"></a> Cap 4.1 - Le risposte per ogni utente
+# <a name="top"></a> Cap 16.1 - Le risposte per ogni utente
 
 In questo capitolo usiamo gli utenti ed il login già sviluppato nei capitoli precedenti e creiamo una tabella di risposte in modo che alle varie domande di ogni lezione associamo una risposta differente per ogni utente.
 
->Ogni utente avrà quindi un suo registro degli esercizi svolti e delle risposte date. Anche se per gli esercizi di allenamento contano poco, diventano invece importanti nel percorso coaching. <br/>
->Più avanti, nel percorso coaching, inseriremo anche un campo boolean per le domande importanti, ossia quelle che utilizzeremo nei giornali di viaggio dell'utente. 
+> Ogni utente avrà quindi un suo registro degli esercizi svolti e delle risposte date. Anche se per gli esercizi di allenamento contano poco, diventano invece importanti nel percorso coaching. <br/>
+> Più avanti, nel percorso coaching, inseriremo anche un campo boolean per le domande importanti, ossia quelle che utilizzeremo nei giornali di viaggio dell'utente. 
 
 ***Attenzione:***
 
@@ -15,11 +15,10 @@ In questo capitolo usiamo gli utenti ed il login già sviluppato nei capitoli pr
 
 
 
-## Risorse esterne
+## Risorse interne
 
-- https://thinkster.io/tutorials/angular-rails/associating-users-with-posts-and-comments
-- https://www.learneroo.com/modules/145/nodes/782
-- https://github-wiki-see.page/m/StanfordBioinformatics/pulsar_lims/wiki/How-to-set-the-current-user-when-building-or-creating-an-association
+- [code_references/active_record-associations/21_00-users_posts_and_comments]()
+- [code_references/active_record-associations/22_00-users_and_books]()
 
 
 
@@ -41,7 +40,7 @@ Abbiamo diviso le varie colonne della tabella in principali e secondarie perché
 Colonne principali:
 
 Colonna                 | Descrizione
------------------------ | -----------------------
+| :-                    | :-
 `content:string`        | (255 caratteri) Le risposte sono brevi, un po' alla twitter, per non perdere la concentrazione sulla visualizzazione. (un'alternativa poteva essere: `value:string`)
 
 
@@ -83,10 +82,10 @@ $ rails g scaffold Answer content:string step:references
 
 vediamo il migrate generato
 
-***code 01 - .../db/migrate/xxx_create_answers.rb - line:1***
+***Codice 01 - .../db/migrate/xxx_create_answers.rb - linea:01***
 
 ```ruby
-class CreateAnswers < ActiveRecord::Migration[6.0]
+class CreateAnswers < ActiveRecord::Migration[7.0]
   def change
     create_table :answers do |t|
       t.string :content
@@ -98,19 +97,18 @@ class CreateAnswers < ActiveRecord::Migration[6.0]
 end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-steps-answers/01_01-db-migrate-xxx_create_answers.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/16-steps-answers/01_01-db-migrate-xxx_create_answers.rb)
 
 
 Effettuiamo il migrate del database per creare la tabella sul database
 
 ```bash
-$ sudo service postgresql start
 $ rails db:migrate
 ```
 
-Da Rails 5 il `.references ..., foreign_key: true` aggiunge già le chiavi esterne e l'indice (come si può vedere su *.../db/schema.rb* dopo il migrate del database).
+Da Rails 5 il `.references ..., foreign_key: true` aggiunge già la chiave esterna e l'indice (come si può vedere su *.../db/schema.rb* dopo il migrate del database).
 
-***code 02 - .../db/schema.rb - line:1***
+***Codice n/a - .../db/schema.rb - linea:n/a***
 
 ```ruby
   create_table "answers", force: :cascade do |t|
@@ -122,15 +120,16 @@ Da Rails 5 il `.references ..., foreign_key: true` aggiunge già le chiavi ester
   end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-steps-answers/01_02-db-schema.rb)
-
 
 
 ## Completiamo la relazione 1-a-molti nei models
 
-Lato model *Answer* il `belongs_to :step` lo troviamo già inserito grazie al `:references` usato prima. Quello che inseriamo è la struttura di commenti per organizzare il crescimento del model.
 
-***code 03 - .../app/models/answer.rb - line:1***
+Lato *Answer* l'associazione `belongs_to :step` la troviamo già inserita grazie al `:references` usato prima. Quello che inseriamo è la struttura di commenti per organizzare il model.
+
+Model: `Answer`.
+
+***Codice 02 - .../app/models/answer.rb - linea:01***
 
 ```ruby
 class Answer < ApplicationRecord
@@ -157,20 +156,21 @@ class Answer < ApplicationRecord
 end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-steps-answers/01_03-models-answer.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/15-steps-answers/01_02-models-answer.rb)
 
 
-Lato model *Step* il `has_many :answers` lo inseriamo noi.
-Su # == Relationships nel sottogruppo ## one-to-many.
+Lato *Step* l'associazione `has_many :answers` la inseriamo noi.
 
-***code 04 - .../app/models/step.rb - line:1***
+Model: `Step` - Gruppo: `# == Relationships` - Sottogruppo: `## one-to-many`.
+
+***Codice 03 - .../app/models/step.rb - linea:01***
 
 ```ruby
   has_many :answers, dependent: :destroy
   accepts_nested_attributes_for :answers, allow_destroy: true, reject_if: proc{ |attr| attr['content'].blank? }
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-steps-answers/01_04-models-step.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/16-steps-answers/01_03-models-step.rb)
 
 
 Analizziamo il codice:
