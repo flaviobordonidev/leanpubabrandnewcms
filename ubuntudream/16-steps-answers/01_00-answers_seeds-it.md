@@ -180,6 +180,12 @@ Analizziamo il codice:
 - `reject_if: proc{ |attr| attr['number'].blank? }` -> evita che vengano salvate form annidate in cui non è stato messo il numero di telefono.
 
 
+Codice                | Descrizione
+| :-                  | :-
+`dependent: :destroy` | questa opzione fa in modo che quando eliminiamo uno step in automatico vengano cancellate anche tutte le sue risposte (*answers*).
+`allow_destroy: true` | permette di cancellare le form annidate.
+`reject_if: proc{ |attr| attr['number'].blank? }` | evita che vengano salvate form annidate in cui non è stato messo il numero di telefono.
+
 
 ## Inseriamo delle risposte da console
 
