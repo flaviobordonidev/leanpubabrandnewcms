@@ -5,7 +5,7 @@
     <% if current_user %>
         <%= form.text_field :user_id, required: true, class: 'form-control', value:current_user.id  %>
     <% else %>
-        <%= form.text_field :user_id, required: true, class: 'form-control', value:2 %>
+        <%= form.text_field :user_id, required: true, class: 'form-control', value:1 %>
     <% end %>
   </div>
 </div>

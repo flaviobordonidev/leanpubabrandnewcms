@@ -1,4 +1,6 @@
-# <a name="top"></a> Cap 4.2 - Associamo le risposte all'utente che le ha date
+# <a name="top"></a> Cap 16.2 - Associamo le risposte all'utente che le ha date
+
+Nel capitolo precedente abbiamo creato la tabella risposte ed un form che inserisce nuove risposte su uno specifico step. In questo capitolo le associamo anche all'utente loggato.
 
 
 
@@ -14,11 +16,9 @@ $ git checkout -b ua
 
 Al momento, le risposte non appartengono a nessuno. Creiamo un migration per associare ogni risposta all'utente loggato.
 
-> Per far questo dobbiamo solo aggiungere una chiave esterna *user_id* alla tabella *answers*.
+> Per far questo dobbiamo solo aggiungere la chiave esterna *user_id* alla tabella *answers*.
 
-Ogni risposta (answer) appartiene a un utente (user), quindi ogni risposta deve avere un *user_id* che identifichi l'utente:
-
-Per tenere traccia di quale risposta (answer) è data da ogni utente, dobbiamo fare un'associazione tra gli utenti (users) e le loro risposte (answers).
+Per tenere traccia di quale risposta (answer) è data da ogni utente, facciamo un'associazione tra gli utenti (users) e le loro risposte (answers) attraverso la chiave esterna *user_id* nella tabella *answers*.
  
 ```bash
 $ rails g migration AddUserRefToAnswers user:references
@@ -28,7 +28,7 @@ $ rails g migration AddUserRefToAnswers user:references
 
 vediamo il migrate generato
 
-***code 01 - .../db/migrate/xxx_add_user_ref_to_answers.rb- line:1***
+***Codice 01 - .../db/migrate/xxx_add_user_ref_to_answers.rb- linea:01***
 
 ```ruby
 class AddUserRefToAnswers < ActiveRecord::Migration[7.0]
@@ -38,7 +38,7 @@ class AddUserRefToAnswers < ActiveRecord::Migration[7.0]
 end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-steps-answers/02_01-db-migrate-xxx_add_user_ref_to_answers.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/16-steps-answers/02_01-db-migrate-xxx_add_user_ref_to_answers.rb)
 
 > Da Rails 5 il `.references ..., foreign_key: true` aggiunge già le chiavi esterne e l'indice (come si può vedere su .../db/schema.rb dopo il migrate del database).
 
@@ -55,13 +55,12 @@ $ Answer.destroy_all
 Eseguiamo il migrate.
 
 ```bash
-$ sudo service postgresql start
 $ rails db:migrate
 ```
 
 Se guardiamo in db/schema vediamo l'aggiunta di `user_id` e dell'indice *index_answers_on_user_id*.
 
-***code n/a - .../db/schema.rb - line:55***
+***Codice n/a - .../db/schema.rb - linea:55***
 
 ```ruby
   create_table "answers", force: :cascade do |t|
@@ -80,30 +79,31 @@ Se guardiamo in db/schema vediamo l'aggiunta di `user_id` e dell'indice *index_a
 ## Implementiamo la relazione 1-a-molti nei models
 
 Questa volta non abbiamo nessun aiuto dal `:references` e quindi dobbiamo inserire entrambi i lati dell'associazione 1-a-molti.
-Lato model *Answer* inseriamo che appartiene ad *user*, ossia che ogni risposta ha 1 utente associato tramite la chiave esterna *user_id*.
 
-Su # == Relationships nel sottogruppo ## many-to-one
+Lato *Answer* inseriamo che appartiene ad *user*, ossia che ogni risposta ha 1 utente associato tramite la chiave esterna *user_id*.
 
-***code 02 - .../app/models/answer.rb- line:12***
+Model: `Answer` - Gruppo: `# == Relationships` - Sottogruppo: `## one-to-many`.
+
+***Codice 02 - .../app/models/answer.rb- linea:12***
 
 ```ruby
   belongs_to :user
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-steps-answers/02_02-models-answer.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/16-steps-answers/02_02-models-answer.rb)
 
 
-Lato model *User* inseriamo che ha molte risposte, ossia che ogni utente può avere molte risposte associate.
+Lato *User* inseriamo che ha molte risposte, ossia che ogni utente può avere molte risposte associate.
 
-Su # == Relationships nel sottogruppo ## many-to-one
+Model: `User` - Gruppo: `# == Relationships` - Sottogruppo: `## many-to-one`.
 
-***code 03 - .../app/models/user.rb- line:24***
+***Codice 03 - .../app/models/user.rb- linea:25***
 
 ```ruby
   has_many :answers
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-steps-answers/02_03-models-user.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/16-steps-answers/02_03-models-user.rb)
 
 
 
@@ -111,7 +111,7 @@ Su # == Relationships nel sottogruppo ## many-to-one
 
 Normalmente per associare l'utente alla tabella *answers* aggiorneremmo *answers_controller* in modo che l'azione che eseguiamo con il submit del form (`create` o `update`) , associ l'utente loggato ad ogni risposta.
 
-***code n/a - .../app/controllers/answers_controller.rb- line:n/a***
+***Codice n/a - .../app/controllers/answers_controller.rb - linea:n/a***
 
 ```ruby
   def create
@@ -128,17 +128,21 @@ Ma nel nostro caso stiamo lavorando su un nested form che è passato da *steps_c
 
 Quindi è più facile inserire l'utente loggato direttamente come valore di default nel field *user_id* del form annidato.
 
-***code 04 - .../views/steps/_answer_fields.html.erb - line:5***
+***Codice 04 - .../views/steps/_answer_fields.html.erb - linea:05***
 
 ```html+erb
     <% if current_user %>
         <%= form.text_field :user_id, required: true, class: 'form-control', value:current_user.id  %>
     <% else %>
-        <%= form.text_field :user_id, required: true, class: 'form-control', value:2 %>
+        <%= form.text_field :user_id, required: true, class: 'form-control', value:1 %>
     <% end %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-steps-answers/02_04-views-steps-_answer_fields.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/16-steps-answers/02_04-views-steps-_answer_fields.html.erb)
+
+
+> Non è elegante inserire if...else forzando value:1 nel caso non sia loggato nessun utente. <br/>
+> la situazione di nessun utente loggato non deve avvenire quindi mi sembra un controllo superfluo.
 
 
 
@@ -146,7 +150,7 @@ Quindi è più facile inserire l'utente loggato direttamente come valore di defa
 
 Inseriamo `:user_id` nella white-list; dentro `answers_attributes: [...]`.
 
-***code 05 - .../controllers/steps_controller.html.erb - line:87***
+***Codice 05 - .../controllers/steps_controller.html.erb - linea:87***
 
 ```ruby
     # Only allow a list of trusted parameters through.
@@ -155,7 +159,7 @@ Inseriamo `:user_id` nella white-list; dentro `answers_attributes: [...]`.
     end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-steps-answers/02_04-views-steps-_answer_fields.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/16-steps-answers/02_05-controllers-steps_controller.rb)
 
 In questo modo il valore dell'user_id è passato nel database ed inserito nella tabella *steps*.
 
@@ -163,13 +167,13 @@ In questo modo il valore dell'user_id è passato nel database ed inserito nella 
 
 ## Mostriamo il nome dell'utente affianco alla risposta
 
-***code 05 - .../views/steps/show.html.erb - line:1***
+***Codice 06 - .../views/steps/show.html.erb - linea:38***
 
 ```html+erb
-        <%= answer.content %> - by <%= answer.user.name %>
+        <%= answer.content %> - by <%= answer.user.username %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-step-answers/02_05-views-steps-show.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/16-step-answers/02_06-views-steps-show.html.erb)
 
 
 > Se l'utente non è loggato prende errore? <br/>
@@ -260,6 +264,27 @@ $ git commit -m "Relation answers to users"
 
 
 
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+```bash
+$ git checkout main
+$ git merge ua
+$ git branch -d ua
+```
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+```bash
+$ git push origin main
+```
+
+
 ## Publichiamo su heroku
 
 Come fatto per il database locale di sviluppo (*bl7_development*), prima di eseguire il migrate su heroku cancelliamo tutti i records dalla tabella *answers* altrimenti riceviamo errore perché nella tabella *answers* la chiave esterna *user_id*, che serve per la relazione uno-a-molti fra *users* ed *answers*, non può essere vuota.
@@ -281,27 +306,6 @@ Andiamo all'url:
 
 Prima ci logghiamo e poi diamo le risposte ai vari steps della prima lezione.
 
-
-
-## Chiudiamo il branch
-
-se abbiamo finito le modifiche e va tutto bene:
-
-```bash
-$ git checkout main
-$ git merge ua
-$ git branch -d ua
-```
-
-
-
-## Facciamo un backup su Github
-
-Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
-
-```bash
-$ git push origin main
-```
 
 
 ---

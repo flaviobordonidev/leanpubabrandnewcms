@@ -12,10 +12,11 @@ class User < ApplicationRecord
   # == Attributes ===========================================================
 
   ## enum
-  #enum language: [:it, :en]
-  enum language: {it: 0, en: 1}
   #enum role: [:user, :admin, :moderator, :author]
   enum role: {user: 0, admin: 1, moderator:2, author:3}
+
+  ## ActiveStorage
+  has_one_attached :avatar_image
 
   # == Relationships ========================================================
 
@@ -24,6 +25,9 @@ class User < ApplicationRecord
   has_many :answers
 
   # == Validations ==========================================================
+
+  ## Validation
+  validates :username, presence: true
 
   # == Scopes ===============================================================
 

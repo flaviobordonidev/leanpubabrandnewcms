@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 5.1 - Implementiamo il video
+# <a name="top"></a> Cap 17.1 - Implementiamo il video
 
 Ogni step si apre inizialmente solo con il player di un video che possiamo mettere a schermo intero. 
 Alla fine del video il player scompare ed appare scritta la domanda fatta nel video ed il form per scrivere la risposta.
