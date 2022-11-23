@@ -22,7 +22,7 @@ Su *render.com* andiamo nel database di produzione `ubuntudream_production` e co
 Usiamo quel codice sul nostro terminale
 
 ```bash
-PGPASSWORD=xxx psql -h dpg-xxx-a.frankfurt-postgres.render.com -U ubuntu ubuntudream_production
+$ PGPASSWORD=xxx psql -h dpg-xxx-a.frankfurt-postgres.render.com -U ubuntu ubuntudream_production
 ```
 
 Esempio 
@@ -47,10 +47,7 @@ ubuntudream_production=>
 
 
 
-
 ## Navighiamo nel PostgreSql Database
-
-
 
 ```sql
 ubuntudream_production=> help
@@ -124,6 +121,27 @@ INSERT INTO users (username, email, password, password_confirmation) VALUES ('An
 
 
 User.create(username: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda')
+
+
+
+## Impostiamo il ruolo di amministratore al primo user
+
+vediamo i nomi delle colonne della tabella ed i dati di tutti gli utenti.
+
+```sql
+\d users
+SELECT * FROM users;
+```
+
+Premiamo il tasto `q` per uscire.
+
+Impostiamo il `role = 1`, che è quello di `administrator` all'utente con `id = 1`, che di solito è il primo utente.
+
+```sql
+UPDATE users
+SET role = 1 
+WHERE id = 1;
+```
 
 
 

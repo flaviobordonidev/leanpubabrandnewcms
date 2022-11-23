@@ -163,7 +163,7 @@ Lato *Step* l'associazione `has_many :answers` la inseriamo noi.
 
 Model: `Step` - Gruppo: `# == Relationships` - Sottogruppo: `## one-to-many`.
 
-***Codice 03 - .../app/models/step.rb - linea:01***
+***Codice 03 - .../app/models/step.rb - linea:14***
 
 ```ruby
   has_many :answers, dependent: :destroy
@@ -177,7 +177,7 @@ Analizziamo il codice:
 
 - `dependent: :destroy` -> questa opzione fa in modo che quando eliminiamo uno step in automatico vengano cancellate anche tutte le sue risposte (*answers*).
 - `allow_destroy: true` -> permette di cancellare le form annidate.
-- `reject_if: proc{ |attr| attr['number'].blank? }` -> evita che vengano salvate form annidate in cui non è stato messo il numero di telefono.
+- `reject_if: proc{ |attr| attr['content'].blank? }` -> evita che vengano salvate form annidate in cui non è stato compilato il campo *content*.
 
 
 
@@ -205,18 +205,17 @@ $ rails c
 ```
 
 > Curiosità: <br/>
-> il comando `> a2 = l1.steps[1].answers.new(content: "cartone").save` avrebbe associato alla variabile a2 il valore True, ossia il risultato del salvataggio.
+> il comando `> a2 = l1.steps[0].answers.new(content: "cartone").save` avrebbe associato alla variabile a2 il valore True, ossia il risultato del salvataggio.
 > Non avrebbe associato l'oggetto `answers[2]`.
 
 
 
 ## Implementiamo sulle views
 
+Mostriamo le risposte caricate da console. <br/>
 Sulla pagina *views/steps/show* inseriamo la visualizzazione di tutte le risposte.
 
-Mostriamo le risposte caricate da console.
-
-***code 05 - .../views/steps/show.html.erb - line:32***
+***Codice 04 - .../views/steps/show.html.erb - linea:33***
 
 ```html+erb
 <p>
@@ -231,14 +230,17 @@ Mostriamo le risposte caricate da console.
 </p>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-steps-answers/01_05-views-steps-show.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/16-steps-answers/01_04-views-steps-show.html.erb)
 
 
-Inseriamo il form per inserire una nuova risposta.
+
+## Inseriamo il form per aggiungere risposte
+
+Inseriamo il form per inserire manualmente una nuova risposta.
 
 > All'interno del `form_with(model: [@lesson, @step]) do` che interagisce con il controller `steps_controller` e che ha una route annidata *lessons/#/steps/#*, inseriamo un **form annidato** per le *answers* attraverso il comando `.fields_for :answers`.
 
-***code 06 - .../views/steps/show.html.erb- line:43***
+***Codice 05 - .../views/steps/show.html.erb - linea:45***
 
 ```html+erb
 <%= form_with(model: [@lesson, @step]) do |form| %>
@@ -252,13 +254,13 @@ Inseriamo il form per inserire una nuova risposta.
 <% end %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-steps-answers/01_06-views-steps-show.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/16-steps-answers/01_05-views-steps-show.html.erb)
 
 
 > Si può anche scrivere `form_with(model: [@lesson, @step], local: true) do |form|` ma il parametro `local: true` da Rails 7 è l'opzione di default e quindi si può omettere.
 
 
-***code 07 - .../views/steps/_answer_fields.html.erb- line:1***
+***Codice 06 - .../views/steps/_answer_fields.html.erb- linea:01***
 
 ```html+erb
 <div class="nested-fields">
@@ -269,13 +271,16 @@ Inseriamo il form per inserire una nuova risposta.
 </div>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-steps-answers/01_07-views-steps-_answer_fields.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-steps-answers/01_06-views-steps-_answer_fields.html.erb)
 
 
 Ogni volta che facciamo submit del form aggiungiamo una nuova risposta.
 
 > Attenzione! <br/>
-> Oltre ad inserire la risposta avanziamo di uno step! Quindi se vogliamo vedere la risposta inserita dobbiamo tornare indietro di uno step.
+> Oltre ad inserire la risposta avanziamo di uno step! Quindi se vogliamo vedere la risposta inserita dobbiamo tornare indietro di uno step. (unica eccezione è l'ultimo record.)
+>
+> Doppia Attenzione!  <br/>
+> Se non aggiorniamo lo steps_controller per accettare i dati di *answers* non sono salvati.
 
 
 
@@ -284,16 +289,16 @@ Ogni volta che facciamo submit del form aggiungiamo una nuova risposta.
 Permettiamo che siano passati i parametri relativi alle risposte (*answers*).
 Per farlo aggiungiamo `answers_attributes[]` al `params.require(:step).permit`. Questo lo possiamo fare perché abbiamo inserito nel model *Step* la voce `accepts_nested_attributes_for :answers`.
 
-***code 08 - .../app/controllers/steps_controller.rb- line:1***
+***Codice 07 - .../app/controllers/steps_controller.rb- linea:01***
 
 ```ruby
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Only allow a list of trusted parameters through.
     def step_params
       params.require(:step).permit(:question, :answer, :lesson_id, answers_attributes: [:_destroy, :id, :content])
     end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/04-steps-answers/01_08-controllers-steps_controller.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/16-steps-answers/01_07-controllers-steps_controller.rb)
 
 Lato server / back-end abbiamo terminato.
 
@@ -321,23 +326,6 @@ $ git commit -m "Add answer table"
 
 
 
-## Publichiamo su heroku
-
-```bash
-$ git push heroku cs:main
-$ heroku run rake db:migrate
-```
-
-Verifichiamo preview su heroku.
-
-Andiamo all'url:
-
-* https://bl7-0.herokuapp.com/lessons/1/steps
-
-E diamo le risposte ai vari steps della prima lezione.
-
-
-
 ## Chiudiamo il branch
 
 se abbiamo finito le modifiche e va tutto bene:
@@ -357,6 +345,21 @@ Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla
 ```bash
 $ git push origin main
 ```
+
+
+
+## Publichiamo su render.com
+
+Lo fa in automatico prendendo gli aggiornamenti dal backup su Github.
+
+Verifichiamo preview in produzione.
+
+Andiamo all'url:
+
+- https://ubuntudream.onrender.com/lessons/1/steps
+
+E diamo le risposte ai vari steps della prima lezione.
+
 
 
 ---

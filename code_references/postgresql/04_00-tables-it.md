@@ -63,6 +63,19 @@ To list all users and their assign roles, you use \du command:
 ## Aggiorna un a RECORD
 
 ```sql
+\d users
+SELECT * FROM users;
+```
+
+Premiamo il tasto `q` per uscire.
+
+```sql
+UPDATE users
+SET role = 1 
+WHERE id = 1;
+```
+
+```sql
 UPDATE courses
 SET published_date = '2020-08-01' 
 WHERE course_id = 3;
