@@ -1,12 +1,16 @@
 # many_to_many association
 
-Risorse web:
 
-* [Sitepoing Master many_to_many](https://www.sitepoint.com/master-many-to-many-associations-with-activerecord/)
-* Railscasts 181-include-vs-joins
-* Railscasts 154-polymorphic-association-revised
-* Railscasts 047-two-many-to-many [04:40]
 
+## Risorse esterne
+
+- [Sitepoing Master many_to_many](https://www.sitepoint.com/master-many-to-many-associations-with-activerecord/)
+- Railscasts 181-include-vs-joins
+- Railscasts 154-polymorphic-association-revised
+- Railscasts 047-two-many-to-many [04:40]
+
+
+- [Tags In Rails 7 With Many To Many Relationship | Ruby On Rails Tutorial](https://www.youtube.com/watch?v=03enr4NNgLI)
 
 
 

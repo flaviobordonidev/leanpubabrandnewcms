@@ -4,9 +4,16 @@ La differenza tra `Display: none` e `Visibility: hidden`.
 
 
 Comando                | Descrizione
----------------------- | -------------------------
-`Visibility: hidden;`  | nasconde l'elemento **ma**  the element will still take up the same space as before. The element will be hidden, but still affect the layout.
+| :-                   | :-
+`Visibility: hidden;`  | nasconde l'elemento **ma** l'elemento continua a mantenere lo stesso spazio occupato che aveva quando visibile. Quindi l'elemento continua ad influenzare il layout.
 `Display: none;`       | The element will be hidden, and the page will be displayed as if the element is not there.
+
+
+
+## Risorse interne
+
+- [ubuntudream/17-steps-show_video_with_events/01_00-mockups_youtube_player-it](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/17-steps-show_video_with_events/01_00-mockups_youtube_player-it.md)
+
 
 
 ## Risorse esterne
@@ -22,20 +29,27 @@ Comando                | Descrizione
 Hiding an element can be done by setting the display property to none. The element will be hidden, and the page will be displayed as if the element is not there:
 
 Example
+
+```
 h1.hidden {
   display: none;
 }
+```
 
 visibility: hidden; also hides an element.
 However, the element will still take up the same space as before. The element will be hidden, but still affect the layout:
 
 Example
+
+```
 h1.hidden {
   visibility: hidden;
 }
+```
 
-* display	    Specifies how an element should be displayed
-* visibility	Specifies whether or not an element should be visible
+- display	    Specifies how an element should be displayed
+- visibility	Specifies whether or not an element should be visible
+
 
 
 ## Simple example of showing a panel with javascript
@@ -71,7 +85,6 @@ This example demonstrates how to use CSS and JavaScript to show an element on cl
   <p>This panel contains a div element, which is hidden by default (display: none).</p>
   <p>It is styled with CSS and we use JavaScript to show it (display: block).</p>
   <p>How it works: Notice that the p element with class="flip" has an onclick attribute attached to it. When the user clicks on the p element, a function called myFunction() is executed, which changes the style of the div with id="panel" from display:none (hidden) to display:block (visible).</p>
-  <p>You will learn more about JavaScript in our JavaScript Tutorial.</p>
 </div>
 
 <script>

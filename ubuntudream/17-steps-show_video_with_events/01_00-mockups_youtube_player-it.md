@@ -12,9 +12,8 @@ Su submit del form si va al secondo step con la seconda parte del video; e così
 
 ## Risorse interne
 
-- [99-code_references/video_players/youtube](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/99-code_references/video_players/01_00-youtube-it.md)
-
-- [99-code_references/video_players/display_none_vs_visibility_hidden](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/99-code_references/video_players/02_00-display_none_vs_visibility_hidden-it.md)
+- [code_references/video_players/youtube](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/video_players/01_00-youtube-it.md)
+- [code_references/video_players/display_none_vs_visibility_hidden](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/video_players/02_00-display_none_vs_visibility_hidden-it.md)
 
 
 
@@ -33,12 +32,13 @@ Di seguito gli eventi che si possono prendere dal player dei video su youtube.
 `player.getPlayerState():Number`
 
 Returns the state of the player. Possible values are:
--1 – unstarted
-0 – ended
-1 – playing
-2 – paused
-3 – buffering
-5 – video cued
+
+- -1 – unstarted
+- 0 – ended
+- 1 – playing
+- 2 – paused
+- 3 – buffering
+- 5 – video cued
 
 
 `player.getCurrentTime():Number`
