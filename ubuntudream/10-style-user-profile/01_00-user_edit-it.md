@@ -1,6 +1,6 @@
 # <a name="top"></a> Cap 6.1 - User profile - Show User profile / account
 
-Inseriamo lo stile del tema eduport nella modifica del profile dell'utente loggato (users/edit).
+Inseriamo lo stile del tema eduport nella modifica del profilo dell'utente loggato (users/edit).
 
 > Lo *show* del profilo utente lo facciamo nel prossimo capitolo.
 

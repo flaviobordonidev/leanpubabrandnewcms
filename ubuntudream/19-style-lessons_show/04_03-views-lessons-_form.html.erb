@@ -22,8 +22,18 @@
   </div>
 
   <div>
-    <%= form.label :header_image, style: "display: block" %>
-    <%= form.file_field :header_image %>
+    <%= form.label :picture_image, style: "display: block" %>
+    <%= form.file_field :picture_image %>
+  </div>
+
+  <div>
+    <%= form.label :picture_author_image, style: "display: block" %>
+    <%= form.file_field :picture_author_image %>
+  </div>
+
+  <div>
+    <%= form.label :description_rtf, style: "display: block" %>
+    <%= form.rich_text_area :description_rtf %>
   </div>
 
   <div>

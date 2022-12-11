@@ -1,9 +1,11 @@
 class LessonsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_lesson, only: %i[ show edit update destroy ]
 
   # GET /lessons or /lessons.json
   def index
     @lessons = Lesson.all
+    authorize @lessons
   end
 
   # GET /lessons/1 or /lessons/1.json
@@ -13,6 +15,7 @@ class LessonsController < ApplicationController
   # GET /lessons/new
   def new
     @lesson = Lesson.new
+    authorize @lesson
   end
 
   # GET /lessons/1/edit
@@ -22,6 +25,7 @@ class LessonsController < ApplicationController
   # POST /lessons or /lessons.json
   def create
     @lesson = Lesson.new(lesson_params)
+    authorize @lesson
 
     respond_to do |format|
       if @lesson.save
@@ -61,10 +65,11 @@ class LessonsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_lesson
       @lesson = Lesson.find(params[:id])
+      authorize @lesson
     end
 
     # Only allow a list of trusted parameters through.
     def lesson_params
-      params.require(:lesson).permit(:name, :duration, :header_image)
+      params.require(:lesson).permit(:name, :duration, :picture_image, :picture_author_image, :description_rtf)
     end
 end

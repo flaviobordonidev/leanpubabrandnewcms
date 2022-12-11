@@ -1,0 +1,23 @@
+<div id="<%= dom_id step %>">
+  <p>
+    <strong>Lesson:</strong>
+    <%#= step.lesson_id %>
+    <%= step.lesson.name %>
+  </p>
+  
+  <p>
+    <strong>Question:</strong>
+    <%= step.question %>
+  </p>
+
+  <p>
+    <strong>Answers of logged User</strong>
+    <ul>
+      <% step.answers.where(user_id: current_user.id).each do |answer| %>
+        <li>
+          <%= answer.content %> - by <%= answer.user.username %>
+        </li>
+      <% end %>
+    </ul>
+  </p>
+</div>

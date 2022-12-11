@@ -35,13 +35,18 @@ Colonna                 | Descrizione
 
 Colonne secondarie
 
-Colonna                   | Descrizione
-|:-                       | :-
-`Categoria/Tag`           | 7. Interpretazione, Dipinto, Suoni ambiente, ... <br/> (vedi gemma taggable)
-`blocco (lucchetto)`      | -> lock_value_percorsocoach1 (livello a cui devi essere per sbloccarlo?) <br/> -> lock_value_percorsocoach2 (indipendente dal percorsocoach1 ) <br/> Quindi metto tante colonne quanti sono i percorsicoach (attualmente è 1 solo ^_^)
-`note:text`               | (molti caratteri) Note Aggiuntive - questo appare nello show. è un approfondimento sull'esercizio
-`meta_title:string`       | Per il SEO
-`meta_description:string` | Per il SEO
+Colonna                       | Descrizione
+|:-                           | :-
+`picture_author_image -> model`	| Foto dell'autore del quadro (via upload ActiveStorage)
+`picture_image -> model` 			| Foto del quadro (via upload ActiveStorage)
+`picture_author_name:string` 	| Nome autore (eg: Joachim Ferdinand Richardt)
+`picture_museum_name:string` 	| Nome museo (eg: Young museum)
+`description:text`						| Descrizione del corso e del quadro. (Descrizione RichTextFormat perché 
+`Categoria/Tag`               | 7. Interpretazione, Dipinto, Suoni ambiente, ... <br/> (vedi gemma taggable)
+`blocco (lucchetto)`          | -> lock_value_percorsocoach1 (livello a cui devi essere per sbloccarlo?) <br/> -> lock_value_percorsocoach2 (indipendente dal percorsocoach1 ) <br/> Quindi metto tante colonne quanti sono i percorsicoach (attualmente è 1 solo ^_^)
+`note:text`                   | (molti caratteri) Note Aggiuntive - questo appare nello show. è un approfondimento sull'esercizio
+`meta_title:string`           | Per il SEO
+`meta_description:string`     | Per il SEO
 
 
 Tabelle collegate 1-a-molti (non c'è *chiave esterna* perché è sull'altra tabella)

@@ -94,7 +94,7 @@ E con questo abbiamo predisposto l'ambiente di pundit.
 Nel prossimo capitolo inizieremo ad usarlo per le autorizzazioni.
 
 > Nota: <br/>
-> Su pundit 2.1 il *generator* creava un file con dentro *class Scope* -> *def resolve* -> *scope.all*.
+> Su pundit 2.1 il *generator* creava un file con dentro `class Scope` -> `def resolve` -> `scope.all`.
 
 ```ruby
     def resolve
@@ -102,7 +102,13 @@ Nel prossimo capitolo inizieremo ad usarlo per le autorizzazioni.
     end
 ```
 
-> invece su pundit 2.2 nel file abbiamo  *class Scope* -> *def resolve* -> `raise NotImplementedError, "You must define #resolve in #{self.class}"`
+> invece su pundit 2.2 nel file abbiamo  `class Scope` -> `def resolve` -> `raise NotImplementedError, "You must define #resolve in #{self.class}"`
+
+```ruby
+    def resolve
+      raise NotImplementedError, "You must define #resolve in #{self.class}"
+    end
+```
 
 
 

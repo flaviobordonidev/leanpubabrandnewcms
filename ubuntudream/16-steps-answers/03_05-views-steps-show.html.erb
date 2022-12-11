@@ -1,0 +1,40 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @step %>
+
+<p>
+  <strong>Answers of logged User</strong>
+  <ul>
+    <% @step.answers.where(user_id: current_user.id).each do |answer| %>
+      <li>
+        <%= answer.content %> - by <%= answer.user.username %>
+      </li>
+    <% end %>
+  </ul>
+</p>
+
+<%= form_with(model: [@lesson, @step], local: true) do |form| %>
+  <!-- Creiamo nuovo Record -->
+  <%= form.fields_for :answers, Answer.new do |answer| %>
+    <%= render "answer_fields", form: answer %>
+  <% end %>
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+
+<br/>---------------<br/>
+
+<div>
+  <%= @step.prev.id if @step.prev.present? %>
+  <%= link_to '<Prev', lesson_step_path(@lesson, @step.prev.id) if @step.prev.present? %>
+  <%= @step.id %>
+  <%= link_to 'Next>', lesson_step_path(@lesson, @step.next.id) if @step.next.present? %>
+  <%= @step.next.id if @step.next.present? %>
+  <br/>
+
+  <%= link_to 'Edit this step', edit_lesson_step_path(@lesson, @step) %> |
+  <%= link_to 'Back to lesson steps', lesson_steps_path(@lesson) %>
+
+  <%= button_to "Destroy this step", [@lesson, @step], method: :delete %>
+</div>

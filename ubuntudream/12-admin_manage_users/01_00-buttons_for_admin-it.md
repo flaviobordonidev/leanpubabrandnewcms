@@ -1,6 +1,6 @@
-# blabla
+# <a name="top"></a> Cap 12.1 - Pulsanti solo per utente Admin
 
-In questo capitolo riporto quello che ho già fatto ^_^
+Questi pulsanti sono visualizzati solo se si è loggati come utente Admin.
 
 In pratica attivo users_index ed il fatto che l'amministratore ha dei links e pulsanti in più per gestire gli altri utenti.
 
@@ -9,8 +9,13 @@ Se invece siamo loggati come user possiamo cambiare solo noi stessi.
 
 
 
+## Risorse interne
 
-## Admin Buttons su users/show
+- []()
+
+
+
+## Admin Buttons su users/show - Page Banner
 
 Mettiamo i pulsanti solo per l'amministratore che gli permettono di fare le modifiche all'utente visualizzato.
 

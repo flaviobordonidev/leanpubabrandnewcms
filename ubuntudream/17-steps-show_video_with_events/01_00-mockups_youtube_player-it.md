@@ -380,8 +380,62 @@ $ git push origin main
 
 Fa tutto da solo.
 
-Appunti per Heroku:
+Prende errore!
+
+```bash
+Nov 25 09:30:10 AM  I, [2022-11-25T08:30:10.392124 #161]  INFO -- : Migrating to AddUserRefToAnswers (20221123095144)
+Nov 25 09:30:10 AM  == 20221123095144 AddUserRefToAnswers: migrating ==============================
+Nov 25 09:30:10 AM  -- add_reference(:answers, :user, {:null=>false, :foreign_key=>true})
+Nov 25 09:30:10 AM  ==> Build failed 😞
+```
+
+è la stessa cosa che ci è successa nel database locale, quello di sviluppo (*bl7_development*). L'errore è dovuto alla presenza di records nella tabella `answers` che creano un conflitto con il nuovo migrate `AddUserRefToAnswers` perché la chiave esterna *user_id*, che serve per la relazione uno-a-molti fra *users* ed *answers*, non può essere vuota. Invece nei records che abbiamo inserito prima era vuota.
+
+Soluzione:
 Come fatto per il database locale di sviluppo (*bl7_development*), prima di eseguire il migrate su heroku cancelliamo tutti i records dalla tabella *answers* altrimenti riceviamo errore perché nella tabella *answers* la chiave esterna *user_id*, che serve per la relazione uno-a-molti fra *users* ed *answers*, non può essere vuota.
+
+
+
+## Svuotiamo tabella `answers` dal server di produzione
+
+Colleghiamoci al database di produzione su "render.com" ed eliminiamo tutti i records dalla tabella `answers`.
+
+- [code_references/postgresql/03_00-connect_remote_database_render-it]()
+
+Su *render.com* andiamo nel database di produzione `ubuntudream_production` e copiamoci il codice su `Connect -> External Connection -> PSQL Command`
+
+Usiamo **quel codice** sul nostro terminale. Sarà simile a questo:
+
+```bash
+$ PGPASSWORD=xxx psql -h dpg-xxx-a.frankfurt-postgres.render.com -U ubuntu ubuntudream_production
+```
+
+Una volta collegati svuotiamo la tabella answers.
+
+```sql
+> SELECT * FROM answers;
+> ubuntudream_productions=> TRUNCATE TABLE answers;
+> SELECT * FROM answers;
+> \q
+```
+
+Esempio:
+
+```sql
+ubuntudream_production=> TRUNCATE TABLE answers;
+TRUNCATE TABLE
+ubuntudream_production=> SELECT * FROM answers;
+ id | content | step_id | created_at | updated_at 
+----+---------+---------+------------+------------
+(0 rows)
+
+ubuntudream_production=> 
+```
+
+
+## Publichiamo su render.com
+
+Facciamo ripartire manualmente il deployment su render.com
 
 
 

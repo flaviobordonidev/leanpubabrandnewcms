@@ -1,0 +1,66 @@
+# <a name="top"></a> Cap ruby_methods.14 - Troncare la stringa
+
+
+## Risorse esterme
+
+- [How to truncate ActionText output without trix formatting info](https://stackoverflow.com/questions/66108842/how-to-truncate-actiontext-output-without-trix-formatting-info)
+- [Rails API: truncate(truncate_at, options = {})](https://api.rubyonrails.org/classes/String.html#method-i-truncate)
+- [Truncate by Word Count in Rails](https://til.hashrocket.com/posts/pv6a3dep8n-truncate-by-word-count-in-rails)
+
+
+
+## "Tronchiamo" Action Text -> Rich Text Format
+
+```ruby
+            <p class="text-truncate-2 d-none d-lg-block"><%= lesson.description_rtf.to_plain_text.truncate(300, separator: ' ') %></p>
+```
+
+
+
+## truncate(truncate_at, options = {})Link
+
+Truncates a given text after a given length if text is longer than length:
+
+```ruby
+'Once upon a time in a world far far away'.truncate(27)
+# => "Once upon a time in a wo..."
+```
+
+Pass a string or regexp :separator to truncate text at a natural break:
+
+```ruby
+'Once upon a time in a world far far away'.truncate(27, separator: ' ')
+# => "Once upon a time in a..."
+```
+
+```ruby
+'Once upon a time in a world far far away'.truncate(27, separator: /\s/)
+# => "Once upon a time in a..."
+```
+
+The last characters will be replaced with the :omission string (defaults to “…”) for a total length not exceeding length:
+
+```ruby
+'And they found that many people were sleeping better.'.truncate(25, omission: '... (continued)')
+# => "And they f... (continued)"
+```
+
+Source: show | on GitHub
+
+
+## Truncate by Word Count in Rails
+
+Rails has a convenient method for truncating strings based on word count.
+
+```ruby
+my_string = "Hello World you are now reading a til post"
+my_string.truncate_words(2) 
+#=> "Hello World..."
+```
+
+The method automatically adds `...` to the end of the string to indicate that the string has been shortened. You can customize this omission by passing an omission argument.
+
+```ruby
+my_string.truncate_words(2, omission: "... (read more)")
+#=> "Hello World... (read more)"
+```

@@ -20,16 +20,16 @@ Ad esempio per il video *UbuntuDream1-01* usiamo il seguente *video id:* ***c35p
 
 Di seguito due screen-shots in cui vediamo dove prendere il "Video link" o "Video id" che ci interessa.
 
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-steps-show_video_with_events/03_fig01-youtube_video_id.png)
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/17-steps-show_video_with_events/03_fig01-youtube_video_id.png)
 
 
-![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-steps-show_video_with_events/03_fig02-youtube_video_id.png)
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/17-steps-show_video_with_events/03_fig02-youtube_video_id.png)
 
 
 
 ## Aggiungiamo il campo del video_id
 
-aggiungiamo il campo per il `video_id` di youtube nella tabella steps.
+aggiungiamo il campo per il **video_id** di youtube nella tabella steps.
  
 ```bash
 $ rails g migration AddYoutubeVideoIdToSteps youtube_video_id:string
@@ -37,7 +37,7 @@ $ rails g migration AddYoutubeVideoIdToSteps youtube_video_id:string
 
 vediamo il migrate generato
 
-***code 01 - .../db/migrate/xxx_add_youtube_video_id_to_steps.rb - line:1***
+***Codice 01 - .../db/migrate/xxx_add_youtube_video_id_to_steps.rb - linea:01***
 
 ```ruby
 class AddYoutubeVideoIdToSteps < ActiveRecord::Migration[7.0]
@@ -47,13 +47,12 @@ class AddYoutubeVideoIdToSteps < ActiveRecord::Migration[7.0]
 end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-step-answers/03_01-db-migrate-xxx_add_youtube_video_id_to_steps.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/17-step-answers/03_01-db-migrate-xxx_add_youtube_video_id_to_steps.rb)
 
 
 eseguiamo il migrate 
 
 ```bash
-$ sudo service postgresql start
 $ rails db:migrate
 ```
 
@@ -63,24 +62,24 @@ $ rails db:migrate
 
 Aggiungiamo il campo alla withelist per permettere di passare il campo `youtube_video_id` su submit del form. Altrimenti non verrebbe caricato nel database.
 
-***code 02 - .../db/controllers/steps_controller.rb - line:87***
+***Codice 02 - .../db/controllers/steps_controller.rb - linea:90***
 
 ```
     # Only allow a list of trusted parameters through.
     def step_params
-      params.require(:step).permit(:question, :answer, :lesson_id, :youtube_video_id, answers_attributes: [:_destroy, :id, :content, :user_id])
+      params.require(:step).permit(:question, :lesson_id, :youtube_video_id, answers_attributes: [:_destroy, :id, :content, :user_id])
     end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-step-answers/03_02-controllers-steps_controller.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/17-step-answers/03_02-controllers-steps_controller.rb)
 
 
 
 ## Aggiorniamo la view
 
-aggiungiamo il campo nel partial form della cartella steps
+Aggiungiamo il campo nel partial form della cartella steps
 
-***code 03 - .../app/views/steps/_form.html.erb - line:20***
+***Codice 03 - .../app/views/steps/_form.html.erb - linea:20***
 
 ```html+erb
   <div>
@@ -89,17 +88,71 @@ aggiungiamo il campo nel partial form della cartella steps
   </div>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-step-answers/03_03-views-steps-_form.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/17-step-answers/03_03-views-steps-_form.html.erb)
 
-Prendiamo il video dal database
+Nel codice javascript del player youtube prendiamo il video dal database.
 
-***code 04 - .../app/views/steps/show.html.erb - line:1***
+***Codice 04 - .../app/views/steps/show.html.erb - linea:01***
 
 ```html+erb
       videoId: '<%= @step.youtube_video_id %>',
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/05-step-answers/03_04-views-steps-show.html.erb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/17-step-answers/03_04-views-steps-show.html.erb)
 
 
 
+## Verifichiamo preview
+
+```bash
+$ rails s -b 192.168.64.3
+```
+
+Andiamo all'url:
+
+- http://192.168.64.3:3000/mockups/youtube_player
+
+
+
+
+## Archiviamo su git
+
+```bash
+$ git add -A
+$ git commit -m "Add dynamic youtube video"
+```
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+```bash
+$ git checkout main
+$ git merge vps
+$ git branch -d vps
+```
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+```bash
+$ git push origin main
+```
+
+
+## Publichiamo su render.com
+
+Fa tutto da solo.
+
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/17-steps-show_video_with_events/01_00-mockups_youtube_player-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/17-steps-show_video_with_events/03_00-dynamic_video-it.md)

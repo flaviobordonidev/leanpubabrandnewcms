@@ -80,3 +80,67 @@ Questo approccio, da un lato ci fa ripetere lo stesso video per ogni lezione, ma
 
 Fine della parte didattica.
 
+
+
+## Lessons index
+
+In questa pagina presentiamo le varie lezioni.
+
+[dafa]
+
+
+
+
+## Verifichiamo preview
+
+```bash
+$ rails s -b 192.168.64.3
+```
+
+Andiamo all'url:
+
+- http://192.168.64.3:3000/lessons/1/steps/1
+
+
+
+## Archiviamo su git
+
+```bash
+$ git add -A
+$ git commit -m "Style edu lessons/:id/steps/:id"
+```
+
+
+
+## Chiudiamo il branch
+
+se abbiamo finito le modifiche e va tutto bene:
+
+```bash
+$ git checkout main
+$ git merge es
+$ git branch -d es
+```
+
+
+
+## Facciamo un backup su Github
+
+Dal nostro branch master di Git facciamo un backup di tutta l'applicazione sulla repository remota Github.
+
+```bash
+$ git push origin main
+```
+
+
+## Publichiamo su render.com
+
+Fa tutto da solo.
+
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/17-steps-show_video_with_events/01_00-mockups_youtube_player-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/17-steps-show_video_with_events/03_00-dynamic_video-it.md)

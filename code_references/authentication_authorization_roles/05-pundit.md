@@ -6,8 +6,9 @@ Installazione ed uso di Pundit
 
 ## Risorse interne
 
-- 01-base/15-authorization/02-authorization-pundit
-- 01-base/15-authorization/03-authorization-users
+- 01-base/16-authorization/02-authorization-pundit
+- 01-base/16-authorization/03-authorization-users
+- 01-base/16-authorization/04-authorization-eg_posts
 
 
 

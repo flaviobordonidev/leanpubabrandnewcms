@@ -1,4 +1,10 @@
-# Cambiamo in DarkMode facendo click sul pulsante nella barra del menu
+# <a name="top"></a> Cap 04.17 - Cambiamo in DarkMode facendo click sul pulsante nella barra del menu
+
+
+
+## Risorse interne
+
+- []()
 
 
 
@@ -12,9 +18,9 @@
 
 ## Analizziamo il codice del tema eduport per cambiare su dark mode
 
-prendiamo la pagina index nel menu il pulsante per cambiare in dark mode
+Vediamo nel menu della pagina index, il pulsante per cambiare in dark mode
 
-***codice 01 - .../app/views/mockups/edu_index.html.erb - line: 583***
+***Codice 01 - .../app/views/mockups/edu_index.html.erb - linea: 583***
 
 ```html
         <!-- Dark mode switch START -->
@@ -23,7 +29,7 @@ prendiamo la pagina index nel menu il pulsante per cambiare in dark mode
             <div class="modeswitch-item">
               <div class="modeswitch-icon"></div>
             </div>
-            <span>Darku mode</span>
+            <span>Dark mode</span>
           </div>
         </li> 
         <!-- Dark mode switch END -->
@@ -34,7 +40,7 @@ prendiamo la pagina index nel menu il pulsante per cambiare in dark mode
 
 Analizziamo il codice javascript che viene con il tema. La parte che ci interessa è il *Dark mode*
 
-***codice 02 - .../app/javascript/controllers/tweet_controller.js - line: 986***
+***Codice 02 - .../app/javascript/functions.js - linea: 986***
 
 ```javascript
     // START: 24 Dark mode
@@ -91,16 +97,14 @@ Analizziamo il codice javascript che viene con il tema. La parte che ci interess
 
 Analizziamo il codice:
 
-`localStorage`
+The `localStorage` object allows you to save key/value pairs in the browser.
 
-The localStorage object allows you to save key/value pairs in the browser.
-
-code                             | Description
--------------------------------- | -----------------------------------------
-Save Data to Local Storage       | localStorage.setItem(key, value);
-Read Data from Local Storage     | let lastname = localStorage.getItem(key);
-Remove Data from Local Storage   | localStorage.removeItem(key);
-Remove All (Clear Local Storage) | localStorage.clear();
+code                                        | Description
+|:-                                         |:-
+`localStorage.getItem(key);`                | Read Data from Local Storage    
+`localStorage.setItem(key, value);`         | Save Data to Local Storage      
+`localStorage.removeItem(key);`             | Remove Data from Local Storage  
+`localStorage.clear();`                     | Remove All (Clear Local Storage)
 
 Nel nostro caso usiamo la key: `data-theme` per archiviare il valore `dark` o il valore `light`.
 
@@ -108,11 +112,11 @@ Inizialmente guardiamo se c'è il valore archiviato ed eventualmente lo prendiam
 
 > `theme = localStorage.getItem('data-theme')`
 
-- Se è presente ed è `dark`, allora eseguiamo la funzione `changeThemeToDark()`
-- Se non è presente o è `light`, allora eseguiamo la funzione `changeThemeToLight()`
+- Se *è presente* ed è `dark`, allora eseguiamo la funzione `changeThemeToDark()`
+- Se *non è presente* o è `light`, allora eseguiamo la funzione `changeThemeToLight()`
 
 
-> In queto tema l'eventuale attributo `dir` sul tag `<html>` è usato per i siti con la scrittura da destra a sinistra (rtl) as esempio quelli arabi.
+> In queto tema l'attributo `dir` (direction) sul tag `<html>` è usato per i siti con la scrittura da destra a sinistra (rtl) as esempio quelli arabi.
 
 **Vediamo la funzione `changeThemeToDark()`**
 
@@ -128,13 +132,17 @@ Fa tre cose:
 > `document.documentElement` returns the `<html>` element. <br>
 > `document.body` returns the `<body>` element.
 
+> la funzione `changeThemeToLight()` è analoga.
+
 Adesso che abbiamo un'idea di come lavora il codice riportiamolo su stimulus
 
 
 
 ## Introduciamo stimulus
 
-Per cambiare stile da *light* a *dark* usiamo il pulsante sulla barra del menu. Come abbiamo visto non è un link di tipo `<a>` ma è messo tra tags `<div>` quindi inseriamo il richiamo allo *stimulus controller* nel `<li>` che contiene il set di *tags* `<div>`.
+Per cambiare stile da *light* a *dark* usiamo il pulsante sulla barra del menu. 
+
+Questo non è un link di tipo `<a>` ma è messo tra tags `<div>` quindi inseriamo il richiamo allo *stimulus controller* nel `<li>` che contiene il set di *tags* `<div>`.
 
 > `data-controller="darktheme"` richiama lo *stimulus controller* ***darktheme_controller.js***.
 
@@ -142,7 +150,7 @@ Ed inseriamo l'azione *click* come attributo sul primo `<div>`.
 
 > `data-action="click->darktheme#switch"`
 
-***codice 03 - .../app/views/mockups/edu_index.html.erb - line: 583***
+***Codice 03 - .../app/views/mockups/edu_index.html.erb - linea: 583***
 
 ```html
 					<!-- Dark mode switch START -->
@@ -284,3 +292,21 @@ Ed in questo caso abbiamo dovuto anche attivare i `localStorage.setItem(...)` ne
 Questa non è una soluzione ottimale perché inizia a caricare sempre lo stile *light*, anche quando deve caricare il 'dark'. La correzione è fatta quasi subito, quando arriva alla funzione *connect()*, ma si intravede il cambio di stile. Lavorando direttamente sul layout lato Rails non si avrebbe questo effetto.
 
 Ma questo lo faremo più avanti.
+
+
+
+---
+
+
+Se non funziona proviamo a fare un precompile.
+
+```
+$ rails assets:precompile
+```
+
+e facciamo ripartire il web service
+
+
+```
+$ rails s -b 192.168.64.3
+```

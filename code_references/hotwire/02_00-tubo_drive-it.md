@@ -141,6 +141,8 @@ Adesso che Turbo Drive è di nuovo attivo vediamo come disattivarlo solo in link
 
 Se guardiamo in inspect --> network vediamo che è effettuata una richiesta di tipo *document*
 
+> Al posto di `data: {turbo: false}` possiamo usare `'data-turbo': false`
+
 
 
 ## Forms submit disattivando Turbo Drive

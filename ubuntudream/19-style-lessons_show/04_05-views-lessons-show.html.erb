@@ -1,14 +1,49 @@
+<!-- Questa è la pagina che presenta la lezione -->
 
 <!-- **************** MAIN CONTENT START **************** -->
 <main>
+
+
+<!-- =======================
+Page Banner START -->
+<section class="bg-dark align-items-center d-flex" style="background:url(assets/images/pattern/04.png) no-repeat center center; background-size:cover;">
+  <!-- Main banner background image -->
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <!-- Title -->
+        <h1 class="text-white"><%= @lesson.name %></h1>
+        <!-- Breadcrumb -->
+        <div class="d-flex">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb breadcrumb-dark breadcrumb-dots mb-0">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Courses</a></li>
+              <li class="breadcrumb-item active" aria-current="page">lesson <%= @lesson.id %></li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- =======================
+Page Banner END -->
+
+
 <!-- =======================
 Page banner video START -->
-<section class="py-0 pb-lg-5">
+<section class="py-sm-5 pb-lg-5">
 	<div class="container">
 		<div class="row g-3">
 			<!-- Course video START -->
 			<div class="col-12">
-        <%= image_tag "mockups/paint_view_of_mount_vernon.png", class: "light-mode-item navbar-brand-item", alt: "painting" %> 
+        <%#= image_tag "mockups/training_01.jpeg", class: "light-mode-item navbar-brand-item mx-auto d-block", alt: "painting" %>
+				<% if @lesson.picture_image.attached? %>
+	        <%= image_tag @lesson.picture_image, class: "light-mode-item navbar-brand-item mx-auto d-block", alt: "painting" %> 
+				<% else %>
+					<p>Nessuna immagine presente</p>
+				<% end %>
 			</div>
 			<!-- Course video END -->
 
@@ -38,7 +73,7 @@ Page content START -->
 					<!-- Course title START -->
 					<div class="col-12">
 						<!-- Title -->
-						<h1>Joachim Ferdinand Richardt - de Young museum - view of mount Vernon</h1>
+						<h1><%= @lesson.name %></h1>
 						<!-- Content -->
 						<ul class="list-inline mb-0">
 							<li class="list-inline-item h6 me-3 mb-1 mb-sm-0"><i class="fas fa-star text-warning me-2"></i>4.5/5.0</li>
@@ -48,13 +83,6 @@ Page content START -->
 					</div>
 					<!-- Course title END -->
 
-					<!-- Button "begin lesson" START -->
-					<div class="col-12 d-grid">
-						<%#= link_to "iniziamo la lezione", "#", class: "btn btn-primary btn-lg" %>
-						<%= link_to 'Iniziamo la lezione', lesson_step_path(@lesson, @lesson.steps.first), class: "btn btn-primary btn-lg" if @lesson.steps.first.present? %>
-					</div>
-					<!-- Button "begin lesson" END -->
-
 					<!-- Instructor detail START -->
 					<div class="col-12">
 						<div class="d-sm-flex justify-content-sm-between align-items-center">
@@ -62,16 +90,26 @@ Page content START -->
 							<div class="d-flex align-items-center">
 								<!-- Avatar image -->
 								<div class="avatar avatar-lg">
-									<%= image_tag "edu/avatar/05.jpg", class: "avatar-img rounded-circle", alt: "avatar" %>
+									<% if @lesson.picture_author_image.attached? %>
+										<%= image_tag @lesson.picture_author_image, class: "avatar-img rounded-circle", alt: "avatar" %>
+									<% else %>
+										<%= image_tag "mockups/training_01_avatar.png", class: "avatar-img rounded-circle", alt: "avatar" %>
+									<% end %>
 								</div>
 								<div class="ms-3">
-									<h6 class="mb-0"><a href="#">By Jacqueline Miller</a></h6>
-									<p class="mb-0 small">Founder Eduport company</p>
+									<h6 class="mb-0"><a href="#">Joachim Ferdinand Richardt</a></h6>
+									<p class="mb-0 small">Young museum</p>
 								</div>
 							</div>
 						</div>
 					</div>
 					<!-- Instructor detail END -->
+
+					<!-- Button "begin lesson" START -->
+					<div class="col-12 d-grid">
+						<%= link_to "inizia aula", lesson_step_path(@lesson, @lesson.steps.first), class: "btn btn-primary btn-lg" %>
+					</div>
+					<!-- Button "begin lesson" END -->
 
 					<!-- Course detail START -->
 					<div class="col-12">
@@ -93,15 +131,9 @@ Page content START -->
 							<!-- Content START -->
 							<div class="tab-pane fade show active" id="course-pills-1" role="tabpanel" aria-labelledby="course-pills-tab-1">
 								<!-- Course detail START -->
-								<h5 class="mb-3">Course Description</h5>
-								<p class="mb-3">Welcome to the <strong> Digital Marketing Ultimate Course Bundle - 12 Courses in 1 (Over 36 hours of content)</strong></p>
-								<p class="mb-3">In this practical hands-on training, you’re going to learn to become a digital marketing expert with this <strong> ultimate course bundle that includes 12 digital marketing courses in 1!</strong></p>
-								<p class="mb-3">If you wish to find out the skills that should be covered in a basic digital marketing course syllabus in India or anywhere around the world, then reading this blog will help. Before we delve into the advanced <strong><a href="#" class="text-reset text-decoration-underline">digital marketing course</a></strong> syllabus, let’s look at the scope of digital marketing and what the future holds.</p>
-								<p class="mb-0">We focus a great deal on the understanding of behavioral psychology and influence triggers which are crucial for becoming a well rounded Digital Marketer. We understand that theory is important to build a solid foundation, we understand that theory alone isn’t going to get the job done so that’s why this course is packed with practical hands-on examples that you can follow step by step.</p>
-								
-								<p class="mb-0">As it so contrasted oh estimating instrument. Size like body someone had. Are conduct viewing boy minutes warrant the expense? Tolerably behavior may admit daughters offending her ask own. Praise effect wishes change way and any wanted. Lively use looked latter regard had. Do he it part more last in. </p>
+								<%# <p class="mb-0">We focus a great deal on the understanding of behavioral psychology and influence triggers which are crucial for becoming a well rounded Digital Marketer.</p> %>
+								<%= @lesson.description_rtf %>
 								<!-- Course detail END -->
-
 							</div>
 							<!-- Content END -->
 
@@ -164,202 +196,202 @@ Page content START -->
 						<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
 							<div class="offcanvas-header bg-dark">
 								<h5 class="offcanvas-title text-white" id="offcanvasSidebarLabel">Course playlist</h5>
-								<button type="button" class="btn btn-sm btn-light mb-0" data-bs-dismiss="offcanvas" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+								<button type="button" class="btn btn-sm btn-light mb-0" data-bs-dismiss="offcanvas" aria-label="Close"><i class="fa-solid fa-xmark fa-lg"></i></button>
+								<%# <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button> %>
 							</div>
 							<div class="offcanvas-body p-3 p-lg-0">
 								<div class="col-12">
 									<!-- Accordion START -->
-									<div class="accordion accordion-icon accordion-bg-light" id="accordionExample2">
+									<div class="accordion accordion-flush-light accordion-flush" id="accordionExample">
 										<!-- Item -->
-										<div class="accordion-item mb-3">
-											<h6 class="accordion-header font-base" id="heading-1">
-												<a class="accordion-button fw-bold rounded collapsed d-block" href="#collapse-1" data-bs-toggle="collapse" data-bs-target="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
-													<span class="mb-0">Preparazione ala visualizzazione</span> 
-													<span class="small d-block mt-1">(2 Lezioni)</span> 
-												</a>
-											</h6>
-											<div id="collapse-1" class="accordion-collapse collapse show" aria-labelledby="heading-1" data-bs-parent="#accordionExample2">
-												<div class="accordion-body mt-3">
+										<div class="accordion-item">
+											<h2 class="accordion-header" id="headingOne">
+												<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+													<span class="mb-0 fw-bold">Preparazione dell’ambiente</span> 
+												</button>
+											</h2>
+											<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+												<div class="accordion-body px-3">
 													<div class="vstack gap-3">
-		
 														<!-- Course lecture -->
-														<div class="d-flex justify-content-between align-items-center">
-															<div class="position-relative d-flex align-items-center">
-																<a href="#" class="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
-																	<i class="fas fa-play me-0"></i>
-																</a>
-																<span class="d-inline-block text-truncate ms-2 mb-0 h6 fw-light w-200px">L'ambiente</span>
+														<div>
+															<div class="d-flex justify-content-between align-items-center mb-2">
+																<div class="position-relative d-flex align-items-center">
+																	<a href="#" class="btn btn-primary-soft btn-round btn-sm mb-0 stretched-link position-static">
+																		<i class="fas fa-play me-0"></i>
+																	</a>
+																	<span class="d-inline-block text-truncate ms-2 mb-0 h6 fw-light w-100px w-sm-200px">La bottiglia d’acqua <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+																</div>
+																<p class="mb-0 text-truncate">2m 10s</p>
 															</div>
-															<p class="mb-0 text-truncate">6m 10s</p>
+														</div>	
+
+														<!-- Course lecture -->
+														<div>
+															<div class="d-flex justify-content-between align-items-center mb-2">
+																<div class="position-relative d-flex align-items-center">
+																	<a href="#" class="btn btn-primary-soft btn-round btn-sm mb-0 stretched-link position-static">
+																		<i class="fas fa-play me-0"></i>
+																	</a>
+																	<span class="d-inline-block text-truncate ms-2 mb-0 h6 fw-light w-100px w-sm-200px">Mettiamoci comodi <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+																</div>
+																<p class="mb-0 text-truncate">15m 10s</p>
+															</div>
 														</div>
 
 														<!-- Course lecture -->
 														<div class="d-flex justify-content-between align-items-center">
 															<div class="position-relative d-flex align-items-center">
-																<a href="#" class="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
+																<a href="#" class="btn btn-primary-soft btn-round btn-sm mb-0 stretched-link position-static">
 																	<i class="fas fa-play me-0"></i>
 																</a>
-																<span class="d-inline-block text-truncate ms-2 mb-0 h6 fw-light w-200px">Il bicchiere d'acqua</span>
+																<span class="d-inline-block text-truncate ms-2 mb-0 h6 fw-light w-100px w-sm-200px">Nessuna interruzione <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
 															</div>
-															<p class="mb-0 text-truncate">6m 10s</p>
-														</div>
-				
-														<!-- Course lecture -->
-														<div class="d-flex justify-content-between align-items-center">
-															<div class="position-relative d-flex align-items-center">
-																<a href="#" class="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
-																	<i class="fas fa-play me-0"></i>
-																</a>
-																<span class="d-inline-block text-truncate ms-2 mb-0 h6 fw-light w-200px">Accogliamo le emozioni</span>
-															</div>
-															<p class="mb-0 text-truncate">5m 20s</p>
+															<p class="mb-0 text-truncate">18m 10s</p>
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
-		
+
 										<!-- Item -->
-										<div class="accordion-item mb-3">
-											<h6 class="accordion-header font-base" id="heading-2">
-												<a class="accordion-button fw-bold collapsed rounded d-block" href="#collapse-2" data-bs-toggle="collapse" data-bs-target="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
-													<span class="mb-0">Rilassamento</span> 
-													<span class="small d-block mt-1">(3 Lectures)</span> 
-												</a>
-											</h6>
-											<div id="collapse-2" class="accordion-collapse collapse" aria-labelledby="heading-2" data-bs-parent="#accordionExample2">
-												<!-- Accordion body START -->
-												<div class="accordion-body mt-3">
+										<div class="accordion-item">
+											<h2 class="accordion-header" id="headingTwo">
+												<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+													<span class="mb-0 fw-bold">Preparazione della mente</span> 
+												</button>
+											</h2>
+											<div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+												<div class="accordion-body px-3">
 													<div class="vstack gap-3">
 														<!-- Course lecture -->
 														<div class="d-flex justify-content-between align-items-center">
 															<div class="position-relative d-flex align-items-center">
-																<a href="#" class="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
+																<a href="#" class="btn btn-primary-soft btn-round btn-sm mb-0 stretched-link position-static">
 																	<i class="fas fa-play me-0"></i>
 																</a>
-																<span class="d-inline-block text-truncate ms-2 mb-0 h6 fw-light w-200px">La risata</span>
+																<span class="d-inline-block text-truncate ms-2 mb-0 h6 fw-light w-100px w-sm-200px">Leggerezza <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
 															</div>
 															<p class="mb-0 text-truncate">2m 10s</p>
 														</div>
-		
+
 														<!-- Course lecture -->
 														<div class="d-flex justify-content-between align-items-center">
 															<div class="position-relative d-flex align-items-center">
-																<a href="#" class="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
+																<a href="#" class="btn btn-primary-soft btn-round btn-sm mb-0 stretched-link position-static">
 																	<i class="fas fa-play me-0"></i>
 																</a>
-																<span class="d-inline-block text-truncate ms-2 mb-0 h6 fw-light w-200px"> What is Digital Marketing What is Digital Marketing</span>
+																<span class="d-inline-block text-truncate ms-2 mb-0 h6 fw-light w-100px w-sm-200px">Calma <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
 															</div>
 															<p class="mb-0 text-truncate">15m 10s</p>
 														</div>
-		
+
 														<!-- Course lecture -->
 														<div class="d-flex justify-content-between align-items-center">
 															<div class="position-relative d-flex align-items-center">
-																<a href="#" class="btn btn-light btn-round btn-sm mb-0 stretched-link position-static" data-bs-toggle="modal" data-bs-target="#coursePremium">
-																	<i class="bi bi-lock-fill"></i>
+																<a href="#" class="btn btn-primary-soft btn-round btn-sm mb-0 stretched-link position-static">
+																	<i class="fas fa-play me-0"></i>
 																</a>
-																<span class="d-inline-block text-truncate ms-2 mb-0 h6 fw-light w-200px">Type of Digital Marketing</span>
+																<span class="d-inline-block text-truncate ms-2 mb-0 h6 fw-light w-100px w-sm-200px">Vivere nel presente <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
 															</div>
 															<p class="mb-0 text-truncate">18m 10s</p>
 														</div>
-													</div>
+													</div>	<!-- Row END -->
 												</div>
-												<!-- Accordion body END -->
 											</div>
 										</div>
-		
+
 										<!-- Item -->
-										<div class="accordion-item mb-3">
-											<h6 class="accordion-header font-base" id="heading-3">
-												<a class="accordion-button fw-bold collapsed rounded d-block" href="#collapse-3" data-bs-toggle="collapse" data-bs-target="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
-													<span class="mb-0">Instructor - Elenco domande</span> 
-													<span class="small d-block mt-1">(tutte le domande della lezione)</span> 
-												</a>
-											</h6>
-											<div id="collapse-3" class="accordion-collapse collapse" aria-labelledby="heading-3" data-bs-parent="#accordionExample2">
-												<!-- Accordion body START -->
-												<div class="accordion-body mt-3">
+										<div class="accordion-item">
+											<h2 class="accordion-header" id="headingThree">
+												<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+													<span class="mb-0 fw-bold">Spiegazione del riscaldamento</span> 
+												</button>
+											</h2>
+											<div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+												<div class="accordion-body px-3">
 													<div class="vstack gap-3">
-
-														<%= render @lesson %>
-
-
-
 														<!-- Course lecture -->
 														<div class="d-flex justify-content-between align-items-center">
 															<div class="position-relative d-flex align-items-center">
-																<a href="#" class="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
+																<a href="#" class="btn btn-primary-soft btn-round btn-sm mb-0 stretched-link position-static">
 																	<i class="fas fa-play me-0"></i>
 																</a>
-																<span class="d-inline-block text-truncate ms-2 mb-0 h6 fw-light w-200px">La risata</span>
+																<span class="d-inline-block text-truncate ms-2 mb-0 h6 fw-light w-100px w-sm-200px">Respirazione <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
 															</div>
 															<p class="mb-0 text-truncate">2m 10s</p>
 														</div>
-		
+
 														<!-- Course lecture -->
 														<div class="d-flex justify-content-between align-items-center">
 															<div class="position-relative d-flex align-items-center">
-																<a href="#" class="btn btn-danger-soft btn-round btn-sm mb-0 stretched-link position-static">
+																<a href="#" class="btn btn-primary-soft btn-round btn-sm mb-0 stretched-link position-static">
 																	<i class="fas fa-play me-0"></i>
 																</a>
-																<span class="d-inline-block text-truncate ms-2 mb-0 h6 fw-light w-200px"> What is Digital Marketing What is Digital Marketing</span>
+																<span class="d-inline-block text-truncate ms-2 mb-0 h6 fw-light w-100px w-sm-200px">Contrazioni muscolari <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
 															</div>
-															<p class="mb-0 text-truncate">15m 10s</p>
+															<p class="mb-0 text-truncate">15m 00s</p>
 														</div>
-		
+
 														<!-- Course lecture -->
 														<div class="d-flex justify-content-between align-items-center">
 															<div class="position-relative d-flex align-items-center">
-																<a href="#" class="btn btn-light btn-round btn-sm mb-0 stretched-link position-static" data-bs-toggle="modal" data-bs-target="#coursePremium">
-																	<i class="bi bi-lock-fill"></i>
+																<a href="#" class="btn btn-primary-soft btn-round btn-sm mb-0 stretched-link position-static">
+																	<i class="fas fa-play me-0"></i>
 																</a>
-																<span class="d-inline-block text-truncate ms-2 mb-0 h6 fw-light w-200px">Type of Digital Marketing</span>
+																<span class="d-inline-block text-truncate ms-2 mb-0 h6 fw-light w-100px w-sm-200px">Posizione di Vittoria <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
 															</div>
-															<p class="mb-0 text-truncate">18m 10s</p>
+															<p class="mb-0 text-truncate">28m 10s</p>
 														</div>
-													</div>
-												</div>
-												<!-- Accordion body END -->
-											</div>
-										</div>
 
-										<!-- Item -->
-										<div class="accordion-item mb-3">
-											<h6 class="accordion-header font-base" id="heading-4">
-												<a class="accordion-button fw-bold collapsed rounded d-block" href="#collapse-4" data-bs-toggle="collapse" data-bs-target="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
-													<span class="mb-0">Instructor - Control</span> 
-													<span class="small d-block mt-1">(comandi di modifica)</span> 
-												</a>
-											</h6>
-											<div id="collapse-4" class="accordion-collapse collapse" aria-labelledby="heading-4" data-bs-parent="#accordionExample2">
-												<!-- Accordion body START -->
-												<div class="accordion-body mt-3">
-													<div class="vstack gap-3">
-
-
-														<%= link_to "Edit this lesson", edit_lesson_path(@lesson) %> |
-														<%= link_to "Back to lessons", lessons_path %>
-
-														<%= button_to "Destroy this lesson", @lesson, method: :delete %>
-
-		
 														<!-- Course lecture -->
 														<div class="d-flex justify-content-between align-items-center">
 															<div class="position-relative d-flex align-items-center">
-																<a href="#" class="btn btn-light btn-round btn-sm mb-0 stretched-link position-static" data-bs-toggle="modal" data-bs-target="#coursePremium">
-																	<i class="bi bi-lock-fill"></i>
+																<a href="#" class="btn btn-primary-soft btn-round btn-sm mb-0 stretched-link position-static">
+																	<i class="fas fa-play me-0"></i>
 																</a>
-																<span class="d-inline-block text-truncate ms-2 mb-0 h6 fw-light w-200px">Type of Digital Marketing</span>
+																<span class="d-inline-block text-truncate ms-2 mb-0 h6 fw-light w-100px w-sm-200px">Posizione di Comando <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
 															</div>
-															<p class="mb-0 text-truncate">18m 10s</p>
+															<p class="mb-0 text-truncate">38m 22s</p>
+														</div>
+
+														<!-- Course lecture -->
+														<div class="d-flex justify-content-between align-items-center">
+															<div class="position-relative d-flex align-items-center">
+																<a href="#" class="btn btn-primary-soft btn-round btn-sm mb-0 stretched-link position-static">
+																	<i class="fas fa-play me-0"></i>
+																</a>
+																<span class="d-inline-block text-truncate ms-2 mb-0 h6 fw-light w-100px w-sm-200px">Posizione di Confidenza <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+															</div>
+															<p class="mb-0 text-truncate">12m 10s</p>
+														</div>
+
+														<!-- Course lecture -->
+														<div class="d-flex justify-content-between align-items-center">
+															<div class="position-relative d-flex align-items-center">
+																<a href="#" class="btn btn-primary-soft btn-round btn-sm mb-0 stretched-link position-static">
+																	<i class="fas fa-play me-0"></i>
+																</a>
+																<span class="d-inline-block text-truncate ms-2 mb-0 h6 fw-light w-100px w-sm-200px">Posizione di Forza <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+															</div>
+															<p class="mb-0 text-truncate">12m 10s</p>
+														</div>
+
+														<!-- Course lecture -->
+														<div class="d-flex justify-content-between align-items-center">
+															<div class="position-relative d-flex align-items-center">
+																<a href="#" class="btn btn-primary-soft btn-round btn-sm mb-0 stretched-link position-static">
+																	<i class="fas fa-play me-0"></i>
+																</a>
+																<span class="d-inline-block text-truncate ms-2 mb-0 h6 fw-light w-100px w-sm-200px">Posizione Zen <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+															</div>
+															<p class="mb-0 text-truncate">35m 10s</p>
 														</div>
 													</div>
-												</div>
-												<!-- Accordion body END -->
+												</div>	
 											</div>
 										</div>
-		
+
 									</div>
 									<!-- Accordion END -->
 								</div>
@@ -380,7 +412,42 @@ Page content END -->
 
 </main>
 <!-- **************** MAIN CONTENT END **************** -->
-					
+
+
+<!-- =======================
+Footer START -->
+<footer class="bg-dark p-3">
+	<div class="container">
+		<div class="row align-items-center">
+			<!-- Widget -->
+			<div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
+				<!-- Logo START -->
+				<a href="index.html"> <img class="h-20px" src="assets/images/logo-light.svg" alt="logo"> </a>
+			</div>
+			
+			<!-- Widget -->
+			<div class="col-md-4 mb-3 mb-md-0">
+				<div class="text-center text-white">
+					Copyrights ©2021 <a href="#" class="text-reset btn-link">Eduport</a>. All rights reserved.
+				</div>
+			</div>
+			<!-- Widget -->
+			<div class="col-md-4">
+				<!-- Rating -->
+				<ul class="list-inline mb-0 text-center text-md-end">
+					<li class="list-inline-item ms-2"><a href="#"><i class="text-white fab fa-facebook"></i></a></li>
+					<li class="list-inline-item ms-2"><a href="#"><i class="text-white fab fa-instagram"></i></a></li>
+					<li class="list-inline-item ms-2"><a href="#"><i class="text-white fab fa-linkedin-in"></i></a></li>
+					<li class="list-inline-item ms-2"><a href="#"><i class="text-white fab fa-twitter"></i></a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+<!-- =======================
+Footer END -->
+
+
 <!-- Modal START -->
 <div class="modal fade" id="coursePremium" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-lg">
@@ -445,26 +512,37 @@ Page content END -->
 </div>  
 <!-- Modal END -->
 
+<!-- Back to top -->
+<div class="back-top"><i class="bi bi-arrow-up-short position-absolute top-50 start-50 translate-middle"></i></div>
+
+<!-- Bootstrap JS -->
+<!-- <script src="assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script> -->
+
+<!-- Vendors -->
+<%# <script src="assets/vendor/choices/js/choices.min.js"></script>
+<script src="assets/vendor/aos/aos.js"></script>
+<script src="assets/vendor/plyr/plyr.js"></script> %>
+
+<!-- Template Functions -->
+<!--<script src="assets/js/functions.js"></script>-->
+
+
+
+
+
+
 
 
 <p style="color: green"><%= notice %></p>
 
+<%= render @lesson %>
 
+<div>
+  <%= link_to "Show all steps of this lesson", lesson_steps_path(@lesson) %> | 
+  <%= link_to 'Add New Step', new_lesson_step_path(@lesson) %> || 
 
-<!-- Back to top -->
-<div class="back-top"><i class="bi bi-arrow-up-short position-absolute top-50 start-50 translate-middle"></i></div>
+  <%= link_to "Edit this lesson", edit_lesson_path(@lesson) %> |
+  <%= link_to "Back to lessons", lessons_path %>
 
-
-
-<!-- SCRIPTS da eliminare perché sono riportati su layouts/application START -->
-  <!-- Bootstrap JS -->
-  <script src="assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Vendors -->
-  <script src="assets/vendor/choices/js/choices.min.js"></script>
-  <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/plyr/plyr.js"></script>
-
-  <!-- Template Functions -->
-  <script src="assets/js/functions.js"></script>
-<!-- SCRIPTS da eliminare perché sono riportati su layouts/application END -->
+  <%= button_to "Destroy this lesson", @lesson, method: :delete %>
+</div>
