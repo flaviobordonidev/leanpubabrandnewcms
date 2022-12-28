@@ -38,6 +38,15 @@ Non essendo il form direttamente legato ad una tabella in passato avremmo usato 
 
 Analizziamo il codice:
 
+codice                    | descrizione
+|:-                       |:-
+url: ""                   | ricarica la stessa pagina. Ha bisogno di ", local:true" per funzionare.
+method: "get"             | passa i parametri delle variabili direttamente nell'url
+text_field_tag :search    | definisce un campo testo con nome "search"
+`, params[:search]`       | opzione per il valore del campo. Ricaricando la pagina rimette nel campo text il valore che era stato digitato. (questo lo posso fare perché il form è inviato via "get")
+`, placeholder: "cerca..."` | opzione per un segnaposto visibile quando non c'è nessun valore nel campo.
+
+
 - url: ""                   : ricarica la stessa pagina. Ha bisogno di ", local:true" per funzionare.
 - method: "get"             : passa i parametri delle variabili direttamente nell'url
 - text_field_tag :search    : definisce un campo testo con nome "search"
