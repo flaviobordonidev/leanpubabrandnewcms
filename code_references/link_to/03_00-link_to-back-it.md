@@ -38,6 +38,10 @@ Another popular class of answers are JavaScript. JavaScript is also used in Rail
  <%= link_to 'Back', 'javascript:history.back()' %>
 ```
 
+> Attenzione: Se il link_to precedente aveva l'opzione `, target: '_blank'` e quindi la pagina si è aperta su un nuovo tab, il back con javascript non funziona perché per lui siamo su una nuova pagina e non c'è un precedente.
+> In questo caso Se invece usiamo `<%= link_to "Back", :back %>` allora torniamo effettivamente alla pagina di prima ma è strano perché abbiamo due tab aperti.
+> Mi sono accorto di questo comportamento perché mi ero scordato di togliere `, target: '_blank'` dal link chiamante e non capivo perché il codice con opzione `javascript` non stesse funzionando. Me ne sono accorto solo quando ho visto che avevo 12 tabs aperti ^_^.
+
 
 
 ##  Javascript - Approach 1: Using history.back()

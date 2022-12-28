@@ -158,6 +158,16 @@ Aggiungiamo due links per cambiare la lingua assegnando il relativo valore a `pa
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-internationalization_i18n/03_04-views-mockups-page_a.html.erb)
 
 
+Per la didattica: Uno switch semplice che ci riporta sempre alla pagina principale: </br>
+
+***Codice n/a - .../app/views/mockups/page_a.html.erb - linea:06***
+
+```html+erb
+<ul>
+  <li><%= link_to "english", root_paht(locale: :en) %></li>
+  <li><%= link_to "italiano", root_paht(locale: :it) %></li>
+</ul>
+```
 
 ## Selezioniamo la lingua dalle impostazione del browser
 

@@ -1,8 +1,9 @@
-class CreateLessons < ActiveRecord::Migration[7.0]
+class CreatePreparatories < ActiveRecord::Migration[7.0]
   def change
-    create_table :lessons do |t|
+    create_table :preparatories do |t|
       t.string :name
       t.integer :duration
+      t.string :youtube_video_id
 
       t.timestamps
     end

@@ -1,9 +1,6 @@
 # <a name="top"></a> Cap 7.1 - Lezioni propedeutiche
 
-Sono le lezioni presenti al lato di ogni esercizio/lezione di visualizzazione.
-
-
-> Forse era meglio chiamare gli esercizi di visualizzazione "exercises" invece di "lessons"...
+Sono le lezioni di preparazione che vanno viste prima di fare la lezione di visualizzazione (sono propedeutiche). Una volta fatte non è necessario rifarle tutte le volte ma le lascio sempre presenti al lato di ogni lezione di visualizzazione nel caso uno voglia ripassare qualche passaggio.
 
 
 
@@ -15,15 +12,13 @@ Sono le lezioni presenti al lato di ogni esercizio/lezione di visualizzazione.
 
 ## Il nome della tabella
 
-Questi lezioni sono propedeutiche agli esercizi di visualizzazione.
+Queste lezioni sono propedeutiche agli esercizi di visualizzazione.
 
 > propedeutica: <br/>
 > Serie di nozioni il cui apprendimento ha valore preparatorio per lo studio di una determinata disciplina.
 
 In inglese la traduzione più carina è `preparatory`.
-Verifichiamo il plurale nella rails console in modo da non avere sorprese.
-
-***rails console***
+Verifichiamo il plurale nella ***rails console*** in modo da non avere sorprese.
 
 ```ruby
 $ rails c
@@ -33,51 +28,34 @@ $ rails c
  => "preparatory"
 ```
 
-Esempio:
+> A differenza della tabella `lessons` la tabella `preparatories` non ha vari step ogni record. Non ha un annidamento.
 
-```ruby
-3.1.1 :003 > "preparatory".pluralize
- => "preparatories" 
-3.1.1 :004 > "preparatories".singularize
- => "preparatory" 
-3.1.1 :005 > 
-```
-
-Questa tabella non ha vari step ogni "lezione propedeutica" (`preparatory`). è una tabella con tanti records ogni lezione. 
-
-> Se cambio lingua cambia l'url del video.
+> `preparatories` è un misto tra `lessons` e `steps`. L'utente non admin interagisce con la sola view show che gli fa vedere il video, come farebbe step, ma non c'è il form finale con la domanda. Una volta finito il video torna alla pagina precedente, che è la lessons/show da cui è stato chiamato.
 
 
 
-
-
-
-
-
-## Vediamo i campi
-
-- description?!?
-
-
-
-## Progettiamo la tabela lessons
+## Progettiamo la tabela preparatories
 
 Abbiamo diviso le varie colonne della tabella in principali e secondarie perché non implementeremo tutte le colonne da subito ma iniziamo con le principali e poi aggiungiamo le altre di volta in volta facendo dei migrate di aggiunta ed aggiornando controller, model e views.
 
 Colonne principali
 
 Colonna                   | Descrizione
-------------------------- | -----------------------
+|:-                       |:-
 `name:string`             | (255 caratteri) Nome lezione propedeutica
 `duration:integer`        | Quanto dura la lezione in media. (Uso un numero intero che mi rappresenta quanti **minuti** dura. es: 90 minuti, 180 minuti, ...)
 `youtube_video_id:string` | (255 caratteri) The video ID will be located in the URL of the video page, right after the v= URL parameter.
-`description:text`        | questa usa rich text?!? oppure descrizione breve? forse non serve perché la mettiamo direttamente nel codice visto che questa è una tabella che è popolata inizialmente ed è strettamente legata al codice.
+
+
+> Se cambio lingua cambia il valore di `youtube_video_id`, ossia l'url del video.
+> Ma questo lo vediamo più avanti quando introduciamo l'internazionalizzazione sul database.
 
 
 Colonne secondarie
 
-- nessuna
-
+Colonna                   | Descrizione
+------------------------- | -----------------------
+`description:text`        | questa usa rich text?!? oppure descrizione breve?
 
 Tabelle collegate 1-a-molti (non c'è *chiave esterna* perché è sull'altra tabella)
 
@@ -85,9 +63,7 @@ nessuna
 
 Tabelle collegate molti-a-1 (c'è *chiave esterna*)
 
-Colonna                   | Descrizione
-------------------------- | -----------------------
-`users?!?`                |
+nessuna
 
 
 
@@ -106,7 +82,7 @@ $ rails g scaffold Preparatory name:string duration:integer youtube_video_id:str
 
 vediamo il migrate generato
 
-***code 01 - .../db/migrate/xxx_create_preparatories.rb - line:1***
+***Codice 01 - .../db/migrate/xxx_create_preparatories.rb - linea:01***
 
 ```ruby
 class CreatePreparatories < ActiveRecord::Migration[7.0]
@@ -122,13 +98,12 @@ class CreatePreparatories < ActiveRecord::Migration[7.0]
 end
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/56-ubuntudream/07-preparatories/01_01-db-migrate-xxx_create_lessons.rb)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/22-preparatories/01_01-db-migrate-xxx_create_preparatories.rb)
 
 
 Effettuiamo il migrate del database per creare la tabella sul database.
 
 ```bash
-$ sudo service postgresql start
 $ rails db:migrate
 ```
 
@@ -138,7 +113,7 @@ $ rails db:migrate
 
 Prepariamo i "semi" per un inserimento dei records in automatico.
 
-***code 02 - .../db/seeds.rb - line:29***
+***Codice 02 - .../db/seeds.rb - linea:29***
 
 ```ruby
 puts "setting the Preparatory lessons"
@@ -189,6 +164,18 @@ $ git commit -m "add scaffold Preparatory"
 
 
 
+## Chiudiamo il branch
+
+Lo chiudiamo nei prossimi capitoli.
+
+
+
+## Facciamo un backup su Github
+
+Lo facciamo nei prossimi capitoli.
+
+
+
 ## Publichiamo su heroku
 
 ```bash
@@ -219,17 +206,6 @@ Andiamo all'url:
 
 E verifichiamo che l'elenco delle *lezioni* e degli *steps* è popolato.
 
-
-
-## Chiudiamo il branch
-
-Lo chiudiamo nei prossimi capitoli.
-
-
-
-## Facciamo un backup su Github
-
-Lo facciamo nei prossimi capitoli.
 
 
 ---

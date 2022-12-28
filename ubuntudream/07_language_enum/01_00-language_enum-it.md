@@ -1,6 +1,6 @@
 # <a name="top"></a> Cap 10.4 - Impostiamo la lingua dalle preferenze dell'utente
 
-*change_language_by_use*
+*change_language_by_user*
 Alle modalità di cambio lingua già impostate nei capitoli precedenti aggiungiamo anche quella di un utente
 
 
@@ -20,7 +20,7 @@ Per assegnare una lingua ad ogni utente inseriamo un nuovo campo enum con le pos
 
 Alla tabella aggiungiamo la seguente colonna:
 
-* language        -> (integer) nel nostro caso 0 = "it" e 1 = "en"
+* language        -> (integer) nel nostro caso 0 = "it", 1 = "en" e 2 = "pt"
 
 
 
@@ -46,7 +46,6 @@ Modifichiamo il migrate aggiungendo che il *valore di default* è quello della l
 Effettuiamo il migrate del database per creare la tabella sul database
 
 ```bash
-$ sudo service postgresql start
 $ rails db:migrate
 ```
 
@@ -67,8 +66,8 @@ ed otteniamo la seguente modifica alla tabella *users*.
 ***codice 02 - .../models/user.rb - line: 3***
 
 ```ruby
-  #enum language: [:it, :en]
-  enum language: {it: 0, en: 1}
+  #enum language: [:it, :en, :pt]
+  enum language: {it: 0, en: 1, pt: 2}
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/04_03-models-user.rb)
@@ -127,8 +126,6 @@ oppure
 -> u.language = :en 
 -> u.save 
 ```
-
-
 
 
 
@@ -197,27 +194,6 @@ La vediamo nel prossimo capitolo perché in questo non abbiamo fatto modifiche a
 $ git add -A
 $ git commit -m "add language field to users table"
 ```
-
-
-
-## Pubblichiamo su Heroku
-
-```bash
-$ git push heroku ui:main
-$ heroku run rails db:migrate
-```
-
-
-
-## Chiudiamo il branch
-
-Lo chiudiamo nel prossimo capitolo.
-
-
-
-## Facciamo un backup su Github
-
-Lo facciamo nel prossimo capitolo.
 
 
 
