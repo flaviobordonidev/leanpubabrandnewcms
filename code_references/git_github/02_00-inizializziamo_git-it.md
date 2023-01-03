@@ -16,7 +16,13 @@ Implementiamo git.
 
 
 
-## inizializziamo
+## Inizializziamo per Obsidian
+
+> vedi prossimo paragrafo: *git_obsidian*
+
+
+
+## Inizializziamo per Rails
 
 Se non è stato fatto, inizializiamo *git*.
 
