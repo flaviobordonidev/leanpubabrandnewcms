@@ -1,7 +1,9 @@
 # <a name="top"></a> Cap 2.2 - Inizializiamo Github
 
 Creiamo il nostro repository remoto su GitHub.
-Lo facciamo perché render.com ha github come repository principale per caricare la nostra app.
+Lo facciamo per due motivi:
+- per avere un backup in cloud su GitHub
+- per andare in produzione, perché l'app in produzione la ospitiamo su render.com e loro usano github come repository principale per prendere l'app e fare il "deployment" in prodozione.
 Si può anche caricare da un'altra repository pubblica di Git ma con GitHub è più facile.
 
 

@@ -9,8 +9,13 @@ Creiamo il nostro repository locale su Git.
 - [01-base/02-git/09_00-credential_and_masterkey]
 
 
+## Installiamo Git
 
-## Attiviamo Git
+Git è già impostato da Rails quando creiamo una nuova app, quindi è già pronto all'uso.
+
+
+
+## Archiviamo su Git
 
 Prima di andare su Github dobbiamo fare il primo commit su Git in modo che sia creato il branch principale; ossia il branch `main`.
 
