@@ -1,8 +1,6 @@
 # <a name="top"></a> Cap postgresql.3 - Colleghiamoci al database remoto
 
-Ci colleghiamo al database di produzione `ubuntudream_production` che stiamo ospitando su *render.com*.
-
-> `ubuntudream_production` è un nome di database scelto per fare gli esempi. Può essere qualsiasi nome, anche se per convenzione Rails tende ad essere `nomeapp_production`.
+Ci colleghiamo al database di sviluppo in locale che stiamo ospitando su `multipass`.
 
 
 

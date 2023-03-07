@@ -116,11 +116,47 @@ Indexes:
 ubuntudream_production-> 
 ```
 
+> per uscire premere il tasto "q"
 
-INSERT INTO users (username, email, password, password_confirmation) VALUES ('Ann', 'ann@test.abc', 'passworda', 'passworda');
 
 
-User.create(username: 'Ann', email: 'ann@test.abc', password: 'passworda', password_confirmation: 'passworda')
+## Vediamo tutti i records nella tabella "users"
+
+```sql
+SELECT * FROM users;
+```
+
+Esempio:
+
+```sql
+ubuntudream_production_arvy=> SELECT * FROM users;
+
+ id | username | first_name | last_name | location | bio | phone_number | email | encrypted_password | reset_password_token | reset_password_sent_at | remember_created_at | created_at | updated_at | role 
+----+----------+------------+-----------+----------+-----+--------------+-------+--------------------+----------------------+------------------------+---------------------+------------+------------+------
+(0 rows)
+
+(END)
+```
+
+> per uscire premere il tasto "q"
+
+
+
+## Aggiungiamo un utente
+
+```sql
+INSERT INTO users (username, email, encrypted_password) VALUES ('Ann', 'ann@test.abc', 'passworda');
+```
+
+> ATTENZIONE!</br>
+> La password viene inserita in chiaro ed invece rails si aspetta la password criptata.
+> lo risolviamo più avanti in questo capitolo
+
+Come vedremo più in basso, il comando giusto è:
+
+```sql
+INSERT INTO users (id, username, email, encrypted_password, created_at, updated_at) VALUES (1, 'Ann', 'ann@test.abc', '$2a$12$x/A/gioZz2yLD6QHAZwE0.VPp0ZjILzbExYCTlU8.YYvd9Km5nEYO', '2022-10-08 23:30:28.257872', '2022-10-08 23:30:28.257872');
+```
 
 
 
@@ -149,6 +185,7 @@ WHERE id = 1;
 
 ## Colleghiamoci al database locale
 
+```sql
 psql -d database -U user -W
 
 
@@ -159,11 +196,13 @@ psql -d database -U user -W
 (1 row)
 
 (END)
+```
 
+> vediamo che la password "passworda" è immagazzinata criptata nella tabella del database locale così:</br>
+> $2a$12$x/A/gioZz2yLD6QHAZwE0.VPp0ZjILzbExYCTlU8.YYvd9Km5nEYO
 
+Quindi la inseriamo così com'è anche nel nostro database di produzione su render.com:
 
+```sql
 INSERT INTO users (id, username, email, encrypted_password, created_at, updated_at) VALUES (1, 'Ann', 'ann@test.abc', '$2a$12$x/A/gioZz2yLD6QHAZwE0.VPp0ZjILzbExYCTlU8.YYvd9Km5nEYO', '2022-10-08 23:30:28.257872', '2022-10-08 23:30:28.257872');
-
-INSERT INTO users (id, username, email, created_at, updated_at) VALUES (1, 'Ann', 'ann@test.abc', '2022-10-08 23:30:28.257872', '2022-10-08 23:30:28.257872');
-
-$2a$12$x/A/gioZz2yLD6QHAZwE0.VPp0ZjILzbExYCTlU8.YYvd9Km5nEYO
+```

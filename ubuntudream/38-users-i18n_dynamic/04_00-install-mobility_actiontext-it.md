@@ -1,23 +1,8 @@
-# <a name="top"></a> Cap 15b.2 - Installiamo mobility-actiontext
-
-
-
-
-> questo capitolo lo abbiamo spostato in 38-users-i18n_dynamic/04_00-install-mobility_actiontext-it
-> va modificato e rinominato `lessons-i18n_dynamic_actiontext-it`
-> la parte di installazione scriviamo che è già stata fatta nei capitoli precedenti ed inseriamo/implementiamo la parte di traduzione delle descrizioni dei quadri: `@lesson.description_rtf`
-
- 
-
-[TODO]
-
-
-
-
-
-
+# <a name="top"></a> Cap 38.4 - Installiamo mobility-actiontext
 
 Questa gemma amplia le funzionalità della gemma `mobility` permettendogli di gestire anche ActionText.
+
+> vedi 64-lessons-i18n-03-install-mobility_actiontext-it
 
 
 
@@ -40,13 +25,13 @@ Questa gemma amplia le funzionalità della gemma `mobility` permettendogli di ge
 ## Prerequisiti di installazione
 
 - deve essere installato Action Text.
-- deve essere installato Mobility without tables. (credo intenda senza il backend table... se intende che avremmo dovuto aspettare a fare il db:migrate su mobility ormai è tardi ^_^)
+- deve essere installato Mobility without tables. (credo intenda senza il backend table...)
 
 
 
 ## Installiamo la gemma "mobility-actiontext"
 
-Per gestire più lingue sul database installiamo la gemma Mobility.
+Per gestire più lingue sul rich-text di Actiontext installiamo la gemma `mobility-actiontext` che estende le funzionalità della gemma `mobility` che abbiamo installato nei capitoli precedenti.
 
 I> verifichiamo [l'ultima versione della gemma](https://rubygems.org/gems/mobility-actiontext)
 I>
@@ -109,7 +94,7 @@ $ rails db:migrate
 
 Abbiamo errori perché la tabella action_text_rich_texts non è vuota.
 
-```
+```ruby
 ubuntu@ubuntufla:~/ubuntudream (lng)$rails db:migrate
 == 20230110143649 TranslateRichTexts: migrating ===============================      
 -- add_column(:action_text_rich_texts, :locale, :string, {:null=>false})             
@@ -152,6 +137,13 @@ class TranslateRichTexts < ActiveRecord::Migration[6.1]
 end
 ```
 
+Effettuiamo il rails db migrate
+
+```bash
+$ rails db:migrate
+```
+
+Adesso funziona. ^_^
 
 
 

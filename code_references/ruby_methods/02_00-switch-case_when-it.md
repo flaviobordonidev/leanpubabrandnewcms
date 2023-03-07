@@ -12,7 +12,7 @@ Risorse web:
 
 I assume you refer to case/when.
 
-~~~~~~~~
+```ruby
 case a_variable # a_variable is the variable we want to compare
 when 1    #compare to 1
   puts "it was 1" 
@@ -21,11 +21,11 @@ when 2    #compare to 2
 else
   puts "it was something else"
 end
-~~~~~~~~
+```
 
 or
 
-~~~~~~~~
+```ruby
 puts case a_variable
 when 1
   "it was 1"
@@ -34,13 +34,13 @@ when 2
 else
   "it was something else"
 end
-~~~~~~~~
+```
 
 EDIT
 
 Something that maybe not everyone knows about but what can be very useful is that you can use regexps in a case statement.
 
-~~~~~~~~
+```ruby
 foo = "1Aheppsdf"
 
 what = case foo
@@ -52,7 +52,7 @@ else
   "Begins with something else"
 end
 puts "String: #{what}"
-~~~~~~~~
+```
 
 Thanks a lot. Can I replace a_variable with params[:id] right? – glarkou Jul 6 '11 at 22:11 
 Absolutely, just make sure you are comparing variables of the same type, e.g "1" is not equal to 1. However "1".to_i is equal to 1 (to_i converts a string to an integer). If you want to compare params[:id] with an integer you need to do "case params[:id].to_i". It looks a bit strange to me to test params[:id] with "case", are you sure about what you are doing?
@@ -62,12 +62,11 @@ Important: Unlike switch statements in many other languages, Ruby’s case does 
 
 
 
-
 ## How do I write a switch statement in Ruby?
 
 Ruby uses the case expression instead.
 
---------
+```ruby
 case x
 when 1..5
   "It's between 1 and 5"
@@ -80,14 +79,13 @@ when String
 else
   "You gave me #{x} -- I have no idea what to do with that."
 end
----------
+```
 
 Ruby compares the object in the when clause with the object in the case clause using the === operator. For example, 1..5 === x, and not x === 1..5.
 
 This allows for sophisticated when clauses as seen above. Ranges, classes and all sorts of things can be tested for rather than just equality.
 
 Unlike switch statements in many other languages, Ruby’s case does not have fall-through, so there is no need to end each when with a break. You can also specify multiple matches in a single when clause like when "foo", "bar".
-
 
 
 

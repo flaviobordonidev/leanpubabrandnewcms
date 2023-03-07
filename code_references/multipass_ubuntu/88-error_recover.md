@@ -1,4 +1,7 @@
-# Error recover
+# <a name="top"></a> Cap multipass_ubuntu.88 - Multipass Error recover
+
+Ripristiniamo una sessione bloccata di multipass
+
 
 
 ## Risorse esterne
@@ -32,6 +35,11 @@ root               141   0.0  0.1  4498516  19276   ??  Ss    1:32PM   0:00.90 /
 Kill the process with the `PID` mentioned on above output.
 Quello relativo a `multipassd` normalmente eseguito come `root`. Nel nostro caso è **141**.
 
+> Nota:</br>
+> La riga con pid 141 va a capo. La parola `multipassd` è nella seconda parte.</br>
+> `/Library/Application Support/com.canonical.multipass/bin/multipassd`
+
+
 ```bash
 $ sudo kill -9 <PID>
 ```
@@ -52,11 +60,13 @@ MacBook-Pro-di-Flavio:~ FB$ ps aux | grep multipass
 FB                4089   0.0  0.0  4268424    724 s002  S+   12:29PM   0:00.00 grep multipass
 root               103   0.0  0.3  4487284  43832   ??  Ss    9:39AM   0:05.53 /Library/Application Support/com.canonical.multipass/bin/multipassd --verbosity debug
 FB                4074   0.0  0.2  4702116  34680   ??  S    12:28PM   0:00.36 multipass.gui --autostarting
+
 MacBook-Pro-di-Flavio:~ FB$ sudo kill -9 103
+
 MacBook-Pro-di-Flavio:~ FB$ multipass list
 Name                    State             IPv4             Image
 ubuntufla               Stopped           --               Ubuntu 20.04 LTS
-MacBook-Pro-di-Flavio:~ FB$ 
+ 
 MacBook-Pro-di-Flavio:~ FB$ multipass start ubuntufla
 MacBook-Pro-di-Flavio:~ FB$ multipass list
 Name                    State             IPv4             Image

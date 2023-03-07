@@ -3,6 +3,18 @@
 Installazione ed uso di Pundit
 
 
+---
+https://evilmartians.com/chronicles/gemfile-of-dreams-libraries-we-use-to-build-rails-apps
+
+Historically, we’ve used Pundit to implement authorization enforcement, but today we have a better option:
+
+```ruby
+gem 'action_policy'
+```
+
+Action Policy is Pundit on steroids. It uses the same concepts (policies) but provides more out-of-the-box features (performance and is developer-experience oriented.)
+---
+
 
 ## Risorse interne
 

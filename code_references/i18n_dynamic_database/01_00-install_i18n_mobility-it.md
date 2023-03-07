@@ -15,6 +15,8 @@ Installiamo la gemma per avere le versioni multi lingua nei campi delle tabelle 
 - [gem mobility - main site](https://github.com/shioyama/mobility)
 - [article](https://dejimata.com/2017/3/3/translating-with-mobility)
 - [Storing Rails translations inside the database with Mobility](https://www.youtube.com/watch?v=2Fyg-22iA9I)
+- [Mobility Gem: How to store Rails translations inside a database](https://lokalise.com/blog/storing-rails-translations-in-database-with-mobility/)
+
 
 
 

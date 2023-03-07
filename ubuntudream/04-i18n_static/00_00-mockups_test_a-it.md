@@ -16,7 +16,12 @@ Abbiamo già creato il controller e le views `mockups`. In questo paragrafo aggi
 
 ## Risorse esterne
 
-- []()
+- [Rails Internationalization (I18n) API](https://guides.rubyonrails.org/i18n.html)
+- [Rails I18n, check if translation exists?](https://stackoverflow.com/questions/12353416/rails-i18n-check-if-translation-exists/12353485#12353485)
+
+```ruby
+I18n.t("some_translation.key", :default => "fallback text")
+```
 
 
 
