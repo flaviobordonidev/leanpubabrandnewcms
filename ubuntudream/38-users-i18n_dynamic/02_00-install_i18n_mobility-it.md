@@ -183,7 +183,7 @@ Ancora non abbiamo cambiamenti da vedere.
 
 ```bash
 $ git add -A
-$ git commit -m "Install Globalize - dynamic i18n"
+$ git commit -m "Install Mobility - dynamic i18n"
 ```
 
 
