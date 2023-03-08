@@ -46,3 +46,12 @@ Mettiamo i pulsanti solo per l'amministratore che gli permettono di fare le modi
 >
 > vedi [BootStrap doc: flex - justify-content](https://getbootstrap.com/docs/4.0/utilities/flex/#justify-content)
 
+
+
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/02_00-roles-admin-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/13-roles/04_00-implement_roles-it.md)
