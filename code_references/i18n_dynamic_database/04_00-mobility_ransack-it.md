@@ -18,6 +18,8 @@ Usiamo la ricerca con la gemma `ransack` e `mobility` per avere ricerche in più
 
 - [ransack](https://activerecord-hackery.github.io/ransack/getting-started/simple-mode/)
 
+- [Ransack search include parameter](https://stackoverflow.com/questions/35750932/ransack-search-include-parameter)
+
 - [Search And Sort In Ruby On Rails 6 With The Rails Ransack Gem](https://www.youtube.com/watch?v=qWObWACNY9g)
 - [Search And Sort In Ruby On Rails 6 With The Rails Ransack Gem part2](https://www.youtube.com/watch?v=rtg-5EXwpbg)
 - [Search And Sort In Ruby On Rails 6 With The Rails Ransack Gem part3](https://www.youtube.com/watch?v=IexdVzZBOrU&t=3s)
@@ -26,6 +28,21 @@ Usiamo la ricerca con la gemma `ransack` e `mobility` per avere ricerche in più
 
 
 - [Polyglot content in a rails app](https://revs.runtime-revolution.com/polyglot-content-in-a-rails-app-aed823854955)
+
+
+
+## Search Matchers
+
+- [Search Matchers](https://activerecord-hackery.github.io/ransack/getting-started/search-matches/)
+
+
+Predicate	| Description       |	Notes
+:-        | :-                | :-
+*_eq	    | equal	            |
+*_not_eq	| not equal         |
+*_matches	| matches with LIKE	| e.g. q[email_matches]=%@gmail.com
+
+...
 
 
 

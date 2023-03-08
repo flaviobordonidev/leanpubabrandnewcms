@@ -114,13 +114,18 @@ SELECT * FROM users;
 
 
 
-## Aggiungiamo manualmente l'utene Ann
+## Aggiungiamo manualmente l'utente Ann
+
+Aggiungiamo un record al nostro database remoto (production) su render.com.
 
 ```sql
 INSERT INTO users (id, username, email, encrypted_password, created_at, updated_at) VALUES (1, 'Ann', 'ann@test.abc', '$2a$12$x/A/gioZz2yLD6QHAZwE0.VPp0ZjILzbExYCTlU8.YYvd9Km5nEYO', '2022-10-08 23:30:28.257872', '2022-10-08 23:30:28.257872');
 ```
 
-Vediamo che è stato inserito correttamente.
+>l'encrypted_password l'abbiamo copiata dal postgresql db locale (development), in cui abbiamo già inserito l'utente Ann usando la password in chiaro e rails l'ha archiviata criptata nel database. Aggiungendola criptata possiamo fare il login in remoto con la stessa password in chiaro usata in locale. 
+
+
+Verifichiamo che l'utente è stato inserito correttamente.
 
 ```sql
 SELECT * FROM users;

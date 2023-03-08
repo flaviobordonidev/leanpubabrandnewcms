@@ -149,6 +149,10 @@ Adesso funziona. ^_^
 
 ## Usiamo mobility con active_text
 
+> ATTENZIONE!
+> Nell'esempio in basso stiamo usando "lessons" ma avendo spostato il capitolo su "users" creiamo un campo `bio_rtf`. Lasciamo il campo `bio` di tipo stringa perché ci servirà più avanti per le ricerche con Ransack.
+> Il campo `bio_rtf` lo usiamo solo a scopo dimostrativo ed una volta usato active_text su lesson possiamo cancellare `bio_rtf`su users. Per avere ricerche veloci è meglio lasciare `bio` come solo testo string.
+
 Attiviamo l'internazionalizzazione per campo ActionText usando la combinazione delle due gemme: `mobility` e `mobility-actiontext` installate precedentemente.
 Indichiamo nel *model* i campi della tabella che vogliamo tradurre. 
 

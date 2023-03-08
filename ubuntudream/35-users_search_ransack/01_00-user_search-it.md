@@ -104,7 +104,7 @@ Usando `lambda` il codice può essere riscritto così:
 
 ## Implementiamo lo style
 
-I got the following to work:
+In questo modo lo stile funziona!
 
 ```html+erb
   <%= form_with(url: "", method: "get", local:true, class: "rounded position-relative") do %>
@@ -116,7 +116,7 @@ I got the following to work:
   <% end %>
 ```
 
-> `submit_tag` doesn't seem to take a block, so the way to do it is with `button_tag`.</br>
+> `submit_tag` doesn't take a block, so the way to do it is with `button_tag`.</br>
 > In this case the "block" is:</br>
 > `<%= ... do %>` </br>
 >   `...` </br>
@@ -135,3 +135,9 @@ Ampliamo la ricerca anche ad altri campi.
 ```
 
 
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03_00-browser_tab_title_users-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02_00-users_form_i18n-it.md)

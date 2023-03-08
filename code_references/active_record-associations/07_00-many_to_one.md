@@ -5,6 +5,8 @@ Associazione molti-a-uno
 
 ## Risorse esterne
 
+-[Rails sito ufficiale: association_basics](https://guides.rubyonrails.org/association_basics.html)
+
 -[rails-associations](https://www.sitepoint.com/brush-up-your-knowledge-of-rails-associations/)
 -[association_basics](http://guides.rubyonrails.org/association_basics.html#self-joins)
 

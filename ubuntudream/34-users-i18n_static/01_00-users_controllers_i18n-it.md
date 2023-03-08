@@ -25,7 +25,7 @@ Internazionalizziamo l'azione *create*.
 ```
 
 
-Internazionalizziamo l'azione *update*.
+Internazionalizziamo l'azione *update* con `t(".notice")`.
 
 ***codice 01 - ...continua - line:48***
 
@@ -33,7 +33,7 @@ Internazionalizziamo l'azione *update*.
         format.html { redirect_to user_url(@user), notice: t(".notice") } # notice: "User was successfully updated."
 ```
 
-Internazionalizziamo l'azione *destroy*.
+Internazionalizziamo l'azione *destroy* con `t(".notice")` e `t(".notice_logged_in")`.
 
 ***codice 01 - ...continua - line:64***
 

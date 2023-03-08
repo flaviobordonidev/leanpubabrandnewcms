@@ -10,6 +10,13 @@ Mobility is a gem for storing and retrieving translations as attributes on a cla
 
 
 
+## Risorse esterne
+
+- [Mobility Gem: How to store Rails translations inside a database](https://lokalise.com/blog/storing-rails-translations-in-database-with-mobility/)
+- [video: Storing Rails translations inside the database with Mobility](https://www.youtube.com/watch?v=2Fyg-22iA9I)
+
+
+
 ## Apriamo il branch "Install Gem Mobility"
 
 ```bash
@@ -179,3 +186,11 @@ $ git add -A
 $ git commit -m "Install Globalize - dynamic i18n"
 ```
 
+
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03_00-browser_tab_title_users-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02_00-users_form_i18n-it.md)

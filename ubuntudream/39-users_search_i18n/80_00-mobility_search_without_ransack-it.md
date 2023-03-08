@@ -1,15 +1,26 @@
+# <a name="top"></a> Cap 39.80 - Come fare le ricerche senza usare Ransack
 
-vedi `15b-lessons-i18n-03-install-mobility_actiontext-it`
 
----
 
+## Risorse interne
+
+- []()
+
+
+
+## Risorse esterne
+
+- []()
+
+
+
+## Apriamo il branch
 
 
 
 
 ## Mobility gem + Rails : how to perform a join with LIKE query on a translated model
 
-- [Mobility gem + Rails : how to perform a join with LIKE query on a translated model](https://stackoverflow.com/questions/51132753/mobility-gem-rails-how-to-perform-a-join-with-like-query-on-a-translated-mod)
 
 I had this query working before implementing Mobility on my app :
 
@@ -47,3 +58,11 @@ Thanks to Chris' help, here is the working Arel query for whoever might be inter
 Product.joins(:category).merge(Category.i18n {name.matches_any(categories)})
 ```
 
+
+
+
+---
+
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/09-manage_users/03_00-browser_tab_title_users-it.md)
+ | [top](#top) |
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/10-users_i18n/02_00-users_form_i18n-it.md)
