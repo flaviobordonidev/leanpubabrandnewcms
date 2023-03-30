@@ -2,13 +2,14 @@
 
 Inseriamo un form per la ricerca delle lezioni composto da un campo di imput ed un pulsante di search.
 
-> nota: per la ricerca abbiamo utilizzato la gemma `ransack`.
+> QUESTA PARTE È SOLO DIDATTICA!!</br>
+> Mostra come avremmo impostato la ricerca se non avessimo avuto la gemma "ransack"
 
 
 
 ## Risorse interne
 
-- []()
+- [99-rails_references/views/pagination]()
 
 
 
@@ -17,14 +18,6 @@ Inseriamo un form per la ricerca delle lezioni composto da un campo di imput ed 
 ```bash
 $ git checkout -b lis
 ```
-
-
-
-
-
-
-[TODO -> Mettiamo RANSACK!!!!]
-
 
 
 
