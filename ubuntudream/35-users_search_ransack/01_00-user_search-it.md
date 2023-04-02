@@ -1,6 +1,6 @@
 # <a name="top"></a> Cap 10.1 - Implementiamo il search
 
-Inseriamo un form per la ricerca delle aziende composto da un campo di imput ed un pulsante di search.
+Inseriamo un form per la ricerca degli utenti composto da un campo di imput ed un pulsante di search.
 
 
 
@@ -24,7 +24,7 @@ Non essendo il form direttamente legato ad una tabella usiamo `form_with` con `u
 
 > In passato avremmo usato "form_tag" ma oggi c'è "form_with" che funziona per tutte le situazioni.
 
-***Codice 01 - .../views/companies/index.html.erb - linea:112***
+***Codice 01 - .../views/users/index.html.erb - linea:112***
 
 ```html+erb
   <%= form_with(url: "", method: "get", local:true) do %>
@@ -33,8 +33,9 @@ Non essendo il form direttamente legato ad una tabella usiamo `form_with` con `u
   <% end %>
 ```
 
-> Nota: Su rails 6 "form_with" di default è impostato come "remote" ossia ha "local:false", al contrario di "form_tag". Quindi per rimpiazzare "form_tag" con "form_with" dobbiamo esplicitare l'opzione ", local:true" altrimenti non funziona il submit.</br>
-> Da rails 7 è impostato di default come "local" ossia ha "local:true" quindi si può omettere. [DAVERIFICARE]
+> Nota: Su rails 6 `form_with` di default è impostato come "remote" ossia ha `local:false`, al contrario di `form_tag`. Quindi per rimpiazzare `form_tag` con `form_with` dobbiamo esplicitare l'opzione `local:true` altrimenti non funziona il submit.</br>
+> Da rails 7 è impostato di default come "local" ossia ha `local:true` quindi si può omettere.
+  [DAVERIFICARE]
 
 Analizziamo il codice:
 
