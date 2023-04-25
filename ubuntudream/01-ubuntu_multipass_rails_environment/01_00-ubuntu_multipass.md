@@ -74,7 +74,7 @@ Una volta installato, apri l'app Terminale e puoi utilizzare il comando `multipa
 Creo istanza da 20G di spazio disco con il comando:
 
 ```bash
-$ multipass launch --name ubuntufla --mem 4G --disk 20G
+$ multipass launch --name ubuntufla --memory 4G --disk 20G
 ```
 
 > Se avessi usato `multipass launch --name ubuntufla` la macchina virtuale avrebbe avuto 1 cpu, 1G mem, 5G disk. 
@@ -82,18 +82,25 @@ $ multipass launch --name ubuntufla --mem 4G --disk 20G
 > Avendo il mio computer una sola CPU lascio il valore di default che è 1 altrimenti potevo passare `--cpus 2`
 >
 > Se avessi avuto un computer con 4 cpus 16 Gb di RAM ed 1 TB di hd probabilmente avrei usato il comando <br/>
-> $ multipass launch --name ubuntufla --cpus 2 --mem 4G --disk 40G
+> $ multipass launch --name ubuntufla --cpus 2 --memory 4G --disk 40G
 
 Esempio:
 
 ```bash
-MacBook-Pro-di-Flavio:~ FB$ multipass launch --name ubuntufla --mem 4G --disk 20G
-Launched: ubuntufla                                                             
-MacBook-Pro-di-Flavio:~ FB$ multipass list
+MacBook-Pro-di-Flavio:Downloads FB$ multipass list
 Name                    State             IPv4             Image
-flub                    Running           192.168.64.4     Ubuntu 20.04 LTS
-ubuntufla               Running           192.168.64.3     Ubuntu 20.04 LTS
-MacBook-Pro-di-Flavio:~ FB$ 
+primary                 Running           192.168.64.5     Ubuntu 22.04 LTS
+ubuntufla               Stopped           --               Ubuntu 20.04 LTS
+MacBook-Pro-di-Flavio:Downloads FB$ multipass stop primary
+MacBook-Pro-di-Flavio:Downloads FB$ multipass launch --name ub22fla --mem 4G --disk 20G
+warning: "--mem" long option will be deprecated in favour of "--memory" in a future release.Please update any scripts, etc.
+Launched: ub22fla                                                               
+MacBook-Pro-di-Flavio:Downloads FB$ multipass list                              
+Name                    State             IPv4             Image
+primary                 Stopped           --               Ubuntu 22.04 LTS
+ub22fla                 Running           192.168.64.6     Ubuntu 22.04 LTS
+ubuntufla               Stopped           --               Ubuntu 20.04 LTS
+MacBook-Pro-di-Flavio:Downloads FB$
 ```
 
 
@@ -130,7 +137,8 @@ ubuntufla               Running           192.168.64.3     Ubuntu 20.04 LTS
 Adesso logghiamoci nella nostra istanza di Ubuntu Linux ed impostiamo la password per l'utente di default che si chiama *ubuntu* (che fantasia che hanno in Canonical ^_^).
 
 ```bash
-$ multipass shell ubuntufla
+$ multipass shell ub22fla
+$ whoami
 $ sudo passwd ubuntu
 ```
 
@@ -139,39 +147,45 @@ Ci sarà chiesto di inserire una password e di confermarla.
 Esempio:
 
 ```bash
-MacBook-Pro-di-Flavio:~ FB$ multipass shell ubuntufla
-Welcome to Ubuntu 20.04.3 LTS (GNU/Linux 5.4.0-99-generic x86_64)
+MacBook-Pro-di-Flavio:Downloads FB$ multipass shell ub22fla
+Welcome to Ubuntu 22.04.2 LTS (GNU/Linux 5.15.0-69-generic x86_64)
 
  * Documentation:  https://help.ubuntu.com
  * Management:     https://landscape.canonical.com
  * Support:        https://ubuntu.com/advantage
 
-  System information as of Wed Mar  2 17:27:25 CET 2022
+  System information as of Thu Apr 20 12:14:45 CEST 2023
 
-  System load:  0.41              Processes:               121
-  Usage of /:   6.9% of 19.21GB   Users logged in:         0
-  Memory usage: 4%                IPv4 address for enp0s2: 192.168.64.3
+  System load:  0.11279296875     Processes:               100
+  Usage of /:   7.5% of 19.20GB   Users logged in:         0
+  Memory usage: 5%                IPv4 address for enp0s2: 192.168.64.6
   Swap usage:   0%
 
 
-1 update can be applied immediately.
-To see these additional updates run: apt list --upgradable
+ * Introducing Expanded Security Maintenance for Applications.
+   Receive updates to over 25,000 software packages with your
+   Ubuntu Pro subscription. Free for personal use.
+
+     https://ubuntu.com/pro
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
 
 
-The list of available updates is more than a week old.
-To check for new updates run: sudo apt update
-
-Last login: Wed Mar  2 17:26:02 2022 from 192.168.64.1
 To run a command as administrator (user "root"), use "sudo <command>".
 See "man sudo_root" for details.
 
-ubuntu@ubuntufla:~$ whoami
+ubuntu@ub22fla:~$ whoami
 ubuntu
-ubuntu@ubuntufla:~$ sudo passwd ubuntu
+ubuntu@ub22fla:~$ sudo passwd ubuntu
 New password: 
 Retype new password: 
 passwd: password updated successfully
-ubuntu@ubuntufla:~$ 
+ubuntu@ub22fla:~$ 
 ```
 
 
@@ -186,20 +200,20 @@ $ sudo -l
 
 > Se vedi le seguenti righe sul tuo terminale, significa che attualmente appartieni al gruppo **sudo**.
 >
-> `User user may run the following commands on server-ubuntu:`
+> `User <<user_name>> may run the following commands on <<server-ubuntu>>:`
 > `   (ALL : ALL) ALL`
 
 Esempio:
 
 ```bash
-ubuntu@ubuntufla:~$ sudo -l
-Matching Defaults entries for ubuntu on ubuntufla:
-    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+ubuntu@ub22fla:~$ sudo -l
+Matching Defaults entries for ubuntu on ub22fla:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty
 
-User ubuntu may run the following commands on ubuntufla:
+User ubuntu may run the following commands on ub22fla:
     (ALL : ALL) ALL
     (ALL) NOPASSWD: ALL
-ubuntu@ubuntufla:~$
+ubuntu@ub22fla:~$ 
 ```
 
 In alternativa, puoi eseguire il comando `groups` e verificare che **sudo** sia una delle voci.
@@ -211,9 +225,9 @@ $ groups
 Esempio:
 
 ```bash
-ubuntu@ubuntufla:~$ groups
+ubuntu@ub22fla:~$ groups
 ubuntu adm dialout cdrom floppy sudo audio dip video plugdev netdev lxd
-ubuntu@ubuntufla:~$ 
+ubuntu@ub22fla:~$ 
 ```
 
 

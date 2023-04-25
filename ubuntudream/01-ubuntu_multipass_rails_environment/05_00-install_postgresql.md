@@ -20,7 +20,13 @@ Di default Rails ha attivo il database sqlite3 ma noi sin da subito nella nostra
 
 ## Verifichiamo che postgreSQL non è installato
 
-Proviamo ad avviare postgres server da terminale.
+Proviamo a vedere la versione
+
+```bash
+$ psql -V
+```
+
+O proviamo ad avviare postgres server da terminale.
 
 ```bash
 $ sudo service postgresql start
@@ -39,6 +45,13 @@ ubuntu@ubuntufla:~$
 ## Installiamo PostgreSQL
 
 Poiché la nostra VM ha *OS Ubuntu* usiamo il suo packet manager *apt* per installare PostgreSQL.
+
+ATTENZIONE **NON** USIAMO subito questi comandi altrimenti non viene installata l'ultima versione di Postgres
+
+
+[vedi capitolo di postgre --> installazione su codereference]
+
+
 
 ```bash
 $ sudo apt update
@@ -237,8 +250,18 @@ Abbiamo ancora **16GB** disponibili.
 
 Impostiamo il collegamento di rails a postgresql con l'indirizzo **localhost** e la porta **5432**.
 
+> apriamo il file `postgresql.conf` nella directory `/etc/postgresql/<<version>>/main/`
+
+Se usiamo la versione 12:
+
 ```bash
 $ sudo vim /etc/postgresql/12/main/postgresql.conf
+```
+
+Se usiamo la versione 15:
+
+```bash
+$ sudo vim /etc/postgresql/15/main/postgresql.conf
 ```
 
 Per fare delle modifiche con VIM:
@@ -297,11 +320,20 @@ ubuntu@ubuntufla:~$
 > L'id utente **non è necessariamente** quello che vediamo nel prompt dei comandi. <br/>
 > Nel nostro caso è lo stesso ma non è sempre così.
 
-Aggiorniamo quindi il file di configurazione
+Aggiorniamo quindi il file di configurazione.
+
+Se usiamo la versione 12:
 
 ```bash
 $ sudo vim /etc/postgresql/12/main/pg_hba.conf
 ```
+
+Se usiamo la versione 15:
+
+```bash
+$ sudo vim /etc/postgresql/15/main/pg_hba.conf
+```
+
 
 Troviamo la parte:
 

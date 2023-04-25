@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap i18n_dynamic_database.2 - Internazionalizziamo gli articoli
+# <a name="top"></a> Cap i18n_dynamic_database.2 - Internazionalizziamo i passaggi della lezione
 
 Usiamo `mobility` per avere versioni in più lingue delle domande degli steps.
 
