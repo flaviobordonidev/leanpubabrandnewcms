@@ -1,5 +1,14 @@
 # restart db
 
+[ATTENZIONE-guarda:]
+- [Vedi code_references/postgresql/04_00-backup_and_recover_database_render-it]()
+  nel capitolo qui sopra facciamo la stessa cosa di questo capitolo ma la facciamo meglio!!!
+
+[TODO: INTEGRARE CAPITOLO NEL LINK IN ALTO CON QUESTO CAPITOLO]
+
+
+
+--
 In questo capitolo rimettiamo in piedi il database partendo da zero.
 
 Lo scenario è quello di un database su render.com di cui non è stato fatto backup e che è stato cancellato. Ad esempio il database free che dopo 3 mesi è cancellato.

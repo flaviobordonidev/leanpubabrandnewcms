@@ -70,6 +70,19 @@ Per farlo funzionare dobbiamo usare `button_to`.
 > Se lo proviamo verrà ricaricata la stessa pagina *mockups/page_a* perché è la pagina di root. La differenza è che apparirà il messaggio di corretto logout.
 
 
+> Il `button_to` è il metodo più corretto per fare il login. </br>
+> Se usiamo "link_to" per funzionare Rails crea un "form" con "button_to" con javascript.
+> vedi [gorails: link_to-vs-button_to](https://gorails.com/episodes/link_to-vs-button_to-in-rails?autoplay=1&ck_subscriber_id=361075866)
+
+```html+erb
+<!-- BAD -->
+<%#= link_to "logout", destroy_user_session_path, data: {turbo_method: :delete}, class: "dropdown-item" %>
+
+<!-- GOOD -->
+<%= button_to "logout", destroy_user_session_path, method: :delete, class: "dropdown-item" %>
+```
+
+
 
 ## Aggiungiamo login
 

@@ -49,6 +49,12 @@ Per evitare che gli utenti continuino ad inserire dati nel database conviene met
 
 Da render.com --> Dashboard --> <<nome_databse>> --> Suspend Database
 
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/postgresql/04_fig01-render_postgres_suspend_1.png)
+
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/postgresql/04_fig02-render_postgres_suspend_2.png)
+
+![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/postgresql/04_fig03-render_postgres_suspend_3.png)
+
 
 
 ## Fare il dump

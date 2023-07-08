@@ -19,7 +19,7 @@ Implementiamo git per OBSIDIAN
 
 > Ho scelto di non usare il plugin perché è pensato per una sincronizzazione quindi oltre ai push fa anche un pull ogni volta che apro Obsidian. Io invece voglio fare solo dei backup e quindi fare solo dei push.</br>
 > Per la sincronizzazione uso Dropbox. </br>
-> Attenzione: su Dropbox deviniamo che la cartella Obsidian deve lavorare **"offline"** in modo da avere tutti i files disponibili per git.
+> Attenzione: su Dropbox definiamo che la cartella Obsidian deve lavorare **"offline"** in modo da avere tutti i files disponibili per git.
 
 
 ## Git init
