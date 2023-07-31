@@ -55,6 +55,9 @@ Da render.com --> Dashboard --> <<nome_databse>> --> Suspend Database
 
 ![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/postgresql/04_fig03-render_postgres_suspend_3.png)
 
+Ma per poter accedere e fare il dump lo dobbiamo toglierlo dal Suspend.
+Quindi sbrighiamoci a fare il dump altrimenti gli utenti ricominceranno a collegarsi.
+
 
 
 ## Fare il dump
@@ -99,7 +102,8 @@ Questo comando va eseguito nella VM (virtual machine) di multipass che abbia ins
 Ci scaricherà il file "database_dump.sql" sulla nostra VM.
 
 
-### Esempio con errore
+
+### Esempio con errore
 
 In questo primo esempio siamo su una VM multipass che ha Postgres 12 (quello che si installa dalla repository di default di Ubuntu 20.04) Invece su render.com è installata l'ultima versione ossia Postgres 15. Quindi abbiamo un errore.
 
@@ -116,7 +120,8 @@ ubuntu@ubuntufla:~ $
 > invece su render.com c'è la versione 15.2
 
 
-### Esempio senza errore
+
+### Esempio senza errore
 
 In questo esempio siamo su una VM multipass che ha Postgres 15 (installato cambiando il repository di default di Ubuntu 20.04 con quello di https://www.postgresql.org/download/linux/ubuntu/)
 Questo è allineato con render.com, quindi **non** abbiamo errori.
@@ -184,11 +189,11 @@ Il ripristino va fatto su un database **NUOVO APPENA CREATO** senza nessuna tabe
 
 https://dashboard.render.com/ --> Dashboard --> New + --> PostgreSQL
 
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-production/03_fig01-render_postgresql_new.png)
+![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/postgresql/04_fig04-render_new_postgres.png)
 
 Non possiamo dare lo stesso "Nome" di uno già dato, ma questo nome è solo per render.com. Il nome del database è quello nel campo "Database" e qui possiamo, e dobbiamo, usare lo stesso nome.
 
-![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-production/03_fig01-render_postgresql_new.png)
+![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/postgresql/04_fig05-render_new_postgres_name.png)
 
 Aggiungiamo un numero progressivo alla fine del "Nome" così abbiamo una traccia di quanti ripristini da dump abbiamo fatto. Quindi, nel nostro caso, avremo:
 
@@ -218,6 +223,7 @@ PGPASSWORD={PASSWORD} psql -h oregon-postgres.render.com -U {DATABASE_USER} {DAT
 
 > In pratica è la stringa che prendiamo per connetterci al database a cui aggiungiamo `< database_dump.sql` per passargli il dump del database.
 
+PGPASSWORD=0t17MnDMdQ2DnDj33YExvojaiFBxj8mo psql -h dpg-ciktvalph6eg6kef3gk0-a.frankfurt-postgres.render.com -U ubuntudream ubuntudream_production_k1q4 < database_dump.sql
 
 Esempio:
 
