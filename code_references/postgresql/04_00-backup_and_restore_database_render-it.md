@@ -223,13 +223,14 @@ PGPASSWORD={PASSWORD} psql -h oregon-postgres.render.com -U {DATABASE_USER} {DAT
 
 > In pratica è la stringa che prendiamo per connetterci al database a cui aggiungiamo `< database_dump.sql` per passargli il dump del database.
 
-PGPASSWORD=0t17MnDMdQ2DnDj33YExvojaiFBxj8mo psql -h dpg-ciktvalph6eg6kef3gk0-a.frankfurt-postgres.render.com -U ubuntudream ubuntudream_production_k1q4 < database_dump.sql
-
 Esempio:
 
 ```bash
 PGPASSWORD=x...0 psql -h d...a.frankfurt-postgres.render.com -U ubuntu ubuntudream_production_arvy < database_dump.sql
 ```
+
+PGPASSWORD=0t17MnDMdQ2DnDj33YExvojaiFBxj8mo psql -h dpg-ciktvalph6eg6kef3gk0-a.frankfurt-postgres.render.com -U ubuntudream ubuntudream_production_k1q4 < database_dump.sql
+
 
 ## Esempio di ripristino riuscito su NUOVO DB
 

@@ -48,7 +48,7 @@ User::update_all  No        Yes       No          No        No          No
 
 ### The default write accessor
 
-```
+```ruby
 user.name = "Rob"
 ```
 
@@ -64,7 +64,7 @@ You can undo the change by calling "reload!" or save the change to the database 
 
 ### The write_attribute method
 
-```
+```ruby
 user.write_attribute(:name, "Rob")
 ```
 
@@ -72,7 +72,7 @@ This is the method that is called by the default accessor above. An alias for th
 
 Just like above, this method does not yet change the attribute in the database. Use this method anywhere you need to bypass the default write accessor above, for example when you want to write a custom "attribute=" writer. In this example we automatically uppercase the name when set:
 
-```
+```ruby
 def name=(new_name)
   write_attribute(:name, new_name.upcase)
   # This is equivalent:
@@ -85,7 +85,7 @@ end
 
 ### The update_attribute method
 
-```
+```ruby
 user.update_attribute(:name, "Rob")
 ```
 
@@ -103,13 +103,13 @@ Because of that last quirk it’s a good practice to use update instead even tho
 
 ### The attributes method
 
-```
+```ruby
 user.attributes = {name: "Rob"}
 ```
 
 This method will set all the attributes you pass it. The changes are not saved to the database. Any attributes you don’t pass will be left unchanged. You can also use "assign_attributes". These are equivalent:
 
-```
+```ruby
 user.attributes = {name: "Rob", age: 12}
 user.assign_attributes {name: "Rob", age: 12}
 ```
@@ -119,7 +119,7 @@ user.assign_attributes {name: "Rob", age: 12}
 
 ### The update method
 
-```
+```ruby
 user.update(name: "Rob")
 ```
 
@@ -132,7 +132,7 @@ Note that just like "update_attribute" this method also saves other changed attr
 
 ### The update_columns method
 
-```
+```ruby
 user.update_columns(name: "Rob")
 ```
 
@@ -143,7 +143,7 @@ Much like "User::update_all" this executes a direct SQL UPDATE query and bypasse
 
 ### The update_column method
 
-```
+```ruby
 user.update_column(:name, "Rob")
 ```
 
@@ -154,7 +154,7 @@ This is equivalent to calling "user.update_columns(name: "Rob")" described above
 
 ### The update class method
 
-```
+```ruby
 User.update(1, name: "Rob")
 ```
 
@@ -164,7 +164,7 @@ This method finds the object with the specified ID and updates it’s attributes
 
 You can also pass in an array of ID’s and parameters:
 
-```
+```ruby
 User.update(
   [1,2,3],
   [
@@ -182,7 +182,7 @@ Note that the second argument is an array of Hashes
 
 ### The update_all class method
 
-```
+```ruby
 User.update_all(name: "Rob")
 ```
 
@@ -190,7 +190,7 @@ Note: this is a class method
 
 This method runs an SQL UPDATE query that updates the attributes of all objects without running any validations or callbacks. You can also call this method on a scoped relation. For exampe to update the name of all people called “Robbie”:
 
-```
+```ruby
 User.where(name: "Robbie").update_all(name: "Rob")
 ```
 

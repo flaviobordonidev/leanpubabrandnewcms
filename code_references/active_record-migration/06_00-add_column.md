@@ -12,7 +12,8 @@ add_column :table_name, :column_name, type, options
 
 
 
-## Esempio1: Add price column to eg_posts table
+## Esempio eg_posts.price
+Add price column to eg_posts table
 
 ***code n/a - "terminal" - line:n/a***
 
@@ -32,7 +33,27 @@ $ rails g migration AddPriceToEgPosts price:decimal
 
 
 
-## Esempio2: Add corporate column to companies table
+## Esempio answers.diary_chap
+Add integer column to answers table
+
+***code n/a - "terminal" - line:n/a***
+
+```ruby
+$ rails g migration AddDiaryChapToAnswers diary_chap:integer
+```
+
+***code 01 - .../db/migrate/xxx_add_diary_chap_to_answers.rb - line:n/a***
+
+```ruby
+    add_column :answers, :diary_chap, :integer, default: 0
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/99-code_references/migrate/06_01-db-migrate-xxx_add_price_to_eg_posts.rb)
+
+
+
+## Esempio companies.corporate 
+Add corporate column to companies table
 
 ***code n/a - "terminal" - line:n/a***
 
@@ -48,7 +69,8 @@ $ rails g migration AddCorporateToCompanies corporate:string
 
 
 
-## Esempio3: Add user columns to posts table ***as external_key***
+## Esempio posts.user
+Add user columns to posts table ***as external_key***
 
 ***code n/a - "terminal" - line:n/a***
 
@@ -71,7 +93,8 @@ end
 
 
 
-## Esempio4: Add address columns to kiosks table
+## Esempio kiosks.address 
+Add address columns to kiosks table
 
 ***code n/a - "terminal" - line:n/a***
 
