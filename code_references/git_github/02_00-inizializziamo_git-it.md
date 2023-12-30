@@ -15,6 +15,101 @@ Implementiamo git.
 - [Gitignore - ignoring files](https://help.github.com/articles/ignoring-files)
 
 
+## Inizializziamo per tt-odoo-manual
+
+La cartella la metto nei miei files dropbox così se cambio computer mi basta installare dropbox e mi ritrovo la cartella pronta. (senza doverla riprendere da Github)
+
+  Creo la cartella `FlaMac/Users/FB/Dropbox/FB_projects/tt-odoo-manual`
+
+Apro la cartella su terminale:
+(Scorciatoia: scrivo `cd ` e poi trascino sul terminale la cartella)
+
+```bash
+$ cd /Users/FB/Dropbox/FB_projects/tt-odoo-manual
+```
+
+Apro una nuova finestra di Visual Studio Code (VS code) [`File -> New Windows`]
+Apro la cartella su VS Code [`File -> Open Folder...`]
+Da VS Code creo il nuovo file `README.md` dentro la cartella.
+
+Vado su GitHub (https://github.com). Faccio login con l'utente "tt-fb".
+Apro il nuovo repository "tt-odoo-manual"
+
+Torno al terminale e seguo le indicazioni per inizializzare Git ed agganciarlo al repository su GitHub.
+
+```bash
+$ cd /Users/FB/Dropbox/FB_projects/tt-odoo-manual
+$ ls -a
+$ git init
+
+$ git add -A
+$ git commit -m "first commit"
+
+# Impostiamo utente tt-fb come flavio.bordoni@tt-group.it
+$ git config --global user.name "tt-fb"
+$ git config --global user.email flavio.bordoni@tt-group.it
+$ git commit --amend --reset-author
+# Se si visualizza editor stile Vim uscire con ":q"
+$ git status
+
+# Continuiamo ad agganciare repository remoto GitHub
+$ git branch -M main
+$ git remote add origin https://github.com/tt-fb/tt-odoo-manual.git
+$ git push -u origin main
+
+# Implementare autorizzazione su GitHub
+"immagine tt-fb" -> "Settings" -> 
+```
+
+Esempio:
+```bash
+MacBook-Pro-di-Flavio:tt-odoo-manual FB$ cd /Users/FB/Dropbox/FB_projects/tt-odoo-manual
+MacBook-Pro-di-Flavio:tt-odoo-manual FB$ ls -a
+.		..		README.md
+MacBook-Pro-di-Flavio:tt-odoo-manual FB$ git init
+Initialized empty Git repository in /Users/FB/Dropbox/FB_projects/tt-odoo-manual/.git/
+MacBook-Pro-di-Flavio:tt-odoo-manual FB$ git add -A
+MacBook-Pro-di-Flavio:tt-odoo-manual FB$ git commit -m "first commit"
+[master (root-commit) 67cbea5] first commit
+ Committer: Flavio Bordoni <FB@MacBook-Pro-di-Flavio.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly:
+
+    git config --global user.name "Your Name"
+    git config --global user.email you@example.com
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 README.md
+MacBook-Pro-di-Flavio:tt-odoo-manual FB$ git config --global user.name "tt-fb"
+MacBook-Pro-di-Flavio:tt-odoo-manual FB$ git config --global user.email flavio.bordoni@tt-group.it
+MacBook-Pro-di-Flavio:tt-odoo-manual FB$ git commit --amend --reset-author
+[master 7d78dae] first commit
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 README.md
+MacBook-Pro-di-Flavio:tt-odoo-manual FB$ git status
+On branch master
+nothing to commit, working tree clean
+MacBook-Pro-di-Flavio:tt-odoo-manual FB$ git branch -M main
+MacBook-Pro-di-Flavio:tt-odoo-manual FB$ git remote add origin https://github.com/tt-fb/tt-odoo-manual.git
+MacBook-Pro-di-Flavio:tt-odoo-manual FB$ git push -u origin main
+Username for 'https://github.com': tt-fb
+Password for 'https://tt-fb@github.com': 
+remote: Support for password authentication was removed on August 13, 2021.
+remote: Please see https://docs.github.com/en/get-started/getting-started-with-git/about-remote-repositories#cloning-with-https-urls for information on currently recommended modes of authentication.
+fatal: Authentication failed for 'https://github.com/tt-fb/tt-odoo-manual.git/'
+MacBook-Pro-di-Flavio:tt-odoo-manual FB$ 
+```
+
+
+https://github.com/tt-fb/tt-odoo-manual
+
+
+
 
 ## Inizializziamo per Obsidian
 

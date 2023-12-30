@@ -43,7 +43,7 @@ Codifica del numero intero:
 
 Aggiungiamo la colonna:
 
-***code n/a - "terminal" - line:n/a***
+***Codice n/a - "terminal" - line:n/a***
 
 ```ruby
 $ rails g migration AddDiaryChapToSteps diary_chap:integer

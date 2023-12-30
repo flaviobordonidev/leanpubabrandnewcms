@@ -7,6 +7,11 @@ Facciamo un backup del database di produzione `ubuntudream_production` che stiam
 > Automatic and manual backups are unavailable for databases on the Free Tier. You can upgrade to a Starter Plan to enable automatic backups.
 
 
+## Risorse interne
+
+- [code_references/multipass_ubuntu/03_00-mount_a_directory-it.md]()
+
+
 
 ## Risorse Esterne
 
@@ -19,7 +24,7 @@ Facciamo un backup del database di produzione `ubuntudream_production` che stiam
 ## Standard Backup del databas PostgreSQL di produzione
 
 Da interfaccia web è possibile solo con la versione a pagamento!
-A fill backup of your database that you can download.
+A full backup of your database that you can download.
 
 > Automatic and manual backups are unavailable for databases on the Free Tier!
 
@@ -47,6 +52,11 @@ Depending on how your applications are set up, this operation may require some d
 
 Per evitare che gli utenti continuino ad inserire dati nel database conviene mettere in manutenzione il sito e stoppare il database di produzione.
 
+Ma lo riattiviamo appena prima di fare il damp.
+**Per poter accedere e fare il dump lo dobbiamo togliere dal Suspend.**
+
+Quindi sbrighiamoci a fare il dump altrimenti gli utenti ricominceranno a collegarsi.
+
 Da render.com --> Dashboard --> <<nome_databse>> --> Suspend Database
 
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/postgresql/04_fig01-render_postgres_suspend_1.png)
@@ -55,8 +65,23 @@ Da render.com --> Dashboard --> <<nome_databse>> --> Suspend Database
 
 ![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/postgresql/04_fig03-render_postgres_suspend_3.png)
 
-Ma per poter accedere e fare il dump lo dobbiamo toglierlo dal Suspend.
-Quindi sbrighiamoci a fare il dump altrimenti gli utenti ricominceranno a collegarsi.
+Inoltre guardiamo la versione di postgresql usata su render.
+Nel nostro caso PostgreSQL Version 15
+
+E la versione di PostgreSQL sulla VM multipass.
+
+```bash
+$ psql -V
+$ psql --version
+```
+
+Nel nostro caso:
+
+```bash
+ubuntu@primary:~$ psql -V
+psql (PostgreSQL) 16.0 (Ubuntu 16.0-1.pgdg22.04+1)
+ubuntu@primary:~$ 
+```
 
 
 
@@ -88,11 +113,14 @@ Prendiamo la stringa usata per collegarsi al database remoto (quello di produzio
 
 > Non dobbiamo collegarci al database. Dobbiamo solo prendere la stringa.
 
+![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/postgresql/04_fig04-render_command_for_external_connection.png)
+
+
 ```bash
 $ PGPASSWORD=x...0 psql -h d...a.frankfurt-postgres.render.com -U ubuntu ubuntudream_production_arvy
 ```
 
-Riadattiamo la stringa per eseguire il comando di dump.
+Adattiamo la stringa. Al posto di `psql` mettiamo `pg_dump` ed aggiungiamo la stringa `-n public --no-owner > database_dump.sql` per eseguire il comando di dump.
 
 ```bash
 $ PGPASSWORD=x...0 pg_dump -h d...a.frankfurt-postgres.render.com -U ubuntu ubuntudream_production_arvy -n public --no-owner > database_dump.sql
@@ -101,7 +129,7 @@ $ PGPASSWORD=x...0 pg_dump -h d...a.frankfurt-postgres.render.com -U ubuntu ubun
 Questo comando va eseguito nella VM (virtual machine) di multipass che abbia installata la stessa versione di Postgres che è installata su render.com
 Ci scaricherà il file "database_dump.sql" sulla nostra VM.
 
-
+PGPASSWORD=pRxldaJwKDIDvzO2tYHEbknweSNxLDmw pg_dump -h dpg-ckhetrkldqrs739s6egg-a.frankfurt-postgres.render.com -U ubuntudream ubuntudream_production_hemp -n public --no-owner > database_dump.sql
 
 ### Esempio con errore
 
@@ -150,6 +178,126 @@ ubuntu@primary:~$ mv database_dump.sql  Home/
 Questo comando sposta il file sulla nostra macchina fisica e precisamente nella cartella "<<root>>/Users/<<username>>". Nel mio caso è su: "FlaMac/Users/FB".
 
 > Volendo spostare una copia si può usare `cp database_dump.sql  Home/`
+
+
+Se non è montata la possiamo montare con il seguente comando da fare dal terminale di mac (non da dentro l'istanza multipass):
+
+- [How to share data between host and VM with Multipass](https://www.youtube.com/watch?v=vrLcER1V2Co)
+
+```bash
+MacBook-Pro-di-Flavio:~ FB$ multipass list
+MacBook-Pro-di-Flavio:~ FB$ multipass mount ~ primary
+MacBook-Pro-di-Flavio:~ FB$ multipass info primary
+MacBook-Pro-di-Flavio:~ FB$ multipass shell primary
+ubuntu@primary:~$ cd /Users/FB/
+ubuntu@primary:/Users/FB$ cp ~/database_dump.sql .
+ubuntu@primary:/Users/FB$ exit
+MacBook-Pro-di-Flavio:~ FB$ multipass unmount primary
+```
+
+Esempio:
+
+```bash
+ubuntu@primary:~$ ls
+Home  database_dump.sql  snap
+ubuntu@primary:~$ exit
+logout
+MacBook-Pro-di-Flavio:~ FB$ multipass list
+Name                    State             IPv4             Image
+primary                 Running           192.168.64.8     Ubuntu 22.04 LTS
+ub22fla                 Stopped           --               Ubuntu 22.04 LTS
+ubuntufla               Stopped           --               Ubuntu 20.04 LTS
+MacBook-Pro-di-Flavio:~ FB$ multipass mount ~/Home primary
+Source path "/Users/FB/Home" does not exist
+MacBook-Pro-di-Flavio:~ FB$ multipass mount ~ primary
+MacBook-Pro-di-Flavio:~ FB$ ls ~
+Applications		Desktop			Downloads		Google Drive		Movies			Pictures		eduport_v1.2.0		google-cloud-sdk
+Creative Cloud Files	Documents		Dropbox			Library			Music			Public			eduport_v1.2.0.zip	leanpubabrandnewcms
+MacBook-Pro-di-Flavio:~ FB$ multipass info primary
+Name:           primary
+State:          Running
+IPv4:           192.168.64.8
+Release:        Ubuntu 22.04.3 LTS
+Image hash:     59c2363fd71b (Ubuntu 22.04 LTS)
+CPU(s):         1
+Load:           0.00 0.00 0.00
+Disk usage:     2.5GiB out of 4.8GiB
+Memory usage:   150.4MiB out of 951.6MiB
+Mounts:         /Users/FB => /Users/FB
+                    UID map: 501:default
+                    GID map: 20:default
+MacBook-Pro-di-Flavio:~ FB$ 
+MacBook-Pro-di-Flavio:~ FB$ multipass shell primary
+Welcome to Ubuntu 22.04.3 LTS (GNU/Linux 5.15.0-86-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Sun Dec 24 21:42:45 CET 2023
+
+  System load:  0.0               Processes:               110
+  Usage of /:   53.5% of 4.67GB   Users logged in:         0
+  Memory usage: 21%               IPv4 address for enp0s2: 192.168.64.8
+  Swap usage:   0%
+
+ * Strictly confined Kubernetes makes edge and IoT secure. Learn how MicroK8s
+   just raised the bar for easy, resilient and secure K8s cluster deployment.
+
+   https://ubuntu.com/engage/secure-kubernetes-at-the-edge
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+Last login: Sun Dec 24 19:07:05 2023 from 192.168.64.1
+ubuntu@primary:~$ ls
+Home  database_dump.sql  snap
+ubuntu@primary:~$ ls /
+Users  bin  boot  dev  etc  home  lib  lib32  lib64  libx32  lost+found  media  mnt  opt  proc  root  run  sbin  snap  srv  sys  tmp  usr  var
+ubuntu@primary:~$ cd /Users/FB/
+.Trash/               .config/              .idm/                 .ssh/                 Desktop/              Library/              Public/               
+.anydesk/             .cups/                .local/               .vscode/              Documents/            Movies/               eduport_v1.2.0/       
+.atom/                .dropbox/             .oracle_jre_usage/    Applications/         Downloads/            Music/                google-cloud-sdk/     
+.bash_sessions/       .gem/                 .solargraph/          Creative Cloud Files/ Dropbox/              Pictures/             leanpubabrandnewcms/  
+ubuntu@primary:~$ cd /Users/FB/
+ubuntu@primary:/Users/FB$ cp ~/database_dump.sql 
+cp: missing destination file operand after '/home/ubuntu/database_dump.sql'
+Try 'cp --help' for more information.
+ubuntu@primary:/Users/FB$ cp ~/database_dump.sql .
+ubuntu@primary:~$ exit
+logout
+MacBook-Pro-di-Flavio:~ FB$ multipass unmount primary
+MacBook-Pro-di-Flavio:~ FB$ multipass info primary
+Name:           primary
+State:          Running
+IPv4:           192.168.64.8
+Release:        Ubuntu 22.04.3 LTS
+Image hash:     59c2363fd71b (Ubuntu 22.04 LTS)
+CPU(s):         1
+Load:           0.00 0.01 0.00
+Disk usage:     2.5GiB out of 4.8GiB
+Memory usage:   176.1MiB out of 951.6MiB
+Mounts:         --
+MacBook-Pro-di-Flavio:~ FB$ 
+```
+
+Il file ce lo ritroviamo sul mac con "finder" su /Users/FB.
+
+
+### Altro metodo per spostare il file
+
+- [`multipass transfer` command](https://multipass.run/docs/transfer-command)
+- [How to share data with an instance](https://multipass.run/docs/share-data-with-an-instance)
+
+
+
+
+
 
 
 

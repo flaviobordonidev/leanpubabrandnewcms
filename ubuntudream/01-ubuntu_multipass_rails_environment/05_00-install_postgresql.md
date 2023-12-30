@@ -14,7 +14,7 @@ Di default Rails ha attivo il database sqlite3 ma noi sin da subito nella nostra
 
 ## Risorse esterne
 
-- - [Heroku - getting-started-with-rails7](https://devcenter.heroku.com/articles/getting-started-with-rails7)
+- [Heroku - getting-started-with-rails7](https://devcenter.heroku.com/articles/getting-started-with-rails7)
 
 
 

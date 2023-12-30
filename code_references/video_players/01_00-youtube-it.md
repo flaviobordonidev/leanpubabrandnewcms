@@ -1,5 +1,11 @@
 # <a name="top"></a> Cap video_players 1 - Il player video di Youtube
 
+- [VideoJS](https://videojs.com/)
+- [Plyr](https://plyr.io/)
+- [jplayer](https://jplayer.org/)
+- [JW Player](https://jwplayer.com/) - è a pagamento
+- [Flowplayer](https://flowplayer.com/) - è a pagamento - è stato comprato da https://www.wowza.com/video/player
+
 
 ## Risorse interne
 
