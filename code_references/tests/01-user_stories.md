@@ -34,101 +34,194 @@ To help with the big picture, Epics can be used to describe, discuss, and visual
 Descrivono l'applicazione e mettono le basi per scrivere i test o sviluppare in TDD (Test Driven Development)
 Seguono una versione più completa del modello Situazione -> Problema -> Soluzione.
 
-A> Caratteristica: <titolo>
-A> 
-A>   Scenario: 
-A> 
-A>     <contesto (Dato...) / evento (Qaundo...) / azione>
-A> 
-A> 
-A>     Come ... <ruolo>                               
-A> 
-A>     Voglio ... <obbiettivo / risultato (Allora...) / esito >
-A> 
-A>     Così che ... <beneficio / scopo / perché / al fine di> 
+Feature: <titolo>
+
+	Scenario:<context/event/action>					| cucumber "Given" and "When"
+		As a <role> 															
+		I want <goal/result/outcome/>					| cucumber "Then"
+		so that <benefit/purpose/why/in order to> 
+
+
+---
+Cucumber
+	Scenario: <name>
+		Given <context>
+		When  <event/action>
+		Then	<outcome>
+Tip:
+To get a good "scenario name" 
+	don't focus on the outcome (the Then part) 
+	but on summarizing the context (Given) and event (When).
+
+--
+Feature: 			<feature name>
+	In order to 	<meet some goal> 
+	As a 			<type of stakeholder>
+	I want 			<a feature>
+
+Scenario: 	<scenario name>
+	Given 	<the context>
+	When	<the event>
+	Then	<the outcome>
+
+---
+Feature: Withdraw Cash
+	In order to buy beer
+	As an account holder
+	I want to withdraw cash from the ATM
+
+Scenario: Withdraw too much from an account in credit 
+	Given I have $50 in my account
+	When I wave my magic wand
+	And I withdraw $100
+	Then I should receive $100
+
+---
+Tip:
+To get a good "scenario name" 
+	don't focus on the outcome (the Then part) 
+	but on summarizing the context (Given) and event (When).
+
+---
+
+Feature: *Contact Page*
+	in order to (outcome)	: send a message to the owner of the website
+	As a (role) 			: visitor to the website
+	I want (...)			: I want to fill out a form with my name, email address, and some text
+
+--
+
+> Caratteristica (Feature): <titolo>
+> 
+>   Scenario: 
+> 
+>     <contesto (Dato...) / evento (Qaundo...) / azione>
+> 
+> 
+>     Come ... <ruolo>                               
+> 
+>     Voglio ... <obbiettivo / risultato (Allora...) / esito >
+> 
+>     Così che ... <beneficio / scopo / perché / al fine di> 
 
 
 
 
 ## Esempio sulle manutenzioni
 
-A> Caratteristica: Controllo delle manutenzioni
-A> 
-A>   Scenario: 
-A> 
-A>     un cliente chiama per un guasto
-A> 
-A> 
-A>     Come tecnico
-A> 
-A>     Voglio sapere se è coperto da manutenzione/garanzia e con che SLAs
-A> 
-A>     Così che posso dare supporto ed eventualmente intervenire. Andando sull’azienda/cliente finale posso vedere tutte le soluzioni fornite comprese manutenzioni/garanzie e data di scadenza.
-A> 
-A>   Scenario: 
-A> 
-A>     voglio sollecitare i clienti con manutenzione in scadenza
-A> 
-A> 
-A>     Come commerciale
-A> 
-A>     Voglio chiamare le persone che si occupano del rinnovo della manutenzione
-A> 
-A>     Così che possiamo fare un offerta/vendita
+Feature: Controllo delle manutenzioni
 
+	Scenario:un cliente chiama per un guasto
+		As a tecnico
+		I want to know if its covered from maintenance/guarantee and with what SLAs
+		so that i can do the support and eventually the intervent.
+
+	Scenario: voglio sollecitare i clienti con manutenzione in scadenza
+		As a commerciale
+		I want to call the person that deal with the maintenance renewance
+		So that we can make an offer/sales
+
+
+> Caratteristica: Controllo delle manutenzioni
+> 
+>   Scenario: 
+> 
+>     un cliente chiama per un guasto
+> 
+> 
+>     Come tecnico
+> 
+>     Voglio sapere se è coperto da manutenzione/garanzia e con che SLAs
+> 
+>     Così che posso dare supporto ed eventualmente intervenire. Andando sull’azienda/cliente finale posso vedere tutte le soluzioni fornite comprese manutenzioni/garanzie e data di scadenza.
+> 
+>   Scenario: 
+> 
+>     voglio sollecitare i clienti con manutenzione in scadenza
+> 
+> 
+>     Come commerciale
+> 
+>     Voglio chiamare le persone che si occupano del rinnovo della manutenzione
+> 
+>     Così che possiamo fare un offerta/vendita
 
 
 ## Esempio sulla Mailing List
 
-A> Caratteristica: Controllo delle manutenzioni
-A> 
-A>   Scenario: 
-A> 
-A>     Registrarsi su una Mailing List
-A> 
-A> 
-A>     Come visitatore del sito web
-A> 
-A>     Voglio registrarmi nella mailing list
-A> 
-A>     Così che possa ricevere novità e annunci
-A> 
-A>   Scenario: 
-A> 
-A>     Unsubscribe
-A> 
-A> 
-A>     Come utente registrato
-A> 
-A>     Voglio uscire dalla mailing list
-A> 
-A>     Così che smetta di ricevere emails
+Feature: Mailing List
 
+	Scenario:Join Mailing List
+		As a visitor to the website
+		I want to join a mailing list
+		so that I can receive news and announcements
+
+	Scenario:	Unsubscribe
+		As a subscriber
+		I whant to unsubscribe from the mailing list
+		so that I stop receiving emails
+
+
+> Caratteristica: Controllo delle manutenzioni
+> 
+>   Scenario: 
+> 
+>     Registrarsi su una Mailing List
+> 
+> 
+>     Come visitatore del sito web
+> 
+>     Voglio registrarmi nella mailing list
+> 
+>     Così che possa ricevere novità e annunci
+> 
+>   Scenario: 
+> 
+>     Unsubscribe
+> 
+> 
+>     Come utente registrato
+> 
+>     Voglio uscire dalla mailing list
+> 
+>     Così che smetta di ricevere emails
 
 
 ## Esempio sulla ATM
 
-A> Caratteristica: Controllo delle manutenzioni
-A> 
-A>   Scenario: 
-A> 
-A>     Prelievo contanti
-A> 
-A> 
-A>     Come intestatario del conto
-A> 
-A>     Voglio prelevare contanti dall'ATM
-A> 
-A>     Così che possa comprarmi una birra
-A> 
-A>   Scenario: 
-A> 
-A>     Prelevare troppo da un conto
-A> 
-A> 
-A>     Come intestatario del conto saldo di 50€
-A> 
-A>     Voglio essere in grado di agitare la bacchetta magica
-A> 
-A>     Così che possa prelevare 100€
+Feature: ATM
+
+	Scenario:Withdraw Cash
+		As an account holder
+		I want to withdraw cash from the ATM
+		so that I can buy a beer
+
+	Scenario: Withdraw too much from an account in credit 
+		As an account holder with $50 in my account
+		I want to be able to wave my magic wand
+		so that I can withdraw $100
+
+> Caratteristica: Controllo delle manutenzioni
+> 
+>   Scenario: 
+> 
+>     Prelievo contanti
+> 
+> 
+>     Come intestatario del conto
+> 
+>     Voglio prelevare contanti dall'ATM
+> 
+>     Così che possa comprarmi una birra
+> 
+>   Scenario: 
+> 
+>     Prelevare troppo da un conto
+> 
+> 
+>     Come intestatario del conto saldo di 50€
+> 
+>     Voglio essere in grado di agitare la bacchetta magica
+> 
+>     Così che possa prelevare 100€
 
