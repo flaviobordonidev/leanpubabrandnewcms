@@ -1,11 +1,19 @@
-# Fare update della distribuzione
+# <a name="top"></a> Cap multipass_ubuntu.2 - Aggiorniamo la distribuzione di Ubuntu
 
-New release '22.04.2 LTS' available.
-Run 'do-release-upgrade' to upgrade to it.
-
+Manteniamo aggiornata la versione di Ubuntu sulla VM.
 
 
-## Eseguire upgrade distribuzione
+
+## Mantenere la distribuzione aggiornata
+
+```bash
+$ sudo apt update
+$ sudo apt upgrade
+```
+
+
+
+## Passare ad una nuova distribuzione
 
 ```bash
 $ sudo apt update
@@ -13,9 +21,10 @@ $ sudo apt upgrade
 $ do-release-upgrade
 ```
 
+Esempio:
 
-
-## Esempio
+> New release '22.04.2 LTS' available.
+> Run 'do-release-upgrade' to upgrade to it.
 
 ```bash
 MacBook-Pro-di-Flavio:~ FB$ multipass shell ubuntufla
@@ -56,21 +65,14 @@ Run 'do-release-upgrade' to upgrade to it.
 
 
 Last login: Sun Feb 19 18:20:33 2023 from 192.168.64.1
-ubuntu@ubuntufla:~ $do-release-upgrade
+ubuntu@ubuntufla:~ $ do-release-upgrade
+
 Checking for a new Ubuntu release
 Please install all available updates for your release before upgrading.
-ubuntu@ubuntufla:~ $
-
 ...
-
-
-
 Reading cache
-
 Checking package manager
-
 Continue running under SSH? 
-
 This session appears to be running under ssh. It is not recommended 
 to perform a upgrade over ssh currently because in case of failure it 
 is harder to recover. 
@@ -84,7 +86,7 @@ Continue [yN] n
 
 [CTRL+c --> x]
 
-ubuntu@ubuntufla:~ $do-release-upgrade
+ubuntu@ubuntufla:~ $ do-release-upgrade
 Checking for a new Ubuntu release
 Get:1 Upgrade tool signature [819 B]                                           
 Get:2 Upgrade tool [1266 kB]                                                   
@@ -95,4 +97,4 @@ extracting 'jammy.tar.gz'
 ubuntu@ubuntufla:~ $
 ```
 
-> Non ho fatto upgrade di release ubuntu per evitare incasinamenti!!!
+> Non ho fatto l'upgrade di release ubuntu per evitare incasinamenti!!!

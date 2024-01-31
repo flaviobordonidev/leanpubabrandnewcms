@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 1.4 - Installiamo Rails sulla VM
+# <a name="top"></a> Cap rails.1 - Installiamo Rails sulla VM
 
 Prima di installare Rails installiamo i programmi necessari a sostenerlo.
 

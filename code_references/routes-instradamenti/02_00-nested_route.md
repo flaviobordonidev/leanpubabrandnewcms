@@ -47,4 +47,3 @@ LO DEVO PULIRE E FARE UN ESEMPIO CHE ABBIA PIU' SENSO :(
 Senza il redirect mi si apre 
 
 wiews/company_person_maps/new/new_person
-

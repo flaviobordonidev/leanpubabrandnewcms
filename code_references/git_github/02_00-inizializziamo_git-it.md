@@ -9,10 +9,17 @@ Implementiamo git.
 -[01-base-02-git-02-inizializziamo_git]()
 
 
-
 ## Risorse esterne
 
 - [Gitignore - ignoring files](https://help.github.com/articles/ignoring-files)
+
+
+## Il primo comando git su mac
+
+Nel sistema operativo mac "git" è "preinstallato" di default. Per "preinstallato" intendo che al primo comando che diamo, ad esempio `git status`, ci apparirà una finestra chiedendoci di installare il `command line development tool`.
+
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/git_github/02_fig01-git_command_requires_the_command_line_development_tool.png)
+
 
 
 ## Inizializziamo per tt-odoo-manual
