@@ -6,7 +6,7 @@ Creiamo i databases su postgreSQL in modo da attivare la connessione con la nost
 
 ## Risorse interne:
 
-- [code_references/postgresql]
+- [code_references/postgresql]()
 
 
 
@@ -14,13 +14,13 @@ Creiamo i databases su postgreSQL in modo da attivare la connessione con la nost
 
 Anche se lo abbiamo già visto nel preview, verifichiamo anche da terminale che non c'è comunicazione con il database.
 
-```bash
+```shell
 $ rails db:migrate
 ```
 
 Esempio:
 
-```bash
+```shell
 ubuntu@ub22fla:~/ubuntudream$ rails db:migrate
 bin/rails aborted!
 ActiveRecord::NoDatabaseError: We could not find your database: ubuntudream_development. Available database configurations can be found in config/database.yml. (ActiveRecord::NoDatabaseError)
@@ -58,7 +58,7 @@ development:
   database: ubuntudream_development
 ```
 
-**...continua - linea: 56**
+*...continua - linea: 56*
 
 ```yaml
 test:
@@ -75,9 +75,6 @@ production:
   username: ubuntudream
   password: <%= ENV["UBUNTUDREAM_DATABASE_PASSWORD"] %>
 ```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-new_app/02_01-config-database.yml)
-
 
 > Per vedere i files della nostra app ci colleghiamo con VS Code tramite SSH alla nostra VM come abbiamo visto nei capitoli precedenti ed apriamo la cartella/directory *ubuntudream*.
 
