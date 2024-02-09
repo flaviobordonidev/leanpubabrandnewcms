@@ -1,0 +1,17 @@
+<h1> <%= t "mockups.page_a.headline" %> </h1>
+<p> <%= t "mockups.page_a.first_paragraph" %> </p>
+<br>
+<hr>
+<br>
+<p>
+  <%= link_to "Inglese", params.permit(:locale).merge(locale: 'en') %> |
+  <%= link_to "Italiano", params.permit(:locale).merge(locale: 'it') %>
+</p>
+<br>
+<hr>
+<br>
+<p> testo = "Sono Flavio, quando avevo 5 anni camminavo per la spiaggia" </p>
+<p> Data = 01/01/1975 </p>
+<p> Soldi = 123456789,12345 </p>
+<p> Soldi = 499999999,99999 </p>
+<p> Soldi (come li direbbe una persona) = 499999999,99999 </p>

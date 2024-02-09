@@ -21,26 +21,25 @@ $ rails db:migrate
 Esempio:
 
 ```bash
-ubuntu@ubuntufla:~/ubuntudream $rails db:migrate
-rails aborted!
-ActiveRecord::NoDatabaseError: We could not find your database: ubuntudream_development. Which can be found in the database configuration file located at config/database.yml.
+ubuntu@ub22fla:~/ubuntudream$ rails db:migrate
+bin/rails aborted!
+ActiveRecord::NoDatabaseError: We could not find your database: ubuntudream_development. Available database configurations can be found in config/database.yml. (ActiveRecord::NoDatabaseError)
 
-To resolve this issue:
+To resolve this error:
 
-- Did you create the database for this app, or delete it? You may need to create your database.
-- Has the database name changed? Check your database.yml config has the correct database name.
+- Did you not create the database, or did you delete it? To create the database, run:
 
-To create your database, run:
+    bin/rails db:create
 
-        bin/rails db:create
+- Has the database name changed? Verify that config/database.yml contains the correct database name.
 
 
 Caused by:
-PG::ConnectionBad: FATAL:  database "ubuntudream_development" does not exist
+PG::ConnectionBad: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  database "ubuntudream_development" does not exist (PG::ConnectionBad)
 
 Tasks: TOP => db:migrate
 (See full trace by running task with --trace)
-ubuntu@ubuntufla:~/ubuntudream $
+ubuntu@ub22fla:~/ubuntudream$ 
 ```
 
 Prende errore perché manca il database lato sviluppo: `ubuntudream_development`.
@@ -51,7 +50,7 @@ Prende errore perché manca il database lato sviluppo: `ubuntudream_development`
 
 L'errore già ci ha detto il nome del database con cui la nostra app cerca di collegarsi (`ubuntudream_development`) ma vediamo il file nella nostra app in cui sono definiti i collegamenti ai databases.
 
-***codice 01 - .../config/database.yml - line:24***
+*** Codice 01 - .../config/database.yml - linea: 22 ***
 
 ```yaml
 development:
@@ -59,7 +58,7 @@ development:
   database: ubuntudream_development
 ```
 
-***codice 01 - ...continua - line:58***
+*** ...continua - linea: 56 ***
 
 ```yaml
 test:
@@ -67,7 +66,7 @@ test:
   database: ubuntudream_test
 ```
 
-***codice 01 - ...continua - line:82***
+*** ...continua - linea: 80 ***
 
 ```yaml
 production:
@@ -89,18 +88,18 @@ production:
 Creiamo i databases per development e test usando il comando `createdb` di postgreSQL.
 
 ```bash
-$ sudo service postgresql start
 $ createdb ubuntudream_development
 $ createdb ubuntudream_test
 ```
 
+> Se psql è stoppato lo possiamo attivare con `sudo service postgresql start`.
+
+
 Esempio:
 
 ```bash
-ubuntu@ubuntufla:~/bl7_0$ sudo service postgresql start
-ubuntu@ubuntufla:~/bl7_0$ createdb ubuntudream_development
-ubuntu@ubuntufla:~/bl7_0$ createdb ubuntudream_test
-ubuntu@ubuntufla:~/bl7_0$ 
+ubuntu@ub22fla:~/ubuntudream$ createdb ubuntudream_development
+ubuntu@ub22fla:~/ubuntudream$ createdb ubuntudream_test
 ```
 
 Nella creazione dei databases non ho dei messaggi di conferma sul terminale. Possiamo però verificare che adesso c'è comunicazione.
@@ -110,11 +109,10 @@ $ rails db:migrate
 ```
 
 ```bash
-ubuntu@ubuntufla:~/bl7_0$ rails db:migrate
-ubuntu@ubuntufla:~/bl7_0$ 
+ubuntu@ub22fla:~/ubuntudream$ rails db:migrate
 ```
 
-Come per la creazione dei databases, anche per il db:migrate non ho messaggi di conferma sul terminale. Sappiamo che c'è comunicazione perché il comando adesso non da nessun errore.
+Come per la creazione dei databases, anche per il `db:migrate` non ho messaggi di conferma sul terminale. Sappiamo che c'è comunicazione perché il comando adesso non da nessun errore.
 
 
 
@@ -123,7 +121,7 @@ Come per la creazione dei databases, anche per il db:migrate non ho messaggi di 
 Adesso proviamo di nuovo il preview
 
 ```bash
-$ rails s -b 192.168.64.3
+$ rails s -b 192.168.64.4
 ```
 
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/01-new_app/07_fig03-preview_working.png)

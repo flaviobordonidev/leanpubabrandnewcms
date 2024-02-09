@@ -99,9 +99,14 @@ config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present? || 
 
 ## Create a Build Script
 
+- [3. Update your app for Render](https://docs.render.com/deploy-rails#deploy-manually)
+
 You will need to run a series of commands to build your app. This can be done using a build script. Create a script called `bin/render-build.sh` at the root of your repository.
 
-***code 05 - .../bin/render-build.sh - line:01***
+*** Codice 05 - .../bin/render-build.sh - linea: 1 ***
+
+OLD:
+
 
 ```bash
 #!/usr/bin/env bash
@@ -113,6 +118,20 @@ bundle exec rake assets:precompile
 bundle exec rake assets:clean
 bundle exec rake db:migrate
 ```
+
+NEW:
+
+```bash
+#!/usr/bin/env bash
+# exit on error
+set -o errexit
+
+bundle install
+./bin/rails assets:precompile
+./bin/rails assets:clean
+```
+
+
 
 Make sure the script is executable before checking it into Git:
 

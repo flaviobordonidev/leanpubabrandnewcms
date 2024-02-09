@@ -1,5 +1,4 @@
-{id: 01-base-05-mockups_i18n-03-change_language}
-# Cap 5.3 -- Cambiamo la lingua
+# <a name="top"></a> Cap i18n_static_config_locale_yaml.80 - Cambiamo la lingua
 
 Per il cambio della lingua (Internazionalizzazione) ci sono varie soluzioni.
 

@@ -1,18 +1,11 @@
 # <a name="top"></a> Cap 2.3 - In produzione con Render
 
-Invece di usare heroku usiamo Render in produzione perché heroku da Novembre/2022 toglierà l'opzione gratuita e sarà solo a pagamento.
-Render invece ha un'opzione gratuita e si può direttamente scalare a pagamento da quella.
-
-Facciamo un primo deploy in produzione senza ottimizzazione del codice.
-Questo è solo per vedere che su Render funziona tutto:
+Facciamo un primo deploy in produzione senza ottimizzazione del codice. Questo per vedere che funziona tutto:
 - la creazione del database PostgreSQL
 - la creazione del Web Service e relativo collegamento a GitHub e al database PostgreSQL
 
-> per fare i collegamenti ci servirà:
-> - l'`Internal Database URL` del nostro database PostgreSQL su Render.
-> - la `masterkey` della nostra applicazione.
-
-Più avanti questo webservice lo cancelliamo e ne creiamo un'altro basato sulle ottimizzazioni fatte nel codice. (Eventualmente applichiamo la modifiche senza cancellarlo)
+> Usiamo Render perché heroku da Novembre/2022 ha tolto l'opzione gratuita ed è solo a pagamento.
+> Render invece ha un'opzione gratuita e si può direttamente scalare a pagamento.
 
 
 
@@ -58,8 +51,12 @@ Creiamo il database.
 ![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-production/03_fig04-render_postgresql_info3.png)
 
 
-Prendiamo l'`Internal Database URL`: `postgres://ubuntu:06...f-k/ubuntudream_production`.
+IMPORTANTE
+> Su render.com per collegare il database appena creato al "Web Service" che creiamo più avanti, ci servirà:
+> - l'`Internal Database URL` del nostro database PostgreSQL su Render.
+> - la `masterkey` della nostra applicazione.
 
+Prendiamo l'`Internal Database URL`: `postgres://ubuntu:06...f-k/ubuntudream_production`.
 
 
 
@@ -67,7 +64,7 @@ Prendiamo l'`Internal Database URL`: `postgres://ubuntu:06...f-k/ubuntudream_pro
 
 Il file `master.key` ha una semplice stringa usata come chiave principale di crittatura. Di default Rails crea una stringa esadecimale di 32bytes.
 
-***code 01 - .../config/master.key - line:01***
+*** Codice 01 - .../config/master.key - linea: 1 ***
 
 ```bash
 f458b1a6862a56b7474b9e734d7b01c4

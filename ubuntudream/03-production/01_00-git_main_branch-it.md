@@ -15,25 +15,57 @@ Git è già impostato da Rails quando creiamo una nuova app, quindi è già pron
 
 
 
+
+## Impostiamo i parametri globali su Git
+
+Impostiamo i dati globali del nostro "account".
+
+```shell
+$ git config --global user.email "you@example.com"
+$ git config --global user.name "Your Name"
+# verifichiamo
+$ git config -l
+```
+
+Esempio:
+
+```shell
+ubuntu@ub22fla:~/ubuntudream$ git config --global user.email "flavio.bordoni.dev@gmail.com"
+ubuntu@ub22fla:~/ubuntudream$ git config --global user.name "Flavio Bordoni"
+ubuntu@ub22fla:~/ubuntudream$ git config -l
+user.email=flavio.bordoni.dev@gmail.com
+user.name=Flavio Bordoni
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+remote.origin.url=git@github-as-ub22fla:flaviobordonidev/ubuntudreambis.git
+remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+branch.main.remote=origin
+```
+
+
+
 ## Archiviamo su Git
 
 Prima di andare su Github dobbiamo fare il primo commit su Git in modo che sia creato il branch principale; ossia il branch `main`.
 
-```bash
+```shell
 $ git add -A
 $ git commit -m "first git commit"
 ```
 
-Esempio
 
-```bash
-ubuntu@ubuntufla:~/ubuntudream $git add -A
-ubuntu@ubuntufla:~/ubuntudream $git commit -m "first git commit"
-[main (root-commit) 65590bc] first git commit
- 83 files changed, 1469 insertions(+)
+```shell
+ubuntu@ub22fla:~/ubuntudream$ git add -A
+ubuntu@ub22fla:~/ubuntudream$ git commit -m "first git commit"
+[main (root-commit) 97e0ba0] first git commit
+ 90 files changed, 1645 insertions(+)
+ create mode 100644 .dockerignore
  create mode 100644 .gitattributes
  create mode 100644 .gitignore
  create mode 100644 .ruby-version
+ create mode 100644 Dockerfile
  create mode 100644 Gemfile
  create mode 100644 Gemfile.lock
  create mode 100644 README.md
@@ -46,8 +78,10 @@ ubuntu@ubuntufla:~/ubuntudream $git commit -m "first git commit"
  create mode 100644 app/controllers/application_controller.rb
  create mode 100644 app/controllers/concerns/.keep
  create mode 100644 app/controllers/mockups_controller.rb
+ create mode 100644 app/controllers/pages_controller.rb
  create mode 100644 app/helpers/application_helper.rb
  create mode 100644 app/helpers/mockups_helper.rb
+ create mode 100644 app/helpers/pages_helper.rb
  create mode 100644 app/javascript/application.js
  create mode 100644 app/javascript/controllers/application.js
  create mode 100644 app/javascript/controllers/hello_controller.js
@@ -59,8 +93,10 @@ ubuntu@ubuntufla:~/ubuntudream $git commit -m "first git commit"
  create mode 100644 app/views/layouts/application.html.erb
  create mode 100644 app/views/layouts/mailer.html.erb
  create mode 100644 app/views/layouts/mailer.text.erb
- create mode 100644 app/views/mockups/index.html.erb
+ create mode 100644 app/views/mockups/test_a.html.erb
+ create mode 100644 app/views/pages/home.html.erb
  create mode 100755 bin/bundle
+ create mode 100755 bin/docker-entrypoint
  create mode 100755 bin/importmap
  create mode 100755 bin/rails
  create mode 100755 bin/rake
@@ -102,6 +138,7 @@ ubuntu@ubuntufla:~/ubuntudream $git commit -m "first git commit"
  create mode 100644 test/channels/application_cable/connection_test.rb
  create mode 100644 test/controllers/.keep
  create mode 100644 test/controllers/mockups_controller_test.rb
+ create mode 100644 test/controllers/pages_controller_test.rb
  create mode 100644 test/fixtures/files/.keep
  create mode 100644 test/helpers/.keep
  create mode 100644 test/integration/.keep
@@ -114,11 +151,21 @@ ubuntu@ubuntufla:~/ubuntudream $git commit -m "first git commit"
  create mode 100644 tmp/storage/.keep
  create mode 100644 vendor/.keep
  create mode 100644 vendor/javascript/.keep
-ubuntu@ubuntufla:~/ubuntudream (main)$
+
+ubuntu@ub22fla:~/ubuntudream (main)$ git branch
+* main
 ```
 
-> Notiamo che nel prompt prima non c'era il branch *main* ma dopo è presente:</br> 
-> ubuntu@ubuntufla:~/ubuntudream `(main)`$
+> Notiamo con il comando `git branch` che adesso esiste il branch **main**.
+
+
+
+## Aggiungiamo il nome del branch attivo sul prompt
+
+Vedi:
+
+- [code_references/git_github/branc_on_prompt]()
+- [code_references/shell_linux/prompt]()
 
 
 

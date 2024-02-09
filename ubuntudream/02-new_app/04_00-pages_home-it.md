@@ -19,11 +19,10 @@ La soluzione migliore è di inserirla all'interno del controller `pages_controll
 
 ## Il controller Pages
 
-Non usiamo né il "generate scaffold" né il "generate model" perché non abbiamo una corrispettiva tabella nel database, quindi evitiamo la tabella ed i models.
-Usiamo invece il " generate controller " e gli associamo l'azione "home". 
+Non usiamo né il `generate scaffold` né il `generate model` perché non abbiamo una corrispettiva tabella nel database, quindi evitiamo la tabella ed i models. Usiamo invece il `generate controller` e gli associamo l'azione "home".
 (non gli associamo le classiche azioni restful: index, show, edit, new, ...)
 
-I> ATTENZIONE: con "rails generate controller ..." -> usiamo il PLURALE ed otteniamo un controller al plurale.
+> ATTENZIONE: con `rails generate controller ...` -> usiamo il **PLURALE** ed otteniamo un controller al plurale.
 
 ```bash
 $ rails g controller Pages home
@@ -31,11 +30,23 @@ $ rails g controller Pages home
 
 non abbiamo nessun migrate perché non ci interfacciamo con il database.
 
-> In realtà nel tutorial abbiamo usato `$ rails g controller Pages page_a`
+
+## La view index
+
+*** Codice 01 - .../views/pages/home.html.rrb - linea: 1 ***
+
+```html+erb
+<h1>Pages#home</h1>
+<p>Find me in app/views/pages/home.html.erb</p>
+```
+
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/01-new_app/04_01-mockups-index.html.erb)
 
 
 
-***Code 02 - .../config/routes.rb - line:7***
+## Gli instradamenti (routes)
+
+*** Codice 02 - .../config/routes.rb - linea: 7 ***
 
 ```ruby
   root 'pages#home'
@@ -43,6 +54,12 @@ non abbiamo nessun migrate perché non ci interfacciamo con il database.
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/01-new_app/04_01-mockups-index.html.erb)
 
+> https://guides.rubyonrails.org/routing.html#using-root
+> You should put the root route at the top of the file, because it is the most popular route and should be matched first.
+> The routes.rb file is processed from top to bottom when a request comes in. The request will be dispatched to the first matching route. If there is no matching route, then Rails returns HTTP status 404 to the caller.
+
+> ECCEZIONE
+> Rails 7.1 ha aggiunto la riga `get "up" => "rails/health#show", as: :rails_health_check` e questa va prima di `root ...` perché la sua funzione è quella di permettere di controllare da remoto che l'applicazione rails sia attiva. (It add an endpoint to your routes file to act as a heartbeat. You can point to many services or monitoring tools to check for downtime.)
 
 Abbiamo il minimo necessario per poter andare in produzione.
 

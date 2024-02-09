@@ -15,6 +15,14 @@ https://www.digitalocean.com/community/tutorials/how-to-create-nested-resources-
 ## Risorse esterne
 
 - [How To Create Nested Resources for a Ruby on Rails Application](https://www.digitalocean.com/community/tutorials/how-to-create-nested-resources-for-a-ruby-on-rails-application)
+- [Implementation of Nested and Un-nested Routes With RESTful Conventions](https://medium.com/@guosamuel1114/implementation-of-nested-and-un-nested-routes-with-restful-conventions-f84285edfde6)
+- [guides.rubyonrails: 2.7 Nested Resources](https://guides.rubyonrails.org/routing.html#nested-resources)
+- [What are the nested routes in Ruby on Rails?](https://www.educative.io/answers/what-are-the-nested-routes-in-ruby-on-rails)
+
+- [guides.rubyonrails: composite primary keys](https://edgeguides.rubyonrails.org/active_record_composite_primary_keys.html)
+- [Define a unique primary key based on 2 columns](https://stackoverflow.com/questions/12746280/define-a-unique-primary-key-based-on-2-columns)
+- [Understanding Composite Primary Keys in Rails 7.1](https://patrickkarsh.medium.com/understanding-composite-primary-keys-in-rails-7-1-7a1e452706b1)
+- [How to Introduce Composite Primary Keys in Rails](https://shopify.engineering/how-to-introduce-composite-primary-keys-in-rails)
 
 
 

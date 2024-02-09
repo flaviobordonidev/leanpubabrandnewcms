@@ -16,6 +16,7 @@ In questo capitolo installiamo le *estensioni* di Visual Studio Code per lavorar
 - [how-pro-ruby-developers-customize-vs-code](https://dev.to/appmapruby/how-pro-ruby-developers-customize-vs-code-2hee)
 - [10-vs-code-extensions](https://dev.to/thomasvanholder/10-vs-code-extensions-for-ruby-on-rails-developers-89a)
 
+- [Remote Development with VS Code on Mac](https://medium.com/macoclock/remote-development-with-vscode-on-mac-in-simple-5-steps-6ae100938d67)
 
 
 

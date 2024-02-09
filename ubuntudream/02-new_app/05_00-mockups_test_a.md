@@ -1,7 +1,6 @@
-# <a name="top"></a> Cap 1.4 - Creiamo la pagina principale
+# <a name="top"></a> Cap 1.5 - Creiamo dei mockups di test
 
-La pagina principale, o di root, è quella che si visualizza digitando l'url base dell'applicazione.
-Normalmente coincide con la homepage.
+Aggiungiamo delle pagine per dei test iniziali, specialmente per lo stile grafico (mockups).
 
 
 
@@ -13,32 +12,32 @@ Normalmente coincide con la homepage.
 
 ## Il controller Mockups
 
-Il controller Pages contiene pagine utilizzate dall'utente nell'usare l'applicazione.
+Il controller `pages_controller` contiene pagine che utilizza l'utente.
 
-Creiamo anche l'altro controller Mockups che è più per lo sviluppatore, o meglio per il web designer, per tenere da parte i bozzetti statici dell'applicazione.
+Creiamo anche il controller `mockups_controller` che è più per lo sviluppatore, o meglio per il web designer, per tenere da parte i bozzetti statici dell'applicazione.
 
 Al momento creiamo la pagina *test_a* sotto *mockups*.
 
-```bash
+```shell
 $ rails g controller Mockups test_a
 ```
 
 > *mockups* è una directory in cui mettiamo delle pagine statiche con dei segnaposto invece dei dati presi dal database.
 
-***Code 01 - .../app/mockups/test_a.html.erb - line:1***
+*** Codice 01 - .../app/mockups/test_a.html.erb - linea: 1 ***
 
 ```html+erb
-<h1>Hello world</h1>
+<h1>Pagina A di test</h1>
 <p>this is the first test page</p>
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/01-new_app/04_01-mockups-index.html.erb)
 
 
-***Code 02 - .../config/routes.rb - line:7***
+*** Codice 02 - .../config/routes.rb - linea: 15 ***
 
 ```ruby
-  root 'mockups#test_a'
+  get 'mockups/test_a'
 ```
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/01-new_app/04_01-mockups-index.html.erb)

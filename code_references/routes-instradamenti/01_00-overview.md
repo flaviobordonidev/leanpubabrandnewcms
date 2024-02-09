@@ -15,6 +15,7 @@ Introduciamo gli instradamenti.
 ## Risorse esterne
 
 - [Rails: routing](https://guides.rubyonrails.org/routing.html)
+- [Routing For Beginners In Ruby On Rails 7](https://www.youtube.com/watch?v=F3aPSBTPiRM)
 - [Understanding Rails Routes 1](https://medium.com/podiihq/understanding-rails-routes-and-restful-design-a192d64cbbb5)
 - [Understanding Rails Routes 2](https://richonrails.com/articles/understanding-rails-routing)
 
