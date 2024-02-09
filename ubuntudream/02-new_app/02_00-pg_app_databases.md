@@ -50,7 +50,7 @@ Prende errore perché manca il database lato sviluppo: `ubuntudream_development`
 
 L'errore già ci ha detto il nome del database con cui la nostra app cerca di collegarsi (`ubuntudream_development`) ma vediamo il file nella nostra app in cui sono definiti i collegamenti ai databases.
 
-*** Codice 01 - .../config/database.yml - linea: 22 ***
+***Codice 01 - .../config/database.yml - linea: 22***
 
 ```yaml
 development:
