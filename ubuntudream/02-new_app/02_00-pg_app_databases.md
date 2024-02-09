@@ -50,7 +50,7 @@ Prende errore perché manca il database lato sviluppo: `ubuntudream_development`
 
 L'errore già ci ha detto il nome del database con cui la nostra app cerca di collegarsi (`ubuntudream_development`) ma vediamo il file nella nostra app in cui sono definiti i collegamenti ai databases.
 
-***Codice 01 - .../config/database.yml - linea: 22***
+[Codice 01 - .../config/database.yml - linea: 22](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-new_app/02_01-config-database.yml)
 
 ```yaml
 development:
@@ -58,7 +58,7 @@ development:
   database: ubuntudream_development
 ```
 
-*** ...continua - linea: 56 ***
+**...continua - linea: 56**
 
 ```yaml
 test:
@@ -66,7 +66,7 @@ test:
   database: ubuntudream_test
 ```
 
-*** ...continua - linea: 80 ***
+*...continua - linea: 80*
 
 ```yaml
 production:
@@ -76,7 +76,7 @@ production:
   password: <%= ENV["UBUNTUDREAM_DATABASE_PASSWORD"] %>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/01-new_app/02_01-config-database.yml)
+[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-new_app/02_01-config-database.yml)
 
 
 > Per vedere i files della nostra app ci colleghiamo con VS Code tramite SSH alla nostra VM come abbiamo visto nei capitoli precedenti ed apriamo la cartella/directory *ubuntudream*.
