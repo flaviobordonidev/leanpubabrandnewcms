@@ -129,12 +129,8 @@ $ multipass version
 ## Creiamo la macchina virtuale
 
 > **ATTENZIONE**
-> Al capitolo 4 c'è il comando `multipass launch ...` in cui impostiamo anche le CHIAVI DI CRITTATURA
-> Possiamo *saltare direttamente là* ed usare i capitoli 1, 2 e 3 come supporto
-
-***ATTENZIONE***</br>
-***Al capitolo 4 c'è il comando `multipass launch ...` in cui impostiamo anche le CHIAVI DI CRITTATURA***</br>
-***Possiamo saltare direttamente là ed usare i capitoli 1, 2 e 3 come supporto***</br>
+> Al capitolo 4 c'è il comando `multipass launch ...` in cui impostiamo anche le CHIAVI DI CRITTATURA.</br>
+> Possiamo **saltare direttamente là** ed usare i capitoli 1, 2 e 3 come supporto
 
 Vediamo l'elenco di sistemi operativi che posso caricare nella VM
 
