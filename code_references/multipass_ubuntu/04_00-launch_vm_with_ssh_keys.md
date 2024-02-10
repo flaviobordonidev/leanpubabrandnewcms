@@ -69,8 +69,8 @@ Se vogliamo successivamente inserire, cambiare o togliere la passfrase su una ch
 
 ## Creiamo la configurazioen cloud-init sul mac
 
-Siamo nel mac quidni sul lato "ssh client".
-Nella directoru in cui abbiamo generato le chiavi di crittatura ssh creiamo il file `cloud-init.yaml`.
+Siamo nel mac quindi sul lato "ssh client".
+Nella directory in cui abbiamo generato le chiavi di crittatura ssh creiamo il file `cloud-init.yaml`.
 
 ```shell
 ❯ touch cloud-init.yaml

@@ -348,7 +348,7 @@ Attenzione questo **non** serve per la nostra app perché useremo un IDE grafico
 
 ```shell
 ❯ multipass shell ubuntufla
-$ sudo apt update`
+$ sudo apt update
 $ sudo apt install ubuntu-desktop xrdp
 ```
 

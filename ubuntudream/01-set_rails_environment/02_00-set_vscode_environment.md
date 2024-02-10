@@ -1,19 +1,17 @@
-# <a name="top"></a> Cap 1.1 - Impostiamo l'ambiente di sviluppo su Ubuntu Server Multipass
+# <a name="top"></a> Cap 1.1 - Impostiamo l'IDE Visual Studio Code
 
-Creiamo la nostra app Ubuntudream usando Ubuntu Server su multipass come nostro ambiente di sviluppo.
-Preparaziamo l'ambiente multipass.
-
+Aggiungiamo al nostro ambiente di sviluppo l'editor per il codice.
+Usiamo Visual Studio Code.
 
 
 ## Risorse interne
-- [code_references/multipass_ubuntu/01_00-ubuntu_multipass.md](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/multipass_ubuntu/01_00-ubuntu_multipass.md)
-- [code_references/multipass_ubuntu/03_00-connect_via_ssh]()
 - [code_references/visual_studio_code/01_00-install_vscode]()
 - [code_references/multipass_ubuntu/05_00-connect_vscode]()
+- [code_references/multipass_ubuntu/05_00-install-vscode-extension-remote_dev]()
+
 - [code_references/rails/01_00-install_rails]()
 - [code_references/postgresql/01_00-install_rails]()
 - [code_references/postgresql/12_00-authorize_postgresql_for_rails]()
-- [code_references/multipass_ubuntu/05_00-install-vscode-extension-remote_dev]()
 
 
 
@@ -27,9 +25,8 @@ per approfondimenti vedi:
 
 
 
-## Installiamo server SSH sulla VM
 
-2. [code_references/multipass_ubuntu/03_00-connect_via_ssh]()
+
 
 Implementiamo la IDE
 In questo capitolo Implementiamo la parte grafica per lo sviluppo e Colleghiamo VS Code alla VM tramite SSH.
