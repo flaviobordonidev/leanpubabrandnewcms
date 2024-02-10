@@ -6,12 +6,28 @@ Preparaziamo l'ambiente multipass.
 
 
 ## Risorse interne
+- [code_references/multipass_ubuntu/01_00-ubuntu_multipass.md](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/multipass_ubuntu/01_00-ubuntu_multipass.md)
+- [code_references/multipass_ubuntu/03_00-connect_via_ssh]()
+- [code_references/visual_studio_code/01_00-install_vscode]()
+- [code_references/multipass_ubuntu/05_00-connect_vscode]()
+- [code_references/rails/01_00-install_rails]()
+- [code_references/postgresql/01_00-install_rails]()
+- [code_references/postgresql/12_00-authorize_postgresql_for_rails]()
+- [code_references/multipass_ubuntu/05_00-install-vscode-extension-remote_dev]()
 
-Seguiamo i seguenti capitoli:
 
-1. [code_references/multipass_ubuntu/01_00-ubuntu_multipass.md](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/multipass_ubuntu/01_00-ubuntu_multipass.md)
 
-Installiamo server SSH sulla VM
+## Installiamo multipass
+
+Scarichiamo il file ".pkg" dal sito https://multipass.run/
+
+per approfondimenti vedi:
+
+- [code_references/multipass_ubuntu/01_00-ubuntu_multipass.md](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/multipass_ubuntu/01_00-ubuntu_multipass.md)
+
+
+
+## Installiamo server SSH sulla VM
 
 2. [code_references/multipass_ubuntu/03_00-connect_via_ssh]()
 
