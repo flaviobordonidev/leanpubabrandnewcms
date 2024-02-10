@@ -3,14 +3,7 @@
 UBUNTUDREAM - Il corso di visualizzazione guidata
 
 
-![Ubuntudream](images/07-elisinfo/00-section/01_01-elisinfo_cover.png)
-
-
-Questo volume continua a partire da quanto già fatto nei seguenti volumi:
-
-- 01-base
-- 02-bootstrap
-- 15-theme-edu
+![Ubuntudream](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/00-section/ubuntudream_cover.jpg)
 
 
 in questo volume: 

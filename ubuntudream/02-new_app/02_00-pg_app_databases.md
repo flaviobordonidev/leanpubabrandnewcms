@@ -84,7 +84,7 @@ production:
 
 Creiamo i databases per development e test usando il comando `createdb` di postgreSQL.
 
-```bash
+```shell
 $ createdb ubuntudream_development
 $ createdb ubuntudream_test
 ```
@@ -94,18 +94,18 @@ $ createdb ubuntudream_test
 
 Esempio:
 
-```bash
+```shell
 ubuntu@ub22fla:~/ubuntudream$ createdb ubuntudream_development
 ubuntu@ub22fla:~/ubuntudream$ createdb ubuntudream_test
 ```
 
 Nella creazione dei databases non ho dei messaggi di conferma sul terminale. Possiamo però verificare che adesso c'è comunicazione.
 
-```bash
+```shell
 $ rails db:migrate
 ```
 
-```bash
+```shell
 ubuntu@ub22fla:~/ubuntudream$ rails db:migrate
 ```
 
@@ -117,7 +117,7 @@ Come per la creazione dei databases, anche per il `db:migrate` non ho messaggi d
 
 Adesso proviamo di nuovo il preview
 
-```bash
+```shell
 $ rails s -b 192.168.64.4
 ```
 
@@ -129,6 +129,6 @@ Funziona ^_^!
 
 ---
 
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/01-new_app/01_00-new_app-it.md)
+[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-new_app/01_00-new_app-it.md)
  | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/01-new_app/03_00-gemfile_ruby_version.md)
+[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-new_app/03_00-gemfile_ruby_version.md)
