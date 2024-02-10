@@ -9,16 +9,18 @@ Il nostro ambiente di sviluppo è su Ubuntu Server attivato con multipass e ragg
 - [multipass.run: installiamo su macos](https://multipass.run/docs/installing-on-macos)
 - [multipass.run: docs](https://multipass.run/docs)
 - [brew.sh: packet manager per macos](https://brew.sh/)
-- https://ubuntu.com/server/docs/virtualization-multipass
+
+- [Multipass si era bloccato e non riuscivo a disinstallarlo e questo post ha risolto](https://github.com/canonical/multipass/issues/3257)
+- [How to install (and uninstall) Multipass on macOS](https://multipass.run/docs/installing-on-macos#heading--install-upgrade-uninstall)
+
+- [ubuntu.com - docs: creare la VM](https://ubuntu.com/server/docs/virtualization-multipass)
+
 - https://discourse.ubuntu.com/t/graphical-desktop-in-multipass/16229
 - https://www.techrepublic.com/article/how-to-install-a-full-desktop-on-a-multipass-virtual-machine-for-easier-linux-development/
 - https://discourse.ubuntu.com/t/is-there-a-way-to-extend-the-disk-allocated-for-the-instance/19346
 - https://github.com/canonical/multipass/issues/62
 
 - https://medium.com/codex/use-linux-virtual-machines-with-multipass-4e2b620cc6
-
-- [Multipass si era bloccato e non riuscivo a disinstallarlo e questo post ha risolto](https://github.com/canonical/multipass/issues/3257)
-- [How to install (and uninstall) Multipass on macOS](https://multipass.run/docs/installing-on-macos#heading--install-upgrade-uninstall)
 
 
 
@@ -126,7 +128,13 @@ $ multipass version
 
 ## Creiamo la macchina virtuale
 
--[Dal manuale multipass](https://ubuntu.com/server/docs/virtualization-multipass)
+> **ATTENZIONE**
+> Al capitolo 4 c'è il comando `multipass launch ...` in cui impostiamo anche le CHIAVI DI CRITTATURA
+> Possiamo *saltare direttamente là* ed usare i capitoli 1, 2 e 3 come supporto
+
+***ATTENZIONE***</br>
+***Al capitolo 4 c'è il comando `multipass launch ...` in cui impostiamo anche le CHIAVI DI CRITTATURA***</br>
+***Possiamo saltare direttamente là ed usare i capitoli 1, 2 e 3 come supporto***</br>
 
 Vediamo l'elenco di sistemi operativi che posso caricare nella VM
 
@@ -154,10 +162,6 @@ ros2-humble                                   0.1              A development and
 ```
 
 Nel nostro caso siamo interessati a Ubuntu 22.04 LTS (image: 22.04) quindi creiamo la VM con questo sistema operativo.
-
-***ATTENZIONE***</br>
-***Al capitolo 4 c'è il comando `multipass launch ...` in cui impostiamo anche le CHIAVI DI CRITTATURA***</br>
-***Possiamo saltare direttamente là ed usare i capitoli 1, 2 e 3 come supporto***</br>
 
 Creiamo un'istanza con 20Gb di spazio disco e 4Gb di memoria e diamogli un nome. Io la chiamo "ub22fla".
 
