@@ -32,7 +32,7 @@ Multipass utilizza hypervisor nativi di tutte le piattaforme supportate (Windows
 
 
 
-## Installazione (install)
+## Installazione (install)
 
 - [homebrew site: multipass](https://formulae.brew.sh/cask/multipass)
 - [How to install Multipass on macOS](https://multipass.run/docs/installing-on-macos)
