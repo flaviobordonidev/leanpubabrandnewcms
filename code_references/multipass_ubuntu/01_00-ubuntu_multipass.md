@@ -6,9 +6,9 @@ Il nostro ambiente di sviluppo è su Ubuntu Server attivato con multipass e ragg
 
 ## Risorse esterne
 
-- [Dal sito di ubuntu al -> sito multipass](https://multipass.run/docs/installing-on-macos)
-- https://multipass.run/docs
-- https://brew.sh/
+- [multipass.run: installiamo su macos](https://multipass.run/docs/installing-on-macos)
+- [multipass.run: docs](https://multipass.run/docs)
+- [brew.sh: packet manager per macos](https://brew.sh/)
 - https://ubuntu.com/server/docs/virtualization-multipass
 - https://discourse.ubuntu.com/t/graphical-desktop-in-multipass/16229
 - https://www.techrepublic.com/article/how-to-install-a-full-desktop-on-a-multipass-virtual-machine-for-easier-linux-development/
@@ -16,6 +16,9 @@ Il nostro ambiente di sviluppo è su Ubuntu Server attivato con multipass e ragg
 - https://github.com/canonical/multipass/issues/62
 
 - https://medium.com/codex/use-linux-virtual-machines-with-multipass-4e2b620cc6
+
+- [Multipass si era bloccato e non riuscivo a disinstallarlo e questo post ha risolto](https://github.com/canonical/multipass/issues/3257)
+- [How to install (and uninstall) Multipass on macOS](https://multipass.run/docs/installing-on-macos#heading--install-upgrade-uninstall)
 
 
 
@@ -92,12 +95,15 @@ Salta questo paragrafo a meno che non ti serva.
 - [Multipass si era bloccato e non riuscivo a disinstallarlo e questo post ha risolto](https://github.com/canonical/multipass/issues/3257)
 - [How to install (and uninstall) Multipass on macOS](https://multipass.run/docs/installing-on-macos#heading--install-upgrade-uninstall)
 
-Per disinstallare un installazione fatta scaricando il file ".dmg / .pkg" --> To uninstall, run the script:
+
+### Disinstallare installazione fatta scaricando il file ".pkg"
 
 ```shell
 ❯ sudo sh "/Library/Application Support/com.canonical.multipass/uninstall.sh"
 ```
 
+
+### Disinstallare installazione fatta con "brew"
 Se invece abbiamo installato con "brew"
 
 To uninstall:
@@ -115,7 +121,6 @@ Col comando `multipass version` puoi controllare quale versione hai in esecuzion
 ```shell
 $ multipass version
 ```
-
 
 
 
@@ -150,9 +155,9 @@ ros2-humble                                   0.1              A development and
 
 Nel nostro caso siamo interessati a Ubuntu 22.04 LTS (image: 22.04) quindi creiamo la VM con questo sistema operativo.
 
-*** ATTENZIONE ***
-*** Al capitolo 4 c'è il comando `multipass launch ...` in cui impostiamo anche le CHIAVI DI CRITTATURA ***
-*** Possiamo saltare direttamente là ed usare i capitoli 1, 2 e 3 come supporto ***
+***ATTENZIONE***</br>
+***Al capitolo 4 c'è il comando `multipass launch ...` in cui impostiamo anche le CHIAVI DI CRITTATURA***</br>
+***Possiamo saltare direttamente là ed usare i capitoli 1, 2 e 3 come supporto***</br>
 
 Creiamo un'istanza con 20Gb di spazio disco e 4Gb di memoria e diamogli un nome. Io la chiamo "ub22fla".
 
