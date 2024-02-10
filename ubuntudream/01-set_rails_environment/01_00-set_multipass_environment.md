@@ -44,7 +44,7 @@ Creiamo il file `cloud-init.yaml`.
 ❯ nano cloud-init.yaml
 ```
 
-[Codice 01 - ~/.ssh/cloud-init.yaml - linea: 1]()
+[Codice 01 - ~/.ssh/cloud-init.yaml - linea: 1](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/01-set_rails_environment/01_01-home-.ssh-cloud-init.yaml)
 
 ```yml
 users:
