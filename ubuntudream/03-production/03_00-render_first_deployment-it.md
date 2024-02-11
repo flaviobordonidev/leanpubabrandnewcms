@@ -82,14 +82,22 @@ Create a new Web Service, pointing it to your application repository (make sure 
 
 Scegli il repository GitHub da cui prendere i files. Nel nostro caso "ubuntudream".
 
+
+PROPERTY    | VALUE
+| :---      | :--- 
+Name        | `ubndudream3`
+Region      | `Frankfurt (EU Central)`
+Branch      | `main`
+Runtime     | `Ruby`
+
 - Name : ubndudream3
 - Region : Frankfurt (EU Central)
 - Branch : main
 - Runtime : Ruby
 
 > ATTENZIONE!
-> Select `Ruby` for the `environment`.</br>
-> Di default l'`environment` è impostato su `docker` e dobbiamo cambiamolo su `Ruby`.
+> Seleziona`Ruby` come `Runtime environment`.</br>
+> Di default il `Runtime environment` è impostato su `docker` e dobbiamo cambiamolo su `Ruby`.
 > Render has native support for many popular languages, including Node.js, Python, Ruby, Go, Rust, and Elixir. *You don’t need to use Docker on Render* if your service can be deployed with a native runtime and a build and start command.
 
 ![fig05](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-production/03_fig05-render_deploy1.png)

@@ -85,12 +85,6 @@ Riseguiamo i passi che abbiamo già fatto nei capitoli precedenti aggiungendo qu
 
 Andiamo nel nostro Web Service su `Settings -> Build & Deploy` ed aggiorniamo le seguenti proprietà:
 
-PROPERTY    : VALUE
-- `Build Command` :	`./bin/render-build.sh`
-- `Start Command` :	`bundle exec puma -C config/puma.rb`
-
-alternativa
-
 PROPERTY        | VALUE
 | :---          | :--- 
 `Build Command` | `./bin/render-build.sh`
