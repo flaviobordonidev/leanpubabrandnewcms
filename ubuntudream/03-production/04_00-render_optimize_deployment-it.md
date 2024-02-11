@@ -85,10 +85,16 @@ Riseguiamo i passi che abbiamo già fatto nei capitoli precedenti aggiungendo qu
 
 Andiamo nel nostro Web Service su `Settings -> Build & Deploy` ed aggiorniamo le seguenti proprietà:
 
-PROPERTY        |	VALUE
------------------------------------------------------
-`Build Command` |	`./bin/render-build.sh`
-`Start Command` |	`bundle exec puma -C config/puma.rb`
+PROPERTY    : VALUE
+- `Build Command` :	`./bin/render-build.sh`
+- `Start Command` :	`bundle exec puma -C config/puma.rb`
+
+alternativa
+
+PROPERTY        | VALUE
+| :---          | :--- 
+`Build Command` | `./bin/render-build.sh`
+`Start Command` | `bundle exec puma -C config/puma.rb`
 
 That’s it! You can now finalize your service deployment. It will be live on your .onrender.com URL as soon as the build finishes.
 
