@@ -11,9 +11,9 @@ Facciamo un primo deploy in produzione senza ottimizzazione del codice. Questo p
 
 ## Risorse esterne
 
-- [Update Your App For Render](https://render.com/docs/deploy-rails#update-your-app-for-render)
-- [Creating a Database](https://render.com/docs/databases)
-
+- [render: Update Your App For Render](https://render.com/docs/deploy-rails#update-your-app-for-render)
+- [render: Creating a Database](https://render.com/docs/databases)
+- [render: Docker vs. native runtimes](https://docs.render.com/docker)
 
 
 
@@ -56,7 +56,7 @@ IMPORTANTE
 > - l'`Internal Database URL` del nostro database PostgreSQL su Render.
 > - la `masterkey` della nostra applicazione.
 
-Prendiamo l'`Internal Database URL`: `postgres://ubuntu:06...f-k/ubuntudream_production`.
+Prendiamo l'`Internal Database URL`: `postgres://ubuntudream:FE7...glyz2-d/ubuntudream_production_64p3`.
 
 
 
@@ -67,7 +67,7 @@ Il file `master.key` ha una semplice stringa usata come chiave principale di cri
 *** Codice 01 - .../config/master.key - linea: 1 ***
 
 ```bash
-f458b1a6862a56b7474b9e734d7b01c4
+seb666...4bh17
 ```
 
 > Siccome questa è la chiave per decifrare tutte le secrets questa è inclusa di default in `.gitignore` e quindi non è passata ai repositories remoti (es: GitHub).
@@ -80,7 +80,17 @@ f458b1a6862a56b7474b9e734d7b01c4
 
 Create a new Web Service, pointing it to your application repository (make sure Render has a permission to access it).
 
-Select `Ruby` for the `environment`.
+Scegli il repository GitHub da cui prendere i files. Nel nostro caso "ubuntudream".
+
+- Name : ubndudream3
+- Region : Frankfurt (EU Central)
+- Branch : main
+- Runtime : Ruby
+
+> ATTENZIONE!
+> Select `Ruby` for the `environment`.</br>
+> Di default l'`environment` è impostato su `docker` e dobbiamo cambiamolo su `Ruby`.
+> Render has native support for many popular languages, including Node.js, Python, Ruby, Go, Rust, and Elixir. *You don’t need to use Docker on Render* if your service can be deployed with a native runtime and a build and start command.
 
 ![fig05](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-production/03_fig05-render_deploy1.png)
 
@@ -89,15 +99,24 @@ Select `Ruby` for the `environment`.
 > Le variabili `Build Command` e `Start Command` nei prossimi capitoli le cambieremo inserendo i files della nostra applicazione Rails con le ottimizzazioni per la produzione.
 
 
-Add the following `Environment Variables` under the `Advanced section`:
+Selezioniamo il piano gratuito
 
+- Free plan
+
+
+Add the following `Environment Variables` under the `Advanced section`:
 KEY	VALUE of `Environment Variables`
+
 - DATABASE_URL      :	the internal database URL for the database you created above
+                        postgres://ubuntudream:FE7...glyz2-d/ubuntudream_production_64p3
 - RAILS_MASTER_KEY  :	the content of the config/master.key file
+                        seb666...4bh17
 
 ![fig07](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-production/03_fig07-render_deploy3.png)
 
-That’s it! You can now finalize your service deployment. It will be live on your .onrender.com URL as soon as the build finishes.
+That’s it! 
+Facciamo click sul bottone *Create Web Service*.
+You can now finalize your service deployment. It will be live on your .onrender.com URL as soon as the build finishes.
 
 - https://ubuntudream.onrender.com/
 

@@ -1,0 +1,5 @@
+Host github-as-ub22fla
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/ub22fla_github_fladev_key_ed25519
+  IdentitiesOnly yes

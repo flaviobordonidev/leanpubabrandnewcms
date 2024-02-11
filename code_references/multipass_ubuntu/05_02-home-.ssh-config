@@ -1,0 +1,14 @@
+Host ub22fla
+  HostName 192.168.64.4
+  IdentityFile ~/.ssh/ub22fla_key_ed25519
+  User ubuntu
+
+Host 192.168.64.7
+  HostName 192.168.64.7
+  IdentityFile ~/.ssh/altro_server_key_ed25519
+  User ubuntu
+
+Host mio_server_pippo
+  HostName 192.168.64.3
+  IdentityFile ~/.ssh/server_pippo_key_ed25519
+  User ubuntu

@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 1.1 - Nuova app rails
+# <a name="top"></a> Cap 2.1 - Nuova app rails
 
 Creiamo la nuova applicazione Ubuntudream.
 
@@ -10,37 +10,23 @@ Creiamo la nuova applicazione Ubuntudream.
 
 
 
-## Risorse esterne
+## Creiamo una nuova applicazione Rails con database postgreSQL
 
-- [Getting Started with Ruby on Rails on Render](https://render.com/docs/deploy-rails)
-
-
-
-## Creiamo l'applicazione
-
-In produzione Render utilizza postgreSQL quindi lo installiamo anche localmente.
-Un'alternativa era quella di caricare la gemma "pg" solo per l'ambiente di produzione. Ma è preferibile usare nell'ambiente di sviluppo le stesse risorse usate in produzione.
+La installiamo includendo da subito il database postgreSQL perché è quello che abbiamo in produzione su Render.
 
 > Attenzione!
-> Se creo una nuova applicazione con l'opzione `--database=postgresql` devo installare prima  `sudo apt install libpq-dev`.
-> Ho provato senza e mi ha dato errore nella parte di installazione di postgresql e mi ha chiesto di installare `sudo apt install libpq-dev`.
-
+> Se creo una nuova applicazione con l'opzione `--database=postgresql` devo installare prima `sudo apt install libpq-dev`.
 
 ```shell
 $ cd ~
 $ rails --version
+# installiamo la libreria postgreSQL di sviluppo
 $ sudo apt install libpq-dev
-```
-
-```shell
+# creiamo la nuova applicazione Rails con il database postgreSQL
 $ rails new ubuntudream --database=postgresql
 ```
 
-> **Non** aggiungiamo anche l'opzione `-j esbuild --css bootstrap` perché questa non usa **importmap**, e noi vogliamo usare **importmap**.
-
-
 Esempio:
-
 
 ```shell
 ubuntu@ub22fla:~$ cd ~
@@ -69,7 +55,7 @@ Unpacking libpq-dev (16.1-1.pgdg22.04+1) ...
 Setting up libpq-dev (16.1-1.pgdg22.04+1) ...
 Processing triggers for man-db (2.10.2-1) ...
 Scanning processes...                                
-Scanning linux images...                                                                                                                                              
+Scanning linux images...                                              
 Running kernel seems to be up-to-date.
 No services need to be restarted.
 No containers need to be restarted.

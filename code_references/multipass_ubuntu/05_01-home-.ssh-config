@@ -1,0 +1,4 @@
+Host ub22fla
+  HostName 192.168.64.4
+  IdentityFile ~/.ssh/ub22fla_key_ed25519
+  User ubuntu

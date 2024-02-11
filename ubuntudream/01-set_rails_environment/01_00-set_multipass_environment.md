@@ -7,13 +7,7 @@ Preparaziamo l'ambiente multipass.
 
 ## Risorse interne
 - [code_references/multipass_ubuntu/01_00-ubuntu_multipass.md](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/multipass_ubuntu/01_00-ubuntu_multipass.md)
-- [code_references/multipass_ubuntu/03_00-connect_via_ssh]()
-- [code_references/visual_studio_code/01_00-install_vscode]()
-- [code_references/multipass_ubuntu/05_00-connect_vscode]()
-- [code_references/rails/01_00-install_rails]()
-- [code_references/postgresql/01_00-install_rails]()
-- [code_references/postgresql/12_00-authorize_postgresql_for_rails]()
-- [code_references/multipass_ubuntu/05_00-install-vscode-extension-remote_dev]()
+- [code_references/multipass_ubuntu/03_00-connect_via_ssh.md](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/multipass_ubuntu/03_00-connect_via_ssh.md)
 
 
 
@@ -59,7 +53,7 @@ Creiamo la macchina virtuale con già le chiavi di crittatura per ssh.
 
 ```shell
 ❯ multipass find
-❯ multipass launch 22.04 --name ub22fla --cpus 1 --memory 4G --disk 20G  --cloud-init cloud-init.yaml
+❯ multipass launch 22.04 --name ub22fla --cpus 1 --memory 4G --disk 20G --cloud-init cloud-init.yaml
 ```
 
 per approfondimenti vedi:
@@ -82,32 +76,6 @@ per approfondimenti vedi:
 
 - [code_references/multipass_ubuntu/04_00-launch_vm_with_ssh_keys.md](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/multipass_ubuntu/04_00-launch_vm_with_ssh_keys.md)
 - [code_references/multipass_ubuntu/03_00-connect_via_ssh.md](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/multipass_ubuntu/03_00-connect_via_ssh.md)
-
-
-
-
-
-
-Implementiamo la IDE
-In questo capitolo Implementiamo la parte grafica per lo sviluppo e Colleghiamo VS Code alla VM tramite SSH.
-
-3. [code_references/visual_studio_code/01_00-install_vscode]()
-4. [code_references/multipass_ubuntu/05_00-connect_vscode]()
-
-Installiamo Rails sulla VM
-
-5. [code_references/rails/01_00-install_rails]()
-
-Installiamo PostgreSQL
-Di default Rails ha attivo il database sqlite3 ma noi sin da subito nella nostra nuova applicazione useremo PostgreSQL, quindi è bene installarlo.
-
-6. [code_references/postgresql/01_00-install_rails]()
-7. [code_references/postgresql/12_00-authorize_postgresql_for_rails]()
-
-VS Code extensions
-In questo capitolo installiamo le *estensioni* di Visual Studio Code per lavorare meglio con Ruby on Rails.
-
-8. [code_references/multipass_ubuntu/05_00-install-vscode-extension-remote_dev]()
 
 
 

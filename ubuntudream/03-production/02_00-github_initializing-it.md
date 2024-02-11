@@ -74,7 +74,7 @@ $ touch ~/.ssh/config
 
 Prepariamo la voce che usiamo per indicare a git di usare la chiave per il `git push` a github.
 
-*** Codice 01 - ~/.ssh/config - linea: 1 ***
+[Codice 01 - ~/.ssh/config - linea: 1](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-new_app/05_01-mockups-test_a.html.erb)
 
 ```shell
 Host github-as-ub22fla
@@ -83,6 +83,7 @@ Host github-as-ub22fla
   IdentityFile ~/.ssh/ub22fla_github_fladev_key_ed25519
   IdentitiesOnly yes
 ```
+
 
 
 ## Github nuovo repository

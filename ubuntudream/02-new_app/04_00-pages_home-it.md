@@ -33,26 +33,22 @@ non abbiamo nessun migrate perché non ci interfacciamo con il database.
 
 ## La view index
 
-*** Codice 01 - .../views/pages/home.html.rrb - linea: 1 ***
+[Codice 01 - .../views/pages/home.html.rrb - linea: 1](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-new_app/04_01-views-pages-home.html.erb)
 
-```html+erb
+```html
 <h1>Pages#home</h1>
 <p>Find me in app/views/pages/home.html.erb</p>
 ```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/01-new_app/04_01-mockups-index.html.erb)
 
 
 
 ## Gli instradamenti (routes)
 
-*** Codice 02 - .../config/routes.rb - linea: 7 ***
+[Codice 02 - .../config/routes.rb - linea: 7](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-new_app/04_02-config-routes.rb)
 
 ```ruby
   root 'pages#home'
 ```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/01-new_app/04_01-mockups-index.html.erb)
 
 > https://guides.rubyonrails.org/routing.html#using-root
 > You should put the root route at the top of the file, because it is the most popular route and should be matched first.

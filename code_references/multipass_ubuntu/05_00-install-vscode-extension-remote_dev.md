@@ -121,7 +121,7 @@ Invece dell'indirizzo IP possiamo dare un nome alla connessione per rendere più
 
 - Click su "View" -> "Command Palette..."
 - cerchiamo per "Remote-SSH: Open SSH Configuration file..." 
-  - e scegliamo "/Users/FB/.ssh/config"
+  - e scegliamo `~/.ssh/config` (`~` nel mio caso è `/Users/FB`)
   - oppure avremmo potututo cercare per "Remote-SSH: Add new SSH Host..."
 
 La struttura base del file è questa:
@@ -135,6 +135,8 @@ Host alias per dare un nome al posto dell IP address
 
 Diamo alla connessione lo stesso nome che usiamo su multipass.
 
+[Codice 01 - ~/.ssh/config - linea: 1]()
+
 ```shell
 Host ub22fla
   HostName 192.168.64.4
@@ -144,6 +146,8 @@ Host ub22fla
 
 
 Se aggiungiamo altre connessioni il file crescerà tipo questo:
+
+[Codice 02 - ~/.ssh/config - linea: 1]()
 
 ```shell
 Host ub22fla
@@ -161,7 +165,6 @@ Host mio_server_pippo
   IdentityFile ~/.ssh/server_pippo_key_ed25519
   User ubuntu
 ```
-
 
 
 

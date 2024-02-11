@@ -24,24 +24,18 @@ $ rails g controller Mockups test_a
 
 > *mockups* è una directory in cui mettiamo delle pagine statiche con dei segnaposto invece dei dati presi dal database.
 
-*** Codice 01 - .../app/mockups/test_a.html.erb - linea: 1 ***
+[Codice 01 - .../app/mockups/test_a.html.erb - linea: 1](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-new_app/05_01-mockups-test_a.html.erb)
 
-```html+erb
+```html
 <h1>Pagina A di test</h1>
 <p>this is the first test page</p>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/01-new_app/04_01-mockups-index.html.erb)
-
-
-*** Codice 02 - .../config/routes.rb - linea: 15 ***
+[Codice 02 - .../config/routes.rb - linea: 15](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-new_app/05_02-config-routes.rb)
 
 ```ruby
   get 'mockups/test_a'
 ```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/01-new_app/04_01-mockups-index.html.erb)
-
 
 Abbiamo il minimo necessario per poter andare in produzione.
 

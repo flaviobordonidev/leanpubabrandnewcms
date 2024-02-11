@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 1.2 - PostgreSQL Databases per myapp
+# <a name="top"></a> Cap 2.2 - Creiamo i databases PostgreSQL per la nostra nuova app Rails
 
 Creiamo i databases su postgreSQL in modo da attivare la connessione con la nostra applicazione Rails sia lato sviluppo che lato test.
 
@@ -113,6 +113,45 @@ Come per la creazione dei databases, anche per il `db:migrate` non ho messaggi d
 
 
 
+## Vediamo i databases creati
+
+```shell
+$ psql
+-> \list
+-> \q
+```
+
+Esempio:
+
+```shell
+ubuntu@ub22fla:~/ubuntudream (is)$psql
+psql (16.1 (Ubuntu 16.1-1.pgdg22.04+1))
+Type "help" for help.
+
+ubuntu=# \list
+                                                          List of databases
+          Name           |  Owner   | Encoding | Locale Provider | Collate |  Ctype  | ICU Locale | ICU Rules |   Access privileges   
+-------------------------+----------+----------+-----------------+---------+---------+------------+-----------+-----------------------
+ postgres                | postgres | UTF8     | libc            | C.UTF-8 | C.UTF-8 |            |           | 
+ template0               | postgres | UTF8     | libc            | C.UTF-8 | C.UTF-8 |            |           | =c/postgres          +
+                         |          |          |                 |         |         |            |           | postgres=CTc/postgres
+ template1               | postgres | UTF8     | libc            | C.UTF-8 | C.UTF-8 |            |           | =c/postgres          +
+                         |          |          |                 |         |         |            |           | postgres=CTc/postgres
+ ubuntu                  | postgres | UTF8     | libc            | C.UTF-8 | C.UTF-8 |            |           | 
+ ubuntudream_development | ubuntu   | UTF8     | libc            | C.UTF-8 | C.UTF-8 |            |           | 
+ ubuntudream_test        | ubuntu   | UTF8     | libc            | C.UTF-8 | C.UTF-8 |            |           | 
+(6 rows)
+
+ubuntu=# \q
+ubuntu@ub22fla:~/ubuntudream (is)$
+```
+
+Per approfondimenti vedi:
+
+- [code_references/postgresql/02_00-connect_local_database]()
+
+
+
 ## Verifichiamo preview
 
 Adesso proviamo di nuovo il preview
@@ -120,6 +159,8 @@ Adesso proviamo di nuovo il preview
 ```shell
 $ rails s -b 192.168.64.4
 ```
+
+E lo visualizziamo nel browser all'url: `http://192.168.64.4:3000`
 
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/01-new_app/07_fig03-preview_working.png)
 

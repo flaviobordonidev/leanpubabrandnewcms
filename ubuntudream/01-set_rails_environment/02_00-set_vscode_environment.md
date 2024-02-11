@@ -5,49 +5,78 @@ Usiamo Visual Studio Code.
 
 
 ## Risorse interne
-- [code_references/visual_studio_code/01_00-install_vscode]()
+- [code_references/visual_studio_code/01_00-install_vscode](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/visual_studio_code/01_00-install_vscode.md)
+- [code_references/multipass_ubuntu/05_00-install-vscode-extension-remote_dev.md](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/multipass_ubuntu/05_00-install-vscode-extension-remote_dev.md)
+
+
 - [code_references/multipass_ubuntu/05_00-connect_vscode]()
-- [code_references/multipass_ubuntu/05_00-install-vscode-extension-remote_dev]()
-
-- [code_references/rails/01_00-install_rails]()
-- [code_references/postgresql/01_00-install_rails]()
-- [code_references/postgresql/12_00-authorize_postgresql_for_rails]()
 
 
 
-## Installiamo multipass
+## Installiamo vscode
 
-Scarichiamo il file ".pkg" dal sito https://multipass.run/
+Installiamo Visual Studio Code scaricando il file ".zip" dal sito https://code.visualstudio.com/download
+
 
 per approfondimenti vedi:
 
-- [code_references/multipass_ubuntu/01_00-ubuntu_multipass.md](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/multipass_ubuntu/01_00-ubuntu_multipass.md)
+- [code_references/visual_studio_code/01_00-install_vscode](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/visual_studio_code/01_00-install_vscode.md)
 
 
 
+## Installiamo l'estensione per connetterci
+
+Apriamo Visual Studio Code. Sulla barra del menu laterale clicchiamo sull'icona *extension*. Cerchiamo *remote-ssh* ed installiamolo.
+
+- Apriamo Visual Studio Code 
+- clicchiamo nella sezione delle estensioni (extensions)
+- Verifichiamo che "Remote - SSH" sia installato.
+  - Altrimenti lo installiamo mettendo nel campo di ricerca la voce "remote-ssh"
+  - clicchiamo sull'icona
+  - clicchiamo su "Install"
+
+
+per approfondimenti vedi:
+
+- [code_references/multipass_ubuntu/05_00-install-vscode-extension-remote_dev.md](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/multipass_ubuntu/05_00-install-vscode-extension-remote_dev.md)
 
 
 
-Implementiamo la IDE
-In questo capitolo Implementiamo la parte grafica per lo sviluppo e Colleghiamo VS Code alla VM tramite SSH.
+## Colleghiamo vscode alla vm
 
-3. [code_references/visual_studio_code/01_00-install_vscode]()
-4. [code_references/multipass_ubuntu/05_00-connect_vscode]()
+- *View* -> *Command Palette...* -> selezioniamo *Remote-SSH: Add New SSH Host…*
+    Inseriamo: `ssh -i ~/.ssh/ub22fla_key_ed25519 ubuntu@192.168.64.4`.
+- Salviamo le impostazioni su `/Users/FB/.ssh/config`
 
-Installiamo Rails sulla VM
+```shell
+Host 192.168.64.4
+  HostName 192.168.64.4
+  User ubuntu
+  IdentityFile ~/.ssh/ub22fla_key_ed25519
+```
 
-5. [code_references/rails/01_00-install_rails]()
+- Nella *palette dei comandi* (F1) selezioniamo *Remote-SSH: Connect to Host…*
+    Dal menu a tendina scegliamo l'host già aggiunto (*192.168.64.3*).
 
-Installiamo PostgreSQL
-Di default Rails ha attivo il database sqlite3 ma noi sin da subito nella nostra nuova applicazione useremo PostgreSQL, quindi è bene installarlo.
 
-6. [code_references/postgresql/01_00-install_rails]()
-7. [code_references/postgresql/12_00-authorize_postgresql_for_rails]()
+Personalizziamo il file di configurazione
 
-VS Code extensions
-In questo capitolo installiamo le *estensioni* di Visual Studio Code per lavorare meglio con Ruby on Rails.
+[Codice 01 - ~/.ssh/config - linea: 1]()
 
-8. [code_references/multipass_ubuntu/05_00-install-vscode-extension-remote_dev]()
+```shell
+Host ub22fla
+  HostName 192.168.64.4
+  IdentityFile ~/.ssh/ub22fla_key_ed25519
+  User ubuntu
+```
+
+- Nella *palette dei comandi* (F1) selezioniamo *Remote-SSH: Connect to Host…*
+    Dal menu a tendina scegliamo l'host (*ub22fla*).
+
+
+per approfondimenti vedi:
+
+- [code_references/multipass_ubuntu/05_00-install-vscode-extension-remote_dev.md](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/multipass_ubuntu/05_00-install-vscode-extension-remote_dev.md)
 
 
 

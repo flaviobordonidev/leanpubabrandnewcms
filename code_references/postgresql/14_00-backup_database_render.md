@@ -87,53 +87,62 @@ $ psql --version
 
 ## Fare il dump
 
-You can take a backup of your database schema and the data in your tables using pg_dump. This command can be used to dump your database to a file (make sure to swap out the appropriate database variables, as well as the hostname for Frankfurt region databases):
+Puoi eseguire un backup dello schema del tuo database e dei dati nelle tue tabelle utilizzando `pg_dump`. Questo comando può essere utilizzato per eseguire il dump del database in un file.
 
 ```bash
 $ PGPASSWORD={PASSWORD} pg_dump -h {FINGERPRINT}.{STATE}-postgres.render.com -U {DATABASE_USER} {DATABASE_NAME} -n public --no-owner > database_dump.sql
 ```
 
-You can then restore this data to your new database:
+> Assicuriamoci di scambiare le variabili del database appropriate, nonché il nome host per i database della regione (nel nostro caso è Francoforte)
+
+Vedi esempi nei prossimi paragrafi.
+
+
+
+## Ripristinare il dump
+
+Possiamo quindi ripristinare in un nuovo database i dati che abbiamo messo nel file di *dump*.
 
 ```bash
 $ PGPASSWORD={PASSWORD} psql -h {FINGERPRINT}.{STATE}-postgres.render.com -U {DATABASE_USER} {DATABASE_NAME} < database_dump.sql
 ```
 
-If you have multiple databases in your PostgreSQL instance, repeat the steps above for each database you wish to backup and restore. Alternatively, you can use pg_dumpall to automatically backup all databases in your instance.
+Vedi esempi nei prossimi paragrafi.
 
-Refer to [Backups](https://render.com/docs/databases#backups) for more details regarding backup and restore.
+> If you have multiple databases in your PostgreSQL instance, repeat the steps above for each database you wish to backup and restore. Alternatively, you can use pg_dumpall to automatically backup all databases in your instance.</br>
+> Refer to [Backups](https://render.com/docs/databases#backups) for more details regarding backup and restore.</br>
+> If certain statements fail to execute due to a version incompatibility, you may need to manually modify your database dump to resolve these issues.
 
-If certain statements fail to execute due to a version incompatibility, you may need to manually modify your database dump to resolve these issues.
 
 
-
-## Esempio di `database_dump` su `ubuntudream_production`
+## Esempio di dump del database su `ubuntudream_production`
 
 Prendiamo la stringa usata per collegarsi al database remoto (quello di produzione su render.com) e la adattiamo a quella per fare il dump del database.
+
+render.com -> ubuntudream_production -> Connect -> External Connection -> PSQL Command
 
 > Non dobbiamo collegarci al database. Dobbiamo solo prendere la stringa.
 
 ![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/code_references/postgresql/04_fig04-render_command_for_external_connection.png)
 
-
-```bash
+```shell
 $ PGPASSWORD=x...0 psql -h d...a.frankfurt-postgres.render.com -U ubuntu ubuntudream_production_arvy
 ```
 
 Adattiamo la stringa. Al posto di `psql` mettiamo `pg_dump` ed aggiungiamo la stringa `-n public --no-owner > database_dump.sql` per eseguire il comando di dump.
 
-```bash
+```shell
 $ PGPASSWORD=x...0 pg_dump -h d...a.frankfurt-postgres.render.com -U ubuntu ubuntudream_production_arvy -n public --no-owner > database_dump.sql
 ```
 
-Questo comando va eseguito nella VM (virtual machine) di multipass che abbia installata la stessa versione, o una maggiore, della versione Postgres che è installata su render.com.
+> Questo comando va eseguito nella VM (virtual machine) di multipass che abbia installata la stessa versione, o una maggiore, della versione Postgres che è installata su render.com.</br>
+> *Versione Postgresql su VM multipass ≥ Versione Postgresql su render.com*
 
-- Versione Postgresql su VM multipass ≥ Versione Postgresql su render.com
-
-Ci scaricherà il file "database_dump.sql" sulla nostra VM.
+Ci scaricherà il file `database_dump.sql` sulla nostra VM.
 
 
-### Esempio con errore
+
+## Esempio con errore
 
 Versione Postgresql su VM multipass < Versione Postgresql su render.com
 
@@ -152,7 +161,8 @@ ubuntu@ubuntufla:~ $
 > invece su render.com c'è la versione 15.2
 
 
-### Esempio senza errore
+
+## Esempio senza errore
 
 Versione Postgresql su VM multipass = Versione Postgresql su render.com
 
@@ -168,7 +178,9 @@ Home  database_dump.sql  snap
 ubuntu@primary:~$ 
 ```
 
-### Altro esempio senza errore
+
+
+## Altro esempio senza errore
 
 Versione Postgresql su VM multipass > Versione Postgresql su render.com
 
@@ -187,128 +199,104 @@ ubuntu@primary:~$
 
 ## Spostiamo il file dalla VM multipass al PC fisico
 
-Per creare un collegamento tra la VM di multipass ed il nostro pc fisico dobbiamo fare un "mount".
-Di solito multipass ne ha già uno di default:
-- nella cartella `~/Home` della VM è montata la cartella user del pc fisico "<<root>>/Users/<<username>>". Nel mio caso è su: `FlaMac/Users/FB`.
-(I files che sul mac troviamo con "finder" su /Users/FB)
+Per creare un collegamento tra la VM di multipass ed il nostro pc fisico dobbiamo fare un `mount`.
 
-Possiamo vedere se i "mounts" con il comando:
-```bash
-$ multipass info primary
-```
+> Se da multipass creiamo la vm di default `primary` potremmo treovarne uno impostato di default la cartella Home con un mount già importato.
+> Nella cartella `~/Home` della VM è montata la cartella user del pc fisico `<<root>>/Users/<<username>>`. 
+> Nel mio caso è su: `FlaMac/Users/FB`. (I files che sul mac troviamo con "finder" su /Users/FB)
 
-Se non è montata la possiamo montare con il seguente comando `multipass mount` da fare dal terminale di mac. (non da dentro l'istanza multipass):
+Possiamo vedere i "mounts" con il comando:
 
-```bash
-MacBook-Pro-di-Flavio:~ FB$ multipass list
-MacBook-Pro-di-Flavio:~ FB$ multipass mount ~ primary
-MacBook-Pro-di-Flavio:~ FB$ multipass info primary
-MacBook-Pro-di-Flavio:~ FB$ multipass shell primary
-ubuntu@primary:~$ cd /Users/FB/
-ubuntu@primary:/Users/FB$ cp ~/database_dump.sql .
-ubuntu@primary:/Users/FB$ exit
-MacBook-Pro-di-Flavio:~ FB$ multipass unmount primary
+```shell
+$ multipass info vm_name
 ```
 
 Esempio:
 
-```bash
-ubuntu@primary:~$ ls
-Home  database_dump.sql  snap
-ubuntu@primary:~$ exit
-logout
-MacBook-Pro-di-Flavio:~ FB$ multipass list
-Name                    State             IPv4             Image
-primary                 Running           192.168.64.8     Ubuntu 22.04 LTS
-ub22fla                 Stopped           --               Ubuntu 22.04 LTS
-ubuntufla               Stopped           --               Ubuntu 20.04 LTS
-MacBook-Pro-di-Flavio:~ FB$ multipass mount ~/Home primary
-Source path "/Users/FB/Home" does not exist
-MacBook-Pro-di-Flavio:~ FB$ multipass mount ~ primary
-MacBook-Pro-di-Flavio:~ FB$ ls ~
-Applications		Desktop			Downloads		Google Drive		Movies			Pictures		eduport_v1.2.0		google-cloud-sdk
-Creative Cloud Files	Documents		Dropbox			Library			Music			Public			eduport_v1.2.0.zip	leanpubabrandnewcms
-MacBook-Pro-di-Flavio:~ FB$ multipass info primary
-Name:           primary
+```shell
+❯ multipass info ub22fla
+Name:           ub22fla
 State:          Running
-IPv4:           192.168.64.8
+IPv4:           192.168.64.4
 Release:        Ubuntu 22.04.3 LTS
-Image hash:     59c2363fd71b (Ubuntu 22.04 LTS)
+Image hash:     dddfb1741f16 (Ubuntu 22.04 LTS)
 CPU(s):         1
 Load:           0.00 0.00 0.00
-Disk usage:     2.5GiB out of 4.8GiB
-Memory usage:   150.4MiB out of 951.6MiB
-Mounts:         /Users/FB => /Users/FB
+Disk usage:     4.0GiB out of 19.2GiB
+Memory usage:   195.2MiB out of 3.8GiB
+Mounts:         --
+```
+
+Se non è montata la possiamo montare con il seguente comando `multipass mount` da fare dal terminale di mac. (non da dentro l'istanza multipass).
+
+```shell
+❯ multipass list
+❯ multipass mount ~ vm_name
+❯ multipass info vm_name
+❯ multipass shell vm_name
+$ cd /Users/FB/
+$ cp ~/database_dump.sql .
+$ exit
+❯ multipass unmount vm_name
+```
+
+Esempio:
+
+```shell
+❯ multipass mount ~ ub22fla
+❯ multipass info ub22fla
+Name:           ub22fla
+State:          Running
+IPv4:           192.168.64.4
+Release:        Ubuntu 22.04.3 LTS
+Image hash:     dddfb1741f16 (Ubuntu 22.04 LTS)
+CPU(s):         1
+Load:           0.11 0.03 0.01
+Disk usage:     4.0GiB out of 19.2GiB
+Memory usage:   198.8MiB out of 3.8GiB
+Mounts:         /Users/fb => /Users/fb
                     UID map: 501:default
                     GID map: 20:default
-MacBook-Pro-di-Flavio:~ FB$ 
-MacBook-Pro-di-Flavio:~ FB$ multipass shell primary
-Welcome to Ubuntu 22.04.3 LTS (GNU/Linux 5.15.0-86-generic x86_64)
 
- * Documentation:  https://help.ubuntu.com
- * Management:     https://landscape.canonical.com
- * Support:        https://ubuntu.com/advantage
-
-  System information as of Sun Dec 24 21:42:45 CET 2023
-
-  System load:  0.0               Processes:               110
-  Usage of /:   53.5% of 4.67GB   Users logged in:         0
-  Memory usage: 21%               IPv4 address for enp0s2: 192.168.64.8
-  Swap usage:   0%
-
- * Strictly confined Kubernetes makes edge and IoT secure. Learn how MicroK8s
-   just raised the bar for easy, resilient and secure K8s cluster deployment.
-
-   https://ubuntu.com/engage/secure-kubernetes-at-the-edge
-
-Expanded Security Maintenance for Applications is not enabled.
-
-0 updates can be applied immediately.
-
-Enable ESM Apps to receive additional future security updates.
-See https://ubuntu.com/esm or run: sudo pro status
-
-
-Last login: Sun Dec 24 19:07:05 2023 from 192.168.64.1
-ubuntu@primary:~$ ls
-Home  database_dump.sql  snap
-ubuntu@primary:~$ ls /
-Users  bin  boot  dev  etc  home  lib  lib32  lib64  libx32  lost+found  media  mnt  opt  proc  root  run  sbin  snap  srv  sys  tmp  usr  var
-ubuntu@primary:~$ cd /Users/FB/
-.Trash/               .config/              .idm/                 .ssh/                 Desktop/              Library/              Public/               
-.anydesk/             .cups/                .local/               .vscode/              Documents/            Movies/               eduport_v1.2.0/       
-.atom/                .dropbox/             .oracle_jre_usage/    Applications/         Downloads/            Music/                google-cloud-sdk/     
-.bash_sessions/       .gem/                 .solargraph/          Creative Cloud Files/ Dropbox/              Pictures/             leanpubabrandnewcms/  
-ubuntu@primary:~$ cd /Users/FB/
-ubuntu@primary:/Users/FB$ cp ~/database_dump.sql 
-cp: missing destination file operand after '/home/ubuntu/database_dump.sql'
-Try 'cp --help' for more information.
-ubuntu@primary:/Users/FB$ cp ~/database_dump.sql .
-ubuntu@primary:~$ exit
+❯ multipass shell ub22fla
+Welcome to Ubuntu 22.04.3 LTS (GNU/Linux 5.15.0-92-generic aarch64)
+...
+ubuntu@ub22fla:~ $ls
+database_dump.sql  snap  ubuntudream
+ubuntu@ub22fla:~ $ls /
+Users  bin  boot  dev  etc  home  lib  lost+found  media  mnt  opt  proc  root  run  sbin  snap  srv  sys  tmp  usr  var
+ubuntu@ub22fla:~ $ls /Users/
+fb
+ubuntu@ub22fla:~ $ls /Users/fb/
+ Applications   Desktop   Documents   Downloads   Dropbox  'Google Drive'   Library   Movies   Music   Pictures   Public
+ubuntu@ub22fla:~ $cd /Users/fb/
+ubuntu@ub22fla:/Users/fb $cp ~/database_dump.sql .
+ubuntu@ub22fla:/Users/fb $
+ubuntu@ub22fla:/Users/fb $exit
 logout
-MacBook-Pro-di-Flavio:~ FB$ multipass unmount primary
-MacBook-Pro-di-Flavio:~ FB$ multipass info primary
-Name:           primary
+
+❯ multipass unmount ub22fla
+❯ multipass info ub22fla
+Name:           ub22fla
 State:          Running
-IPv4:           192.168.64.8
+IPv4:           192.168.64.4
 Release:        Ubuntu 22.04.3 LTS
-Image hash:     59c2363fd71b (Ubuntu 22.04 LTS)
+Image hash:     dddfb1741f16 (Ubuntu 22.04 LTS)
 CPU(s):         1
-Load:           0.00 0.01 0.00
-Disk usage:     2.5GiB out of 4.8GiB
-Memory usage:   176.1MiB out of 951.6MiB
+Load:           0.00 0.00 0.00
+Disk usage:     4.0GiB out of 19.2GiB
+Memory usage:   185.9MiB out of 3.8GiB
 Mounts:         --
-MacBook-Pro-di-Flavio:~ FB$ 
 ```
 
 Il file ce lo ritroviamo sul mac con "finder" su /Users/FB.
 
 
-### Altro metodo per spostare il file
+
+## Altro metodo per spostare il file
 
 - [`multipass transfer` command](https://multipass.run/docs/transfer-command)
 - [How to share data with an instance](https://multipass.run/docs/share-data-with-an-instance)
-
 
 
 

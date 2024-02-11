@@ -22,13 +22,11 @@ ruby 3.3.0 (2023-12-25 revision 5124f9ac75) [aarch64-linux]
 
 Verifichiamo la versione di ruby **scritta sul gemfile**.
 
-*** Code 01 - .../Gemfile - linea: 3 ***
+[Codice 01 - ..../Gemfile - linea: 3](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-new_app/03_01-gemfile.rb)
 
 ```ruby
 ruby "3.3.0"
 ```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/01-new_app/03_01-gemfile.rb)
 
 > Se ci fossero delle patches, la versione verrebbe riportata senza il numero di patch. Ad esempio: '3.1.1' e non '3.1.1p18'.
 
