@@ -27,7 +27,41 @@ You will need to run a series of commands to build your app. This can be done us
 
 
 
-## Creiamo un build script
+## Verifichiamo il Web Service render.com
+
+Verifichiamo i valori che che abbiamo impostato e quelli di default che andremo ad ottimizzare.
+
+### Environment Variables
+
+Andiamo nel nostro Web Service su `Settings -> Environment`.
+render.com -> Dashboard -> ubuntudream3 (Web Service) -> Environment
+-> Environment Variables
+
+Key                | Value
+| :---             | :--- 
+`DATABASE_URL`     | `postgres://ubuntudream:FE7...glyz2-d/ubuntudream_production_64p3`
+`RAILS_MASTER_KEY` | `seb666...4bh17`
+
+
+### Build & Deploy
+
+Andiamo nel nostro Web Service su `Settings -> Build & Deploy`.
+render.com -> Dashboard -> ubuntudream3 (Web Service) -> Settings 
+-> Build & Deploy
+
+Di default abbiamo:
+
+Property        | Value
+| :---          | :--- 
+`Build Command` | `bundle install; bundle exec rake assets:precompile; bundle exec rake assets:clean;`
+`Start Command` | `bundle exec puma -t 5:5 -p ${PORT:-3000} -e ${RACK_ENV:-development}`
+
+- `Build Command` = `bundle install; bundle exec rake assets:precompile; bundle exec rake assets:clean;`</br>
+- `Start Command` = `bundle exec puma -t 5:5 -p ${PORT:-3000} -e ${RACK_ENV:-development}`
+
+
+
+## Creiamo il build script per `Build Command`
 
 Render crea il tuo progetto, prima di ogni messa in produzione (deploy), eseguendo uno specifico comando di compilazione (build command). 
 Creiamo lo script da utilizzare per questo comando.
@@ -75,22 +109,38 @@ ubuntu@ub22fla:~/ubuntudream (is)$ls -l bin/render-build.sh
 
 
 
+## Creiamo il build script per `Start Command`
+
+
+
+
+
 ## Aggiorniamo il Web Service render.com
 
-Riseguiamo i passi che abbiamo già fatto nei capitoli precedenti aggiungendo qualche modifica.
+Andiamo nel nostro Web Service su `Settings -> Build & Deploy`.
 
-- Abbiamo già creato un nuovo database PostgreSQL su Render 
-  e ci siamo appuntati l'`internal database URL`.
-- Aggiorniamo il Web Service creato precedentemente.
+render.com -> Dashboard -> ubuntudream3 (Web Service) -> Settings -> Build & Deploy
 
-Andiamo nel nostro Web Service su `Settings -> Build & Deploy` ed aggiorniamo le seguenti proprietà:
+Di default abbiamo:
+- `Build Command` = `bundle install; bundle exec rake assets:precompile; bundle exec rake assets:clean;`</br>
+- `Start Command` = `bundle exec puma -t 5:5 -p ${PORT:-3000} -e ${RACK_ENV:-development}`
+
+Li cambiamo con i due files che abbiamo creato
 
 PROPERTY        | VALUE
 | :---          | :--- 
 `Build Command` | `./bin/render-build.sh`
 `Start Command` | `bundle exec puma -C config/puma.rb`
 
+
+
 That’s it! You can now finalize your service deployment. It will be live on your .onrender.com URL as soon as the build finishes.
+
+Riseguiamo i passi che abbiamo già fatto nei capitoli precedenti aggiungendo qualche modifica.
+
+- Abbiamo già creato un nuovo database PostgreSQL su Render 
+  e ci siamo appuntati l'`internal database URL`.
+- Aggiorniamo il Web Service creato precedentemente.
 
 
 

@@ -85,15 +85,10 @@ Scegli il repository GitHub da cui prendere i files. Nel nostro caso "ubuntudrea
 
 PROPERTY    | VALUE
 | :---      | :--- 
-Name        | `ubndudream3`
+Name        | `ubuntudream3`
 Region      | `Frankfurt (EU Central)`
 Branch      | `main`
 Runtime     | `Ruby`
-
-- Name : ubndudream3
-- Region : Frankfurt (EU Central)
-- Branch : main
-- Runtime : Ruby
 
 > ATTENZIONE!
 > Seleziona`Ruby` come `Runtime environment`.</br>
