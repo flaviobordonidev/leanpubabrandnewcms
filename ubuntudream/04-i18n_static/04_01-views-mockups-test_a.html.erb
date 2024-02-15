@@ -1,0 +1,7 @@
+<h1> <%= t "mockups.test_a.headline" %> </h1>
+<p> <%= t "mockups.test_a.first_paragraph" %> </p>
+<br>
+<p>
+  <%= link_to t("mockups.test_a.link_to_english"), params.permit(:locale).merge(locale: 'en') %> |
+  <%= link_to t("mockups.test_a.link_to_italian"), params.permit(:locale).merge(locale: 'it') %>
+</p>

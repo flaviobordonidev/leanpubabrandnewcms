@@ -32,3 +32,5 @@ en:
     test_a:
       headline: "This is the homepage"
       first_paragraph: "the text showed here is passed via a 'translation file' and this means that our application is ready to support more languages"
+      link_to_english: "English"
+      link_to_italian: "Italian"

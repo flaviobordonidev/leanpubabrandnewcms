@@ -10,13 +10,6 @@ Aggiungiamo la gestione in più lingue del contenuto statico (quello che non è 
 
 
 
-## Risorse esterne
-
-- [Rails Internationalization (I18n) API](https://guides.rubyonrails.org/i18n.html)
-- [Rails I18n, check if translation exists?](https://stackoverflow.com/questions/12353416/rails-i18n-check-if-translation-exists/12353485#12353485)
-
-
-
 ## Apriamo il branch "Internazionalizazione Statica"
 
 ```shell
@@ -31,7 +24,7 @@ I18n statico: `t "nome_segnaposto"`
 
 > `t` è l'helper per la traduzione.</br>
 
-*** Codice 01 - .../app/views/mockups/test_a.html.erb - linea:39 ***
+[Codice 01 - .../app/views/mockups/test_a.html.erb - linea:39]()
 
 ```html
 <!--<h1>Hello world</h1>-->
@@ -49,17 +42,15 @@ I18n statico: `t "nome_segnaposto"`
 Per far apparire le descrizioni invece dei segnaposti implementiamo il backend Yaml.
 Iniziamo con il file `en.yml` perché l'inglese (en) è la lingua che viene selezionata di default.
 
-*** Codice 02 - .../config/locales/en.yml - line: 32 ***
+[Codice 02 - .../config/locales/en.yml - line: 30]()
 
 ```yaml
 en:
   mockups:
-    page_a:
+    test_a:
       headline: "This is the homepage"
-      first_paragraph: "the text showed here is passed via a 'translation file' and this means that our application is ready to support more languages."
+      first_paragraph: "the text showed here is passed via a 'translation file' and this means that our application is ready to support more languages"
 ```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/01_02-config-locales-en.yml)
 
 > ATTENZIONE! i files YAML (.yml) sono sensibili all'indentatura. Per indentare usiamo gli *spazi* e non i *tabs*.
 
@@ -67,14 +58,13 @@ en:
 
 ## Verifichiamo preview
 
-```bash
-$ sudo service postgresql start
-$ rails s
+Adesso proviamo di nuovo il preview
+
+```shell
+$ rails s -b 192.168.64.4
 ```
 
-Se visualizziamo sul browser vediamo che, al posto dei segnaposto, si presenta il contenuto.
-
-* https://mycloud9path.amazonaws.com/mockups/page_a
+E lo visualizziamo nel browser all'url: `http://192.168.64.4:3000/mockups/test_a`
 
 
 

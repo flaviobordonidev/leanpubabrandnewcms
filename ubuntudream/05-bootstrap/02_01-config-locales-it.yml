@@ -1,0 +1,56 @@
+# Files in the config/locales directory are used for internationalization
+# and are automatically loaded by Rails. If you want to use locales other
+# than English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t "hello"
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t("hello") %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# The following keys must be escaped otherwise they will not be retrieved by
+# the default I18n backend:
+#
+# true, false, on, off, yes, no
+#
+# Instead, surround them with single quotes.
+#
+# en:
+#   "true": "foo"
+#
+# To learn more, please read the Rails Internationalization guide
+# available at https://guides.rubyonrails.org/i18n.html.
+
+it:
+  mockups:
+    page_a:
+      navbar_title: "Barra di navigazione"
+      navbar_home: "Casa (home) ^_^"
+      navbar_link: "Collegamento"
+      navbar_dropdown: "Menu a discesa"
+      navbar_action: "Azione"
+      navbar_another_action: "Un'altra azione"
+      navbar_something_else_here: "Qualcos'altro qui"
+      navbar_disabled: "Collegamento disabilitato"
+      navbar_search: "Cerca qui"
+      headline: "Questa è la pagina principale"
+      first_paragraph: "Il testo mostrato qui viene passato tramite un 'file di traduzione' e questo significa che la nostra applicazione è pronta per supportare più lingue."
+      current_user: "Utente attivo"
+      no_logged_user: "Nessun utente ha effettuato l'accesso!"
+      logout: "Disconnettersi"
+      login: "Accedere"
+      popover_title: "Titolo del popover"
+      amazing_content: "Ed ecco alcuni contenuti sorprendenti. È molto coinvolgente. Vero?"
+      click_to_toggle_popover: "Cliccare per attivare il popover"
+      show_toast: "Mostra il toast in basso a destra"
+      toast_title: "Questo è il titolo del toast"
+      toast_time_ago: "11 minuti fa"
+      toast_message: "Ciao mondo! Questo è un messaggio del toast."

@@ -21,6 +21,8 @@ Cambiamo la lingua usando `params[:locale]` ad esempio per l'italiano usiamo l'u
 ## Risorse esterne
 
 - [GoRails i18n](https://gorails.com/episodes/how-to-use-rails-i18n?autoplay=1&ck_subscriber_id=361075866)
+- [Rails Internationalization (I18n) API](https://guides.rubyonrails.org/i18n.html)
+- [Rails I18n, check if translation exists?](https://stackoverflow.com/questions/12353416/rails-i18n-check-if-translation-exists/12353485#12353485)
 
 
 

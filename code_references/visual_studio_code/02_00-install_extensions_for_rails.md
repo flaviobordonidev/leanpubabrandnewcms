@@ -15,6 +15,7 @@ In questo capitolo installiamo le *estensioni* di Visual Studio Code per lavorar
 - [VS Code extensions for ruby on rails](https://dev.to/thomasvanholder/10-vs-code-extensions-for-ruby-on-rails-developers-89a)
 - [how-pro-ruby-developers-customize-vs-code](https://dev.to/appmapruby/how-pro-ruby-developers-customize-vs-code-2hee)
 - [10-vs-code-extensions](https://dev.to/thomasvanholder/10-vs-code-extensions-for-ruby-on-rails-developers-89a)
+- [highlight html.erb and js.erb in vscode](https://stackoverflow.com/questions/55485810/highlight-html-erb-and-js-erb-in-vscode)
 
 - [Remote Development with VS Code on Mac](https://medium.com/macoclock/remote-development-with-vscode-on-mac-in-simple-5-steps-6ae100938d67)
 
@@ -22,12 +23,14 @@ In questo capitolo installiamo le *estensioni* di Visual Studio Code per lavorar
 
 ## Estensioni che ho installato
 
-@installed
+`@installed`
 
 - Ruby LSP               : by Shopify. Per gestire Ruby. (consigliato anche dalla documentazione di vscode).
 - One dark pro           : by binaryify. Tema (@theme) che ho scelto. Uso il suo color theme "One dark pro darker".
 - Material Icon Theme    : by Philipp Kief (pkief.com). Per le icone.
-- ERB Formatter/Beautify : by Ali Ariff. Per formattare pagine *.erb* con i tasti *SHIFT+OPTION+F*.
+- ERB Formatter/Beautify : by Ali Ariff. Per formattare pagine *.erb* con i tasti *SHIFT+OPTION+F*. (formattare vuol dire indentare correttamente)
+- Ruby Syntax Highlighting : by Sarah Ridge. Per syntax highlight specialmente di *html.erb* (syntax highlight vuo dire colorare il codice)
+
 
 
 ## Estensioni che ho considerato
@@ -45,6 +48,7 @@ Elenco in ordine alfabetico
 - [Ruby by rebornix](https://marketplace.visualstudio.com/items?itemName=rebornix.Ruby) --> rimpiazzata da Ruby LSP
 - [Ruby by Peng VL]() --> This extension is deprecated. Use the Ruby LSP extension instead.
 - [Ruby LSP by Shopify](https://github.com/Shopify/vscode-shopify-ruby) --> installata
+- [Ruby Syntax Highlighting by Sarah Ridge](https://marketplace.visualstudio.com/items?itemName=SarahRidge.vscode-ruby-syntax)
 - [simple-ruby-erb by vortizhe](https://marketplace.visualstudio.com/items?itemName=vortizhe.simple-ruby-erb)
 - [solargraph by castwide](https://marketplace.visualstudio.com/items?itemName=castwide.solargraph) --> Fortemente consigliata in passato.
     ( forse rimpiazzata da Ruby LSP?!? vedi: https://www.youtube.com/watch?v=mkLDPpDSWng )
@@ -133,7 +137,9 @@ Esempio:
 
 ## Syntax color highlight
 
-Per la colorazione del codice ci pensa l'estensione Ruby LSP
+Per la colorazione del codice ci pensa l'estensione Ruby LSP.
+
+> Pero non mi colorava i files html.erb. Ho risolto con l'estensione `Ruby Syntax Highlighting`.
 
 
 

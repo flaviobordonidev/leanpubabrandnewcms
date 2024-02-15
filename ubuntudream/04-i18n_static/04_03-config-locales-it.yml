@@ -27,8 +27,10 @@
 #       "yes": yup
 #       enabled: "ON"
 
-en:
+it:
   mockups:
     test_a:
-      headline: "This is the homepage"
-      first_paragraph: "the text showed here is passed via a 'translation file' and this means that our application is ready to support more languages"
+      headline: "Questa è l'homepage"
+      first_paragraph: "il testo che leggi è preso da un 'file di traduzione' e questo significa che siamo pronti a supportare più lingue."
+      link_to_english: "Inglese"
+      link_to_italian: "Italiano"

@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 2.3 - In produzione con Render
+# <a name="top"></a> Cap 3.3 - In produzione con Render
 
 Facciamo un primo deploy in produzione senza ottimizzazione del codice. Questo per vedere che funziona tutto:
 - la creazione del database PostgreSQL

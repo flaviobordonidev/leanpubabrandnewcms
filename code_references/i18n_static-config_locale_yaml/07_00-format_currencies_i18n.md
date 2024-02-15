@@ -6,6 +6,8 @@ Formattiamo i prezzi per le varie valute.
 
 ## Risorse interne
 
+- [ubuntudream/04-i18n_static/04_00-default_format_i18n-mockups-test_a]()
+
 - [99-rails_references/i18n/02-format_date_time_i18n]
 
 
@@ -13,14 +15,6 @@ Formattiamo i prezzi per le varie valute.
 ## Risorse esterne
 
 - [Rails Internationalization guide](https://guides.rubyonrails.org/i18n.html)
-
-
-
-## Apriamo il branch "Formats i18n Currency"
-
-```bash
-$ git checkout -b fic
-```
 
 
 

@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   before_action :set_locale
 
-  #-----------------------------------------------------------------------------
+  #---
   private
   
   #set language for internationalization

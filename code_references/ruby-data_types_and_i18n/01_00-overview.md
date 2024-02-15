@@ -1,18 +1,20 @@
 # The ActiveRecord data types available in Rails 5.
 
-Risorse web:
 
-* https://stackoverflow.com/questions/17918117/rails-4-list-of-available-datatypes
-* https://michaelsoolee.com/rails-activerecord-data-types/
+## Risorse esterne
+
+- https://stackoverflow.com/questions/17918117/rails-4-list-of-available-datatypes
+- https://michaelsoolee.com/rails-activerecord-data-types/
 
 
-Capitoli in cui abbiamo usato i18n:
 
-* capitolo 01-base/05-mockups_i18n/01-mockups_i18n
-* capitolo 01-base/10-users_i18n/02-users_validations_i18n
-* capitolo 01-base/10-users_i18n/03-users_form_i18n
-* capitolo 01-base/10-users_i18n/04-browser_tab_title_users_i18n
-* capitolo 01-base/12-format_i18n/01-format_date_time_i18n
+## Risorse interne
+
+- capitolo 01-base/05-mockups_i18n/01-mockups_i18n
+- capitolo 01-base/10-users_i18n/02-users_validations_i18n
+- capitolo 01-base/10-users_i18n/03-users_form_i18n
+- capitolo 01-base/10-users_i18n/04-browser_tab_title_users_i18n
+- capitolo 01-base/12-format_i18n/01-format_date_time_i18n
 
 
 
@@ -75,5 +77,4 @@ end
 ## E' meglio usare date o datetime?
 
 se non si hanno milioni di records nelle nostre tabelle in cui può avere senso ottimizzare, è preferibile usare sempre "datetime" anche se si vuole archiviare semplicemente una data.
-
 

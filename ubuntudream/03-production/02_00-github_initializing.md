@@ -1,4 +1,4 @@
-# <a name="top"></a> Cap 2.2 - Inizializiamo Github
+# <a name="top"></a> Cap 3.2 - Inizializiamo Github
 
 Creiamo il nostro repository remoto su GitHub.
 Lo facciamo per due motivi:

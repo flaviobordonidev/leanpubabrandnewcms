@@ -10,29 +10,21 @@ Impostiamo come lingua di default l'italiano.
 
 
 
-## Risorse esterne
-
-- []()
-
-
-
 ## Backend it.yml
 
 Creiamo il file `it.yml` per implementare la lingua italiana (it).
 
 > Facciamo prima a copiare `en.yml`, rinominarlo ed inserire le traduzioni.
 
-***codice 04 - .../config/locales/it.yml - line: 32***
+[Codice 01 - .../config/locales/it.yml - linea: 30]()
 
 ```yaml
 it:
   mockups:
-    page_a:
+    test_a:
       headline: "Questa è l'homepage"
       first_paragraph: "il testo che leggi è preso da un 'file di traduzione' e questo significa che siamo pronti a supportare più lingue."
 ```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-internationalization_i18n/01_04-config-locales-it.yml)
 
 Questa traduzione è pronta ma non è ancora utilizzata nella nostra applicazione.
 
@@ -40,11 +32,10 @@ Questa traduzione è pronta ma non è ancora utilizzata nella nostra applicazion
 
 ## Impostiamo la lingua di default
 
-Sulla configurazione dell'applicazione dichiariamo quale sono le lingue a disposizione ed impostiamo la lingua di default cambiando il "locale di default".
+Sulla cartella della configurazione dell'applicazione dichiariamo quali sono le lingue che rendiamo disponibili ed impostiamo la lingua di default tramite la variabile `default_locale`.
+Nella cartella `config/initializers` creiamo il nuovo file `i18n.rb`.
 
-Creiamo un nuovo file con estensione `.rb` che chiamiamo `i18n.rb`.
-
-*** Codice 03 - .../config/initializers/i18n.rb - linea:04 ***
+[Codice 02 - .../config/initializers/i18n.rb - linea: 4]()
 
 ```ruby
 Rails.application.config.i18n.available_locales = [:en, :it]
@@ -52,27 +43,23 @@ Rails.application.config.i18n.default_locale = :it
 Rails.application.config.i18n.fallbacks = true
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/06-mockups_i18n/02_02-config-initializers-i18n.rb)
-
 
 
 ## Verifichiamo preview
 
-Chiudiamo il webserver (*CTRL+C*) e lo riavviamo.
+Adesso proviamo di nuovo il preview
 
-```bash
-$ rails s
+```shell
+$ rails s -b 192.168.64.4
 ```
 
-Se visualizziamo sul browser vediamo che, al posto dei segnaposto, ora c'è la lingua italiana.
-
-- http://192.168.64.3:3000/mockups/page_a
+E lo visualizziamo nel browser all'url: `http://192.168.64.4:3000/mockups/test_a`
 
 
 
 ## Salviamo su Git
 
-```bash
+```shell
 $ git add -A
 $ git commit -m "set i18n default_locale = :it"
 ```

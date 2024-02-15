@@ -7,8 +7,8 @@ Adesso entriamo più in profondità nella formattazione delle **date**.
 
 ## Risorse interne
 
-- 99-rails_references/data_types/date-time
-- 99-rails_references/i18n/02-format_date_time_i18n
+- [ubuntudream/04-i18n_static/04_00-default_format_i18n-mockups-test_a]()
+- [code_references/ruby-data_types_and_i18n/02_00-date_time]()
 
 
 
@@ -31,8 +31,6 @@ Inseriamo alcune date su mockups/page_a.
 <p> data: Sat, 08 Oct 2022 23:30:28.257872000 UTC +00:00  </p>
 
 ```
-
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/02_03-views-eg_posts-_eg_post.html.erb)
 
 
 
@@ -181,46 +179,6 @@ Non ci resta che richiamare la formattazione con l'helper *l*.
 
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/02_04-views-eg_posts-_eg_post.html.erb)
 
-
-
-
-
-
-
-
-## Archiviamo su git
-
-```bash
-$ git add -A
-$ git commit -m "Format with i18n the date fields created_at and updated_at on eg_posts"
-```
-
-
-## Chiudiamo il branch
-
-se abbiamo finito le modifiche e va tutto bene:
-
-```bash
-$ git checkout main
-$ git merge fin
-$ git branch -d fin
-```
-
-
-
-## Facciamo un backup su Github
-
-```bash
-$ git push origin main
-```
-
-
-
-## Pubblichiamo su render.com
-
-Dalla web gui premiamo il pulsante per il "deploy".
-
-> In realtà non serve perché quando sente il backup fatto su Github in automatico effettua il deploy
 
 
 
