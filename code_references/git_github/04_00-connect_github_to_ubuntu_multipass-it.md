@@ -14,6 +14,9 @@ Connettiamo GitHub alla nostra VM locale di multipass: `ub22fla`.
 - [How to Use Multiple SSH Keys For Different Git Accounts](https://theboreddev.com/use-multiple-ssh-keys-different-git-accounts/#google_vignette)
 - [Specify an SSH key for git push for a given domain](https://stackoverflow.com/questions/7927750/specify-an-ssh-key-for-git-push-for-a-given-domain)
 
+- [How to use specific SSH keys for git push](https://medium.com/@michael.rhema/how-to-use-specific-ssh-keys-for-git-push-4ecf3b31eeb4)
+- [How to specify different SSH keys for git push for a given domain](https://thucnc.medium.com/how-to-specify-different-ssh-keys-for-git-push-for-a-given-domain-bef56639dc02)
+
 
 
 ## Risorse interne

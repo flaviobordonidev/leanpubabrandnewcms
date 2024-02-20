@@ -92,6 +92,37 @@ To list all databases in the current PostgreSQL database server, you use `\l` co
 \l
 ```
 
+## CREATE DATABASE
+
+Per creare un database
+
+```shell
+CREATE DATABASE <database name>;
+```
+
+Esempio:
+
+```shell
+CREATE DATABASE example;
+```
+
+
+
+## DROP DATABASE
+
+Per distruggere un database.
+
+```shell
+DROP DATABASE <database name>;
+```
+
+Esempio:
+
+```shell
+DROP DATABASE example;
+```
+
+
 
 
 ## List available tables
@@ -280,4 +311,6 @@ It is more useful when you edit a function in the editor.
 ```
 
 ![fig.03](psql commadn ef edit function)
+
+
 

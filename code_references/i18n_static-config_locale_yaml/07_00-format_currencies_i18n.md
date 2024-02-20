@@ -87,6 +87,17 @@ Possiamo anche passare argomenti nel metodo i18n translate in questo modo: *%{my
 [tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/04_02-config-locales-en.yml)
 
 
+
+```html+erb
+<h3>Currency / Soldi</h3>
+numero non formattato = 123456789,12345
+<br> numero formattato: <%= number_to_currency(123456789.12345) %>
+<br> numero formattato con 3 decimali: <%= number_to_currency(123456789.12345, precision: 3) %>
+<br> numero formattato con 4 decimali: <%= number_to_currency(123456789.12345, precision: 4) %>
+<br> numero formattato con 5 decimali: <%= number_to_currency(123456789.12345, precision: 5) %>
+```
+
+
 Aggiorniamo il partial *_eg_post* per visualizzare le traduzioni nelle views *index* e *show*.
 
 ***codice 03 - .../app/views/eg_posts/_eg_post.html.erb - line:22***
@@ -105,10 +116,9 @@ Aggiorniamo il partial *_eg_post* per visualizzare le traduzioni nelle views *in
   </p>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/04_03-views-eg_posts-_eg_post.html.erb)
-
 > La *precisione (precision)* che diamo in formattazione è solo "visiva". <br/>
 > Nel database saranno archiviate **4 cifre** dopo la virgola, così come definito nel migrate.
+
 
 
 

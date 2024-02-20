@@ -137,7 +137,7 @@ Questo lo abbiamo già dal file scaricato nel capitolo precedente.
     - dicembre
 ```
 
-***codice n/a - ...continua - line: 263***
+[codice n/a - ...continua - line: 263]()
 
 ```yaml
   time:
@@ -153,7 +153,7 @@ Questo lo abbiamo già dal file scaricato nel capitolo precedente.
 
 Non ci resta che richiamare la formattazione con l'helper *l*.
 
-***codice 04 - .../app/views/eg_posts/_eg_post.html.erb - line: 27***
+[codice 04 - .../app/views/eg_posts/_eg_post.html.erb - line: 27]()
 
 ```html+erb
 <p>
@@ -177,8 +177,40 @@ Non ci resta che richiamare la formattazione con l'helper *l*.
 </p>
 ```
 
-[tutto il codice](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/12-format_i18n/02_04-views-eg_posts-_eg_post.html.erb)
 
+La formattazione delle date nelle varie lingue
+Abbiamo aggiunto i due files `it` e `en` con le formattazioni già impostate. 
+Adesso entriamo più in profondità nella formattazione delle *date*.
+
+```html+erb
+<p> data: Sat, 08 Oct 2022 23:30:28.257872000 UTC +00:00  </p>
+
+<p>
+  <%= Time.now.strftime("day %d %^B %Y") %>
+  <%= Time.now.strftime("%A %d %^B %Y at %H:%M and %S seconds") %>
+  <br>
+  <%= l Time.now, format: :long %>
+  <br>
+  <%= l Time.now, format: :short %>
+</p>
+```
+
+> `l` è l'helper per la formattazine della data
+
+
+```html+erb
+<h3>Date and Time / Data e Ora</h3>
+<p>unformatted (Time.now) = <%= Time.now %></p>
+<p>strftime1 (Time.now) = <%= Time.now.strftime("day %d %^B %Y") %></p>
+<p>strftime2 (Time.now) = <%= Time.now.strftime("%A %d %^B %Y at %H:%M and %S seconds") %></p>
+
+<p>yaml short (Time.now) =  <%= l Time.now, format: :short %></p>
+<p>yaml long (Time.now) = <%= l Time.now, format: :long %></p>
+<p>yaml long ("...".to_date) = <%= l "2022-10-08 23:30:28 UTC".to_date, format: :long %></p>
+<p>yaml long ("...".to_datetime) = <%= l "2022-10-08 23:30:28 UTC".to_datetime, format: :long %></p>
+```
+
+> `l` è l'helper per la formattazine della data
 
 
 
