@@ -1,6 +1,4 @@
 [home](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/README.md) |
-[IT](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/README-it.md) |
-[EN](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/README.md)
 
 # Library
 

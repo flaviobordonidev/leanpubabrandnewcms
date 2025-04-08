@@ -7,6 +7,9 @@ In questo capitolo installiamo le *estensioni* di Visual Studio Code per lavorar
 
 ## Risorse esterne
 
+- [A decent VS Code + Ruby on Rails setup](https://railsnotes.xyz/blog/vscode-rails-setup)
+    Suggerito nell'email Ruby Weekly del 22-02-2024
+
 - [Visualstudio.com - ruby](https://code.visualstudio.com/docs/languages/ruby)
 - [Ruby LSP by Shopify](https://marketplace.visualstudio.com/items?itemName=Shopify.ruby-lsp)
 - [The Best VS Code Themes 2023](https://medium.com/quick-code/the-best-vs-code-themes-2022-9e9b648c4596)

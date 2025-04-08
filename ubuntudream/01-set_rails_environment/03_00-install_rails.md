@@ -21,7 +21,7 @@ per approfondimenti vedi:
 
 
 
-Installiamo Rails sulla VM
+## Installiamo Rails sulla VM
 
 5. [code_references/rails/01_00-install_rails]()
 

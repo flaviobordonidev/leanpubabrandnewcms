@@ -3,6 +3,12 @@
 
 ## Risorse esterne
 
+Hotrails dev:
+
+- [Turbo Rails Tutorial](https://www.hotrails.dev/turbo-rails)
+suggerito da email Ruby Weekly del 22-02-2024
+
+
 Gorails:
 
 - [Refactoring Javascript with Stimulus Values API & Defaults - #423 · November 29, 2021](https://gorails.com/episodes/refactoring-javascript-with-stimulus-values-api-defaults?autoplay=1)
@@ -12,6 +18,7 @@ Gorails:
 - [How to use Hotwire in Rails - #376 · December 23, 2020](https://gorails.com/episodes/hotwire-rails?autoplay=1)
 - [How to use Hotwire in Rails - Premiered Dec 23, 2020](https://www.youtube.com/watch?v=Qp6sxgjA-xY)
 
+
 Mix & GO:
 
 - [Hotwire: Reactive Rails Applications Without JavaScript](https://www.youtube.com/watch?v=m5dDxpXKXJM)
@@ -20,6 +27,14 @@ Mix & GO:
 Altro:
 
 - [Five Turbo Lessons I Learned the Hard Way](https://www.viget.com/articles/five-turbo-lessons-i-learned-the-hard-way/)
+- [Hotwire Modals in Ruby on Rails with Stimulus and Turbo Frames](https://blog.appsignal.com/2024/02/21/hotwire-modals-in-ruby-on-rails-with-stimulus-and-turbo-frames.html)
+
+
+
+## Un tutorial trovato nel 2024
+
+- [Turbo Rails Tutorial](https://www.hotrails.dev/turbo-rails)
+suggerito da email Ruby Weekly del 22-02-2024
 
 
 

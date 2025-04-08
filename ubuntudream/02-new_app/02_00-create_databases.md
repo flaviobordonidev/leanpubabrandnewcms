@@ -21,7 +21,7 @@ $ rails db:migrate
 Esempio:
 
 ```shell
-ubuntu@ub22fla:~/ubuntudream$ rails db:migrate
+ubuntu@ub22fla:~/ubuntudreamfive$ rails db:migrate
 bin/rails aborted!
 ActiveRecord::NoDatabaseError: We could not find your database: ubuntudream_development. Available database configurations can be found in config/database.yml. (ActiveRecord::NoDatabaseError)
 
@@ -35,27 +35,26 @@ To resolve this error:
 
 
 Caused by:
-PG::ConnectionBad: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  database "ubuntudream_development" does not exist (PG::ConnectionBad)
+PG::ConnectionBad: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  database "ubuntudreamfive_development" does not exist (PG::ConnectionBad)
 
 Tasks: TOP => db:migrate
 (See full trace by running task with --trace)
-ubuntu@ub22fla:~/ubuntudream$ 
 ```
 
-Prende errore perché manca il database lato sviluppo: `ubuntudream_development`.
+Prende errore perché manca il database lato sviluppo: `ubuntudreamfive_development`.
 
 
 
 ## Vediamo il nome dei databases
 
-L'errore già ci ha detto il nome del database con cui la nostra app cerca di collegarsi (`ubuntudream_development`) ma vediamo il file nella nostra app in cui sono definiti i collegamenti ai databases.
+L'errore già ci ha detto il nome del database con cui la nostra app cerca di collegarsi (`ubuntudreamfive_development`) ma vediamo il file nella nostra app in cui sono definiti i collegamenti ai databases.
 
 [Codice 01 - .../config/database.yml - linea: 22](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-new_app/02_01-config-database.yml)
 
 ```yaml
 development:
   <<: *default
-  database: ubuntudream_development
+  database: ubuntudreamfive_development
 ```
 
 *...continua - linea: 56*
@@ -63,7 +62,7 @@ development:
 ```yaml
 test:
   <<: *default
-  database: ubuntudream_test
+  database: ubuntudreamfive_test
 ```
 
 *...continua - linea: 80*
@@ -71,12 +70,12 @@ test:
 ```yaml
 production:
   <<: *default
-  database: ubuntudream_production
+  database: ubuntudreamfive_production
   username: ubuntudream
   password: <%= ENV["UBUNTUDREAM_DATABASE_PASSWORD"] %>
 ```
 
-> Per vedere i files della nostra app ci colleghiamo con VS Code tramite SSH alla nostra VM come abbiamo visto nei capitoli precedenti ed apriamo la cartella/directory *ubuntudream*.
+> Per vedere i files della nostra app ci colleghiamo con VS Code tramite SSH alla nostra VM come abbiamo visto nei capitoli precedenti ed apriamo la cartella/directory *ubuntudreamfive*.
 
 
 
@@ -85,8 +84,8 @@ production:
 Creiamo i databases per development e test usando il comando `createdb` di postgreSQL.
 
 ```shell
-$ createdb ubuntudream_development
-$ createdb ubuntudream_test
+$ createdb ubuntudreamfive_development
+$ createdb ubuntudreamfive_test
 ```
 
 > Se psql è stoppato lo possiamo attivare con `sudo service postgresql start`.
@@ -95,8 +94,8 @@ $ createdb ubuntudream_test
 Esempio:
 
 ```shell
-ubuntu@ub22fla:~/ubuntudream$ createdb ubuntudream_development
-ubuntu@ub22fla:~/ubuntudream$ createdb ubuntudream_test
+ubuntu@ub22fla:~/ubuntudream$ createdb ubuntudreamfive_development
+ubuntu@ub22fla:~/ubuntudream$ createdb ubuntudreamfive_test
 ```
 
 Nella creazione dei databases non ho dei messaggi di conferma sul terminale. Possiamo però verificare che adesso c'è comunicazione.

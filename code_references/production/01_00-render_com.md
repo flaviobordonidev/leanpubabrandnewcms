@@ -22,6 +22,6 @@ Per Database PostgreSql
 - [render: Creating a Database](https://render.com/docs/databases)
 - [render: Docker vs. native runtimes](https://docs.render.com/docker)
 
-
+- [How to deploy a Rails app to Render - Adding Honeybadger for monitoring](https://www.honeybadger.io/blog/deploy-rails-render/)
 
 ## ...

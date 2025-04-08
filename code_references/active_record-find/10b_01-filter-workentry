@@ -1,0 +1,2 @@
+# Query all WorkEntry for a specific user for a month of a year
+WorkEntry.where(month: month).where(year: year).where(user_id: user_id)
