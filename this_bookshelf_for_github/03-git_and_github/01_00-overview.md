@@ -11,7 +11,7 @@ I files di questi libri li sto editando nella cartella `/Users/fb/Library/CloudS
 ```shell
 ❯ git status
 ❯ git add -A
-❯ git commit -m "aggiornamenti 2025-04-08"
+❯ git commit -m "aggiornamenti 2025-04-11"
 ❯ git push
 ❯ git status
 ```

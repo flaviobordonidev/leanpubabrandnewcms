@@ -20,7 +20,7 @@ Su submit del form si va al secondo step con la seconda parte del video; e così
 ## Apriamo il branch "Implementiamo il Video"
 
 ```bash
-$ git checkout -b iv
+❯ git checkout -b iv
 ```
 
 
