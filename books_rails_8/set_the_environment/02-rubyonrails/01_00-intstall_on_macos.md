@@ -21,4 +21,4 @@ Questa installazione è fatta direttamente sul sistema operativo nativo del mio 
 
 ---
 [top](#top) |
-[index](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/02_00-install_ssh_server.md)
+[index](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/index.md)
