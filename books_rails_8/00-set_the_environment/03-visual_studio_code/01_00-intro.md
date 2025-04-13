@@ -1,6 +1,18 @@
-# <a name="top"></a> Tailwind
+# <a name="top"></a> Cap 2.1 - Intro
 
-segna posto
+Adesso installiamo microsoft Visual Studio Code
+
+
+## Installazione
+
+Blabla
+
+```shell
+❯ 
+```
+
+Blabla
+
 
 
 ## Risorse esterne

@@ -84,6 +84,8 @@ Rails 8.0.2
 If the rails command is not found, try restarting your terminal.
 You're ready to [Get Started with Rails](https://guides.rubyonrails.org/getting_started.html)!
 
+Ruby on Rails installato ^_^
+
 
 
 ## Risorse esterne

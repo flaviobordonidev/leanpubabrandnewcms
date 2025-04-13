@@ -240,7 +240,13 @@ On Linux, there are applications such as ***Remmina*** to visualize the desktop 
 - https://medium.com/codex/use-linux-virtual-machines-with-multipass-4e2b620cc6
 
 
+
+## Risorse esterne
+
+- [bla](https://blabla)
+
+
+
 ---
-[<- back](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/00-frontmatter/03-introduction.md)
- | [top](#top) |
-[next ->](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/01-base/01-new_app_with_ubuntu_multipass/02_00-install_ssh_server.md)
+[top](#top) |
+[index](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/index.md)

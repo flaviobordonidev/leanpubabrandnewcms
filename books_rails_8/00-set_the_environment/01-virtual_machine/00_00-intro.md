@@ -34,3 +34,14 @@ Non ho provato parallel perché non ho budget sufficiente ^_^
 
 Alla fine ho deciso di installare Ruby on Rails e postgresql direttamente sul sistema operativo nativo del mio macbook pro, senza usare macchine virtuali.
 
+
+
+## Risorse esterne
+
+- [bla](https://blabla)
+
+
+
+---
+[top](#top) |
+[index](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/index.md)
