@@ -41,6 +41,15 @@ Questa view è quella che di default è caricata come "master" di tutte le altre
 </html>
 ```
 
+Aggiungiamo una linea di `stylesheet_link_tag` che punta ad un sito che mette a disposizione, tramite cdn, un file di stile css semplice ma carino.
+
+
+***Codice 01 - .../app/views/layouts/application.html.erb - linea:22***
+
+```html
+    <%= stylesheet_link_tag "https://cdn.simplecss.org/simple.css" %>
+```
+
 
 
 
