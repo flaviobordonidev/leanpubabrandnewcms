@@ -96,7 +96,7 @@ Nel nostro caso non abbiamo processi ausiliari e quindi parte solo il webserver 
 
 Vediamo il risultato nel browser all'url: `http://127.0.0.1:3000/`
 
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/02-rubyonrails/02_fig01-rails_starting_screen.png)
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/00-set_the_environment/02-rubyonrails/02_fig01-rails_starting_screen.png)
 
 
 
