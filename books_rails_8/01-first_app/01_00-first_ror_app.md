@@ -98,6 +98,14 @@ Vediamo il risultato nel browser all'url: `http://127.0.0.1:3000/`
 
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/00-set_the_environment/02-rubyonrails/02_fig01-rails_starting_screen.png)
 
+vediamo il risultato della gestione dei post all'url: `http://127.0.0.1:3000/posts`
+
+Verrà visualizzata la view `posts/index`
+
+All'url: `http://127.0.0.1:3000/posts.json`
+
+Verrà visualizzata il file json. Questo normalmente è gestito come web API.
+
 
 
 ## Risorse esterne
