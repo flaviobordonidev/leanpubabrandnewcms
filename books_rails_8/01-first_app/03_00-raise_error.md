@@ -20,8 +20,7 @@ Attiviamo un'eccezione `raise exception` nell'azione `index`
 
 Rails ci presenta una interfaccia ben fatta per gestire l'eccezione.
 
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/00-set_the_environment/02-rubyonrails/02_fig01-rails_starting_screen.png)
-
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/01-first_app/03_fig01-posts_index_raise_exception.png)
 
 
 
