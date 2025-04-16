@@ -6,7 +6,7 @@ Seguiamo il video in homepage del sito https://rubyonrails.org/ dove il biondo s
 
 ## Vediamo il controller `controllers/posts_controller`
 
-Attiviamo un'eccezione `raise exception` nell'azione `index`
+Attiviamo un'eccezione `raise exception` nell'azione `index`.
 
 ***Codice 01 - .../app/controllers/posts_controller.rb - linea:7***
 
@@ -21,6 +21,8 @@ Attiviamo un'eccezione `raise exception` nell'azione `index`
 Rails ci presenta una interfaccia ben fatta per gestire l'eccezione.
 
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/01-first_app/03_fig01-posts_index_raise_exception.png)
+
+Con in basso anche una console che mi permette di interagire con l'applicazione dal punto in cui la abbiamo interrotta.
 
 
 
