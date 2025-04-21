@@ -13,7 +13,11 @@ Le *media query* sono delle funzioni CSS che ci permettono di dire al nostro cod
 
 Vediamo i breakpoints:
 
-Breakpoint   | Class infix  | Dimensions
-| :---       | :--          | :---
-Extra Small  | _none_       | <576 px
-Small        | sm           | >=576 px
+Breakpoint   | Class infix  | Dimensions  | Devices
+| :---       | :--          | :---        | :---
+Extra Small  | _none_       | <576 px     | Cellulari
+Small        | sm           | >=576 px    | iPad, Tablet
+Medium       | md           | >=768 px    | Notebook 15"
+Large        | lg           | >=992 px    | Notebook 17" e PC desktop
+Extra Large  | xl           | >=1200 px   | Pc desktop con monitor grandi
+Extra Extra Large  | xxl    | >=1400 px   | Pc desktop con monitor molto grandi
