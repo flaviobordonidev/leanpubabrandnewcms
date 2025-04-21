@@ -31,7 +31,7 @@ $ rails g controller Pages home
 non abbiamo nessun migrate perché non ci interfacciamo con il database.
 
 
-## La view index
+## La view home
 
 [Codice 01 - .../views/pages/home.html.rrb - linea: 1](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/02-new_app/04_01-views-pages-home.html.erb)
 

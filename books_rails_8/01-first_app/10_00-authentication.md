@@ -205,15 +205,11 @@ Per risolverlo basta definire l'instradamento di "root".
 
 
 
-
-
-
-
-
 ## Risorse esterne
 
 - [Sito ufficiale di Ruby on Rails: video in homepage](https://rubyonrails.org/)
-
+- [Rails 8 Authentication](https://avohq.io/blog/rails-8-authentication)
+- [appsignal.com - Pre-build a Secure Authentication Layer - 25-04-16](https://blog.appsignal.com/2025/04/16/pre-build-a-secure-authentication-layer-with-authentication-zero-for-ruby-on-rails.html)
 
 ---
 [top](#top) |

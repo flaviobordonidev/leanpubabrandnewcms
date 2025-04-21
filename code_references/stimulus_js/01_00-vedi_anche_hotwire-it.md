@@ -2,4 +2,15 @@
 
 Stimulus è un componente di Hotwire.
 
-Hotwire con i tre componenti di Turbo (Turbo Drive, Turbo Frames, Turbo Streams) rimpiazza AJAX.
+- [Hello Hotwire - Free Course - Full Version](https://www.youtube.com/watch?v=xEC0A-QZQFc)
+
+Hotwire ha tre componenti:
+- Turbo
+- Stimulus
+- Strada
+
+Turbo rimpiazza "AJAX"
+Turbo ha tre componenti:
+- Turbo Drive 
+- Turbo Frames
+- Turbo Streams
