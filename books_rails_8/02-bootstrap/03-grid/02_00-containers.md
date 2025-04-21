@@ -13,7 +13,7 @@ Abbiamo 3 tipi di container:
 
 Vediamoli spiegati meglio nella tabella:
 
-[]              | Extra Small  | Small <576 px  | Medium >=576 px | Large >=768 px | X-Large >=1200 px | XX-Large >=1400 px 
+[]              | Extra Small <576 px  | Small >=576 px  | Medium >=768 px | Large >=992 px | X-Large >=1200 px | XX-Large >=1400 px 
 | :---          | :--          | :---           | :---            | :---           | :---              | :---
 `.container`    | 100%         | 540 px         | 720 px          | 960 px         | 1140 px           | 1320 px
 `.container-sm` | 100%         | 540 px         | 720 px          | 960 px         | 1140 px           | 1320 px
