@@ -6,26 +6,30 @@ Stimulus continuously watches the page, kicking in as soon as **attributes** app
 
 
 
-## Risorse esterne
-
-- [GoRails: Stimulus JS Framework Introduction](https://gorails.com/episodes/stimulus-js-framework-introduction?autoplay=1)
-- [GoRails: How to use Stimulus JS 2.0](https://www.youtube.com/watch?v=AEPIotNWFOM)
-
-- [main site](https://stimulus.hotwired.dev/)
-- [handbook](https://stimulus.hotwired.dev/handbook/introduction)
-- [references](https://stimulus.hotwired.dev/reference/controllers)
-- [github: stimulus - sourcecode](https://github.com/hotwired/stimulus)
-- [community](https://discuss.hotwired.dev/)
-
-- [Lista di eventi](https://www.w3schools.com/tags/ref_eventattributes.asp)
-
-
-
 ## Cos'è Stimulus
 
 Stimulus è un'alternativa a Jquery.
 Stimulus si concentra solo sull'intercettare ed il rispondere agli *eventi*.
 **Non** fa *ajax requests*, non *handles states*, non *render html*. (Queste sono cose di *turbo* e *hot wire*)
+
+
+
+## Stimulus come parte della suite Hotwire
+
+Stimulus è un componente di Hotwire.
+
+- [Hello Hotwire - Free Course - Full Version](https://www.youtube.com/watch?v=xEC0A-QZQFc)
+
+Hotwire ha tre componenti:
+- Turbo
+- Stimulus
+- Strada
+
+Turbo rimpiazza "AJAX"
+Turbo ha tre componenti:
+- Turbo Drive 
+- Turbo Frames
+- Turbo Streams
 
 
 
@@ -357,3 +361,24 @@ export default class extends Controller {
   }
 }
 ```
+
+
+
+## Risorse esterne
+
+- [GoRails: Stimulus JS Framework Introduction](https://gorails.com/episodes/stimulus-js-framework-introduction?autoplay=1)
+- [GoRails: How to use Stimulus JS 2.0](https://www.youtube.com/watch?v=AEPIotNWFOM)
+
+- [main site](https://stimulus.hotwired.dev/)
+- [handbook](https://stimulus.hotwired.dev/handbook/introduction)
+- [references](https://stimulus.hotwired.dev/reference/controllers)
+- [github: stimulus - sourcecode](https://github.com/hotwired/stimulus)
+- [community](https://discuss.hotwired.dev/)
+
+- [Lista di eventi](https://www.w3schools.com/tags/ref_eventattributes.asp)
+
+
+
+---
+[top](#top) |
+[index](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/index.md)

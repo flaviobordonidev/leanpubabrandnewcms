@@ -7,7 +7,7 @@ Creiamo una nuova applicazione su cui installeremo Tailwind e proveremo alcuni d
 ## L'applicazione con Tailwindcss
 
 Creiamo la nuova applicazione "tailwind_app" nella cartella `ror` che abbiamo dedicato ai progetti di Ruby on Rails nel mio profilo utente.
-Creiamo un'applicazione normalmente SENZA aggiungere opzioni per bootstrap tipo `-c tailwind`.
+Creiamo un'applicazione normalmente **SENZA** aggiungere opzioni per bootstrap tipo `-c css-tailwind`.
 Apriamo il terminale.
 
 ```shell
