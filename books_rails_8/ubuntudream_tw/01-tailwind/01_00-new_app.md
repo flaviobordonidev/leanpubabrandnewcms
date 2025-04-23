@@ -1,5 +1,6 @@
-# <a name="top"></a> Applicazione con Tailwind [25/04/18]
+# <a name="top"></a> Applicazione Ubuntu Dream con Tailwind
 
+[25/04/18]
 Creiamo una nuova applicazione su cui installeremo Tailwind e proveremo alcuni dei suoi componenti.
 
 
