@@ -60,51 +60,6 @@ Una volta copiati tutti i contenuti delle quattro cartelle nelle rispettive cart
 
 
 
-## Copiamo i files dell'asset_pipeline (stylesheets e javascripts)
-
-Nel tema *Eduport* all'interno della cartella *template/assets* ci sono le seguenti cartelle:
-
-- `css` -> questa cartella **non** ci serve perché ha i sorgenti già compilati
-- `images` -> copiamo il contenuto in `.../app/assets/images/eduport/`
-- `js` -> copiamo il contenuto in `.../app/javascript/eduport/`
-- `scss` -> copiamo il contenuto in `.../app/assets/stylesheets/eduport/scss/`
-- `vendor` -> copiamo il contenuto in `.../app/assets/stylesheets/eduport/vendor/`
-
-Una volta copiati tutti i contenuti delle quattro cartelle nelle rispettive cartelle della nostra app siamo pronti per attivarle.
-
-> le varie cartelle ***edu*** le creiamo noi e poi ci copiamo i vari files.
-
-Il risultato finale è quindi:
-
-- app
-  - assets
-    - images
-      - eduport
-        - about
-        - avatar
-        - bg
-        - ...
-        - logo.svg
-    - stylesheets
-      - edueduport
-        - scss
-          - components
-          - custom
-          - dark
-          - ...
-          - style.scss
-        - vendor
-          - animate
-          - aos
-          - ...
-          - tiny-slider
-  - javascript
-    - eduport
-      - functions.js
-
-
-
-
 ## Attiviamo i files stylesheet da usare
 
 Nella parte "header" del file abbiamo Le chiamate ai files stylesheets. La principale è al file `assets/css/style`. Partiamo da qui.
@@ -219,6 +174,15 @@ facendo refresh dell'url `https://192.168.64.3:3000` abbiamo un errore sull'asse
 Le chiamate ai files di stylesheet e di javascript sono diverse tra HTML e Rails. Rails usa gli helpers. Adattiamo quindi le chiamate per rispondere alle convenzioni Rails.
 
 Inseriamo gli helpers che puntano all'asset_pipeline sia per stylesheets che javascripts.
+
+
+
+Da            | A
+| :---                      | :---
+.../app/assets/images/edu/  | - about <br/> - avatar <br/> - bg <br/> - ... <br/> - logo.svg
+.../app/javascript/edu      | - functions
+
+
 
 DA                                             | A
 | :---                                         | :--- 
