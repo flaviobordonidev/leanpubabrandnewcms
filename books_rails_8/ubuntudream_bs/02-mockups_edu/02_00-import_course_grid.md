@@ -17,11 +17,11 @@ Preferisco invece importare la pagina `course-grid.html` che ha un navbar comple
 
 Vediamo alcune immagini sia su mobile, "mobile first", che su desktop:
 
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_fig01-index.png)
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/ubuntudream_bs/02-mockups_edu/02_fig01-eduport_mobile_course_grid.png)
 
-![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_fig02-index.png)
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/ubuntudream_bs/02-mockups_edu/02_fig02-eduport_course_grid.png)
 
-![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_fig02-index.png)
+![fig03](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/ubuntudream_bs/02-mockups_edu/02_fig03-eduport_course_grid.png)
 
 
 Vediamo tutto il codice *<html>* preso così com'è dal tema Eduport, senza predisposizione per Ruby on Rails.
@@ -119,11 +119,11 @@ Andiamo con il browser sull'URL:
 
 - http://192.168.64.4:3000/mockups/eduport_index
 
-![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_fig03-index.png)
+![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/ubuntudream_bs/02-mockups_edu/02_fig04-edu_course_grid.png)
 
-![fig05](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_fig04-index.png)
+![fig05](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/ubuntudream_bs/02-mockups_edu/02_fig05-edu_course_grid.png)
 
-![fig06](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_fig04-index.png)
+![fig06](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/ubuntudream_bs/02-mockups_edu/02_fig06-edu_course_grid.png)
 
 
 
@@ -210,7 +210,7 @@ Andiamo con il browser sull'URL:
 
 - http://192.168.64.4:3000/mockups/eduport_index
 
-![fig07](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/ubuntudream/04-theme_eduport/01_fig04-index.png)
+![fig07](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/ubuntudream_bs/02-mockups_edu/02_fig07-edu_course_grid.png)
 
 Adesso è già molto più vicina all'originale.
 Nel prossimo capitolo inseriamo lo stile css ed il javascript del tema eduport.
