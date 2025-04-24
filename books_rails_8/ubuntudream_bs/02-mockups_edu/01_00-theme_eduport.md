@@ -27,14 +27,15 @@ I files di nostro interesse sono nella cartella `eduport_v1.4.2/template`
 
 ## I passaggi per importare il tema Eduport sulla nostra app Rails
 
+Importiamo html
 1. Scegliamo una pagina html da importare
 2. Creiamo il nuovo layout `empty` in cui mettiamo solo la chiamata alla view
 3. Creiamo una pagina su mockups e copiamoci tutto il codice della pagina html
 4. Aggiorniamo config/routes.rb
 5. Aggiorniamo mockups_controller e indichiamo di usare il layout `empty` nell'azione della nuova pagina creata
+6. Adattiamo le chiamate su `<header>...</header>` alla convenzione Ror
 
-6. Adattiamo le chiamate "header", ossia il codice fuori dai tags <body>...</body>, con quello che abbiamo nel nostro layout di default `application`
-
+Importiamo style e js
 7. copiamo i files stylesheets (css, scss) su "assets/stylesheets/edu"
 8. copiamo le immagini (png, jpg) su "assets/images/edu"
 9. copiamo i files javascripts (js) su "assets/javascripts/edu"

@@ -221,7 +221,7 @@ Andiamo con il browser sull'URL:
 ![fig07](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/ubuntudream_bs/02-mockups_edu/02_fig07-edu_course_grid.png)
 
 Adesso è già molto più vicina all'originale.
-Nel prossimo capitolo inseriamo lo stile css ed il javascript del tema eduport.
+Nel prossimo capitolo inseriamo lo stile css ed il javascript del tema Eduport.
 
 ---
 [top](#top) |

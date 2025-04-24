@@ -1,6 +1,6 @@
-# <a name="top"></a> Cap 4.2 - Attiviamo stile del tema
+# <a name="top"></a> Importiamo lo stile del tema Eduport
 
-Attiviamo lo stylesheets.
+Attiviamo lo stile e relativi javascript del tema Eduport.
 
 Possiamo avere due approcci:
 
@@ -12,38 +12,18 @@ Il secondo è più semplice sia come implementazione iniziale che dei successivi
 Noi scegliamo il secondo approccio.
 
 
-Importiamo i files stylesheets
 
-Continuiamo con i passaggi per importare il tema Edu sulla nostra app Rails:
+## Vediamo la cartella `assets` del tema Eduport
 
-6. copiamo i files stylesheets (css, scss) su "assets/stylesheets/edu"
-7. copiamo le immagini (png, jpg) su "assets/images/edu"
-8. copiamo i files javascripts (js) su "assets/javascripts/edu"
-9. su mockups/edu_index_4.html.erb aggiustiamo i "puntamenti" per richiamare stylesheets, images e javascripts.
+Nel tema *Eduport* all'interno della cartella `template/assets` ci sono le seguenti cartelle:
 
-
-
-## Risorse esterne
-
-- [file di esempio preso dal tema Eduport](file:///Users/FB/eduport_v1.2.0/template/index-4.html).
-- [indice della documentazione dentro il tema Eduport](file:///Users/FB/eduport_v1.2.0/template/docs/index.html)
-
-
-
-## Vediamo la cartella *assets* del tema Eduport
-
-Nella documentazione vediamo questa struttura di cartelle/directories dentro il tema Eduport.
-Vediamo la struttura dentro la cartella "assets/", che contiene tutti i files degli "assets" (stylesheets e javascripts) che usa il tema.
-
-Nel tema *Eduport* all'interno della cartella *template/assets* ci sono le seguenti cartelle:
-
-- `assets/`<br/>
+- `assets/` 
   Includes all assets files, like CSS, Images, JS, SCSS and plugins used in theme
-  - `css/`<br/>
+  - `css/` 
     Includes .css file, used in theme
-  - `images/`<br/>
+  - `images/` 
     Includes all images, used in .html files.
-  - `js/`<br/>
+  - `js/` - 
     Includes plugin's initialization file
   - `scss/`<br/>
     Includes all of raw source files that are used to create the final CSS that is included in theme
@@ -509,6 +489,14 @@ Andiamo con il browser sull'URL:
 
 
 Nel prossimo capitolo ...
+
+
+
+## Risorse esterne
+
+- [file di esempio preso dal tema Eduport](file:///Users/FB/eduport_v1.2.0/template/index-4.html).
+- [indice della documentazione dentro il tema Eduport](file:///Users/FB/eduport_v1.2.0/template/docs/index.html)
+
 
 ---
 [top](#top) |
