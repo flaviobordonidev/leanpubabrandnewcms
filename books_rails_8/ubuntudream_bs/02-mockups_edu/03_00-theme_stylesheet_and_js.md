@@ -188,13 +188,13 @@ a   | `<%= javascript_include_tag 'eduport/xxx', 'data-turbolinks-track' => true
 Impostiamoli da layouts/edu_demo
 
 ```html+erb
-da...  <link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">
-a ... <%= stylesheet_link_tag 'edu/css/style.css', media: 'all', 'data-turbolinks-track': 'reload', id: 'style-switch' %>
+da... <link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">
+a...  <%= stylesheet_link_tag 'edu/css/style.css', media: 'all', 'data-turbolinks-track': 'reload', id: 'style-switch' %>
 ```
 
 ```html+erb
-da...  <script type="text/javascript" src="js/xxx.js"></script>
-a ... <%= javascript_include_tag 'eduport/xxx', 'data-turbolinks-track' => true %>
+da... <script type="text/javascript" src="js/xxx.js"></script>
+a...  <%= javascript_include_tag 'eduport/xxx', 'data-turbolinks-track' => true %>
 ```
 
 
