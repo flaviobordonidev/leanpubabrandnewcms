@@ -98,7 +98,7 @@ Creiamo la pagina `.../app/views/mockups/edu_course_grid.html.erb`, ci copiamo t
 
 Facciamo in modo che la view `mockups/edu_course_grid` utilizzi il layout `empty`.
 
-[Codice 02 - .../controllers/mockups_controller.rb - linea: 8]()
+***Codice 05 - .../controllers/mockups_controller.rb - linea:8***
 
 ```ruby
   def edu_course_grid
@@ -117,7 +117,7 @@ $ ./bin/dev
 
 Andiamo con il browser sull'URL:
 
-- http://192.168.64.4:3000/mockups/eduport_index
+- http://127.0.0.1:3000/mockups/edu_course_grid
 
 ![fig04](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/ubuntudream_bs/02-mockups_edu/02_fig04-edu_course_grid.png)
 
@@ -135,7 +135,7 @@ Commentiamo le chiamate in "html puro" ed inseriamo le chiamate che sono su `...
 
 > Per commentare uso il codice Rails `<%# ... %>` 
 
-***Codice 05 - .../app/views/mockups/edu_course_grid.html.erb - linea:1***
+***Codice 06 - .../app/views/mockups/edu_course_grid.html.erb - linea:1***
 
 ```html
 <!DOCTYPE html>
@@ -161,7 +161,7 @@ Commentiamo le chiamate in "html puro" ed inseriamo le chiamate che sono su `...
     <script>
 ```
 
-***Codice 05 - .../app/views/mockups/edu_course_grid.html.erb - linea:73***
+***Codice 06 - .../app/views/mockups/edu_course_grid.html.erb - linea:73***
 
 ```html
   </script>
@@ -197,6 +197,16 @@ Commentiamo le chiamate in "html puro" ed inseriamo le chiamate che sono su `...
   <body>
 ```
 
+NOTA: Forse bastavano solo queste due righe Rails prima di </head> :
+
+```html
+   <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+
+  </head>
+```
+
 
 
 ## Verifichiamo preview
@@ -208,7 +218,7 @@ $ ./bin/dev
 
 Andiamo con il browser sull'URL:
 
-- http://192.168.64.4:3000/mockups/eduport_index
+- http://127.0.0.1:3000/mockups/edu_course_grid
 
 ![fig07](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/ubuntudream_bs/02-mockups_edu/02_fig07-edu_course_grid.png)
 
