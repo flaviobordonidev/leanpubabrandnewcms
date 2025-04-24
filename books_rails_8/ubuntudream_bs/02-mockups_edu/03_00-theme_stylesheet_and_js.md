@@ -23,7 +23,7 @@ Nel tema *Eduport* all'interno della cartella `template/assets` ci sono le segue
     Includes .css file, used in theme
   - `images/` 
     Includes all images, used in .html files.
-  - `js/` -> 
+  - `js/` 
     Includes plugin's initialization file
   - `scss/` 
     Includes all of raw source files that are used to create the final CSS that is included in theme
