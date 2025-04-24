@@ -108,7 +108,7 @@ Facciamo in modo che la view `mockups/edu_course_grid` utilizzi il layout `empty
 
 
 
-## Verifichiamo preview
+## Verifichiamo preview
 
 ```bash
 ❯ ./bin/dev
