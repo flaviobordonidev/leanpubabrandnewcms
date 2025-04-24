@@ -111,8 +111,7 @@ Facciamo in modo che la view `mockups/edu_course_grid` utilizzi il layout `empty
 ## Verifichiamo preview
 
 ```bash
-#$ rails s -b 192.168.64.4
-$ ./bin/dev
+❯ ./bin/dev
 ```
 
 Andiamo con il browser sull'URL:
@@ -197,7 +196,7 @@ Commentiamo le chiamate in "html puro" ed inseriamo le chiamate che sono su `...
   <body>
 ```
 
-NOTA: Forse bastavano solo queste due righe Rails prima di </head> :
+NOTA: Forse bastavano solo queste due righe Rails prima di `</head>` :
 
 ```html
    <%# Includes all stylesheet files in app/assets/stylesheets %>
@@ -212,8 +211,7 @@ NOTA: Forse bastavano solo queste due righe Rails prima di </head> :
 ## Verifichiamo preview
 
 ```bash
-#$ rails s -b 192.168.64.4
-$ ./bin/dev
+❯ ./bin/dev
 ```
 
 Andiamo con il browser sull'URL:
