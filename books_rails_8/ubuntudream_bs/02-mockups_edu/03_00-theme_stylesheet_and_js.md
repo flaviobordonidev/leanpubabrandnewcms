@@ -177,31 +177,29 @@ Inseriamo gli helpers che puntano all'asset_pipeline sia per stylesheets che jav
 
 
 
-Da            | A
+cambio            | codice
 | :---                      | :---
-`<link rel="stylesheet" type="text/css" href="assets/css/style.css">` | `<%= stylesheet_link_tag 'eduport/scss/style.scss', media: 'all', 'data-turbolinks-track': 'reload' %>`
-`<script type="text/javascript" src="js/xxx.js"></script>` | `<%= javascript_include_tag 'eduport/xxx', 'data-turbolinks-track' => true %>`
-
-
-
-- da `<link rel="stylesheet" href="css/xxx.css" />` <br/>
-  a  `<%= stylesheet_link_tag 'pofo/css/xxx', media: 'all', 'data-turbolinks-track': 'reload' %>`
-
-- da `<script type="text/javascript" src="js/xxx.js"></script>`  <br/>
-  a  `<%= javascript_include_tag 'pofo/js/xxx', 'data-turbolinks-track' => true %>`
+da  | `<link rel="stylesheet" type="text/css" href="assets/css/style.css">`
+a   | `<%= stylesheet_link_tag 'eduport/scss/style.scss', media: 'all', 'data-turbolinks-track': 'reload' %>`
+da  | `<script type="text/javascript" src="js/xxx.js"></script>`
+a   | `<%= javascript_include_tag 'eduport/xxx', 'data-turbolinks-track' => true %>`
 
 
 Impostiamoli da layouts/edu_demo
 
 ```html+erb
-	<link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">
-  <%= stylesheet_link_tag 'edu/css/style.css', media: 'all', 'data-turbolinks-track': 'reload', id: 'style-switch' %>
+<link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">
+<%= stylesheet_link_tag 'edu/css/style.css', media: 'all', 'data-turbolinks-track': 'reload', id: 'style-switch' %>
 ```
 
+---
+
+```html
+<link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">
+```
 
 ```html+erb
-da	<link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">
- a  <%= stylesheet_link_tag 'edu/css/style.css', media: 'all', 'data-turbolinks-track': 'reload', id: 'style-switch' %>
+<%= stylesheet_link_tag 'edu/css/style.css', media: 'all', 'data-turbolinks-track': 'reload', id: 'style-switch' %>
 ```
 
 
