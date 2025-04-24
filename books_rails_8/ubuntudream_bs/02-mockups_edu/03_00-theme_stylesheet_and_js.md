@@ -203,12 +203,22 @@ da
 
 a 
 
-```html+erb
+```html
 	<!-- Theme CSS -->
   <%= stylesheet_link_tag 'edu/css/style.css', media: 'all', 'data-turbolinks-track': 'reload', id: 'style-switch' %>
 ```
 
-[tutto il codice](#11-02-02_01all)
+
+```diff
+-	<link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">
++ <%= stylesheet_link_tag 'edu/css/style.css', media: 'all', 'data-turbolinks-track': 'reload', id: 'style-switch' %>
+```
+
+
+```html
+da	<link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">
+a   <%= stylesheet_link_tag 'edu/css/style.css', media: 'all', 'data-turbolinks-track': 'reload', id: 'style-switch' %>
+```
 
 
 Copiamo il file *style.css* dal tema alla nostra app.
