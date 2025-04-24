@@ -179,15 +179,9 @@ Inseriamo gli helpers che puntano all'asset_pipeline sia per stylesheets che jav
 
 Da            | A
 | :---                      | :---
+`<link rel="stylesheet" type="text/css" href="assets/css/style.css">` | `<%= stylesheet_link_tag 'eduport/scss/style.scss', media: 'all', 'data-turbolinks-track': 'reload' %>`
 .../app/assets/images/edu/  | - about <br/> - avatar <br/> - bg <br/> - ... <br/> - logo.svg
 .../app/javascript/edu      | - functions
-
-
-
-DA                                             | A
-| :---                                         | :--- 
-<link rel="stylesheet" type="text/css" href="assets/css/style.css"> | <%= stylesheet_link_tag 'eduport/scss/style.scss', media: 'all', 'data-turbolinks-track': 'reload' %>
-
 `<script type="text/javascript" src="js/xxx.js"></script>` | `<%= javascript_include_tag 'eduport/xxx', 'data-turbolinks-track' => true %>`
 
 
