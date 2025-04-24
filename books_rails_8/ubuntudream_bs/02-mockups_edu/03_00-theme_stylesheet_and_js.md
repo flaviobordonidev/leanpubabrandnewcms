@@ -180,44 +180,28 @@ Inseriamo gli helpers che puntano all'asset_pipeline sia per stylesheets che jav
 Da            | A
 | :---                      | :---
 `<link rel="stylesheet" type="text/css" href="assets/css/style.css">` | `<%= stylesheet_link_tag 'eduport/scss/style.scss', media: 'all', 'data-turbolinks-track': 'reload' %>`
-.../app/assets/images/edu/  | - about <br/> - avatar <br/> - bg <br/> - ... <br/> - logo.svg
-.../app/javascript/edu      | - functions
 `<script type="text/javascript" src="js/xxx.js"></script>` | `<%= javascript_include_tag 'eduport/xxx', 'data-turbolinks-track' => true %>`
 
 
 
 - da `<link rel="stylesheet" href="css/xxx.css" />` <br/>
   a  `<%= stylesheet_link_tag 'pofo/css/xxx', media: 'all', 'data-turbolinks-track': 'reload' %>`
+
 - da `<script type="text/javascript" src="js/xxx.js"></script>`  <br/>
   a  `<%= javascript_include_tag 'pofo/js/xxx', 'data-turbolinks-track' => true %>`
 
 
 Impostiamoli da layouts/edu_demo
 
-da 
-
-```html
-	<!-- Theme CSS -->
+```html+erb
 	<link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">
-```
-
-a 
-
-```html
-	<!-- Theme CSS -->
   <%= stylesheet_link_tag 'edu/css/style.css', media: 'all', 'data-turbolinks-track': 'reload', id: 'style-switch' %>
 ```
 
 
-```diff
--	<link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">
-+ <%= stylesheet_link_tag 'edu/css/style.css', media: 'all', 'data-turbolinks-track': 'reload', id: 'style-switch' %>
-```
-
-
-```html
+```html+erb
 da	<link id="style-switch" rel="stylesheet" type="text/css" href="assets/css/style.css">
-a   <%= stylesheet_link_tag 'edu/css/style.css', media: 'all', 'data-turbolinks-track': 'reload', id: 'style-switch' %>
+ a  <%= stylesheet_link_tag 'edu/css/style.css', media: 'all', 'data-turbolinks-track': 'reload', id: 'style-switch' %>
 ```
 
 
