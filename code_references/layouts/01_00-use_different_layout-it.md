@@ -1,41 +1,43 @@
-# <a name="top"></a> Cap 2.1 - Importiamo una pagina dal tema
+# <a name="top"></a> Usare un layout diverso
 
-# Come cambiare il layout
-
+Per applicare un layout diverso da quello di default `views/layouts/application.html.erb`
 
 
 
 ## Creiamo un nuovo layout
 
-dentro le views/layouts aggiungere il file mylayout.html.erb
+dentro le `views/layouts` aggiungere il file `mylayout.html.erb`
 
 
 
-
-## Nuovo layout per una sola view
+## Nuovo layout per una sola azione del controller e relativa view
 
 Dentro l'azione richiesta del controller mettere 
 
-***codice: n/a - .../app/controllers/xxx_controller.rb - line:01***
+***codice: n/a - .../app/controllers/mines_controller.rb - line:01***
 
 ```ruby
-  def xxx
+class MinesController < ApplicationController
+
+  def myaction
     ...
     render layout: 'mylayout'
-    ...
   end
 ```
 
-https://brandnewcms-flaviobordonidev.c9users.io/test_pages/slider
 
 
-
-
-## Nuovo layout per tutte le views di una tabella
-
+## Nuovo layout per tutte le azioni del controller e relative views
 
 Dentro il controller mettere prima delle azioni
 
-```ruby  
+***codice: n/a - .../app/controllers/mines_controller.rb - line:01***
+
+```ruby
+class MinesController < ApplicationController
   layout "mylayout"
+
+  def myaction
+    ...
+  end
 ```
