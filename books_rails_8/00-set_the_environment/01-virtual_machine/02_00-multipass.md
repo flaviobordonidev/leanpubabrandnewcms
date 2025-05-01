@@ -6,6 +6,19 @@ Però con il macbook pro con chip M3 mi ha dato tanti problemi ed ho deciso di l
 > Attenzione!
 > SU MACBOOK PRO CON CHIP M3 NON FUNZIONA BENE! (data: 12/04/2025)
 
+Instances won't start on Apple M3 silicon 
+https://github.com/canonical/multipass/issues/3308
+townsend2010 on Feb 12, 2024 - Contributor
+Hi all!
+Just to let you know, version 1.13.1 has been released that has the fix for this issue. (https://github.com/canonical/multipass/releases/tag/v1.13.1)
+@ssg3d, all you need to do is download and install the package and follow the prompts.
+
+https://github.com/canonical/multipass/releases/tag/v1.15.0
+
+—
+Install Multipass
+https://canonical.com/multipass/install
+
 
 
 ## Installazione tramite .pkg
