@@ -90,7 +90,7 @@ Prepariamo i 3 tipi di menu ed il contenuto principale
 Vediamo come si presentano su PC e su Mobile.
 
 
-![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/ubuntudream_bs/02-mockups_edu/02_fig01-eduport_mobile_course_grid.png)
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/ubuntudream_tw/02-mockups/02_fig01-ud_mobile_navbars.png)
+  
+![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/ubuntudream_tw/02-mockups/02_fig02-ud_pc_navbars.png)
 
-
-fig02
