@@ -51,11 +51,46 @@ come abbiamo visto in precedenza nel capitolo xxx abbiamo già creato mockups_co
 Adesso aggiungiamo la view `mockups/ud_navbars.html.erb`
 
 
+
 ## Prepariamo le navbars
 
+Prepariamo i 3 tipi di menu ed il contenuto principale
 
-***Codice 01 - .../app/views/mockups/ud_navbars.html.erb - linea:1***
+***Codice 01 - .../app/views/mockups/ud_navbars.html.erb - linea:11***
 
 ```html
-
+    <!-- Navbar Top (always visible) -->
+    <header class="fixed top-0 left-0 right-0 bg-white border-b shadow-md flex justify-around items-center h-16 z-50 lg:ml-64">
 ```
+
+
+***Codice 01 - .../app/views/mockups/ud_navbars.html.erb - linea:25***
+
+```html
+    <!-- Sidebar Lateral (only desktop) -->
+    <aside class="hidden lg:block fixed top-0 left-0 w-64 h-full bg-gray-800 text-white pt-20 p-4">
+```
+
+
+***Codice 01 - .../app/views/mockups/ud_navbars.html.erb - linea:35***
+
+```html
+    <!-- Main Content -->
+    <main class="mt-18 pt-2 lg:pl-64 mb-18 lg:mb-0 pb-2 container mx-auto px-4">
+```
+
+
+***Codice 01 - .../app/views/mockups/ud_navbars.html.erb - linea:55***
+
+```html
+    <!-- Navbar Bottom (only mobile) -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg flex justify-around items-center h-16 lg:hidden">
+```
+
+Vediamo come si presentano su PC e su Mobile.
+
+
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/ubuntudream_bs/02-mockups_edu/02_fig01-eduport_mobile_course_grid.png)
+
+
+fig02
