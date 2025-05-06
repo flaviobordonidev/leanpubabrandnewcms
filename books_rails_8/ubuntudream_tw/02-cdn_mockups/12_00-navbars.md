@@ -24,7 +24,7 @@ La barra di navigazione in basso (`navbar_bottom`) è quella principale ed ha 5 
 - Profilo
 
 I primi quattro caricano delle nuove pagine invece il "profilo" apre un sotto menu con i seguenti pulsanti:
-- <<Foto e nome utente>>
+- [Foto e nome utente]
 - Edit profile
 - Account settings
 - Help
@@ -87,10 +87,8 @@ Prepariamo i 3 tipi di menu ed il contenuto principale
     <nav class="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg flex justify-around items-center h-16 lg:hidden">
 ```
 
-Vediamo come si presentano su PC e su Mobile.
-
+Vediamo come si presentano su Mobile e su PC.
 
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/ubuntudream_tw/02-mockups/02_fig01-ud_mobile_navbars.png)
   
 ![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/ubuntudream_tw/02-mockups/02_fig02-ud_pc_navbars.png)
-

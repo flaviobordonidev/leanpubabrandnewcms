@@ -1,6 +1,7 @@
-# <a name="top"></a> Applicazione con Tailwind [25/04/17]
+# <a name="top"></a> Installiamo Tailwind CSS
 
-Installiamo Tailwind CSS
+[25/04/17]
+Ci sono diversi modi di installare Tailwind CSS, io cerco di usare quello che lavora su importmap che è la piattaforma preferita da rails 7.0 e come riferimenti mi baso su rails.org portato avanti da DHHH che ha creato Rails ed anche dal sito ufficiale di Tailwind.
 
 
 
@@ -62,25 +63,12 @@ Adesso verifichiamo.
 ❯ rails g controller Mockups test_a
 ```
 
-Ed inseriamoci alcuni componenti bootstap
-
-- [l'alert](https://getbootstrap.com/docs/5.3/components/alerts/)
-- [i pulsanti](https://getbootstrap.com/docs/5.3/components/buttons/)
-- [la navbar](https://getbootstrap.com/docs/5.3/components/navbar/)
-
 
 ```shell
 <h1 class="text-3xl font-bold underline">
   Hello world!
 </h1>
 ```
-
-
-
-
-
-
-
 
 
 

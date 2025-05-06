@@ -1,5 +1,12 @@
 # <a name="top"></a> Selezione delle pagine
 
+Adesso riportiamo i mockups usando tailwind installato su Ruby on Rails e sostituendo javascript scritto direttamente nella pagina html a javascript scritto con Stimulus.
+
+Altra cosa che possiamo fare è creare il file config di tailwind in cui importiamo i valori light e dark in modo da rendere DRY (do not repeat yourself) gli stili Tailwind css scritti nelle varie views.
+
+
+
+
 In questi capitoli creeremo i mockups della nostra app. Ossia delle pagine statiche con i dati inseriti direttamente nel codice, i "segnaposto", per definire la grafica della nostra app.
 
 
