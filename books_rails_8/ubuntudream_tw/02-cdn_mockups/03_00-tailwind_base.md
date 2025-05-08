@@ -19,8 +19,18 @@ La struttura base HTML.
     - main
     - footer
 
+
+Left aligned Header | Right aligned Header | Center aligned Header
+| :--- | ---: | :---:
+Content Cell  | Content Cell | Content Cell
+Content Cell  | Content Cell | Content Cell
+
+
 Tags | Descrizione | usi multipli
 | :--- | :--- | :---
+<header>  | This | That
+
+
 <header>  | This tag is for logical organization. Dentro l'header subito dopo il <body> puoi mettere <nav> tags e <form> tags. | si possono avere tanti tags <header>
 <main>    | tag is for logical organization. Dentro l'header subito dopo il <body> puoi mettere <nav> tags e <form> tags. | si possono avere tanti tags <header>
 <footer>  | tag is for logical organization. Dentro il footer alla fine del <body> ho "GPR", "Copyrights", "Contact info", "Legal info", "P.IVA", ... | Si possono avere tanti tags <footer>
