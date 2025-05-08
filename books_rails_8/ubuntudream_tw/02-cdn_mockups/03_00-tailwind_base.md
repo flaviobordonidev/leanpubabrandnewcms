@@ -19,30 +19,11 @@ La struttura base HTML.
     - main
     - footer
 
-
-Left aligned Header | Right aligned Header | Center aligned Header
-| :--- | ---: | :---:
-Content Cell  | Content Cell | Content Cell
-Content Cell  | Content Cell | Content Cell
-
-
 Tags | Descrizione | usi multipli
 | :--- | :--- | :---
-`<header>`  | This | That
-
-
-<header>  | This tag is for logical organization. Dentro l'header subito dopo il <body> puoi mettere <nav> tags e <form> tags. | si possono avere tanti tags <header>
-<main>    | tag is for logical organization. Dentro l'header subito dopo il <body> puoi mettere <nav> tags e <form> tags. | si possono avere tanti tags <header>
-<footer>  | tag is for logical organization. Dentro il footer alla fine del <body> ho "GPR", "Copyrights", "Contact info", "Legal info", "P.IVA", ... | Si possono avere tanti tags <footer>
-
-
-
-- <header> tag is for logical organization. Dentro l'header subito dopo il <body> puoi mettere <nav> tags e <form> tags.
-    si possono avere tanti tags <header>
-- <main> tag is for logical organization. Si concentra sulla parte principale della pagina. Per i non vedenti ad esempio arrivo diretto al "<main>" evitando di leggere header con nav e/o lateral nav,...
-    Ci dovrebbe essere solo 1 tag <main>. (Eventualmente un altro come invisible o hidden). 
-- <footer> tag is for logical organization. Dentro il footer alla fine del <body> ho "GPR", "Copyrights", "Contact info", "Legal info", "P.IVA", ...
-    Si possono avere tanti tags <footer>
+`<header>`  | This tag is for logical organization. Dentro l'header subito dopo il `<body>` puoi mettere `<nav>` tags e `<form>` tags. | si possono avere tanti tags `<header>`
+`<main>`    | This tag is for logical organization. Si concentra sulla parte principale della pagina. Per i non vedenti ad esempio arrivo diretto al `<main>` evitando di leggere header con nav e/o lateral nav,... | Ci dovrebbe essere solo 1 tag `<main>`. (Eventualmente un altro come invisible o hidden). 
+`<footer>`  | This tag is for logical organization. Dentro il footer alla fine del `<body>` ho "GPR", "Copyrights", "Contact info", "Legal info", "P.IVA", ... | Si possono avere tanti tags `<footer>`
 
 
 ```html
