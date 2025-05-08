@@ -183,6 +183,7 @@ class MockupsController < ApplicationController
 ```
 
 
+
 ## Facciamo partire il server
 
 Verifichiamo di essere nella directory della nostra app `cd /Users/fb/ror/ubuntudream_bs/` e facciamo partire il server.

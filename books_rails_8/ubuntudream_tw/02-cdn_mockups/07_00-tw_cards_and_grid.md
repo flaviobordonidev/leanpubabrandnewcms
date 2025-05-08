@@ -5,10 +5,69 @@ A titolo di esempio facciamo delle cards per delle ricette di cucina.
 
 
 
+
+## The basic DOM
+
+La struttura base HTML.
+
+
+***Codice 01 - .../app/views/cdnmockups/tw_base.html.erb - linea:1***
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Flavio Bordoni">
+    <title>Tailwind Base</title>
+
+    <!-- IMPORTA TAILWIND -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- <link rel="stylesheet" href="css/style.css" type="text/css"> -->
+  </head>
+  <body>
+
+    <header>
+      <nav>...</nav>
+      <form> search... </form>
+      ...
+    </header>
+
+    <main>
+      ...
+      <article>
+        <header>
+        </header>
+        <img></img>
+        <footer></footer>
+      </article>
+      ...
+      <article>
+        ...
+      </article>
+      ...
+    </main>
+
+    <footer>
+      <nav>...</nav>
+      <p>copyright</p> ...
+      ...
+    </footer>
+
+    <script src="scripts.js">
+      ...
+    </script>
+  </body>
+</html>
+```
+
+
+
+
 ## La view `tw_comp_cards` per il componente Card
 
 Creiamo la nuova view `cdnmockups/tw_comp_cards`, la nuova azione `tw_comp_cards` su `cdnmockups_controller` e l'instradamento su `routes`.
-
 
 
 ## Iniziamo creando la struttura base
@@ -35,21 +94,88 @@ La struttura base di una cards ha un'immagine, un titolo, una descrizione ed uno
 
 
 
+## L'elemento `<div>`
+
+Posso usare anche sempre <div> ma è meglio, quando possibile, usare dei tags già definiti su <html5>
+The <div> element should be used only when no other semantic element (such as <article> or <nav>) is appropriate.
+The <section> HTML element represents a generic standalone section of a document, which doesn't have a more specific semantic element to represent it. Sections should always have a heading, with very few exceptions.
+If you are only using the element as a styling wrapper, use a <div> instead
+
+Esempio in cui uso tutti tags `<div>`:
+
+```html
+  <!-- cards -->
+  <div>
+    <img></img>
+    <div>
+      <span></span>
+      <span></span>
+    </div>
+    <div>banner</div>
+  </div>
+```
+
+Esempio in cui uso vari tags html:
+
+```html
+  <!-- cards -->
+  <article>
+    <img></img>
+    <header>
+      <h2></h2>
+      <p></p>
+    </header>
+    <aside>banner</aside>
+  </article>
+```
+
+In questo esempio in basso ho organizzato meglio a "livello semantico" la mia card facendo un parallelo con l'articolo.
+
+- The <aside> tags should provide additional information that helps, but is not required for the page. The aside should be short, providing extra info, not be another article itself.
+- The <article> HTML element represents a self-contained composition in a document, page, application, or site, which is intended to be independently distributable or reusable. Examples include: a forum post, a magazine or newspaper article, a blog entry, a product card, a user-submitted comment, an interactive widget or gadget, or any other independent item of content.
+
+A given document can have multiple articles in it; for example, on a blog that shows the text of each article one after another as the reader scrolls, each post would be contained in an <article> element, possibly with one or more <section>s within.
+
+```html
+<article class="forecast">
+  <h1>Weather forecast for Seattle</h1>
+  <article class="day-forecast">
+    <h2>03 March 2018</h2>
+    <p>Rain.</p>
+  </article>
+  <article class="day-forecast">
+    <h2>04 March 2018</h2>
+    <p>Periods of rain.</p>
+  </article>
+  <article class="day-forecast">
+    <h2>05 March 2018</h2>
+    <p>Heavy rain.</p>
+  </article>
+</article>
+```
+
+
+
+## Continuiamo conla struttura base
+
+Adesso miglioriamo la semantica sostituendo i tags `<div>` con i tags `<article>`, `<h2>`, `<p>`, ...
+Inoltre inseriamo i percorsi all'immagine ed introduciamo il "badge".
+
 ***Codice 02 - .../app/views/cdnmockups/tw_comp_cards.html.erb - linea:3***
 
 ```html
           <!-- card -->
-          <div class="bg-white rounded overflow-hidden shadow-md">
+          <article class="bg-white rounded overflow-hidden shadow-md">
             <img class="bg-neutral-100" src="https://images.pexels.com/photos/1058035/pexels-photo-1058035.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="curry">
-            <div>
-              <span class="font-bold">Spezie</span>
-              <span class="block text-sm">Una selezione di spezie</span>
-            </div>
+            <header>
+              <h2 class="font-bold">Spezie</h2>
+              <p class="block text-sm">Una selezione di spezie</p>
+            </header>
             <!-- badge -->
-            <div>
+            <aside>
               <span>12 min</span>
-            </div>
-          </div>
+            </aside>
+          </article>
 ```
 
 Nel primo `<div>`, quello che definisce la card:
@@ -87,6 +213,49 @@ Nel tag `<img>`:
           </div>
 ```
 
+
+
+## Moltiplichiamo le cards su container Flex
+
+vedi http://127.0.0.1:3000/mockups/tw_comp_cards
+
+```html
+    <!-- Main Content -->
+    <main>
+
+      <!-- Flex container of the cards -->
+      <div class="flex w-full gap-6">
+
+        <!-- card -->
+        ...
+
+        <!-- card -->
+        ...
+```
+
+Come si può vedere su container Flex le cards si allargano in funzione del contenuto e se sono di più si schiacciano per cercare di lasciarle tutte sulla stessa riga.
+
+
+
+## Moltiplichiamo le cards su container Grid
+
+vedi http://127.0.0.1:3000/mockups/tw_comp_cards
+
+```html
+    <!-- Main Content -->
+    <main>
+
+      <!-- Grid container of the cards -->
+      <div class="grid md:grid-cols-3 gap-6">
+
+        <!-- card -->
+        ...
+
+        <!-- card -->
+        ...
+```
+
+Come si può vedere su container Grid le cards restano della larghezza definita nelle colonne e se sono di più del numero delle colonne vanno automaticamente sulla riga successiva.
 
 
 

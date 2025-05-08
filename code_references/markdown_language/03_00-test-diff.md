@@ -1,17 +1,21 @@
-# <a name="top"></a> Test
+# <a name="top"></a> Esempi di codice in cui evidenzio linne tolte e linee aggiunte
 
-Test
+Per far questo utilizzo `diff`.
 
 
 
-***Codice 01 - .../Gemfile - linea:65***
+## Esempi di uso di `diff`
+
+
+***Codice 01 - .../example - linea:1***
 
 ```diff
 -code to remove
 +code to add
 ```
 
-Esempi:
+
+***Codice 02 - .../example - linea:1***
 
 ```diff
 # app/views/layouts/application.html.erb
