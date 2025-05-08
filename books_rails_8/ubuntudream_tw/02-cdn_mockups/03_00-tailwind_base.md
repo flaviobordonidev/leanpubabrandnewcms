@@ -21,9 +21,9 @@ La struttura base HTML.
 
 Tags | Descrizione | usi multipli
 | :--- | :--- | :---
-`<header>`  | This tag is for logical organization. Dentro l'header subito dopo il `<body>` puoi mettere `<nav>` tags e `<form>` tags. | Nella pagina html possono avere anche altri tags `<header>` dentro altri elementi.
-`<main>`    | This tag is for logical organization. Si concentra sulla parte principale della pagina. Per i non vedenti ad esempio arrivo diretto al `<main>` evitando di leggere header con nav e/o lateral nav,... | Ci dovrebbe essere solo 1 tag `<main>`. (Eventualmente un altro come invisible o hidden). 
-`<footer>`  | This tag is for logical organization. Dentro il footer alla fine del `<body>` ho "GPR", "Copyrights", "Contact info", "Legal info", "P.IVA", ... | Nella pagina html possono avere anche altri tags `<footer>` dentro altri elementi.
+`<header>`  | This tag is for logical organization. Dentro l'header subito dopo il `<body>` puoi mettere `<nav>` tags e `<form>` tags. | Ci possono essere anche altri tags `<header>` usati dentro dei tags contenitore.
+`<main>`    | This tag is for logical organization. Si concentra sulla parte principale della pagina. Per i non vedenti ad esempio arrivo diretto al `<main>` evitando di leggere header con nav e/o lateral nav,... | Ci dovrebbe essere 1 solo tag `<main>`. (Eventualmente un altro come invisible o hidden). 
+`<footer>`  | This tag is for logical organization. Dentro il footer alla fine del `<body>` ho "GPR", "Copyrights", "Contact info", "Legal info", "P.IVA", ... | Ci possono essere anche altri tags `<footer>` usati dentro dei tags contenitore.
 
 
 ```html
