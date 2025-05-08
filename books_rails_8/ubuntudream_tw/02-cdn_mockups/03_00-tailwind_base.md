@@ -28,7 +28,7 @@ Content Cell  | Content Cell | Content Cell
 
 Tags | Descrizione | usi multipli
 | :--- | :--- | :---
-<header>  | This | That
+`<header>`  | This | That
 
 
 <header>  | This tag is for logical organization. Dentro l'header subito dopo il <body> puoi mettere <nav> tags e <form> tags. | si possono avere tanti tags <header>
