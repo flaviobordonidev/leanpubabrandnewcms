@@ -4,14 +4,16 @@ Facciamo alcune cards con Tailwind CSS.
 A titolo di esempio facciamo delle cards per delle ricette di cucina.
 
 
+## La view `tw_comp_cards` per il componente Card
+
+Creiamo la nuova view `cdnmockups/tw_comp_cards`, la nuova azione `tw_comp_cards` su `cdnmockups_controller` e l'instradamento su `routes`.
 
 
-## The basic DOM
+## Iniziamo creando la struttura base
 
-La struttura base HTML.
+La struttura della DOM nel suo insieme.
 
-
-***Codice 01 - .../app/views/cdnmockups/tw_base.html.erb - linea:1***
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/ubuntudream_tw/02-cdn_mockups/07_fig01-DOM_header_nav_main_footer.png)
 
 ```html
 <!DOCTYPE html>
@@ -62,15 +64,6 @@ La struttura base HTML.
 </html>
 ```
 
-
-
-
-## La view `tw_comp_cards` per il componente Card
-
-Creiamo la nuova view `cdnmockups/tw_comp_cards`, la nuova azione `tw_comp_cards` su `cdnmockups_controller` e l'instradamento su `routes`.
-
-
-## Iniziamo creando la struttura base
 
 La struttura base di una cards ha un'immagine, un titolo, una descrizione ed uno o più "badges" per alcune funzioni ad esempio il cuore per evidenziare un like, oppure il tempo di cottura in una ricetta, oppure le visualizzazioni, le stelle, o altro.
 
@@ -156,7 +149,7 @@ A given document can have multiple articles in it; for example, on a blog that s
 
 
 
-## Continuiamo conla struttura base
+## Continuiamo con la struttura base
 
 Adesso miglioriamo la semantica sostituendo i tags `<div>` con i tags `<article>`, `<h2>`, `<p>`, ...
 Inoltre inseriamo i percorsi all'immagine ed introduciamo il "badge".
@@ -212,6 +205,111 @@ Nel tag `<img>`:
             </div>
           </div>
 ```
+
+
+
+
+
+---
+---
+
+
+
+
+
+
+<div class="grid grid-cols-12 gap-4">
+  <div class="col-span-6 bg-blue-200">Metà</div>
+  <div class="col-span-6 bg-blue-400">Altra metà</div>
+</div>
+
+
+<div class="grid grid-cols-12 gap-4">
+  <div class="col-span-4 bg-red-200">4 colonne</div>
+  <div class="col-span-8 bg-red-400">8 colonne</div>
+</div>
+
+
+
+---
+
+Sì, con le breakpoint classes di Tailwind. Per esempio:
+
+<div class="grid grid-cols-12 gap-4">
+  <div class="col-span-12 md:col-span-6 lg:col-span-4">Responsive</div>
+</div>
+
+- col-span-12: su mobile
+- md:col-span-6: da 768px in su (tablet)
+- lg:col-span-4: da 1024px in su (desktop)
+
+
+---
+
+Come tradurre in tailwind il seguente layout bootstrap che ha anche le "row":
+
+<div class="container text-center">
+  <div class="row">
+    <div class="col">
+      Column
+    </div>
+    <div class="col">
+      Column
+    </div>
+    <div class="col">
+      Column
+    </div>
+  </div>
+</div>
+
+Ottimo esempio! Quello che hai mostrato è un classico layout Bootstrap con una container, una row e tre col, ognuna delle quali si distribuisce in modo equamente spaziale all'interno della riga (grazie al comportamento Flexbox implicito di Bootstrap sulle row).
+
+In Tailwind, non esiste una classe astratta row, ma possiamo ricreare lo stesso identico layout in due modi principali:
+
+✅ Versione equivalente in Tailwind (con Flexbox)
+
+<div class="container mx-auto text-center">
+  <div class="flex">
+    <div class="flex-1 border p-4">Column</div>
+    <div class="flex-1 border p-4">Column</div>
+    <div class="flex-1 border p-4">Column</div>
+  </div>
+</div>
+
+
+Se preferisci usare Grid (più vicino al modello 12 colonne):
+
+<div class="container mx-auto text-center">
+  <div class="grid grid-cols-3 gap-4">
+    <div class="border p-4">Column</div>
+    <div class="border p-4">Column</div>
+    <div class="border p-4">Column</div>
+  </div>
+</div>
+
+Bootstrap rende automaticamente col stackabili su mobile. In Tailwind devi specificarlo così:
+
+<div class="container mx-auto text-center">
+  <div class="flex flex-col md:flex-row">
+    <div class="flex-1 border p-4">Column</div>
+    <div class="flex-1 border p-4">Column</div>
+    <div class="flex-1 border p-4">Column</div>
+  </div>
+</div>
+
+
+
+## CSS Flex vs Grid (using Tailwind CSS) | Which to choose?
+
+- [CSS Flex vs Grid (using Tailwind CSS) | Which to choose?](https://www.youtube.com/watch?v=NUDLB5WG_6E)
+
+Nell'immagine `03_fig01-tw_flex_on_email_button` è meglio usare `flex` invece di `grid` perché ci interessa che il pulsante si *adatti al contenuto*, ossia a quello che c'è scritto dentro. In questo caso "Get a demo". Se domani ci voglio scrivere "Get a free demo", usando `flex` il pulsante si allunga da solo. Se invece usavo grid che succedeva? Boh! è da provare.
+
+
+
+
+---
+---
 
 
 
