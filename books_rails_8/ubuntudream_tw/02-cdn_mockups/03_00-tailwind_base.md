@@ -59,7 +59,7 @@ Tags | Descrizione | usi multipli
 
 ## The Tailwind Hello page
 
-
+Di seguito una prima pagina con formattazione Tailwinds.
 
 ***Codice 01 - .../app/views/cdnmockups/tw_base.html.erb - linea:1***
 
@@ -79,7 +79,14 @@ Tags | Descrizione | usi multipli
   <body>
 
     <main>
-      ...
+      <h1 class="bg-yellow-100 text-blue-800 my-3 mx-6 text-center text-9xl font-extrabold">Hello, world!</h1>
+      <div class="bg-yellow-200 mx-2 px-4 py-2">
+        <button type="button" class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-700/10 ring-inset">Primary</button>
+        <button type="button" class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset">Secondary</button>
+        <button type="button" class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset">Success</button>
+        <button type="button" class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/10 ring-inset">Danger</button>
+        <button type="button" class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-yellow-600/20 ring-inset">Warning</button>
+      </div>
     </main>
 
   </body>
@@ -94,3 +101,7 @@ Tags | Descrizione | usi multipli
 - [ Beginner Tailwind [FULL COURSE] - 9 ore](https://www.youtube.com/watch?v=wEM5NdJ-8HY)
 - [Intro to HTML5: The Main Tag - Part 9](https://www.youtube.com/watch?app=desktop&v=vftAJ2KEBV8)
 
+
+---
+[top](#top) |
+[index](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/index.md)
