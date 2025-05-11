@@ -1,0 +1,23 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @article %>
+
+<video
+  id="my-video"
+  class="video-js vjs-theme-fantasy"
+  data-controller="video"
+  controls
+  preload="auto"
+  width="640"
+  height="264"
+  data-setup="{}">
+  <source src="<%= rails_blob_path(@article.video) %>" />
+  Il tuo browser non supporta il tag video.
+</video>
+
+<div>
+  <%= link_to "Edit this article", edit_article_path(@article) %> |
+  <%= link_to "Back to articles", articles_path %>
+
+  <%= button_to "Destroy this article", @article, method: :delete %>
+</div>

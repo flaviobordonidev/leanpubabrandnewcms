@@ -21,6 +21,11 @@ Apriamo il terminale.
 
 ## Risorse esterne
 
+Una risorsa importante è ChatGPT.
+(Tip: Usa ChatGPT per aiutarti mentre implementi)
+
+Tutorials:
+
 - [Install Tailwind CSS with Ruby on Rails](https://tailwindcss.com/docs/installation/framework-guides/ruby-on-rails)
 
 

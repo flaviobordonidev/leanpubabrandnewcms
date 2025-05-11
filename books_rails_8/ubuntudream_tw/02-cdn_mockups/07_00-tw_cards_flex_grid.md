@@ -36,6 +36,11 @@ La struttura della DOM nel suo insieme.
       ...
     </header>
 
+    <div id="sidebar">
+      <nav>...</nav>
+      ...
+    </div>
+
     <main>
       ...
       <article>
@@ -89,10 +94,12 @@ La struttura base di una cards ha un'immagine, un titolo, una descrizione ed uno
 
 ## L'elemento `<div>`
 
-Posso usare anche sempre <div> ma è meglio, quando possibile, usare dei tags già definiti su <html5>
-The <div> element should be used only when no other semantic element (such as <article> or <nav>) is appropriate.
-The <section> HTML element represents a generic standalone section of a document, which doesn't have a more specific semantic element to represent it. Sections should always have a heading, with very few exceptions.
-If you are only using the element as a styling wrapper, use a <div> instead
+Posso usare anche sempre `<div>` ma è meglio, quando possibile, usare dei tags già definiti su `<html5>`
+The `<div>` element should be used only when no other semantic element (such as `<article>` or `<nav>`) is appropriate.
+The `<section>` HTML element represents a generic standalone section of a document, which doesn't have a more specific semantic element to represent it. *Sections should always have a heading*, with very few exceptions.
+If you are only using the element as a styling wrapper, use a `<div>` instead.
+`<section>` tells browsers and screen readers that the content inside it should be grouped together, like a section in an article.
+`<div>` does not impart any meaning and is simply used to help with layout.
 
 Esempio in cui uso tutti tags `<div>`:
 
@@ -208,112 +215,10 @@ Nel tag `<img>`:
 
 
 
-
-
----
----
-
-
-
-
-
-
-<div class="grid grid-cols-12 gap-4">
-  <div class="col-span-6 bg-blue-200">Metà</div>
-  <div class="col-span-6 bg-blue-400">Altra metà</div>
-</div>
-
-
-<div class="grid grid-cols-12 gap-4">
-  <div class="col-span-4 bg-red-200">4 colonne</div>
-  <div class="col-span-8 bg-red-400">8 colonne</div>
-</div>
-
-
-
----
-
-Sì, con le breakpoint classes di Tailwind. Per esempio:
-
-<div class="grid grid-cols-12 gap-4">
-  <div class="col-span-12 md:col-span-6 lg:col-span-4">Responsive</div>
-</div>
-
-- col-span-12: su mobile
-- md:col-span-6: da 768px in su (tablet)
-- lg:col-span-4: da 1024px in su (desktop)
-
-
----
-
-Come tradurre in tailwind il seguente layout bootstrap che ha anche le "row":
-
-<div class="container text-center">
-  <div class="row">
-    <div class="col">
-      Column
-    </div>
-    <div class="col">
-      Column
-    </div>
-    <div class="col">
-      Column
-    </div>
-  </div>
-</div>
-
-Ottimo esempio! Quello che hai mostrato è un classico layout Bootstrap con una container, una row e tre col, ognuna delle quali si distribuisce in modo equamente spaziale all'interno della riga (grazie al comportamento Flexbox implicito di Bootstrap sulle row).
-
-In Tailwind, non esiste una classe astratta row, ma possiamo ricreare lo stesso identico layout in due modi principali:
-
-✅ Versione equivalente in Tailwind (con Flexbox)
-
-<div class="container mx-auto text-center">
-  <div class="flex">
-    <div class="flex-1 border p-4">Column</div>
-    <div class="flex-1 border p-4">Column</div>
-    <div class="flex-1 border p-4">Column</div>
-  </div>
-</div>
-
-
-Se preferisci usare Grid (più vicino al modello 12 colonne):
-
-<div class="container mx-auto text-center">
-  <div class="grid grid-cols-3 gap-4">
-    <div class="border p-4">Column</div>
-    <div class="border p-4">Column</div>
-    <div class="border p-4">Column</div>
-  </div>
-</div>
-
-Bootstrap rende automaticamente col stackabili su mobile. In Tailwind devi specificarlo così:
-
-<div class="container mx-auto text-center">
-  <div class="flex flex-col md:flex-row">
-    <div class="flex-1 border p-4">Column</div>
-    <div class="flex-1 border p-4">Column</div>
-    <div class="flex-1 border p-4">Column</div>
-  </div>
-</div>
-
-
-
-## CSS Flex vs Grid (using Tailwind CSS) | Which to choose?
-
-- [CSS Flex vs Grid (using Tailwind CSS) | Which to choose?](https://www.youtube.com/watch?v=NUDLB5WG_6E)
-
-Nell'immagine `03_fig01-tw_flex_on_email_button` è meglio usare `flex` invece di `grid` perché ci interessa che il pulsante si *adatti al contenuto*, ossia a quello che c'è scritto dentro. In questo caso "Get a demo". Se domani ci voglio scrivere "Get a free demo", usando `flex` il pulsante si allunga da solo. Se invece usavo grid che succedeva? Boh! è da provare.
-
-
-
-
----
----
-
-
-
 ## Moltiplichiamo le cards su container Flex
+
+Quando abbiamo più cards e vogliamo che la loro larghezza vari in funzione della quantità di contentuto, è utile inserirle su un contenitore flex. Con un contenitore flex le cards non andranno mai su una seconda riga ma si stringeranno sempre di più.
+
 
 vedi http://127.0.0.1:3000/mockups/tw_comp_cards
 
@@ -337,6 +242,8 @@ Come si può vedere su container Flex le cards si allargano in funzione del cont
 
 ## Moltiplichiamo le cards su container Grid
 
+Quando abbiamo più cards e vogliamo che rispettino delle larghezze prestabilite e che l'eccesso di contentuto si sviluppi in verticale, è utile inserirle su una griglie. Se abbiamo più cards rispetto al numero di colonne indicato, che sono quelle che determinano la larghezza prestabilita, allora le cards in eccesso andranno automaticamente su una nuova riga.
+
 vedi http://127.0.0.1:3000/mockups/tw_comp_cards
 
 ```html
@@ -357,6 +264,27 @@ Come si può vedere su container Grid le cards restano della larghezza definita 
 
 
 
+## Usare una grid a 12 colonne come BootStrap
+
+ Possiamo creare una griglia a 12 colonne, come fa Boorstrap, ed inserire poi le colonne che ci servono davvero usando il `col-span-`.
+
+Ad esempio il seguente codice crea una colonna su cellulare, due colonne su tablet e 3 colonne su PC.
+
+```html
+<div class="grid grid-cols-12 gap-4">
+  <div class="col-span-12 md:col-span-6 lg:col-span-4">Responsive</div>
+</div>
+```
+
+`col-span-` | # colonne
+|:---   |:---
+`col-span-12:`   | 1 colonna su collulare (da 0px in su)
+`md:col-span-6:` | 2 colonne su tablet (da 768px in su)
+`lg:col-span-4:` | 3 colonne da PC (da 1024px in su)
+
+
+
+
 ## Risorse esterne
 
 - [ Tailwind CSS Tutorial #9 - Cards ](https://www.youtube.com/watch?v=vqKie-xmcFs&list=PL4cUxeGkcC9gpXORlEHjc5bgnIi5HEGhw&index=9)
@@ -374,4 +302,7 @@ Come si può vedere su container Grid le cards restano della larghezza definita 
 
 
 - [ Beginner Tailwind [FULL COURSE] - 9 ore](https://www.youtube.com/watch?v=wEM5NdJ-8HY)
-- []
+
+- [CSS Flex vs Grid (using Tailwind CSS) | Which to choose?](https://www.youtube.com/watch?v=NUDLB5WG_6E)
+
+Nell'immagine `03_fig01-tw_flex_on_email_button` è meglio usare `flex` invece di `grid` perché ci interessa che il pulsante si *adatti al contenuto*, ossia a quello che c'è scritto dentro. In questo caso "Get a demo". Se domani ci voglio scrivere "Get a free demo", usando `flex` il pulsante si allunga da solo. Se invece usavo grid che succedeva? Boh! è da provare.
