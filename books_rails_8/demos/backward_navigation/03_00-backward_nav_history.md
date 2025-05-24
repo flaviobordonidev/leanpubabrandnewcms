@@ -79,7 +79,8 @@ codice | Spiegazione
 `if (this.skipValue) return` | Se `@skip_history` è *true* la pagina non è archiviata nello storico perché esco subito con `return`.
 `const path = window.location.pathname` | Questa riga estrae il percorso corrente dell’URL, cioè tutto ciò che viene dopo il dominio, escludendo il protocollo `https://` e l’host `www.example.com`.
 `let customHistory = JSON.parse(sessionStorage.getItem("customHistory") \|\| "[]")` | Questa riga serve a leggere lo stack di cronologia personalizzata che abbiamo salvato in precedenza, e trasformarlo in un array JavaScript.
-
+`sessionStorage.getItem("customHistory")` | Cerca nel `sessionStorage` (memoria locale del browser che dura finché il tab è aperto) un oggetto con chiave `customHistory`. Se esiste, sarà una stringa JSON, ad esempio: `'["/intro", "/articoli/1", "/articoli/2"]'`
+`JSON.parse(...)` | Converte quella stringa JSON in un vero array JavaScript, che potrai manipolare con push(), pop(), filter() ecc.
 
 
 ## Aggiunta del controller alle pagine
