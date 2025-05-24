@@ -1,7 +1,8 @@
-# <a name="top"></a> Impostiamo alcune formattazioni base di Tailwind
+# <a name="top"></a> Implementiamo delle cards
 
 Facciamo alcune cards con Tailwind CSS.
 A titolo di esempio facciamo delle cards per delle ricette di cucina.
+
 
 
 ## La view `tw_comp_cards` per il componente Card
@@ -9,9 +10,10 @@ A titolo di esempio facciamo delle cards per delle ricette di cucina.
 Creiamo la nuova view `cdnmockups/tw_comp_cards`, la nuova azione `tw_comp_cards` su `cdnmockups_controller` e l'instradamento su `routes`.
 
 
+
 ## Iniziamo creando la struttura base
 
-La struttura della DOM nel suo insieme.
+La struttura della DOM con le cards nella sezione `<main>`.
 
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/ubuntudream_tw/02-cdn_mockups/07_fig01-DOM_header_nav_main_footer.png)
 
@@ -30,17 +32,6 @@ La struttura della DOM nel suo insieme.
   </head>
   <body>
 
-    <header>
-      <nav>...</nav>
-      <form> search... </form>
-      ...
-    </header>
-
-    <div id="sidebar">
-      <nav>...</nav>
-      ...
-    </div>
-
     <main>
       ...
       <article>
@@ -56,12 +47,6 @@ La struttura della DOM nel suo insieme.
       ...
     </main>
 
-    <footer>
-      <nav>...</nav>
-      <p>copyright</p> ...
-      ...
-    </footer>
-
     <script src="scripts.js">
       ...
     </script>
@@ -70,29 +55,28 @@ La struttura della DOM nel suo insieme.
 ```
 
 
+
+### Struttura base di una card
+
 La struttura base di una cards ha un'immagine, un titolo, una descrizione ed uno o più "badges" per alcune funzioni ad esempio il cuore per evidenziare un like, oppure il tempo di cottura in una ricetta, oppure le visualizzazioni, le stelle, o altro.
 
-***Codice 01 - .../app/views/cdnmockups/tw_comp_cards.html.erb - linea:3***
+Esempio in cui uso tutti tags `<div>`.
 
 ```html
-          <!-- card -->
-          <div class="bg-white">
-            <img class="bg-neutral-100" src="" alt="">
-            <div>
-              <span class="font-bold">Titolo</span>
-              <span class="block text-sm">Descrizione</span>
-            </div>
-            <!-- badge -->
-            <div>
-              <span>tempo di preparazione</span>
-            </div>
-          </div>
-          <!-- card - end -->
+<!-- card -->
+<div>
+  <img src="" alt="">
+  <div>
+    <span>Titolo</span>
+    <span>Descrizione</span>
+  </div>
+  <!-- badge -->
+  <div>
+    <span>tempo di preparazione</span>
+  </div>
+</div>
+<!-- card - end -->
 ```
-
-
-
-## L'elemento `<div>`
 
 Posso usare anche sempre `<div>` ma è meglio, quando possibile, usare dei tags già definiti su `<html5>`
 The `<div>` element should be used only when no other semantic element (such as `<article>` or `<nav>`) is appropriate.
@@ -101,21 +85,7 @@ If you are only using the element as a styling wrapper, use a `<div>` instead.
 `<section>` tells browsers and screen readers that the content inside it should be grouped together, like a section in an article.
 `<div>` does not impart any meaning and is simply used to help with layout.
 
-Esempio in cui uso tutti tags `<div>`:
-
-```html
-  <!-- cards -->
-  <div>
-    <img></img>
-    <div>
-      <span></span>
-      <span></span>
-    </div>
-    <div>banner</div>
-  </div>
-```
-
-Esempio in cui uso vari tags html:
+Esempio in cui uso vari tags html.
 
 ```html
   <!-- cards -->
@@ -125,11 +95,14 @@ Esempio in cui uso vari tags html:
       <h2></h2>
       <p></p>
     </header>
-    <aside>banner</aside>
+    <!-- badge -->
+    <aside>
+      <span>badge</span>
+    </aside>
   </article>
 ```
 
-In questo esempio in basso ho organizzato meglio a "livello semantico" la mia card facendo un parallelo con l'articolo.
+In questo esempio ho organizzato meglio a "livello semantico" la mia card facendo un parallelo con l'articolo.
 
 - The <aside> tags should provide additional information that helps, but is not required for the page. The aside should be short, providing extra info, not be another article itself.
 - The <article> HTML element represents a self-contained composition in a document, page, application, or site, which is intended to be independently distributable or reusable. Examples include: a forum post, a magazine or newspaper article, a blog entry, a product card, a user-submitted comment, an interactive widget or gadget, or any other independent item of content.
@@ -156,9 +129,27 @@ A given document can have multiple articles in it; for example, on a blog that s
 
 
 
-## Continuiamo con la struttura base
+## La card con la ricetta
 
-Adesso miglioriamo la semantica sostituendo i tags `<div>` con i tags `<article>`, `<h2>`, `<p>`, ...
+***Codice 01 - .../app/views/cdnmockups/tw_comp_cards.html.erb - linea:24***
+
+```html
+          <!-- card -->
+          <div class="bg-white">
+            <img class="bg-neutral-100" src="" alt="">
+            <div>
+              <span class="font-bold">Spezie</span>
+              <span class="block text-sm">Una selezione di spezie</span>
+            </div>
+            <!-- badge -->
+            <div>
+              <span>tempo di preparazione</span>
+            </div>
+          </div>
+          <!-- card - end -->
+```
+
+Nella cards con la ricetta miglioriamo la semantica sostituendo i tags `<div>` con i tags `<article>`, `<h2>`, `<p>`, ...
 Inoltre inseriamo i percorsi all'immagine ed introduciamo il "badge".
 
 ***Codice 02 - .../app/views/cdnmockups/tw_comp_cards.html.erb - linea:3***

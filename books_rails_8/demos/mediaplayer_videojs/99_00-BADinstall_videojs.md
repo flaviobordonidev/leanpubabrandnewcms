@@ -1,4 +1,11 @@
-# <a name="top"></a> Installiamo videojs
+# <a name="top"></a> Installiamo videojs -- BAD
+
+
+
+**DA NON USARE** PERCHè videojs non è supportato pienamente da importmap.
+Infatti l'installazione qui in basso prende errori e non funziona pienamente.
+
+
 
 [25/05/10]
 Installiamo `videojs` nella nostra applicazione RoR.

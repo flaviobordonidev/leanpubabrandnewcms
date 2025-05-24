@@ -64,17 +64,24 @@ Puoi controllare cosa viene servito con rails assets:precompile o in bin/rails a
 
 Nel tuo application.html.erb (o altro layout):
 
-```html
-<%= stylesheet_link_tag "video-js.min", media: "all", "data-turbo-track": "reload" %>
-<%= javascript_importmap_tags %>
-<%= javascript_include_tag "video.min", "data-turbo-track": "reload" %>
+***Codice 01 - .../app/views/layouts/application.html.erb - linea:24***
+
+```diff
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
++    <%= stylesheet_link_tag "video-js.min", media: "all", "data-turbo-track": "reload" %>
+
+    <%= javascript_importmap_tags %>
++    <%= javascript_include_tag "video.min", "data-turbo-track": "reload" %>
 ```
 
-Niente manifest, niente require: Propshaft serve automaticamente i file presenti nei path asset.
+> Niente manifest, niente require: Propshaft serve automaticamente i file presenti nei path asset.
 
 
 
 ## Aggiungi il player nella view show
+
+***Codice 02 - .../app/views/articles/show.html.erb - linea:24***
 
 ```html
 <video
@@ -124,13 +131,19 @@ Salva il file come:
 Includi il tema nel layout
 Nel file application.html.erb o equivalente:
 
-```html
-<%= stylesheet_link_tag "video-js.min", media: "all", "data-turbo-track": "reload" %>
-<%= stylesheet_link_tag "videojs-theme-forest", media: "all", "data-turbo-track": "reload" %>
+***Codice 01 - .../app/views/layouts/application.html.erb - linea:24***
+
+```diff
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "video-js.min", media: "all", "data-turbo-track": "reload" %>
++    <%= stylesheet_link_tag "videojs-theme-forest", media: "all", "data-turbo-track": "reload" %>
+
+    <%= javascript_importmap_tags %>
+    <%= javascript_include_tag "video.min", "data-turbo-track": "reload" %>
 ```
 
-Applica il tema nel markup del player
-Nel tag <video>, aggiungi la classe del tema vjs-theme-forest:
+Nel tag <video>, aggiungi la classe del tema `vjs-theme-forest`.
 
 ```html
 <video

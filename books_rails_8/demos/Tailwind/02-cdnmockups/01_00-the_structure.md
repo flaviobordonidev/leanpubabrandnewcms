@@ -1,14 +1,10 @@
 # <a name="top"></a> Prepariamo la struttura per le pagine CDN Mockups
 
 Creiamo un mockup che prende lo stile, nel nostro caso Tailwind Css, tramite CDN.
-Questo non è consigliato per la produzione e più avanti installeremo Tailwind Css direttamente nella nostra app Rails usando importmap, ma per creare dei mockups iniziali è molto utile.
+Questo non è consigliato per la produzione ma per creare dei mockups iniziali è molto utile.
 
 (la struttura che creiamo è talmente generica che possiamo caricare anche Bootstrap tramite CDN o un altro framework)
 
-
-- indichiamo di usare per tutte le azioni il layout empty
-- instradiamo nel file routes
-- 
 
 
 ## Creiamo il layout empty

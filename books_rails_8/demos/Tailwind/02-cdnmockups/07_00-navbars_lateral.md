@@ -2,6 +2,77 @@
 
 La nostra app è "mobile first" quindi deve funzionare bene sui cellulari prima di tutto e poi impostiamo anche la grafica per PC con monitor più grandi.
 
+Tre barre di navigazione di cui due visualizzate.
+- su cellulare abbiamo Barra in alto e Barra in basso
+- su pc abbiamo Barra in alto e Barra laterale
+
+Questa struttura è interessante ma nei prossimi capitoli ci sposteremo poi ad una soluzione con solo due barre di navigazione sia su cellulare che su PC; la barra in alto e la barra in basso (non utilizzeremo la barra laterale).
+
+
+
+## Iniziamo creando la struttura base
+
+Implementiamo la struttura della DOM nel suo insieme includendo `<header>`, `<main>`, `footer`.
+- Su `<header>` inseriamo: `<nav>`.
+- Su `<main>` inseriamo le cards (`<article>`).
+- Su `<footer>` inseriamo il copyright `<p>`.
+
+![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/ubuntudream_tw/02-cdn_mockups/07_fig01-DOM_header_nav_main_footer.png)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Flavio Bordoni">
+    <title>Tailwind Base</title>
+
+    <!-- IMPORTA TAILWIND -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- <link rel="stylesheet" href="css/style.css" type="text/css"> -->
+  </head>
+  <body>
+
+    <header>
+      <nav>...</nav>
+      <form> search... </form>
+      ...
+    </header>
+
+    <div id="sidebar">
+      <nav>...</nav>
+      ...
+    </div>
+
+    <main>
+      ...
+      <article>
+        <header>
+        </header>
+        <img></img>
+        <footer></footer>
+      </article>
+      ...
+      <article>
+        ...
+      </article>
+      ...
+    </main>
+
+    <footer>
+      <nav>...</nav>
+      <p>copyright</p> ...
+      ...
+    </footer>
+
+    <script src="scripts.js">
+      ...
+    </script>
+  </body>
+</html>
+```
+
 
 ## Navbars / menu
 
@@ -92,3 +163,16 @@ Vediamo come si presentano su Mobile e su PC.
 ![fig01](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/ubuntudream_tw/02-mockups/02_fig01-ud_mobile_navbars.png)
   
 ![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/ubuntudream_tw/02-mockups/02_fig02-ud_pc_navbars.png)
+
+
+
+
+
+## Risorse esterne
+
+- []()
+
+
+---
+[top](#top) |
+[index](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/index.md)

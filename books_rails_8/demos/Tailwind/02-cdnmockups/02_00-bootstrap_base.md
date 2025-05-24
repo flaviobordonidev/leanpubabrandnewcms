@@ -1,7 +1,6 @@
 # <a name="top"></a> Impostiamo alcune formattazioni base di Bootstrap
 
-Questa pagina è solo didattica e **possiamo saltarla**.
-Serve solo ad evidenziare che il framwork caricato tramite CDN non è installato su Ruby on Rails ma è un semplice puntamento ad un server esterno e questo ci permette di fare una pagina usando un framework diverso da quello scelto. In questo caso usaiamo bootstrap invece di Tailwind.
+Evidenziamo che il framwork caricato tramite CDN non è installato su Ruby on Rails ma è un semplice puntamento ad un server esterno e questo ci permette di fare una pagina usando un framework diverso da quello scelto. In questo caso usaiamo bootstrap invece di Tailwind.
 
 Impostiamo alcune formattazioni base di Bootstrap principalmente per assicurarci che il "caricamento" tramite CDN stia funzionando.
 
