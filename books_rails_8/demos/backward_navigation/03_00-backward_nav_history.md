@@ -81,6 +81,8 @@ codice | Spiegazione
 `let customHistory = JSON.parse(sessionStorage.getItem("customHistory") \|\| "[]")` | Questa riga serve a leggere lo stack di cronologia personalizzata che abbiamo salvato in precedenza, e trasformarlo in un array JavaScript.
 `sessionStorage.getItem("customHistory")` | Cerca nel `sessionStorage` (memoria locale del browser che dura finché il tab è aperto) un oggetto con chiave `customHistory`. Se esiste, sarà una stringa JSON, ad esempio: `'["/intro", "/articoli/1", "/articoli/2"]'`
 `JSON.parse(...)` | Converte quella stringa JSON in un vero array JavaScript, che potrai manipolare con push(), pop(), filter() ecc.
+`sessionStorage.getItem(...) \|\| "[]"` | Se non c’è ancora nulla salvato in sessionStorage (es. prima visita dell’utente), getItem(...) restituisce null. Per evitare errori, si usa `\|\| "[]"` così, se non trova niente, `JSON.parse("[]")` crea un array vuoto, pronto da usare.
+
 
 
 ## Aggiunta del controller alle pagine
