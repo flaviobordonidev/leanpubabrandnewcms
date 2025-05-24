@@ -78,7 +78,7 @@ codice | Spiegazione
 `static values = { skip: Boolean }` | Questo dice a Stimulus: “Aspettati un attributo chiamato data-history-skip-value, e interpretalo come un booleano.”
 `if (this.skipValue) return` | Se `@skip_history` è *true* la pagina non è archiviata nello storico perché esco subito con `return`.
 `const path = window.location.pathname` | Questa riga estrae il percorso corrente dell’URL, cioè tutto ciò che viene dopo il dominio, escludendo il protocollo `https://` e l’host `www.example.com`.
-`let customHistory = JSON.parse(sessionStorage.getItem("customHistory") || "[]")` | Questa riga serve a leggere lo stack di cronologia personalizzata che abbiamo salvato in precedenza, e trasformarlo in un array JavaScript.
+`let customHistory = JSON.parse(sessionStorage.getItem("customHistory") \|\| "[]")` | Questa riga serve a leggere lo stack di cronologia personalizzata che abbiamo salvato in precedenza, e trasformarlo in un array JavaScript.
 
 
 
