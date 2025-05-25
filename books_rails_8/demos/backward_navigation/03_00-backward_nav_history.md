@@ -35,7 +35,7 @@ Poiché vogliamo mantenere la storia della navigazione per tutte le view imposti
 ```
 
 - Il valore di `data-controller` è il nome dello stimulus controller che viene richiamato. Nel nostro caso `history_controller`.
-- `data-history-skip-value` è una variabile che usiamo nel nostro stimulus controller.
+- `data-history-skip-value` è una variabile che usiamo nel nostro stimulus controller. `data-` indica che ci stiamo riferendo ad uno stimulus controller. `...-history-...` è il nome dello stimulus controller. `...-skip-...` è il nome di una variabile che definiamo nello stimulus controlelr. `...-value` vuol dire che stiamo assegnando il valore della variabile definita nello stimulus controller.
 - `@skip_history` è una variabile di istanza che definiamo a livello di controller ed è di tipo `boolean` quindi `TRUE` o `FALSE`.
 
 Quindi: ogni volta che si carica una pagina, Stimulus registra (o meno) l’URL in base a `@skip_history`, indipendentemente da cosa c’è nella pagina (bottoni, form ecc.).
@@ -44,10 +44,10 @@ Quindi: ogni volta che si carica una pagina, Stimulus registra (o meno) l’URL 
 
 ## Creiamo lo Stimulus controller
 
-Creiamo la stimulus controller `history_controller.js`. Ed impostiamo che quando è chiamato registra (o meno) l’URL in base a `@skip_history`.
+Creiamo lo stimulus controller `history_controller.js`. Ed impostiamo che quando è chiamato registra (o meno) l’URL in base a `@skip_history`.
 Quindi mettiamo il codice nel `connect()` che è sempre eseguito quando si richiama lo stimulus controller con `data-controller`.
 
-***Codice 01 - .../app/javascript/controllers/history_controller.js - linea:24***
+***Codice 01 - .../app/javascript/controllers/history_controller.js - linea:1***
 
 ```javascript
 import { Controller } from "@hotwired/stimulus"
@@ -78,7 +78,7 @@ Analiziamo il codice
 
 codice | Spiegazione
 :-- | :--
-`static values = { skip: Boolean }` | Questo dice a Stimulus: “Aspettati un attributo chiamato data-history-skip-value, e interpretalo come un booleano.”
+`static values = { skip: Boolean }` | Dice a Stimulus: “Aspettati un attributo chiamato `data-history-skip-value`, e interpretalo come un booleano.”
 `if (this.skipValue) return` | Se `@skip_history` è *true* la pagina non è archiviata nello storico perché esco subito con `return`.
 `const path = window.location.pathname` | Questa riga estrae il percorso corrente dell’URL, cioè tutto ciò che viene dopo il dominio, escludendo il protocollo `https://` e l’host `www.example.com`.
 `let customHistory = JSON.parse(sessionStorage.getItem("customHistory") \|\| "[]")` | Questa riga serve a leggere lo stack di cronologia personalizzata che abbiamo salvato in precedenza, e trasformarlo in un array JavaScript.
