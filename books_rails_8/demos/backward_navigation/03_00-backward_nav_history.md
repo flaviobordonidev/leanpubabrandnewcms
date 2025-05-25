@@ -63,8 +63,11 @@ export default class extends Controller {
     const path = window.location.pathname
     let customHistory = JSON.parse(sessionStorage.getItem("customHistory") || "[]")
     
+    // Evita di salvare due volte lo stesso path consecutivamente
     if (customHistory[customHistory.length - 1] !== path) {
+      // Aggiunge la pagina corrente allo stack personalizzato
       customHistory.push(path)
+      // Salva di nuovo tutto nel sessionStorage come stringa JSON
       sessionStorage.setItem("customHistory", JSON.stringify(customHistory))
     }
   }
@@ -82,6 +85,9 @@ codice | Spiegazione
 `sessionStorage.getItem("customHistory")` | Cerca nel `sessionStorage` (memoria locale del browser che dura finché il tab è aperto) un oggetto con chiave `customHistory`. Se esiste, sarà una stringa JSON, ad esempio: `'["/intro", "/articoli/1", "/articoli/2"]'`
 `JSON.parse(...)` | Converte quella stringa JSON in un vero array JavaScript, che potrai manipolare con push(), pop(), filter() ecc.
 `sessionStorage.getItem(...) \|\| "[]"` | Se non c’è ancora nulla salvato in sessionStorage (es. prima visita dell’utente), getItem(...) restituisce null. Per evitare errori, si usa `\|\| "[]"` così, se non trova niente, `JSON.parse("[]")` crea un array vuoto, pronto da usare.
+`customHistory[customHistory.length - 1] !== path` | Sta verificando se l’ultima pagina registrata nello stack è diversa dalla pagina attuale `path` per evitare duplicati.
+`customHistory.push(path)` | Aggiunge l’URL corrente alla fine dello stack.
+`sessionStorage.setItem(...)` | Dopo aver aggiornato lo stack, questa riga salva di nuovo tutto nel browser, convertendo l’array in stringa. Per esempio:`["/intro", "/lezione/1", "/domanda/2"]` → `'["/intro","/lezione/1","/domanda/2"]'`
 
 
 
