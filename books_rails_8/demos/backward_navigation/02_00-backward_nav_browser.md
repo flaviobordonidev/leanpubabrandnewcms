@@ -17,7 +17,7 @@ Questo pulsante userà la cronologia del browser per tornare alla pagina precede
 
 Se preferisci usare un link (<a>), funziona allo stesso modo:
 
-***Codice 01 - .../app/views/articles/show.html.erb - linea:24***
+***Codice 02 - .../app/views/articles/show.html.erb - linea:24***
 
 ```html
 <%= link_to 'Torna indietro', '#', onclick: 'window.history.back(); return false;' %>
