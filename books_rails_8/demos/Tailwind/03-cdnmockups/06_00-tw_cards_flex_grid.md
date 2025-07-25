@@ -3,6 +3,9 @@
 Facciamo alcune cards con Tailwind CSS.
 A titolo di esempio facciamo delle cards per delle ricette di cucina.
 
+**ATTENZIONE**
+**Il file** `06_99-app-views-cdnmockups-tw_comp_cards.html.erb` **è quello più completo**.
+
 
 
 ## La view `tw_comp_cards` per il componente Card
@@ -257,8 +260,7 @@ Come si può vedere su container Grid le cards restano della larghezza definita 
 
 ## Usare una grid a 12 colonne come BootStrap
 
- Possiamo creare una griglia a 12 colonne, come fa Boorstrap, ed inserire poi le colonne che ci servono davvero usando il `col-span-`.
-
+Possiamo creare una griglia a 12 colonne, come fa Boorstrap, ed inserire poi le colonne che ci servono davvero usando il `col-span-`.
 Ad esempio il seguente codice crea una colonna su cellulare, due colonne su tablet e 3 colonne su PC.
 
 ```html
@@ -267,11 +269,38 @@ Ad esempio il seguente codice crea una colonna su cellulare, due colonne su tabl
 </div>
 ```
 
-`col-span-` | # colonne
-|:---   |:---
+`col-span-`      | # colonne
+|:---            |:---
 `col-span-12:`   | 1 colonna su collulare (da 0px in su)
 `md:col-span-6:` | 2 colonne su tablet (da 768px in su)
 `lg:col-span-4:` | 3 colonne da PC (da 1024px in su)
+
+
+
+## Mantenere insieme icona e testo 
+
+Per far sì che l’icona dell’orologio e la scritta “5 min” restino sempre insieme su una sola riga, devi racchiuderle in un **contenitore `inline-flex` con `whitespace-nowrap`**.
+
+Ecco come puoi correggere il blocco interessato:
+
+```html
+<span class="inline-flex items-center text-sm whitespace-nowrap">
+  <svg xmlns="http://www.w3.org/2000/svg"
+       width="16" height="16" fill="currentColor"
+       class="bi bi-clock mr-1"
+       viewBox="0 0 16 16">
+    <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
+    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/>
+  </svg>
+  5 min
+</span>
+```
+
+Spiegazione:
+- `inline-flex`: dispone svg e testo sulla stessa linea.
+- `items-center`: li allinea verticalmente.
+- `whitespace-nowrap`: impedisce l’andata a capo all’interno del blocco.
+- `mr-1`: margine a destra dell’icona, per distanziare dal testo.
 
 
 
@@ -296,4 +325,3 @@ Ad esempio il seguente codice crea una colonna su cellulare, due colonne su tabl
 
 - [CSS Flex vs Grid (using Tailwind CSS) | Which to choose?](https://www.youtube.com/watch?v=NUDLB5WG_6E)
 
-Nell'immagine `03_fig01-tw_flex_on_email_button` è meglio usare `flex` invece di `grid` perché ci interessa che il pulsante si *adatti al contenuto*, ossia a quello che c'è scritto dentro. In questo caso "Get a demo". Se domani ci voglio scrivere "Get a free demo", usando `flex` il pulsante si allunga da solo. Se invece usavo grid che succedeva? Boh! è da provare.

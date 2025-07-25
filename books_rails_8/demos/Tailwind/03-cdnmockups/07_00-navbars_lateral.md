@@ -165,6 +165,7 @@ Vediamo come si presentano su Mobile e su PC.
 ![fig02](https://github.com/flaviobordonidev/leanpubabrandnewcms/blob/master/books_rails_8/ubuntudream_tw/02-mockups/02_fig02-ud_pc_navbars.png)
 
 
+Nell'immagine `07_fig92-tw_flex_on_email_button` è meglio usare `flex` invece di `grid` perché ci interessa che il pulsante si *adatti al contenuto*, ossia a quello che c'è scritto dentro. In questo caso "Get a demo". Se domani ci voglio scrivere "Get a free demo", usando `flex` il pulsante si allunga da solo. Se invece usavo grid che succedeva? Boh! è da provare.
 
 
 
