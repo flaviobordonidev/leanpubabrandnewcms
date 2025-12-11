@@ -3,3 +3,110 @@
 Mi piace molto la soluzione Arch Linux + Hyprland e vorrei riprodurre una soluzione simile sul mio ambiente Mac OS.
 
 
+
+## Gli "Spaces" o "Desktops"
+
+Io erroneamente credevo che glii spaces si aprivano massimizzando un'applicazione. Invece NO, quella è un'eccezione che viene mostrata tra gli spaces ma non è uno space.
+Per creare uno space dobbiamo usare il "+" che è tutto a destra nella lista degli spaces.
+La lista degli spaces la possiamo aprire con:
+  - trackpad strisciando 3-4 dita in alto.
+  - CTRL + Freccia Su
+
+Apriamola ed aggiungiamo 10 spaces premendo più volte il tasto "+".
+Adesso attiviamo gli shortcuts andando su:
+- System Settings --> Keyboards --> Keyboard Shortcuts...
+- "Mission Control" nel menu a sx --> Apriamo l'albero nella voce "Mission Control"
+- Avremo nella lista tanti "Switch to Desktop #" quanti sono gli spaces che abbiamo aggiunto (nel ns caso 10)
+- Flaghiamo ognuno dei 10 ottenendo gli shortcuts da "CTRL+1" fino a "CTRL+0"
+
+
+
+## Riduciamo l'animazione
+
+L'animazione di spostamento tra spaces usandoli spesso può risultare fastidiosa.
+La possiamo rendere molto più veloce andando su:
+- System Settings --> Accessibility --> Display 
+- Reduce motion = ON 
+
+
+
+## Disattiviamo il riordino degli Spaces
+
+Facciamo in modo che gli Spaces non siano riordinati (rearrenged) e restino sempre nella stessa posizione per restare coerenti con la numerazione che gli abbiamo assegnato. Andiamo su:
+- System Settings --> Desktop & Dock
+- scroll down to "Mission Control" 
+- Automatically rearrange Spaces based on most recent use = OFF
+
+
+
+## Come massimizzare una finestra nel desktop senza andare a schermo intero
+
+Facendo doppio clic sulla barra della finestra si massimizza all'interno del Desktop o Space attivo.
+Se invece facciamo clic sul bottone verde sulla barra della finestra la espandiamo a schermo intero (quasi come fosse uno Space).
+
+
+
+## Fissiamo un'applicazione ad un workspace
+
+Facciamo clic destro sull'applicazione nella barra di menu in basso.
+- Options --> Assign to = This Desktop
+
+> di default Assign to = None
+
+Questo fa si che tutte le volte che apriamo quell'applicazione si aprirà nel Desktop o Space che gli abbiamo indicato.
+
+
+
+## Installiamo Amethist
+
+Per installare Amethist facciamo quanto indicato nel sito ufficiale
+- https://ianyh.com/amethyst/
+- https://github.com/ianyh/Amethyst
+
+Ossia usiamo brew:
+
+```shell
+❯ brew install --cask amethyst
+```
+
+
+
+## Add Keyboard Shortcuts
+
+Questa parte voglio farla con cura. Voglio allineare l'uso con i comandi di default di hyprland ed anche simili a quelli di NeoVim.
+Amhetist ha un set di azioni inferiore rispetto a quelle di Hyprland quindi quando è assente metto "n/a".
+Le azioni di Amethist *non* sono mappabili con quelle di hyprland perché sono molto meno.
+Ad esempio Amethist per il cambio di Focus usa la rotazione oraria e antioraria invece delle quattro direzioni su, giù, destra, sinistra.
+
+
+
+### Change Focus Within Space
+
+Azione Hyprland   | Keyb. Sh. Hypr.   | Azione Amethist               |  Keyb. Sh. Ameth.
+| :---            | :---              | :---                          | :---
+movefocus, left   | Mod + h           | n/a                           | n/a
+movefocus, down   | Mod + j           | Move focus counter clockwise  | ⌃ + ⌥ + j
+movefocus, up     | Mod + k           | Move focus clockwise          | ⌃ + ⌥ + k
+movefocus, right  | Mod + l           | n/a                           | n/a
+
+
+
+### Change Focus Between Displays
+
+change focus between external displays (left and right)
+
+Azione Hyprland   | Keyb. Sh. Hypr.   | Azione Amethist      |  Keyb. Sh. Ameth.
+| :---            | :---              | :---                 | :---
+previous display  |                   | previous display     | ⌃ + ⌥ + s
+next display      |                   | next display         | ⌃ + ⌥ + g
+
+
+
+
+
+
+
+## Risorse esterne
+
+- [Boost your MacOS PRODUCTIVITY with Amethyst | Tiling Window Manager](https://www.youtube.com/watch?v=7Z9-Ry4yGNc)
+- [How To Use A Tiling Window Manager On MacOs | Yabai Ultimate Guide](https://www.youtube.com/watch?v=k94qImbFKWE)
