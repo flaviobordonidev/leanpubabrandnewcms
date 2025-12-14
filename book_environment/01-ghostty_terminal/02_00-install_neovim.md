@@ -37,4 +37,9 @@ Dentro nvim
 ## Risorse esterne
 
 - [The Only Video You Need to Get Started with Neovim](https://www.youtube.com/watch?v=m8C0Cq9Uv9o)
+- [Youtuber NEOBEAM](https://www.youtube.com/@linkarzu)
 - [From 0 to IDE in NEOVIM from scratch | FREE COURSE // EP 1](https://www.youtube.com/watch?v=zHTeCSVAFNY&list=PLsz00TDipIffreIaUNk64KxTIkQaGguqn&index=2)
+- [Kickstart Your Neovim Config](https://www.youtube.com/watch?v=hnTXJGm8VBA&list=PLXJ0on0Dau77NO_jXpRuhIScIFDMzGnNX)
+- [Zero to IDE with LazyVim](https://www.youtube.com/watch?v=N93cTbtLCIM)
+- [My complete Neovim markdown setup and workflow in 2024](https://www.youtube.com/watch?v=c0cuvzK1SDo)
+- [Why I Moved from Telescope to Snacks Picker - And Why I'm Not Using fzf-lua](https://www.youtube.com/watch?v=7hEWG3GP6m0)

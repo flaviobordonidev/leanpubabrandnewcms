@@ -11,8 +11,8 @@ nVim di default va a cercare la configurazione nel path: `~/.config/nvim/`
 Potremmo mettere tutta la configurazione nel singolo file: `~/.config/nvim/init.lua`
 Però questo file diventerebbe troppo grande e sarebbe difficile da mantenere.
 
-Per questo motivo quando abbiamo installato lazy.vim compiandoci la cartella github ci siamo trasportati, oltre al file `~/.config/nvim/init.lua` anche delle sotto-cartelle e tanti altri files `.lua` in modo da avere la configurazione divisa in vare "aree di competenza".
-Un esmpio molto chiaro sono i plugins che vengono separati ognuno sul suo file dentro la cartella `~/.config/nvim/plugins/`.
+Per questo motivo quando abbiamo installato lazy.vim compiandoci la cartella github ci siamo trasportati, oltre al file `~/.config/nvim/init.lua` anche delle sotto-cartelle e tanti altri files `.lua` in modo da avere la configurazione divisa in varie "aree di competenza".
+Un esempio molto chiaro sono i plugins che vengono separati ognuno sul suo file dentro la cartella `~/.config/nvim/plugins/`.
 
 Ma vediamo con calma come sono i files di configurazione.
 
@@ -38,7 +38,7 @@ Innanzitutto abbiamo la cartella `~/.config/nvim/` che inizialmente non c'era e 
 
 ## Vediamo init.lua
 
-> Pr convenzione NeoVim appena parte cerca i file di configurazione nel "runtimepath"
+> Per convenzione NeoVim appena parte cerca i file di configurazione nel "runtimepath"
 
 Questo è il file principale e quello in cui potremmo avere tutta la configurazione. Siccome la configurazione è distribuita nel file principale è rimasto solo il puntamnento a `~/.config/nvim/config/lazy.lua`
 

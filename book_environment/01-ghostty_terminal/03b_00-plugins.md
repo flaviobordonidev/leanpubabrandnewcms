@@ -2,6 +2,51 @@
 # <a name="top"></a> LazyVim 14 ha preinstallati i seguenti plugins
 
 
+
+
+
+
+
+
+In LazyVim è assolutamente normale che molti plugin non compaiano nella cartella
+~/.config/nvim/lua/plugins.
+Non è un errore della tua configurazione: è proprio come LazyVim è progettato.
+
+Ti spiego perché in modo chiaro e senza sezioni formali, così da darti un quadro completo del funzionamento.
+
+LazyVim è costruito sopra lazy.nvim, un plugin manager che permette a una distribuzione come LazyVim di includere una grande quantità di plugin preconfigurati senza che l’utente debba dichiararli a mano. Quando installi LazyVim, ottieni automaticamente un set di plugin “core” definiti internamente dalla distribuzione, non nella tua cartella ~/.config, ma nel percorso runtime del plugin LazyVim stesso. In pratica, questi plugin vengono caricati perché fanno parte del pacchetto LazyVim: sono elencati nei file della distribuzione (per esempio dentro lazyvim/lua/lazyvim/plugins), non nella directory utente.
+
+La directory ~/.config/nvim/lua/plugins contiene solo estensioni e override locali:
+quello che vuoi aggiungere, cambiare, disattivare o sovrascrivere. Per questo la directory è spesso molto più vuota rispetto alla quantità reale di plugin caricati.
+
+Se vuoi vedere tutti i plugin effettivamente attivi, puoi usare:
+
+:Lazy
+
+
+e aprire la sezione “Plugins”. Lì troverai sia quelli aggiunti da te sia quelli inclusi dalla distribuzione.
+
+Se vuoi capire da dove viene un plugin specifico, puoi controllare con:
+
+:Lazy debug <nomeplugin>
+
+
+oppure puoi leggere i preset direttamente nel repository ufficiale di LazyVim.
+
+Infine, se vuoi modificare uno dei plugin “di default”, non devi copiare il file da LazyVim: basta creare un file dentro ~/.config/nvim/lua/plugins/xxx.lua e definire un override. Lazy.nvim farà il merge delle configurazioni rispettando la tua versione come prioritaria.
+
+Se vuoi, posso mostrarti un esempio pratico:
+– come aggiungere un plugin,
+– come disattivarne uno incluso di default,
+– oppure come modificarne le opzioni.
+
+Dimmi cosa ti serve.
+
+
+
+
+
+
 [La0zyVim 14](https://www.lazyvim.org/plugins) provides a set of preconfigured plugins enabled by default. All you need to do to utilize these plugins is install the **LazyVim starter template**.
 
 Vediamo i plugins attivi divisi per categorie.
