@@ -3,6 +3,7 @@
 
 ## Risorse esterne
 
+- [Lazyvim website](https://www.lazyvim.org/#-learn)
 - [book lazyvim](https://lazyvim-ambitious-devs.phillips.codes/course/chapter-1/)
 - [Getting Started with Stimulus in Rails (The Basics)](https://www.youtube.com/watch?v=XlyFLC3YqPw)
 
